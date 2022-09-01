@@ -2,10 +2,8 @@
 /lib/
 /test/
 custom-elements.json
-# top level source
+# this will potentially need to be removed
 edi-table.js
 edi-table.js.map
 edi-table.d.ts
 edi-table.d.ts.map
-# only generated for size check
-edi-table.bundled.js

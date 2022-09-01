@@ -5,6 +5,8 @@ import {ediTableStyle} from './edi-table-style';
 type TableRow = (number | string)[];
 type TableContents = TableRow[];
 
+// spellcheck can be enabled or disabled by the user - enabled by default
+
 @customElement('edi-table')
 export class MyElement extends LitElement {
   static override styles = [ediTableStyle];
@@ -17,18 +19,24 @@ export class MyElement extends LitElement {
 
   @property({type: Array})
   contents: TableContents = [
-    [1, 2, 3, 4],
-    [1, 2, 3, 4, 6],
+    [255, 0, 0, 'Red'],
+    [254, 0, 0, 'Red'],
   ];
 
   override render() {
+    // setTimeout(() => {
+    //   this.contents = [
+    //     [1, 2, 3, 4],
+    //     [1, 2, 3, 5],
+    //   ];
+    // }, 2000);
+    console.log('called');
     return html`
       <h1>${this.sayHello(this.name)}!</h1>
       <button @click=${this._onClick} part="button">
         Click Count: ${this.count}
       </button>
-      <div>${this.generateTable()}</div>
-      <slot></slot>
+      <div class="table">${this.generateTable()}</div>
     `;
   }
 
@@ -36,7 +44,7 @@ export class MyElement extends LitElement {
     return dataRow.map((cellText: string | number) => {
       // https://lit.dev/docs/localization/best-practices
       // check if this is re-rendered when a text value is changed
-      return html`<div>${cellText}</div>`;
+      return html`<div class="cell" contenteditable>${cellText}</div>`;
     });
   }
 
@@ -49,7 +57,7 @@ export class MyElement extends LitElement {
   }
 
   private generateTable() {
-    return this.populateData(this.contents);
+    return html`<div class="data">${this.populateData(this.contents)}</div>`;
   }
 
   private _onClick() {

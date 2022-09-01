@@ -1,1 +1,3 @@
 update homepage property in package
+
+change outDir in tsconfig.json to be lib instead of ./

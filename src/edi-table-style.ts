@@ -18,6 +18,7 @@ export const ediTableStyle = css`
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-bottom-color: rgba(0, 0, 0, 0.12);
+    width: fit-content;
   }
 
   .row > div:first-child {
@@ -52,5 +53,9 @@ export const ediTableStyle = css`
     line-height: 18px;
     font-size: 12px;
     color: #555555;
+  }
+
+  .table {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   }
 `;
