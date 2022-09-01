@@ -75,9 +75,7 @@ const noBrowser = (b) => {
 };
 let commandLineBrowsers;
 try {
-  commandLineBrowsers = process.env.BROWSERS?.split(',').map(
-    (b) => browsers[b] ?? noBrowser(b)
-  );
+  commandLineBrowsers = process.env.BROWSERS?.split(',').map((b) => browsers[b] ?? noBrowser(b));
 } catch (e) {
   console.warn(e);
 }
@@ -85,7 +83,7 @@ try {
 // https://modern-web.dev/docs/test-runner/cli-and-configuration/
 export default {
   rootDir: '.',
-  files: ['./test/**/*_test.js'],
+  files: ['./dist/test/**/*_test.js'],
   nodeResolve: {exportConditions: mode === 'dev' ? ['development'] : []},
   preserveSymlinks: true,
   browsers: commandLineBrowsers ?? Object.values(browsers),
@@ -108,7 +106,9 @@ export default {
           {
             name: 'lit-polyfill-support',
             path: 'node_modules/lit/polyfill-support.js',
-            test: "!('attachShadow' in Element.prototype) || !('getRootNode' in Element.prototype) || window.ShadyDOM && window.ShadyDOM.force",
+            test:
+              "!('attachShadow' in Element.prototype) || !('getRootNode' in Element.prototype) " +
+              '|| window.ShadyDOM && window.ShadyDOM.force',
             module: false,
           },
         ],

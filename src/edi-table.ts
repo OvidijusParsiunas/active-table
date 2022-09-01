@@ -23,6 +23,9 @@ export class MyElement extends LitElement {
     [254, 0, 0, 'Red'],
   ];
 
+  @property()
+  cell = () => {};
+
   override render() {
     // setTimeout(() => {
     //   this.contents = [
@@ -30,30 +33,38 @@ export class MyElement extends LitElement {
     //     [1, 2, 3, 5],
     //   ];
     // }, 2000);
-    console.log('called');
     return html`
       <h1>${this.sayHello(this.name)}!</h1>
-      <button @click=${this._onClick} part="button">
-        Click Count: ${this.count}
-      </button>
+      <button @click=${this._onClick} part="button">Click Count: ${this.count}</button>
       <div class="table">${this.generateTable()}</div>
     `;
   }
 
-  private generateCells(dataRow: TableRow): HTMLTemplateResult[] {
-    return dataRow.map((cellText: string | number) => {
+  private updateTableContent(target: HTMLElement, rowIndex: number, columnIndex: number) {
+    this.contents[rowIndex][columnIndex] = target.textContent?.trim() as string;
+    console.log(this.cell());
+  }
+
+  private generateCells(dataRow: TableRow, rowIndex: number): HTMLTemplateResult[] {
+    return dataRow.map((cellText: string | number, columnIndex: number) => {
       // https://lit.dev/docs/localization/best-practices
       // check if this is re-rendered when a text value is changed
-      return html`<div class="cell" contenteditable>${cellText}</div>`;
+      return html`<div
+        class="cell"
+        contenteditable
+        @input=${(e: InputEvent) => this.updateTableContent(e.target as HTMLElement, rowIndex, columnIndex)}
+      >
+        ${cellText}
+      </div>`;
     });
   }
 
-  private populateDataRow(dataRow: TableRow): HTMLTemplateResult {
-    return html`<div class="row">${this.generateCells(dataRow)}</div>`;
+  private populateDataRow(dataRow: TableRow, rowIndex: number): HTMLTemplateResult {
+    return html`<div class="row">${this.generateCells(dataRow, rowIndex)}</div>`;
   }
 
   private populateData(data: TableContents): HTMLTemplateResult[] {
-    return data.map((dataRows: TableRow) => this.populateDataRow(dataRows));
+    return data.map((dataRows: TableRow, rowIndex: number) => this.populateDataRow(dataRows, rowIndex));
   }
 
   private generateTable() {
