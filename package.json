@@ -1,15 +1,15 @@
 {
-  "name": "edi-table",
+  "name": "editable-table-component",
   "version": "0.0.1",
   "description": "A fully editable table",
-  "main": "./dist/edi-table.js",
-  "module": "./dist/edi-table.js",
+  "main": "./dist/editable-table-component.js",
+  "module": "./dist/editable-table-component.js",
   "type": "module",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
     "build:element": "npm run build && rollup -c",
-    "clean": "rimraf dist/edi-table.{d.ts,d.ts.map,js,js.map} test/edi-table.{d.ts,d.ts.map,js,js.map} test/edi-table_test.{d.ts,d.ts.map,js,js.map}",
+    "clean": "rimraf dist/editable-table-component.{d.ts,d.ts.map,js,js.map} test/editable-table-component.{d.ts,d.ts.map,js,js.map} test/edi-table_test.{d.ts,d.ts.map,js,js.map}",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",
     "lint:lit-analyzer": "lit-analyzer",
@@ -45,12 +45,12 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OvidijusParsiunas/edi-table.git"
+    "url": "git+https://github.com/OvidijusParsiunas/editable-table-component.git"
   },
   "bugs": {
-    "url": "https://github.com/OvidijusParsiunas/edi-table/issues"
+    "url": "https://github.com/OvidijusParsiunas/editable-table-component/issues"
   },
-  "homepage": "https://github.com/OvidijusParsiunas/edi-table",
+  "homepage": "https://github.com/OvidijusParsiunas/editable-table-component",
   "dependencies": {
     "@rollup/plugin-replace": "^4.0.0",
     "lit": "^2.2.4",

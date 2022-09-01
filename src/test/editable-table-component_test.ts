@@ -1,16 +1,16 @@
-import {MyElement} from '../edi-table.js';
+import {MyElement} from '../editable-table-component.js';
 
 import {fixture, assert} from '@open-wc/testing';
 import {html} from 'lit/static-html.js';
 
-suite('edi-table', () => {
+suite('editable-table-component', () => {
   test('is defined', () => {
-    const el = document.createElement('edi-table');
+    const el = document.createElement('editable-table-component');
     assert.instanceOf(el, MyElement);
   });
 
   test('renders with default values', async () => {
-    const el = await fixture(html`<edi-table></edi-table>`);
+    const el = await fixture(html`<editable-table-component></editable-table-component>`);
     assert.shadowDom.equal(
       el,
       `
@@ -22,7 +22,7 @@ suite('edi-table', () => {
   });
 
   test('renders with a set name', async () => {
-    const el = await fixture(html`<edi-table name="Test"></edi-table>`);
+    const el = await fixture(html`<editable-table-component name="Test"></editable-table-component>`);
     assert.shadowDom.equal(
       el,
       `
@@ -34,7 +34,7 @@ suite('edi-table', () => {
   });
 
   test('handles a click', async () => {
-    const el = (await fixture(html`<edi-table></edi-table>`)) as MyElement;
+    const el = (await fixture(html`<editable-table-component></editable-table-component>`)) as MyElement;
     const button = el.shadowRoot!.querySelector('button')!;
     button.click();
     await el.updateComplete;
@@ -49,7 +49,7 @@ suite('edi-table', () => {
   });
 
   test('styling applied', async () => {
-    const el = (await fixture(html`<edi-table></edi-table>`)) as MyElement;
+    const el = (await fixture(html`<editable-table-component></editable-table-component>`)) as MyElement;
     await el.updateComplete;
     assert.equal(getComputedStyle(el).paddingTop, '16px');
   });

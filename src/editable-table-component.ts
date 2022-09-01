@@ -1,13 +1,13 @@
 import {LitElement, html, HTMLTemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {ediTableStyle} from './edi-table-style';
+import {ediTableStyle} from './editable-table-component-style';
 
 type TableRow = (number | string)[];
 type TableContents = TableRow[];
 
 // spellcheck can be enabled or disabled by the user - enabled by default
 
-@customElement('edi-table')
+@customElement('editable-table-component')
 export class MyElement extends LitElement {
   static override styles = [ediTableStyle];
 
@@ -83,7 +83,7 @@ export class MyElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'edi-table': MyElement;
+    'editable-table-component': MyElement;
   }
 }
 

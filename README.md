@@ -1,4 +1,5 @@
-# edi-table
+# editable-table-component
+
 A fully editable table
 
 ## Setup

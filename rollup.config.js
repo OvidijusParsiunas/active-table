@@ -4,9 +4,9 @@ import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 
 export default {
-  input: 'dist/edi-table.js',
+  input: 'dist/editable-table-component.js',
   output: {
-    file: 'dist/edi-table.bundled.js',
+    file: 'dist/editable-table-component.bundled.js',
     format: 'esm',
   },
   onwarn(warning) {
