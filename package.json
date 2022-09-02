@@ -1,6 +1,6 @@
 {
   "name": "editable-table-component",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "A fully editable table",
   "main": "./dist/editable-table-component.js",
   "module": "./dist/editable-table-component.js",
@@ -74,5 +74,11 @@
     "rimraf": "^3.0.2",
     "typescript": "~4.7.4"
   },
-  "customElements": "custom-elements.json"
+  "customElements": "custom-elements.json",
+  "files": [
+    "dist/*.d.*",
+    "dist/*.js",
+    "dist/*.js.*",
+    "custom-elements.json"
+  ]
 }

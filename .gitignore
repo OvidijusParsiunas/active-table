@@ -1,4 +1,3 @@
 /node_modules/
-/lib/
-/test/
 /dist
+custom-elements.json

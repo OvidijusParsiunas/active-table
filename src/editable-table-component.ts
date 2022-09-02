@@ -1,6 +1,6 @@
-import {LitElement, html, HTMLTemplateResult} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
+import {customElement, property} from 'lit/decorators.js';
+import {LitElement, html, HTMLTemplateResult} from 'lit';
 
 type TableRow = (number | string)[];
 type TableContents = TableRow[];
@@ -8,14 +8,11 @@ type TableContents = TableRow[];
 // spellcheck can be enabled or disabled by the user - enabled by default
 
 @customElement('editable-table-component')
-export class MyElement extends LitElement {
+export class EditableTableComponent extends LitElement {
   static override styles = [ediTableStyle];
 
   @property()
   name = 'World';
-
-  @property({type: Number})
-  count = 0;
 
   @property({type: Array})
   contents: TableContents = [
@@ -24,7 +21,10 @@ export class MyElement extends LitElement {
   ];
 
   @property()
-  cell = () => {};
+  onCellUpdate: (newText: string, cellRowIndex: number, cellColumnIndex: number) => void = () => {};
+
+  @property()
+  onTableUpdated: (newTableContents: TableContents) => void = () => {};
 
   override render() {
     // setTimeout(() => {
@@ -35,14 +35,15 @@ export class MyElement extends LitElement {
     // }, 2000);
     return html`
       <h1>${this.sayHello(this.name)}!</h1>
-      <button @click=${this._onClick} part="button">Click Count: ${this.count}</button>
       <div class="table">${this.generateTable()}</div>
     `;
   }
 
   private updateTableContent(target: HTMLElement, rowIndex: number, columnIndex: number) {
-    this.contents[rowIndex][columnIndex] = target.textContent?.trim() as string;
-    console.log(this.cell());
+    const newText = target.textContent?.trim() as string;
+    this.contents[rowIndex][columnIndex] = newText;
+    this.onCellUpdate(newText, rowIndex, columnIndex);
+    this.onTableUpdated(this.contents);
   }
 
   private generateCells(dataRow: TableRow, rowIndex: number): HTMLTemplateResult[] {
@@ -71,11 +72,6 @@ export class MyElement extends LitElement {
     return html`<div class="data">${this.populateData(this.contents)}</div>`;
   }
 
-  private _onClick() {
-    this.count++;
-    this.dispatchEvent(new CustomEvent('count-changed'));
-  }
-
   sayHello(name: string): string {
     return `Hello, ${name}`;
   }
@@ -83,7 +79,7 @@ export class MyElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'editable-table-component': MyElement;
+    'editable-table-component': EditableTableComponent;
   }
 }
 

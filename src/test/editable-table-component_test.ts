@@ -1,4 +1,4 @@
-import {MyElement} from '../editable-table-component.js';
+import {EditableTableComponent} from '../editable-table-component.js';
 
 import {fixture, assert} from '@open-wc/testing';
 import {html} from 'lit/static-html.js';
@@ -6,7 +6,7 @@ import {html} from 'lit/static-html.js';
 suite('editable-table-component', () => {
   test('is defined', () => {
     const el = document.createElement('editable-table-component');
-    assert.instanceOf(el, MyElement);
+    assert.instanceOf(el, EditableTableComponent);
   });
 
   test('renders with default values', async () => {
@@ -34,7 +34,7 @@ suite('editable-table-component', () => {
   });
 
   test('handles a click', async () => {
-    const el = (await fixture(html`<editable-table-component></editable-table-component>`)) as MyElement;
+    const el = (await fixture(html`<editable-table-component></editable-table-component>`)) as EditableTableComponent;
     const button = el.shadowRoot!.querySelector('button')!;
     button.click();
     await el.updateComplete;
@@ -49,7 +49,7 @@ suite('editable-table-component', () => {
   });
 
   test('styling applied', async () => {
-    const el = (await fixture(html`<editable-table-component></editable-table-component>`)) as MyElement;
+    const el = (await fixture(html`<editable-table-component></editable-table-component>`)) as EditableTableComponent;
     await el.updateComplete;
     assert.equal(getComputedStyle(el).paddingTop, '16px');
   });

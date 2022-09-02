@@ -1,1 +1,4 @@
 update homepage property in package
+
+detect React:
+!!Object.keys(document).find(key => key.includes('react'))
