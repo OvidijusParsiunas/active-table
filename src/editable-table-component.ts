@@ -4,6 +4,7 @@ import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {customElement, property, state} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
 import {TableContents, TableRow} from './types/tableContents';
+import {createRef, ref, Ref} from 'lit/directives/ref.js';
 import {LitElement, html, HTMLTemplateResult} from 'lit';
 
 // spellcheck can be enabled or disabled by the user - enabled by default
@@ -46,6 +47,10 @@ export class EditableTableComponent extends LitElement {
   @property({type: String})
   defaultValue = '';
 
+  // WORK - use this more
+  // WORK - is this available publically
+  dataRef: Ref<HTMLInputElement> = createRef();
+
   override render() {
     // setTimeout(() => {
     //   this.contents = [
@@ -72,16 +77,16 @@ export class EditableTableComponent extends LitElement {
     this.updateCell(processedText, rowIndex, columnIndex, target)
   }
 
-  private pasteCell = (event: ClipboardEvent, rowIndex: number, columnIndex: number) => {
+  private pasteOnCell(event: ClipboardEvent, rowIndex: number, columnIndex: number) {
     const clipboardText = JSON.stringify(event.clipboardData?.getData('text/plain'));
     if (UpdateCellsViaCSVOnPaste.isCSVData(clipboardText)) {
       UpdateCellsViaCSVOnPaste.update(clipboardText, event, rowIndex, columnIndex, this);
     } else {
       this.updateCellWithPreprocessing((event.target as HTMLElement).textContent, rowIndex, columnIndex);
     }
-  };
+  }
 
-  private blurCell(target: HTMLElement, rowIndex: number, columnIndex: number) {
+  private blurOnCell(target: HTMLElement, rowIndex: number, columnIndex: number) {
     const cellText = target.textContent?.trim();
     if (cellText !== undefined) {
       if (
@@ -95,42 +100,120 @@ export class EditableTableComponent extends LitElement {
     }
   }
 
-  private inputCell(event: InputEvent, rowIndex: number, columnIndex: number) {
+  private inputOnCell(event: InputEvent, rowIndex: number, columnIndex: number) {
     if (event.inputType !== 'insertFromPaste') {
       this.updateCellWithPreprocessing((event.target as HTMLElement).textContent, rowIndex, columnIndex);
     }
   }
 
-  private generateCells(dataRow: TableRow, rowIndex: number, isHeader: boolean): HTMLTemplateResult[] {
+  private createCells(dataRow: TableRow, rowIndex: number, isHeader: boolean): HTMLTemplateResult[] {
     return dataRow.map((cellText: string | number, columnIndex: number) => {
       const isContentEditable = isHeader ? !!this.areHeadersEditable : true;
       const newRowIndex = isHeader ? 0 : rowIndex + 1;
       // https://lit.dev/docs/localization/best-practices
       // check if this is re-rendered when a text value is changed
-      return html`<div
+      const myElement = html`<div
         class="cell"
         contenteditable=${isContentEditable}
-        @input=${(e: InputEvent) => this.inputCell(e, newRowIndex, columnIndex)}
-        @blur=${(e: FocusEvent) => this.blurCell(e.target as HTMLElement, newRowIndex, columnIndex)}
-        @paste=${(e: ClipboardEvent) => this.pasteCell(e, newRowIndex, columnIndex)}
+        @input=${(e: InputEvent) => this.inputOnCell(e, newRowIndex, columnIndex)}
+        @blur=${(e: FocusEvent) => this.blurOnCell(e.target as HTMLElement, newRowIndex, columnIndex)}
+        @paste=${(e: ClipboardEvent) => this.pasteOnCell(e, newRowIndex, columnIndex)}
       >
         ${cellText}
       </div>`;
+      return myElement;
     });
   }
 
-  private populateDataRow(dataRow: TableRow, rowIndex: number, isHeader = false): HTMLTemplateResult {
-    return html`<div class="row">${this.generateCells(dataRow, rowIndex, isHeader)}</div>`;
+  private createDataRow(dataRow: TableRow, rowIndex: number, isHeader = false): HTMLTemplateResult {
+    return html`<div class="row">${this.createCells(dataRow, rowIndex, isHeader)}</div>`;
+  }
+
+  // WORK - see if this can be done for all
+  private inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
+    const inputEvent = event as InputEvent;
+    if (inputEvent.inputType !== 'insertFromPaste') {
+      this.updateCellWithPreprocessing((inputEvent.target as HTMLElement).textContent, rowIndex, columnIndex);
+    }
+  }
+
+  private blurCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
+    const target = event.target as HTMLElement;
+    const cellText = target.textContent?.trim();
+    if (cellText !== undefined) {
+      if (
+        (this.defaultValue !== '' && cellText === '') ||
+        (rowIndex === 0 &&
+          !this.duplicateHeadersAllowed &&
+          NumberOfIdenticalHeaderText.get(cellText, this.contents[0]) > 1)
+      ) {
+        this.updateCell(this.defaultValue, rowIndex, columnIndex, target);
+      }
+    }
+  }
+
+  private pasteCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: ClipboardEvent) {
+    const clipboardText = JSON.stringify(event.clipboardData?.getData('text/plain'));
+    if (UpdateCellsViaCSVOnPaste.isCSVData(clipboardText)) {
+      UpdateCellsViaCSVOnPaste.update(clipboardText, event, rowIndex, columnIndex, this);
+    } else {
+      this.updateCellWithPreprocessing((event.target as HTMLElement).textContent, rowIndex, columnIndex);
+    }
+  }
+
+  private createCellNodes(dataRow: TableRow, rowIndex: number, isHeader: boolean) {
+    return dataRow.map((cellText: string | number, columnIndex: number) => {
+      const isContentEditable = isHeader ? !!this.areHeadersEditable : true;
+      const div = document.createElement('div');
+      div.classList.add('cell');
+      div.contentEditable = String(isContentEditable);
+      div.textContent = cellText as string;
+      div.oninput = this.inputCell.bind(this, rowIndex, columnIndex);
+      div.onblur = this.blurCell.bind(this, rowIndex, columnIndex);
+      div.onpaste = this.pasteCell.bind(this, rowIndex, columnIndex);
+      return div;
+    });
+  }
+
+  private createDataRowNode(dataRow: TableRow, rowIndex: number, isHeader = false) {
+    const cellNodes = this.createCellNodes(dataRow, rowIndex, isHeader);
+    const div = document.createElement('div');
+    div.classList.add('row');
+    cellNodes.forEach((node) => {
+      div.appendChild(node);
+    });
+    return div;
   }
 
   private populateData(data: TableContents): HTMLTemplateResult[] {
-    return data.map((dataRows: TableRow, rowIndex: number) => this.populateDataRow(dataRows, rowIndex));
+    return data.map((dataRows: TableRow, rowIndex: number) => this.createDataRow(dataRows, rowIndex));
+  }
+
+  private addNewRow() {
+    const numberOfColumns = this.contents[0].length;
+    const newRowData = new Array(numberOfColumns).fill(this.defaultValue);
+    this.contents.push(newRowData);
+    newRowData.forEach((cellText: string, columnIndex: number) => {
+      this.onCellUpdate(cellText, this.contents.length - 1, columnIndex);
+    });
+    this.onTableUpdate(this.contents);
+    const newRowNode = this.createDataRowNode(newRowData, this.contents.length - 1);
+    if (this.dataRef.value) {
+      this.dataRef.value.appendChild(newRowNode);
+    }
+  }
+
+  private createAddRowElement() {
+    return html` <div class="add-new-row-row row" @click=${this.addNewRow}>
+      <div class="add-new-row-cell cell">+ New</div>
+    </div>`;
   }
 
   private generateTable() {
     return html`
-      <div class="header">${this.populateDataRow(this.contents[0], 0, true)}</div>
-      <div class="data">${this.populateData(this.contents.slice(1))}</div>
+      <div class="header">${this.createDataRow(this.contents[0], 0, true)}</div>
+      <div class="data" ${ref(this.dataRef)}>${this.populateData(this.contents.slice(1))}</div>
+      ${this.createAddRowElement()}
     `;
   }
 }
@@ -140,36 +223,4 @@ declare global {
     'editable-table-component': EditableTableComponent;
   }
 }
-
-// const generateCells = (dataRow: TableRow, rowIndex: number, isHeader = false) => {
-//   const isContentEditable = isHeader ? areHeadersEditable : true;
-//   return dataRow.map((cellText: string, columnIndex: number) => {
-//     const isDefaultValue = typeof defaultValue !== 'undefined' && cellText === defaultValue;
-//     return (
-//       <div
-//         className={`row-${rowIndex}-column-${columnIndex} cell ${isDefaultValue ? defaultValueClassName : ''}`}
-//         key={columnIndex}
-//         contentEditable={isContentEditable}
-//         onInput={updateCellOnInput}
-//         onPaste={updateCellsOnPaste}
-//         onMouseDown={(e) => (isDefaultValue ? updateCellTextUsingSpecificValue(e.target as HTMLElement, '') : {})}
-//         onBlur={(e) => onCellBlur(e)}
-//         suppressContentEditableWarning={true}
-//       >
-//         {cellText}
-//       </div>
-//     );
-//   });
-// };
-
-// const populateDataRow = (dataRow: TableRow, rowIndex: number, isHeader = false): JSX.Element => {
-//   return (
-//     <div className="row" key={rowIndex}>
-//       {generateCells(dataRow, rowIndex, isHeader)}
-//     </div>
-//   );
-// };
-
-// const populateData = (data: TableContents): JSX.Element[] => {
-//   return data.map((dataRows: TableRow, rowIndex: number) => populateDataRow(dataRows, rowIndex + 1));
-// };
+// onMouseDown={(e) => (isDefaultValue ? updateCellTextUsingSpecificValue(e.target as HTMLElement, '') : {})}

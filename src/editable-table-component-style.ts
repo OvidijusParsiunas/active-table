@@ -42,6 +42,10 @@ export const ediTableStyle = css`
     text-align: left;
   }
 
+  .add-new-row-row {
+    width: auto;
+  }
+
   .add-new-row-row:hover {
     background-color: #f4f4f4;
     cursor: pointer;
