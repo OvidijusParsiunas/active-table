@@ -57,5 +57,6 @@ export const ediTableStyle = css`
 
   .table {
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    width: fit-content;
   }
 `;

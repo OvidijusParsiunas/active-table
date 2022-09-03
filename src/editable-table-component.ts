@@ -1,9 +1,10 @@
+import {UpdateCellsViaCSVOnPaste} from './utils/pasteCSV/updateCellsViaCSVOnPaste';
+import {NumberOfIdenticalHeaderText} from './utils/numberOfIdenticalHeaderText';
+import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {customElement, property, state} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
+import {TableContents, TableRow} from './types/tableContents';
 import {LitElement, html, HTMLTemplateResult} from 'lit';
-
-type TableRow = (number | string)[];
-type TableContents = TableRow[];
 
 // spellcheck can be enabled or disabled by the user - enabled by default
 @customElement('editable-table-component')
@@ -28,13 +29,13 @@ export class EditableTableComponent extends LitElement {
 
   @property({
     type: Boolean,
-    converter: EditableTableComponent.convertToBoolean,
+    converter: LITElementTypeConverters.convertToBoolean,
   })
   areHeadersEditable = true;
 
   @property({
     type: Boolean,
-    converter: EditableTableComponent.convertToBoolean,
+    converter: LITElementTypeConverters.convertToBoolean,
   })
   duplicateHeadersAllowed = true;
 
@@ -55,50 +56,63 @@ export class EditableTableComponent extends LitElement {
     return html`<div class="table">${this.generateTable()}</div>`;
   }
 
-  private static convertToBoolean(value: string | null): boolean {
-    return typeof value === 'string' ? value === 'true' : Boolean(value);
-  }
-
-  private updateTableContent(target: HTMLElement, rowIndex: number, columnIndex: number) {
-    const newText = target.textContent?.trim() as string;
+  // if target used, its textContent is going to be updated
+  private updateCell(newText: string | undefined, rowIndex: number, columnIndex: number, target?: HTMLElement): void {
+    if (!newText) return;
     this.contents[rowIndex][columnIndex] = newText;
+    if (target) target.textContent = newText;
     this.onCellUpdate(newText, rowIndex, columnIndex);
     this.onTableUpdate(this.contents);
   }
 
-  private updateDefault(target: HTMLElement, rowIndex: number, columnIndex: number) {
-    this.contents[rowIndex][columnIndex] = this.defaultValue;
-    target.textContent = this.defaultValue;
-    this.onCellUpdate(this.defaultValue, rowIndex, columnIndex);
-    this.onTableUpdate(this.contents);
+  // prettier-ignore
+  private updateCellWithPreprocessing(
+      newText: string | null, rowIndex: number, columnIndex: number, target?: HTMLElement): void {
+    const processedText = newText?.trim();
+    this.updateCell(processedText, rowIndex, columnIndex, target)
   }
 
-  private getNumberOfIdenticalHeaderText(targetHeaderText: string) {
-    return this.contents[0].slice(0).filter((headerText) => headerText === targetHeaderText).length;
-  }
+  private pasteCell = (event: ClipboardEvent, rowIndex: number, columnIndex: number) => {
+    const clipboardText = JSON.stringify(event.clipboardData?.getData('text/plain'));
+    if (UpdateCellsViaCSVOnPaste.isCSVData(clipboardText)) {
+      UpdateCellsViaCSVOnPaste.update(clipboardText, event, rowIndex, columnIndex, this);
+    } else {
+      this.updateCellWithPreprocessing((event.target as HTMLElement).textContent, rowIndex, columnIndex);
+    }
+  };
 
   private blurCell(target: HTMLElement, rowIndex: number, columnIndex: number) {
     const cellText = target.textContent?.trim();
     if (cellText !== undefined) {
       if (
         (this.defaultValue !== '' && cellText === '') ||
-        (rowIndex === 0 && !this.duplicateHeadersAllowed && this.getNumberOfIdenticalHeaderText(cellText) > 1)
+        (rowIndex === 0 &&
+          !this.duplicateHeadersAllowed &&
+          NumberOfIdenticalHeaderText.get(cellText, this.contents[0]) > 1)
       ) {
-        this.updateDefault(target, rowIndex, columnIndex);
+        this.updateCell(this.defaultValue, rowIndex, columnIndex, target);
       }
+    }
+  }
+
+  private inputCell(event: InputEvent, rowIndex: number, columnIndex: number) {
+    if (event.inputType !== 'insertFromPaste') {
+      this.updateCellWithPreprocessing((event.target as HTMLElement).textContent, rowIndex, columnIndex);
     }
   }
 
   private generateCells(dataRow: TableRow, rowIndex: number, isHeader: boolean): HTMLTemplateResult[] {
     return dataRow.map((cellText: string | number, columnIndex: number) => {
       const isContentEditable = isHeader ? !!this.areHeadersEditable : true;
+      const newRowIndex = isHeader ? 0 : rowIndex + 1;
       // https://lit.dev/docs/localization/best-practices
       // check if this is re-rendered when a text value is changed
       return html`<div
         class="cell"
         contenteditable=${isContentEditable}
-        @input=${(e: InputEvent) => this.updateTableContent(e.target as HTMLElement, rowIndex, columnIndex)}
-        @blur=${(e: FocusEvent) => this.blurCell(e.target as HTMLElement, rowIndex, columnIndex)}
+        @input=${(e: InputEvent) => this.inputCell(e, newRowIndex, columnIndex)}
+        @blur=${(e: FocusEvent) => this.blurCell(e.target as HTMLElement, newRowIndex, columnIndex)}
+        @paste=${(e: ClipboardEvent) => this.pasteCell(e, newRowIndex, columnIndex)}
       >
         ${cellText}
       </div>`;
