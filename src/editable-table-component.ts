@@ -1,5 +1,5 @@
-import {ediTableStyle} from './editable-table-component-style';
 import {customElement, property, state} from 'lit/decorators.js';
+import {ediTableStyle} from './editable-table-component-style';
 import {LitElement, html, HTMLTemplateResult} from 'lit';
 
 type TableRow = (number | string)[];
@@ -19,6 +19,7 @@ export class EditableTableComponent extends LitElement {
     [0, 254, 0, 'Green'],
   ];
 
+  // check if types for this work
   @property()
   onCellUpdate: (newText: string, cellRowIndex: number, cellColumnIndex: number) => void = () => {};
 
@@ -27,15 +28,22 @@ export class EditableTableComponent extends LitElement {
 
   @property({
     type: Boolean,
-    converter: function (value) {
-      return typeof value === 'string' ? value === 'true' : value;
-    },
+    converter: EditableTableComponent.convertToBoolean,
   })
   areHeadersEditable = true;
+
+  @property({
+    type: Boolean,
+    converter: EditableTableComponent.convertToBoolean,
+  })
+  duplicateHeadersAllowed = true;
 
   @state()
   // attempt to use the noAccessor property type or hasChanged property type in order to control what is being refresherd
   _header: string[] = [];
+
+  @property({type: String})
+  defaultValue = '';
 
   override render() {
     // setTimeout(() => {
@@ -47,11 +55,38 @@ export class EditableTableComponent extends LitElement {
     return html`<div class="table">${this.generateTable()}</div>`;
   }
 
+  private static convertToBoolean(value: string | null): boolean {
+    return typeof value === 'string' ? value === 'true' : Boolean(value);
+  }
+
   private updateTableContent(target: HTMLElement, rowIndex: number, columnIndex: number) {
     const newText = target.textContent?.trim() as string;
     this.contents[rowIndex][columnIndex] = newText;
     this.onCellUpdate(newText, rowIndex, columnIndex);
     this.onTableUpdate(this.contents);
+  }
+
+  private updateDefault(target: HTMLElement, rowIndex: number, columnIndex: number) {
+    this.contents[rowIndex][columnIndex] = this.defaultValue;
+    target.textContent = this.defaultValue;
+    this.onCellUpdate(this.defaultValue, rowIndex, columnIndex);
+    this.onTableUpdate(this.contents);
+  }
+
+  private getNumberOfIdenticalHeaderText(targetHeaderText: string) {
+    return this.contents[0].slice(0).filter((headerText) => headerText === targetHeaderText).length;
+  }
+
+  private blurCell(target: HTMLElement, rowIndex: number, columnIndex: number) {
+    const cellText = target.textContent?.trim();
+    if (cellText !== undefined) {
+      if (
+        (this.defaultValue !== '' && cellText === '') ||
+        (rowIndex === 0 && !this.duplicateHeadersAllowed && this.getNumberOfIdenticalHeaderText(cellText) > 1)
+      ) {
+        this.updateDefault(target, rowIndex, columnIndex);
+      }
+    }
   }
 
   private generateCells(dataRow: TableRow, rowIndex: number, isHeader: boolean): HTMLTemplateResult[] {
@@ -63,6 +98,7 @@ export class EditableTableComponent extends LitElement {
         class="cell"
         contenteditable=${isContentEditable}
         @input=${(e: InputEvent) => this.updateTableContent(e.target as HTMLElement, rowIndex, columnIndex)}
+        @blur=${(e: FocusEvent) => this.blurCell(e.target as HTMLElement, rowIndex, columnIndex)}
       >
         ${cellText}
       </div>`;
