@@ -47,25 +47,23 @@ export class EditableTableComponent extends LitElement {
   defaultValue = '';
 
   @state()
-  dataElementRef: HTMLElement | null = null;
-
-  @state()
   tableElementRef: HTMLElement | null = null;
 
+  @state()
+  headerElementRef: HTMLElement | null = null;
+
+  @state()
+  dataElementRef: HTMLElement | null = null;
+
   override render() {
-    // setTimeout(() => {
-    //   this.contents = [
-    //     [1, 2, 3, 4],
-    //     [1, 2, 3, 5],
-    //   ];
-    // }, 2000);
     TableElement.populate(this);
     this.onTableUpdate(this.contents);
   }
 
   override connectedCallback() {
     super.connectedCallback();
-    TableElement.create(this);
+    const tableElement = TableElement.create(this);
+    this.shadowRoot?.appendChild(tableElement);
   }
 }
 
@@ -74,3 +72,23 @@ declare global {
     'editable-table-component': EditableTableComponent;
   }
 }
+
+// if using raw javascript, this is a direction to help move away from using render
+// the initial values should be fetched in connectedCallBack (or set to default) and their changes can be observed in
+// MutationObserver, this would also save callback and boolean changes from having to re-render the screen
+
+// @state()
+// observer = new MutationObserver(function (mutations) {
+//   mutations.forEach(function (mutation) {
+//     if (mutation.attributeName === 'contents') {
+//       console.log(mutation);
+//       console.log('attributes changed');
+//     }
+//   });
+// });
+
+// override connectedCallback() {
+//   super.connectedCallback();
+//   this.observer.observe(this, {
+//     attributes: true, //configure it to listen to attribute changes
+//   });

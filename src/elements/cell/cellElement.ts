@@ -3,7 +3,7 @@ import {TableRow} from '../../types/tableContents';
 import {CellEvents} from './cellEvents';
 
 export class CellElement {
-  private static createCellElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
+  private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
     const isContentEditable = isHeader ? !!etc.areHeadersEditable : true;
     const cellElement = document.createElement('div');
     cellElement.classList.add('cell');
@@ -11,6 +11,7 @@ export class CellElement {
     cellElement.textContent = cellText as string;
     return cellElement;
   }
+
   // prettier-ignore
   private static setCellEvents(etc: EditableTableComponent,
       cellElement: HTMLElement, newRowIndex: number, columnIndex: number) {
@@ -21,11 +22,10 @@ export class CellElement {
   }
 
   // prettier-ignore
-  private static createCell(etc: EditableTableComponent,
+  public static createCellElement(etc: EditableTableComponent,
       cellText: string, rowIndex: number, columnIndex: number, isHeader: boolean) {
-    const cellElement = CellElement.createCellElement(etc, cellText, isHeader);
-    const newRowIndex = isHeader ? 0 : rowIndex + 1;
-    CellElement.setCellEvents(etc, cellElement, newRowIndex, columnIndex);
+    const cellElement = CellElement.createCellDOMElement(etc, cellText, isHeader);
+    CellElement.setCellEvents(etc, cellElement, rowIndex, columnIndex);
     return cellElement;
   }
 
@@ -33,7 +33,8 @@ export class CellElement {
   public static createRowCellElements(etc: EditableTableComponent,
       dataRow: TableRow, rowIndex: number, isHeader: boolean) {
     return dataRow.map((cellText: string | number, columnIndex: number) => {
-      return CellElement.createCell(etc, cellText as string, rowIndex, columnIndex, isHeader);
+      const newRowIndex = isHeader ? 0 : rowIndex + 1;
+      return CellElement.createCellElement(etc, cellText as string, newRowIndex, columnIndex, isHeader);
     });
   }
 }
