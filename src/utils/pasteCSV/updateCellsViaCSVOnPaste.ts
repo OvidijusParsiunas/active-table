@@ -1,42 +1,39 @@
-import {NumberOfIdenticalHeaderText} from '../numberOfIdenticalHeaderText';
 import {EditableTableComponent} from '../../editable-table-component';
 import {TableCellText, TableRow} from '../../types/tableContents';
+import {NumberOfIdenticalCells} from '../numberOfIdenticalCells';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
 import {CSV} from '../../types/CSV';
 
 export class UpdateCellsViaCSVOnPaste {
   // prettier-ignore
-  private static updateCell(rowElement: HTMLElement, rowIndex: number, columnIndex: number, newText: string,
-      editableTableComponent: EditableTableComponent) {
+  private static updateCell(etc: EditableTableComponent,
+      rowElement: HTMLElement, rowIndex: number, columnIndex: number, newText: string) {
     rowElement.children[columnIndex].textContent = newText;
     // not have to re-render the whole table
-    editableTableComponent.contents[rowIndex][columnIndex] = newText;
-    editableTableComponent.onCellUpdate(newText, rowIndex, columnIndex);
+    etc.contents[rowIndex][columnIndex] = newText;
+    etc.onCellUpdate(newText, rowIndex, columnIndex);
   }
 
-  // prettier-ignore
-  private static getNewText(cellText: string, rowIndex: number,
-      editableTableComponent: EditableTableComponent): string {
-    if (!editableTableComponent.duplicateHeadersAllowed && rowIndex === 0
-        && NumberOfIdenticalHeaderText.get(cellText, editableTableComponent.contents[0]) > 0) {
-      return editableTableComponent.defaultValue;
+  private static getNewText(cellText: string, rowIndex: number, etc: EditableTableComponent): string {
+    if (!etc.duplicateHeadersAllowed && rowIndex === 0 && NumberOfIdenticalCells.get(cellText, etc.contents[0]) > 0) {
+      return etc.defaultValue;
     }
     return cellText as string;
   }
 
   // prettier-ignore
-  private static updateColumn(rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: TableCellText,
-      editableTableComponent: EditableTableComponent) {
-    const newText = UpdateCellsViaCSVOnPaste.getNewText(cellText as string, rowIndex, editableTableComponent)
-    UpdateCellsViaCSVOnPaste.updateCell(rowElement, rowIndex, columnIndex, newText, editableTableComponent)
+  private static updateColumn(etc: EditableTableComponent,
+      rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: TableCellText) {
+    const newText = UpdateCellsViaCSVOnPaste.getNewText(cellText as string, rowIndex, etc)
+    UpdateCellsViaCSVOnPaste.updateCell(etc, rowElement, rowIndex, columnIndex, newText)
   }
 
   // prettier-ignore
-  private static updateRow(row: TableRow, rowIndex: number, columnIndex: number, rowElement: HTMLElement,
-      editableTableComponent: EditableTableComponent) {
+  private static updateRow(etc: EditableTableComponent,
+      row: TableRow, rowIndex: number, columnIndex: number, rowElement: HTMLElement) {
     row.forEach((cellText: TableCellText, CSVColumnIndex: number) => {
       const relativeColumnIndex = columnIndex + CSVColumnIndex;
-      UpdateCellsViaCSVOnPaste.updateColumn(rowElement, rowIndex, relativeColumnIndex, cellText, editableTableComponent)
+      UpdateCellsViaCSVOnPaste.updateColumn(etc, rowElement, rowIndex, relativeColumnIndex, cellText)
     });
   }
 
@@ -46,26 +43,25 @@ export class UpdateCellsViaCSVOnPaste {
   // training table may not be available and the user may just want to predict with their model
   // which will only allow validation when an error is thrown, catch that error and display
   // prettier-ignore
-  private static updateCellsTextUsingCSV(table: HTMLElement, CSV: CSV, rowIndex: number, columnIndex: number,
-      editableTableComponent: EditableTableComponent) {
+  private static updateCellsTextUsingCSV(etc: EditableTableComponent,
+      table: HTMLElement, CSV: CSV, rowIndex: number, columnIndex: number,) {
     const headerElement = table.children[0];
     const dataElement = table.children[1];
     CSV.forEach((row: TableRow, CSVRowIndex: number) => {
       const relativeRowIndex = rowIndex + CSVRowIndex;
       const rowElement = relativeRowIndex === 0 ? headerElement.children[0] : dataElement.children[relativeRowIndex - 1];
-      UpdateCellsViaCSVOnPaste.updateRow(
-        row, relativeRowIndex, columnIndex, rowElement as HTMLElement, editableTableComponent);
+      UpdateCellsViaCSVOnPaste.updateRow(etc, row, relativeRowIndex, columnIndex, rowElement as HTMLElement);
     });
-    editableTableComponent.onTableUpdate(editableTableComponent.contents);
+    etc.onTableUpdate(etc.contents);
   }
 
   // prettier-ignore
-  public static update(clipboardText: string, event: ClipboardEvent, rowIndex: number, columnIndex: number,
-      editableTableComponent: EditableTableComponent) {
+  public static update(etc: EditableTableComponent,
+      clipboardText: string, event: ClipboardEvent, rowIndex: number, columnIndex: number,) {
     event.preventDefault();
     const CSV = ParseCSVClipboardText.parse(clipboardText);
     const tableElement = (event.target as HTMLElement).parentElement?.parentElement?.parentElement;
-    this.updateCellsTextUsingCSV(tableElement as HTMLElement, CSV, rowIndex, columnIndex, editableTableComponent);
+    this.updateCellsTextUsingCSV(etc, tableElement as HTMLElement, CSV, rowIndex, columnIndex);
   }
 
   public static isCSVData(clipboardText: string): boolean {
