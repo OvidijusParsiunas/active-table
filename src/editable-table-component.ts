@@ -58,12 +58,14 @@ export class EditableTableComponent extends LitElement {
     //     [1, 2, 3, 5],
     //   ];
     // }, 2000);
-    return html`<div class="table">${this.generateTable()}</div>`;
+    const tableElement = html`<div class="table">${this.generateTable()}</div>`;
+    this.onTableUpdate(this.contents);
+    return tableElement;
   }
 
   // if target used, its textContent is going to be updated
   private updateCell(newText: string | undefined, rowIndex: number, columnIndex: number, target?: HTMLElement): void {
-    if (!newText) return;
+    if (newText === undefined || newText === null) return;
     this.contents[rowIndex][columnIndex] = newText;
     if (target) target.textContent = newText;
     this.onCellUpdate(newText, rowIndex, columnIndex);
@@ -137,6 +139,15 @@ export class EditableTableComponent extends LitElement {
     }
   }
 
+  private pasteCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: ClipboardEvent) {
+    const clipboardText = JSON.stringify(event.clipboardData?.getData('text/plain'));
+    if (UpdateCellsViaCSVOnPaste.isCSVData(clipboardText)) {
+      UpdateCellsViaCSVOnPaste.update(clipboardText, event, rowIndex, columnIndex, this);
+    } else {
+      this.updateCellWithPreprocessing((event.target as HTMLElement).textContent, rowIndex, columnIndex);
+    }
+  }
+
   private blurCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const target = event.target as HTMLElement;
     const cellText = target.textContent?.trim();
@@ -152,16 +163,13 @@ export class EditableTableComponent extends LitElement {
     }
   }
 
-  private pasteCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: ClipboardEvent) {
-    const clipboardText = JSON.stringify(event.clipboardData?.getData('text/plain'));
-    if (UpdateCellsViaCSVOnPaste.isCSVData(clipboardText)) {
-      UpdateCellsViaCSVOnPaste.update(clipboardText, event, rowIndex, columnIndex, this);
-    } else {
-      this.updateCellWithPreprocessing((event.target as HTMLElement).textContent, rowIndex, columnIndex);
+  private focusCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
+    if (this.defaultValue !== '' && this.defaultValue === (event.target as HTMLElement).textContent) {
+      this.updateCell('', rowIndex, columnIndex, event.target as HTMLElement);
     }
   }
 
-  private createCellNodes(dataRow: TableRow, rowIndex: number, isHeader: boolean) {
+  private createCellElements(dataRow: TableRow, rowIndex: number, isHeader: boolean) {
     return dataRow.map((cellText: string | number, columnIndex: number) => {
       const isContentEditable = isHeader ? !!this.areHeadersEditable : true;
       const div = document.createElement('div');
@@ -169,17 +177,18 @@ export class EditableTableComponent extends LitElement {
       div.contentEditable = String(isContentEditable);
       div.textContent = cellText as string;
       div.oninput = this.inputCell.bind(this, rowIndex, columnIndex);
-      div.onblur = this.blurCell.bind(this, rowIndex, columnIndex);
       div.onpaste = this.pasteCell.bind(this, rowIndex, columnIndex);
+      div.onblur = this.blurCell.bind(this, rowIndex, columnIndex);
+      div.onfocus = this.focusCell.bind(this, rowIndex, columnIndex);
       return div;
     });
   }
 
-  private createDataRowNode(dataRow: TableRow, rowIndex: number, isHeader = false) {
-    const cellNodes = this.createCellNodes(dataRow, rowIndex, isHeader);
+  private createDataRowElement(dataRow: TableRow, rowIndex: number, isHeader = false) {
+    const cellElements = this.createCellElements(dataRow, rowIndex, isHeader);
     const div = document.createElement('div');
     div.classList.add('row');
-    cellNodes.forEach((node) => {
+    cellElements.forEach((node) => {
       div.appendChild(node);
     });
     return div;
@@ -197,14 +206,12 @@ export class EditableTableComponent extends LitElement {
       this.onCellUpdate(cellText, this.contents.length - 1, columnIndex);
     });
     this.onTableUpdate(this.contents);
-    const newRowNode = this.createDataRowNode(newRowData, this.contents.length - 1);
-    if (this.dataRef.value) {
-      this.dataRef.value.appendChild(newRowNode);
-    }
+    const newRowNode = this.createDataRowElement(newRowData, this.contents.length - 1);
+    this.dataRef.value?.appendChild(newRowNode);
   }
 
   private createAddRowElement() {
-    return html` <div class="add-new-row-row row" @click=${this.addNewRow}>
+    return html`<div class="add-new-row-row row" @click=${this.addNewRow}>
       <div class="add-new-row-cell cell">+ New</div>
     </div>`;
   }
@@ -223,4 +230,3 @@ declare global {
     'editable-table-component': EditableTableComponent;
   }
 }
-// onMouseDown={(e) => (isDefaultValue ? updateCellTextUsingSpecificValue(e.target as HTMLElement, '') : {})}
