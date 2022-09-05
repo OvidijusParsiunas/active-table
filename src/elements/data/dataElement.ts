@@ -7,7 +7,7 @@ export class DataElement {
     const dataElement = document.createElement('div');
     dataElement.classList.add('data');
     etc.contents.slice(1).forEach((dataRow: TableRow, rowIndex: number) => {
-      const rowElement = RowElement.create(etc, dataRow, rowIndex);
+      const rowElement = RowElement.create(etc, dataRow, rowIndex + 1);
       dataElement.appendChild(rowElement);
     });
     return dataElement;

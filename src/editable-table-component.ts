@@ -21,7 +21,7 @@ export class EditableTableComponent extends LitElement {
   ];
 
   // check if types for this work
-  @property()
+  @property({converter: LITElementTypeConverters.convertToFunction})
   onCellUpdate: (newText: string, cellRowIndex: number, cellColumnIndex: number) => void = () => {};
 
   @property()

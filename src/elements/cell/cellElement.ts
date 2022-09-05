@@ -13,7 +13,7 @@ export class CellElement {
   }
 
   // prettier-ignore
-  private static setCellEvents(etc: EditableTableComponent,
+  public static setCellEvents(etc: EditableTableComponent,
       cellElement: HTMLElement, newRowIndex: number, columnIndex: number) {
     cellElement.oninput = CellEvents.inputCell.bind(etc, newRowIndex, columnIndex);
     cellElement.onpaste = CellEvents.pasteCell.bind(etc, newRowIndex, columnIndex);
@@ -33,8 +33,7 @@ export class CellElement {
   public static createRowCellElements(etc: EditableTableComponent,
       dataRow: TableRow, rowIndex: number, isHeader: boolean) {
     return dataRow.map((cellText: string | number, columnIndex: number) => {
-      const newRowIndex = isHeader ? 0 : rowIndex + 1;
-      return CellElement.createCellElement(etc, cellText as string, newRowIndex, columnIndex, isHeader);
+      return CellElement.createCellElement(etc, cellText as string, rowIndex, columnIndex, isHeader);
     });
   }
 }
