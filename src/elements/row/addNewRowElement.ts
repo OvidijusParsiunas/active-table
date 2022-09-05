@@ -1,5 +1,5 @@
 import {EditableTableComponent} from '../../editable-table-component';
-import {AddNewDataRow} from '../../utils/add/addNewDataRow';
+import {InsertNewDataRow} from '../../utils/add/insertNewDataRow';
 
 export class AddNewRowElement {
   private static createCell() {
@@ -12,7 +12,7 @@ export class AddNewRowElement {
   private static createRow(etc: EditableTableComponent) {
     const addNewRowRow = document.createElement('div');
     addNewRowRow.classList.add('add-new-row-row', 'row');
-    addNewRowRow.onclick = AddNewDataRow.add.bind(etc, 0);
+    addNewRowRow.onclick = InsertNewDataRow.insert.bind(etc, 0);
     return addNewRowRow;
   }
 
