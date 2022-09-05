@@ -1,6 +1,7 @@
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {customElement, property, state} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
+import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {TableElement} from './elements/tableElement';
 import {TableContents} from './types/tableContents';
 import {LitElement} from 'lit';
@@ -22,7 +23,8 @@ export class EditableTableComponent extends LitElement {
 
   // check if types for this work
   @property({converter: LITElementTypeConverters.convertToFunction})
-  onCellUpdate: (newText: string, cellRowIndex: number, cellColumnIndex: number) => void = () => {};
+  onCellUpdate: (newText: string, cellRowIndex: number, cellColumnIndex: number, updateType: CELL_UPDATE_TYPE) => void =
+    () => {};
 
   @property()
   onTableUpdate: (newTableContents: TableContents) => void = () => {};

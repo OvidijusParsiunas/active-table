@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../editable-table-component';
+import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
 import {CellElement} from '../../elements/cell/cellElement';
 
 export class InsertNewCoulmn {
@@ -6,7 +7,7 @@ export class InsertNewCoulmn {
     const nextColumns = Array.from(etc.headerElementRef?.children[0].children || []).slice(startingColumnIndex);
     nextColumns.forEach((cellElement: Node, columnIndex: number) => {
       const relativeColumnIndex = columnIndex + startingColumnIndex;
-      etc.onCellUpdate(cellElement.textContent as string, 0, relativeColumnIndex);
+      etc.onCellUpdate(cellElement.textContent as string, 0, relativeColumnIndex, CELL_UPDATE_TYPE.UPDATE);
       CellElement.setCellEvents(etc, cellElement as HTMLElement, 0, relativeColumnIndex);
     });
   }
@@ -19,7 +20,7 @@ export class InsertNewCoulmn {
     // if rowElement.children[columnIndex] is undefined, the element is added at the end
     rowElement.insertBefore(cellElement, (rowElement as HTMLElement).children[columnIndex]);
     etc.contents[rowIndex].splice(columnIndex, 0, etc.defaultValue);
-    etc.onCellUpdate(etc.defaultValue, rowIndex, columnIndex);
+    etc.onCellUpdate(etc.defaultValue, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
     setTimeout(() => InsertNewCoulmn.updateNextColumns(etc, columnIndex + 1));
   }
 

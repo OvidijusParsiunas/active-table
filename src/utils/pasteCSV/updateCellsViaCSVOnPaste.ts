@@ -1,6 +1,7 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {TableCellText, TableRow} from '../../types/tableContents';
 import {NumberOfIdenticalCells} from '../numberOfIdenticalCells';
+import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
 import {CSV} from '../../types/CSV';
 
@@ -11,7 +12,7 @@ export class UpdateCellsViaCSVOnPaste {
     rowElement.children[columnIndex].textContent = newText;
     // not have to re-render the whole table
     etc.contents[rowIndex][columnIndex] = newText;
-    etc.onCellUpdate(newText, rowIndex, columnIndex);
+    etc.onCellUpdate(newText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
   }
 
   private static getNewText(cellText: string, rowIndex: number, etc: EditableTableComponent): string {

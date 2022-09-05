@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../editable-table-component';
+import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
 import {CellElement} from '../../elements/cell/cellElement';
 import {RowElement} from '../../elements/row/rowElement';
 import {TableRow} from '../../types/tableContents';
@@ -9,7 +10,7 @@ export class InsertNewDataRow {
     lowerRows.forEach((rowElement: Node, rowIndex: number) => {
       const relativeRowIndex = rowIndex + dataRowIndex + 1;
       Array.from((rowElement as HTMLElement).children).forEach((cellElement: Node, columnIndex: number) => {
-        etc.onCellUpdate(cellElement.textContent as string, relativeRowIndex, columnIndex);
+        etc.onCellUpdate(cellElement.textContent as string, relativeRowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
         CellElement.setCellEvents(etc, cellElement as HTMLElement, relativeRowIndex, columnIndex);
       });
     });
@@ -21,7 +22,7 @@ export class InsertNewDataRow {
     etc.dataElementRef?.insertBefore(newRowElement, etc.dataElementRef.children[contentsRowIndex - 1]);
     etc.contents.splice(contentsRowIndex, 0, newRowData);
     Array.from(newRowElement.children).forEach((cellElement: Node, columnIndex: number) => {
-      etc.onCellUpdate(cellElement.textContent as string, contentsRowIndex, columnIndex);
+      etc.onCellUpdate(cellElement.textContent as string, contentsRowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
     });
   }
 

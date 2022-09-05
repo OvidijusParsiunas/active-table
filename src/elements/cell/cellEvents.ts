@@ -1,6 +1,7 @@
 import {UpdateCellsViaCSVOnPaste} from '../../utils/pasteCSV/updateCellsViaCSVOnPaste';
 import {NumberOfIdenticalCells} from '../../utils/numberOfIdenticalCells';
 import {EditableTableComponent} from '../../editable-table-component';
+import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
 
 export class CellEvents {
   private static readonly EMPTY_STRING = '';
@@ -13,7 +14,7 @@ export class CellEvents {
     if (newText === undefined || newText === null) return;
     etc.contents[rowIndex][columnIndex] = newText;
     if (target) target.textContent = newText;
-    etc.onCellUpdate(newText, rowIndex, columnIndex);
+    etc.onCellUpdate(newText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
     etc.onTableUpdate(etc.contents);
   }
 
