@@ -25,11 +25,9 @@ export class InsertNewCoulmn {
   }
 
   private static insertNewCellsToDataRows(etc: EditableTableComponent, columnIndex: number) {
-    if (etc.dataElementRef) {
-      Array.from(etc.dataElementRef.children).forEach((dataRowElement: Node, rowIndex: number) => {
-        InsertNewCoulmn.addCell(etc, dataRowElement, rowIndex + 1, columnIndex);
-      });
-    }
+    Array.from(etc.dataElementRef?.children || []).forEach((dataRowElement: Node, rowIndex: number) => {
+      InsertNewCoulmn.addCell(etc, dataRowElement, rowIndex + 1, columnIndex);
+    });
   }
 
   private static insertCellToHeaderRow(etc: EditableTableComponent, columnIndex: number) {
