@@ -1,5 +1,5 @@
+import {InsertNewDataRow} from '../../utils/insertRemoveStructure/insert/insertNewDataRow';
 import {EditableTableComponent} from '../../editable-table-component';
-import {InsertNewDataRow} from '../../utils/add/insertNewDataRow';
 
 export class AddNewRowElement {
   private static createCell() {

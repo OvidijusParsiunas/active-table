@@ -1,6 +1,6 @@
-import {EditableTableComponent} from '../../editable-table-component';
-import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
-import {CellElement} from '../../elements/cell/cellElement';
+import {EditableTableComponent} from '../../../editable-table-component';
+import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
+import {CellElement} from '../../../elements/cell/cellElement';
 
 export class InsertNewCoulmn {
   private static updateNextColumns(etc: EditableTableComponent, startingColumnIndex: number) {

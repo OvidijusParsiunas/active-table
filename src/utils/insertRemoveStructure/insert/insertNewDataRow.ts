@@ -1,8 +1,8 @@
-import {UpdateStructures, LastRowDetails} from '../insertRemoveStructure/shared/updateStructures';
-import {EditableTableComponent} from '../../editable-table-component';
-import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
-import {RowElement} from '../../elements/row/rowElement';
-import {TableRow} from '../../types/tableContents';
+import {UpdateStructures, LastRowDetails} from '../shared/updateStructures';
+import {EditableTableComponent} from '../../../editable-table-component';
+import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
+import {RowElement} from '../../../elements/row/rowElement';
+import {TableRow} from '../../../types/tableContents';
 
 export class InsertNewDataRow {
   private static createNewRowData(etc: EditableTableComponent): TableRow {
