@@ -1,4 +1,4 @@
-import {EditableTableComponent} from '../../../../dist/editable-table-component';
+import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ElementDetails} from '../../../types/elementDetails';
 import {UpdateColumns} from '../shared/updateColumns';
