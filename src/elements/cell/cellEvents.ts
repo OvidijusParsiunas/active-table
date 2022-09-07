@@ -2,6 +2,7 @@ import {UpdateCellsViaCSVOnPaste} from '../../utils/pasteCSV/updateCellsViaCSVOn
 import {NumberOfIdenticalCells} from '../../utils/numberOfIdenticalCells';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
+import {ColumnSizerEvents} from './columnSizerEvents';
 
 export class CellEvents {
   private static readonly EMPTY_STRING = '';
@@ -60,5 +61,13 @@ export class CellEvents {
     if (this.defaultValue !== CellEvents.EMPTY_STRING && this.defaultValue === (event.target as HTMLElement).textContent) {
       CellEvents.updateCell(this, CellEvents.EMPTY_STRING, rowIndex, columnIndex, event.target as HTMLElement);
     }
+  }
+
+  public static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
+    ColumnSizerEvents.display(this, columnIndex, event);
+  }
+
+  public static mouseLeaveCell(this: EditableTableComponent, columnIndex: number) {
+    ColumnSizerEvents.hide(this, columnIndex);
   }
 }

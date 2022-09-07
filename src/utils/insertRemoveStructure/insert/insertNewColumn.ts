@@ -8,10 +8,10 @@ export class InsertNewColumn {
   // prettier-ignore
   private static updateColumns(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
-      const rowDetails: ElementDetails = { element: rowElement, index: rowIndex };
-      const lastCellElement = rowElement.children[rowElement.children.length - 1] as HTMLElement;
-      const lastColumn: ElementDetails = { element: lastCellElement, index: rowElement.children.length - 1 };
-      UpdateColumns.update(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.ADD, lastColumn)
+    const rowDetails: ElementDetails = { element: rowElement, index: rowIndex };
+    const lastCellElement = rowElement.children[rowElement.children.length - 1] as HTMLElement;
+    const lastColumn: ElementDetails = { element: lastCellElement, index: rowElement.children.length - 1 };
+    UpdateColumns.update(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.ADD, lastColumn)
   }
 
   // prettier-ignore

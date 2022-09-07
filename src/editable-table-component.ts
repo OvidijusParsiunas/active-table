@@ -2,6 +2,7 @@ import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {customElement, property, state} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
+import {OverlayElements} from './types/overlayElements';
 import {TableElement} from './elements/tableElement';
 import {TableContents} from './types/tableContents';
 import {LitElement} from 'lit';
@@ -48,14 +49,21 @@ export class EditableTableComponent extends LitElement {
   @property({type: String})
   defaultValue = '';
 
+  // these consist of data and header elements
   @state()
-  tableElementRef: HTMLElement | null = null;
+  coreElementsParentRef: HTMLElement | null = null;
 
   @state()
   headerElementRef: HTMLElement | null = null;
 
   @state()
   dataElementRef: HTMLElement | null = null;
+
+  @state()
+  overlayElementsParentRef: HTMLElement | null = null;
+
+  @state()
+  overlayElements: OverlayElements = {columnSizers: []};
 
   override render() {
     TableElement.populate(this);
@@ -64,8 +72,9 @@ export class EditableTableComponent extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
-    const tableElement = TableElement.create(this);
+    const tableElement = TableElement.createBase(this);
     this.shadowRoot?.appendChild(tableElement);
+    this.onTableUpdate(this.contents);
   }
 }
 

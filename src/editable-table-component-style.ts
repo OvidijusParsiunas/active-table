@@ -63,4 +63,23 @@ export const ediTableStyle = css`
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     width: fit-content;
   }
+
+  .column-width-sizer {
+    width: 1px;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    background-color: #dfdfdf;
+    position: absolute;
+  }
+
+  .column-width-sizer:hover {
+    width: 7px;
+    margin-left: -3px;
+    background-color: grey;
+    cursor: col-resize;
+  }
+
+  .column-width-sizer:active {
+    background-color: blue;
+  }
 `;
