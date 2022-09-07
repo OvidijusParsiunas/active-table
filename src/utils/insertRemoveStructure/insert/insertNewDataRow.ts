@@ -6,6 +6,13 @@ import {TableRow} from '../../../types/tableContents';
 import {UpdateRows} from '../shared/updateRows';
 
 export class InsertNewDataRow {
+  private static updateRows(etc: EditableTableComponent, contentsRowIndex: number) {
+    const lastRowElement = etc.dataElementRef?.children[etc.dataElementRef.children.length - 1];
+    const lastRow: ElementDetails = {element: lastRowElement as HTMLElement, index: etc.contents.length - 1};
+    UpdateRows.update(etc, contentsRowIndex, CELL_UPDATE_TYPE.ADD, lastRow);
+    etc.onTableUpdate(etc.contents);
+  }
+
   private static createNewRowData(etc: EditableTableComponent): TableRow {
     const numberOfColumns = etc.contents[0].length;
     return new Array(numberOfColumns).fill(etc.defaultValue);
@@ -23,10 +30,7 @@ export class InsertNewDataRow {
     InsertNewDataRow.insertNewRow(this, contentsRowIndex);
     setTimeout(() => {
       if (!this.dataElementRef) return;
-      const lastRowElement = this.dataElementRef?.children[this.dataElementRef.children.length - 1];
-      const lastRow: ElementDetails = {element: lastRowElement as HTMLElement, index: this.contents.length - 1};
-      UpdateRows.update(this, contentsRowIndex, CELL_UPDATE_TYPE.ADD, lastRow);
-      this.onTableUpdate(this.contents);
+      InsertNewDataRow.updateRows(this, contentsRowIndex);
     });
   }
 }
