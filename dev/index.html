@@ -15,6 +15,25 @@
     </style>
   </head>
   <body>
-    <editable-table-component></editable-table-component>
+    <editable-table-component
+      id="etc-element"
+      defaultValue="-"
+      duplicateHeadersAllowed="false"
+      onCellUpdate="() => console.log('aa')"
+    ></editable-table-component>
+    <script>
+      const myValue = [
+        [1, 2, 3, 4],
+        [1, 2, 3, 5],
+      ];
+      const element = document.getElementById('etc-element');
+      const aa = (content, row, column, type) => {
+        console.log(content, row, column, type);
+      };
+      setTimeout(() => {
+        // element.setAttribute('contents', `[[${myValue[0]}],[${myValue[1]}]]`);
+        element.setAttribute('onCellUpdate', aa);
+      }, 100);
+    </script>
   </body>
 </html>
