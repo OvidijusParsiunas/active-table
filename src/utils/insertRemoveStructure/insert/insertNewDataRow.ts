@@ -1,8 +1,9 @@
-import {UpdateStructures, LastRowDetails} from '../shared/updateStructures';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
+import {ElementDetails} from '../../../types/elementDetails';
 import {RowElement} from '../../../elements/row/rowElement';
 import {TableRow} from '../../../types/tableContents';
+import {UpdateRows} from '../shared/updateRows';
 
 export class InsertNewDataRow {
   private static createNewRowData(etc: EditableTableComponent): TableRow {
@@ -23,8 +24,8 @@ export class InsertNewDataRow {
     setTimeout(() => {
       if (!this.dataElementRef) return;
       const lastRowElement = this.dataElementRef?.children[this.dataElementRef.children.length - 1];
-      const lastRow: LastRowDetails = {element: lastRowElement as HTMLElement, index: this.contents.length - 1};
-      UpdateStructures.updateDataRows(this, contentsRowIndex, CELL_UPDATE_TYPE.ADD, lastRow);
+      const lastRow: ElementDetails = {element: lastRowElement as HTMLElement, index: this.contents.length - 1};
+      UpdateRows.update(this, contentsRowIndex, CELL_UPDATE_TYPE.ADD, lastRow);
       this.onTableUpdate(this.contents);
     });
   }

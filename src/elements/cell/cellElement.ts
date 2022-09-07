@@ -3,15 +3,6 @@ import {TableRow} from '../../types/tableContents';
 import {CellEvents} from './cellEvents';
 
 export class CellElement {
-  private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
-    const isContentEditable = isHeader ? !!etc.areHeadersEditable : true;
-    const cellElement = document.createElement('div');
-    cellElement.classList.add('cell');
-    cellElement.contentEditable = String(isContentEditable);
-    cellElement.textContent = cellText as string;
-    return cellElement;
-  }
-
   // prettier-ignore
   public static setCellEvents(etc: EditableTableComponent,
       cellElement: HTMLElement, newRowIndex: number, columnIndex: number) {
@@ -19,6 +10,15 @@ export class CellElement {
     cellElement.onpaste = CellEvents.pasteCell.bind(etc, newRowIndex, columnIndex);
     cellElement.onblur = CellEvents.blurCell.bind(etc, newRowIndex, columnIndex);
     cellElement.onfocus = CellEvents.focusCell.bind(etc, newRowIndex, columnIndex);
+  }
+
+  private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
+    const isContentEditable = isHeader ? !!etc.areHeadersEditable : true;
+    const cellElement = document.createElement('div');
+    cellElement.classList.add('cell');
+    cellElement.contentEditable = String(isContentEditable);
+    cellElement.textContent = cellText as string;
+    return cellElement;
   }
 
   // prettier-ignore

@@ -1,6 +1,6 @@
 import {EditableTableComponent} from '../../../../dist/editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
-import {UpdateStructures} from '../shared/updateStructures';
+import {UpdateRows} from '../shared/updateRows';
 
 export class RemoveDataRow {
   private static removeRow(etc: EditableTableComponent, contentsRowIndex: number, dataRowIndex: number) {
@@ -15,7 +15,7 @@ export class RemoveDataRow {
       RemoveDataRow.removeRow(etc, contentsRowIndex, dataRowIndex);
       setTimeout(() => {
         const lastRow = {element: lastRowElement, index: etc.contents.length};
-        UpdateStructures.updateDataRows(etc, contentsRowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow);
+        UpdateRows.update(etc, contentsRowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow);
         etc.onTableUpdate(etc.contents);
       });
     }
