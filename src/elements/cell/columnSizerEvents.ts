@@ -19,7 +19,6 @@ export class ColumnSizerEvents {
     columnSizer.style.display = 'block';
   }
 
-  // prettier-ignore
   public static display(etc: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     const headerCellElement = event.target as HTMLElement;
     const cellRect = headerCellElement.getBoundingClientRect();
@@ -28,17 +27,27 @@ export class ColumnSizerEvents {
       ColumnSizerEvents.displayElement(headerCellElement, cellRect, columnSizerLeft.element, `${cellRect.left}px`);
     }
     const columnSizerRight = etc.overlayElements.columnSizers[columnIndex];
-    ColumnSizerEvents.displayElement(
-      headerCellElement, cellRect, columnSizerRight.element, `${cellRect.left + cellRect.width}px`);
+    const columnRightSizerLeft = `${cellRect.left + cellRect.width}px`;
+    ColumnSizerEvents.displayElement(headerCellElement, cellRect, columnSizerRight.element, columnRightSizerLeft);
   }
 
   public static onMouseEnter(this: ColumnSizerElements, columnSizerState: ColumnSizerState) {
     columnSizerState.isMouseHovered = true;
     columnSizerState.element.style.transition = `0.2s`;
+    // only remove the background image if the user is definitely hovering over it
+    setTimeout(() => {
+      if (columnSizerState.isMouseHovered) columnSizerState.element.style.backgroundImage = 'none';
+    }, 50);
   }
 
   public static onMouseLeave(this: ColumnSizerElements, columnSizerState: ColumnSizerState) {
     columnSizerState.isMouseHovered = false;
-    setTimeout(() => (columnSizerState.element.style.transition = `0.0s`));
+    // only reset the background image if the user is definitely not hovering over it
+    setTimeout(() => {
+      if (!columnSizerState.isMouseHovered) {
+        columnSizerState.element.style.transition = `0.0s`;
+        columnSizerState.element.style.backgroundImage = ColumnSizerElements.BACKGROUND_IMAGE;
+      }
+    }, 100);
   }
 }

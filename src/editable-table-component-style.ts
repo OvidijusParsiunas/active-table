@@ -68,7 +68,7 @@ export const ediTableStyle = css`
     width: 1px;
     border-left: 1px solid white;
     border-right: 1px solid white;
-    background-color: #dfdfdf;
+    background-size: 20px 5px;
     position: absolute;
   }
 
