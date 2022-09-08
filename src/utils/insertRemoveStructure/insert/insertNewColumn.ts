@@ -1,3 +1,4 @@
+import {ColumnSizerElements} from '../../../elements/cell/columnSizerElements';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellElement} from '../../../elements/cell/cellElement';
@@ -27,6 +28,7 @@ export class InsertNewColumn {
   private static insertNewCellsToDataRows(etc: EditableTableComponent, columnIndex: number) {
     Array.from(etc.dataElementRef?.children || []).forEach((dataRowElement: Node, rowIndex: number) => {
       InsertNewColumn.addCell(etc, dataRowElement as HTMLElement, rowIndex + 1, columnIndex);
+      ColumnSizerElements.createNew(etc.overlayElementsParentRef as HTMLElement, etc.overlayElements.columnSizers);
     });
   }
 

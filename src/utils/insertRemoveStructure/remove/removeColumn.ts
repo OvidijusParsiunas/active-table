@@ -1,9 +1,15 @@
 import {EditableTableComponent} from '../../../editable-table-component';
+import {ColumnSizersStates} from '../../../types/overlayElements';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ElementDetails} from '../../../types/elementDetails';
 import {UpdateColumns} from '../shared/updateColumns';
 
 export class RemoveColumn {
+  private static removeColumnSizer(columnSizers: ColumnSizersStates, overlayElementsParent: HTMLElement) {
+    columnSizers.pop();
+    overlayElementsParent.removeChild(overlayElementsParent.children[overlayElementsParent.children.length - 1]);
+  }
+
   // prettier-ignore
   private static removeCell(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
@@ -27,6 +33,7 @@ export class RemoveColumn {
     if (etc.headerElementRef) {
       const headerRow = etc.headerElementRef.children[0];
       RemoveColumn.removeCell(etc, headerRow as HTMLElement, 0, columnIndex);
+      RemoveColumn.removeColumnSizer(etc.overlayElements.columnSizers, etc.overlayElementsParentRef as HTMLElement);
     }
   }
 
