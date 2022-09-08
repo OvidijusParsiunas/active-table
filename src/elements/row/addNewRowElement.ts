@@ -12,7 +12,7 @@ export class AddNewRowElement {
   private static createRow(etc: EditableTableComponent) {
     const addNewRowRow = document.createElement('div');
     addNewRowRow.classList.add('add-new-row-row', 'row');
-    addNewRowRow.onclick = InsertNewDataRow.insert.bind(etc, 2);
+    addNewRowRow.onclick = InsertNewDataRow.insertEvent.bind(etc, 2);
     return addNewRowRow;
   }
 

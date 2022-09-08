@@ -1,9 +1,11 @@
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
+import {TableElementEventState} from './types/tableElementEventState';
 import {customElement, property, state} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {OverlayElements} from './types/overlayElements';
 import {TableElement} from './elements/tableElement';
+import {ColumnsDetails} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
 import {LitElement} from 'lit';
 
@@ -42,12 +44,14 @@ export class EditableTableComponent extends LitElement {
   })
   duplicateHeadersAllowed = true;
 
+  // this contains all cell elements, if there is a need to access cell elements outside the context of columns
+  // create an entirely new state object and access elements from there as we don't want to store all elements
+  // multiple times, and use this instead for data exclusively on columns, such as width etc.
   @state()
-  // attempt to use the noAccessor property type or hasChanged property type in order to control what is being refresherd
-  _header: string[] = [];
+  columnsDetails: ColumnsDetails = [];
 
   @property({type: String})
-  defaultValue = '';
+  defaultCellValue = '';
 
   // these consist of data and header elements
   @state()
@@ -64,6 +68,9 @@ export class EditableTableComponent extends LitElement {
 
   @state()
   overlayElements: OverlayElements = {columnSizers: []};
+
+  @state()
+  tableElementEventState: TableElementEventState = {};
 
   override render() {
     TableElement.populate(this);

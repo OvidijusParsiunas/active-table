@@ -17,7 +17,7 @@ export class UpdateCellsViaCSVOnPaste {
 
   private static getNewText(cellText: string, rowIndex: number, etc: EditableTableComponent): string {
     if (!etc.duplicateHeadersAllowed && rowIndex === 0 && NumberOfIdenticalCells.get(cellText, etc.contents[0]) > 0) {
-      return etc.defaultValue;
+      return etc.defaultCellValue;
     }
     return cellText as string;
   }

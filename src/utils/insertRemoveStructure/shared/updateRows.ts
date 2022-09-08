@@ -30,7 +30,6 @@ export class UpdateRows {
       const lowerRows = Array.from(dataElementChildren).slice(startContentsRowIndex - 1, lastContentsRowIndex - 1);
       lowerRows.forEach((rowElement: Node, rowIndex: number) => {
         const relativeContentsRowIndex = rowIndex + startContentsRowIndex;
-        console.log(relativeContentsRowIndex)
         UpdateRows.updateRowCells(etc, rowElement as HTMLElement, relativeContentsRowIndex, CELL_UPDATE_TYPE.UPDATE);
       });
     }

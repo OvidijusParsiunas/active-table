@@ -49,25 +49,27 @@ export class CellEvents {
     const cellText = target.textContent?.trim();
     if (cellText !== undefined) {
       if (
-        (this.defaultValue !== CellEvents.EMPTY_STRING && cellText === CellEvents.EMPTY_STRING) ||
+        (this.defaultCellValue !== CellEvents.EMPTY_STRING && cellText === CellEvents.EMPTY_STRING) ||
         (rowIndex === 0 && !this.duplicateHeadersAllowed && NumberOfIdenticalCells.get(cellText, this.contents[0]) > 1)
       ) {
-        CellEvents.updateCell(this, this.defaultValue, rowIndex, columnIndex, target);
+        CellEvents.updateCell(this, this.defaultCellValue, rowIndex, columnIndex, target);
       }
     }
   }
 
+  // prettier-ignore
   public static focusCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
-    if (this.defaultValue !== CellEvents.EMPTY_STRING && this.defaultValue === (event.target as HTMLElement).textContent) {
+    if (this.defaultCellValue !== CellEvents.EMPTY_STRING &&
+        this.defaultCellValue === (event.target as HTMLElement).textContent) {
       CellEvents.updateCell(this, CellEvents.EMPTY_STRING, rowIndex, columnIndex, event.target as HTMLElement);
     }
   }
 
-  public static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
-    ColumnSizerEvents.display(this, columnIndex, event);
+  public static mouseEnterCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
+    if (rowIndex === 0) ColumnSizerEvents.display(this, columnIndex, event);
   }
 
-  public static mouseLeaveCell(this: EditableTableComponent, columnIndex: number) {
-    ColumnSizerEvents.hide(this, columnIndex);
+  public static mouseLeaveCell(this: EditableTableComponent, rowIndex: number, columnIndex: number) {
+    if (rowIndex === 0) ColumnSizerEvents.hide(this, columnIndex);
   }
 }

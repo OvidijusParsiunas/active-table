@@ -33,7 +33,6 @@ export const ediTableStyle = css`
     min-height: 46px;
     box-sizing: border-box;
     outline: none;
-    width: 100px;
     overflow-wrap: anywhere;
   }
 
@@ -70,16 +69,6 @@ export const ediTableStyle = css`
     border-right: 1px solid white;
     background-size: 20px 5px;
     position: absolute;
-  }
-
-  .column-width-sizer:hover {
-    width: 7px;
-    margin-left: -3px;
-    background-color: grey;
-    cursor: col-resize;
-  }
-
-  .column-width-sizer:active {
-    background-color: blue;
+    user-select: none;
   }
 `;

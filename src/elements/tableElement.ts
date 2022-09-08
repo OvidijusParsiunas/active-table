@@ -1,14 +1,19 @@
 import {EditableTableComponent} from '../editable-table-component';
 import {AddNewRowElement} from './row/addNewRowElement';
 import {HeaderElement} from './header/headerElement';
+import {TableEvents} from './table/tableEvents';
 import {DataElement} from './data/dataElement';
 
 export class TableElement {
   public static populate(etc: EditableTableComponent) {
-    etc.headerElementRef = HeaderElement.create(etc);
-    etc.dataElementRef = DataElement.create(etc);
+    HeaderElement.create(etc);
+    DataElement.create(etc);
     const addRowElement = AddNewRowElement.create(etc);
-    etc.coreElementsParentRef?.replaceChildren(etc.headerElementRef, etc.dataElementRef, addRowElement);
+    etc.coreElementsParentRef?.replaceChildren(
+      etc.headerElementRef as HTMLElement,
+      etc.dataElementRef as HTMLElement,
+      addRowElement
+    );
   }
 
   private static addOverlayElements(tableElement: HTMLElement) {
@@ -23,14 +28,18 @@ export class TableElement {
     return coreElements;
   }
 
-  private static creatTableElement() {
+  private static createTableElement(etc: EditableTableComponent) {
     const tableElement = document.createElement('div');
     tableElement.classList.add('table');
+    tableElement.onmousedown = TableEvents.onMouseDown.bind(etc);
+    tableElement.onmouseup = TableEvents.onMouseUp.bind(etc);
+    tableElement.onmousemove = TableEvents.onMouseMove.bind(etc);
+    tableElement.onmouseleave = TableEvents.onMouseLeave.bind(etc);
     return tableElement;
   }
 
   public static createBase(etc: EditableTableComponent) {
-    const tableElement = TableElement.creatTableElement();
+    const tableElement = TableElement.createTableElement(etc);
     const coreElementsParent = TableElement.createCoreElementsParent(tableElement);
     etc.coreElementsParentRef = coreElementsParent;
     const overlayElementsParent = TableElement.addOverlayElements(tableElement);
