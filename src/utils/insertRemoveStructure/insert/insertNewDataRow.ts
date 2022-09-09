@@ -3,6 +3,7 @@ import {TableCellText, TableRow} from '../../../types/tableContents';
 import {RowElement} from '../../../elements/row/rowElement';
 import {InsertNewColumn} from './insertNewColumn';
 
+// REF-1
 export class InsertNewDataRow {
   // prettier-ignore
   private static addCells(etc: EditableTableComponent,

@@ -64,6 +64,8 @@ export class ColumnSizerEvents {
     return {columnSizer: columnSizers[sizerNumber], sizerNumber};
   }
 
+  // the reason why table events are used to track mouse move events on column sizers is because otherwise when
+  // the mouse moves quickly - it can leave the column sizer and events would stop firing
   // prettier-ignore
   public static tableOnMouseMove(selectedColumnSizer: HTMLElement,
       columnSizers: ColumnSizersStates, columnsDetails: ColumnsDetails, newXMovement: number) {
@@ -74,6 +76,7 @@ export class ColumnSizerEvents {
     ColumnSizerElements.setLeftProp(selectedColumnSizer, left, width, newXMovement);
   }
 
+  // the following method allows us to track when the user stops dragging mouse even when not on the column sizer
   public static tableOnMouseUp(selectedColumnSizer: HTMLElement, columnSizers: ColumnSizersStates, target: HTMLElement) {
     ColumnSizerElements.setTransitionTime(selectedColumnSizer);
     const {columnSizer} = ColumnSizerEvents.getColumnSizerDetailsViaId(selectedColumnSizer.id, columnSizers);
@@ -85,6 +88,7 @@ export class ColumnSizerEvents {
     }
   }
 
+  // in addition to the above method, the following allows us to track when the mouse has left the table
   public static tableOnMouseLeave(selectedColumnSizer: HTMLElement) {
     ColumnSizerElements.setTransitionTime(selectedColumnSizer);
     ColumnSizerElements.setDefaultProperties(selectedColumnSizer);
@@ -92,8 +96,8 @@ export class ColumnSizerEvents {
   }
 
   public static sizerOnMouseEnter(this: EditableTableComponent, columnSizerState: ColumnSizerState) {
-    // if selected and hovered over another
     columnSizerState.isMouseHovered = true;
+    // if selected and hovered over another
     if (this.tableElementEventState.selectedColumnSizer) return;
     ColumnSizerElements.setHoverProperties(columnSizerState.element);
     // only remove the background image if the user is definitely hovering over it

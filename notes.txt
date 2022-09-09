@@ -2,3 +2,10 @@ update homepage property in package
 
 detect React:
 !!Object.keys(document).find(key => key.includes('react'))
+
+KNOWLEDGE:
+
+REF-1:
+Table and its rows are populated cell by cell using the column class in order to add appropriate event listeners etc
+This is to make sure that all methods of structure addition - row/column will add same events and code is managed
+in one place
