@@ -1,8 +1,8 @@
 import {EditableTableComponent} from '../../../editable-table-component';
+import {TableCellText, TableRow} from '../../../types/tableContents';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ElementDetails} from '../../../types/elementDetails';
 import {RowElement} from '../../../elements/row/rowElement';
-import {TableRow} from '../../../types/tableContents';
 import {InsertNewColumn} from './insertNewColumn';
 import {UpdateRows} from '../shared/updateRows';
 
@@ -18,11 +18,11 @@ export class InsertNewDataRow {
   private static addCells(etc: EditableTableComponent,
       newRowData: TableRow, newRowElement: HTMLElement, contentsRowIndex: number) {
     const isHeaderRow = contentsRowIndex === 0;
-    newRowData.forEach((value, columnIndex) => {
+    newRowData.forEach((cellText: TableCellText, columnIndex: number) => {
       if (isHeaderRow) {
-        InsertNewColumn.insertToHeaderRow(etc, columnIndex, value as string);
+        InsertNewColumn.insertToHeaderRow(etc, columnIndex, cellText as string);
       } else {
-        InsertNewColumn.insertToRow(etc, newRowElement, contentsRowIndex, columnIndex, value as string);
+        InsertNewColumn.insertToRow(etc, newRowElement, contentsRowIndex, columnIndex, cellText as string);
       }
     });
   }

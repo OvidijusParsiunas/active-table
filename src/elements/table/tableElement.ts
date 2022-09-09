@@ -1,8 +1,8 @@
-import {EditableTableComponent} from '../editable-table-component';
-import {AddNewRowElement} from './row/addNewRowElement';
-import {HeaderElement} from './header/headerElement';
-import {TableEvents} from './table/tableEvents';
-import {DataElement} from './data/dataElement';
+import {EditableTableComponent} from '../../editable-table-component';
+import {AddNewRowElement} from '../row/addNewRowElement';
+import {HeaderElement} from '../header/headerElement';
+import {DataElement} from '../data/dataElement';
+import {TableEvents} from './tableEvents';
 
 export class TableElement {
   public static populate(etc: EditableTableComponent) {

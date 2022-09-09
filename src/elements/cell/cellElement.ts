@@ -14,18 +14,20 @@ export class CellElement {
     cellElement.onmouseleave = CellEvents.mouseLeaveCell.bind(etc, newRowIndex, columnIndex);
   }
 
-  private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
+  private static createCellDOMElement(etc: EditableTableComponent, cellText: string, width: string, isHeader: boolean) {
     const isContentEditable = isHeader ? !!etc.areHeadersEditable : true;
     const cellElement = document.createElement('div');
     cellElement.classList.add('cell');
-    cellElement.style.width = InsertNewColumn.DEFAULT_COLUMN_WIDTH;
+    cellElement.style.width = width || InsertNewColumn.DEFAULT_COLUMN_WIDTH;
     cellElement.contentEditable = String(isContentEditable);
     cellElement.textContent = cellText as string;
     return cellElement;
   }
 
-  public static createCellElement(etc: EditableTableComponent, cellText: string, rowIndex: number, columnIndex: number) {
-    const cellElement = CellElement.createCellDOMElement(etc, cellText, rowIndex === 0);
+  // prettier-ignore
+  public static createCellElement(etc: EditableTableComponent,
+      cellText: string, width: string, rowIndex: number, columnIndex: number) {
+    const cellElement = CellElement.createCellDOMElement(etc, cellText, width, rowIndex === 0);
     CellElement.setCellEvents(etc, cellElement, rowIndex, columnIndex);
     return cellElement;
   }

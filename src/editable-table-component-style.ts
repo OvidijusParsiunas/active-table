@@ -64,11 +64,11 @@ export const ediTableStyle = css`
   }
 
   .column-width-sizer {
-    width: 1px;
     border-left: 1px solid white;
     border-right: 1px solid white;
     background-size: 20px 5px;
     position: absolute;
     user-select: none;
+    cursor: col-resize;
   }
 `;

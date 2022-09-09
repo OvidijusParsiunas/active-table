@@ -9,8 +9,8 @@ import {UpdateColumns} from '../shared/updateColumns';
 export class InsertNewColumn {
   public static readonly DEFAULT_COLUMN_WIDTH = '100px';
 
-  private static createDefaultColumnDetailsObject(cellElement: HTMLElement): ColumnDetails {
-    return {width: InsertNewColumn.DEFAULT_COLUMN_WIDTH, elements: [cellElement]};
+  private static createDefaultColumnDetailsObject(width: string, cellElement: HTMLElement): ColumnDetails {
+    return {width, elements: [cellElement]};
   }
 
   // prettier-ignore
@@ -24,22 +24,23 @@ export class InsertNewColumn {
 
   // prettier-ignore
   private static add(etc: EditableTableComponent,
-      rowElement: HTMLElement, rowIndex: number, columnIndex: number, value?: string) {
-    const cellValue = value === undefined ? etc.defaultCellValue : value;
-    const cellElement = CellElement.createCellElement(etc, cellValue, rowIndex, columnIndex);
+      rowElement: HTMLElement, rowIndex: number, columnIndex: number, width: string, cellText?: string) {
+    const text = cellText === undefined ? etc.defaultCellValue : cellText;
+    const cellElement = CellElement.createCellElement(etc, text, width, rowIndex, columnIndex);
     // if rowElement.children[columnIndex] is undefined, the element is added at the end
     rowElement.insertBefore(cellElement, rowElement.children[columnIndex]);
     // assuming that the use of existing values is already inside contents
-    if (value === undefined) etc.contents[rowIndex].splice(columnIndex, 0, etc.defaultCellValue);
+    if (cellText === undefined) etc.contents[rowIndex].splice(columnIndex, 0, etc.defaultCellValue);
     setTimeout(() => InsertNewColumn.updateColumns(etc, rowElement, rowIndex, columnIndex));
     return cellElement;
   }
 
   // prettier-ignore
   public static insertToRow(
-      etc: EditableTableComponent, dataRowElement: HTMLElement, rowIndex: number, columnIndex: number, value?: string) {
-    const cellElement = InsertNewColumn.add(etc, dataRowElement, rowIndex, columnIndex, value);
-    setTimeout(() => etc.columnsDetails[columnIndex].elements.push(cellElement))
+      etc: EditableTableComponent, dataRowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText?: string) {
+    const columnDetails = etc.columnsDetails[columnIndex];
+    const cellElement = InsertNewColumn.add(etc, dataRowElement, rowIndex, columnIndex, columnDetails.width, cellText);
+    setTimeout(() => columnDetails.elements.push(cellElement))
   }
 
   private static insertToDataRows(etc: EditableTableComponent, columnIndex: number) {
@@ -48,11 +49,12 @@ export class InsertNewColumn {
     });
   }
 
-  public static insertToHeaderRow(etc: EditableTableComponent, columnIndex: number, value?: string) {
+  public static insertToHeaderRow(etc: EditableTableComponent, columnIndex: number, cellText?: string) {
     if (etc.headerElementRef) {
       const headerRow = etc.headerElementRef.children[0];
-      const cellElement = InsertNewColumn.add(etc, headerRow as HTMLElement, 0, columnIndex, value);
-      etc.columnsDetails.splice(columnIndex, 0, InsertNewColumn.createDefaultColumnDetailsObject(cellElement));
+      const width = InsertNewColumn.DEFAULT_COLUMN_WIDTH;
+      const cellElement = InsertNewColumn.add(etc, headerRow as HTMLElement, 0, columnIndex, width, cellText);
+      etc.columnsDetails.splice(columnIndex, 0, InsertNewColumn.createDefaultColumnDetailsObject(width, cellElement));
       setTimeout(() => ColumnSizerElements.createAndAddNew(etc));
     }
   }

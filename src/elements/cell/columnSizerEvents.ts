@@ -6,7 +6,6 @@ import {ColumnSizerElements} from './columnSizerElements';
 export class ColumnSizerEvents {
   private static readonly MOUSE_PASSTHROUGH_TIME_ML = 50;
 
-  // TO-DO hover over another, then try to move it
   public static hide(etc: EditableTableComponent, columnIndex: number) {
     ColumnSizerElements.hide(etc, columnIndex);
   }
@@ -31,6 +30,7 @@ export class ColumnSizerEvents {
   private static setNewColumnWidths(columnDetails: ColumnDetails, colWidth: number, newXMovement: number) {
     const newWidth = `${colWidth + newXMovement}px`;
     columnDetails.elements.forEach((cellElement) => (cellElement.style.width = newWidth));
+    setTimeout(() => (columnDetails.width = newWidth));
   }
 
   // prettier-ignore

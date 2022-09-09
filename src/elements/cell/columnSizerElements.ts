@@ -19,10 +19,19 @@ export class ColumnSizerElements {
     columnSizerElement.style.backgroundImage = 'none';
   }
 
+  public static setTransitionTime(columnSizerElement: HTMLElement) {
+    columnSizerElement.style.transition = ColumnSizerElements.TRANSITION_TIME;
+  }
+
+  public static unsetTransitionTime(columnSizerElement: HTMLElement) {
+    columnSizerElement.style.transition = `0.0s`;
+  }
+
   private static createElement(widthSizerIndex: number) {
     const columnSizerElement = document.createElement('div');
     columnSizerElement.id = `${ColumnSizerElements.COLUMN_WIDTH_SIZER_ID_PREFIX}${widthSizerIndex}`;
     columnSizerElement.classList.add(ColumnSizerElements.COLUMN_WIDTH_SIZER_CLASS);
+    ColumnSizerElements.setSyncDefaultProperties(columnSizerElement);
     ColumnSizerElements.setBackgroundImage(columnSizerElement);
     return columnSizerElement;
   }
@@ -59,19 +68,11 @@ export class ColumnSizerElements {
     columnSizerElement.style.left = newLeft;
   }
 
+  // properties that are changed by hover
   public static setSyncDefaultProperties(columnSizerElement: HTMLElement) {
     columnSizerElement.style.width = `1px`;
     columnSizerElement.style.marginLeft = `0px`;
-    columnSizerElement.style.cursor = ``;
     columnSizerElement.style.backgroundColor = ``;
-  }
-
-  public static setTransitionTime(columnSizerElement: HTMLElement) {
-    columnSizerElement.style.transition = ColumnSizerElements.TRANSITION_TIME;
-  }
-
-  public static unsetTransitionTime(columnSizerElement: HTMLElement) {
-    columnSizerElement.style.transition = `0.0s`;
   }
 
   public static setAsyncDefaultProperties(columnSizerElement: HTMLElement) {
@@ -88,6 +89,5 @@ export class ColumnSizerElements {
     columnSizerElement.style.width = `7px`;
     columnSizerElement.style.marginLeft = `-3px`;
     columnSizerElement.style.backgroundColor = `grey`;
-    columnSizerElement.style.cursor = `col-resize`;
   }
 }
