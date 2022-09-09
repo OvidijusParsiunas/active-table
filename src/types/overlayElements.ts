@@ -1,5 +1,6 @@
 export interface ColumnSizerState {
   element: HTMLElement;
+  isParentCellHovered: boolean;
   isMouseHovered: boolean;
 }
 

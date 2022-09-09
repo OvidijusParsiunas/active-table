@@ -9,9 +9,11 @@ export class TableEvents {
     }
   }
 
+  // prettier-ignore
   public static onMouseUp(this: EditableTableComponent, event: MouseEvent) {
-    if (this.tableElementEventState.selectedColumnSizer) {
-      ColumnSizerEvents.tableOnMouseUp(this.tableElementEventState.selectedColumnSizer, event.target as HTMLElement);
+    const { tableElementEventState: { selectedColumnSizer }, overlayElements: { columnSizers } } = this;
+    if (selectedColumnSizer) {
+      ColumnSizerEvents.tableOnMouseUp(selectedColumnSizer, columnSizers, event.target as HTMLElement);
       delete this.tableElementEventState.selectedColumnSizer;
     }
   }

@@ -6,31 +6,62 @@ import {ColumnSizerElements} from './columnSizerElements';
 export class ColumnSizerEvents {
   private static readonly MOUSE_PASSTHROUGH_TIME_ML = 50;
 
-  public static hide(etc: EditableTableComponent, columnIndex: number) {
-    ColumnSizerElements.hide(etc, columnIndex);
+  private static hideWhenCellNotHovered(columnSizer: ColumnSizerState, wasHovered: boolean) {
+    if (columnSizer.isParentCellHovered) return;
+    if (wasHovered) {
+      ColumnSizerElements.hideAfterBlurAnimation(columnSizer.element);
+    } else {
+      ColumnSizerElements.hide(columnSizer.element);
+    }
   }
 
-  public static display(etc: EditableTableComponent, columnIndex: number, event: MouseEvent) {
+  private static hideColumnSizer(columnSizer: ColumnSizerState | undefined) {
+    if (!columnSizer) return;
+    columnSizer.isParentCellHovered = false;
+    // when hovering over a column sizer and quickly move out of it through the cell and out of the cell we need to know if
+    // the sizer was hovered, because columnSizer.isMouseHovered can be set to false before this is called, need another
+    // way to figure out if the cell was hovered, hence the following method looks at its element style
+    // the reason why this is before timeout is because we want to get this information asap
+    const isHovered = ColumnSizerElements.isHovered(columnSizer.element);
+    setTimeout(() => {
+      // check if mouse has not left the cell for the column sizer
+      if (!columnSizer.isMouseHovered) {
+        ColumnSizerEvents.hideWhenCellNotHovered(columnSizer, isHovered);
+      }
+    });
+  }
+
+  public static cellMouseLeave(columnSizers: ColumnSizersStates, columnIndex: number) {
+    ColumnSizerEvents.hideColumnSizer(columnSizers[columnIndex - 1]);
+    ColumnSizerEvents.hideColumnSizer(columnSizers[columnIndex]);
+  }
+
+  private static displayColumnSizer(columnSizer: ColumnSizerState | undefined, height: string, top: string, left: string) {
+    if (!columnSizer) return;
+    ColumnSizerElements.display(columnSizer.element, height, top, left);
+    columnSizer.isParentCellHovered = true;
+  }
+
+  public static cellMouseEnter(columnSizers: ColumnSizersStates, columnIndex: number, event: MouseEvent) {
     const headerCellElement = event.target as HTMLElement;
     const cellRect = headerCellElement.getBoundingClientRect();
-    const columnSizerLeft = etc.overlayElements.columnSizers[columnIndex - 1];
-    if (columnSizerLeft) {
-      ColumnSizerElements.display(headerCellElement, cellRect, columnSizerLeft.element, `${cellRect.left}px`);
-    }
-    const columnSizerRight = etc.overlayElements.columnSizers[columnIndex];
+    const height = `${headerCellElement.offsetHeight}px`;
+    const top = `${cellRect.top}px`;
+    const columnLeftSizerLeft = `${cellRect.left}px`;
+    ColumnSizerEvents.displayColumnSizer(columnSizers[columnIndex - 1], height, top, columnLeftSizerLeft);
     const columnRightSizerLeft = `${cellRect.left + cellRect.width}px`;
-    ColumnSizerElements.display(headerCellElement, cellRect, columnSizerRight.element, columnRightSizerLeft);
-  }
-
-  private static getColumnSizerDetailsViaId(id: string, columnSizers: ColumnSizersStates) {
-    const sizerNumber = Number(id.replace(/\D/g, ''));
-    return {columnSizer: columnSizers[sizerNumber], sizerNumber};
+    ColumnSizerEvents.displayColumnSizer(columnSizers[columnIndex], height, top, columnRightSizerLeft);
   }
 
   private static setNewColumnWidths(columnDetails: ColumnDetails, colWidth: number, newXMovement: number) {
     const newWidth = `${colWidth + newXMovement}px`;
     columnDetails.elements.forEach((cellElement) => (cellElement.style.width = newWidth));
     setTimeout(() => (columnDetails.width = newWidth));
+  }
+
+  private static getColumnSizerDetailsViaId(id: string, columnSizers: ColumnSizersStates) {
+    const sizerNumber = Number(id.replace(/\D/g, ''));
+    return {columnSizer: columnSizers[sizerNumber], sizerNumber};
   }
 
   // prettier-ignore
@@ -43,23 +74,24 @@ export class ColumnSizerEvents {
     ColumnSizerElements.setLeftProp(selectedColumnSizer, left, width, newXMovement);
   }
 
-  public static tableOnMouseUp(selectedColumnSizer: HTMLElement, target: HTMLElement) {
+  public static tableOnMouseUp(selectedColumnSizer: HTMLElement, columnSizers: ColumnSizersStates, target: HTMLElement) {
+    ColumnSizerElements.setTransitionTime(selectedColumnSizer);
+    const {columnSizer} = ColumnSizerEvents.getColumnSizerDetailsViaId(selectedColumnSizer.id, columnSizers);
     // if mouse up on a different element
     if (target !== selectedColumnSizer) {
-      ColumnSizerElements.setSyncDefaultProperties(selectedColumnSizer);
-      ColumnSizerElements.setAsyncDefaultProperties(selectedColumnSizer);
+      ColumnSizerElements.setDefaultProperties(selectedColumnSizer);
+      ColumnSizerElements.setPropertiesAfterBlurAnimation(selectedColumnSizer);
+      ColumnSizerElements.hideAfterBlurAnimation(columnSizer.element);
     }
-    // need to reset transition property when mouse up
-    ColumnSizerElements.setTransitionTime(selectedColumnSizer);
   }
 
   public static tableOnMouseLeave(selectedColumnSizer: HTMLElement) {
-    ColumnSizerElements.setSyncDefaultProperties(selectedColumnSizer);
-    ColumnSizerElements.setAsyncDefaultProperties(selectedColumnSizer);
-    // don't need to set transition as sudden default looks nicer when the cursor leaves the table
+    ColumnSizerElements.setTransitionTime(selectedColumnSizer);
+    ColumnSizerElements.setDefaultProperties(selectedColumnSizer);
+    ColumnSizerElements.setPropertiesAfterBlurAnimation(selectedColumnSizer);
   }
 
-  public static onMouseEnter(this: EditableTableComponent, columnSizerState: ColumnSizerState) {
+  public static sizerOnMouseEnter(this: EditableTableComponent, columnSizerState: ColumnSizerState) {
     // if selected and hovered over another
     columnSizerState.isMouseHovered = true;
     if (this.tableElementEventState.selectedColumnSizer) return;
@@ -70,16 +102,22 @@ export class ColumnSizerEvents {
     }, ColumnSizerEvents.MOUSE_PASSTHROUGH_TIME_ML);
   }
 
-  public static onMouseLeave(this: EditableTableComponent, columnSizerState: ColumnSizerState) {
+  public static sizerOnMouseLeave(this: EditableTableComponent, columnSizerState: ColumnSizerState) {
     columnSizerState.isMouseHovered = false;
     // mouse leave can occur when mouse is moving and column sizer is selected, hence this prevents setting to default
     if (!this.tableElementEventState.selectedColumnSizer) {
-      ColumnSizerElements.setSyncDefaultProperties(columnSizerState.element);
+      ColumnSizerElements.setDefaultProperties(columnSizerState.element);
     }
+    // when leaving the table, the last sizer can be hovered, hence the following is used to hide it because
+    // columnSizer.isMouseHovered can be set to false before this is called, need another way to figure out
+    // if the cell was hovered, following method looks at its element style to see if it was highlighted
+    // the reason why this is before timeout is because we want to get this information asap
+    const wasHovered = ColumnSizerElements.isHovered(columnSizerState.element);
     // only reset if the user is definitely not hovering over it
     setTimeout(() => {
       if (!this.tableElementEventState.selectedColumnSizer && !columnSizerState.isMouseHovered) {
-        ColumnSizerElements.setAsyncDefaultProperties(columnSizerState.element);
+        ColumnSizerElements.setPropertiesAfterBlurAnimation(columnSizerState.element);
+        ColumnSizerEvents.hideWhenCellNotHovered(columnSizerState, wasHovered);
       }
     }, ColumnSizerEvents.MOUSE_PASSTHROUGH_TIME_ML);
   }

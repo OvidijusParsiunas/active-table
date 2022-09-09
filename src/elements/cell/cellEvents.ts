@@ -21,16 +21,16 @@ export class CellEvents {
 
   // prettier-ignore
   private static updateCellWithPreprocessing(etc: EditableTableComponent,
-      newText: string | null,rowIndex: number, columnIndex: number, target?: HTMLElement): void {
+      newText: string | null, rowIndex: number, columnIndex: number, target?: HTMLElement): void {
     const processedText = newText?.trim();
-    CellEvents.updateCell(etc, processedText, rowIndex, columnIndex, target)
+    CellEvents.updateCell(etc, processedText, rowIndex, columnIndex, target);
   }
 
   public static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const inputEvent = event as InputEvent;
     if (inputEvent.inputType !== CellEvents.PASTE_INPUT_TYPE) {
-      const {textContent} = inputEvent.target as HTMLElement;
-      CellEvents.updateCellWithPreprocessing(this, textContent, rowIndex, columnIndex);
+      const target = inputEvent.target as HTMLElement;
+      CellEvents.updateCellWithPreprocessing(this, target.textContent, rowIndex, columnIndex);
     }
   }
 
@@ -59,17 +59,17 @@ export class CellEvents {
 
   // prettier-ignore
   public static focusCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
-    if (this.defaultCellValue !== CellEvents.EMPTY_STRING &&
-        this.defaultCellValue === (event.target as HTMLElement).textContent) {
+    if (this.defaultCellValue !== CellEvents.EMPTY_STRING
+        && this.defaultCellValue === (event.target as HTMLElement).textContent) {
       CellEvents.updateCell(this, CellEvents.EMPTY_STRING, rowIndex, columnIndex, event.target as HTMLElement);
     }
   }
 
   public static mouseEnterCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
-    if (rowIndex === 0) ColumnSizerEvents.display(this, columnIndex, event);
+    if (rowIndex === 0) ColumnSizerEvents.cellMouseEnter(this.overlayElements.columnSizers, columnIndex, event);
   }
 
   public static mouseLeaveCell(this: EditableTableComponent, rowIndex: number, columnIndex: number) {
-    if (rowIndex === 0) ColumnSizerEvents.hide(this, columnIndex);
+    if (rowIndex === 0) ColumnSizerEvents.cellMouseLeave(this.overlayElements.columnSizers, columnIndex);
   }
 }
