@@ -4,8 +4,13 @@ export interface ColumnSizerState {
   isMouseHovered: boolean;
 }
 
-export type ColumnSizersStates = ColumnSizerState[];
+export type ColumnSizerList = ColumnSizerState[];
+
+export interface ColumnSizers {
+  list: ColumnSizerList;
+  currentlyVisibleElements: Set<HTMLElement>;
+}
 
 export interface OverlayElements {
-  columnSizers: ColumnSizersStates;
+  columnSizers: ColumnSizers;
 }

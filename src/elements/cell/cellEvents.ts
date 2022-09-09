@@ -2,12 +2,23 @@ import {UpdateCellsViaCSVOnPaste} from '../../utils/pasteCSV/updateCellsViaCSVOn
 import {NumberOfIdenticalCells} from '../../utils/numberOfIdenticalCells';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
+import {ColumnSizers} from '../../types/overlayElements';
 import {ColumnSizerEvents} from './columnSizerEvents';
 
 export class CellEvents {
   private static readonly EMPTY_STRING = '';
   private static readonly PASTE_INPUT_TYPE = 'insertFromPaste';
   private static readonly TEXT_DATA_FORMAT = 'text/plain';
+
+  // prettier-ignore
+  private static updateVisibleColumnSizerHeight(
+      currentlyVisibleElements: ColumnSizers['currentlyVisibleElements'], target: HTMLElement) {
+    // placed in a timeout to save up on performance
+    setTimeout(() => {
+      const newHeight = `${target.offsetHeight}px`;
+      currentlyVisibleElements.forEach((columnSizer) => columnSizer.style.height = newHeight);
+    });
+  }
 
   // prettier-ignore
   private static updateCell(etc: EditableTableComponent,
@@ -31,6 +42,11 @@ export class CellEvents {
     if (inputEvent.inputType !== CellEvents.PASTE_INPUT_TYPE) {
       const target = inputEvent.target as HTMLElement;
       CellEvents.updateCellWithPreprocessing(this, target.textContent, rowIndex, columnIndex);
+      if (rowIndex === 0) {
+        // reason why using currentlyVisibleElements property instead of getting the column sizers via the columnIndex
+        // is because the user could have hovered over another header cell other than the one that is being typed in
+        CellEvents.updateVisibleColumnSizerHeight(this.overlayElements.columnSizers.currentlyVisibleElements, target);
+      }
     }
   }
 

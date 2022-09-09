@@ -1,4 +1,4 @@
-import {ColumnSizersStates, ColumnSizerState} from '../../types/overlayElements';
+import {ColumnSizerList, ColumnSizers, ColumnSizerState} from '../../types/overlayElements';
 import {ColumnDetails, ColumnsDetails} from '../../types/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElements} from './columnSizerElements';
@@ -15,7 +15,8 @@ export class ColumnSizerEvents {
     }
   }
 
-  private static hideColumnSizer(columnSizer: ColumnSizerState | undefined) {
+  private static hideColumnSizer(columnSizers: ColumnSizers, columnIndex: number) {
+    const columnSizer = columnSizers.list[columnIndex];
     if (!columnSizer) return;
     columnSizer.isParentCellHovered = false;
     // when hovering over a column sizer and quickly move out of it through the cell and out of the cell we need to know if
@@ -27,30 +28,35 @@ export class ColumnSizerEvents {
       // check if mouse has not left the cell for the column sizer
       if (!columnSizer.isMouseHovered) {
         ColumnSizerEvents.hideWhenCellNotHovered(columnSizer, isHovered);
+        columnSizers.currentlyVisibleElements.delete(columnSizer.element);
       }
     });
   }
 
-  public static cellMouseLeave(columnSizers: ColumnSizersStates, columnIndex: number) {
-    ColumnSizerEvents.hideColumnSizer(columnSizers[columnIndex - 1]);
-    ColumnSizerEvents.hideColumnSizer(columnSizers[columnIndex]);
+  public static cellMouseLeave(columnSizers: ColumnSizers, columnIndex: number) {
+    ColumnSizerEvents.hideColumnSizer(columnSizers, columnIndex - 1);
+    ColumnSizerEvents.hideColumnSizer(columnSizers, columnIndex);
   }
 
-  private static displayColumnSizer(columnSizer: ColumnSizerState | undefined, height: string, top: string, left: string) {
+  // prettier-ignore
+  private static displayColumnSizer(
+      columnSizers: ColumnSizers, columnIndex: number, height: string, top: string, left: string) {
+    const columnSizer = columnSizers.list[columnIndex];
     if (!columnSizer) return;
     ColumnSizerElements.display(columnSizer.element, height, top, left);
     columnSizer.isParentCellHovered = true;
+    columnSizers.currentlyVisibleElements.add(columnSizer.element);
   }
 
-  public static cellMouseEnter(columnSizers: ColumnSizersStates, columnIndex: number, event: MouseEvent) {
+  public static cellMouseEnter(columnSizers: ColumnSizers, columnIndex: number, event: MouseEvent) {
     const headerCellElement = event.target as HTMLElement;
     const cellRect = headerCellElement.getBoundingClientRect();
     const height = `${headerCellElement.offsetHeight}px`;
     const top = `${cellRect.top}px`;
     const columnLeftSizerLeft = `${cellRect.left}px`;
-    ColumnSizerEvents.displayColumnSizer(columnSizers[columnIndex - 1], height, top, columnLeftSizerLeft);
+    ColumnSizerEvents.displayColumnSizer(columnSizers, columnIndex - 1, height, top, columnLeftSizerLeft);
     const columnRightSizerLeft = `${cellRect.left + cellRect.width}px`;
-    ColumnSizerEvents.displayColumnSizer(columnSizers[columnIndex], height, top, columnRightSizerLeft);
+    ColumnSizerEvents.displayColumnSizer(columnSizers, columnIndex, height, top, columnRightSizerLeft);
   }
 
   private static setNewColumnWidths(columnDetails: ColumnDetails, colWidth: number, newXMovement: number) {
@@ -59,7 +65,7 @@ export class ColumnSizerEvents {
     setTimeout(() => (columnDetails.width = newWidth));
   }
 
-  private static getColumnSizerDetailsViaId(id: string, columnSizers: ColumnSizersStates) {
+  private static getColumnSizerDetailsViaId(id: string, columnSizers: ColumnSizerList) {
     const sizerNumber = Number(id.replace(/\D/g, ''));
     return {columnSizer: columnSizers[sizerNumber], sizerNumber};
   }
@@ -68,16 +74,19 @@ export class ColumnSizerEvents {
   // the mouse moves quickly - it can leave the column sizer and events would stop firing
   // prettier-ignore
   public static tableOnMouseMove(selectedColumnSizer: HTMLElement,
-      columnSizers: ColumnSizersStates, columnsDetails: ColumnsDetails, newXMovement: number) {
+      columnSizers: ColumnSizerList, columnsDetails: ColumnsDetails, newXMovement: number) {
     const { columnSizer, sizerNumber } = ColumnSizerEvents.getColumnSizerDetailsViaId(selectedColumnSizer.id, columnSizers)
     ColumnSizerElements.unsetTransitionTime(columnSizer.element);
-    const {left, width} = columnsDetails[sizerNumber].elements[0].getBoundingClientRect();
+    const {left, width, height} = columnsDetails[sizerNumber].elements[0].getBoundingClientRect();
     ColumnSizerEvents.setNewColumnWidths(columnsDetails[sizerNumber], width, newXMovement);
     ColumnSizerElements.setLeftProp(selectedColumnSizer, left, width, newXMovement);
+    // if the header cell size increases or decreases as the width is changed
+    // the reason why it is set in a timeout is in order to try to minimize the upfront operations for performance
+    setTimeout(() => selectedColumnSizer.style.height = `${height}px`);
   }
 
   // the following method allows us to track when the user stops dragging mouse even when not on the column sizer
-  public static tableOnMouseUp(selectedColumnSizer: HTMLElement, columnSizers: ColumnSizersStates, target: HTMLElement) {
+  public static tableOnMouseUp(selectedColumnSizer: HTMLElement, columnSizers: ColumnSizerList, target: HTMLElement) {
     ColumnSizerElements.setTransitionTime(selectedColumnSizer);
     const {columnSizer} = ColumnSizerEvents.getColumnSizerDetailsViaId(selectedColumnSizer.id, columnSizers);
     // if mouse up on a different element

@@ -67,7 +67,7 @@ export class EditableTableComponent extends LitElement {
   overlayElementsParentRef: HTMLElement | null = null;
 
   @state()
-  overlayElements: OverlayElements = {columnSizers: []};
+  overlayElements: OverlayElements = {columnSizers: {list: [], currentlyVisibleElements: new Set()}};
 
   @state()
   tableElementEventState: TableElementEventState = {};

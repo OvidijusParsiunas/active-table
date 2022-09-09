@@ -13,7 +13,7 @@ export class TableEvents {
   public static onMouseUp(this: EditableTableComponent, event: MouseEvent) {
     const { tableElementEventState: { selectedColumnSizer }, overlayElements: { columnSizers } } = this;
     if (selectedColumnSizer) {
-      ColumnSizerEvents.tableOnMouseUp(selectedColumnSizer, columnSizers, event.target as HTMLElement);
+      ColumnSizerEvents.tableOnMouseUp(selectedColumnSizer, columnSizers.list, event.target as HTMLElement);
       delete this.tableElementEventState.selectedColumnSizer;
     }
   }
@@ -22,7 +22,7 @@ export class TableEvents {
   public static onMouseMove(this: EditableTableComponent, event: MouseEvent) {
     const { tableElementEventState: { selectedColumnSizer }, overlayElements: { columnSizers }, columnsDetails } = this;
     if (selectedColumnSizer) {
-      ColumnSizerEvents.tableOnMouseMove(selectedColumnSizer, columnSizers, columnsDetails, event.movementX);
+      ColumnSizerEvents.tableOnMouseMove(selectedColumnSizer, columnSizers.list, columnsDetails, event.movementX);
     }
   }
 

@@ -47,12 +47,12 @@ export class ColumnSizerElements {
   // prettier-ignore
   public static createAndAddNew(etc: EditableTableComponent) {
     const { overlayElementsParentRef, overlayElements: { columnSizers } } = etc;
-    const columnSizerElement = ColumnSizerElements.createElement(columnSizers.length);
+    const columnSizerElement = ColumnSizerElements.createElement(columnSizers.list.length);
     const columnSizerState = ColumnSizerElements.createNewColumnSizerState(columnSizerElement);
     columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizerState);
     columnSizerElement.onmouseleave = ColumnSizerEvents.sizerOnMouseLeave.bind(etc, columnSizerState);
     (overlayElementsParentRef as HTMLElement).appendChild(columnSizerElement);
-    columnSizers.push(columnSizerState);
+    columnSizers.list.push(columnSizerState);
   }
 
   public static display(columnSizerElement: HTMLElement, height: string, top: string, left: string) {
@@ -69,6 +69,7 @@ export class ColumnSizerElements {
   public static hideAfterBlurAnimation(columnSizerElement: HTMLElement) {
     setTimeout(() => {
       ColumnSizerElements.hide(columnSizerElement);
+      // TO-DO - check if HALF_TRANSITION_TIME_ML or TRANSITION_TIME_ML timeout is the better one
     }, ColumnSizerElements.HALF_TRANSITION_TIME_ML);
   }
 
