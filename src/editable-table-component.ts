@@ -1,3 +1,4 @@
+import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableElementEventState} from './types/tableElementEventState';
 import {customElement, property, state} from 'lit/decorators.js';
@@ -53,6 +54,9 @@ export class EditableTableComponent extends LitElement {
   @property({type: String})
   defaultCellValue = '';
 
+  @state()
+  tableElementRef: HTMLElement | null = null;
+
   // these consist of data and header elements
   @state()
   coreElementsParentRef: HTMLElement | null = null;
@@ -67,14 +71,21 @@ export class EditableTableComponent extends LitElement {
   overlayElementsParentRef: HTMLElement | null = null;
 
   @state()
-  overlayElements: OverlayElements = {columnSizers: {list: [], currentlyVisibleElements: new Set()}};
+  overlayElements: OverlayElements = OverlayElementsState.createNew();
 
   @state()
   tableElementEventState: TableElementEventState = {};
 
   override render() {
+    this.refreshState();
     TableElement.populate(this);
     this.onTableUpdate(this.contents);
+  }
+
+  private refreshState() {
+    this.overlayElements = OverlayElementsState.createNew();
+    this.tableElementEventState = {};
+    this.columnsDetails = [];
   }
 
   override connectedCallback() {

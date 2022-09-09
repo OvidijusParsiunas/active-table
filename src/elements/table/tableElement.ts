@@ -1,3 +1,4 @@
+import {OverlayElementsParent} from '../overlaysElements/overlayElementsParent';
 import {EditableTableComponent} from '../../editable-table-component';
 import {AddNewRowElement} from '../row/addNewRowElement';
 import {HeaderElement} from '../header/headerElement';
@@ -6,20 +7,11 @@ import {TableEvents} from './tableEvents';
 
 export class TableElement {
   public static populate(etc: EditableTableComponent) {
-    HeaderElement.create(etc);
-    DataElement.create(etc);
+    const headerElement = HeaderElement.create(etc);
+    const dataElement = DataElement.create(etc);
+    const overlayElementsParent = OverlayElementsParent.create(etc);
     const addRowElement = AddNewRowElement.create(etc);
-    etc.coreElementsParentRef?.replaceChildren(
-      etc.headerElementRef as HTMLElement,
-      etc.dataElementRef as HTMLElement,
-      addRowElement
-    );
-  }
-
-  private static addOverlayElements(tableElement: HTMLElement) {
-    const overlayElementsParent = document.createElement('div');
-    tableElement.appendChild(overlayElementsParent);
-    return overlayElementsParent;
+    etc.coreElementsParentRef?.replaceChildren(headerElement, dataElement, addRowElement, overlayElementsParent);
   }
 
   private static createCoreElementsParent(tableElement: HTMLElement) {
@@ -40,10 +32,9 @@ export class TableElement {
 
   public static createBase(etc: EditableTableComponent) {
     const tableElement = TableElement.createTableElement(etc);
+    etc.tableElementRef = tableElement;
     const coreElementsParent = TableElement.createCoreElementsParent(tableElement);
     etc.coreElementsParentRef = coreElementsParent;
-    const overlayElementsParent = TableElement.addOverlayElements(tableElement);
-    etc.overlayElementsParentRef = overlayElementsParent;
     return tableElement;
   }
 }

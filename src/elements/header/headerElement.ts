@@ -7,5 +7,6 @@ export class HeaderElement {
     headerElement.classList.add('header');
     etc.headerElementRef = headerElement;
     InsertNewDataRow.insert(etc, 0, etc.contents[0]);
+    return headerElement;
   }
 }

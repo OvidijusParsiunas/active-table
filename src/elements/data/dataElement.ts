@@ -10,5 +10,6 @@ export class DataElement {
     etc.contents.slice(1).forEach((dataRow: TableRow, rowIndex: number) => {
       InsertNewDataRow.insert(etc, rowIndex + 1, dataRow);
     });
+    return dataElement;
   }
 }
