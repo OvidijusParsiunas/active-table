@@ -6,12 +6,12 @@ import {ElementDetails} from '../../../types/elementDetails';
 export class UpdateRows {
   // prettier-ignore
   private static updateRowCells(etc: EditableTableComponent,
-      rowElement: HTMLElement, contentsRowIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
+      rowElement: HTMLElement, rowIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
     Array.from(rowElement.children).forEach((cellElement: Node, columnIndex: number) => {
       if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
-        CellElement.setCellEvents(etc, cellElement as HTMLElement, contentsRowIndex, columnIndex);
+        CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
       }
-      etc.onCellUpdate(cellElement.textContent as string, contentsRowIndex, columnIndex, cellUpdateType);
+      etc.onCellUpdate(cellElement.textContent as string, rowIndex, columnIndex, cellUpdateType);
     });
   }
 
@@ -21,14 +21,12 @@ export class UpdateRows {
     }
   }
 
-  // prettier-ignore
-  private static updateLowerBeforeLastRows(etc: EditableTableComponent, startContentsRowIndex: number,
-      lastContentsRowIndex: number) {
+  private static updateLowerBeforeLastRows(etc: EditableTableComponent, startRowIndex: number, lastRowIndex: number) {
     const tableBodyChildren = etc.tableBodyElementRef?.children;
     if (tableBodyChildren) {
-      const lowerRows = Array.from(tableBodyChildren).slice(startContentsRowIndex - 1, lastContentsRowIndex - 1);
-      lowerRows.forEach((rowElement: Node, rowIndex: number) => {
-        const relativeContentsRowIndex = rowIndex + startContentsRowIndex;
+      const lowerRows = Array.from(tableBodyChildren).slice(startRowIndex, lastRowIndex);
+      lowerRows.forEach((rowElement: Node, lowerRowIndex: number) => {
+        const relativeContentsRowIndex = lowerRowIndex + startRowIndex;
         UpdateRows.updateRowCells(etc, rowElement as HTMLElement, relativeContentsRowIndex, CELL_UPDATE_TYPE.UPDATE);
       });
     }
@@ -38,9 +36,9 @@ export class UpdateRows {
   // are no longer available as this class's methods are run in setTimeouts, hence those details need to be captured
   // before these methods are executed
   // prettier-ignore
-  public static update(etc: EditableTableComponent,
-      startContentsRowIndex: number, lastRowUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {
-    UpdateRows.updateLowerBeforeLastRows(etc, startContentsRowIndex, lastRow.index)
+  public static update(
+      etc: EditableTableComponent, startRowIndex: number, lastRowUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {
+    UpdateRows.updateLowerBeforeLastRows(etc, startRowIndex, lastRow.index)
     UpdateRows.updateLastRow(etc, lastRowUpdateType, lastRow);
   }
 }

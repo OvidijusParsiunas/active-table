@@ -4,10 +4,3 @@ detect React:
 !!Object.keys(document).find(key => key.includes('react'))
 
 when tabbing across cells, need the cursor to automatically point towards the end of the text
-
-KNOWLEDGE:
-
-REF-1:
-Table and its rows are populated cell by cell using the column class in order to add appropriate event listeners etc
-This is to make sure that all methods of structure addition - row/column will add same events and code is managed
-in one place
