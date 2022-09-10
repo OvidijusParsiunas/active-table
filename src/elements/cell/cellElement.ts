@@ -1,8 +1,9 @@
-import {InsertNewColumn} from '../../utils/insertRemoveStructure/insert/insertNewColumn';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CellEvents} from './cellEvents';
 
 export class CellElement {
+  public static readonly DEFAULT_COLUMN_WIDTH = '100px';
+
   // prettier-ignore
   public static setCellEvents(etc: EditableTableComponent,
       cellElement: HTMLElement, newRowIndex: number, columnIndex: number) {
@@ -24,7 +25,7 @@ export class CellElement {
     const cellElement = CellElement.create(isHeader);
     cellElement.contentEditable = String(isHeader ? !!etc.areHeadersEditable : true);
     cellElement.textContent = cellText as string;
-    if (isHeader) cellElement.style.width = InsertNewColumn.DEFAULT_COLUMN_WIDTH;
+    if (isHeader) cellElement.style.width = CellElement.DEFAULT_COLUMN_WIDTH;
     return cellElement;
   }
 

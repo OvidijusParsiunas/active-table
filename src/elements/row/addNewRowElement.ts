@@ -4,12 +4,14 @@ import {CellElement} from '../cell/cellElement';
 import {RowElement} from './rowElement';
 
 export class AddNewRowElement {
+  private static readonly DEFAULT_COL_SPAN = 1_000_000_000;
+
   private static createCell() {
     const addNewRowCell = CellElement.create();
     addNewRowCell.classList.add('add-new-row-cell');
     addNewRowCell.textContent = '+ New';
-    // WORK - this will need to increase by the number of columns
-    addNewRowCell.colSpan = 4;
+    // set to high number to always merge cells in this row
+    addNewRowCell.colSpan = AddNewRowElement.DEFAULT_COL_SPAN;
     return addNewRowCell;
   }
 

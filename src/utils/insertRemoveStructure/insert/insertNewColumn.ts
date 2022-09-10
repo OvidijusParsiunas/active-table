@@ -7,8 +7,6 @@ import {ColumnDetails} from '../../../types/columnDetails';
 import {UpdateColumns} from '../shared/updateColumns';
 
 export class InsertNewColumn {
-  public static readonly DEFAULT_COLUMN_WIDTH = '100px';
-
   private static createDefaultColumnDetailsObject(cellElement: HTMLElement): ColumnDetails {
     return {elements: [cellElement]};
   }
