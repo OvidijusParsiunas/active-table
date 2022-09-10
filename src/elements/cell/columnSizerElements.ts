@@ -1,6 +1,8 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerEvents} from './columnSizerEvents';
 
+// the reason why there are multiple column sizers is because sometimes the user may hover over it before hovering
+// over a cell e.g from top/below
 export class ColumnSizerElements {
   private static readonly BACKGROUND_IMAGE =
     'linear-gradient(180deg, #cdcdcd, #cdcdcd 75%, transparent 75%, transparent 100%)';
@@ -46,7 +48,7 @@ export class ColumnSizerElements {
 
   // prettier-ignore
   public static createAndAddNew(etc: EditableTableComponent) {
-    const { overlayElementsParentRef, overlayElements: { columnSizers } } = etc;
+    const { overlayElementsParentRef, overlayElementsState: { columnSizers } } = etc;
     const columnSizerElement = ColumnSizerElements.createElement(columnSizers.list.length);
     const columnSizerState = ColumnSizerElements.createNewColumnSizerState(columnSizerElement);
     columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizerState);
@@ -78,6 +80,7 @@ export class ColumnSizerElements {
     columnSizerElement.style.left = newLeft;
   }
 
+  // TO-DO this should only be set if there is no color for vertical borders
   // properties that are changed by hover
   public static setDefaultProperties(columnSizerElement: HTMLElement) {
     columnSizerElement.style.width = `1px`;

@@ -1,7 +1,7 @@
 import {ColumnSizerList, ColumnSizers, ColumnSizerState} from '../../types/overlayElements';
-import {ColumnDetails, ColumnsDetails} from '../../types/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElements} from './columnSizerElements';
+import {ColumnsDetails} from '../../types/columnDetails';
 
 export class ColumnSizerEvents {
   private static readonly MOUSE_PASSTHROUGH_TIME_ML = 50;
@@ -59,10 +59,9 @@ export class ColumnSizerEvents {
     ColumnSizerEvents.displayColumnSizer(columnSizers, columnIndex, height, top, columnRightSizerLeft);
   }
 
-  private static setNewColumnWidths(columnDetails: ColumnDetails, colWidth: number, newXMovement: number) {
+  private static setNewColumnWidth(columnElement: HTMLElement, colWidth: number, newXMovement: number) {
     const newWidth = `${colWidth + newXMovement}px`;
-    columnDetails.elements.forEach((cellElement) => (cellElement.style.width = newWidth));
-    setTimeout(() => (columnDetails.width = newWidth));
+    columnElement.style.width = newWidth;
   }
 
   private static getColumnSizerDetailsViaId(id: string, columnSizers: ColumnSizerList) {
@@ -77,8 +76,9 @@ export class ColumnSizerEvents {
       columnSizers: ColumnSizerList, columnsDetails: ColumnsDetails, newXMovement: number) {
     const { columnSizer, sizerNumber } = ColumnSizerEvents.getColumnSizerDetailsViaId(selectedColumnSizer.id, columnSizers)
     ColumnSizerElements.unsetTransitionTime(columnSizer.element);
-    const {left, width, height} = columnsDetails[sizerNumber].elements[0].getBoundingClientRect();
-    ColumnSizerEvents.setNewColumnWidths(columnsDetails[sizerNumber], width, newXMovement);
+    const columnElement = columnsDetails[sizerNumber].elements[0];
+    const {left, width, height} = columnElement.getBoundingClientRect();
+    ColumnSizerEvents.setNewColumnWidth(columnElement, width, newXMovement);
     ColumnSizerElements.setLeftProp(selectedColumnSizer, left, width, newXMovement);
     // if the header cell size increases or decreases as the width is changed
     // the reason why it is set in a timeout is in order to try to minimize the upfront operations for performance

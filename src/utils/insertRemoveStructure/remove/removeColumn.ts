@@ -23,18 +23,21 @@ export class RemoveColumn {
     });
   }
 
+  // prettier-ignore
   private static removeCellFromDataRow(etc: EditableTableComponent, columnIndex: number) {
-    Array.from(etc.dataElementRef?.children || []).forEach((dataRowElement: Node, rowIndex: number) => {
+    Array.from(etc.tableBodyElementRef?.children || []).slice(1).forEach((dataRowElement: Node, rowIndex: number) => {
       RemoveColumn.removeCell(etc, dataRowElement as HTMLElement, rowIndex + 1, columnIndex);
     });
   }
 
+  // prettier-ignore
   private static removeCellFromHeaderRow(etc: EditableTableComponent, columnIndex: number) {
-    if (etc.headerElementRef) {
-      const headerRow = etc.headerElementRef.children[0];
-      RemoveColumn.removeCell(etc, headerRow as HTMLElement, 0, columnIndex);
-      RemoveColumn.removeColumnSizer(etc.overlayElements.columnSizers.list, etc.overlayElementsParentRef as HTMLElement);
-    }
+    const headerRow = etc.tableBodyElementRef?.children[0];
+    RemoveColumn.removeCell(etc, headerRow as HTMLElement, 0, columnIndex);
+    RemoveColumn.removeColumnSizer(
+      etc.overlayElementsState.columnSizers.list,
+      etc.overlayElementsParentRef as HTMLElement
+    );
   }
 
   public static remove(etc: EditableTableComponent, columnIndex: number) {

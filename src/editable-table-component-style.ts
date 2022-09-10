@@ -1,48 +1,38 @@
 import {css} from 'lit';
 
 export const ediTableStyle = css`
-  .header {
+  table {
+    border-spacing: 0px;
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  }
+
+  .row > *:first-child {
+    padding-left: 16px;
+  }
+
+  /* header cells */
+  tbody > .row:first-child > .cell {
     color: rgba(0, 0, 0, 0.87);
     font-size: 12px;
     font-weight: 500;
-  }
-
-  .data {
-    font-size: 13px;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.87);
-  }
-
-  .row {
-    display: flex;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: rgba(0, 0, 0, 0.12);
-    width: fit-content;
-  }
-
-  .row > div:first-child {
-    padding-left: 16px;
-    width: 106px;
   }
 
   .cell {
     text-align: left;
     padding: 6px;
     padding-top: 11px;
-    min-height: 46px;
+    height: 43px;
     box-sizing: border-box;
     outline: none;
     overflow-wrap: anywhere;
-  }
-
-  /* check if this is a good workaround for smaller devices */
-  .cell:empty {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.87);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(0, 0, 0, 0.12);
+    vertical-align: top;
     text-align: left;
-  }
-
-  .add-new-row-row {
-    width: auto;
   }
 
   .add-new-row-row:hover {
@@ -56,11 +46,7 @@ export const ediTableStyle = css`
     line-height: 18px;
     font-size: 12px;
     color: #555555;
-  }
-
-  .table {
-    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-    width: fit-content;
+    vertical-align: middle;
   }
 
   .column-width-sizer {

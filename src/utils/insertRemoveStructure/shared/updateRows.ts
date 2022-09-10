@@ -16,8 +16,7 @@ export class UpdateRows {
   }
 
   private static updateLastRow(etc: EditableTableComponent, cellUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {
-    const dataElementChildren = etc.dataElementRef?.children;
-    if (dataElementChildren) {
+    if (etc.tableBodyElementRef?.children) {
       UpdateRows.updateRowCells(etc, lastRow.element, lastRow.index, cellUpdateType);
     }
   }
@@ -25,9 +24,9 @@ export class UpdateRows {
   // prettier-ignore
   private static updateLowerBeforeLastRows(etc: EditableTableComponent, startContentsRowIndex: number,
       lastContentsRowIndex: number) {
-    const dataElementChildren = etc.dataElementRef?.children;
-    if (dataElementChildren) {
-      const lowerRows = Array.from(dataElementChildren).slice(startContentsRowIndex - 1, lastContentsRowIndex - 1);
+    const tableBodyChildren = etc.tableBodyElementRef?.children;
+    if (tableBodyChildren) {
+      const lowerRows = Array.from(tableBodyChildren).slice(startContentsRowIndex - 1, lastContentsRowIndex - 1);
       lowerRows.forEach((rowElement: Node, rowIndex: number) => {
         const relativeContentsRowIndex = rowIndex + startContentsRowIndex;
         UpdateRows.updateRowCells(etc, rowElement as HTMLElement, relativeContentsRowIndex, CELL_UPDATE_TYPE.UPDATE);

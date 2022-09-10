@@ -57,24 +57,17 @@ export class EditableTableComponent extends LitElement {
   @state()
   tableElementRef: HTMLElement | null = null;
 
-  // these consist of data and header elements
   @state()
-  coreElementsParentRef: HTMLElement | null = null;
+  tableElementEventState: TableElementEventState = {};
 
   @state()
-  headerElementRef: HTMLElement | null = null;
-
-  @state()
-  dataElementRef: HTMLElement | null = null;
+  tableBodyElementRef: HTMLElement | null = null;
 
   @state()
   overlayElementsParentRef: HTMLElement | null = null;
 
   @state()
-  overlayElements: OverlayElements = OverlayElementsState.createNew();
-
-  @state()
-  tableElementEventState: TableElementEventState = {};
+  overlayElementsState: OverlayElements = OverlayElementsState.createNew();
 
   override render() {
     this.refreshState();
@@ -83,7 +76,7 @@ export class EditableTableComponent extends LitElement {
   }
 
   private refreshState() {
-    this.overlayElements = OverlayElementsState.createNew();
+    this.overlayElementsState = OverlayElementsState.createNew();
     this.tableElementEventState = {};
     this.columnsDetails = [];
   }

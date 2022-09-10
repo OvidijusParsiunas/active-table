@@ -1,28 +1,24 @@
+import {InsertNewDataRow} from '../../utils/insertRemoveStructure/insert/insertNewDataRow';
 import {OverlayElementsParent} from '../overlaysElements/overlayElementsParent';
 import {EditableTableComponent} from '../../editable-table-component';
 import {AddNewRowElement} from '../row/addNewRowElement';
-import {HeaderElement} from '../header/headerElement';
-import {DataElement} from '../data/dataElement';
+import {TableRow} from '../../types/tableContents';
 import {TableEvents} from './tableEvents';
 
 export class TableElement {
   public static populate(etc: EditableTableComponent) {
-    const headerElement = HeaderElement.create(etc);
-    const dataElement = DataElement.create(etc);
-    const overlayElementsParent = OverlayElementsParent.create(etc);
-    const addRowElement = AddNewRowElement.create(etc);
-    etc.coreElementsParentRef?.replaceChildren(headerElement, dataElement, addRowElement, overlayElementsParent);
+    etc.overlayElementsParentRef = OverlayElementsParent.create();
+    const addRowElementRef = AddNewRowElement.create(etc);
+    etc.tableBodyElementRef?.replaceChildren(addRowElementRef, etc.overlayElementsParentRef);
+    etc.contents.map((dataRow: TableRow, rowIndex: number) => InsertNewDataRow.insert(etc, rowIndex, dataRow));
   }
 
-  private static createCoreElementsParent(tableElement: HTMLElement) {
-    const coreElements = document.createElement('div');
-    tableElement.appendChild(coreElements);
-    return coreElements;
+  private static createTableBody() {
+    return document.createElement('tbody');
   }
 
   private static createTableElement(etc: EditableTableComponent) {
-    const tableElement = document.createElement('div');
-    tableElement.classList.add('table');
+    const tableElement = document.createElement('table');
     tableElement.onmousedown = TableEvents.onMouseDown.bind(etc);
     tableElement.onmouseup = TableEvents.onMouseUp.bind(etc);
     tableElement.onmousemove = TableEvents.onMouseMove.bind(etc);
@@ -31,11 +27,10 @@ export class TableElement {
   }
 
   public static createBase(etc: EditableTableComponent) {
-    const tableElement = TableElement.createTableElement(etc);
-    etc.tableElementRef = tableElement;
-    const coreElementsParent = TableElement.createCoreElementsParent(tableElement);
-    etc.coreElementsParentRef = coreElementsParent;
-    return tableElement;
+    etc.tableElementRef = TableElement.createTableElement(etc);
+    etc.tableBodyElementRef = TableElement.createTableBody();
+    etc.tableElementRef.appendChild(etc.tableBodyElementRef);
+    return etc.tableElementRef;
   }
 }
 

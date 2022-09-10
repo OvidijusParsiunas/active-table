@@ -7,14 +7,9 @@ import {InsertNewColumn} from './insertNewColumn';
 export class InsertNewDataRow {
   // prettier-ignore
   private static addCells(etc: EditableTableComponent,
-      newRowData: TableRow, newRowElement: HTMLElement, contentsRowIndex: number) {
-    const isHeaderRow = contentsRowIndex === 0;
+      newRowData: TableRow, newRowElement: HTMLElement, rowIndex: number) {
     newRowData.forEach((cellText: TableCellText, columnIndex: number) => {
-      if (isHeaderRow) {
-        InsertNewColumn.insertToHeaderRow(etc, columnIndex, cellText as string);
-      } else {
-        InsertNewColumn.insertToRow(etc, newRowElement, contentsRowIndex, columnIndex, cellText as string);
-      }
+      InsertNewColumn.insertToRow(etc, newRowElement, rowIndex, columnIndex, cellText as string);
     });
   }
 
@@ -23,22 +18,22 @@ export class InsertNewDataRow {
     return new Array(numberOfColumns).fill(etc.defaultCellValue);
   }
 
-  private static insertNewRow(etc: EditableTableComponent, contentsRowIndex: number, rowData?: TableRow) {
+  private static insertNewRow(etc: EditableTableComponent, rowIndex: number, rowData?: TableRow) {
     const newRowData = rowData || InsertNewDataRow.createNewRowData(etc);
     const newRowElement = RowElement.create();
-    const parentElement = (contentsRowIndex === 0 ? etc.headerElementRef : etc.dataElementRef) as HTMLElement;
-    parentElement.insertBefore(newRowElement, parentElement.children[contentsRowIndex - 1]);
-    InsertNewDataRow.addCells(etc, newRowData, newRowElement, contentsRowIndex);
+    InsertNewDataRow.addCells(etc, newRowData, newRowElement, rowIndex);
+    etc.tableBodyElementRef?.insertBefore(newRowElement, etc.tableBodyElementRef.children[rowIndex]);
     // assuming that if rowData is provided, it is already in contents
-    if (rowData === undefined) etc.contents.splice(contentsRowIndex, 0, newRowData);
+    // WORK - potentially make this asynchronous
+    if (rowData === undefined) etc.contents.splice(rowIndex, 0, newRowData);
   }
 
-  public static insert(etc: EditableTableComponent, contentsRowIndex: number, rowData?: TableRow) {
-    InsertNewDataRow.insertNewRow(etc, contentsRowIndex, rowData);
+  public static insert(etc: EditableTableComponent, rowIndex: number, rowData?: TableRow) {
+    InsertNewDataRow.insertNewRow(etc, rowIndex, rowData);
     setTimeout(() => etc.onTableUpdate(etc.contents));
   }
 
-  public static insertEvent(this: EditableTableComponent, contentsRowIndex: number) {
-    InsertNewDataRow.insert(this, contentsRowIndex);
+  public static insertEvent(this: EditableTableComponent, rowIndex: number) {
+    InsertNewDataRow.insert(this, rowIndex);
   }
 }

@@ -17,9 +17,8 @@
   <body>
     <editable-table-component
       id="etc-element"
-      defaultValue="-"
+      defaultCellValue="-"
       duplicateHeadersAllowed="false"
-      onCellUpdate="() => console.log('aa')"
     ></editable-table-component>
     <script>
       const myValue = [
@@ -28,11 +27,13 @@
       ];
       const element = document.getElementById('etc-element');
       const aa = (content, row, column, type) => {
-        console.log(content, row, column, type);
+        // console.log(content, row, column, type);
       };
       setTimeout(() => {
-        // element.setAttribute('contents', `[[${myValue[0]}],[${myValue[1]}]]`);
-        element.setAttribute('onCellUpdate', aa);
+        if (element) {
+          // element.setAttribute('contents', `[[${myValue[0]}],[${myValue[1]}]]`);
+          element.setAttribute('onCellUpdate', aa);
+        }
       }, 100);
     </script>
   </body>

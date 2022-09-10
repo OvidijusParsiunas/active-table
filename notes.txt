@@ -3,6 +3,8 @@ update homepage property in package
 detect React:
 !!Object.keys(document).find(key => key.includes('react'))
 
+when tabbing across cells, need the cursor to automatically point towards the end of the text
+
 KNOWLEDGE:
 
 REF-1:

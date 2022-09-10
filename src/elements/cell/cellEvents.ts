@@ -45,7 +45,7 @@ export class CellEvents {
       if (rowIndex === 0) {
         // reason why using currentlyVisibleElements property instead of getting the column sizers via the columnIndex
         // is because the user could have hovered over another header cell other than the one that is being typed in
-        CellEvents.updateVisibleColumnSizerHeight(this.overlayElements.columnSizers.currentlyVisibleElements, target);
+        CellEvents.updateVisibleColumnSizerHeight(this.overlayElementsState.columnSizers.currentlyVisibleElements, target);
       }
     }
   }
@@ -82,10 +82,10 @@ export class CellEvents {
   }
 
   public static mouseEnterCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
-    if (rowIndex === 0) ColumnSizerEvents.cellMouseEnter(this.overlayElements.columnSizers, columnIndex, event);
+    if (rowIndex === 0) ColumnSizerEvents.cellMouseEnter(this.overlayElementsState.columnSizers, columnIndex, event);
   }
 
   public static mouseLeaveCell(this: EditableTableComponent, rowIndex: number, columnIndex: number) {
-    if (rowIndex === 0) ColumnSizerEvents.cellMouseLeave(this.overlayElements.columnSizers, columnIndex);
+    if (rowIndex === 0) ColumnSizerEvents.cellMouseLeave(this.overlayElementsState.columnSizers, columnIndex);
   }
 }

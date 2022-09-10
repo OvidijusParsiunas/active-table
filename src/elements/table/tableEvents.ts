@@ -11,7 +11,7 @@ export class TableEvents {
 
   // prettier-ignore
   public static onMouseUp(this: EditableTableComponent, event: MouseEvent) {
-    const { tableElementEventState: { selectedColumnSizer }, overlayElements: { columnSizers } } = this;
+    const { tableElementEventState: { selectedColumnSizer }, overlayElementsState: { columnSizers } } = this;
     if (selectedColumnSizer) {
       ColumnSizerEvents.tableOnMouseUp(selectedColumnSizer, columnSizers.list, event.target as HTMLElement);
       delete this.tableElementEventState.selectedColumnSizer;
@@ -20,7 +20,7 @@ export class TableEvents {
 
   // prettier-ignore
   public static onMouseMove(this: EditableTableComponent, event: MouseEvent) {
-    const { tableElementEventState: { selectedColumnSizer }, overlayElements: { columnSizers }, columnsDetails } = this;
+    const { tableElementEventState: { selectedColumnSizer }, overlayElementsState: {columnSizers}, columnsDetails } = this;
     if (selectedColumnSizer) {
       ColumnSizerEvents.tableOnMouseMove(selectedColumnSizer, columnSizers.list, columnsDetails, event.movementX);
     }

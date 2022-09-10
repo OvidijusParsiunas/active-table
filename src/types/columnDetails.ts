@@ -1,5 +1,4 @@
 export interface ColumnDetails {
-  width: string;
   elements: HTMLElement[];
 }
 
