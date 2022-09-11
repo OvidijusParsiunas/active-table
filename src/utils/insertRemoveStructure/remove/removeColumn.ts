@@ -10,23 +10,21 @@ export class RemoveColumn {
     overlayElementsParent.removeChild(overlayElementsParent.children[overlayElementsParent.children.length - 1]);
   }
 
-  // prettier-ignore
-  private static removeCell(etc: EditableTableComponent,
-      rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
+  private static removeCell(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
     const lastCellElement = rowElement.children[rowElement.children.length - 1] as HTMLElement;
-    const lastColumn: ElementDetails = { element: lastCellElement, index: rowElement.children.length - 1 };
+    const lastColumn: ElementDetails = {element: lastCellElement, index: rowElement.children.length - 1};
     rowElement.removeChild(rowElement.children[columnIndex]);
     etc.contents[rowIndex].splice(columnIndex, 1);
-    setTimeout(() =>{
-      const rowDetails: ElementDetails = { element: rowElement, index: rowIndex };
-      UpdateColumns.update(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.REMOVED, lastColumn)
+    setTimeout(() => {
+      const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};
+      UpdateColumns.update(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.REMOVED, lastColumn);
     });
   }
 
   // prettier-ignore
-  private static removeCellFromDataRow(etc: EditableTableComponent, columnIndex: number) {
-    Array.from(etc.tableBodyElementRef?.children || []).slice(1).forEach((dataRowElement: Node, rowIndex: number) => {
-      RemoveColumn.removeCell(etc, dataRowElement as HTMLElement, rowIndex + 1, columnIndex);
+  private static removeCellFromRow(etc: EditableTableComponent, columnIndex: number) {
+    Array.from(etc.tableBodyElementRef?.children || []).slice(1).forEach((rowElement: Node, rowIndex: number) => {
+      RemoveColumn.removeCell(etc, rowElement as HTMLElement, rowIndex + 1, columnIndex);
     });
   }
 
@@ -42,7 +40,7 @@ export class RemoveColumn {
 
   public static remove(etc: EditableTableComponent, columnIndex: number) {
     RemoveColumn.removeCellFromHeaderRow(etc, columnIndex);
-    RemoveColumn.removeCellFromDataRow(etc, columnIndex);
+    RemoveColumn.removeCellFromRow(etc, columnIndex);
     etc.onTableUpdate(etc.contents);
   }
 }
