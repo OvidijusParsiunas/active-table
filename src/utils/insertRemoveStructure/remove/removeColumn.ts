@@ -21,14 +21,13 @@ export class RemoveColumn {
     });
   }
 
-  // prettier-ignore
   private static removeCellFromRow(etc: EditableTableComponent, columnIndex: number) {
-    Array.from(etc.tableBodyElementRef?.children || []).slice(1).forEach((rowElement: Node, rowIndex: number) => {
+    const rowElements = Array.from(etc.tableBodyElementRef?.children || []);
+    rowElements.slice(1, etc.contents.length).forEach((rowElement: Node, rowIndex: number) => {
       RemoveColumn.removeCell(etc, rowElement as HTMLElement, rowIndex + 1, columnIndex);
     });
   }
 
-  // prettier-ignore
   private static removeCellFromHeaderRow(etc: EditableTableComponent, columnIndex: number) {
     const headerRow = etc.tableBodyElementRef?.children[0];
     RemoveColumn.removeCell(etc, headerRow as HTMLElement, 0, columnIndex);
@@ -36,11 +35,12 @@ export class RemoveColumn {
       etc.overlayElementsState.columnSizers.list,
       etc.overlayElementsParentRef as HTMLElement
     );
+    etc.columnsDetails.splice(columnIndex, 1);
   }
 
   public static remove(etc: EditableTableComponent, columnIndex: number) {
     RemoveColumn.removeCellFromHeaderRow(etc, columnIndex);
     RemoveColumn.removeCellFromRow(etc, columnIndex);
-    etc.onTableUpdate(etc.contents);
+    setTimeout(() => etc.onTableUpdate(etc.contents));
   }
 }
