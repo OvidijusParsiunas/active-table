@@ -8,6 +8,7 @@ import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {OverlayElements} from './types/overlayElements';
 import {ColumnsDetails} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
+import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
 
 // spellcheck can be enabled or disabled by the user - enabled by default
@@ -68,6 +69,12 @@ export class EditableTableComponent extends LitElement {
 
   @state()
   overlayElementsState: OverlayElements = OverlayElementsState.createNew();
+
+  @property({type: Object})
+  customTableStyle: CSSStyle = {};
+
+  @property({type: Object})
+  customCellStyle: CSSStyle = {};
 
   override render() {
     this.refreshState();

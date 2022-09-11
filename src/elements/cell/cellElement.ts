@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../editable-table-component';
+import {CSSStyle} from '../../types/cssStyle';
 import {CellEvents} from './cellEvents';
 
 export class CellElement {
@@ -15,14 +16,15 @@ export class CellElement {
     cellElement.onmouseleave = CellEvents.mouseLeaveCell.bind(etc, newRowIndex, columnIndex);
   }
 
-  public static create(isHeader = false) {
+  public static create(customCellStyle: CSSStyle, isHeader = false) {
     const cellElement = document.createElement(isHeader ? 'th' : 'td');
     cellElement.classList.add('cell');
+    Object.assign(cellElement.style, customCellStyle);
     return cellElement;
   }
 
   private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
-    const cellElement = CellElement.create(isHeader);
+    const cellElement = CellElement.create(etc.customCellStyle, isHeader);
     cellElement.contentEditable = String(isHeader ? !!etc.areHeadersEditable : true);
     cellElement.textContent = cellText as string;
     if (isHeader) cellElement.style.width = CellElement.DEFAULT_COLUMN_WIDTH;

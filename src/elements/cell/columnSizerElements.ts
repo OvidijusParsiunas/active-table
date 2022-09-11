@@ -71,7 +71,6 @@ export class ColumnSizerElements {
   public static hideAfterBlurAnimation(columnSizerElement: HTMLElement) {
     setTimeout(() => {
       ColumnSizerElements.hide(columnSizerElement);
-      // TO-DO - check if HALF_TRANSITION_TIME_ML or TRANSITION_TIME_ML timeout is the better one
     }, ColumnSizerElements.HALF_TRANSITION_TIME_ML);
   }
 

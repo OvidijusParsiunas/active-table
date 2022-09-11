@@ -19,6 +19,7 @@ export class TableElement {
 
   private static createTableElement(etc: EditableTableComponent) {
     const tableElement = document.createElement('table');
+    Object.assign(tableElement.style, etc.customTableStyle);
     tableElement.onmousedown = TableEvents.onMouseDown.bind(etc);
     tableElement.onmouseup = TableEvents.onMouseUp.bind(etc);
     tableElement.onmousemove = TableEvents.onMouseMove.bind(etc);

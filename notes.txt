@@ -4,3 +4,16 @@ detect React:
 !!Object.keys(document).find(key => key.includes('react'))
 
 when tabbing across cells, need the cursor to automatically point towards the end of the text
+
+add the following eslint and prettier rule:
+"@typescript-eslint/prefer-readonly": "error",
+This will require parserServives it work
+
+STRATEGY:
+
+REF-1
+customCellStyle will only override the borders of inner table structure and not the outside of the table
+These have been overriden in the css using !import
+The reason for this is because the use of custom border left or border right styles would leave one of the side borders uncovered and the use of both would
+result in thick middle borders
+For the table borders to be set, use customTableStyle

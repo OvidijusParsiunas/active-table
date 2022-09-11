@@ -4,17 +4,28 @@ export const ediTableStyle = css`
   table {
     border-spacing: 0px;
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   }
 
-  .row > *:first-child {
-    padding-left: 16px;
-  }
-
-  /* header cells */
-  tbody > .row:first-child > .cell {
+  /* REF-1 */
+  tbody > *:first-child > th {
+    border-top: none !important;
     color: rgba(0, 0, 0, 0.87);
     font-size: 12px;
     font-weight: 500;
+  }
+
+  .row > *:first-child {
+    border-left: none !important;
+    padding-left: 16px;
+  }
+
+  .row > *:last-child {
+    border-right: none !important;
+  }
+
+  tbody > tr:last-of-type > .cell {
+    border-bottom: none !important;
   }
 
   .cell {
