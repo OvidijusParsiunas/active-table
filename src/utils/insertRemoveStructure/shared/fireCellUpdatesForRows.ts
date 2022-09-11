@@ -3,7 +3,7 @@ import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ElementDetails} from '../../../types/elementDetails';
 
-export class UpdateRows {
+export class FireCellUpdatesForRows {
   // prettier-ignore
   private static updateRowCells(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
@@ -17,17 +17,19 @@ export class UpdateRows {
 
   private static updateLastRow(etc: EditableTableComponent, cellUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {
     if (etc.tableBodyElementRef?.children) {
-      UpdateRows.updateRowCells(etc, lastRow.element, lastRow.index, cellUpdateType);
+      FireCellUpdatesForRows.updateRowCells(etc, lastRow.element, lastRow.index, cellUpdateType);
     }
   }
 
+  // prettier-ignore
   private static updateLowerBeforeLastRows(etc: EditableTableComponent, startRowIndex: number, lastRowIndex: number) {
     const tableBodyChildren = etc.tableBodyElementRef?.children;
     if (tableBodyChildren) {
       const lowerRows = Array.from(tableBodyChildren).slice(startRowIndex, lastRowIndex);
       lowerRows.forEach((rowElement: Node, lowerRowIndex: number) => {
         const relativeContentsRowIndex = lowerRowIndex + startRowIndex;
-        UpdateRows.updateRowCells(etc, rowElement as HTMLElement, relativeContentsRowIndex, CELL_UPDATE_TYPE.UPDATE);
+        FireCellUpdatesForRows.updateRowCells(
+          etc, rowElement as HTMLElement, relativeContentsRowIndex, CELL_UPDATE_TYPE.UPDATE);
       });
     }
   }
@@ -38,7 +40,7 @@ export class UpdateRows {
   // prettier-ignore
   public static update(
       etc: EditableTableComponent, startRowIndex: number, lastRowUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {
-    UpdateRows.updateLowerBeforeLastRows(etc, startRowIndex, lastRow.index)
-    UpdateRows.updateLastRow(etc, lastRowUpdateType, lastRow);
+    FireCellUpdatesForRows.updateLowerBeforeLastRows(etc, startRowIndex, lastRow.index)
+    FireCellUpdatesForRows.updateLastRow(etc, lastRowUpdateType, lastRow);
   }
 }

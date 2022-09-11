@@ -1,9 +1,9 @@
 import {EditableTableComponent} from '../../../editable-table-component';
+import {FireCellUpdatesForRows} from '../shared/fireCellUpdatesForRows';
 import {TableCellText, TableRow} from '../../../types/tableContents';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ElementDetails} from '../../../types/elementDetails';
 import {RowElement} from '../../../elements/row/rowElement';
-import {UpdateRows} from '../shared/updateRows';
 import {InsertNewCell} from './insertNewCell';
 
 export class InsertNewRow {
@@ -11,7 +11,7 @@ export class InsertNewRow {
     const lastRowIndex = etc.contents.length - 1;
     const lastDataRowElement = etc.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const lastRowDetails: ElementDetails = {element: lastDataRowElement, index: lastRowIndex};
-    UpdateRows.update(etc, rowIndex, CELL_UPDATE_TYPE.ADD, lastRowDetails);
+    FireCellUpdatesForRows.update(etc, rowIndex, CELL_UPDATE_TYPE.ADD, lastRowDetails);
     etc.onTableUpdate(etc.contents);
   }
 

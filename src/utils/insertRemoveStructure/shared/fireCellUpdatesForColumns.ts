@@ -3,7 +3,7 @@ import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ElementDetails} from '../../../types/elementDetails';
 
-export class UpdateColumns {
+export class FireCellUpdatesForColumns {
   // prettier-ignore
   private static updateLastColumn(etc: EditableTableComponent,
     rowIndex: number, cellElement: Node, columnIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
@@ -19,7 +19,7 @@ export class UpdateColumns {
     const nextColumns = Array.from(row.element.children).slice(startColumnIndex, lastColumnIndex);
     nextColumns.forEach((cellElement: Node, columnIndex: number) => {
       const relativeColumnIndex = columnIndex + startColumnIndex;
-      UpdateColumns.updateLastColumn(etc, row.index, cellElement, relativeColumnIndex, CELL_UPDATE_TYPE.UPDATE)
+      FireCellUpdatesForColumns.updateLastColumn(etc, row.index, cellElement, relativeColumnIndex, CELL_UPDATE_TYPE.UPDATE)
     });
   }
 
@@ -29,7 +29,7 @@ export class UpdateColumns {
   // prettier-ignore
   public static update(etc: EditableTableComponent, 
       row: ElementDetails, startingColumnIndex: number, cellUpdateType: CELL_UPDATE_TYPE, lastColumn: ElementDetails) {
-    UpdateColumns.updateNextBeforeLastColumns(etc, row, startingColumnIndex, lastColumn.index);
-    UpdateColumns.updateLastColumn(etc, row.index, lastColumn.element, lastColumn.index, cellUpdateType);
+    FireCellUpdatesForColumns.updateNextBeforeLastColumns(etc, row, startingColumnIndex, lastColumn.index);
+    FireCellUpdatesForColumns.updateLastColumn(etc, row.index, lastColumn.element, lastColumn.index, cellUpdateType);
   }
 }

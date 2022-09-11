@@ -1,8 +1,8 @@
+import {FireCellUpdatesForColumns} from '../shared/fireCellUpdatesForColumns';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ColumnSizerList} from '../../../types/overlayElements';
 import {ElementDetails} from '../../../types/elementDetails';
-import {UpdateColumns} from '../shared/updateColumns';
 
 export class RemoveColumn {
   private static removeColumnSizer(columnSizers: ColumnSizerList, overlayElementsParent: HTMLElement) {
@@ -17,7 +17,7 @@ export class RemoveColumn {
     etc.contents[rowIndex].splice(columnIndex, 1);
     setTimeout(() => {
       const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};
-      UpdateColumns.update(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.REMOVED, lastColumn);
+      FireCellUpdatesForColumns.update(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.REMOVED, lastColumn);
     });
   }
 

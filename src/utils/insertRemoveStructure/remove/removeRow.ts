@@ -1,6 +1,6 @@
 import {EditableTableComponent} from '../../../editable-table-component';
+import {FireCellUpdatesForRows} from '../shared/fireCellUpdatesForRows';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
-import {UpdateRows} from '../shared/updateRows';
 
 export class RemoveRow {
   private static removeRow(etc: EditableTableComponent, rowIndex: number) {
@@ -14,7 +14,7 @@ export class RemoveRow {
     RemoveRow.removeRow(etc, rowIndex);
     setTimeout(() => {
       const lastRow = {element: lastRowElement, index: lastRowIndex};
-      UpdateRows.update(etc, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow);
+      FireCellUpdatesForRows.update(etc, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow);
       etc.onTableUpdate(etc.contents);
     });
   }
