@@ -8,7 +8,7 @@ export class AddNewRowElement {
   private static readonly DEFAULT_COL_SPAN = 1_000_000_000;
 
   private static createCell(customCellStyle: CSSStyle) {
-    const addNewRowCell = CellElement.create(customCellStyle);
+    const addNewRowCell = CellElement.create(customCellStyle, {});
     addNewRowCell.classList.add('add-new-row-cell');
     addNewRowCell.textContent = '+ New';
     // set to high number to always merge cells in this row

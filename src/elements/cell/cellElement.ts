@@ -16,15 +16,15 @@ export class CellElement {
     cellElement.onmouseleave = CellEvents.mouseLeaveCell.bind(etc, newRowIndex, columnIndex);
   }
 
-  public static create(customCellStyle: CSSStyle, isHeader = false) {
+  public static create(customCellStyle: CSSStyle, customHeaderStyle: CSSStyle, isHeader = false) {
     const cellElement = document.createElement(isHeader ? 'th' : 'td');
     cellElement.classList.add('cell');
-    Object.assign(cellElement.style, customCellStyle);
+    Object.assign(cellElement.style, customCellStyle, isHeader ? customHeaderStyle : {});
     return cellElement;
   }
 
   private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
-    const cellElement = CellElement.create(etc.customCellStyle, isHeader);
+    const cellElement = CellElement.create(etc.customCellStyle, etc.customHeaderStyle, isHeader);
     cellElement.contentEditable = String(isHeader ? !!etc.areHeadersEditable : true);
     cellElement.textContent = cellText as string;
     if (isHeader) cellElement.style.width = CellElement.DEFAULT_COLUMN_WIDTH;

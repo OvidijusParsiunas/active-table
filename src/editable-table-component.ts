@@ -74,6 +74,9 @@ export class EditableTableComponent extends LitElement {
   customTableStyle: CSSStyle = {};
 
   @property({type: Object})
+  customHeaderStyle: CSSStyle = {};
+
+  @property({type: Object})
   customCellStyle: CSSStyle = {};
 
   override render() {
