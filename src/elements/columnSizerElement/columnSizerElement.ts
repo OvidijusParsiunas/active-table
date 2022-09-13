@@ -75,7 +75,7 @@ export class ColumnSizerElement {
   private static createNewColumnSizerState(columnSizerElement: HTMLElement, isOnCellBorder: boolean): ColumnSizerState {
     return {
       element: columnSizerElement,
-      isMouseHovered: false,
+      isSizerHovered: false,
       isParentCellHovered: false,
       backgroundImage: isOnCellBorder ? '' : ColumnSizerElement.DEFAULT_BACKGROUND_IMAGE,
     };

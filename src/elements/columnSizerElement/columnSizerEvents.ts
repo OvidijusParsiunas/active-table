@@ -26,7 +26,7 @@ export class ColumnSizerEvents {
     const isHovered = ColumnSizerElement.isHovered(columnSizer.element);
     setTimeout(() => {
       // check if mouse has not left the cell for the column sizer
-      if (!columnSizer.isMouseHovered) {
+      if (!columnSizer.isSizerHovered) {
         ColumnSizerEvents.hideWhenCellNotHovered(columnSizer, isHovered);
         columnSizers.currentlyVisibleElements.delete(columnSizer.element);
       }
@@ -106,18 +106,18 @@ export class ColumnSizerEvents {
   }
 
   public static sizerOnMouseEnter(this: EditableTableComponent, columnSizerState: ColumnSizerState) {
-    columnSizerState.isMouseHovered = true;
+    columnSizerState.isSizerHovered = true;
     // if selected and hovered over another
     if (this.tableElementEventState.selectedColumnSizer) return;
     ColumnSizerElement.setHoverProperties(columnSizerState.element);
     // only remove the background image if the user is definitely hovering over it
     setTimeout(() => {
-      if (columnSizerState.isMouseHovered) ColumnSizerElement.unsetBackgroundImage(columnSizerState.element);
+      if (columnSizerState.isSizerHovered) ColumnSizerElement.unsetBackgroundImage(columnSizerState.element);
     }, ColumnSizerEvents.MOUSE_PASSTHROUGH_TIME_ML);
   }
 
   public static sizerOnMouseLeave(this: EditableTableComponent, columnSizer: ColumnSizerState) {
-    columnSizer.isMouseHovered = false;
+    columnSizer.isSizerHovered = false;
     // mouse leave can occur when mouse is moving and column sizer is selected, hence this prevents setting to default
     if (!this.tableElementEventState.selectedColumnSizer) {
       ColumnSizerElement.setDefaultProperties(columnSizer.element);
@@ -129,7 +129,7 @@ export class ColumnSizerEvents {
     const wasHovered = ColumnSizerElement.isHovered(columnSizer.element);
     // only reset if the user is definitely not hovering over it
     setTimeout(() => {
-      if (!this.tableElementEventState.selectedColumnSizer && !columnSizer.isMouseHovered) {
+      if (!this.tableElementEventState.selectedColumnSizer && !columnSizer.isSizerHovered) {
         ColumnSizerElement.setPropertiesAfterBlurAnimation(columnSizer.element, columnSizer.backgroundImage);
         ColumnSizerEvents.hideWhenCellNotHovered(columnSizer, wasHovered);
       }
