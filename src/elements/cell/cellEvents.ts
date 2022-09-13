@@ -1,9 +1,9 @@
 import {UpdateCellsViaCSVOnPaste} from '../../utils/pasteCSV/updateCellsViaCSVOnPaste';
 import {NumberOfIdenticalCells} from '../../utils/numberOfIdenticalCells';
+import {ColumnSizerEvents} from '../columnSizerElement/columnSizerEvents';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
 import {ColumnSizers} from '../../types/overlayElements';
-import {ColumnSizerEvents} from './columnSizerEvents';
 
 export class CellEvents {
   private static readonly EMPTY_STRING = '';

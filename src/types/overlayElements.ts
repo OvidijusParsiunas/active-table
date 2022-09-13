@@ -2,6 +2,7 @@ export interface ColumnSizerState {
   element: HTMLElement;
   isParentCellHovered: boolean;
   isMouseHovered: boolean;
+  backgroundImage: string;
 }
 
 export type ColumnSizerList = ColumnSizerState[];

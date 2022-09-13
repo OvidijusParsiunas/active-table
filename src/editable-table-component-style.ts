@@ -61,11 +61,13 @@ export const ediTableStyle = css`
   }
 
   .column-width-sizer {
-    border-left: 1px solid white;
-    border-right: 1px solid white;
+    border-left: 1px solid;
+    border-right: 1px solid;
     background-size: 20px 5px;
     position: absolute;
     user-select: none;
     cursor: col-resize;
+    display: flex;
+    justify-content: center;
   }
 `;

@@ -1,10 +1,10 @@
+import {ColumnSizerElement} from '../columnSizerElement/columnSizerElement';
+import {ColumnSizerEvents} from '../columnSizerElement/columnSizerEvents';
 import {EditableTableComponent} from '../../editable-table-component';
-import {ColumnSizerElements} from '../cell/columnSizerElements';
-import {ColumnSizerEvents} from '../cell/columnSizerEvents';
 
 export class TableEvents {
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
-    if ((event.target as HTMLElement).classList.contains(ColumnSizerElements.COLUMN_WIDTH_SIZER_CLASS)) {
+    if ((event.target as HTMLElement).classList.contains(ColumnSizerElement.COLUMN_WIDTH_SIZER_CLASS)) {
       this.tableElementEventState.selectedColumnSizer = event.target as HTMLElement;
     }
   }
@@ -26,9 +26,11 @@ export class TableEvents {
     }
   }
 
+  // prettier-ignore
   public static onMouseLeave(this: EditableTableComponent) {
-    if (this.tableElementEventState.selectedColumnSizer) {
-      ColumnSizerEvents.tableOnMouseLeave(this.tableElementEventState.selectedColumnSizer);
+    const { tableElementEventState: { selectedColumnSizer }, overlayElementsState: {columnSizers} } = this;
+    if (selectedColumnSizer) {
+      ColumnSizerEvents.tableOnMouseLeave(selectedColumnSizer, columnSizers.list);
       delete this.tableElementEventState.selectedColumnSizer;
     }
   }

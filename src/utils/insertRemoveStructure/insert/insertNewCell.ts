@@ -1,4 +1,4 @@
-import {ColumnSizerElements} from '../../../elements/cell/columnSizerElements';
+import {ColumnSizerElement} from '../../../elements/columnSizerElement/columnSizerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ColumnDetails} from '../../../types/columnDetails';
@@ -14,7 +14,7 @@ export class InsertNewCell {
     if (rowIndex === 0) {
       // cannot be in a timeout as createAndAddNew needs it
       etc.columnsDetails.splice(columnIndex, 0, InsertNewCell.createDefaultColumnDetailsObject(cellElement));
-      ColumnSizerElements.createAndAddNew(etc);
+      ColumnSizerElement.createAndAddNew(etc);
     } else {
       // TO-DO - not sure if all cell elements are needed, if this is not required in the future do not this code
       setTimeout(() => etc.columnsDetails[columnIndex].elements.push(cellElement));
