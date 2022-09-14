@@ -38,25 +38,19 @@ export class ColumnSizerEvents {
     ColumnSizerEvents.hideColumnSizer(columnSizers, columnIndex);
   }
 
-  // prettier-ignore
-  private static displayColumnSizer(
-      columnSizers: ColumnSizers, columnIndex: number, height: string, top: string, left: string) {
+  private static displayColumnSizer(columnSizers: ColumnSizers, columnIndex: number, height: string) {
     const columnSizer = columnSizers.list[columnIndex];
     if (!columnSizer) return;
-    ColumnSizerElement.display(columnSizer.element, height, top, left);
+    ColumnSizerElement.display(columnSizer.element, height);
     columnSizer.isParentCellHovered = true;
     columnSizers.currentlyVisibleElements.add(columnSizer.element);
   }
 
   public static cellMouseEnter(columnSizers: ColumnSizers, columnIndex: number, event: MouseEvent) {
     const headerCellElement = event.target as HTMLElement;
-    const cellRect = headerCellElement.getBoundingClientRect();
     const height = `${headerCellElement.offsetHeight}px`;
-    const top = `${cellRect.top}px`;
-    const columnLeftSizerLeft = `${cellRect.left - 1}px`;
-    ColumnSizerEvents.displayColumnSizer(columnSizers, columnIndex - 1, height, top, columnLeftSizerLeft);
-    const columnRightSizerLeft = `${cellRect.left + cellRect.width - 1}px`;
-    ColumnSizerEvents.displayColumnSizer(columnSizers, columnIndex, height, top, columnRightSizerLeft);
+    ColumnSizerEvents.displayColumnSizer(columnSizers, columnIndex - 1, height);
+    ColumnSizerEvents.displayColumnSizer(columnSizers, columnIndex, height);
   }
 
   private static setNewColumnWidth(columnElement: HTMLElement, colWidth: number, newXMovement: number) {
@@ -77,9 +71,8 @@ export class ColumnSizerEvents {
     const { columnSizer, sizerNumber } = ColumnSizerEvents.getColumnSizerDetailsViaId(selectedColumnSizer.id, columnSizers)
     ColumnSizerElement.unsetTransitionTime(columnSizer.element);
     const columnElement = columnsDetails[sizerNumber].elements[0];
-    const {left, width, height} = columnElement.getBoundingClientRect();
+    const {width, height} = columnElement.getBoundingClientRect();
     ColumnSizerEvents.setNewColumnWidth(columnElement, width, newXMovement);
-    ColumnSizerElement.setLeftProp(selectedColumnSizer, left, width, newXMovement);
     // if the header cell size increases or decreases as the width is changed
     // the reason why it is set in a timeout is in order to try to minimize the upfront operations for performance
     setTimeout(() => selectedColumnSizer.style.height = `${height}px`);
@@ -105,14 +98,14 @@ export class ColumnSizerEvents {
     ColumnSizerElement.setPropertiesAfterBlurAnimation(selectedColumnSizer, columnSizer.backgroundImage);
   }
 
-  public static sizerOnMouseEnter(this: EditableTableComponent, columnSizerState: ColumnSizerState) {
-    columnSizerState.isSizerHovered = true;
+  public static sizerOnMouseEnter(this: EditableTableComponent, columnSizer: ColumnSizerState) {
+    columnSizer.isSizerHovered = true;
     // if selected and hovered over another
     if (this.tableElementEventState.selectedColumnSizer) return;
-    ColumnSizerElement.setHoverProperties(columnSizerState.element);
+    ColumnSizerElement.setHoverProperties(columnSizer.element, columnSizer.hoverWidth);
     // only remove the background image if the user is definitely hovering over it
     setTimeout(() => {
-      if (columnSizerState.isSizerHovered) ColumnSizerElement.unsetBackgroundImage(columnSizerState.element);
+      if (columnSizer.isSizerHovered) ColumnSizerElement.unsetBackgroundImage(columnSizer.element);
     }, ColumnSizerEvents.MOUSE_PASSTHROUGH_TIME_ML);
   }
 

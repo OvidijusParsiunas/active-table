@@ -4,7 +4,7 @@ import {EditableTableComponent} from '../../editable-table-component';
 
 export class TableEvents {
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
-    if ((event.target as HTMLElement).classList.contains(ColumnSizerElement.COLUMN_WIDTH_SIZER_CLASS)) {
+    if ((event.target as HTMLElement).classList.contains(ColumnSizerElement.COLUMN_SIZER_CLASS)) {
       this.tableElementEventState.selectedColumnSizer = event.target as HTMLElement;
     }
   }

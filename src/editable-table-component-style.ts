@@ -20,7 +20,7 @@ export const ediTableStyle = css`
     padding-left: 16px;
   }
 
-  .row > *:last-child {
+  .row > .cell:last-of-type {
     border-right: none !important;
   }
 
@@ -46,6 +46,24 @@ export const ediTableStyle = css`
     text-align: left;
   }
 
+  .column-sizer {
+    border-left: 1px solid;
+    border-right: 1px solid;
+    background-size: 20px 5px;
+    position: absolute;
+    user-select: none;
+    cursor: col-resize;
+    display: flex;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .cell-divider {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+  }
+
   .add-new-row-row:hover {
     background-color: #f4f4f4;
     cursor: pointer;
@@ -58,16 +76,5 @@ export const ediTableStyle = css`
     font-size: 12px;
     color: #555555;
     vertical-align: middle;
-  }
-
-  .column-width-sizer {
-    border-left: 1px solid;
-    border-right: 1px solid;
-    background-size: 20px 5px;
-    position: absolute;
-    user-select: none;
-    cursor: col-resize;
-    display: flex;
-    justify-content: center;
   }
 `;

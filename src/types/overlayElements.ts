@@ -3,6 +3,7 @@ export interface ColumnSizerState {
   isParentCellHovered: boolean;
   isSizerHovered: boolean;
   backgroundImage: string;
+  hoverWidth: string;
 }
 
 export type ColumnSizerList = ColumnSizerState[];

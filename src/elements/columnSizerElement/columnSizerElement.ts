@@ -11,8 +11,8 @@ export class ColumnSizerElement {
     'linear-gradient(180deg, #cdcdcd, #cdcdcd 75%, transparent 75%, transparent 100%)';
   private static readonly HOVER_BACKGROUND_IMAGE = 'none';
   public static readonly HOVER_COLOR = 'grey';
-  public static readonly COLUMN_WIDTH_SIZER_CLASS = 'column-width-sizer';
-  private static readonly COLUMN_WIDTH_SIZER_ID_PREFIX = 'width-sizer-';
+  public static readonly COLUMN_SIZER_CLASS = 'column-sizer';
+  private static readonly COLUMN_SIZER_ID_PREFIX = `${ColumnSizerElement.COLUMN_SIZER_CLASS}-`;
   private static readonly TRANSITION_TIME_ML = 200;
   private static readonly TRANSITION_TIME = `${ColumnSizerElement.TRANSITION_TIME_ML / 1000}s`;
   private static readonly HALF_TRANSITION_TIME_ML = ColumnSizerElement.TRANSITION_TIME_ML / 2;
@@ -40,30 +40,30 @@ export class ColumnSizerElement {
   public static setDefaultProperties(columnSizerElement: HTMLElement) {
     // WORK - inherit width
     columnSizerElement.style.width = `0.1px`;
-    columnSizerElement.style.marginLeft = `0px`;
     ColumnSizerElement.setColors(columnSizerElement, `#ffffff08`);
     ColumnSizerElementOverlay.hide(columnSizerElement.children[0] as HTMLElement);
   }
 
   private static createElement(sizerIndex: number) {
     const columnSizerElement = document.createElement('div');
-    columnSizerElement.id = `${ColumnSizerElement.COLUMN_WIDTH_SIZER_ID_PREFIX}${sizerIndex}`;
-    columnSizerElement.classList.add(ColumnSizerElement.COLUMN_WIDTH_SIZER_CLASS);
+    columnSizerElement.id = `${ColumnSizerElement.COLUMN_SIZER_ID_PREFIX}${sizerIndex}`;
+    columnSizerElement.classList.add(ColumnSizerElement.COLUMN_SIZER_CLASS);
     const middleOverlayElement = ColumnSizerElementOverlay.create();
-    columnSizerElement.appendChild(middleOverlayElement);
+    columnSizerElement.append(middleOverlayElement);
+    ColumnSizerElement.hide(columnSizerElement);
     return columnSizerElement;
   }
 
   // prettier-ignore
-  private static refreshPreviousColumnSizerBackground(
+  public static refreshSecondLastColumnSizer(
       columnSizerList: ColumnSizerList, columnsDetails: ColumnsDetails, tableElement: HTMLElement) {
-    const previousSizerIndex = columnSizerList.length - 2;
-    const previousSizer = columnSizerList[previousSizerIndex];
-    if (previousSizer) {
-      const columnSizer = ColumnSizerElement.createStateAndApplyToElement(
-        previousSizer.element, columnsDetails, previousSizerIndex, tableElement)
-      // cannot simply overwright columnSizerList[previousSizerIndex] as it the entry is already binded to elements
-      Object.assign(columnSizerList[previousSizerIndex], columnSizer);
+    const secondLastColumnSizerIndex = columnSizerList.length - 2;
+    const columnSizer = columnSizerList[secondLastColumnSizerIndex];
+    if (columnSizer) {
+      const newColumnSizer = ColumnSizerElement.createStateAndApplyToElement(
+        columnSizer.element, columnsDetails, secondLastColumnSizerIndex, tableElement)
+      // cannot simply overwright columnSizerList[previousColumnSizerIndex] as the entry is already binded to elements
+      Object.assign(columnSizerList[secondLastColumnSizerIndex], newColumnSizer);
     }
   }
 
@@ -75,6 +75,8 @@ export class ColumnSizerElement {
   private static createNewColumnSizerState(columnSizerElement: HTMLElement, isOnCellBorder: boolean): ColumnSizerState {
     return {
       element: columnSizerElement,
+      // WORK need to look at padding to set
+      hoverWidth: '7px',
       isSizerHovered: false,
       isParentCellHovered: false,
       backgroundImage: isOnCellBorder ? '' : ColumnSizerElement.DEFAULT_BACKGROUND_IMAGE,
@@ -107,28 +109,21 @@ export class ColumnSizerElement {
   }
 
   // prettier-ignore
-  public static createAndAddNew(etc: EditableTableComponent) {
-    const { overlayElementsParentRef, overlayElementsState: { columnSizers }, columnsDetails } = etc;
+  public static create(etc: EditableTableComponent) {
+    const { overlayElementsState: { columnSizers }, columnsDetails } = etc;
     const sizerIndex = columnSizers.list.length; 
     const columnSizerElement = ColumnSizerElement.createElement(sizerIndex);
     const columnSizer = ColumnSizerElement.createStateAndApplyToElement(
       columnSizerElement, columnsDetails, sizerIndex, etc.tableBodyElementRef as HTMLElement)
-    columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);
-    columnSizerElement.onmouseleave = ColumnSizerEvents.sizerOnMouseLeave.bind(etc, columnSizer);
-    (overlayElementsParentRef as HTMLElement).appendChild(columnSizerElement);
     // WORK - this may need to be reset on removal
     columnSizers.list.push(columnSizer);
-    // WORK - need this on delete
-    // this is used to reset the state as upon adding a new header cell, the previous cell border no longer
-    // depends on the table
-    ColumnSizerElement.refreshPreviousColumnSizerBackground(
-      columnSizers.list, columnsDetails, etc.tableBodyElementRef as HTMLElement);
+    columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);
+    columnSizerElement.onmouseleave = ColumnSizerEvents.sizerOnMouseLeave.bind(etc, columnSizer);
+    return columnSizerElement;
   }
 
-  public static display(columnSizerElement: HTMLElement, height: string, top: string, left: string) {
+  public static display(columnSizerElement: HTMLElement, height: string) {
     columnSizerElement.style.height = height;
-    columnSizerElement.style.top = top;
-    columnSizerElement.style.left = left;
     columnSizerElement.style.display = 'flex';
   }
 
@@ -140,11 +135,6 @@ export class ColumnSizerElement {
     setTimeout(() => {
       ColumnSizerElement.hide(columnSizerElement);
     }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
-  }
-
-  public static setLeftProp(columnSizerElement: HTMLElement, colLeft: number, colWidth: number, newXMovement: number) {
-    const newLeft = `${colLeft + colWidth + newXMovement}px`;
-    columnSizerElement.style.left = newLeft;
   }
 
   private static setColors(columnSizerElement: HTMLElement, color: string) {
@@ -163,11 +153,10 @@ export class ColumnSizerElement {
     }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
   }
 
-  public static setHoverProperties(columnSizerElement: HTMLElement) {
+  public static setHoverProperties(columnSizerElement: HTMLElement, width: string) {
     ColumnSizerElementOverlay.display(columnSizerElement.children[0] as HTMLElement);
     ColumnSizerElement.setTransitionTime(columnSizerElement);
     ColumnSizerElement.setColors(columnSizerElement, ColumnSizerElement.HOVER_COLOR);
-    columnSizerElement.style.width = `7px`;
-    columnSizerElement.style.marginLeft = `-4px`;
+    columnSizerElement.style.width = width;
   }
 }
