@@ -22,8 +22,7 @@ export class ColumnSizerState {
         && (totalCellBorderWidth > 0 || beforeLeftCellRight > 0)) {
       return ColumnSizerElement.EMPTY_BACKGROUND_IMAGE;
     }
-  }
-  if (totalCellBorderWidth > 0) {
+  } else if (totalCellBorderWidth > 0) {
     return ColumnSizerElement.EMPTY_BACKGROUND_IMAGE;
   }
   return ColumnSizerElement.FILLED_BACKGROUND_IMAGE;

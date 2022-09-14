@@ -63,13 +63,12 @@ export class ColumnSizerElement {
   }
 
   // prettier-ignore
-  public static refreshSecondLastColumnSizer(
-      columnSizerList: ColumnSizerList, columnsDetails: ColumnsDetails, tableElement: HTMLElement) {
+  public static refreshSecondLastColumnSizer(columnSizerList: ColumnSizerList, columnsDetails: ColumnsDetails) {
     const secondLastColumnSizerIndex = columnSizerList.length - 2;
     const columnSizer = columnSizerList[secondLastColumnSizerIndex];
     if (columnSizer) {
       const newColumnSizer = ColumnSizerElement.createStateAndApplyToElement(
-        columnSizer.element, columnsDetails, secondLastColumnSizerIndex, tableElement);
+        columnSizer.element, columnsDetails, secondLastColumnSizerIndex);
       // cannot simply overwright columnSizerList[previousColumnSizerIndex] as the entry is already binded to elements
       Object.assign(columnSizerList[secondLastColumnSizerIndex], newColumnSizer);
     }
@@ -92,10 +91,11 @@ export class ColumnSizerElement {
 
   // prettier-ignore
   public static create(etc: EditableTableComponent) {
-    const { overlayElementsState: { columnSizers }, columnsDetails } = etc;
+    const { overlayElementsState: { columnSizers }, columnsDetails, tableElementRef } = etc;
     const sizerIndex = columnSizers.list.length;
     const columnSizerElement = ColumnSizerElement.createElement(sizerIndex);
-    const columnSizer = ColumnSizerElement.createStateAndApplyToElement(columnSizerElement, columnsDetails, sizerIndex)
+    const columnSizer = ColumnSizerElement.createStateAndApplyToElement(
+      columnSizerElement, columnsDetails, sizerIndex, tableElementRef as HTMLElement);
     // WORK - this may need to be reset on removal
     columnSizers.list.push(columnSizer);
     columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);

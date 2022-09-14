@@ -17,12 +17,12 @@ export class InsertNewCell {
 
   // prettier-ignore
   private static createColumnSizer(etc: EditableTableComponent, cellDividerElement: HTMLElement) {
-    const { tableBodyElementRef, overlayElementsState: { columnSizers }, columnsDetails } = etc;
+    const { overlayElementsState: { columnSizers }, columnsDetails } = etc;
     const columnSizerElement = ColumnSizerElement.create(etc);
     cellDividerElement.appendChild(columnSizerElement);
     // WORK - need this on delete to be working correctly
     // the previous cell border no longer depends on the table border
-    ColumnSizerElement.refreshSecondLastColumnSizer(columnSizers.list, columnsDetails, tableBodyElementRef as HTMLElement);
+    ColumnSizerElement.refreshSecondLastColumnSizer(columnSizers.list, columnsDetails);
   }
 
   private static createDefaultColumnDetailsObject(cellElement: HTMLElement): ColumnDetails {
