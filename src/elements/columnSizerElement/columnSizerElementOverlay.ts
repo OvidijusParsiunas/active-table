@@ -7,13 +7,10 @@ export class ColumnSizerElementOverlay {
   // as the transition time causes a blend effect
   // this is explicitly used to cover that color without a transition period
   public static create() {
-    // WORK - refactor
     const overlayElement = document.createElement('div');
-    overlayElement.style.display = 'none';
-    overlayElement.style.height = 'inherit';
-    overlayElement.style.position = 'absolute';
-    overlayElement.style.pointerEvents = 'none';
     overlayElement.style.backgroundColor = ColumnSizerElement.HOVER_COLOR;
+    overlayElement.classList.add('column-sizer-overlay');
+    overlayElement.style.display = 'none';
     return overlayElement;
   }
 

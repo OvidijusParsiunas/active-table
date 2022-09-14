@@ -46,6 +46,12 @@ export const ediTableStyle = css`
     text-align: left;
   }
 
+  .cell-divider {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+  }
+
   .column-sizer {
     border-left: 1px solid;
     border-right: 1px solid;
@@ -58,10 +64,10 @@ export const ediTableStyle = css`
     z-index: 1;
   }
 
-  .cell-divider {
+  .column-sizer-overlay {
+    height: inherit;
     position: absolute;
-    display: flex;
-    justify-content: center;
+    pointer-events: none;
   }
 
   .add-new-row-row:hover {
