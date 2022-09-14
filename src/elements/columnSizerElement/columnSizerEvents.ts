@@ -1,4 +1,4 @@
-import {ColumnSizerList, ColumnSizers, ColumnSizerState} from '../../types/overlayElements';
+import {ColumnSizerList, ColumnSizers, ColumnSizerStateT} from '../../types/overlayElements';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnsDetails} from '../../types/columnDetails';
 import {ColumnSizerElement} from './columnSizerElement';
@@ -6,8 +6,8 @@ import {ColumnSizerElement} from './columnSizerElement';
 export class ColumnSizerEvents {
   private static readonly MOUSE_PASSTHROUGH_TIME_ML = 50;
 
-  private static hideWhenCellNotHovered(columnSizer: ColumnSizerState, wasHovered: boolean) {
-    if (columnSizer.isParentCellHovered) return;
+  private static hideWhenCellNotHovered(columnSizer: ColumnSizerStateT, wasHovered: boolean) {
+    if (columnSizer.isSideCellHovered) return;
     if (wasHovered) {
       ColumnSizerElement.hideAfterBlurAnimation(columnSizer.element);
     } else {
@@ -18,7 +18,7 @@ export class ColumnSizerEvents {
   private static hideColumnSizer(columnSizers: ColumnSizers, columnIndex: number) {
     const columnSizer = columnSizers.list[columnIndex];
     if (!columnSizer) return;
-    columnSizer.isParentCellHovered = false;
+    columnSizer.isSideCellHovered = false;
     // when hovering over a column sizer and quickly move out of it through the cell and out of the cell we need to know if
     // the sizer was hovered, because columnSizer.isMouseHovered can be set to false before this is called, need another
     // way to figure out if the cell was hovered, hence the following method looks at its element style
@@ -42,7 +42,7 @@ export class ColumnSizerEvents {
     const columnSizer = columnSizers.list[columnIndex];
     if (!columnSizer) return;
     ColumnSizerElement.display(columnSizer.element, height);
-    columnSizer.isParentCellHovered = true;
+    columnSizer.isSideCellHovered = true;
     columnSizers.currentlyVisibleElements.add(columnSizer.element);
   }
 
@@ -84,8 +84,8 @@ export class ColumnSizerEvents {
     const {columnSizer} = ColumnSizerEvents.getColumnSizerDetailsViaId(selectedColumnSizer.id, columnSizers);
     // if mouse up on a different element
     if (target !== selectedColumnSizer) {
-      ColumnSizerElement.setDefaultProperties(selectedColumnSizer);
-      ColumnSizerElement.setPropertiesAfterBlurAnimation(selectedColumnSizer, columnSizer.backgroundImage);
+      ColumnSizerElement.setDefaultProperties(selectedColumnSizer, columnSizer.styles.default.width);
+      ColumnSizerElement.setPropertiesAfterBlurAnimation(selectedColumnSizer, columnSizer.styles.default.backgroundImage);
       ColumnSizerElement.hideAfterBlurAnimation(columnSizer.element);
     }
   }
@@ -94,26 +94,27 @@ export class ColumnSizerEvents {
   public static tableOnMouseLeave(selectedColumnSizer: HTMLElement, columnSizers: ColumnSizerList) {
     const {columnSizer} = ColumnSizerEvents.getColumnSizerDetailsViaId(selectedColumnSizer.id, columnSizers);
     ColumnSizerElement.setTransitionTime(selectedColumnSizer);
-    ColumnSizerElement.setDefaultProperties(selectedColumnSizer);
-    ColumnSizerElement.setPropertiesAfterBlurAnimation(selectedColumnSizer, columnSizer.backgroundImage);
+    ColumnSizerElement.setDefaultProperties(selectedColumnSizer, columnSizer.styles.default.width);
+    ColumnSizerElement.setPropertiesAfterBlurAnimation(selectedColumnSizer, columnSizer.styles.default.backgroundImage);
   }
 
-  public static sizerOnMouseEnter(this: EditableTableComponent, columnSizer: ColumnSizerState) {
+  public static sizerOnMouseEnter(this: EditableTableComponent, columnSizer: ColumnSizerStateT) {
     columnSizer.isSizerHovered = true;
     // if selected and hovered over another
     if (this.tableElementEventState.selectedColumnSizer) return;
-    ColumnSizerElement.setHoverProperties(columnSizer.element, columnSizer.hoverWidth);
+    ColumnSizerElement.setHoverProperties(columnSizer.element, columnSizer.styles.hover.width);
     // only remove the background image if the user is definitely hovering over it
     setTimeout(() => {
       if (columnSizer.isSizerHovered) ColumnSizerElement.unsetBackgroundImage(columnSizer.element);
     }, ColumnSizerEvents.MOUSE_PASSTHROUGH_TIME_ML);
   }
 
-  public static sizerOnMouseLeave(this: EditableTableComponent, columnSizer: ColumnSizerState) {
+  // prettier-ignore
+  public static sizerOnMouseLeave(this: EditableTableComponent, columnSizer: ColumnSizerStateT) {
     columnSizer.isSizerHovered = false;
     // mouse leave can occur when mouse is moving and column sizer is selected, hence this prevents setting to default
     if (!this.tableElementEventState.selectedColumnSizer) {
-      ColumnSizerElement.setDefaultProperties(columnSizer.element);
+      ColumnSizerElement.setDefaultProperties(columnSizer.element, columnSizer.styles.default.width);
     }
     // when leaving the table, the last sizer can be hovered, hence the following is used to hide it because
     // columnSizer.isMouseHovered can be set to false before this is called, need another way to figure out
@@ -123,7 +124,8 @@ export class ColumnSizerEvents {
     // only reset if the user is definitely not hovering over it
     setTimeout(() => {
       if (!this.tableElementEventState.selectedColumnSizer && !columnSizer.isSizerHovered) {
-        ColumnSizerElement.setPropertiesAfterBlurAnimation(columnSizer.element, columnSizer.backgroundImage);
+        ColumnSizerElement.setPropertiesAfterBlurAnimation(columnSizer.element,
+          columnSizer.styles.default.backgroundImage);
         ColumnSizerEvents.hideWhenCellNotHovered(columnSizer, wasHovered);
       }
     }, ColumnSizerEvents.MOUSE_PASSTHROUGH_TIME_ML);

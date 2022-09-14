@@ -64,6 +64,7 @@ export class EditableTableComponent extends LitElement {
   @state()
   tableBodyElementRef: HTMLElement | null = null;
 
+  // may not be requred
   @state()
   overlayElementsParentRef: HTMLElement | null = null;
 

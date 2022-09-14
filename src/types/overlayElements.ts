@@ -1,12 +1,25 @@
-export interface ColumnSizerState {
-  element: HTMLElement;
-  isParentCellHovered: boolean;
-  isSizerHovered: boolean;
-  backgroundImage: string;
-  hoverWidth: string;
+interface ColumnSizerStyles {
+  default: {
+    backgroundImage: string;
+    width: string;
+  };
+  hover: {
+    width: string;
+  };
+  permanent: {
+    marginLeft: string;
+  };
 }
 
-export type ColumnSizerList = ColumnSizerState[];
+// WORK - typescript regex
+export interface ColumnSizerStateT {
+  element: HTMLElement;
+  isSideCellHovered: boolean;
+  isSizerHovered: boolean;
+  styles: ColumnSizerStyles;
+}
+
+export type ColumnSizerList = ColumnSizerStateT[];
 
 export interface ColumnSizers {
   list: ColumnSizerList;

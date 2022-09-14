@@ -1,15 +1,24 @@
-import {ColumnSizerList, ColumnSizerState} from '../../types/overlayElements';
+import {ColumnSizerList, ColumnSizerStateT} from '../../types/overlayElements';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElementOverlay} from './columnSizerElementOverlay';
 import {ColumnsDetails} from '../../types/columnDetails';
 import {ColumnSizerEvents} from './columnSizerEvents';
+import {ColumnSizerState} from './columnSizerState';
+
+export interface BorderWidths {
+  leftCellRight: number;
+  rightCellLeft: number;
+  // the reason why this is needed is the last cell cannot see if left cell has border right as it is overriden
+  // hence we can find out if it is supposed to have cell right by looking at the cell before the left one
+  beforeLeftCellRight: number;
+}
 
 // the reason why there are multiple column sizers is because sometimes the user may hover over it before hovering
 // over a cell e.g from top/below
 export class ColumnSizerElement {
-  private static readonly DEFAULT_BACKGROUND_IMAGE =
+  public static readonly FILLED_BACKGROUND_IMAGE =
     'linear-gradient(180deg, #cdcdcd, #cdcdcd 75%, transparent 75%, transparent 100%)';
-  private static readonly HOVER_BACKGROUND_IMAGE = 'none';
+  public static readonly EMPTY_BACKGROUND_IMAGE = 'none';
   public static readonly HOVER_COLOR = 'grey';
   public static readonly COLUMN_SIZER_CLASS = 'column-sizer';
   private static readonly COLUMN_SIZER_ID_PREFIX = `${ColumnSizerElement.COLUMN_SIZER_CLASS}-`;
@@ -18,7 +27,7 @@ export class ColumnSizerElement {
   private static readonly HALF_TRANSITION_TIME_ML = ColumnSizerElement.TRANSITION_TIME_ML / 2;
 
   public static isHovered(columnSizerElement: HTMLElement) {
-    return columnSizerElement.style.backgroundImage === ColumnSizerElement.HOVER_BACKGROUND_IMAGE;
+    return columnSizerElement.style.backgroundImage === ColumnSizerElement.EMPTY_BACKGROUND_IMAGE;
   }
 
   public static setBackgroundImage(columnSizerElement: HTMLElement, backgroundImage: string) {
@@ -26,7 +35,7 @@ export class ColumnSizerElement {
   }
 
   public static unsetBackgroundImage(columnSizerElement: HTMLElement) {
-    columnSizerElement.style.backgroundImage = ColumnSizerElement.HOVER_BACKGROUND_IMAGE;
+    columnSizerElement.style.backgroundImage = ColumnSizerElement.EMPTY_BACKGROUND_IMAGE;
   }
 
   public static setTransitionTime(columnSizerElement: HTMLElement) {
@@ -34,13 +43,12 @@ export class ColumnSizerElement {
   }
 
   public static unsetTransitionTime(columnSizerElement: HTMLElement) {
-    columnSizerElement.style.transition = `0.0s`;
+    columnSizerElement.style.transition = '0.0s';
   }
 
-  public static setDefaultProperties(columnSizerElement: HTMLElement) {
-    // WORK - inherit width
-    columnSizerElement.style.width = `0.1px`;
-    ColumnSizerElement.setColors(columnSizerElement, `#ffffff08`);
+  public static setDefaultProperties(columnSizerElement: HTMLElement, width: string) {
+    columnSizerElement.style.width = width;
+    ColumnSizerElement.setColors(columnSizerElement, '#ffffff08');
     ColumnSizerElementOverlay.hide(columnSizerElement.children[0] as HTMLElement);
   }
 
@@ -61,49 +69,23 @@ export class ColumnSizerElement {
     const columnSizer = columnSizerList[secondLastColumnSizerIndex];
     if (columnSizer) {
       const newColumnSizer = ColumnSizerElement.createStateAndApplyToElement(
-        columnSizer.element, columnsDetails, secondLastColumnSizerIndex, tableElement)
+        columnSizer.element, columnsDetails, secondLastColumnSizerIndex, tableElement);
       // cannot simply overwright columnSizerList[previousColumnSizerIndex] as the entry is already binded to elements
       Object.assign(columnSizerList[secondLastColumnSizerIndex], newColumnSizer);
     }
   }
 
-  private static applySizerStateToElement(columnSizerElement: HTMLElement, columnSizer: ColumnSizerState) {
-    ColumnSizerElement.setDefaultProperties(columnSizerElement);
-    ColumnSizerElement.setBackgroundImage(columnSizerElement, columnSizer.backgroundImage);
-  }
-
-  private static createNewColumnSizerState(columnSizerElement: HTMLElement, isOnCellBorder: boolean): ColumnSizerState {
-    return {
-      element: columnSizerElement,
-      // WORK need to look at padding to set
-      hoverWidth: '7px',
-      isSizerHovered: false,
-      isParentCellHovered: false,
-      backgroundImage: isOnCellBorder ? '' : ColumnSizerElement.DEFAULT_BACKGROUND_IMAGE,
-    };
-  }
-
-  private static isOnCellBorder(columnsDetails: ColumnsDetails, sizerIndex: number, tableElement?: HTMLElement) {
-    const isOnCellBorder = !!(
-      columnsDetails[sizerIndex].elements[0].style.borderRight ||
-      columnsDetails[sizerIndex + 1]?.elements[0].style.borderLeft
-    );
-    // REF-1
-    // cell border is not placed on the rightmost border and is controlled by the table border
-    // the strategy here is to indicate a border if the table has a right border and other cells have borders
-    // but do not indicate it if either does not
-    // this will cause the predefined color to appear when table has a border but cells do not, but will retain consistency
-    if (columnsDetails.length - 1 === sizerIndex && tableElement) {
-      return !!tableElement.style.borderRight && isOnCellBorder;
-    }
-    return isOnCellBorder;
+  private static applySizerStateToElement(columnSizerElement: HTMLElement, columnSizer: ColumnSizerStateT) {
+    ColumnSizerElement.setDefaultProperties(columnSizerElement, columnSizer.styles.default.width);
+    ColumnSizerElementOverlay.setWidth(columnSizer.element.children[0] as HTMLElement, columnSizer.styles.default.width);
+    columnSizerElement.style.marginLeft = columnSizer.styles.permanent.marginLeft;
+    ColumnSizerElement.setBackgroundImage(columnSizerElement, columnSizer.styles.default.backgroundImage);
   }
 
   // prettier-ignore
-  private static createStateAndApplyToElement(
-      columnSizerElement: HTMLElement, columnsDetails: ColumnsDetails, sizerIndex: number, tableElement: HTMLElement) {
-    const isOnCellBorder = ColumnSizerElement.isOnCellBorder(columnsDetails, sizerIndex, tableElement);
-    const columnSizer = ColumnSizerElement.createNewColumnSizerState(columnSizerElement, isOnCellBorder);
+  private static createStateAndApplyToElement(columnSizerElement: HTMLElement,
+      columnsDetails: ColumnsDetails, sizerIndex: number, tableElement?: HTMLElement) {
+    const columnSizer = ColumnSizerState.create(columnSizerElement, columnsDetails, sizerIndex, tableElement);
     ColumnSizerElement.applySizerStateToElement(columnSizerElement, columnSizer);
     return columnSizer;
   }
@@ -111,10 +93,9 @@ export class ColumnSizerElement {
   // prettier-ignore
   public static create(etc: EditableTableComponent) {
     const { overlayElementsState: { columnSizers }, columnsDetails } = etc;
-    const sizerIndex = columnSizers.list.length; 
+    const sizerIndex = columnSizers.list.length;
     const columnSizerElement = ColumnSizerElement.createElement(sizerIndex);
-    const columnSizer = ColumnSizerElement.createStateAndApplyToElement(
-      columnSizerElement, columnsDetails, sizerIndex, etc.tableBodyElementRef as HTMLElement)
+    const columnSizer = ColumnSizerElement.createStateAndApplyToElement(columnSizerElement, columnsDetails, sizerIndex)
     // WORK - this may need to be reset on removal
     columnSizers.list.push(columnSizer);
     columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);
