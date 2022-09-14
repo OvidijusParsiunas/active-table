@@ -1,5 +1,6 @@
 import {ColumnSizerElement} from './columnSizerElement';
 import {ColumnSizerState} from './columnSizerState';
+import {PX} from '../../types/pxDimension';
 
 export class ColumnSizerElementOverlay {
   // this element is used to prevent a bug where upon hovering a column sizer that is on top of a cell border
@@ -14,7 +15,7 @@ export class ColumnSizerElementOverlay {
     return overlayElement;
   }
 
-  public static setWidth(overlayElement: HTMLElement, width: string) {
+  public static setWidth(overlayElement: HTMLElement, width: PX) {
     const widthNumber = Number.parseInt(width);
     overlayElement.style.width = `${ColumnSizerState.shouldWidthBeIncreased(widthNumber) ? widthNumber : 4}px`;
   }

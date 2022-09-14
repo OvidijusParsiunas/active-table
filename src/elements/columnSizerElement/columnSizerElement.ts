@@ -4,6 +4,7 @@ import {ColumnSizerElementOverlay} from './columnSizerElementOverlay';
 import {ColumnsDetails} from '../../types/columnDetails';
 import {ColumnSizerEvents} from './columnSizerEvents';
 import {ColumnSizerState} from './columnSizerState';
+import {PX} from '../../types/pxDimension';
 
 export interface BorderWidths {
   leftCellRight: number;
@@ -46,7 +47,7 @@ export class ColumnSizerElement {
     columnSizerElement.style.transition = '0.0s';
   }
 
-  public static setDefaultProperties(columnSizerElement: HTMLElement, width: string) {
+  public static setDefaultProperties(columnSizerElement: HTMLElement, width: PX) {
     columnSizerElement.style.width = width;
     ColumnSizerElement.setColors(columnSizerElement, '#ffffff08');
     ColumnSizerElementOverlay.hide(columnSizerElement.children[0] as HTMLElement);
@@ -103,7 +104,7 @@ export class ColumnSizerElement {
     return columnSizerElement;
   }
 
-  public static display(columnSizerElement: HTMLElement, height: string) {
+  public static display(columnSizerElement: HTMLElement, height: PX) {
     columnSizerElement.style.height = height;
     columnSizerElement.style.display = 'flex';
   }
@@ -134,7 +135,7 @@ export class ColumnSizerElement {
     }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
   }
 
-  public static setHoverProperties(columnSizerElement: HTMLElement, width: string) {
+  public static setHoverProperties(columnSizerElement: HTMLElement, width: PX) {
     ColumnSizerElementOverlay.display(columnSizerElement.children[0] as HTMLElement);
     ColumnSizerElement.setTransitionTime(columnSizerElement);
     ColumnSizerElement.setColors(columnSizerElement, ColumnSizerElement.HOVER_COLOR);

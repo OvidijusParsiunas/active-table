@@ -1,17 +1,18 @@
+import {PX} from './pxDimension';
+
 interface ColumnSizerStyles {
   default: {
     backgroundImage: string;
-    width: string;
+    width: PX;
   };
   hover: {
-    width: string;
+    width: PX;
   };
   permanent: {
-    marginLeft: string;
+    marginLeft: PX;
   };
 }
 
-// WORK - typescript regex
 export interface ColumnSizerStateT {
   element: HTMLElement;
   isSideCellHovered: boolean;

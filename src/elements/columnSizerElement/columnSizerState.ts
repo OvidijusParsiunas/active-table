@@ -1,34 +1,34 @@
 import {BorderWidths, ColumnSizerElement} from './columnSizerElement';
 import {ColumnSizerStateT} from '../../types/overlayElements';
 import {ColumnsDetails} from '../../types/columnDetails';
+import {PX} from '../../types/pxDimension';
 
 export class ColumnSizerState {
   public static shouldWidthBeIncreased(widthPx: number) {
     return widthPx > 4;
   }
 
-  // WORK - override
   // prettier-ignore
   private static getBackgroundImage(
-    totalCellBorderWidth: number, beforeLeftCellRight: number, isLastCell: boolean, tableElement?: HTMLElement) {
-  // REF-1
-  // right border is not placed on the rightmost cell and is instead controlled by the table border
-  // the strategy here is to have a default column sizer background image if the table has no border or even if it does
-  // and the cells do not as to maintain consistency
-  // howver do not have a default column sizer background image if both cells and table have a border, for the  purposes
-  // of consistency
-  if (isLastCell && tableElement) {
-    if (Number.parseInt(tableElement.style.borderRightWidth) > 0
-        && (totalCellBorderWidth > 0 || beforeLeftCellRight > 0)) {
+      totalCellBorderWidth: number, beforeLeftCellRight: number, isLastCell: boolean, tableElement?: HTMLElement) {
+    // REF-1
+    // right border is not placed on the rightmost cell and is instead controlled by the table border
+    // the strategy here is to have a default column sizer background image if the table has no border or even if it does
+    // and the cells do not as to maintain consistency
+    // howver do not have a default column sizer background image if both cells and table have a border, for the  purposes
+    // of consistency
+    if (isLastCell && tableElement) {
+      if (Number.parseInt(tableElement.style.borderRightWidth) > 0
+          && (totalCellBorderWidth > 0 || beforeLeftCellRight > 0)) {
+        return ColumnSizerElement.EMPTY_BACKGROUND_IMAGE;
+      }
+    } else if (totalCellBorderWidth > 0) {
       return ColumnSizerElement.EMPTY_BACKGROUND_IMAGE;
     }
-  } else if (totalCellBorderWidth > 0) {
-    return ColumnSizerElement.EMPTY_BACKGROUND_IMAGE;
+    return ColumnSizerElement.FILLED_BACKGROUND_IMAGE;
   }
-  return ColumnSizerElement.FILLED_BACKGROUND_IMAGE;
-}
 
-  private static getMarginLeft(borderWidths: BorderWidths) {
+  private static getMarginLeft(borderWidths: BorderWidths): PX {
     const marginLeft = borderWidths ? borderWidths.leftCellRight - borderWidths.rightCellLeft : 0;
     return `${-marginLeft}px`;
   }

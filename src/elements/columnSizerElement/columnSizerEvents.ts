@@ -2,6 +2,7 @@ import {ColumnSizerList, ColumnSizers, ColumnSizerStateT} from '../../types/over
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnsDetails} from '../../types/columnDetails';
 import {ColumnSizerElement} from './columnSizerElement';
+import {PX} from '../../types/pxDimension';
 
 export class ColumnSizerEvents {
   private static readonly MOUSE_PASSTHROUGH_TIME_ML = 50;
@@ -38,7 +39,7 @@ export class ColumnSizerEvents {
     ColumnSizerEvents.hideColumnSizer(columnSizers, columnIndex);
   }
 
-  private static displayColumnSizer(columnSizers: ColumnSizers, columnIndex: number, height: string) {
+  private static displayColumnSizer(columnSizers: ColumnSizers, columnIndex: number, height: PX) {
     const columnSizer = columnSizers.list[columnIndex];
     if (!columnSizer) return;
     ColumnSizerElement.display(columnSizer.element, height);
@@ -48,7 +49,7 @@ export class ColumnSizerEvents {
 
   public static cellMouseEnter(columnSizers: ColumnSizers, columnIndex: number, event: MouseEvent) {
     const headerCellElement = event.target as HTMLElement;
-    const height = `${headerCellElement.offsetHeight}px`;
+    const height: PX = `${headerCellElement.offsetHeight}px`;
     ColumnSizerEvents.displayColumnSizer(columnSizers, columnIndex - 1, height);
     ColumnSizerEvents.displayColumnSizer(columnSizers, columnIndex, height);
   }
