@@ -1,6 +1,5 @@
+import {ColumnsDetails, ColumnSizerStateT} from '../../types/columnDetails';
 import {BorderWidths, ColumnSizerElement} from './columnSizerElement';
-import {ColumnSizerStateT} from '../../types/overlayElements';
-import {ColumnsDetails} from '../../types/columnDetails';
 import {PX} from '../../types/pxDimension';
 
 export class ColumnSizerState {

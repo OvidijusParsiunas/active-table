@@ -11,26 +11,26 @@ export class TableEvents {
 
   // prettier-ignore
   public static onMouseUp(this: EditableTableComponent, event: MouseEvent) {
-    const { tableElementEventState: { selectedColumnSizer }, overlayElementsState: { columnSizers } } = this;
+    const { tableElementEventState: { selectedColumnSizer }, columnsDetails } = this;
     if (selectedColumnSizer) {
-      ColumnSizerEvents.tableOnMouseUp(selectedColumnSizer, columnSizers.list, event.target as HTMLElement);
+      ColumnSizerEvents.tableOnMouseUp(selectedColumnSizer, columnsDetails, event.target as HTMLElement);
       delete this.tableElementEventState.selectedColumnSizer;
     }
   }
 
   // prettier-ignore
   public static onMouseMove(this: EditableTableComponent, event: MouseEvent) {
-    const { tableElementEventState: { selectedColumnSizer }, overlayElementsState: {columnSizers}, columnsDetails } = this;
+    const { tableElementEventState: { selectedColumnSizer }, columnsDetails } = this;
     if (selectedColumnSizer) {
-      ColumnSizerEvents.tableOnMouseMove(selectedColumnSizer, columnSizers.list, columnsDetails, event.movementX);
+      ColumnSizerEvents.tableOnMouseMove(selectedColumnSizer, columnsDetails, event.movementX);
     }
   }
 
   // prettier-ignore
   public static onMouseLeave(this: EditableTableComponent) {
-    const { tableElementEventState: { selectedColumnSizer }, overlayElementsState: {columnSizers} } = this;
+    const { tableElementEventState: { selectedColumnSizer }, columnsDetails } = this;
     if (selectedColumnSizer) {
-      ColumnSizerEvents.tableOnMouseLeave(selectedColumnSizer, columnSizers.list);
+      ColumnSizerEvents.tableOnMouseLeave(selectedColumnSizer, columnsDetails);
       delete this.tableElementEventState.selectedColumnSizer;
     }
   }

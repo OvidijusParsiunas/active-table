@@ -1,5 +1,4 @@
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
-import {OverlayElementsParent} from '../overlaysElements/overlayElementsParent';
 import {EditableTableComponent} from '../../editable-table-component';
 import {AddNewRowElement} from '../row/addNewRowElement';
 import {TableRow} from '../../types/tableContents';
@@ -7,9 +6,8 @@ import {TableEvents} from './tableEvents';
 
 export class TableElement {
   public static populate(etc: EditableTableComponent) {
-    etc.overlayElementsParentRef = OverlayElementsParent.create();
     const addRowElementRef = AddNewRowElement.create(etc);
-    etc.tableBodyElementRef?.replaceChildren(addRowElementRef, etc.overlayElementsParentRef);
+    etc.tableBodyElementRef?.replaceChildren(addRowElementRef);
     etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
   }
 

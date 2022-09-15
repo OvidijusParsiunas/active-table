@@ -3,20 +3,18 @@ import {NumberOfIdenticalCells} from '../../utils/numberOfIdenticalCells';
 import {ColumnSizerEvents} from '../columnSizerElement/columnSizerEvents';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
-import {ColumnSizers} from '../../types/overlayElements';
+import {ElementSet} from '../../types/elementSet';
 
 export class CellEvents {
   private static readonly EMPTY_STRING = '';
   private static readonly PASTE_INPUT_TYPE = 'insertFromPaste';
   private static readonly TEXT_DATA_FORMAT = 'text/plain';
 
-  // prettier-ignore
-  private static updateVisibleColumnSizerHeight(
-      currentlyVisibleElements: ColumnSizers['currentlyVisibleElements'], target: HTMLElement) {
+  private static updateVisibleColumnSizerHeight(visibleSizers: ElementSet, target: HTMLElement) {
     // placed in a timeout to save up on performance
     setTimeout(() => {
       const newHeight = `${target.offsetHeight}px`;
-      currentlyVisibleElements.forEach((columnSizer) => columnSizer.style.height = newHeight);
+      visibleSizers.forEach((columnSizer) => (columnSizer.style.height = newHeight));
     });
   }
 
@@ -43,9 +41,9 @@ export class CellEvents {
       const target = inputEvent.target as HTMLElement;
       CellEvents.updateCellWithPreprocessing(this, target.textContent, rowIndex, columnIndex);
       if (rowIndex === 0) {
-        // reason why using currentlyVisibleElements property instead of getting the column sizers via the columnIndex
+        // reason why using visibleColumnSizers property instead of getting column sizers via columnDetails and columnIndex
         // is because the user could have hovered over another header cell other than the one that is being typed in
-        CellEvents.updateVisibleColumnSizerHeight(this.overlayElementsState.columnSizers.currentlyVisibleElements, target);
+        CellEvents.updateVisibleColumnSizerHeight(this.overlayElementsState.visibleColumnSizers, target);
       }
     }
   }
@@ -81,11 +79,15 @@ export class CellEvents {
     }
   }
 
+  // prettier-ignore
   public static mouseEnterCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
-    if (rowIndex === 0) ColumnSizerEvents.cellMouseEnter(this.overlayElementsState.columnSizers, columnIndex, event);
+    if (rowIndex === 0) ColumnSizerEvents.cellMouseEnter(
+      this.columnsDetails, columnIndex, this.overlayElementsState.visibleColumnSizers, event);
   }
 
+  // prettier-ignore
   public static mouseLeaveCell(this: EditableTableComponent, rowIndex: number, columnIndex: number) {
-    if (rowIndex === 0) ColumnSizerEvents.cellMouseLeave(this.overlayElementsState.columnSizers, columnIndex);
+    if (rowIndex === 0) ColumnSizerEvents.cellMouseLeave(
+      this.columnsDetails, columnIndex, this.overlayElementsState.visibleColumnSizers);
   }
 }

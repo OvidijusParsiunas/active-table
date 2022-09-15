@@ -1,7 +1,6 @@
-import {ColumnSizerList, ColumnSizerStateT} from '../../types/overlayElements';
+import {ColumnsDetails, ColumnSizerStateT} from '../../types/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElementOverlay} from './columnSizerElementOverlay';
-import {ColumnsDetails} from '../../types/columnDetails';
 import {ColumnSizerEvents} from './columnSizerEvents';
 import {ColumnSizerState} from './columnSizerState';
 import {PX} from '../../types/pxDimension';
@@ -64,14 +63,14 @@ export class ColumnSizerElement {
   }
 
   // prettier-ignore
-  public static refreshSecondLastColumnSizer(columnSizerList: ColumnSizerList, columnsDetails: ColumnsDetails) {
-    const secondLastColumnSizerIndex = columnSizerList.length - 2;
-    const columnSizer = columnSizerList[secondLastColumnSizerIndex];
+  public static refreshSecondLastColumnSizer(columnsDetails: ColumnsDetails) {
+    const secondLastColumnSizerIndex = columnsDetails.length - 2;
+    const columnSizer = columnsDetails[secondLastColumnSizerIndex]?.columnSizer;
     if (columnSizer) {
       const newColumnSizer = ColumnSizerElement.createStateAndApplyToElement(
         columnSizer.element, columnsDetails, secondLastColumnSizerIndex);
-      // cannot simply overwright columnSizerList[previousColumnSizerIndex] as the entry is already binded to elements
-      Object.assign(columnSizerList[secondLastColumnSizerIndex], newColumnSizer);
+      // cannot simply overwright columnsDetails[previousColumnSizerIndex] as the entry is already binded to elements
+      Object.assign(columnsDetails[secondLastColumnSizerIndex], newColumnSizer);
     }
   }
 
@@ -92,16 +91,14 @@ export class ColumnSizerElement {
 
   // prettier-ignore
   public static create(etc: EditableTableComponent) {
-    const { overlayElementsState: { columnSizers }, columnsDetails, tableElementRef } = etc;
-    const sizerIndex = columnSizers.list.length;
+    const { columnsDetails, tableElementRef } = etc;
+    const sizerIndex = columnsDetails.length;
     const columnSizerElement = ColumnSizerElement.createElement(sizerIndex);
     const columnSizer = ColumnSizerElement.createStateAndApplyToElement(
       columnSizerElement, columnsDetails, sizerIndex, tableElementRef as HTMLElement);
-    // WORK - this may need to be reset on removal
-    columnSizers.list.push(columnSizer);
     columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);
     columnSizerElement.onmouseleave = ColumnSizerEvents.sizerOnMouseLeave.bind(etc, columnSizer);
-    return columnSizerElement;
+    return columnSizer;
   }
 
   public static display(columnSizerElement: HTMLElement, height: PX) {

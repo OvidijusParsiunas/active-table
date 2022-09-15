@@ -1,8 +1,8 @@
 import {ColumnSizerElement} from '../../../elements/columnSizerElement/columnSizerElement';
+import {ColumnDetails, ColumnSizerStateT} from '../../../types/columnDetails';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellElement} from '../../../elements/cell/cellElement';
-import {ColumnDetails} from '../../../types/columnDetails';
 
 export class InsertNewCell {
   // prettier-ignore
@@ -15,18 +15,17 @@ export class InsertNewCell {
     rowElement.insertBefore(cellDividerElement, rowElement.children[childIndex + 1]);
   }
 
-  // prettier-ignore
   private static createColumnSizer(etc: EditableTableComponent, cellDividerElement: HTMLElement) {
-    const { overlayElementsState: { columnSizers }, columnsDetails } = etc;
-    const columnSizerElement = ColumnSizerElement.create(etc);
-    cellDividerElement.appendChild(columnSizerElement);
+    const columnSizer = ColumnSizerElement.create(etc);
+    cellDividerElement.appendChild(columnSizer.element);
     // WORK - need this on delete to be working correctly
     // the previous cell border no longer depends on the table border
-    ColumnSizerElement.refreshSecondLastColumnSizer(columnSizers.list, columnsDetails);
+    ColumnSizerElement.refreshSecondLastColumnSizer(etc.columnsDetails);
+    return columnSizer;
   }
 
-  private static createDefaultColumnDetailsObject(cellElement: HTMLElement): ColumnDetails {
-    return {elements: [cellElement]};
+  private static createColumnDetailsObject(cellElement: HTMLElement, columnSizer: ColumnSizerStateT): ColumnDetails {
+    return {elements: [cellElement], columnSizer};
   }
 
   // prettier-ignore
@@ -34,8 +33,9 @@ export class InsertNewCell {
       rowIndex: number, columnIndex: number, cellElement: HTMLElement, cellDividerElement: HTMLElement) {
     if (rowIndex === 0) {
       // cannot be in a timeout as create needs it
-      etc.columnsDetails.splice(columnIndex, 0, InsertNewCell.createDefaultColumnDetailsObject(cellElement));
-      InsertNewCell.createColumnSizer(etc, cellDividerElement);
+      const columnSizer = InsertNewCell.createColumnSizer(etc, cellDividerElement);
+      const columnDetails = InsertNewCell.createColumnDetailsObject(cellElement, columnSizer);
+      etc.columnsDetails.splice(columnIndex, 0, columnDetails);
     } else {
       // TO-DO - not sure if all cell elements are needed, if this is not required in the future do not this code
       setTimeout(() => etc.columnsDetails[columnIndex].elements.push(cellElement));
