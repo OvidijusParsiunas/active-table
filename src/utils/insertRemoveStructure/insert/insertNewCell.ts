@@ -1,6 +1,6 @@
+import {InsertRemoveColumnSizer} from '../../columnSizer/manipulateColumnSizer';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {InsertColumnSizer} from '../../columnSizer/insertColumnSizer';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../../types/columnDetails';
@@ -21,7 +21,7 @@ export class InsertNewCell {
     if (rowIndex === 0) {
       const columnDetails = ColumnDetails.createPartial(cellElement);
       etc.columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
-      InsertColumnSizer.insert(etc, etc.columnsDetails, columnDetails, columnIndex);
+      InsertRemoveColumnSizer.insert(etc, etc.columnsDetails, columnDetails, columnIndex);
     } else {
       // TO-DO - not sure if all cell elements are needed, if this is not required in the future do not this code
       etc.columnsDetails[columnIndex].elements.push(cellElement);

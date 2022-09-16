@@ -6,7 +6,7 @@ import {ElementDetails} from '../../../types/elementDetails';
 
 export class UpdateCellsForColumns {
   // prettier-ignore
-  private static updateLastColumn(etc: EditableTableComponent,
+  private static updateColumn(etc: EditableTableComponent,
     rowIndex: number, cellElement: Node, columnIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
     if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
       CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
@@ -17,10 +17,10 @@ export class UpdateCellsForColumns {
   // prettier-ignore
   private static updateNextBeforeLastColumns(
       etc: EditableTableComponent, row: ElementDetails, startColumnIndex: number, lastColumnIndex: number) {
-    const nextColumns = ExtractElements.dataCellsArrFromRow(row.element).slice(startColumnIndex, lastColumnIndex);
+    const nextColumns = ExtractElements.textCellsArrFromRow(row.element).slice(startColumnIndex, lastColumnIndex);
     nextColumns.forEach((cellElement: Node, columnIndex: number) => {
       const relativeColumnIndex = columnIndex + startColumnIndex;
-      UpdateCellsForColumns.updateLastColumn(etc, row.index, cellElement, relativeColumnIndex, CELL_UPDATE_TYPE.UPDATE)
+      UpdateCellsForColumns.updateColumn(etc, row.index, cellElement, relativeColumnIndex, CELL_UPDATE_TYPE.UPDATE);
     });
   }
 
@@ -31,6 +31,6 @@ export class UpdateCellsForColumns {
   public static rebindAndFireUpdates(etc: EditableTableComponent, 
       row: ElementDetails, startingColumnIndex: number, cellUpdateType: CELL_UPDATE_TYPE, lastColumn: ElementDetails) {
     UpdateCellsForColumns.updateNextBeforeLastColumns(etc, row, startingColumnIndex, lastColumn.index);
-    UpdateCellsForColumns.updateLastColumn(etc, row.index, lastColumn.element, lastColumn.index, cellUpdateType);
+    UpdateCellsForColumns.updateColumn(etc, row.index, lastColumn.element, lastColumn.index, cellUpdateType);
   }
 }

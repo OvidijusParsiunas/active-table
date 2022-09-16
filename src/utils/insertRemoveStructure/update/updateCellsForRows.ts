@@ -8,7 +8,7 @@ export class UpdateCellsForRows {
   // prettier-ignore
   private static updateRowCells(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
-    const dataCellElements = ExtractElements.dataCellsArrFromRow(rowElement);
+    const dataCellElements = ExtractElements.textCellsArrFromRow(rowElement);
     dataCellElements.forEach((cellElement: Node, columnIndex: number) => {
       if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
         CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);

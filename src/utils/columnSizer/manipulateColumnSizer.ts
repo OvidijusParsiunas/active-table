@@ -4,9 +4,8 @@ import {ColumnSizerElement} from '../../elements/columnSizerElement/columnSizerE
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizer} from './columnSizer';
 
-export class InsertColumnSizer {
-  private static updateIdsOfAllNext(columnsDetails: ColumnsDetailsT, columnIndex: number) {
-    const nextIndex = columnIndex + 1;
+export class InsertRemoveColumnSizer {
+  private static updateIdsOfAllSubsequent(columnsDetails: ColumnsDetailsT, nextIndex: number) {
     columnsDetails.slice(nextIndex).forEach((columnDetails: ColumnDetailsT, index: number) => {
       const relativeIndex = nextIndex + index;
       ColumnSizerElement.setElementId(columnDetails.columnSizer.element, relativeIndex);
@@ -25,9 +24,8 @@ export class InsertColumnSizer {
     const cellDividerElement = newColumnDetails.elements[0].nextSibling as HTMLElement;
     const columnSizer = ColumnSizer.create(etc, columnIndex);
     newColumnDetails.columnSizer = columnSizer;
-    // WORK - need this on delete to be working correctly
     cellDividerElement.appendChild(columnSizer.element);
-    InsertColumnSizer.applySizerStateToElement(columnSizer.element, columnSizer);
+    InsertRemoveColumnSizer.applySizerStateToElement(columnSizer.element, columnSizer);
   }
 
   private static updatePrevious(columnsDetails: ColumnsDetailsT, columnIndex: number) {
@@ -36,7 +34,7 @@ export class InsertColumnSizer {
     const {columnSizer} = columnsDetails[previousIndex];
     // no need for full creation as there is a need to retain the element and its bindings
     const newColumnSizer = ColumnSizer.createObject(columnSizer.element, columnsDetails, previousIndex);
-    InsertColumnSizer.applySizerStateToElement(newColumnSizer.element, newColumnSizer);
+    InsertRemoveColumnSizer.applySizerStateToElement(newColumnSizer.element, newColumnSizer);
     // cannot simply overwright columnSizer it has already binded to elements
     Object.assign(columnSizer, newColumnSizer);
   }
@@ -44,8 +42,13 @@ export class InsertColumnSizer {
   // prettier-ignore
   public static insert(etc: EditableTableComponent,
       columnsDetails: ColumnsDetailsT, newColumnDetails: ColumnDetailsTPartial, columnIndex: number) {
-    InsertColumnSizer.updatePrevious(columnsDetails, columnIndex);
-    InsertColumnSizer.insertAtIndex(etc, newColumnDetails, columnIndex);
-    InsertColumnSizer.updateIdsOfAllNext(columnsDetails, columnIndex);
+    InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex);
+    InsertRemoveColumnSizer.insertAtIndex(etc, newColumnDetails, columnIndex);
+    InsertRemoveColumnSizer.updateIdsOfAllSubsequent(columnsDetails, columnIndex + 1);
+  }
+
+  public static remove(columnsDetails: ColumnsDetailsT, columnIndex: number) {
+    InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex);
+    InsertRemoveColumnSizer.updateIdsOfAllSubsequent(columnsDetails, columnIndex);
   }
 }
