@@ -1,8 +1,8 @@
-import {ColumnsDetails, ColumnSizerStateT, ColumnDetailsT, ColumnDetailsTPartial} from '../../types/columnDetails';
+import {ColumnsDetails, ColumnSizerT, ColumnDetailsT, ColumnDetailsTPartial} from '../../types/columnDetails';
 import {ColumnSizerElementOverlay} from '../../elements/columnSizerElement/columnSizerElementOverlay';
 import {ColumnSizerElement} from '../../elements/columnSizerElement/columnSizerElement';
 import {EditableTableComponent} from '../../editable-table-component';
-import {ColumnSizerState} from './columnSizerState';
+import {ColumnSizer} from './columnSizer';
 
 export class InsertColumnSizer {
   private static updateIdsOfAllNext(columnsDetails: ColumnsDetails, columnIndex: number) {
@@ -13,7 +13,7 @@ export class InsertColumnSizer {
     });
   }
 
-  private static applySizerStateToElement(columnSizerElement: HTMLElement, columnSizer: ColumnSizerStateT) {
+  private static applySizerStateToElement(columnSizerElement: HTMLElement, columnSizer: ColumnSizerT) {
     ColumnSizerElement.setDefaultProperties(columnSizerElement, columnSizer.styles.default.width);
     ColumnSizerElementOverlay.setWidth(columnSizer.element.children[0] as HTMLElement, columnSizer.styles.default.width);
     ColumnSizerElement.setPermanentProperties(columnSizerElement, columnSizer.styles.permanent.marginLeft);
@@ -23,7 +23,7 @@ export class InsertColumnSizer {
   private static insertAtIndex(etc: EditableTableComponent, newColumnDetails: ColumnDetailsTPartial, columnIndex: number) {
     // assuming this has already been added, otherwise pass it down through params
     const cellDividerElement = newColumnDetails.elements[0].nextSibling as HTMLElement;
-    const columnSizer = ColumnSizerState.create(etc, columnIndex);
+    const columnSizer = ColumnSizer.create(etc, columnIndex);
     newColumnDetails.columnSizer = columnSizer;
     // WORK - need this on delete to be working correctly
     cellDividerElement.appendChild(columnSizer.element);
@@ -35,7 +35,7 @@ export class InsertColumnSizer {
     if (previousIndex < 0) return;
     const {columnSizer} = columnsDetails[previousIndex];
     // no need for full creation as there is a need to retain the element and its bindings
-    const newColumnSizer = ColumnSizerState.createObject(columnSizer.element, columnsDetails, previousIndex);
+    const newColumnSizer = ColumnSizer.createObject(columnSizer.element, columnsDetails, previousIndex);
     InsertColumnSizer.applySizerStateToElement(newColumnSizer.element, newColumnSizer);
     // cannot simply overwright columnSizer it has already binded to elements
     Object.assign(columnSizer, newColumnSizer);

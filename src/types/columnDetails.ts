@@ -13,8 +13,7 @@ interface ColumnSizerStyles {
   };
 }
 
-// WORK - ColumnSizerT
-export interface ColumnSizerStateT {
+export interface ColumnSizerT {
   element: HTMLElement;
   isSideCellHovered: boolean;
   isSizerHovered: boolean;
@@ -23,12 +22,13 @@ export interface ColumnSizerStateT {
 
 export interface ColumnDetailsT {
   elements: HTMLElement[];
-  columnSizer: ColumnSizerStateT;
+  columnSizer: ColumnSizerT;
 }
 
+// used for when column details initialised bedore the column sizer
 export interface ColumnDetailsTPartial {
   elements: HTMLElement[];
-  columnSizer?: ColumnSizerStateT;
+  columnSizer?: ColumnSizerT;
 }
 
 export type ColumnsDetails = ColumnDetailsT[];

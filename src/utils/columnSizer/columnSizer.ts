@@ -1,10 +1,10 @@
 import {BorderWidths, ColumnSizerElement} from '../../elements/columnSizerElement/columnSizerElement';
 import {ColumnSizerEvents} from '../../elements/columnSizerElement/columnSizerEvents';
-import {ColumnsDetails, ColumnSizerStateT} from '../../types/columnDetails';
+import {ColumnsDetails, ColumnSizerT} from '../../types/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PX} from '../../types/pxDimension';
 
-export class ColumnSizerState {
+export class ColumnSizer {
   public static shouldWidthBeIncreased(widthPx: number) {
     return widthPx > 4;
   }
@@ -51,21 +51,21 @@ export class ColumnSizerState {
 
   // prettier-ignore
   public static createObject(columnSizerElement: HTMLElement,
-      columnsDetails: ColumnsDetails, sizerIndex: number, tableElement?: HTMLElement): ColumnSizerStateT {
-    const borderWidthsInfo = ColumnSizerState.generateBorderWidthsInfo(columnsDetails, sizerIndex);
-    const totalCellBorderWidth = ColumnSizerState.getTotalCellBorderWidth(borderWidthsInfo);
-    const marginLeft = ColumnSizerState.getMarginLeft(borderWidthsInfo);
-    const backgroundImage = ColumnSizerState.getBackgroundImage(totalCellBorderWidth,
+      columnsDetails: ColumnsDetails, sizerIndex: number, tableElement?: HTMLElement): ColumnSizerT {
+    const borderWidthsInfo = ColumnSizer.generateBorderWidthsInfo(columnsDetails, sizerIndex);
+    const totalCellBorderWidth = ColumnSizer.getTotalCellBorderWidth(borderWidthsInfo);
+    const marginLeft = ColumnSizer.getMarginLeft(borderWidthsInfo);
+    const backgroundImage = ColumnSizer.getBackgroundImage(totalCellBorderWidth,
       borderWidthsInfo.beforeLeftCellRight, columnsDetails.length - 1 === sizerIndex, tableElement);
-    const columnSizerState: ColumnSizerStateT = {
+    const columnSizerState: ColumnSizerT = {
       element: columnSizerElement,
       styles: {
         default: {
-          width: ColumnSizerState.shouldWidthBeIncreased(totalCellBorderWidth) ? `${totalCellBorderWidth}px` : '0.1px',
+          width: ColumnSizer.shouldWidthBeIncreased(totalCellBorderWidth) ? `${totalCellBorderWidth}px` : '0.1px',
           backgroundImage,
         },
         hover: {
-          width: ColumnSizerState.shouldWidthBeIncreased(totalCellBorderWidth) ? `${totalCellBorderWidth * 1.5}px` : '7px',
+          width: ColumnSizer.shouldWidthBeIncreased(totalCellBorderWidth) ? `${totalCellBorderWidth * 1.5}px` : '7px',
         },
         permanent: {
           marginLeft,
@@ -81,7 +81,7 @@ export class ColumnSizerState {
   public static create(etc: EditableTableComponent, sizerIndex: number) {
     const { columnsDetails, tableElementRef } = etc;
     const columnSizerElement = ColumnSizerElement.createElement(sizerIndex);
-    const columnSizer = ColumnSizerState.createObject(
+    const columnSizer = ColumnSizer.createObject(
       columnSizerElement, columnsDetails, sizerIndex, tableElementRef as HTMLElement);
     columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);
     columnSizerElement.onmouseleave = ColumnSizerEvents.sizerOnMouseLeave.bind(etc, columnSizer);

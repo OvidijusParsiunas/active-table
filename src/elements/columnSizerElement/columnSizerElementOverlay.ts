@@ -1,4 +1,4 @@
-import {ColumnSizerState} from '../../utils/columnSizer/columnSizerState';
+import {ColumnSizer} from '../../utils/columnSizer/columnSizer';
 import {ColumnSizerElement} from './columnSizerElement';
 import {PX} from '../../types/pxDimension';
 
@@ -17,7 +17,7 @@ export class ColumnSizerElementOverlay {
 
   public static setWidth(overlayElement: HTMLElement, width: PX) {
     const widthNumber = Number.parseInt(width);
-    overlayElement.style.width = `${ColumnSizerState.shouldWidthBeIncreased(widthNumber) ? widthNumber : 4}px`;
+    overlayElement.style.width = `${ColumnSizer.shouldWidthBeIncreased(widthNumber) ? widthNumber : 4}px`;
   }
 
   public static display(overlayElement: HTMLElement) {
