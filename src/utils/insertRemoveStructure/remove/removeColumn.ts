@@ -1,5 +1,5 @@
-import {FireCellUpdatesForColumns} from '../shared/fireCellUpdatesForColumns';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ElementDetails} from '../../../types/elementDetails';
 
@@ -12,7 +12,7 @@ export class RemoveColumn {
     etc.contents[rowIndex].splice(columnIndex, 1);
     setTimeout(() => {
       const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};
-      FireCellUpdatesForColumns.update(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.REMOVED, lastColumn);
+      UpdateCellsForColumns.rebindAndFireUpdates(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.REMOVED, lastColumn);
     });
   }
 

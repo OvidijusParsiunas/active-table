@@ -4,8 +4,7 @@ import {CellElement} from '../../../elements/cell/cellElement';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
 
-// WORK not only fires but rebind
-export class FireCellUpdatesForRows {
+export class UpdateCellsForRows {
   // prettier-ignore
   private static updateRowCells(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
@@ -20,7 +19,7 @@ export class FireCellUpdatesForRows {
 
   private static updateLastRow(etc: EditableTableComponent, cellUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {
     if (etc.tableBodyElementRef?.children) {
-      FireCellUpdatesForRows.updateRowCells(etc, lastRow.element, lastRow.index, cellUpdateType);
+      UpdateCellsForRows.updateRowCells(etc, lastRow.element, lastRow.index, cellUpdateType);
     }
   }
 
@@ -31,7 +30,7 @@ export class FireCellUpdatesForRows {
       const lowerRows = Array.from(tableBodyChildren).slice(startRowIndex, lastRowIndex);
       lowerRows.forEach((rowElement: Node, lowerRowIndex: number) => {
         const relativeContentsRowIndex = lowerRowIndex + startRowIndex;
-        FireCellUpdatesForRows.updateRowCells(
+        UpdateCellsForRows.updateRowCells(
           etc, rowElement as HTMLElement, relativeContentsRowIndex, CELL_UPDATE_TYPE.UPDATE);
       });
     }
@@ -41,9 +40,9 @@ export class FireCellUpdatesForRows {
   // are no longer available as this class's methods are run in setTimeouts, hence those details need to be captured
   // before these methods are executed
   // prettier-ignore
-  public static update(
+  public static rebindAndFireUpdates(
       etc: EditableTableComponent, startRowIndex: number, lastRowUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {
-    FireCellUpdatesForRows.updateLowerBeforeLastRows(etc, startRowIndex, lastRow.index)
-    FireCellUpdatesForRows.updateLastRow(etc, lastRowUpdateType, lastRow);
+    UpdateCellsForRows.updateLowerBeforeLastRows(etc, startRowIndex, lastRow.index)
+    UpdateCellsForRows.updateLastRow(etc, lastRowUpdateType, lastRow);
   }
 }

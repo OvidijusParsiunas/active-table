@@ -1,5 +1,5 @@
-import {FireCellUpdatesForColumns} from '../shared/fireCellUpdatesForColumns';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ElementDetails} from '../../../types/elementDetails';
 import {InsertNewCell} from './insertNewCell';
@@ -13,7 +13,7 @@ export class InsertNewColumn {
     const lastCellElement = rowElement.children[lastCellElementIndex] as HTMLElement;
     // index is the data cell index not the element index - as there are divider elements we divide by 2
     const lastColumn: ElementDetails = { element: lastCellElement, index: lastCellElementIndex / 2 };
-    FireCellUpdatesForColumns.update(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.ADD, lastColumn);
+    UpdateCellsForColumns.rebindAndFireUpdates(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.ADD, lastColumn);
   }
 
   private static insertToAllRows(etc: EditableTableComponent, columnIndex: number) {

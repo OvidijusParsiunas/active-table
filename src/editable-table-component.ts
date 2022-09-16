@@ -6,7 +6,7 @@ import {ediTableStyle} from './editable-table-component-style';
 import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {OverlayElements} from './types/overlayElements';
-import {ColumnsDetails} from './types/columnDetails';
+import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
 import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
@@ -50,7 +50,7 @@ export class EditableTableComponent extends LitElement {
   // create an entirely new state object and access elements from there as we don't want to store all elements
   // multiple times, and use this instead for data exclusively on columns, such as width etc.
   @state()
-  columnsDetails: ColumnsDetails = [];
+  columnsDetails: ColumnsDetailsT = [];
 
   @property({type: String})
   defaultCellValue = '';

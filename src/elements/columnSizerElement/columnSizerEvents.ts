@@ -1,4 +1,4 @@
-import {ColumnsDetails, ColumnSizerT} from '../../types/columnDetails';
+import {ColumnsDetailsT, ColumnSizerT} from '../../types/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElement} from './columnSizerElement';
 import {ElementSet} from '../../types/elementSet';
@@ -33,7 +33,7 @@ export class ColumnSizerEvents {
     });
   }
 
-  public static cellMouseLeave(columnsDetails: ColumnsDetails, columnIndex: number, visibleSizers: ElementSet) {
+  public static cellMouseLeave(columnsDetails: ColumnsDetailsT, columnIndex: number, visibleSizers: ElementSet) {
     ColumnSizerEvents.hideColumnSizer(columnsDetails[columnIndex - 1]?.columnSizer, visibleSizers);
     ColumnSizerEvents.hideColumnSizer(columnsDetails[columnIndex].columnSizer, visibleSizers);
   }
@@ -47,7 +47,7 @@ export class ColumnSizerEvents {
 
   // prettier-ignore
   public static cellMouseEnter(
-      columnsDetails: ColumnsDetails, columnIndex: number, visibleSizers: ElementSet, event: MouseEvent) {
+      columnsDetails: ColumnsDetailsT, columnIndex: number, visibleSizers: ElementSet, event: MouseEvent) {
     const headerCellElement = event.target as HTMLElement;
     const height: PX = `${headerCellElement.offsetHeight}px`;
     ColumnSizerEvents.displayColumnSizer(columnsDetails[columnIndex - 1]?.columnSizer, height, visibleSizers);
@@ -59,7 +59,7 @@ export class ColumnSizerEvents {
     columnElement.style.width = newWidth;
   }
 
-  private static getColumnDetailsViaElementId(id: string, columnsDetails: ColumnsDetails) {
+  private static getColumnDetailsViaElementId(id: string, columnsDetails: ColumnsDetailsT) {
     const sizerNumber = Number(id.replace(/\D/g, ''));
     return columnsDetails[sizerNumber];
   }
@@ -67,7 +67,7 @@ export class ColumnSizerEvents {
   // the reason why table events are used to track mouse move events on column sizers is because otherwise when
   // the mouse moves quickly - it can leave the column sizer and events would stop firing
   // prettier-ignore
-  public static tableOnMouseMove(selectedColumnSizer: HTMLElement, columnsDetails: ColumnsDetails, newXMovement: number) {
+  public static tableOnMouseMove(selectedColumnSizer: HTMLElement, columnsDetails: ColumnsDetailsT, newXMovement: number) {
     const { columnSizer, elements: [columnElement] } =
       ColumnSizerEvents.getColumnDetailsViaElementId(selectedColumnSizer.id, columnsDetails);
     ColumnSizerElement.unsetTransitionTime(columnSizer.element);
@@ -79,7 +79,7 @@ export class ColumnSizerEvents {
   }
 
   // the following method allows us to track when the user stops dragging mouse even when not on the column sizer
-  public static tableOnMouseUp(selectedColumnSizer: HTMLElement, columnsDetails: ColumnsDetails, target: HTMLElement) {
+  public static tableOnMouseUp(selectedColumnSizer: HTMLElement, columnsDetails: ColumnsDetailsT, target: HTMLElement) {
     ColumnSizerElement.setTransitionTime(selectedColumnSizer);
     const {columnSizer} = ColumnSizerEvents.getColumnDetailsViaElementId(selectedColumnSizer.id, columnsDetails);
     // if mouse up on a different element
@@ -91,7 +91,7 @@ export class ColumnSizerEvents {
   }
 
   // in addition to the above method, the following allows us to track when the mouse has left the table
-  public static tableOnMouseLeave(selectedColumnSizer: HTMLElement, columnsDetails: ColumnsDetails) {
+  public static tableOnMouseLeave(selectedColumnSizer: HTMLElement, columnsDetails: ColumnsDetailsT) {
     const {columnSizer} = ColumnSizerEvents.getColumnDetailsViaElementId(selectedColumnSizer.id, columnsDetails);
     ColumnSizerElement.setTransitionTime(selectedColumnSizer);
     ColumnSizerElement.setDefaultProperties(selectedColumnSizer, columnSizer.styles.default.width);

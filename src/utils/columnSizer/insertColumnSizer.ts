@@ -1,11 +1,11 @@
-import {ColumnsDetails, ColumnSizerT, ColumnDetailsT, ColumnDetailsTPartial} from '../../types/columnDetails';
+import {ColumnsDetailsT, ColumnSizerT, ColumnDetailsT, ColumnDetailsTPartial} from '../../types/columnDetails';
 import {ColumnSizerElementOverlay} from '../../elements/columnSizerElement/columnSizerElementOverlay';
 import {ColumnSizerElement} from '../../elements/columnSizerElement/columnSizerElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizer} from './columnSizer';
 
 export class InsertColumnSizer {
-  private static updateIdsOfAllNext(columnsDetails: ColumnsDetails, columnIndex: number) {
+  private static updateIdsOfAllNext(columnsDetails: ColumnsDetailsT, columnIndex: number) {
     const nextIndex = columnIndex + 1;
     columnsDetails.slice(nextIndex).forEach((columnDetails: ColumnDetailsT, index: number) => {
       const relativeIndex = nextIndex + index;
@@ -30,7 +30,7 @@ export class InsertColumnSizer {
     InsertColumnSizer.applySizerStateToElement(columnSizer.element, columnSizer);
   }
 
-  private static updatePrevious(columnsDetails: ColumnsDetails, columnIndex: number) {
+  private static updatePrevious(columnsDetails: ColumnsDetailsT, columnIndex: number) {
     const previousIndex = columnIndex - 1;
     if (previousIndex < 0) return;
     const {columnSizer} = columnsDetails[previousIndex];
@@ -43,7 +43,7 @@ export class InsertColumnSizer {
 
   // prettier-ignore
   public static insert(etc: EditableTableComponent,
-      columnsDetails: ColumnsDetails, newColumnDetails: ColumnDetailsTPartial, columnIndex: number) {
+      columnsDetails: ColumnsDetailsT, newColumnDetails: ColumnDetailsTPartial, columnIndex: number) {
     InsertColumnSizer.updatePrevious(columnsDetails, columnIndex);
     InsertColumnSizer.insertAtIndex(etc, newColumnDetails, columnIndex);
     InsertColumnSizer.updateIdsOfAllNext(columnsDetails, columnIndex);

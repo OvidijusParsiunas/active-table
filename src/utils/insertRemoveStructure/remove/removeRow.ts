@@ -1,11 +1,11 @@
 import {EditableTableComponent} from '../../../editable-table-component';
-import {FireCellUpdatesForRows} from '../shared/fireCellUpdatesForRows';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
+import {UpdateCellsForRows} from '../update/updateCellsForRows';
 
 export class RemoveRow {
   private static update(etc: EditableTableComponent, rowIndex: number, lastRowElement: HTMLElement, lastRowIndex: number) {
     const lastRow = {element: lastRowElement, index: lastRowIndex};
-    FireCellUpdatesForRows.update(etc, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow);
+    UpdateCellsForRows.rebindAndFireUpdates(etc, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow);
     etc.onTableUpdate(etc.contents);
   }
 

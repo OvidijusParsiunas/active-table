@@ -1,6 +1,6 @@
 import {BorderWidths, ColumnSizerElement} from '../../elements/columnSizerElement/columnSizerElement';
 import {ColumnSizerEvents} from '../../elements/columnSizerElement/columnSizerEvents';
-import {ColumnsDetails, ColumnSizerT} from '../../types/columnDetails';
+import {ColumnsDetailsT, ColumnSizerT} from '../../types/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PX} from '../../types/pxDimension';
 
@@ -38,7 +38,7 @@ export class ColumnSizer {
     return borderWidths ? borderWidths.rightCellLeft + borderWidths.leftCellRight : 0;
   }
 
-  private static generateBorderWidthsInfo(columnsDetails: ColumnsDetails, sizerIndex: number): BorderWidths {
+  private static generateBorderWidthsInfo(columnsDetails: ColumnsDetailsT, sizerIndex: number): BorderWidths {
     const borderWidths: BorderWidths = {rightCellLeft: 0, leftCellRight: 0, beforeLeftCellRight: 0};
     const beforeLeftCell = columnsDetails[sizerIndex - 1]?.elements[0];
     if (beforeLeftCell) borderWidths.beforeLeftCellRight = Number.parseInt(beforeLeftCell.style.borderRightWidth) || 0;
@@ -51,7 +51,7 @@ export class ColumnSizer {
 
   // prettier-ignore
   public static createObject(columnSizerElement: HTMLElement,
-      columnsDetails: ColumnsDetails, sizerIndex: number, tableElement?: HTMLElement): ColumnSizerT {
+      columnsDetails: ColumnsDetailsT, sizerIndex: number, tableElement?: HTMLElement): ColumnSizerT {
     const borderWidthsInfo = ColumnSizer.generateBorderWidthsInfo(columnsDetails, sizerIndex);
     const totalCellBorderWidth = ColumnSizer.getTotalCellBorderWidth(borderWidthsInfo);
     const marginLeft = ColumnSizer.getMarginLeft(borderWidthsInfo);

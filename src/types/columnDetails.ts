@@ -31,4 +31,4 @@ export interface ColumnDetailsTPartial {
   columnSizer?: ColumnSizerT;
 }
 
-export type ColumnsDetails = ColumnDetailsT[];
+export type ColumnsDetailsT = ColumnDetailsT[];
