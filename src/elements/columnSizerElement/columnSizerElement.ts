@@ -1,8 +1,4 @@
-import {ColumnsDetails, ColumnSizerStateT} from '../../types/columnDetails';
-import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElementOverlay} from './columnSizerElementOverlay';
-import {ColumnSizerEvents} from './columnSizerEvents';
-import {ColumnSizerState} from './columnSizerState';
 import {PX} from '../../types/pxDimension';
 
 export interface BorderWidths {
@@ -21,7 +17,7 @@ export class ColumnSizerElement {
   public static readonly EMPTY_BACKGROUND_IMAGE = 'none';
   public static readonly HOVER_COLOR = 'grey';
   public static readonly COLUMN_SIZER_CLASS = 'column-sizer';
-  private static readonly COLUMN_SIZER_ID_PREFIX = `${ColumnSizerElement.COLUMN_SIZER_CLASS}-`;
+  public static readonly COLUMN_SIZER_ID_PREFIX = `${ColumnSizerElement.COLUMN_SIZER_CLASS}-`;
   private static readonly TRANSITION_TIME_ML = 200;
   private static readonly TRANSITION_TIME = `${ColumnSizerElement.TRANSITION_TIME_ML / 1000}s`;
   private static readonly HALF_TRANSITION_TIME_ML = ColumnSizerElement.TRANSITION_TIME_ML / 2;
@@ -46,59 +42,29 @@ export class ColumnSizerElement {
     columnSizerElement.style.transition = '0.0s';
   }
 
+  // properties that can be overwritten by hover
   public static setDefaultProperties(columnSizerElement: HTMLElement, width: PX) {
     columnSizerElement.style.width = width;
     ColumnSizerElement.setColors(columnSizerElement, '#ffffff08');
     ColumnSizerElementOverlay.hide(columnSizerElement.children[0] as HTMLElement);
   }
 
-  private static createElement(sizerIndex: number) {
-    const columnSizerElement = document.createElement('div');
+  public static setPermanentProperties(columnSizerElement: HTMLElement, marginLeft: string) {
+    columnSizerElement.style.marginLeft = marginLeft;
+  }
+
+  public static setElementId(columnSizerElement: HTMLElement, sizerIndex: number) {
     columnSizerElement.id = `${ColumnSizerElement.COLUMN_SIZER_ID_PREFIX}${sizerIndex}`;
+  }
+
+  public static createElement(sizerIndex: number) {
+    const columnSizerElement = document.createElement('div');
+    ColumnSizerElement.setElementId(columnSizerElement, sizerIndex);
     columnSizerElement.classList.add(ColumnSizerElement.COLUMN_SIZER_CLASS);
     const middleOverlayElement = ColumnSizerElementOverlay.create();
     columnSizerElement.append(middleOverlayElement);
     ColumnSizerElement.hide(columnSizerElement);
     return columnSizerElement;
-  }
-
-  // prettier-ignore
-  public static refreshSecondLastColumnSizer(columnsDetails: ColumnsDetails) {
-    const secondLastColumnSizerIndex = columnsDetails.length - 2;
-    const columnSizer = columnsDetails[secondLastColumnSizerIndex]?.columnSizer;
-    if (columnSizer) {
-      const newColumnSizer = ColumnSizerElement.createStateAndApplyToElement(
-        columnSizer.element, columnsDetails, secondLastColumnSizerIndex);
-      // cannot simply overwright columnsDetails[previousColumnSizerIndex] as the entry is already binded to elements
-      Object.assign(columnsDetails[secondLastColumnSizerIndex], newColumnSizer);
-    }
-  }
-
-  private static applySizerStateToElement(columnSizerElement: HTMLElement, columnSizer: ColumnSizerStateT) {
-    ColumnSizerElement.setDefaultProperties(columnSizerElement, columnSizer.styles.default.width);
-    ColumnSizerElementOverlay.setWidth(columnSizer.element.children[0] as HTMLElement, columnSizer.styles.default.width);
-    columnSizerElement.style.marginLeft = columnSizer.styles.permanent.marginLeft;
-    ColumnSizerElement.setBackgroundImage(columnSizerElement, columnSizer.styles.default.backgroundImage);
-  }
-
-  // prettier-ignore
-  private static createStateAndApplyToElement(columnSizerElement: HTMLElement,
-      columnsDetails: ColumnsDetails, sizerIndex: number, tableElement?: HTMLElement) {
-    const columnSizer = ColumnSizerState.create(columnSizerElement, columnsDetails, sizerIndex, tableElement);
-    ColumnSizerElement.applySizerStateToElement(columnSizerElement, columnSizer);
-    return columnSizer;
-  }
-
-  // prettier-ignore
-  public static create(etc: EditableTableComponent) {
-    const { columnsDetails, tableElementRef } = etc;
-    const sizerIndex = columnsDetails.length;
-    const columnSizerElement = ColumnSizerElement.createElement(sizerIndex);
-    const columnSizer = ColumnSizerElement.createStateAndApplyToElement(
-      columnSizerElement, columnsDetails, sizerIndex, tableElementRef as HTMLElement);
-    columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);
-    columnSizerElement.onmouseleave = ColumnSizerEvents.sizerOnMouseLeave.bind(etc, columnSizer);
-    return columnSizer;
   }
 
   public static display(columnSizerElement: HTMLElement, height: PX) {

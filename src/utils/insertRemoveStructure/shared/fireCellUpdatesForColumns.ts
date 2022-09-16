@@ -1,6 +1,7 @@
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellElement} from '../../../elements/cell/cellElement';
+import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
 
 export class FireCellUpdatesForColumns {
@@ -16,7 +17,7 @@ export class FireCellUpdatesForColumns {
   // prettier-ignore
   private static updateNextBeforeLastColumns(
       etc: EditableTableComponent, row: ElementDetails, startColumnIndex: number, lastColumnIndex: number) {
-    const nextColumns = Array.from(row.element.children).slice(startColumnIndex, lastColumnIndex);
+    const nextColumns = ExtractElements.dataCellsArrFromRow(row.element).slice(startColumnIndex, lastColumnIndex);
     nextColumns.forEach((cellElement: Node, columnIndex: number) => {
       const relativeColumnIndex = columnIndex + startColumnIndex;
       FireCellUpdatesForColumns.updateLastColumn(etc, row.index, cellElement, relativeColumnIndex, CELL_UPDATE_TYPE.UPDATE)

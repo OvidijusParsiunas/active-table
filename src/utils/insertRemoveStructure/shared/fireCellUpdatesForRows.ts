@@ -1,13 +1,16 @@
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellElement} from '../../../elements/cell/cellElement';
+import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
 
+// WORK not only fires but rebind
 export class FireCellUpdatesForRows {
   // prettier-ignore
   private static updateRowCells(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
-    Array.from(rowElement.children).forEach((cellElement: Node, columnIndex: number) => {
+    const dataCellElements = ExtractElements.dataCellsArrFromRow(rowElement);
+    dataCellElements.forEach((cellElement: Node, columnIndex: number) => {
       if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
         CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
       }

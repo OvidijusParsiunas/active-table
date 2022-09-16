@@ -1,5 +1,5 @@
+import {ColumnSizerState} from '../../utils/columnSizer/columnSizerState';
 import {ColumnSizerElement} from './columnSizerElement';
-import {ColumnSizerState} from './columnSizerState';
 import {PX} from '../../types/pxDimension';
 
 export class ColumnSizerElementOverlay {

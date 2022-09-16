@@ -1,5 +1,7 @@
+import {BorderWidths, ColumnSizerElement} from '../../elements/columnSizerElement/columnSizerElement';
+import {ColumnSizerEvents} from '../../elements/columnSizerElement/columnSizerEvents';
 import {ColumnsDetails, ColumnSizerStateT} from '../../types/columnDetails';
-import {BorderWidths, ColumnSizerElement} from './columnSizerElement';
+import {EditableTableComponent} from '../../editable-table-component';
 import {PX} from '../../types/pxDimension';
 
 export class ColumnSizerState {
@@ -48,7 +50,7 @@ export class ColumnSizerState {
   }
 
   // prettier-ignore
-  public static create(columnSizerElement: HTMLElement,
+  public static createObject(columnSizerElement: HTMLElement,
       columnsDetails: ColumnsDetails, sizerIndex: number, tableElement?: HTMLElement): ColumnSizerStateT {
     const borderWidthsInfo = ColumnSizerState.generateBorderWidthsInfo(columnsDetails, sizerIndex);
     const totalCellBorderWidth = ColumnSizerState.getTotalCellBorderWidth(borderWidthsInfo);
@@ -73,5 +75,16 @@ export class ColumnSizerState {
       isSideCellHovered: false,
     };
     return columnSizerState;
+  }
+
+  // prettier-ignore
+  public static create(etc: EditableTableComponent, sizerIndex: number) {
+    const { columnsDetails, tableElementRef } = etc;
+    const columnSizerElement = ColumnSizerElement.createElement(sizerIndex);
+    const columnSizer = ColumnSizerState.createObject(
+      columnSizerElement, columnsDetails, sizerIndex, tableElementRef as HTMLElement);
+    columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);
+    columnSizerElement.onmouseleave = ColumnSizerEvents.sizerOnMouseLeave.bind(etc, columnSizer);
+    return columnSizer;
   }
 }

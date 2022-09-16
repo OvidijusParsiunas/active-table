@@ -9,8 +9,10 @@ export class InsertNewColumn {
   private static updateColumns(
       etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
     const rowDetails: ElementDetails = { element: rowElement, index: rowIndex };
-    const lastCellElement = rowElement.children[rowElement.children.length - 1] as HTMLElement;
-    const lastColumn: ElementDetails = { element: lastCellElement, index: rowElement.children.length - 1 };
+    const lastCellElementIndex = rowElement.children.length - 2;
+    const lastCellElement = rowElement.children[lastCellElementIndex] as HTMLElement;
+    // index is the data cell index not the element index - as there are divider elements we divide by 2
+    const lastColumn: ElementDetails = { element: lastCellElement, index: lastCellElementIndex / 2 };
     FireCellUpdatesForColumns.update(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.ADD, lastColumn);
   }
 
