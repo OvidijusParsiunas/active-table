@@ -19,13 +19,12 @@ export class InsertNewCell {
   private static updateColumnDetailsAndSizers(
       etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
     if (rowIndex === 0) {
-      // WORK - cannot be in a timeout as create needs it
       const columnDetails = ColumnDetails.createPartial(cellElement);
       etc.columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
       InsertColumnSizer.insert(etc, etc.columnsDetails, columnDetails, columnIndex);
     } else {
       // TO-DO - not sure if all cell elements are needed, if this is not required in the future do not this code
-      setTimeout(() => etc.columnsDetails[columnIndex].elements.push(cellElement));
+      etc.columnsDetails[columnIndex].elements.push(cellElement);
     }
   }
 
@@ -35,8 +34,8 @@ export class InsertNewCell {
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
     const newCellElement = CellElement.createCellElement(etc, cellText, rowIndex, columnIndex);
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex);
-    InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, newCellElement);
-    // cannot plce in a timeout as etc.contents length is used to get last row index
+    setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, newCellElement));
+    // cannot place in a timeout as etc.contents length is used to get last row index
     if (isNewText) etc.contents[rowIndex].splice(columnIndex, 0, etc.defaultCellValue);
   }
 }
