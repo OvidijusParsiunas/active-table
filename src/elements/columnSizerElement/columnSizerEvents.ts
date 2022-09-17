@@ -1,5 +1,6 @@
 import {ColumnsDetailsT, ColumnSizerT} from '../../types/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
+import {ColumnSizerElementOverlay} from './columnSizerElementOverlay';
 import {ColumnSizerElement} from './columnSizerElement';
 import {ElementSet} from '../../types/elementSet';
 import {PX} from '../../types/pxDimension';
@@ -51,7 +52,7 @@ export class ColumnSizerEvents {
     const headerCellElement = event.target as HTMLElement;
     const height: PX = `${headerCellElement.offsetHeight}px`;
     ColumnSizerEvents.displayColumnSizer(columnsDetails[columnIndex - 1]?.columnSizer, height, visibleSizers);
-    ColumnSizerEvents.displayColumnSizer(columnsDetails[columnIndex].columnSizer, height, visibleSizers);
+    ColumnSizerEvents.displayColumnSizer(columnsDetails[columnIndex]?.columnSizer, height, visibleSizers);
   }
 
   private static setNewColumnWidth(columnElement: HTMLElement, colWidth: number, newXMovement: number) {
@@ -78,15 +79,28 @@ export class ColumnSizerEvents {
     setTimeout(() => (selectedColumnSizer.style.height = `${height}px`));
   }
 
+  public static tableOnMouseDown(selectedColumnSizer: HTMLElement) {
+    ColumnSizerElement.setColors(selectedColumnSizer, ColumnSizerElement.MOUSE_DOWN_COLOR);
+    ColumnSizerElementOverlay.setMouseDownColor(selectedColumnSizer.children[0] as HTMLElement);
+    ColumnSizerElement.unsetTransitionTime(selectedColumnSizer);
+  }
+
   // the following method allows us to track when the user stops dragging mouse even when not on the column sizer
   public static tableOnMouseUp(selectedColumnSizer: HTMLElement, columnsDetails: ColumnsDetailsT, target: HTMLElement) {
-    ColumnSizerElement.setTransitionTime(selectedColumnSizer);
+    // resetting the mouse down properties
+    ColumnSizerElement.setColors(selectedColumnSizer, ColumnSizerElement.HOVER_COLOR);
+    ColumnSizerElementOverlay.setDefaultColor(selectedColumnSizer.children[0] as HTMLElement);
     const {columnSizer} = ColumnSizerEvents.getColumnDetailsViaElementId(selectedColumnSizer.id, columnsDetails);
     // if mouse up on a different element
     if (target !== selectedColumnSizer) {
+      ColumnSizerElement.setTransitionTime(selectedColumnSizer);
       ColumnSizerElement.setDefaultProperties(selectedColumnSizer, columnSizer.styles.default.width);
       ColumnSizerElement.setPropertiesAfterBlurAnimation(selectedColumnSizer, columnSizer.styles.default.backgroundImage);
       ColumnSizerElement.hideAfterBlurAnimation(columnSizer.element);
+    } else {
+      // the reason why this is in a timeout is to allow the colors to be set to hover without a transition so the overlay
+      // does not stand out on mouse up
+      setTimeout(() => ColumnSizerElement.setTransitionTime(selectedColumnSizer));
     }
   }
 
@@ -120,13 +134,13 @@ export class ColumnSizerEvents {
     // columnSizer.isMouseHovered can be set to false before this is called, need another way to figure out
     // if the cell was hovered, following method looks at its element style to see if it was highlighted
     // the reason why this is before timeout is because we want to get this information asap
-    const wasHovered = ColumnSizerElement.isHovered(columnSizer.element);
+    const isHovered = ColumnSizerElement.isHovered(columnSizer.element);
     // only reset if the user is definitely not hovering over it
     setTimeout(() => {
       if (!this.tableElementEventState.selectedColumnSizer && !columnSizer.isSizerHovered) {
         ColumnSizerElement.setPropertiesAfterBlurAnimation(columnSizer.element,
           columnSizer.styles.default.backgroundImage);
-        ColumnSizerEvents.hideWhenCellNotHovered(columnSizer, wasHovered);
+        ColumnSizerEvents.hideWhenCellNotHovered(columnSizer, isHovered);
       }
     }, ColumnSizerEvents.MOUSE_PASSTHROUGH_TIME_ML);
   }

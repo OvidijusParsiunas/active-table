@@ -9,12 +9,15 @@ export interface BorderWidths {
   beforeLeftCellRight: number;
 }
 
-// the reason why there are multiple column sizers is because sometimes the user may hover over it before hovering
-// over a cell e.g from top/below
+// the reason why there is a unique column sizer for each column is because sometimes the user may hover over
+// it before hovering over a cell which makes state management difficult - e.g from top/below
+// another reason is that by having each one be statically placed after cells does not require any further
+// calculations for moving it when the user drags it with the mouse
 export class ColumnSizerElement {
   public static readonly FILLED_BACKGROUND_IMAGE =
     'linear-gradient(180deg, #cdcdcd, #cdcdcd 75%, transparent 75%, transparent 100%)';
   public static readonly EMPTY_BACKGROUND_IMAGE = 'none';
+  public static readonly MOUSE_DOWN_COLOR = '#4668ed';
   public static readonly HOVER_COLOR = 'grey';
   public static readonly COLUMN_SIZER_CLASS = 'column-sizer';
   public static readonly COLUMN_SIZER_ID_PREFIX = `${ColumnSizerElement.COLUMN_SIZER_CLASS}-`;
@@ -82,7 +85,7 @@ export class ColumnSizerElement {
     }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
   }
 
-  private static setColors(columnSizerElement: HTMLElement, color: string) {
+  public static setColors(columnSizerElement: HTMLElement, color: string) {
     columnSizerElement.style.backgroundColor = color;
     columnSizerElement.style.borderLeftColor = color;
     columnSizerElement.style.borderRightColor = color;

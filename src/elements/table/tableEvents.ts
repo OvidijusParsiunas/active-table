@@ -6,6 +6,7 @@ export class TableEvents {
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
     if ((event.target as HTMLElement).classList.contains(ColumnSizerElement.COLUMN_SIZER_CLASS)) {
       this.tableElementEventState.selectedColumnSizer = event.target as HTMLElement;
+      ColumnSizerEvents.tableOnMouseDown(this.tableElementEventState.selectedColumnSizer as HTMLElement);
     }
   }
 
