@@ -36,6 +36,6 @@ export class InsertNewCell {
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex);
     setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, newCellElement));
     // cannot place in a timeout as etc.contents length is used to get last row index
-    if (isNewText) etc.contents[rowIndex].splice(columnIndex, 0, etc.defaultCellValue);
+    if (isNewText) etc.contents[rowIndex].splice(columnIndex, 0, cellText);
   }
 }

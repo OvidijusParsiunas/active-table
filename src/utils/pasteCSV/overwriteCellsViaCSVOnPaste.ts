@@ -11,23 +11,29 @@ import {CSV, CSVRow} from '../../types/CSV';
 
 export class OverwriteCellsViaCSVOnPaste {
   // if the data array does not fill the full structure, fill cells with the default value
-  private static createDataArrayWithDefaultCells(etc: EditableTableComponent, data: CSVRow, dataStartIndex: number) {
-    const newRowData = DataUtils.createDataArray(etc.contents[0].length, etc.defaultCellValue);
+  // prettier-ignore
+  private static createDataArrayWithDefaultCells(
+      arrayLength: number, defaultValue: string, data: CSVRow, dataStartIndex: number) {
+    const newRowData = DataUtils.createDataArray(arrayLength, defaultValue);
     newRowData.splice(dataStartIndex, data.length, ...data);
     return newRowData;
   }
 
+  // prettier-ignore
   private static createNewRows(etc: EditableTableComponent, dataForNewRows: CSV, startColumnIndex: number) {
     dataForNewRows.forEach((rowData: CSVRow) => {
-      const newRowData = OverwriteCellsViaCSVOnPaste.createDataArrayWithDefaultCells(etc, rowData, startColumnIndex);
+      const newRowData = OverwriteCellsViaCSVOnPaste.createDataArrayWithDefaultCells(
+        etc.contents[0].length, etc.defaultCellValue, rowData, startColumnIndex);
       InsertNewRow.insert(etc, etc.contents.length, true, newRowData);
     });
   }
 
+  // prettier-ignore
   private static createNewColumns(etc: EditableTableComponent, dataForNewColumnsByRow: CSV, startRowIndex: number) {
     const dataForNewColumnsByColumn = ArrayUtils.transpose(dataForNewColumnsByRow);
     dataForNewColumnsByColumn.forEach((columnData: CSVRow) => {
-      const newColumnData = OverwriteCellsViaCSVOnPaste.createDataArrayWithDefaultCells(etc, columnData, startRowIndex);
+      const newColumnData = OverwriteCellsViaCSVOnPaste.createDataArrayWithDefaultCells(
+        etc.contents.length, etc.defaultCellValue, columnData, startRowIndex);
       InsertNewColumn.insert(etc, etc.contents[0].length, newColumnData);
     });
   }
