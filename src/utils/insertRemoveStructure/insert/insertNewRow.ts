@@ -5,6 +5,7 @@ import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ElementDetails} from '../../../types/elementDetails';
 import {RowElement} from '../../../elements/row/rowElement';
 import {InsertNewCell} from './insertNewCell';
+import {DataUtils} from '../shared/dataUtils';
 
 export class InsertNewRow {
   private static fireCellUpdates(etc: EditableTableComponent, rowIndex: number) {
@@ -23,13 +24,8 @@ export class InsertNewRow {
     });
   }
 
-  private static createNewRowData(etc: EditableTableComponent): TableRow {
-    const numberOfColumns = etc.contents[0].length;
-    return new Array(numberOfColumns).fill(etc.defaultCellValue);
-  }
-
   private static insertNewRow(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
-    const newRowData = rowData || InsertNewRow.createNewRowData(etc);
+    const newRowData = rowData || DataUtils.createDataArray(etc.contents[0].length, etc.defaultCellValue);
     const newRowElement = RowElement.create();
     etc.tableBodyElementRef?.insertBefore(newRowElement, etc.tableBodyElementRef.children[rowIndex]);
     // don't need a timeout as addition of row with new text is not expensive

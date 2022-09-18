@@ -1,4 +1,4 @@
-import {UpdateCellsViaCSVOnPaste} from '../../utils/pasteCSV/updateCellsViaCSVOnPaste';
+import {OverwriteCellsViaCSVOnPaste} from '../../utils/pasteCSV/overwriteCellsViaCSVOnPaste';
 import {NumberOfIdenticalCells} from '../../utils/numberOfIdenticalCells';
 import {ColumnSizerEvents} from '../columnSizerElement/columnSizerEvents';
 import {EditableTableComponent} from '../../editable-table-component';
@@ -50,8 +50,8 @@ export class CellEvents {
 
   public static pasteCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: ClipboardEvent) {
     const clipboardText = JSON.stringify(event.clipboardData?.getData(CellEvents.TEXT_DATA_FORMAT));
-    if (UpdateCellsViaCSVOnPaste.isCSVData(clipboardText)) {
-      UpdateCellsViaCSVOnPaste.update(this, clipboardText, event, rowIndex, columnIndex);
+    if (OverwriteCellsViaCSVOnPaste.isCSVData(clipboardText)) {
+      OverwriteCellsViaCSVOnPaste.overwrite(this, clipboardText, event, rowIndex, columnIndex);
     } else {
       const {textContent} = event.target as HTMLElement;
       CellEvents.updateCellWithPreprocessing(this, textContent, rowIndex, columnIndex);
