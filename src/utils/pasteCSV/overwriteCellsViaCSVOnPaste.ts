@@ -80,8 +80,6 @@ export class OverwriteCellsViaCSVOnPaste {
     return dataForNewColumns;
   }
 
-  // TO-DO create new rows/columns if index exceeds the current amount
-  // (potentially highlight what is failing validation in red and display what the problem is upon hover)
   // prettier-ignore
   private static overwriteCellsTextUsingCSV(
       etc: EditableTableComponent, CSV: CSV, startRowIndex: number, startColumnIndex: number) {

@@ -7,8 +7,8 @@ import {RowElement} from './rowElement';
 export class AddNewRowElement {
   private static readonly DEFAULT_COL_SPAN = 1_000_000_000;
 
-  private static createCell(customCellStyle: CSSStyle) {
-    const addNewRowCell = CellElement.create(customCellStyle, {});
+  private static createCell(cellStyle: CSSStyle) {
+    const addNewRowCell = CellElement.create(cellStyle, {});
     addNewRowCell.classList.add('add-new-row-cell');
     addNewRowCell.textContent = '+ New';
     // set to high number to always merge cells in this row
@@ -25,7 +25,7 @@ export class AddNewRowElement {
 
   public static create(etc: EditableTableComponent) {
     const addNewRowRow = AddNewRowElement.createRow(etc);
-    const addNewRowCell = AddNewRowElement.createCell(etc.customCellStyle);
+    const addNewRowCell = AddNewRowElement.createCell(etc.cellStyle);
     addNewRowRow.appendChild(addNewRowCell);
     return addNewRowRow;
   }

@@ -6,8 +6,10 @@ import {TableEvents} from './tableEvents';
 
 export class TableElement {
   public static populate(etc: EditableTableComponent) {
-    const addRowElementRef = AddNewRowElement.create(etc);
-    etc.tableBodyElementRef?.replaceChildren(addRowElementRef);
+    if (etc.displayAddRowCell) {
+      const addRowElementRef = AddNewRowElement.create(etc);
+      etc.tableBodyElementRef?.replaceChildren(addRowElementRef);
+    }
     etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
   }
 
@@ -17,7 +19,7 @@ export class TableElement {
 
   private static createTableElement(etc: EditableTableComponent) {
     const tableElement = document.createElement('table');
-    Object.assign(tableElement.style, etc.customTableStyle);
+    Object.assign(tableElement.style, etc.tableStyle);
     tableElement.onmousedown = TableEvents.onMouseDown.bind(etc);
     tableElement.onmouseup = TableEvents.onMouseUp.bind(etc);
     tableElement.onmousemove = TableEvents.onMouseMove.bind(etc);
