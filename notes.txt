@@ -12,8 +12,8 @@ This will require parserServives it work
 STRATEGY:
 
 REF-1
-customCellStyle will only override the borders of inner table structure and not the outside of the table
+cellStyle will only override the borders of inner table structure and not the outside of the table
 These have been overriden in the css using !import
 The reason for this is because the use of custom border left or border right styles would leave one of the side borders uncovered and the use of both would
 result in thick middle borders
-For the table borders to be set, use customTableStyle
+For the table borders to be set, use tableStyle

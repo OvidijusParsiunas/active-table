@@ -3,18 +3,21 @@ import {ColumnSizerEvents} from '../columnSizerElement/columnSizerEvents';
 import {EditableTableComponent} from '../../editable-table-component';
 
 export class TableEvents {
+  // prettier-ignore
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
     if ((event.target as HTMLElement).classList.contains(ColumnSizerElement.COLUMN_SIZER_CLASS)) {
       this.tableElementEventState.selectedColumnSizer = event.target as HTMLElement;
-      ColumnSizerEvents.tableOnMouseDown(this.tableElementEventState.selectedColumnSizer as HTMLElement);
+      ColumnSizerEvents.tableOnMouseDown(
+        this.tableElementEventState.selectedColumnSizer as HTMLElement, this.columnResizerStyle.click?.backgroundColor);
     }
   }
 
   // prettier-ignore
   public static onMouseUp(this: EditableTableComponent, event: MouseEvent) {
-    const { tableElementEventState: { selectedColumnSizer }, columnsDetails } = this;
+    const { tableElementEventState: { selectedColumnSizer }, columnsDetails, columnResizerStyle } = this;
     if (selectedColumnSizer) {
-      ColumnSizerEvents.tableOnMouseUp(selectedColumnSizer, columnsDetails, event.target as HTMLElement);
+      ColumnSizerEvents.tableOnMouseUp(
+        selectedColumnSizer, columnsDetails, event.target as HTMLElement, columnResizerStyle.hover?.backgroundColor);
       delete this.tableElementEventState.selectedColumnSizer;
     }
   }

@@ -27,13 +27,14 @@
       ];
       const element = document.getElementById('etc-element');
       const aa = (content, row, column, type) => {
-        // console.log(content, row, column, type);
+        console.log(content, row, column, type);
       };
       setTimeout(() => {
         if (element) {
           // element.setAttribute('contents', `[[${myValue[0]}],[${myValue[1]}]]`);
-          // element.setAttribute('customCellStyle', JSON.stringify({borderBottom: '1px solid black'}));
-          // element.setAttribute('customTableStyle', JSON.stringify({borderBottom: '1px solid black'}));
+          // element.setAttribute('cellStyle', JSON.stringify({borderRight: '1px solid black'}));
+          // element.setAttribute('tableStyle', JSON.stringify({border: '10px solid black'}));
+          // element.setAttribute('headerStyle', JSON.stringify({backgroundColor: 'red'}));
           element.setAttribute('onCellUpdate', aa);
         }
       }, 5);

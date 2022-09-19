@@ -3,13 +3,17 @@ import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableElementEventState} from './types/tableElementEventState';
 import {customElement, property, state} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
+import {ColumnResizerStyle, CSSStyle} from './types/cssStyle';
 import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {OverlayElements} from './types/overlayElements';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
-import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
+
+// TO-DO
+// column validation: potentially highlight what is failing validation in red and display what the problem is upon hover
+// rename file name from using hyphen case to camel
 
 // spellcheck can be enabled or disabled by the user - enabled by default
 // new row or column buttons can be made optional
@@ -68,13 +72,20 @@ export class EditableTableComponent extends LitElement {
   overlayElementsState: OverlayElements = OverlayElementsState.createNew();
 
   @property({type: Object})
-  customTableStyle: CSSStyle = {};
+  tableStyle: CSSStyle = {};
 
   @property({type: Object})
-  customHeaderStyle: CSSStyle = {};
+  headerStyle: CSSStyle = {};
 
   @property({type: Object})
-  customCellStyle: CSSStyle = {};
+  cellStyle: CSSStyle = {};
+
+  // in the code - the columnResizer is called columnSizer for simplicity
+  @property({type: Object})
+  columnResizerStyle: ColumnResizerStyle = {hover: {backgroundColor: 'red'}, click: {backgroundColor: 'green'}};
+
+  @property({type: Boolean})
+  displayAddRowCell = true;
 
   override render() {
     this.refreshState();

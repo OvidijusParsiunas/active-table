@@ -79,17 +79,18 @@ export class ColumnSizerEvents {
     setTimeout(() => (selectedColumnSizer.style.height = `${height}px`));
   }
 
-  public static tableOnMouseDown(selectedColumnSizer: HTMLElement) {
-    ColumnSizerElement.setColors(selectedColumnSizer, ColumnSizerElement.MOUSE_DOWN_COLOR);
+  public static tableOnMouseDown(selectedColumnSizer: HTMLElement, customColor?: string) {
+    ColumnSizerElement.setColors(selectedColumnSizer, customColor || ColumnSizerElement.MOUSE_DOWN_COLOR);
     ColumnSizerElementOverlay.setMouseDownColor(selectedColumnSizer.children[0] as HTMLElement);
     ColumnSizerElement.unsetTransitionTime(selectedColumnSizer);
   }
 
   // the following method allows us to track when the user stops dragging mouse even when not on the column sizer
-  public static tableOnMouseUp(selectedColumnSizer: HTMLElement, columnsDetails: ColumnsDetailsT, target: HTMLElement) {
+  // prettier-ignore
+  public static tableOnMouseUp(
+      selectedColumnSizer: HTMLElement, columnsDetails: ColumnsDetailsT, target: HTMLElement, customColor?: string) {
     // resetting the mouse down properties
-    ColumnSizerElement.setColors(selectedColumnSizer, ColumnSizerElement.HOVER_COLOR);
-    ColumnSizerElementOverlay.setDefaultColor(selectedColumnSizer.children[0] as HTMLElement);
+    ColumnSizerElementOverlay.setDefaultColor(selectedColumnSizer.children[0] as HTMLElement, customColor);
     const {columnSizer} = ColumnSizerEvents.getColumnDetailsViaElementId(selectedColumnSizer.id, columnsDetails);
     // if mouse up on a different element
     if (target !== selectedColumnSizer) {
@@ -98,6 +99,7 @@ export class ColumnSizerEvents {
       ColumnSizerElement.setPropertiesAfterBlurAnimation(selectedColumnSizer, columnSizer.styles.default.backgroundImage);
       ColumnSizerElement.hideAfterBlurAnimation(columnSizer.element);
     } else {
+      ColumnSizerElement.setColors(selectedColumnSizer, customColor || ColumnSizerElement.DEFAULT_COLOR);
       // the reason why this is in a timeout is to allow the colors to be set to hover without a transition so the overlay
       // does not stand out on mouse up
       setTimeout(() => ColumnSizerElement.setTransitionTime(selectedColumnSizer));
@@ -112,11 +114,13 @@ export class ColumnSizerEvents {
     ColumnSizerElement.setPropertiesAfterBlurAnimation(selectedColumnSizer, columnSizer.styles.default.backgroundImage);
   }
 
+  // prettier-ignore
   public static sizerOnMouseEnter(this: EditableTableComponent, columnSizer: ColumnSizerT) {
     columnSizer.isSizerHovered = true;
     // if selected and hovered over another
     if (this.tableElementEventState.selectedColumnSizer) return;
-    ColumnSizerElement.setHoverProperties(columnSizer.element, columnSizer.styles.hover.width);
+    ColumnSizerElement.setHoverProperties(
+      columnSizer.element, columnSizer.styles.hover.width, this.columnResizerStyle.hover?.backgroundColor);
     // only remove the background image if the user is definitely hovering over it
     setTimeout(() => {
       if (columnSizer.isSizerHovered) ColumnSizerElement.unsetBackgroundImage(columnSizer.element);

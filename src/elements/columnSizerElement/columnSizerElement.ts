@@ -18,7 +18,8 @@ export class ColumnSizerElement {
     'linear-gradient(180deg, #cdcdcd, #cdcdcd 75%, transparent 75%, transparent 100%)';
   public static readonly EMPTY_BACKGROUND_IMAGE = 'none';
   public static readonly MOUSE_DOWN_COLOR = '#4668ed';
-  public static readonly HOVER_COLOR = 'grey';
+  public static readonly DEFAULT_COLOR = 'grey';
+  public static readonly SEMI_TRANSPARENT_COLOR = '#ffffff01';
   public static readonly COLUMN_SIZER_CLASS = 'column-sizer';
   public static readonly COLUMN_SIZER_ID_PREFIX = `${ColumnSizerElement.COLUMN_SIZER_CLASS}-`;
   private static readonly TRANSITION_TIME_ML = 200;
@@ -48,7 +49,7 @@ export class ColumnSizerElement {
   // properties that can be overwritten by hover
   public static setDefaultProperties(columnSizerElement: HTMLElement, width: PX) {
     columnSizerElement.style.width = width;
-    ColumnSizerElement.setColors(columnSizerElement, '#ffffff08');
+    ColumnSizerElement.setColors(columnSizerElement, ColumnSizerElement.SEMI_TRANSPARENT_COLOR);
     ColumnSizerElementOverlay.hide(columnSizerElement.children[0] as HTMLElement);
   }
 
@@ -60,11 +61,11 @@ export class ColumnSizerElement {
     columnSizerElement.id = `${ColumnSizerElement.COLUMN_SIZER_ID_PREFIX}${sizerIndex}`;
   }
 
-  public static createElement(sizerIndex: number) {
+  public static create(sizerIndex: number, customColor?: string) {
     const columnSizerElement = document.createElement('div');
     ColumnSizerElement.setElementId(columnSizerElement, sizerIndex);
     columnSizerElement.classList.add(ColumnSizerElement.COLUMN_SIZER_CLASS);
-    const middleOverlayElement = ColumnSizerElementOverlay.create();
+    const middleOverlayElement = ColumnSizerElementOverlay.create(customColor);
     columnSizerElement.append(middleOverlayElement);
     ColumnSizerElement.hide(columnSizerElement);
     return columnSizerElement;
@@ -101,10 +102,10 @@ export class ColumnSizerElement {
     }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
   }
 
-  public static setHoverProperties(columnSizerElement: HTMLElement, width: PX) {
+  public static setHoverProperties(columnSizerElement: HTMLElement, width: PX, customColor?: string) {
     ColumnSizerElementOverlay.display(columnSizerElement.children[0] as HTMLElement);
     ColumnSizerElement.setTransitionTime(columnSizerElement);
-    ColumnSizerElement.setColors(columnSizerElement, ColumnSizerElement.HOVER_COLOR);
+    ColumnSizerElement.setColors(columnSizerElement, customColor || ColumnSizerElement.DEFAULT_COLOR);
     columnSizerElement.style.width = width;
   }
 }

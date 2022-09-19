@@ -80,7 +80,7 @@ export class ColumnSizer {
   // prettier-ignore
   public static create(etc: EditableTableComponent, sizerIndex: number) {
     const { columnsDetails, tableElementRef } = etc;
-    const columnSizerElement = ColumnSizerElement.createElement(sizerIndex);
+    const columnSizerElement = ColumnSizerElement.create(sizerIndex, etc.columnResizerStyle.hover?.backgroundColor);
     const columnSizer = ColumnSizer.createObject(
       columnSizerElement, columnsDetails, sizerIndex, tableElementRef as HTMLElement);
     columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);
