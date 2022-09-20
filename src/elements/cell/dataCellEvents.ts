@@ -5,7 +5,6 @@ import {ElementSet} from '../../types/elementSet';
 import {CellEvents} from './cellEvents';
 
 export class DataCellEvents {
-  private static readonly EMPTY_STRING = '';
   private static readonly PASTE_INPUT_TYPE = 'insertFromPaste';
   private static readonly TEXT_DATA_FORMAT = 'text/plain';
 
@@ -44,25 +43,16 @@ export class DataCellEvents {
     }
   }
 
-  // WORK - duplicate headers allowed
   private static blurCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
-    const target = event.target as HTMLElement;
-    const cellText = target.textContent?.trim();
-    if (cellText !== undefined) {
-      if (
-        (this.defaultCellValue !== DataCellEvents.EMPTY_STRING && cellText === DataCellEvents.EMPTY_STRING) ||
-        (rowIndex === 0 && !this.duplicateHeadersAllowed && NumberOfIdenticalCells.get(cellText, this.contents[0]) > 1)
-      ) {
-        CellEvents.updateCell(this, this.defaultCellValue, rowIndex, columnIndex, target);
-      }
-    }
+    const cellElement = event.target as HTMLElement;
+    CellEvents.ifEmptyCellSetToDefault(this, rowIndex, columnIndex, cellElement);
   }
 
   // prettier-ignore
   private static focusCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
-    if (this.defaultCellValue !== DataCellEvents.EMPTY_STRING
+    if (this.defaultCellValue !== CellEvents.EMPTY_STRING
         && this.defaultCellValue === (event.target as HTMLElement).textContent) {
-      CellEvents.updateCell(this, DataCellEvents.EMPTY_STRING, rowIndex, columnIndex, event.target as HTMLElement);
+      CellEvents.updateCell(this, CellEvents.EMPTY_STRING, rowIndex, columnIndex, event.target as HTMLElement);
     }
   }
 

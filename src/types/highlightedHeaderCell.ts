@@ -1,1 +1,1 @@
-export type HighlightedHeaderCell = {element: HTMLElement | null};
+export type HighlightedHeaderCell = {element?: HTMLElement; columnIndex?: number};

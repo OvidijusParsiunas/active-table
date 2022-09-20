@@ -10,14 +10,17 @@ export class HeaderCellEvents {
     cellElement.style.backgroundColor = '';
   }
 
-  private static highlightCell(cellElement: HTMLElement, highlightedHeaderCell: HighlightedHeaderCell) {
+  // prettier-ignore
+  private static highlightCell(
+      highlightedHeaderCell: HighlightedHeaderCell, cellElement: HTMLElement, columnIndex: number) {
     cellElement.style.backgroundColor = HeaderCellEvents.HOVER_BACKGROUND_COLOR;
     highlightedHeaderCell.element = cellElement;
+    highlightedHeaderCell.columnIndex = columnIndex;
   }
 
   // prettier-ignore
   private static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
-    HeaderCellEvents.highlightCell(event.target as HTMLElement, this.highlightedHeaderCell);
+    HeaderCellEvents.highlightCell(this.highlightedHeaderCell, event.target as HTMLElement, columnIndex);
     ColumnSizerEvents.cellMouseEnter(
       this.columnsDetails, columnIndex, this.overlayElementsState.visibleColumnSizers, event);
   }

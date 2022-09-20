@@ -4,6 +4,7 @@ import {HeaderCellEvents} from '../cell/headerCellEvents';
 import {CellEvents} from '../cell/cellEvents';
 
 export class Dropdown {
+  private static readonly ENTER_KEY = 'Enter';
   // there will only ever be one dropdown instance within the shadow dom
   private static readonly DROPDOWN_ID = 'editable-table-component-dropdown';
   private static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
@@ -22,8 +23,15 @@ export class Dropdown {
     elements.forEach((element: HTMLElement) => (element.style.display = 'none'));
   }
 
+  private static onKeyDown(this: EditableTableComponent, event: KeyboardEvent) {
+    if (event.key === Dropdown.ENTER_KEY) {
+      Dropdown.hideRelevantDropdownElements(this);
+    }
+  }
+
+  // reason why using onInput for updating cells is because it works for paste
   // prettier-ignore
-  private static onInputKeyDown(this: EditableTableComponent,
+  private static onInput(this: EditableTableComponent,
       columnIndex: number, cellElement: HTMLElement, dropdownElement: HTMLElement, dropdownInutElement: HTMLInputElement) {
     setTimeout(() => {
       CellEvents.updateCellWithPreprocessing(this, 0, columnIndex, dropdownInutElement.value, cellElement);
@@ -67,11 +75,14 @@ export class Dropdown {
   }
 
   // prettier-ignore
-  public static hideRelevantDropdownElements(
-      headerCellElement: HTMLElement, columnDropdown: HTMLElement, fullTableOverlay: HTMLElement) {
-    HeaderCellEvents.fadeCell(headerCellElement);
-    Dropdown.hideElements(columnDropdown, fullTableOverlay);
-    Dropdown.resetDropdownPosition(columnDropdown);
+  public static hideRelevantDropdownElements(etc: EditableTableComponent) {
+    const {
+      overlayElementsState: {columnDropdown, fullTableOverlay},
+      highlightedHeaderCell: {element: cellElement, columnIndex}} = etc;
+    CellEvents.ifEmptyCellSetToDefault(etc, 0, columnIndex as number, cellElement as HTMLElement);
+    HeaderCellEvents.fadeCell(cellElement as HTMLElement);
+    Dropdown.hideElements(columnDropdown as HTMLElement, fullTableOverlay as HTMLElement);
+    Dropdown.resetDropdownPosition(columnDropdown as HTMLElement);
   }
 
   // TO-DO will this work correctly when a scrollbar is introduced
@@ -100,8 +111,9 @@ export class Dropdown {
     Dropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
     fullTableOverlay.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
     dropdownInutElement.focus();
-    // overwrites the onkeydown event
-    dropdownElement.onkeydown = Dropdown.onInputKeyDown.bind(
+    // overwrites the oninput event
+    dropdownInutElement.oninput = Dropdown.onInput.bind(
       etc, columnIndex, cellElement, dropdownElement, dropdownInutElement);
+    dropdownElement.onkeydown = Dropdown.onKeyDown.bind(etc);
   }
 }

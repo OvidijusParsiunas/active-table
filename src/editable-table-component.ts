@@ -17,6 +17,9 @@ import {LitElement} from 'lit';
 // column validation: potentially highlight what is failing validation in red and display what the problem is upon hover
 // rename file name from using hyphen case to camel
 
+// WORK - tab and escape for the dropdown
+// WORK - paste csv default cell
+
 // spellcheck can be enabled or disabled by the user - enabled by default
 // new row or column buttons can be made optional
 @customElement('editable-table-component')
@@ -74,7 +77,7 @@ export class EditableTableComponent extends LitElement {
   tableBodyElementRef: HTMLElement | null = null;
 
   @state()
-  highlightedHeaderCell: HighlightedHeaderCell = {element: null};
+  highlightedHeaderCell: HighlightedHeaderCell = {};
 
   @state()
   overlayElementsState: OverlayElements = OverlayElementsState.createNew();
