@@ -30,7 +30,7 @@ export class HeaderCellEvents {
   }
 
   private static mouseClick(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
-    Dropdown.display(this, columnIndex, event);
+    Dropdown.displayRelevantDropdownElements(this, columnIndex, event);
   }
 
   public static set(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {

@@ -1,5 +1,6 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {ElementViewPort} from '../../utils/elements/elementViewPort';
+import {HeaderCellEvents} from '../cell/headerCellEvents';
 import {CellEvents} from '../cell/cellEvents';
 
 export class Dropdown {
@@ -8,6 +9,18 @@ export class Dropdown {
   private static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
   private static readonly DROPDOWN_INPUT_CLASS = 'dropdown-input';
   private static readonly CSS_DISPLAY_VISIBLE = 'block';
+
+  public static isDisplayed(columnDropdown?: HTMLElement) {
+    return columnDropdown?.style.display === Dropdown.CSS_DISPLAY_VISIBLE;
+  }
+
+  public static isPartOfDropdownElement(element: HTMLElement) {
+    return element.id === Dropdown.DROPDOWN_ID || element.classList.contains(Dropdown.DROPDOWN_ITEM_CLASS);
+  }
+
+  private static hideElements(...elements: HTMLElement[]) {
+    elements.forEach((element: HTMLElement) => (element.style.display = 'none'));
+  }
 
   // prettier-ignore
   private static onInputKeyDown(this: EditableTableComponent,
@@ -48,19 +61,26 @@ export class Dropdown {
     return dropdownElement;
   }
 
+  private static resetDropdownPosition(dropdownElement: HTMLElement) {
+    dropdownElement.style.left = '';
+    dropdownElement.style.right = '';
+  }
+
   // prettier-ignore
-  private static displayElements(
-      dropdownElement: HTMLElement, fullTableOverlay: HTMLElement, dropdownInutElement: HTMLElement) {
-    dropdownElement.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
-    fullTableOverlay.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
-    dropdownInutElement.focus();
+  public static hideRelevantDropdownElements(
+      headerCellElement: HTMLElement, columnDropdown: HTMLElement, fullTableOverlay: HTMLElement) {
+    HeaderCellEvents.fadeCell(headerCellElement);
+    Dropdown.hideElements(columnDropdown, fullTableOverlay);
+    Dropdown.resetDropdownPosition(columnDropdown);
   }
 
   // TO-DO will this work correctly when a scrollbar is introduced
-  private static setDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement) {
+  private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement) {
     const dimensions = cellElement.getBoundingClientRect();
     dropdownElement.style.left = `${dimensions.left}px`;
     dropdownElement.style.top = `${dimensions.bottom}px`;
+    // needs to be displayed in order to evalute if in view port
+    dropdownElement.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
     if (!ElementViewPort.isIn(dropdownElement)) {
       // move to the right
       dropdownElement.style.left = '';
@@ -70,29 +90,18 @@ export class Dropdown {
 
   // prettier-ignore
   // WORK - how will this positioning work with scrolling
-  public static display(etc: EditableTableComponent, columnIndex: number, event: MouseEvent) {
+  public static displayRelevantDropdownElements(etc: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     const fullTableOverlay = etc.overlayElementsState.fullTableOverlay as HTMLElement;
     const dropdownElement = etc.overlayElementsState.columnDropdown as HTMLElement;
     const dropdownInutElement = dropdownElement.getElementsByClassName(
       Dropdown.DROPDOWN_INPUT_CLASS)[0] as HTMLInputElement;
     dropdownInutElement.value = etc.contents[0][columnIndex] as string;
     const cellElement = event.target as HTMLElement;
-    Dropdown.setDropdownPosition(cellElement, dropdownElement);
-    Dropdown.displayElements(dropdownElement, fullTableOverlay, dropdownInutElement);
+    Dropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
+    fullTableOverlay.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
+    dropdownInutElement.focus();
     // overwrites the onkeydown event
     dropdownElement.onkeydown = Dropdown.onInputKeyDown.bind(
       etc, columnIndex, cellElement, dropdownElement, dropdownInutElement);
-  }
-
-  public static hideElements(...elements: HTMLElement[]) {
-    elements.forEach((element: HTMLElement) => (element.style.display = 'none'));
-  }
-
-  public static isDisplayed(columnDropdown?: HTMLElement) {
-    return columnDropdown?.style.display === Dropdown.CSS_DISPLAY_VISIBLE;
-  }
-
-  public static isPartOfDropdownElement(element: HTMLElement) {
-    return element.id === Dropdown.DROPDOWN_ID || element.classList.contains(Dropdown.DROPDOWN_ITEM_CLASS);
   }
 }

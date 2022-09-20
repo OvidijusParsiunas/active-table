@@ -1,8 +1,8 @@
 import {EditableTableComponent} from '../../editable-table-component';
-import {HeaderCellEvents} from '../cell/headerCellEvents';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class WindowEvents {
+  // prettier-ignore
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
     const {columnDropdown, fullTableOverlay} = this.overlayElementsState;
     // window event.target can only identify the parent element in shadow dom, not elements
@@ -12,8 +12,8 @@ export class WindowEvents {
     // if the user clicks outside of the shadow dom and the column dropdown is open,
     // close the column dropdown
     if (Dropdown.isDisplayed(columnDropdown)) {
-      HeaderCellEvents.fadeCell(this.highlightedHeaderCell.element as HTMLElement);
-      Dropdown.hideElements(columnDropdown as HTMLElement, fullTableOverlay as HTMLElement);
+      Dropdown.hideRelevantDropdownElements(
+        this.highlightedHeaderCell.element as HTMLElement, columnDropdown as HTMLElement, fullTableOverlay as HTMLElement)
     }
   }
 }
