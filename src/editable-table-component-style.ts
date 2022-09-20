@@ -104,12 +104,13 @@ export const ediTableStyle = css`
   }
 
   .dropdown-item {
-    cursor: pointer;
     padding-top: 1px;
     padding-bottom: 1px;
     padding-right: 5px;
     padding-left: 5px;
     color: grey;
+    cursor: pointer;
+    user-select: none;
   }
 
   .dropdown-item:hover {

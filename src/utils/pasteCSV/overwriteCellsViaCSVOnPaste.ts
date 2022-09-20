@@ -100,7 +100,7 @@ export class OverwriteCellsViaCSVOnPaste {
       clipboardText: string, event: ClipboardEvent, rowIndex: number, columnIndex: number,) {
     event.preventDefault();
     const CSV = ParseCSVClipboardText.parse(clipboardText);
-    this.overwriteCellsTextUsingCSV(etc, CSV, rowIndex, columnIndex);
+    OverwriteCellsViaCSVOnPaste.overwriteCellsTextUsingCSV(etc, CSV, rowIndex, columnIndex);
   }
 
   public static isCSVData(clipboardText: string): boolean {

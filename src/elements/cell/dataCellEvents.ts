@@ -1,8 +1,8 @@
 import {OverwriteCellsViaCSVOnPaste} from '../../utils/pasteCSV/overwriteCellsViaCSVOnPaste';
 import {NumberOfIdenticalCells} from '../../utils/numberOfIdenticalCells';
 import {EditableTableComponent} from '../../editable-table-component';
-import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
 import {ElementSet} from '../../types/elementSet';
+import {CellEvents} from './cellEvents';
 
 export class DataCellEvents {
   private static readonly EMPTY_STRING = '';
@@ -18,32 +18,16 @@ export class DataCellEvents {
   }
 
   // prettier-ignore
-  private static updateCell(etc: EditableTableComponent,
-      newText: string | undefined, rowIndex: number, columnIndex: number, target?: HTMLElement): void {
-    if (newText === undefined || newText === null) return;
-    etc.contents[rowIndex][columnIndex] = newText;
-    if (target) target.textContent = newText;
-    etc.onCellUpdate(newText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
-    etc.onTableUpdate(etc.contents);
-  }
-
-  // prettier-ignore
-  private static updateCellWithPreprocessing(etc: EditableTableComponent,
-      newText: string | null, rowIndex: number, columnIndex: number, target?: HTMLElement): void {
-    const processedText = newText?.trim();
-    DataCellEvents.updateCell(etc, processedText, rowIndex, columnIndex, target);
-  }
-
   private static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const inputEvent = event as InputEvent;
     if (inputEvent.inputType !== DataCellEvents.PASTE_INPUT_TYPE) {
-      const target = inputEvent.target as HTMLElement;
-      DataCellEvents.updateCellWithPreprocessing(this, target.textContent, rowIndex, columnIndex);
+      const cellElement = inputEvent.target as HTMLElement;
+      CellEvents.updateCellWithPreprocessing(this, rowIndex, columnIndex, cellElement.textContent as string);
       // WORK - this may not be required
       if (rowIndex === 0) {
         // reason why using visibleColumnSizers property instead of getting column sizers via columnDetails and columnIndex
         // is because the user could have hovered over another header cell other than the one that is being typed in
-        DataCellEvents.updateVisibleColumnSizerHeight(this.overlayElementsState.visibleColumnSizers, target);
+        DataCellEvents.updateVisibleColumnSizerHeight(this.overlayElementsState.visibleColumnSizers, cellElement);
       }
     }
   }
@@ -53,8 +37,10 @@ export class DataCellEvents {
     if (OverwriteCellsViaCSVOnPaste.isCSVData(clipboardText)) {
       OverwriteCellsViaCSVOnPaste.overwrite(this, clipboardText, event, rowIndex, columnIndex);
     } else {
-      const {textContent} = event.target as HTMLElement;
-      DataCellEvents.updateCellWithPreprocessing(this, textContent, rowIndex, columnIndex);
+      const cellElement = event.target as HTMLElement;
+      setTimeout(() => {
+        CellEvents.updateCellWithPreprocessing(this, rowIndex, columnIndex, cellElement.textContent as string);
+      });
     }
   }
 
@@ -67,7 +53,7 @@ export class DataCellEvents {
         (this.defaultCellValue !== DataCellEvents.EMPTY_STRING && cellText === DataCellEvents.EMPTY_STRING) ||
         (rowIndex === 0 && !this.duplicateHeadersAllowed && NumberOfIdenticalCells.get(cellText, this.contents[0]) > 1)
       ) {
-        DataCellEvents.updateCell(this, this.defaultCellValue, rowIndex, columnIndex, target);
+        CellEvents.updateCell(this, this.defaultCellValue, rowIndex, columnIndex, target);
       }
     }
   }
@@ -76,7 +62,7 @@ export class DataCellEvents {
   private static focusCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
     if (this.defaultCellValue !== DataCellEvents.EMPTY_STRING
         && this.defaultCellValue === (event.target as HTMLElement).textContent) {
-      DataCellEvents.updateCell(this, DataCellEvents.EMPTY_STRING, rowIndex, columnIndex, event.target as HTMLElement);
+      CellEvents.updateCell(this, DataCellEvents.EMPTY_STRING, rowIndex, columnIndex, event.target as HTMLElement);
     }
   }
 

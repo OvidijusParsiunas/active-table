@@ -30,8 +30,7 @@ export class HeaderCellEvents {
   }
 
   private static mouseClick(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
-    const {columnDropdown, fullTableOverlay} = this.overlayElementsState;
-    Dropdown.display(columnDropdown as HTMLElement, fullTableOverlay as HTMLElement, columnIndex, event);
+    Dropdown.display(this, columnIndex, event);
   }
 
   public static set(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
