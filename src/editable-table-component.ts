@@ -23,6 +23,8 @@ import {LitElement} from 'lit';
 export class EditableTableComponent extends LitElement {
   static override styles = [ediTableStyle];
 
+  public static ELEMENT_TAG = 'EDITABLE-TABLE-COMPONENT';
+
   @property({type: Array})
   contents: TableContents = [
     ['R', 'G', 'B', 'Color'],

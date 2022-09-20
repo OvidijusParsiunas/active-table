@@ -4,6 +4,13 @@ export class Dropdown {
   private static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
   private static readonly CSS_DISPLAY_VISIBLE = 'block';
 
+  private static addInputItem(dropdownElement: HTMLElement, defaultText: string) {
+    const inputItemElement = document.createElement('input');
+    inputItemElement.classList.add(Dropdown.DROPDOWN_ITEM_CLASS);
+    inputItemElement.textContent = defaultText;
+    dropdownElement.appendChild(inputItemElement);
+  }
+
   private static addItem(dropdownElement: HTMLElement, itemText: string) {
     const itemElement = document.createElement('div');
     itemElement.classList.add(Dropdown.DROPDOWN_ITEM_CLASS);
@@ -14,6 +21,7 @@ export class Dropdown {
   public static create() {
     const dropdownElement = document.createElement('div');
     dropdownElement.id = Dropdown.DROPDOWN_ID;
+    Dropdown.addInputItem(dropdownElement, 'asdasdsad');
     Dropdown.addItem(dropdownElement, 'Ascending');
     Dropdown.addItem(dropdownElement, 'Descending');
     Dropdown.addItem(dropdownElement, 'Insert Right');
@@ -38,7 +46,7 @@ export class Dropdown {
     return columnDropdown?.style.display === Dropdown.CSS_DISPLAY_VISIBLE;
   }
 
-  public static isDropdownElement(columnDropdown: HTMLElement) {
-    return columnDropdown.id === Dropdown.DROPDOWN_ID;
+  public static isPartOfDropdownElement(element: HTMLElement) {
+    return element.id === Dropdown.DROPDOWN_ID || element.classList.contains(Dropdown.DROPDOWN_ITEM_CLASS);
   }
 }

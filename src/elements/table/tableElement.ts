@@ -21,7 +21,7 @@ export class TableElement {
       etc.tableBodyElementRef?.appendChild(addNewRowElement);
     }
     // full table overlay element
-    etc.overlayElementsState.fullTableOverlay = FullTableOverlayElement.create();
+    etc.overlayElementsState.fullTableOverlay = FullTableOverlayElement.create(etc);
     etc.tableBodyElementRef?.appendChild(etc.overlayElementsState.fullTableOverlay);
   }
 
