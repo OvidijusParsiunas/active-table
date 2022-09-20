@@ -1,19 +1,19 @@
 import {EditableTableComponent} from '../../editable-table-component';
+import {HeaderCellEvents} from './headerCellEvents';
+import {DataCellEvents} from './dataCellEvents';
 import {CSSStyle} from '../../types/cssStyle';
-import {CellEvents} from './cellEvents';
 
 export class CellElement {
   public static readonly DEFAULT_COLUMN_WIDTH = '100px';
 
   // prettier-ignore
   public static setCellEvents(etc: EditableTableComponent,
-      cellElement: HTMLElement, newRowIndex: number, columnIndex: number) {
-    cellElement.oninput = CellEvents.inputCell.bind(etc, newRowIndex, columnIndex);
-    cellElement.onpaste = CellEvents.pasteCell.bind(etc, newRowIndex, columnIndex);
-    cellElement.onblur = CellEvents.blurCell.bind(etc, newRowIndex, columnIndex);
-    cellElement.onfocus = CellEvents.focusCell.bind(etc, newRowIndex, columnIndex);
-    cellElement.onmouseenter = CellEvents.mouseEnterCell.bind(etc, newRowIndex, columnIndex);
-    cellElement.onmouseleave = CellEvents.mouseLeaveCell.bind(etc, newRowIndex, columnIndex);
+      cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    if (rowIndex === 0) {
+      HeaderCellEvents.set(etc, cellElement, columnIndex);
+    } else {
+      DataCellEvents.set(etc, cellElement, rowIndex, columnIndex);
+    }
   }
 
   public static create(cellStyle: CSSStyle, headerStyle: CSSStyle, isHeader = false) {
@@ -25,7 +25,8 @@ export class CellElement {
 
   private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
     const cellElement = CellElement.create(etc.cellStyle, etc.headerStyle, isHeader);
-    cellElement.contentEditable = String(isHeader ? !!etc.areHeadersEditable : true);
+    // WORK - take etc.areHeadersEditable into consideration
+    cellElement.contentEditable = String(!isHeader);
     cellElement.textContent = cellText as string;
     if (isHeader) cellElement.style.width = CellElement.DEFAULT_COLUMN_WIDTH;
     return cellElement;

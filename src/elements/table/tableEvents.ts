@@ -1,6 +1,6 @@
-import {ColumnSizerElement} from '../columnSizerElement/columnSizerElement';
-import {ColumnSizerEvents} from '../columnSizerElement/columnSizerEvents';
 import {EditableTableComponent} from '../../editable-table-component';
+import {ColumnSizerElement} from '../columnSizer/columnSizerElement';
+import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
 
 export class TableEvents {
   // prettier-ignore

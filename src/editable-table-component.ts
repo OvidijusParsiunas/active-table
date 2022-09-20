@@ -1,9 +1,11 @@
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableElementEventState} from './types/tableElementEventState';
+import {HighlightedHeaderCell} from './types/highlightedHeaderCell';
 import {customElement, property, state} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
 import {ColumnResizerStyle, CSSStyle} from './types/cssStyle';
+import {WindowElement} from './elements/window/windowElement';
 import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {OverlayElements} from './types/overlayElements';
@@ -38,6 +40,7 @@ export class EditableTableComponent extends LitElement {
   @property()
   onTableUpdate: (newTableContents: TableContents) => void = () => {};
 
+  // WORK - will need to do some work for this
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
@@ -69,6 +72,9 @@ export class EditableTableComponent extends LitElement {
   tableBodyElementRef: HTMLElement | null = null;
 
   @state()
+  highlightedHeaderCell: HighlightedHeaderCell = {element: null};
+
+  @state()
   overlayElementsState: OverlayElements = OverlayElementsState.createNew();
 
   @property({type: Object})
@@ -80,21 +86,21 @@ export class EditableTableComponent extends LitElement {
   @property({type: Object})
   cellStyle: CSSStyle = {};
 
-  // in the code - the columnResizer is called columnSizer for simplicity
+  // in code - columnResizer is called columnSizer for simplicity
   @property({type: Object})
-  columnResizerStyle: ColumnResizerStyle = {hover: {backgroundColor: 'red'}, click: {backgroundColor: 'green'}};
+  columnResizerStyle: ColumnResizerStyle = {};
 
   @property({type: Boolean})
   displayAddRowCell = true;
 
   override render() {
-    this.refreshState();
-    TableElement.populate(this);
+    this.refreshTableBodyState();
+    TableElement.populateBody(this);
     this.onTableUpdate(this.contents);
   }
 
-  private refreshState() {
-    this.overlayElementsState = OverlayElementsState.createNew();
+  private refreshTableBodyState() {
+    OverlayElementsState.resetTableBodyProperties(this.overlayElementsState);
     this.tableElementEventState = {};
     this.columnsDetails = [];
   }
@@ -102,7 +108,9 @@ export class EditableTableComponent extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
     const tableElement = TableElement.createBase(this);
+    TableElement.addAuxiliaryElements(tableElement, this.overlayElementsState);
     this.shadowRoot?.appendChild(tableElement);
+    WindowElement.addEvents(this);
     this.onTableUpdate(this.contents);
   }
 }

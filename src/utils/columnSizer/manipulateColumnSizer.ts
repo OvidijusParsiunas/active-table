@@ -1,6 +1,6 @@
 import {ColumnsDetailsT, ColumnSizerT, ColumnDetailsT, ColumnDetailsTPartial} from '../../types/columnDetails';
-import {ColumnSizerElementOverlay} from '../../elements/columnSizerElement/columnSizerElementOverlay';
-import {ColumnSizerElement} from '../../elements/columnSizerElement/columnSizerElement';
+import {ColumnSizerElementOverlay} from '../../elements/columnSizer/columnSizerElementOverlay';
+import {ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizer} from './columnSizer';
 

@@ -1,4 +1,5 @@
 import {ColumnSizerElementOverlay} from './columnSizerElementOverlay';
+import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {PX} from '../../types/pxDimension';
 
 export interface BorderWidths {
@@ -11,6 +12,8 @@ export interface BorderWidths {
 
 // the reason why there is a unique column sizer for each column is because sometimes the user may hover over
 // it before hovering over a cell which makes state management difficult - e.g from top/below
+// another reason is because the column sizer neeeds to know which column it is manipulating and needs to
+// be binded to the header cell
 // another reason is that by having each one be statically placed after cells does not require any further
 // calculations for moving it when the user drags it with the mouse
 export class ColumnSizerElement {
@@ -19,7 +22,6 @@ export class ColumnSizerElement {
   public static readonly EMPTY_BACKGROUND_IMAGE = 'none';
   public static readonly MOUSE_DOWN_COLOR = '#4668ed';
   public static readonly DEFAULT_COLOR = 'grey';
-  public static readonly SEMI_TRANSPARENT_COLOR = '#ffffff01';
   public static readonly COLUMN_SIZER_CLASS = 'column-sizer';
   public static readonly COLUMN_SIZER_ID_PREFIX = `${ColumnSizerElement.COLUMN_SIZER_CLASS}-`;
   private static readonly TRANSITION_TIME_ML = 200;
@@ -49,7 +51,7 @@ export class ColumnSizerElement {
   // properties that can be overwritten by hover
   public static setDefaultProperties(columnSizerElement: HTMLElement, width: PX) {
     columnSizerElement.style.width = width;
-    ColumnSizerElement.setColors(columnSizerElement, ColumnSizerElement.SEMI_TRANSPARENT_COLOR);
+    ColumnSizerElement.setColors(columnSizerElement, SEMI_TRANSPARENT_COLOR);
     ColumnSizerElementOverlay.hide(columnSizerElement.children[0] as HTMLElement);
   }
 

@@ -1,15 +1,36 @@
+import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {EditableTableComponent} from '../../editable-table-component';
+import {OverlayElements} from '../../types/overlayElements';
 import {AddNewRowElement} from '../row/addNewRowElement';
 import {TableRow} from '../../types/tableContents';
+import {Dropdown} from '../dropdown/dropdown';
 import {TableEvents} from './tableEvents';
 
 export class TableElement {
-  public static populate(etc: EditableTableComponent) {
+  public static addAuxiliaryElements(tableElement: HTMLElement, overlayElementsState: OverlayElements) {
+    const dropdownElenent = Dropdown.create();
+    tableElement.appendChild(dropdownElenent);
+    overlayElementsState.columnDropdown = dropdownElenent;
+  }
+
+  private static addAuxiliaryBodyElements(etc: EditableTableComponent) {
+    // add new row element
     if (etc.displayAddRowCell) {
-      const addRowElementRef = AddNewRowElement.create(etc);
-      etc.tableBodyElementRef?.replaceChildren(addRowElementRef);
+      const addNewRowElement = AddNewRowElement.create(etc);
+      etc.tableBodyElementRef?.appendChild(addNewRowElement);
     }
+    // full table overlay element
+    etc.overlayElementsState.fullTableOverlay = FullTableOverlayElement.create();
+    etc.tableBodyElementRef?.appendChild(etc.overlayElementsState.fullTableOverlay);
+  }
+
+  // WORK - switch
+  public static populateBody(etc: EditableTableComponent) {
+    // removes all the current children
+    etc.tableBodyElementRef?.replaceChildren();
+    TableElement.addAuxiliaryBodyElements(etc);
+    // header/data rows
     etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
   }
 

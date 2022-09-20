@@ -7,7 +7,7 @@ import {ElementDetails} from '../../../types/elementDetails';
 export class UpdateCellsForColumns {
   // prettier-ignore
   private static updateColumn(etc: EditableTableComponent,
-    rowIndex: number, cellElement: Node, columnIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
+      rowIndex: number, cellElement: Node, columnIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
     if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
       CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
     }

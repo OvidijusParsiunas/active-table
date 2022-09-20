@@ -7,12 +7,21 @@ export const ediTableStyle = css`
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   }
 
+  tbody {
+    position: relative;
+  }
+
   /* REF-1 */
   tbody > *:first-child > th {
     border-top: none !important;
     color: rgba(0, 0, 0, 0.87);
     font-size: 12px;
     font-weight: 500;
+  }
+
+  th {
+    cursor: pointer;
+    user-select: none;
   }
 
   .row > *:first-child {
@@ -71,7 +80,7 @@ export const ediTableStyle = css`
   }
 
   .add-new-row-row:hover {
-    background-color: #f4f4f4;
+    background-color: #f7f7f7;
     cursor: pointer;
   }
 
@@ -82,5 +91,35 @@ export const ediTableStyle = css`
     font-size: 12px;
     color: #555555;
     vertical-align: middle;
+  }
+
+  #editable-table-component-dropdown {
+    position: absolute;
+    box-shadow: rgb(232 232 232) 0px 2px 5px 0px;
+    border-radius: 5px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-color: white;
+    z-index: 1;
+  }
+
+  .dropdown-item {
+    cursor: pointer;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-right: 5px;
+    padding-left: 5px;
+    color: grey;
+  }
+
+  .dropdown-item:hover {
+    background-color: #eaeaea;
+  }
+
+  #full-table-overlay {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
   }
 `;

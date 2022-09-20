@@ -1,5 +1,5 @@
-import {BorderWidths, ColumnSizerElement} from '../../elements/columnSizerElement/columnSizerElement';
-import {ColumnSizerEvents} from '../../elements/columnSizerElement/columnSizerEvents';
+import {BorderWidths, ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement';
+import {ColumnSizerEvents} from '../../elements/columnSizer/columnSizerEvents';
 import {ColumnsDetailsT, ColumnSizerT} from '../../types/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PX} from '../../types/pxDimension';
