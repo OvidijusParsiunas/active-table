@@ -27,13 +27,13 @@ export class TableElement {
     etc.tableBodyElementRef?.appendChild(etc.overlayElementsState.fullTableOverlay);
   }
 
-  // WORK - switch
   public static populateBody(etc: EditableTableComponent) {
     // removes all the current children
     etc.tableBodyElementRef?.replaceChildren();
-    TableElement.addAuxiliaryBodyElements(etc);
     // header/data rows
     etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
+    // new row row and full table overlay
+    TableElement.addAuxiliaryBodyElements(etc);
   }
 
   private static createTableBody() {

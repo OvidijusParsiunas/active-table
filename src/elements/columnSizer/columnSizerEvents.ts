@@ -2,7 +2,6 @@ import {ColumnsDetailsT, ColumnSizerT} from '../../types/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElementOverlay} from './columnSizerElementOverlay';
 import {ColumnSizerElement} from './columnSizerElement';
-import {ElementSet} from '../../types/elementSet';
 import {PX} from '../../types/pxDimension';
 
 export class ColumnSizerEvents {
@@ -17,7 +16,7 @@ export class ColumnSizerEvents {
     }
   }
 
-  private static hideColumnSizer(columnSizer: ColumnSizerT, visibleSizers: ElementSet) {
+  private static hideColumnSizer(columnSizer: ColumnSizerT) {
     if (!columnSizer) return;
     columnSizer.isSideCellHovered = false;
     // when hovering over a column sizer and quickly move out of it through the cell and out of the cell we need to know if
@@ -29,30 +28,26 @@ export class ColumnSizerEvents {
       // check if mouse has not left the cell for the column sizer
       if (!columnSizer.isSizerHovered) {
         ColumnSizerEvents.hideWhenCellNotHovered(columnSizer, isHovered);
-        visibleSizers.delete(columnSizer.element);
       }
     });
   }
 
-  public static cellMouseLeave(columnsDetails: ColumnsDetailsT, columnIndex: number, visibleSizers: ElementSet) {
-    ColumnSizerEvents.hideColumnSizer(columnsDetails[columnIndex - 1]?.columnSizer, visibleSizers);
-    ColumnSizerEvents.hideColumnSizer(columnsDetails[columnIndex].columnSizer, visibleSizers);
+  public static cellMouseLeave(columnsDetails: ColumnsDetailsT, columnIndex: number) {
+    ColumnSizerEvents.hideColumnSizer(columnsDetails[columnIndex - 1]?.columnSizer);
+    ColumnSizerEvents.hideColumnSizer(columnsDetails[columnIndex].columnSizer);
   }
 
-  private static displayColumnSizer(columnSizer: ColumnSizerT, height: PX, visibleSizers: ElementSet) {
+  private static displayColumnSizer(columnSizer: ColumnSizerT, height: PX) {
     if (!columnSizer) return;
     ColumnSizerElement.display(columnSizer.element, height);
     columnSizer.isSideCellHovered = true;
-    visibleSizers.add(columnSizer.element);
   }
 
-  // prettier-ignore
-  public static cellMouseEnter(
-      columnsDetails: ColumnsDetailsT, columnIndex: number, visibleSizers: ElementSet, event: MouseEvent) {
+  public static cellMouseEnter(columnsDetails: ColumnsDetailsT, columnIndex: number, event: MouseEvent) {
     const headerCellElement = event.target as HTMLElement;
     const height: PX = `${headerCellElement.offsetHeight}px`;
-    ColumnSizerEvents.displayColumnSizer(columnsDetails[columnIndex - 1]?.columnSizer, height, visibleSizers);
-    ColumnSizerEvents.displayColumnSizer(columnsDetails[columnIndex]?.columnSizer, height, visibleSizers);
+    ColumnSizerEvents.displayColumnSizer(columnsDetails[columnIndex - 1]?.columnSizer, height);
+    ColumnSizerEvents.displayColumnSizer(columnsDetails[columnIndex]?.columnSizer, height);
   }
 
   private static setNewColumnWidth(columnElement: HTMLElement, colWidth: number, newXMovement: number) {

@@ -19,18 +19,16 @@ export class HeaderCellEvents {
     highlightedHeaderCell.columnIndex = columnIndex;
   }
 
-  // prettier-ignore
   private static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     HeaderCellEvents.highlightCell(this.highlightedHeaderCell, event.target as HTMLElement, columnIndex);
-    ColumnSizerEvents.cellMouseEnter(
-      this.columnsDetails, columnIndex, this.overlayElementsState.visibleColumnSizers, event);
+    ColumnSizerEvents.cellMouseEnter(this.columnsDetails, columnIndex, event);
   }
 
   private static mouseLeaveCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     if (!Dropdown.isDisplayed(this.overlayElementsState.columnDropdown)) {
       HeaderCellEvents.fadeCell(event.target as HTMLElement);
     }
-    ColumnSizerEvents.cellMouseLeave(this.columnsDetails, columnIndex, this.overlayElementsState.visibleColumnSizers);
+    ColumnSizerEvents.cellMouseLeave(this.columnsDetails, columnIndex);
   }
 
   private static mouseClick(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
