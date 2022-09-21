@@ -8,8 +8,10 @@ import {Dropdown} from '../dropdown/dropdown';
 import {TableEvents} from './tableEvents';
 
 export class TableElement {
-  public static addAuxiliaryElements(tableElement: HTMLElement, overlayElementsState: OverlayElements) {
-    const dropdownElenent = Dropdown.create();
+  // prettier-ignore
+  public static addAuxiliaryElements(
+      tableElement: HTMLElement, overlayElementsState: OverlayElements, areHeadersEditable: boolean) {
+    const dropdownElenent = Dropdown.create(areHeadersEditable);
     tableElement.appendChild(dropdownElenent);
     overlayElementsState.columnDropdown = dropdownElenent;
   }

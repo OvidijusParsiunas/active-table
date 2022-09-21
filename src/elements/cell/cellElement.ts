@@ -25,7 +25,6 @@ export class CellElement {
 
   private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
     const cellElement = CellElement.create(etc.cellStyle, etc.headerStyle, isHeader);
-    // WORK - take etc.areHeadersEditable into consideration
     cellElement.contentEditable = String(!isHeader);
     cellElement.textContent = cellText as string;
     if (isHeader) cellElement.style.width = CellElement.DEFAULT_COLUMN_WIDTH;

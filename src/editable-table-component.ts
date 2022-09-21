@@ -17,8 +17,6 @@ import {LitElement} from 'lit';
 // column validation: potentially highlight what is failing validation in red and display what the problem is upon hover
 // rename file name from using hyphen case to camel
 
-// WORK - tab and escape for the dropdown
-
 // spellcheck can be enabled or disabled by the user - enabled by default
 // new row or column buttons can be made optional
 @customElement('editable-table-component')
@@ -44,7 +42,6 @@ export class EditableTableComponent extends LitElement {
   @property()
   onTableUpdate: (newTableContents: TableContents) => void = () => {};
 
-  // WORK - will need to do some work for this
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
@@ -112,7 +109,7 @@ export class EditableTableComponent extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
     const tableElement = TableElement.createBase(this);
-    TableElement.addAuxiliaryElements(tableElement, this.overlayElementsState);
+    TableElement.addAuxiliaryElements(tableElement, this.overlayElementsState, this.areHeadersEditable);
     this.shadowRoot?.appendChild(tableElement);
     WindowElement.addEvents(this);
     this.onTableUpdate(this.contents);

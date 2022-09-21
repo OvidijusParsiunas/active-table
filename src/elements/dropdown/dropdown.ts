@@ -25,18 +25,18 @@ export class Dropdown {
     elements.forEach((element: HTMLElement) => (element.style.display = 'none'));
   }
 
-  private static focusNextItem(dropdownInutElement: HTMLElement, event: KeyboardEvent) {
+  private static focusNextItem(dropdownElement: HTMLElement, event: KeyboardEvent) {
     event.preventDefault();
     const focusedElement = event.target as HTMLElement;
     const nextElement = focusedElement.nextSibling as HTMLElement;
-    (nextElement || dropdownInutElement).focus();
+    (nextElement || dropdownElement.children[0]).focus();
   }
 
-  private static onKeyDown(this: EditableTableComponent, dropdownInutElement: HTMLElement, event: KeyboardEvent) {
+  private static onKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
     if (event.key === Dropdown.ENTER_KEY || event.key === Dropdown.ESCAPE_KEY) {
       Dropdown.hideRelevantDropdownElements(this);
     } else if (event.key === Dropdown.TAB_KEY) {
-      Dropdown.focusNextItem(dropdownInutElement, event);
+      Dropdown.focusNextItem(dropdownElement, event);
     }
   }
 
@@ -69,11 +69,11 @@ export class Dropdown {
     dropdownElement.appendChild(itemElement);
   }
 
-  public static create() {
+  public static create(areHeadersEditable: boolean) {
     const dropdownElement = document.createElement('div');
     dropdownElement.id = Dropdown.DROPDOWN_ID;
-    Dropdown.addInputItem(dropdownElement);
-    Dropdown.addItem(dropdownElement, 'Ascending');
+    if (areHeadersEditable) Dropdown.addInputItem(dropdownElement);
+    Dropdown.addItem(dropdownElement, 'Ascendinasdsadasdasg');
     Dropdown.addItem(dropdownElement, 'Descending');
     Dropdown.addItem(dropdownElement, 'Insert Right');
     Dropdown.addItem(dropdownElement, 'Insert Left');
@@ -113,20 +113,26 @@ export class Dropdown {
   }
 
   // prettier-ignore
+  private static setInputElement(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement,
+      dropdownInutElement: HTMLInputElement, dropdownElement: HTMLElement) {
+    dropdownInutElement.value = etc.contents[0][columnIndex] as string;
+    // overwrites the oninput event
+    dropdownInutElement.oninput = Dropdown.onInput.bind(
+      etc, columnIndex, cellElement, dropdownElement, dropdownInutElement);
+  }
+
+  // prettier-ignore
   // WORK - how will this positioning work with scrolling
   public static displayRelevantDropdownElements(etc: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     const fullTableOverlay = etc.overlayElementsState.fullTableOverlay as HTMLElement;
     const dropdownElement = etc.overlayElementsState.columnDropdown as HTMLElement;
     const dropdownInutElement = dropdownElement.getElementsByClassName(
       Dropdown.DROPDOWN_INPUT_CLASS)[0] as HTMLInputElement;
-    dropdownInutElement.value = etc.contents[0][columnIndex] as string;
     const cellElement = event.target as HTMLElement;
     Dropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
+    if (dropdownInutElement) Dropdown.setInputElement(etc, columnIndex, cellElement, dropdownInutElement, dropdownElement);
+    dropdownElement.onkeydown = Dropdown.onKeyDown.bind(etc, dropdownElement);
+    (dropdownElement.children[0] as HTMLElement).focus()
     fullTableOverlay.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
-    dropdownInutElement.focus();
-    // overwrites the oninput event
-    dropdownInutElement.oninput = Dropdown.onInput.bind(
-      etc, columnIndex, cellElement, dropdownElement, dropdownInutElement);
-    dropdownElement.onkeydown = Dropdown.onKeyDown.bind(etc, dropdownInutElement);
   }
 }
