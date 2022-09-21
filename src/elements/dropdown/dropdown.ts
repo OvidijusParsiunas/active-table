@@ -5,6 +5,8 @@ import {CellEvents} from '../cell/cellEvents';
 
 export class Dropdown {
   private static readonly ENTER_KEY = 'Enter';
+  private static readonly ESCAPE_KEY = 'Escape';
+  private static readonly TAB_KEY = 'Tab';
   // there will only ever be one dropdown instance within the shadow dom
   private static readonly DROPDOWN_ID = 'editable-table-component-dropdown';
   private static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
@@ -23,9 +25,18 @@ export class Dropdown {
     elements.forEach((element: HTMLElement) => (element.style.display = 'none'));
   }
 
-  private static onKeyDown(this: EditableTableComponent, event: KeyboardEvent) {
-    if (event.key === Dropdown.ENTER_KEY) {
+  private static focusNextItem(dropdownInutElement: HTMLElement, event: KeyboardEvent) {
+    event.preventDefault();
+    const focusedElement = event.target as HTMLElement;
+    const nextElement = focusedElement.nextSibling as HTMLElement;
+    (nextElement || dropdownInutElement).focus();
+  }
+
+  private static onKeyDown(this: EditableTableComponent, dropdownInutElement: HTMLElement, event: KeyboardEvent) {
+    if (event.key === Dropdown.ENTER_KEY || event.key === Dropdown.ESCAPE_KEY) {
       Dropdown.hideRelevantDropdownElements(this);
+    } else if (event.key === Dropdown.TAB_KEY) {
+      Dropdown.focusNextItem(dropdownInutElement, event);
     }
   }
 
@@ -34,7 +45,7 @@ export class Dropdown {
   private static onInput(this: EditableTableComponent,
       columnIndex: number, cellElement: HTMLElement, dropdownElement: HTMLElement, dropdownInutElement: HTMLInputElement) {
     setTimeout(() => {
-      CellEvents.updateCellWithPreprocessing(this, 0, columnIndex, dropdownInutElement.value, cellElement);
+      CellEvents.updateCell(this, dropdownInutElement.value, 0, columnIndex, { element: cellElement, processText: false });
       // when the header cell height changes - the dropdown moves up and
       const dimensions = cellElement.getBoundingClientRect();
       dropdownElement.style.top = `${dimensions.bottom}px`;
@@ -43,6 +54,7 @@ export class Dropdown {
 
   private static addInputItem(dropdownElement: HTMLElement) {
     const inputItemElement = document.createElement('input');
+    inputItemElement.tabIndex = dropdownElement.children.length;
     inputItemElement.classList.add(Dropdown.DROPDOWN_ITEM_CLASS, Dropdown.DROPDOWN_INPUT_CLASS);
     // TO-DO hook up with the parent API
     inputItemElement.spellcheck = false;
@@ -51,6 +63,7 @@ export class Dropdown {
 
   private static addItem(dropdownElement: HTMLElement, itemText: string) {
     const itemElement = document.createElement('div');
+    itemElement.tabIndex = dropdownElement.children.length;
     itemElement.classList.add(Dropdown.DROPDOWN_ITEM_CLASS);
     itemElement.textContent = itemText;
     dropdownElement.appendChild(itemElement);
@@ -79,7 +92,7 @@ export class Dropdown {
     const {
       overlayElementsState: {columnDropdown, fullTableOverlay},
       highlightedHeaderCell: {element: cellElement, columnIndex}} = etc;
-    CellEvents.ifEmptyCellSetToDefault(etc, 0, columnIndex as number, cellElement as HTMLElement);
+    CellEvents.setCellToDefaultIfNeeded(etc, 0, columnIndex as number, cellElement as HTMLElement);
     HeaderCellEvents.fadeCell(cellElement as HTMLElement);
     Dropdown.hideElements(columnDropdown as HTMLElement, fullTableOverlay as HTMLElement);
     Dropdown.resetDropdownPosition(columnDropdown as HTMLElement);
@@ -114,6 +127,6 @@ export class Dropdown {
     // overwrites the oninput event
     dropdownInutElement.oninput = Dropdown.onInput.bind(
       etc, columnIndex, cellElement, dropdownElement, dropdownInutElement);
-    dropdownElement.onkeydown = Dropdown.onKeyDown.bind(etc);
+    dropdownElement.onkeydown = Dropdown.onKeyDown.bind(etc, dropdownInutElement);
   }
 }
