@@ -34,7 +34,7 @@ export class Dropdown {
 
   private static onKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
     if (event.key === Dropdown.ENTER_KEY || event.key === Dropdown.ESCAPE_KEY) {
-      Dropdown.hideRelevantDropdownElements(this);
+      Dropdown.processTextAndHide(this);
     } else if (event.key === Dropdown.TAB_KEY) {
       Dropdown.focusNextItem(dropdownElement, event);
     }
@@ -88,10 +88,12 @@ export class Dropdown {
   }
 
   // prettier-ignore
-  public static hideRelevantDropdownElements(etc: EditableTableComponent) {
+  public static processTextAndHide(etc: EditableTableComponent) {
     const {
       overlayElementsState: {columnDropdown, fullTableOverlay},
       highlightedHeaderCell: {element: cellElement, columnIndex}} = etc;
+    // setCellToDefaultIfNeeded will not work without etc.contents containing trimmed text
+    etc.contents[0][columnIndex as number] = (cellElement?.textContent as string).trim();
     CellEvents.setCellToDefaultIfNeeded(etc, 0, columnIndex as number, cellElement as HTMLElement);
     HeaderCellEvents.fadeCell(cellElement as HTMLElement);
     Dropdown.hideElements(columnDropdown as HTMLElement, fullTableOverlay as HTMLElement);

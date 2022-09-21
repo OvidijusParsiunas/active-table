@@ -16,6 +16,7 @@ export class DataUtils {
     return false;
   }
 
+  // note that NumberOfIdenticalCells.get uses the etc.contents top row, so it needs to be up-to-date
   // prettier-ignore
   private static shouldTextBeSetToDefault(text: string,
       defaultCellValue: string, rowIndex: number, duplicateHeadersAllowed: boolean, headerContents: TableRow) {
@@ -27,7 +28,7 @@ export class DataUtils {
   public static processCellText(etc: EditableTableComponent, rowIndex: number, cellText: string) {
     const trimmedText = typeof cellText === 'string' ? cellText.trim() : cellText;
     const shouldBeSetToDefault = DataUtils.shouldTextBeSetToDefault(
-      cellText, etc.defaultCellValue, rowIndex, etc.duplicateHeadersAllowed, etc.contents[0]);
+      trimmedText, etc.defaultCellValue, rowIndex, etc.duplicateHeadersAllowed, etc.contents[0]);
     return shouldBeSetToDefault ? etc.defaultCellValue : trimmedText;
   }
 }

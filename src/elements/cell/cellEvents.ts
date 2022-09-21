@@ -30,7 +30,6 @@ export class CellEvents {
     if (CellEvents.executeUpdateOpration('updateTableEvent', options)) etc.onTableUpdate(etc.contents); 
   }
 
-  // WORK - duplicate headers allowed
   // this is used for cases where you only want to update if a cell has to be set to default
   // prettier-ignore
   public static setCellToDefaultIfNeeded(

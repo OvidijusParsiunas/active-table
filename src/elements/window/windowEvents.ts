@@ -10,7 +10,7 @@ export class WindowEvents {
     // if the user clicks outside of the shadow dom and the column dropdown is open,
     // close the column dropdown
     if (Dropdown.isDisplayed(this.overlayElementsState.columnDropdown)) {
-      Dropdown.hideRelevantDropdownElements(this);
+      Dropdown.processTextAndHide(this);
     }
   }
 }

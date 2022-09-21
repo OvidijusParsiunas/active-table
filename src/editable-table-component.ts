@@ -48,6 +48,7 @@ export class EditableTableComponent extends LitElement {
   })
   areHeadersEditable = true;
 
+  // TO-DO make sure this works when pasting into the header will be allowed
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,

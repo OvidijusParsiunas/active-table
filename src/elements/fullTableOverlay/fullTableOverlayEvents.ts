@@ -7,7 +7,7 @@ export class FullTableOverlayEvents {
     // window events will handle if the dropdown is open and the user clicks outside of the shadow dom
     if (Dropdown.isDisplayed(this.overlayElementsState.columnDropdown)
         && !Dropdown.isPartOfDropdownElement(event.target as HTMLElement)) {
-      Dropdown.hideRelevantDropdownElements(this);
+      Dropdown.processTextAndHide(this);
     }
   }
 }
