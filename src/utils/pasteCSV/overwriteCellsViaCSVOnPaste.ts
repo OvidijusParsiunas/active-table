@@ -3,9 +3,8 @@ import {InsertNewRow} from '../insertRemoveStructure/insert/insertNewRow';
 import {EditableTableComponent} from '../../editable-table-component';
 import {DataUtils} from '../insertRemoveStructure/shared/dataUtils';
 import {TableCellText, TableRow} from '../../types/tableContents';
-import {NumberOfIdenticalCells} from '../numberOfIdenticalCells';
-import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
+import {CellEvents} from '../../elements/cell/cellEvents';
 import {ArrayUtils} from '../array/arrayUtils';
 import {CSV, CSVRow} from '../../types/CSV';
 
@@ -42,16 +41,8 @@ export class OverwriteCellsViaCSVOnPaste {
   private static overwriteCell(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, newCellText: string) {
     // the reason why columnIndex is multiplied by 2 is because there is a divider element after each cell
-    rowElement.children[columnIndex * 2].textContent = newCellText;
-    etc.contents[rowIndex][columnIndex] = newCellText;
-    etc.onCellUpdate(newCellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
-  }
-
-  private static getNewCellText(cellText: string, rowIndex: number, etc: EditableTableComponent): string {
-    if (!etc.duplicateHeadersAllowed && rowIndex === 0 && NumberOfIdenticalCells.get(cellText, etc.contents[0]) > 0) {
-      return etc.defaultCellValue;
-    }
-    return cellText as string;
+    const cellElement = rowElement.children[columnIndex * 2] as HTMLElement;
+    CellEvents.updateCell(etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
   }
 
   // prettier-ignore
@@ -59,8 +50,7 @@ export class OverwriteCellsViaCSVOnPaste {
       row: TableRow, rowIndex: number, columnIndex: number, rowElement: HTMLElement) {
     row.forEach((cellText: TableCellText, CSVColumnIndex: number) => {
       const relativeColumnIndex = columnIndex + CSVColumnIndex;
-      const newCellText = OverwriteCellsViaCSVOnPaste.getNewCellText(cellText as string, rowIndex, etc);
-      OverwriteCellsViaCSVOnPaste.overwriteCell(etc, rowElement, rowIndex, relativeColumnIndex, newCellText);
+      OverwriteCellsViaCSVOnPaste.overwriteCell(etc, rowElement, rowIndex, relativeColumnIndex, cellText as string);
     });
   }
 

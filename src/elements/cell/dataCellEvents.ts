@@ -1,5 +1,4 @@
 import {OverwriteCellsViaCSVOnPaste} from '../../utils/pasteCSV/overwriteCellsViaCSVOnPaste';
-import {NumberOfIdenticalCells} from '../../utils/numberOfIdenticalCells';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ElementSet} from '../../types/elementSet';
 import {CellEvents} from './cellEvents';
@@ -21,7 +20,7 @@ export class DataCellEvents {
     const inputEvent = event as InputEvent;
     if (inputEvent.inputType !== DataCellEvents.PASTE_INPUT_TYPE) {
       const cellElement = inputEvent.target as HTMLElement;
-      CellEvents.updateCellWithPreprocessing(this, rowIndex, columnIndex, cellElement.textContent as string);
+      CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex);
       // WORK - this may not be required
       if (rowIndex === 0) {
         // reason why using visibleColumnSizers property instead of getting column sizers via columnDetails and columnIndex
@@ -38,28 +37,20 @@ export class DataCellEvents {
     } else {
       const cellElement = event.target as HTMLElement;
       setTimeout(() => {
-        CellEvents.updateCellWithPreprocessing(this, rowIndex, columnIndex, cellElement.textContent as string);
+        CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex, {processText: false});
       });
     }
   }
 
   private static blurCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const cellElement = event.target as HTMLElement;
-    CellEvents.ifEmptyCellSetToDefault(this, rowIndex, columnIndex, cellElement);
-  }
-
-  // prettier-ignore
-  private static focusCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
-    if (this.defaultCellValue !== CellEvents.EMPTY_STRING
-        && this.defaultCellValue === (event.target as HTMLElement).textContent) {
-      CellEvents.updateCell(this, CellEvents.EMPTY_STRING, rowIndex, columnIndex, event.target as HTMLElement);
-    }
+    CellEvents.setCellToDefaultIfNeeded(this, rowIndex, columnIndex, cellElement);
   }
 
   public static set(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     cellElement.oninput = DataCellEvents.inputCell.bind(etc, rowIndex, columnIndex);
     cellElement.onpaste = DataCellEvents.pasteCell.bind(etc, rowIndex, columnIndex);
     cellElement.onblur = DataCellEvents.blurCell.bind(etc, rowIndex, columnIndex);
-    cellElement.onfocus = DataCellEvents.focusCell.bind(etc, rowIndex, columnIndex);
+    cellElement.onfocus = CellEvents.removeTextIfCellDefault.bind(etc, rowIndex, columnIndex);
   }
 }

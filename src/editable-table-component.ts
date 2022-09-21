@@ -18,7 +18,6 @@ import {LitElement} from 'lit';
 // rename file name from using hyphen case to camel
 
 // WORK - tab and escape for the dropdown
-// WORK - paste csv default cell
 
 // spellcheck can be enabled or disabled by the user - enabled by default
 // new row or column buttons can be made optional

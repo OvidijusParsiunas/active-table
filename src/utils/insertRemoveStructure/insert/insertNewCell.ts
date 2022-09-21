@@ -4,6 +4,7 @@ import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../../types/columnDetails';
+import {DataUtils} from '../shared/dataUtils';
 
 export class InsertNewCell {
   private static insertElementsToRow(rowElement: HTMLElement, newCellElement: HTMLElement, columnIndex: number) {
@@ -32,10 +33,11 @@ export class InsertNewCell {
   // prettier-ignore
   public static insertToRow(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
-    const newCellElement = CellElement.createCellElement(etc, cellText, rowIndex, columnIndex);
+    const processedCellText = DataUtils.processCellText(etc, rowIndex, cellText);
+    const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex);
     setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, newCellElement));
     // cannot place in a timeout as etc.contents length is used to get last row index
-    if (isNewText) etc.contents[rowIndex].splice(columnIndex, 0, cellText);
+    etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
   }
 }

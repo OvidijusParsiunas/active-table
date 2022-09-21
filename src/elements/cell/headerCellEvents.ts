@@ -2,6 +2,7 @@ import {HighlightedHeaderCell} from '../../types/highlightedHeaderCell';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
 import {Dropdown} from '../dropdown/dropdown';
+import {CellEvents} from './cellEvents';
 
 export class HeaderCellEvents {
   private static readonly HOVER_BACKGROUND_COLOR = '#f7f7f7';
@@ -33,6 +34,7 @@ export class HeaderCellEvents {
   }
 
   private static mouseClick(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
+    CellEvents.removeTextIfCellDefault.bind(this)(0, columnIndex, event);
     Dropdown.displayRelevantDropdownElements(this, columnIndex, event);
   }
 
