@@ -3,6 +3,7 @@ import {ElementViewPort} from '../../utils/elements/elementViewPort';
 import {HeaderCellEvents} from '../cell/headerCellEvents';
 import {CellEvents} from '../cell/cellEvents';
 import {DropdownItem} from './dropdownItem';
+import {SIDE} from '../../types/side';
 
 export class Dropdown {
   private static readonly ENTER_KEY = 'Enter';
@@ -53,7 +54,6 @@ export class Dropdown {
 
   private static resetDropdownPosition(dropdownElement: HTMLElement) {
     dropdownElement.style.left = '';
-    dropdownElement.style.right = '';
   }
 
   // prettier-ignore
@@ -80,10 +80,14 @@ export class Dropdown {
     dropdownElement.style.top = `${dimensions.bottom}px`;
     // needs to be displayed in order to evalute if in view port
     dropdownElement.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
-    if (!ElementViewPort.isIn(dropdownElement)) {
-      // move to the right
-      dropdownElement.style.left = '';
-      dropdownElement.style.right = '0px';
+    const visibilityDetails = ElementViewPort.getVisibilityDetails(dropdownElement);
+    if (!visibilityDetails.isFullyVisible) {
+      const tableElement = dropdownElement.parentElement as HTMLElement;
+      if (visibilityDetails.blockingSide === SIDE.LEFT) {
+        dropdownElement.style.left = `${tableElement.getBoundingClientRect().left}px`;
+      } else if (visibilityDetails.blockingSide === SIDE.RIGHT) {
+        dropdownElement.style.left = `${tableElement.getBoundingClientRect().right - Dropdown.DROPDOWN_WIDTH}px`;
+      }
     }
   }
 

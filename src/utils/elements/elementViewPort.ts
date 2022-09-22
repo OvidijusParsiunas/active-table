@@ -1,5 +1,12 @@
+import {SIDE} from '../../types/side';
+
+interface BlockingSide {
+  isFullyVisible: boolean;
+  blockingSide?: SIDE;
+}
+
 export class ElementViewPort {
-  public static isIn(element: HTMLElement) {
+  public static getVisibilityDetails(element: HTMLElement): BlockingSide {
     let top = element.offsetTop;
     let left = element.offsetLeft;
     const width = element.offsetWidth;
@@ -11,11 +18,18 @@ export class ElementViewPort {
       left += element.offsetLeft;
     }
 
-    return (
-      top >= window.pageYOffset &&
-      left >= window.pageXOffset &&
-      top + height <= window.pageYOffset + window.innerHeight &&
-      left + width <= window.pageXOffset + window.innerWidth
-    );
+    if (top < window.pageYOffset) {
+      return {isFullyVisible: false, blockingSide: SIDE.TOP};
+    }
+    if (top + height > window.pageYOffset + window.innerHeight) {
+      return {isFullyVisible: false, blockingSide: SIDE.BOTTOM};
+    }
+    if (left < window.pageXOffset) {
+      return {isFullyVisible: false, blockingSide: SIDE.LEFT};
+    }
+    if (left + width > window.pageXOffset + window.innerWidth) {
+      return {isFullyVisible: false, blockingSide: SIDE.RIGHT};
+    }
+    return {isFullyVisible: true};
   }
 }
