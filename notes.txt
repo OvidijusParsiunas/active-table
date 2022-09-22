@@ -9,6 +9,8 @@ add the following eslint and prettier rule:
 "@typescript-eslint/prefer-readonly": "error",
 This will require parserServives it work
 
+Could potentially use web workers to speed up processing
+
 STRATEGY:
 
 REF-1

@@ -2,6 +2,7 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {ElementViewPort} from '../../utils/elements/elementViewPort';
 import {HeaderCellEvents} from '../cell/headerCellEvents';
 import {CellEvents} from '../cell/cellEvents';
+import {DropdownItem} from './dropdownItem';
 
 export class Dropdown {
   private static readonly ENTER_KEY = 'Enter';
@@ -9,75 +10,42 @@ export class Dropdown {
   private static readonly TAB_KEY = 'Tab';
   // there will only ever be one dropdown instance within the shadow dom
   private static readonly DROPDOWN_ID = 'editable-table-component-dropdown';
-  private static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
-  private static readonly DROPDOWN_INPUT_CLASS = 'dropdown-input';
   private static readonly CSS_DISPLAY_VISIBLE = 'block';
+  private static readonly DROPDOWN_WIDTH = 176;
 
   public static isDisplayed(columnDropdown?: HTMLElement) {
     return columnDropdown?.style.display === Dropdown.CSS_DISPLAY_VISIBLE;
   }
 
   public static isPartOfDropdownElement(element: HTMLElement) {
-    return element.id === Dropdown.DROPDOWN_ID || element.classList.contains(Dropdown.DROPDOWN_ITEM_CLASS);
+    return element.id === Dropdown.DROPDOWN_ID || element.classList.contains(DropdownItem.DROPDOWN_ITEM_CLASS);
   }
 
   private static hideElements(...elements: HTMLElement[]) {
     elements.forEach((element: HTMLElement) => (element.style.display = 'none'));
   }
 
-  private static focusNextItem(dropdownElement: HTMLElement, event: KeyboardEvent) {
-    event.preventDefault();
-    const focusedElement = event.target as HTMLElement;
-    const nextElement = focusedElement.nextSibling as HTMLElement;
-    (nextElement || dropdownElement.children[0]).focus();
-  }
-
   private static onKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
     if (event.key === Dropdown.ENTER_KEY || event.key === Dropdown.ESCAPE_KEY) {
       Dropdown.processTextAndHide(this);
     } else if (event.key === Dropdown.TAB_KEY) {
-      Dropdown.focusNextItem(dropdownElement, event);
+      DropdownItem.focusNextItem(dropdownElement, event);
     }
-  }
-
-  // reason why using onInput for updating cells is because it works for paste
-  // prettier-ignore
-  private static onInput(this: EditableTableComponent,
-      columnIndex: number, cellElement: HTMLElement, dropdownElement: HTMLElement, dropdownInutElement: HTMLInputElement) {
-    setTimeout(() => {
-      CellEvents.updateCell(this, dropdownInutElement.value, 0, columnIndex, { element: cellElement, processText: false });
-      // when the header cell height changes - the dropdown moves up and
-      const dimensions = cellElement.getBoundingClientRect();
-      dropdownElement.style.top = `${dimensions.bottom}px`;
-    })
-  }
-
-  private static addInputItem(dropdownElement: HTMLElement) {
-    const inputItemElement = document.createElement('input');
-    inputItemElement.tabIndex = dropdownElement.children.length;
-    inputItemElement.classList.add(Dropdown.DROPDOWN_ITEM_CLASS, Dropdown.DROPDOWN_INPUT_CLASS);
-    // TO-DO hook up with the parent API
-    inputItemElement.spellcheck = false;
-    dropdownElement.appendChild(inputItemElement);
-  }
-
-  private static addItem(dropdownElement: HTMLElement, itemText: string) {
-    const itemElement = document.createElement('div');
-    itemElement.tabIndex = dropdownElement.children.length;
-    itemElement.classList.add(Dropdown.DROPDOWN_ITEM_CLASS);
-    itemElement.textContent = itemText;
-    dropdownElement.appendChild(itemElement);
   }
 
   public static create(areHeadersEditable: boolean) {
     const dropdownElement = document.createElement('div');
     dropdownElement.id = Dropdown.DROPDOWN_ID;
-    if (areHeadersEditable) Dropdown.addInputItem(dropdownElement);
-    Dropdown.addItem(dropdownElement, 'Ascendinasdsadasdasg');
-    Dropdown.addItem(dropdownElement, 'Descending');
-    Dropdown.addItem(dropdownElement, 'Insert Right');
-    Dropdown.addItem(dropdownElement, 'Insert Left');
-    Dropdown.addItem(dropdownElement, 'Delete');
+    // using width to be able to center the dropdown relative to the cell
+    // alternative approach is to use a parent div for the dropdown which would be centered relativer to the cell
+    // and there would be no need for an equation to center the dropdown using its width, but this is simpler
+    dropdownElement.style.width = `${Dropdown.DROPDOWN_WIDTH}px`;
+    if (areHeadersEditable) DropdownItem.addInputItem(dropdownElement);
+    DropdownItem.addButtonItem(dropdownElement, 'Ascending');
+    DropdownItem.addButtonItem(dropdownElement, 'Descending');
+    DropdownItem.addButtonItem(dropdownElement, 'Insert Right');
+    DropdownItem.addButtonItem(dropdownElement, 'Insert Left');
+    DropdownItem.addButtonItem(dropdownElement, 'Delete');
     Dropdown.hideElements(dropdownElement);
     return dropdownElement;
   }
@@ -100,10 +68,14 @@ export class Dropdown {
     Dropdown.resetDropdownPosition(columnDropdown as HTMLElement);
   }
 
+  private static getLeftPropertyToCenterDropdown(cellDimensions: DOMRect) {
+    return `${cellDimensions.left + cellDimensions.width / 2 - Dropdown.DROPDOWN_WIDTH / 2}px`;
+  }
+
   // TO-DO will this work correctly when a scrollbar is introduced
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement) {
     const dimensions = cellElement.getBoundingClientRect();
-    dropdownElement.style.left = `${dimensions.left}px`;
+    dropdownElement.style.left = Dropdown.getLeftPropertyToCenterDropdown(dimensions);
     dropdownElement.style.top = `${dimensions.bottom}px`;
     // needs to be displayed in order to evalute if in view port
     dropdownElement.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
@@ -115,26 +87,18 @@ export class Dropdown {
   }
 
   // prettier-ignore
-  private static setInputElement(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement,
-      dropdownInutElement: HTMLInputElement, dropdownElement: HTMLElement) {
-    dropdownInutElement.value = etc.contents[0][columnIndex] as string;
-    // overwrites the oninput event
-    dropdownInutElement.oninput = Dropdown.onInput.bind(
-      etc, columnIndex, cellElement, dropdownElement, dropdownInutElement);
-  }
-
-  // prettier-ignore
   // WORK - how will this positioning work with scrolling
   public static displayRelevantDropdownElements(etc: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     const fullTableOverlay = etc.overlayElementsState.fullTableOverlay as HTMLElement;
     const dropdownElement = etc.overlayElementsState.columnDropdown as HTMLElement;
-    const dropdownInutElement = dropdownElement.getElementsByClassName(
-      Dropdown.DROPDOWN_INPUT_CLASS)[0] as HTMLInputElement;
+    const dropdownInputElement = dropdownElement.getElementsByClassName(
+      DropdownItem.DROPDOWN_INPUT_CLASS)[0] as HTMLInputElement;
     const cellElement = event.target as HTMLElement;
     Dropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
-    if (dropdownInutElement) Dropdown.setInputElement(etc, columnIndex, cellElement, dropdownInutElement, dropdownElement);
+    if (dropdownInputElement) DropdownItem.setUpInputElement(
+      etc, columnIndex, cellElement, dropdownInputElement, dropdownElement);
     dropdownElement.onkeydown = Dropdown.onKeyDown.bind(etc, dropdownElement);
-    (dropdownElement.children[0] as HTMLElement).focus()
+    DropdownItem.focusInputElement(dropdownElement);
     fullTableOverlay.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
   }
 }

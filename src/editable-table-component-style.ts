@@ -1,6 +1,11 @@
 import {css} from 'lit';
 
 export const ediTableStyle = css`
+  /* this is used to shrink the width of the editable-table-component element to the shadow-root width */
+  :host {
+    display: inline-block;
+  }
+
   table {
     border-spacing: 0px;
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
@@ -113,7 +118,11 @@ export const ediTableStyle = css`
     user-select: none;
   }
 
-  .dropdown-item:hover {
+  .dropdown-input-item {
+    text-align: center;
+  }
+
+  .dropdown-button:hover {
     background-color: #eaeaea;
   }
 
