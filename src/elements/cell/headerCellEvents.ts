@@ -19,6 +19,14 @@ export class HeaderCellEvents {
     highlightedHeaderCell.columnIndex = columnIndex;
   }
 
+  // prettier-ignore
+  public static incrementHighlightCellIndexWhenNewBefore(
+      highlightedHeaderCell: HighlightedHeaderCell, newColumnIndex: number) {
+    if (highlightedHeaderCell.columnIndex !== undefined && newColumnIndex <= highlightedHeaderCell.columnIndex) {
+      highlightedHeaderCell.columnIndex += 1;
+    }
+  }
+
   private static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     HeaderCellEvents.highlightCell(this.highlightedHeaderCell, event.target as HTMLElement, columnIndex);
     ColumnSizerEvents.cellMouseEnter(this.columnsDetails, columnIndex, event);

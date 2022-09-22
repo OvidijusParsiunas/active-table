@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../../editable-table-component';
+import {HeaderCellEvents} from '../../../elements/cell/headerCellEvents';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
@@ -28,6 +29,7 @@ export class InsertNewColumn {
 
   // columnData is in a row format to populate the column by iterating through each row
   public static insert(etc: EditableTableComponent, columnIndex: number, columnData?: TableRow) {
+    HeaderCellEvents.incrementHighlightCellIndexWhenNewBefore(etc.highlightedHeaderCell, columnIndex);
     InsertNewColumn.insertToAllRows(etc, columnIndex, columnData);
     setTimeout(() => etc.onTableUpdate(etc.contents));
   }
