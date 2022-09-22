@@ -40,4 +40,8 @@ export class RemoveColumn {
       etc.onTableUpdate(etc.contents);
     });
   }
+
+  public static removeEvent(this: EditableTableComponent, columnIndex: number) {
+    RemoveColumn.remove(this, columnIndex);
+  }
 }

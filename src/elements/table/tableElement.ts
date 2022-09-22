@@ -9,9 +9,9 @@ import {TableEvents} from './tableEvents';
 
 export class TableElement {
   // prettier-ignore
-  public static addAuxiliaryElements(
+  public static addAuxiliaryElements(etc: EditableTableComponent,
       tableElement: HTMLElement, overlayElementsState: OverlayElements, areHeadersEditable: boolean) {
-    const dropdownElenent = Dropdown.create(areHeadersEditable);
+    const dropdownElenent = Dropdown.create(etc, areHeadersEditable);
     tableElement.appendChild(dropdownElenent);
     overlayElementsState.columnDropdown = dropdownElenent;
   }

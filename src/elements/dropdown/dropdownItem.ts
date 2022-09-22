@@ -1,11 +1,14 @@
 import {EditableTableComponent} from '../../editable-table-component';
+import {InsertNewColumn} from '../../utils/insertRemoveStructure/insert/insertNewColumn';
+import {RemoveColumn} from '../../utils/insertRemoveStructure/remove/removeColumn';
 import {CellEvents} from '../cell/cellEvents';
+import {Dropdown} from './dropdown';
 
 export class DropdownItem {
   public static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
   public static readonly DROPDOWN_INPUT_CLASS = 'dropdown-input';
   private static readonly DROPDOWN_INPUT_ITEM_CLASS = 'dropdown-input-item';
-  private static readonly DROPDOWN_BUTTON_CLASS = 'dropdown-button';
+  public static readonly DROPDOWN_BUTTON_CLASS = 'dropdown-button';
 
   private static createItem(dropdownElement: HTMLElement) {
     const itemElement = document.createElement('div');
@@ -44,6 +47,25 @@ export class DropdownItem {
     inputElement.spellcheck = false;
     itemElement.appendChild(inputElement);
     dropdownElement.appendChild(itemElement);
+  }
+
+  // prettier-ignore
+  private static buttonItemClickMiddleware(this: EditableTableComponent, columnIndex: number,
+      fn: (this: EditableTableComponent, columnIndex: number) => void) {
+    fn.bind(this)(columnIndex);
+    Dropdown.processTextAndHide(this);
+  }
+
+  // prettier-ignore
+  public static rebindButtonItems(etc: EditableTableComponent, columnIndex: number, dropdownElement: HTMLElement) {
+    const buttonItemChildren = dropdownElement.getElementsByClassName(DropdownItem.DROPDOWN_BUTTON_CLASS);
+    (buttonItemChildren[2] as HTMLElement).onclick = DropdownItem.buttonItemClickMiddleware.bind(
+      etc, columnIndex + 1, InsertNewColumn.insertEvent);
+    (buttonItemChildren[3] as HTMLElement).onclick = DropdownItem.buttonItemClickMiddleware.bind(
+      etc, columnIndex, InsertNewColumn.insertEvent);
+    (buttonItemChildren[4] as HTMLElement).onclick = DropdownItem.buttonItemClickMiddleware.bind(
+      etc, columnIndex, RemoveColumn.removeEvent);
+    // WORK - potential animation can be useful when a new column is inserted
   }
 
   public static addButtonItem(dropdownElement: HTMLElement, itemText: string) {

@@ -33,13 +33,14 @@ export class Dropdown {
     }
   }
 
-  public static create(areHeadersEditable: boolean) {
+  public static create(etc: EditableTableComponent, areHeadersEditable: boolean) {
     const dropdownElement = document.createElement('div');
     dropdownElement.id = Dropdown.DROPDOWN_ID;
     // using width to be able to center the dropdown relative to the cell
     // alternative approach is to use a parent div for the dropdown which would be centered relativer to the cell
     // and there would be no need for an equation to center the dropdown using its width, but this is simpler
     dropdownElement.style.width = `${Dropdown.DROPDOWN_WIDTH}px`;
+    dropdownElement.onkeydown = Dropdown.onKeyDown.bind(etc, dropdownElement);
     if (areHeadersEditable) DropdownItem.addInputItem(dropdownElement);
     DropdownItem.addButtonItem(dropdownElement, 'Ascending');
     DropdownItem.addButtonItem(dropdownElement, 'Descending');
@@ -97,8 +98,8 @@ export class Dropdown {
     Dropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
     if (dropdownInputElement) DropdownItem.setUpInputElement(
       etc, columnIndex, cellElement, dropdownInputElement, dropdownElement);
-    dropdownElement.onkeydown = Dropdown.onKeyDown.bind(etc, dropdownElement);
     DropdownItem.focusInputElement(dropdownElement);
+    DropdownItem.rebindButtonItems(etc, columnIndex, dropdownElement);
     fullTableOverlay.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
   }
 }

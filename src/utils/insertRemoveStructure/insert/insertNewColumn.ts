@@ -31,4 +31,8 @@ export class InsertNewColumn {
     InsertNewColumn.insertToAllRows(etc, columnIndex, columnData);
     setTimeout(() => etc.onTableUpdate(etc.contents));
   }
+
+  public static insertEvent(this: EditableTableComponent, columnIndex: number) {
+    InsertNewColumn.insert(this, columnIndex);
+  }
 }

@@ -110,7 +110,7 @@ export class EditableTableComponent extends LitElement {
   override connectedCallback() {
     super.connectedCallback();
     const tableElement = TableElement.createBase(this);
-    TableElement.addAuxiliaryElements(tableElement, this.overlayElementsState, this.areHeadersEditable);
+    TableElement.addAuxiliaryElements(this, tableElement, this.overlayElementsState, this.areHeadersEditable);
     this.shadowRoot?.appendChild(tableElement);
     WindowElement.addEvents(this);
     this.onTableUpdate(this.contents);
