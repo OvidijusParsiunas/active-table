@@ -7,6 +7,7 @@ interface UpdateCellOptions {
   element?: HTMLElement;
   updateTableEvent?: boolean;
   processText?: boolean;
+  updateContents?: boolean;
 }
 
 export class CellEvents {
@@ -24,7 +25,7 @@ export class CellEvents {
     if (CellEvents.executeUpdateOpration('processText', options)) {
       cellText = DataUtils.processCellText(etc, rowIndex, cellText); 
     }
-    etc.contents[rowIndex][columnIndex] = cellText;
+    if (CellEvents.executeUpdateOpration('updateContents', options)) etc.contents[rowIndex][columnIndex] = cellText; 
     etc.onCellUpdate(cellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
     if (options?.element) options.element.textContent = cellText;
     if (CellEvents.executeUpdateOpration('updateTableEvent', options)) etc.onTableUpdate(etc.contents); 

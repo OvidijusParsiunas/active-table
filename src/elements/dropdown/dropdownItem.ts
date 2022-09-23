@@ -1,7 +1,8 @@
-import {EditableTableComponent} from '../../editable-table-component';
 import {InsertNewColumn} from '../../utils/insertRemoveStructure/insert/insertNewColumn';
 import {RemoveColumn} from '../../utils/insertRemoveStructure/remove/removeColumn';
+import {EditableTableComponent} from '../../editable-table-component';
 import {CellEvents} from '../cell/cellEvents';
+import {Sort} from '../../utils/array/sort';
 import {Dropdown} from './dropdown';
 
 export class DropdownItem {
@@ -49,23 +50,25 @@ export class DropdownItem {
     dropdownElement.appendChild(itemElement);
   }
 
-  // prettier-ignore
-  private static buttonItemClickMiddleware(this: EditableTableComponent, columnIndex: number,
-      fn: (this: EditableTableComponent, columnIndex: number) => void) {
-    fn.bind(this)(columnIndex);
+  private static middleware(this: EditableTableComponent, func: Function): void {
+    func();
     Dropdown.processTextAndHide(this);
   }
 
   // prettier-ignore
   public static rebindButtonItems(etc: EditableTableComponent, columnIndex: number, dropdownElement: HTMLElement) {
     const buttonItemChildren = dropdownElement.getElementsByClassName(DropdownItem.DROPDOWN_BUTTON_CLASS);
-    (buttonItemChildren[2] as HTMLElement).onclick = DropdownItem.buttonItemClickMiddleware.bind(
-      etc, columnIndex + 1, InsertNewColumn.insertEvent);
-    (buttonItemChildren[3] as HTMLElement).onclick = DropdownItem.buttonItemClickMiddleware.bind(
-      etc, columnIndex, InsertNewColumn.insertEvent);
-    (buttonItemChildren[4] as HTMLElement).onclick = DropdownItem.buttonItemClickMiddleware.bind(
-      etc, columnIndex, RemoveColumn.removeEvent);
-    // WORK - potential animation can be useful when a new column is inserted
+    (buttonItemChildren[0] as HTMLElement).onclick = DropdownItem.middleware.bind(
+      etc, Sort.sortContentsColumn.bind(this, etc, columnIndex, true));
+    (buttonItemChildren[1] as HTMLElement).onclick = DropdownItem.middleware.bind(
+      etc, Sort.sortContentsColumn.bind(this, etc, columnIndex, false));
+    (buttonItemChildren[2] as HTMLElement).onclick = DropdownItem.middleware.bind(
+      etc, InsertNewColumn.insert.bind(this, etc, columnIndex + 1));
+    (buttonItemChildren[3] as HTMLElement).onclick = DropdownItem.middleware.bind(
+      etc, InsertNewColumn.insert.bind(this, etc, columnIndex));
+    (buttonItemChildren[4] as HTMLElement).onclick = DropdownItem.middleware.bind(
+      etc, RemoveColumn.remove.bind(this, etc, columnIndex));
+    // TO-DO - potential animation can be useful when a new column is inserted
   }
 
   public static addButtonItem(dropdownElement: HTMLElement, itemText: string) {
