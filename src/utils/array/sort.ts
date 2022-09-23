@@ -1,6 +1,7 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {TableContents, TableRow} from '../../types/tableContents';
 import {CellEvents} from '../../elements/cell/cellEvents';
+import {COLUMN_TYPE} from '../../enums/columnTypes';
 
 export class Sort {
   // prettier-ignore
@@ -33,13 +34,72 @@ export class Sort {
     contents.sort((a: TableRow, b: TableRow) => (b[columnIndex] as number) - (a[columnIndex] as number));
   }
 
-  public static sortContentsColumn(etc: EditableTableComponent, columnIndex: number, asc: boolean) {
-    const dataContents = etc.contents.slice(1);
+  private static sortNumbers(dataContents: TableContents, columnIndex: number, asc: boolean) {
     if (asc) {
       Sort.sortNumbersColumnAscending(dataContents, columnIndex);
     } else {
       Sort.sortNumbersColumnDescending(dataContents, columnIndex);
     }
+  }
+
+  private static sortStringsColumnAscending(contents: TableContents, columnIndex: number) {
+    contents.sort((a: TableRow, b: TableRow) => (a[columnIndex] as string).localeCompare(b[columnIndex] as string));
+  }
+
+  private static sortStringsColumnDescending(contents: TableContents, columnIndex: number) {
+    contents.sort((a: TableRow, b: TableRow) => (b[columnIndex] as string).localeCompare(a[columnIndex] as string));
+  }
+
+  private static sortStrings(dataContents: TableContents, columnIndex: number, asc: boolean) {
+    if (asc) {
+      Sort.sortStringsColumnAscending(dataContents, columnIndex);
+    } else {
+      Sort.sortStringsColumnDescending(dataContents, columnIndex);
+    }
+  }
+
+  public static sortContentsColumn(etc: EditableTableComponent, columnIndex: number, asc: boolean) {
+    const dataContents = etc.contents.slice(1);
+    const columnType = etc.columnsDetails[columnIndex].type;
+    if (columnType === COLUMN_TYPE.Number) {
+      Sort.sortNumbers(dataContents, columnIndex, asc);
+    } else {
+      Sort.sortStrings(dataContents, columnIndex, asc);
+    }
     Sort.update(etc, dataContents);
   }
 }
+
+// Alternative way to sort any types
+
+// private static sortAnyAscending(contents: TableContents, columnIndex: number) {
+//   contents.sort((a: TableRow, b: TableRow) => {
+//     if ((a[columnIndex] as number) < (b[columnIndex] as number)) {
+//       return -1;
+//     }
+//     if ((a[columnIndex] as number) > (b[columnIndex] as number)) {
+//       return 1;
+//     }
+//     return 0;
+//   });
+// }
+
+// private static sortAnyDescending(contents: TableContents, columnIndex: number) {
+//   contents.sort((a: TableRow, b: TableRow) => {
+//     if ((a[columnIndex] as number) > (b[columnIndex] as number)) {
+//       return -1;
+//     }
+//     if ((a[columnIndex] as number) < (b[columnIndex] as number)) {
+//       return 1;
+//     }
+//     return 0;
+//   });
+// }
+
+// private static sortAny(dataContents: TableContents, columnIndex: number, asc: boolean) {
+//   if (asc) {
+//     Sort.sortAnyAscending(dataContents, columnIndex);
+//   } else {
+//     Sort.sortAnyDescending(dataContents, columnIndex);
+//   }
+// }

@@ -118,11 +118,15 @@ export const ediTableStyle = css`
     user-select: none;
   }
 
+  .dropdown-title-item {
+    cursor: default;
+  }
+
   .dropdown-input-item {
     text-align: center;
   }
 
-  .dropdown-button:hover {
+  .dropdown-hoverable-item:hover {
     background-color: #eaeaea;
   }
 

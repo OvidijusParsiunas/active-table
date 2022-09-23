@@ -9,7 +9,30 @@ export class DropdownItem {
   public static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
   public static readonly DROPDOWN_INPUT_CLASS = 'dropdown-input';
   private static readonly DROPDOWN_INPUT_ITEM_CLASS = 'dropdown-input-item';
-  public static readonly DROPDOWN_BUTTON_CLASS = 'dropdown-button';
+  private static readonly DROPDOWN_TITLE_ITEM_CLASS = 'dropdown-title-item';
+  private static readonly DROPDOWN_BUTTON_CLASS = 'dropdown-button';
+  private static readonly DROPDOWN_HOVERABLE_ITEM = 'dropdown-hoverable-item';
+
+  private static onClickMiddleware(this: EditableTableComponent, func: Function): void {
+    func();
+    Dropdown.processTextAndHide(this);
+  }
+
+  // prettier-ignore
+  public static rebindButtonItems(etc: EditableTableComponent, columnIndex: number, dropdownElement: HTMLElement) {
+    const buttonItemChildren = dropdownElement.getElementsByClassName(DropdownItem.DROPDOWN_BUTTON_CLASS);
+    (buttonItemChildren[0] as HTMLElement).onclick = DropdownItem.onClickMiddleware.bind(
+      etc, Sort.sortContentsColumn.bind(this, etc, columnIndex, true));
+    (buttonItemChildren[1] as HTMLElement).onclick = DropdownItem.onClickMiddleware.bind(
+      etc, Sort.sortContentsColumn.bind(this, etc, columnIndex, false));
+    (buttonItemChildren[2] as HTMLElement).onclick = DropdownItem.onClickMiddleware.bind(
+      etc, InsertNewColumn.insert.bind(this, etc, columnIndex + 1));
+    (buttonItemChildren[3] as HTMLElement).onclick = DropdownItem.onClickMiddleware.bind(
+      etc, InsertNewColumn.insert.bind(this, etc, columnIndex));
+    (buttonItemChildren[4] as HTMLElement).onclick = DropdownItem.onClickMiddleware.bind(
+      etc, RemoveColumn.remove.bind(this, etc, columnIndex));
+    // TO-DO - potential animation can be useful when a new column is inserted
+  }
 
   private static createItem(dropdownElement: HTMLElement) {
     const itemElement = document.createElement('div');
@@ -50,33 +73,28 @@ export class DropdownItem {
     dropdownElement.appendChild(itemElement);
   }
 
-  private static middleware(this: EditableTableComponent, func: Function): void {
-    func();
-    Dropdown.processTextAndHide(this);
-  }
-
-  // prettier-ignore
-  public static rebindButtonItems(etc: EditableTableComponent, columnIndex: number, dropdownElement: HTMLElement) {
-    const buttonItemChildren = dropdownElement.getElementsByClassName(DropdownItem.DROPDOWN_BUTTON_CLASS);
-    (buttonItemChildren[0] as HTMLElement).onclick = DropdownItem.middleware.bind(
-      etc, Sort.sortContentsColumn.bind(this, etc, columnIndex, true));
-    (buttonItemChildren[1] as HTMLElement).onclick = DropdownItem.middleware.bind(
-      etc, Sort.sortContentsColumn.bind(this, etc, columnIndex, false));
-    (buttonItemChildren[2] as HTMLElement).onclick = DropdownItem.middleware.bind(
-      etc, InsertNewColumn.insert.bind(this, etc, columnIndex + 1));
-    (buttonItemChildren[3] as HTMLElement).onclick = DropdownItem.middleware.bind(
-      etc, InsertNewColumn.insert.bind(this, etc, columnIndex));
-    (buttonItemChildren[4] as HTMLElement).onclick = DropdownItem.middleware.bind(
-      etc, RemoveColumn.remove.bind(this, etc, columnIndex));
-    // TO-DO - potential animation can be useful when a new column is inserted
-  }
-
   public static addButtonItem(dropdownElement: HTMLElement, itemText: string) {
     const itemElement = DropdownItem.createItem(dropdownElement);
-    itemElement.classList.add(DropdownItem.DROPDOWN_BUTTON_CLASS);
+    itemElement.classList.add(DropdownItem.DROPDOWN_BUTTON_CLASS, DropdownItem.DROPDOWN_HOVERABLE_ITEM);
     const text = document.createElement('div');
     text.textContent = itemText;
     itemElement.append(text);
+    dropdownElement.appendChild(itemElement);
+  }
+
+  public static addTitle(dropdownElement: HTMLElement, text: string) {
+    const title = document.createElement('div');
+    title.classList.add(DropdownItem.DROPDOWN_ITEM_CLASS, DropdownItem.DROPDOWN_TITLE_ITEM_CLASS);
+    title.textContent = text;
+    dropdownElement.appendChild(title);
+  }
+
+  public static addSelectionItem(dropdownElement: HTMLElement, text: string) {
+    const itemElement = DropdownItem.createItem(dropdownElement);
+    itemElement.classList.add(DropdownItem.DROPDOWN_HOVERABLE_ITEM);
+    const textElement = document.createElement('div');
+    textElement.textContent = text;
+    itemElement.appendChild(textElement);
     dropdownElement.appendChild(itemElement);
   }
 

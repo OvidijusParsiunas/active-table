@@ -1,11 +1,8 @@
-import {ColumnDetailsT, ColumnDetailsTPartial, ColumnSizerT} from '../../types/columnDetails';
+import {ColumnDetailsTPartial} from '../../types/columnDetails';
+import {COLUMN_TYPE} from '../../enums/columnTypes';
 
 export class ColumnDetails {
   public static createPartial(cellElement: HTMLElement): ColumnDetailsTPartial {
-    return {elements: [cellElement]};
-  }
-
-  public static create(cellElement: HTMLElement, columnSizer: ColumnSizerT): ColumnDetailsT {
-    return {elements: [cellElement], columnSizer};
+    return {elements: [cellElement], type: COLUMN_TYPE.String};
   }
 }

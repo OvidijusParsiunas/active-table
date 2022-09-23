@@ -1,3 +1,5 @@
+import {COLUMN_TYPE} from '../enums/columnTypes';
+import {Optional} from './optional';
 import {PX} from './pxDimension';
 
 interface ColumnSizerStyles {
@@ -23,12 +25,10 @@ export interface ColumnSizerT {
 export interface ColumnDetailsT {
   elements: HTMLElement[];
   columnSizer: ColumnSizerT;
+  type: COLUMN_TYPE;
 }
 
-// used for when column details initialised bedore the column sizer
-export interface ColumnDetailsTPartial {
-  elements: HTMLElement[];
-  columnSizer?: ColumnSizerT;
-}
+// used for when column details initialised before the column sizer
+export type ColumnDetailsTPartial = Optional<ColumnDetailsT, 'columnSizer'>;
 
 export type ColumnsDetailsT = ColumnDetailsT[];

@@ -1,6 +1,7 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {ElementViewPort} from '../../utils/elements/elementViewPort';
 import {HeaderCellEvents} from '../cell/headerCellEvents';
+import {COLUMN_TYPE} from '../../enums/columnTypes';
 import {CellEvents} from '../cell/cellEvents';
 import {DropdownItem} from './dropdownItem';
 import {SIDE} from '../../types/side';
@@ -27,7 +28,14 @@ export class Dropdown {
   }
 
   private static onKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
-    if (event.key === Dropdown.ENTER_KEY || event.key === Dropdown.ESCAPE_KEY) {
+    if (event.key === Dropdown.ENTER_KEY) {
+      const itemElement = event.target as HTMLElement;
+      if (itemElement.classList.contains(DropdownItem.DROPDOWN_INPUT_CLASS)) {
+        Dropdown.processTextAndHide(this);
+      } else {
+        itemElement.click();
+      }
+    } else if (event.key === Dropdown.ESCAPE_KEY) {
       Dropdown.processTextAndHide(this);
     } else if (event.key === Dropdown.TAB_KEY) {
       DropdownItem.focusNextItem(dropdownElement, event);
@@ -43,6 +51,8 @@ export class Dropdown {
     dropdownElement.style.width = `${Dropdown.DROPDOWN_WIDTH}px`;
     dropdownElement.onkeydown = Dropdown.onKeyDown.bind(etc, dropdownElement);
     if (areHeadersEditable) DropdownItem.addInputItem(dropdownElement);
+    DropdownItem.addTitle(dropdownElement, 'Property type');
+    DropdownItem.addSelectionItem(dropdownElement, String(COLUMN_TYPE.Any));
     DropdownItem.addButtonItem(dropdownElement, 'Ascending');
     DropdownItem.addButtonItem(dropdownElement, 'Descending');
     DropdownItem.addButtonItem(dropdownElement, 'Insert Right');
@@ -74,10 +84,11 @@ export class Dropdown {
   }
 
   // TO-DO will this work correctly when a scrollbar is introduced
-  private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement) {
+  private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement, type: COLUMN_TYPE) {
     const dimensions = cellElement.getBoundingClientRect();
     dropdownElement.style.left = Dropdown.getLeftPropertyToCenterDropdown(dimensions);
     dropdownElement.style.top = `${dimensions.bottom}px`;
+    dropdownElement.children[2].textContent = COLUMN_TYPE[type];
     // needs to be displayed in order to evalute if in view port
     dropdownElement.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
     const visibilityDetails = ElementViewPort.getVisibilityDetails(dropdownElement);
@@ -99,7 +110,7 @@ export class Dropdown {
     const dropdownInputElement = dropdownElement.getElementsByClassName(
       DropdownItem.DROPDOWN_INPUT_CLASS)[0] as HTMLInputElement;
     const cellElement = event.target as HTMLElement;
-    Dropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
+    Dropdown.displayAndSetDropdownPosition(cellElement, dropdownElement, etc.columnsDetails[columnIndex].type);
     if (dropdownInputElement) DropdownItem.setUpInputElement(
       etc, columnIndex, cellElement, dropdownInputElement, dropdownElement);
     DropdownItem.focusInputElement(dropdownElement);
