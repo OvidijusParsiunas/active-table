@@ -1,5 +1,6 @@
 import {InsertNewColumn} from '../insertRemoveStructure/insert/insertNewColumn';
 import {InsertNewRow} from '../insertRemoveStructure/insert/insertNewRow';
+import {CellTypeTotalsUtils} from '../cellTypeTotals/cellTypeTotalsUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {DataUtils} from '../insertRemoveStructure/shared/dataUtils';
 import {TableCellText, TableRow} from '../../types/tableContents';
@@ -42,7 +43,12 @@ export class OverwriteCellsViaCSVOnPaste {
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, newCellText: string) {
     // the reason why columnIndex is multiplied by 2 is because there is a divider element after each cell
     const cellElement = rowElement.children[columnIndex * 2] as HTMLElement;
+    const oldType = CellTypeTotalsUtils.parseType(cellElement.textContent as string, etc.defaultCellValue);
     CellEvents.updateCell(etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
+    setTimeout(() => {
+      const newType = CellTypeTotalsUtils.parseType(newCellText, etc.defaultCellValue);
+      CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(etc.columnsDetails[columnIndex], oldType, newType);
+    });
   }
 
   // prettier-ignore
@@ -52,6 +58,10 @@ export class OverwriteCellsViaCSVOnPaste {
       const relativeColumnIndex = columnIndex + CSVColumnIndex;
       OverwriteCellsViaCSVOnPaste.overwriteCell(etc, rowElement, rowIndex, relativeColumnIndex, cellText as string);
     });
+  }
+
+  private static setFocusedCellType(etc: EditableTableComponent, cellText: string) {
+    etc.focusedCell.type = CellTypeTotalsUtils.parseType(cellText, etc.defaultCellValue);
   }
 
   // prettier-ignore
@@ -67,6 +77,7 @@ export class OverwriteCellsViaCSVOnPaste {
       const overflowData = dataToOverwriteRow.slice(numberOfCellsToOverwrite);
       dataForNewColumns.push(overflowData);
     });
+    setTimeout(() => OverwriteCellsViaCSVOnPaste.setFocusedCellType(etc, dataToOverwriteRows[0][0]));
     return dataForNewColumns;
   }
 

@@ -1,4 +1,4 @@
-import {COLUMN_TYPE} from '../enums/columnTypes';
+import {CELL_TYPE} from '../enums/cellType';
 import {Optional} from './optional';
 import {PX} from './pxDimension';
 
@@ -22,10 +22,15 @@ export interface ColumnSizerT {
   styles: ColumnSizerStyles;
 }
 
+export type CellTypeTotals = {
+  [key in CELL_TYPE]: number;
+};
+
 export interface ColumnDetailsT {
   elements: HTMLElement[];
   columnSizer: ColumnSizerT;
-  type: COLUMN_TYPE;
+  columnType: CELL_TYPE;
+  cellTypeTotals: CellTypeTotals;
 }
 
 // used for when column details initialised before the column sizer

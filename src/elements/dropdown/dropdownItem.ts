@@ -1,6 +1,7 @@
 import {InsertNewColumn} from '../../utils/insertRemoveStructure/insert/insertNewColumn';
 import {RemoveColumn} from '../../utils/insertRemoveStructure/remove/removeColumn';
 import {EditableTableComponent} from '../../editable-table-component';
+import {CELL_TYPE} from '../../enums/cellType';
 import {CellEvents} from '../cell/cellEvents';
 import {Sort} from '../../utils/array/sort';
 import {Dropdown} from './dropdown';
@@ -12,6 +13,17 @@ export class DropdownItem {
   private static readonly DROPDOWN_TITLE_ITEM_CLASS = 'dropdown-title-item';
   private static readonly DROPDOWN_BUTTON_CLASS = 'dropdown-button';
   private static readonly DROPDOWN_HOVERABLE_ITEM = 'dropdown-hoverable-item';
+
+  // WORK - open and close dropdown twice will result in incorrect text
+  // prettier-ignore
+  public static setContent(etc: EditableTableComponent,
+      dropdownElement: HTMLElement, columnIndex: number, cellElement: HTMLElement) {
+    const columnTypeElement = dropdownElement.children[2];
+    columnTypeElement.textContent = CELL_TYPE[etc.columnsDetails[columnIndex].columnType];
+    const dropdownInputElement = dropdownElement.getElementsByClassName(
+      DropdownItem.DROPDOWN_INPUT_CLASS)[0] as HTMLInputElement;
+    DropdownItem.setUpInputElement(etc, columnIndex, cellElement, dropdownInputElement, dropdownElement);
+  }
 
   private static onClickMiddleware(this: EditableTableComponent, func: Function): void {
     func();

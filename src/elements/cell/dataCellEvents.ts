@@ -1,5 +1,8 @@
 import {OverwriteCellsViaCSVOnPaste} from '../../utils/pasteCSV/overwriteCellsViaCSVOnPaste';
+import {CellTypeTotalsUtils} from '../../utils/cellTypeTotals/cellTypeTotalsUtils';
+import {FocusedCellUtils} from '../../utils/focusedCell/focusedCellUtils';
 import {EditableTableComponent} from '../../editable-table-component';
+import {CELL_TYPE} from '../../enums/cellType';
 import {CellEvents} from './cellEvents';
 
 export class DataCellEvents {
@@ -26,15 +29,27 @@ export class DataCellEvents {
     }
   }
 
+  // prettier-ignore
   private static blurCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const cellElement = event.target as HTMLElement;
     CellEvents.setCellToDefaultIfNeeded(this, rowIndex, columnIndex, cellElement);
+    setTimeout(() => {
+      const newType = CellTypeTotalsUtils.parseType(cellElement.textContent as string, this.defaultCellValue);
+      CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(
+        this.columnsDetails[columnIndex], this.focusedCell.type as CELL_TYPE, newType);
+    });
+  }
+
+  private static focusCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
+    const cellElement = event.target as HTMLElement;
+    CellEvents.removeTextIfCellDefault(this, rowIndex, columnIndex, event);
+    setTimeout(() => FocusedCellUtils.setDataCell(this.focusedCell, cellElement, columnIndex, this.defaultCellValue));
   }
 
   public static set(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     cellElement.oninput = DataCellEvents.inputCell.bind(etc, rowIndex, columnIndex);
     cellElement.onpaste = DataCellEvents.pasteCell.bind(etc, rowIndex, columnIndex);
     cellElement.onblur = DataCellEvents.blurCell.bind(etc, rowIndex, columnIndex);
-    cellElement.onfocus = CellEvents.removeTextIfCellDefault.bind(etc, rowIndex, columnIndex);
+    cellElement.onfocus = DataCellEvents.focusCell.bind(etc, rowIndex, columnIndex);
   }
 }

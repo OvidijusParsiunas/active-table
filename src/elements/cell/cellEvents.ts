@@ -26,9 +26,10 @@ export class CellEvents {
       cellText = DataUtils.processCellText(etc, rowIndex, cellText); 
     }
     if (CellEvents.executeUpdateOpration('updateContents', options)) etc.contents[rowIndex][columnIndex] = cellText; 
-    etc.onCellUpdate(cellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
     if (options?.element) options.element.textContent = cellText;
-    if (CellEvents.executeUpdateOpration('updateTableEvent', options)) etc.onTableUpdate(etc.contents); 
+    if (CellEvents.executeUpdateOpration('updateTableEvent', options)) etc.onTableUpdate(etc.contents);
+    // WORK - set inside a timeout
+    etc.onCellUpdate(cellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
   }
 
   // this is used for cases where you only want to update if a cell has to be set to default
@@ -43,11 +44,11 @@ export class CellEvents {
   }
 
   // prettier-ignore
-  public static removeTextIfCellDefault(this: EditableTableComponent,
+  public static removeTextIfCellDefault(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, event: FocusEvent) {
-    if (this.defaultCellValue !== CellEvents.EMPTY_STRING
-        && this.defaultCellValue === (event.target as HTMLElement).textContent) {
-      CellEvents.updateCell(this, CellEvents.EMPTY_STRING, rowIndex, columnIndex,
+    if (etc.defaultCellValue !== CellEvents.EMPTY_STRING
+        && etc.defaultCellValue === (event.target as HTMLElement).textContent) {
+      CellEvents.updateCell(etc, CellEvents.EMPTY_STRING, rowIndex, columnIndex,
         { element: event.target as HTMLElement, processText: false });
     }
   }

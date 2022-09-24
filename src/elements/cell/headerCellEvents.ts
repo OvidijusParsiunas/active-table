@@ -1,4 +1,4 @@
-import {HighlightedHeaderCell} from '../../types/highlightedHeaderCell';
+import {FocusedCellUtils} from '../../utils/focusedCell/focusedCellUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
 import {Dropdown} from '../dropdown/dropdown';
@@ -11,24 +11,12 @@ export class HeaderCellEvents {
     cellElement.style.backgroundColor = '';
   }
 
-  // prettier-ignore
-  private static highlightCell(
-      highlightedHeaderCell: HighlightedHeaderCell, cellElement: HTMLElement, columnIndex: number) {
+  private static highlightCell(cellElement: HTMLElement) {
     cellElement.style.backgroundColor = HeaderCellEvents.HOVER_BACKGROUND_COLOR;
-    highlightedHeaderCell.element = cellElement;
-    highlightedHeaderCell.columnIndex = columnIndex;
-  }
-
-  // prettier-ignore
-  public static incrementHighlightCellIndexWhenNewBefore(
-      highlightedHeaderCell: HighlightedHeaderCell, newColumnIndex: number) {
-    if (highlightedHeaderCell.columnIndex !== undefined && newColumnIndex <= highlightedHeaderCell.columnIndex) {
-      highlightedHeaderCell.columnIndex += 1;
-    }
   }
 
   private static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
-    HeaderCellEvents.highlightCell(this.highlightedHeaderCell, event.target as HTMLElement, columnIndex);
+    HeaderCellEvents.highlightCell(event.target as HTMLElement);
     ColumnSizerEvents.cellMouseEnter(this.columnsDetails, columnIndex, event);
   }
 
@@ -40,8 +28,9 @@ export class HeaderCellEvents {
   }
 
   private static mouseClick(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
-    CellEvents.removeTextIfCellDefault.bind(this)(0, columnIndex, event);
+    CellEvents.removeTextIfCellDefault(this, 0, columnIndex, event);
     Dropdown.displayRelevantDropdownElements(this, columnIndex, event);
+    setTimeout(() => FocusedCellUtils.setHeaderCell(this.focusedCell, event.target as HTMLElement, columnIndex));
   }
 
   public static set(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {

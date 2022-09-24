@@ -1,5 +1,6 @@
 import {InsertRemoveColumnSizer} from '../../columnSizer/manipulateColumnSizer';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
+import {CellTypeTotalsUtils} from '../../cellTypeTotals/cellTypeTotalsUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
@@ -18,14 +19,18 @@ export class InsertNewCell {
 
   // prettier-ignore
   private static updateColumnDetailsAndSizers(
-      etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
+      etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement, text: string) {
+    const { columnsDetails, defaultCellValue } = etc;
     if (rowIndex === 0) {
       const columnDetails = ColumnDetails.createPartial(cellElement);
-      etc.columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
-      InsertRemoveColumnSizer.insert(etc, etc.columnsDetails, columnDetails, columnIndex);
+      columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
+      InsertRemoveColumnSizer.insert(etc, columnsDetails, columnDetails, columnIndex);
     } else {
       // TO-DO - not sure if all cell elements are needed, if this is not required in the future do not this code
-      etc.columnsDetails[columnIndex].elements.push(cellElement);
+      // WORK - can elements.push be set to async
+      const columnDetails = etc.columnsDetails[columnIndex];
+      columnDetails.elements.push(cellElement);
+      setTimeout(() => CellTypeTotalsUtils.incrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, text));
     }
   }
 
@@ -36,7 +41,8 @@ export class InsertNewCell {
     const processedCellText = DataUtils.processCellText(etc, rowIndex, cellText);
     const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex);
-    setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, newCellElement));
+    setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(
+      etc, rowIndex, columnIndex, newCellElement, processedCellText));
     // cannot place in a timeout as etc.contents length is used to get last row index
     etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
   }
