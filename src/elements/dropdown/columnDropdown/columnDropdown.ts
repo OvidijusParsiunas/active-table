@@ -1,3 +1,4 @@
+import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ElementViewPort} from '../../../utils/elements/elementViewPort';
 import {HeaderCellEvents} from '../../cell/headerCellEvents';
@@ -15,13 +16,14 @@ export class ColumnDropdown extends Dropdown {
   // prettier-ignore
   public static processTextAndHide(etc: EditableTableComponent) {
     const {
-      overlayElementsState: {columnDropdown, fullTableOverlay},
+      overlayElementsState: {columnDropdown, columnTypeDropdown, fullTableOverlay},
       focusedCell: {element: cellElement, columnIndex}} = etc;
     // setCellToDefaultIfNeeded will not work without etc.contents containing trimmed text
     etc.contents[0][columnIndex as number] = (cellElement?.textContent as string).trim();
     CellEvents.setCellToDefaultIfNeeded(etc, 0, columnIndex as number, cellElement as HTMLElement);
     HeaderCellEvents.fadeCell(cellElement as HTMLElement);
-    Dropdown.hideElements(columnDropdown as HTMLElement, fullTableOverlay as HTMLElement);
+    GenericElementUtils.hideElements(
+      columnDropdown as HTMLElement, fullTableOverlay as HTMLElement, columnTypeDropdown as HTMLElement);
     ColumnDropdown.resetDropdownPosition(columnDropdown as HTMLElement);
   }
 
@@ -31,7 +33,8 @@ export class ColumnDropdown extends Dropdown {
       if (DropdownItem.doesElementContainInputClass(itemElement)) {
         ColumnDropdown.processTextAndHide(this);
       } else {
-        itemElement.click();
+        itemElement.dispatchEvent(new Event('mouseenter'));
+        itemElement.dispatchEvent(new Event('click'));
       }
     } else if (event.key === Dropdown.ESCAPE_KEY) {
       ColumnDropdown.processTextAndHide(this);
@@ -46,7 +49,8 @@ export class ColumnDropdown extends Dropdown {
     dropdownElement.onkeydown = ColumnDropdown.onKeyDown.bind(etc, dropdownElement);
     if (areHeadersEditable) ColumnDropdownItem.addInputItem(dropdownElement);
     DropdownItem.addTitle(dropdownElement, 'Property type');
-    ColumnDropdownItem.addColumnTypeNestedDropdownItem(dropdownElement);
+    const columnDropdown = ColumnDropdownItem.addColumnTypeNestedDropdownItem(dropdownElement);
+    etc.overlayElementsState.columnTypeDropdown = columnDropdown;
     ColumnDropdownItem.addSortButton(dropdownElement, 'Ascending');
     ColumnDropdownItem.addSortButton(dropdownElement, 'Descending');
     DropdownItem.addButtonItem(dropdownElement, 'Insert Right');

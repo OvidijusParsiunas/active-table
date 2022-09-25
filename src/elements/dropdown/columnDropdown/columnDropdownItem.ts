@@ -17,9 +17,11 @@ export class ColumnDropdownItem extends DropdownItem {
     return Object.keys(COLUMN_TYPE).filter((key) => !isNaN(Number(COLUMN_TYPE[key as keyof typeof COLUMN_TYPE])));
   }
 
+  // prettier-ignore
   public static addColumnTypeNestedDropdownItem(dropdownElement: HTMLElement) {
     const nestedDropdownKeys = ColumnDropdownItem.getNestedDropdownNames();
-    DropdownItem.addNestedDropdownItem(dropdownElement, '', nestedDropdownKeys, ColumnDropdownItem.COLUMN_TYPE_ITEM_CLASS);
+    return DropdownItem.addNestedDropdownItem(
+      dropdownElement, '', nestedDropdownKeys, ColumnDropdownItem.COLUMN_TYPE_ITEM_CLASS);
   }
 
   // this is used as an ancher to identify the location of below buttons

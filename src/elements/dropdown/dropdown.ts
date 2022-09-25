@@ -1,3 +1,4 @@
+import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {DropdownItem} from './dropdownItem';
 
 export class Dropdown {
@@ -18,7 +19,7 @@ export class Dropdown {
     dropdownElement.style.width = `${Dropdown.DROPDOWN_WIDTH}px`;
     dropdownElement.style.paddingTop = Dropdown.DROPDOWN_PADDING_TOP_BOTTOM_PX;
     dropdownElement.style.paddingBottom = Dropdown.DROPDOWN_PADDING_TOP_BOTTOM_PX;
-    Dropdown.hideElements(dropdownElement);
+    GenericElementUtils.hideElements(dropdownElement);
     return dropdownElement;
   }
 
@@ -28,9 +29,5 @@ export class Dropdown {
 
   public static isPartOfDropdownElement(element: HTMLElement) {
     return element.classList.contains(Dropdown.DROPDOWN_CLASS) || DropdownItem.doesElementContainItemClass(element);
-  }
-
-  public static hideElements(...elements: HTMLElement[]) {
-    elements.forEach((element: HTMLElement) => (element.style.display = 'none'));
   }
 }
