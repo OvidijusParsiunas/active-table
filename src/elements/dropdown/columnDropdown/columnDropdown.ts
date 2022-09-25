@@ -27,9 +27,8 @@ export class ColumnDropdown extends Dropdown {
 
   private static onKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
     if (event.key === Dropdown.ENTER_KEY) {
-      // WORK - does not do what it is supposed to do
       const itemElement = event.target as HTMLElement;
-      if (DropdownItem.doesElementContainItemClass(itemElement)) {
+      if (DropdownItem.doesElementContainInputClass(itemElement)) {
         ColumnDropdown.processTextAndHide(this);
       } else {
         itemElement.click();

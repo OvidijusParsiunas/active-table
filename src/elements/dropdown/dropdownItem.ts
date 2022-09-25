@@ -82,7 +82,7 @@ export class DropdownItem {
     return element.classList.contains(DropdownItem.DROPDOWN_ITEM_CLASS);
   }
 
-  private static doesElementContainInputClass(element: HTMLElement) {
+  public static doesElementContainInputClass(element: HTMLElement) {
     return element.classList.contains(DropdownItem.DROPDOWN_INPUT_CLASS);
   }
 
