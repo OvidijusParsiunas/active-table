@@ -8,30 +8,6 @@ import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
 
 export class ColumnDropdown extends Dropdown {
-  private static focusNextItemOutsideOfInput(focusedElement: HTMLElement) {
-    const itemElement = focusedElement.parentElement as HTMLElement;
-    const nextItemElement = itemElement.nextSibling as HTMLElement;
-    nextItemElement.focus();
-  }
-
-  // WORK - fix
-  private static focusNextItem(dropdownElement: HTMLElement, event: KeyboardEvent) {
-    event.preventDefault();
-    const focusedElement = event.target as HTMLElement;
-    const nextElement = focusedElement.nextSibling as HTMLElement;
-    if (nextElement) {
-      nextElement.focus();
-    } else if (!nextElement) {
-      // if at last item
-      if (DropdownItem.doesElementContainItemClasses(focusedElement)) {
-        ColumnDropdownItem.focusInputElement(dropdownElement);
-      } else {
-        // if currently inside of input item (assuming input is not last item)
-        ColumnDropdown.focusNextItemOutsideOfInput(focusedElement);
-      }
-    }
-  }
-
   private static resetDropdownPosition(dropdownElement: HTMLElement) {
     dropdownElement.style.left = '';
   }
@@ -51,8 +27,9 @@ export class ColumnDropdown extends Dropdown {
 
   private static onKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
     if (event.key === Dropdown.ENTER_KEY) {
+      // WORK - does not do what it is supposed to do
       const itemElement = event.target as HTMLElement;
-      if (DropdownItem.doesElementContainItemClasses(itemElement)) {
+      if (DropdownItem.doesElementContainItemClass(itemElement)) {
         ColumnDropdown.processTextAndHide(this);
       } else {
         itemElement.click();
@@ -60,14 +37,15 @@ export class ColumnDropdown extends Dropdown {
     } else if (event.key === Dropdown.ESCAPE_KEY) {
       ColumnDropdown.processTextAndHide(this);
     } else if (event.key === Dropdown.TAB_KEY) {
-      ColumnDropdown.focusNextItem(dropdownElement, event);
+      event.preventDefault();
+      DropdownItem.focusNextItem(event.target as HTMLElement, dropdownElement);
     }
   }
 
   public static create(etc: EditableTableComponent, areHeadersEditable: boolean) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.onkeydown = ColumnDropdown.onKeyDown.bind(etc, dropdownElement);
-    if (areHeadersEditable) ColumnDropdownItem.addCellTextInputItem(dropdownElement);
+    if (areHeadersEditable) ColumnDropdownItem.addInputItem(dropdownElement);
     DropdownItem.addTitle(dropdownElement, 'Property type');
     ColumnDropdownItem.addColumnTypeNestedDropdownItem(dropdownElement);
     ColumnDropdownItem.addSortButton(dropdownElement, 'Ascending');
@@ -113,7 +91,8 @@ export class ColumnDropdown extends Dropdown {
     const cellElement = event.target as HTMLElement;
     ColumnDropdownItem.setUpContent(etc, dropdownElement, columnIndex, cellElement);
     ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
-    ColumnDropdownItem.focusInputElement(dropdownElement);
+    const inputElement = ColumnDropdownItem.getInputElement(dropdownElement)
+    if (inputElement) ColumnDropdownItem.focusInputElement(inputElement as HTMLElement);
     ColumnDropdownItem.rebindButtonItems(etc, columnIndex, dropdownElement);
     fullTableOverlay.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
   }

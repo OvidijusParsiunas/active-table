@@ -27,7 +27,7 @@ export class Dropdown {
   }
 
   public static isPartOfDropdownElement(element: HTMLElement) {
-    return element.classList.contains(Dropdown.DROPDOWN_CLASS) || DropdownItem.doesElementContainItemClasses(element);
+    return element.classList.contains(Dropdown.DROPDOWN_CLASS) || DropdownItem.doesElementContainItemClass(element);
   }
 
   public static hideElements(...elements: HTMLElement[]) {

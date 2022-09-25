@@ -14,10 +14,9 @@ export class DropdownItem {
     return itemElement;
   }
 
-  public static addInputItem(dropdownElement: HTMLElement, className?: string) {
+  public static addInputItem(dropdownElement: HTMLElement) {
     const itemElement = DropdownItem.createItem(dropdownElement);
     itemElement.classList.add(DropdownItem.DROPDOWN_INPUT_ITEM_CLASS);
-    if (className) itemElement.classList.add(className);
     const inputElement = document.createElement('input');
     inputElement.classList.add(DropdownItem.DROPDOWN_INPUT_CLASS);
     // TO-DO hook up with the parent API
@@ -79,7 +78,39 @@ export class DropdownItem {
     dropdownElement.appendChild(itemElement);
   }
 
-  public static doesElementContainItemClasses(element: HTMLElement) {
+  public static doesElementContainItemClass(element: HTMLElement) {
     return element.classList.contains(DropdownItem.DROPDOWN_ITEM_CLASS);
+  }
+
+  private static doesElementContainInputClass(element: HTMLElement) {
+    return element.classList.contains(DropdownItem.DROPDOWN_INPUT_CLASS);
+  }
+
+  public static focusInputElement(inputItemElement: HTMLElement) {
+    (inputItemElement.children[0] as HTMLElement).focus();
+  }
+
+  public static getInputElement(dropdownElement: HTMLElement) {
+    return dropdownElement.getElementsByClassName(DropdownItem.DROPDOWN_INPUT_ITEM_CLASS)[0];
+  }
+
+  public static focusNextItem(element: HTMLElement, dropdownElement: HTMLElement, startElement = false): void {
+    const nextElement = startElement ? element : (element.nextSibling as HTMLElement);
+    if (!nextElement) {
+      // when inside an input item
+      if (DropdownItem.doesElementContainInputClass(element)) {
+        const itemElement = element.parentElement as HTMLElement;
+        return DropdownItem.focusNextItem(itemElement, dropdownElement);
+      }
+      // when on last item
+      return DropdownItem.focusNextItem(dropdownElement.children[0] as HTMLElement, dropdownElement, true);
+      // when on a title item
+    } else if (nextElement.classList.contains(DropdownItem.DROPDOWN_TITLE_ITEM_CLASS)) {
+      return DropdownItem.focusNextItem(nextElement, dropdownElement);
+      // when on an input item
+    } else if (nextElement.classList.contains(DropdownItem.DROPDOWN_INPUT_ITEM_CLASS)) {
+      return DropdownItem.focusInputElement(nextElement);
+    }
+    return nextElement.focus();
   }
 }

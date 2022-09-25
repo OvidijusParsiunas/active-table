@@ -12,11 +12,6 @@ import {DropdownItem} from '../dropdownItem';
 export class ColumnDropdownItem extends DropdownItem {
   private static readonly SORT_ITEM_CLASS = 'dropdown-sort-item';
   private static readonly COLUMN_TYPE_ITEM_CLASS = 'dropdown-column-type-item';
-  private static readonly CELL_TEXT_INPUT_ITEM_CLASS = 'dropdown-cell-text-input-item';
-
-  public static addCellTextInputItem(dropdownElement: HTMLElement) {
-    DropdownItem.addInputItem(dropdownElement, ColumnDropdownItem.CELL_TEXT_INPUT_ITEM_CLASS);
-  }
 
   private static getNestedDropdownNames() {
     return Object.keys(COLUMN_TYPE).filter((key) => !isNaN(Number(COLUMN_TYPE[key as keyof typeof COLUMN_TYPE])));
@@ -104,11 +99,8 @@ export class ColumnDropdownItem extends DropdownItem {
     ColumnDropdownItem.setColumnTypeItem(etc, dropdownElement, columnIndex);
     const dropdownInputElement = dropdownElement.getElementsByClassName(
       DropdownItem.DROPDOWN_INPUT_CLASS)[0] as HTMLInputElement;
-    ColumnDropdownItem.setUpInputElement(etc, columnIndex, cellElement, dropdownInputElement, dropdownElement);
-  }
-
-  public static focusInputElement(dropdownElement: HTMLElement) {
-    const inputItemElement = dropdownElement.getElementsByClassName(ColumnDropdownItem.CELL_TEXT_INPUT_ITEM_CLASS)[0];
-    (inputItemElement.children[0] as HTMLElement).focus();
+    if (dropdownInputElement) {
+      ColumnDropdownItem.setUpInputElement(etc, columnIndex, cellElement, dropdownInputElement, dropdownElement);
+    }
   }
 }
