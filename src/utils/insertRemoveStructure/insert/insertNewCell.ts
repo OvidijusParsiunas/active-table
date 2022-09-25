@@ -27,7 +27,6 @@ export class InsertNewCell {
       InsertRemoveColumnSizer.insert(etc, columnsDetails, columnDetails, columnIndex);
     } else {
       // TO-DO - not sure if all cell elements are needed, if this is not required in the future do not this code
-      // WORK - can elements.push be set to async
       const columnDetails = etc.columnsDetails[columnIndex];
       columnDetails.elements.push(cellElement);
       setTimeout(() => CellTypeTotalsUtils.incrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, text));

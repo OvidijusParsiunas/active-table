@@ -29,7 +29,6 @@ export class InsertNewColumn {
 
   // columnData is in a row format to populate the column by iterating through each row
   public static insert(etc: EditableTableComponent, columnIndex: number, columnData?: TableRow) {
-    // WORK - set this to async
     FocusedCellUtils.incrementColumnIndex(etc.focusedCell, columnIndex);
     InsertNewColumn.insertToAllRows(etc, columnIndex, columnData);
     setTimeout(() => etc.onTableUpdate(etc.contents));

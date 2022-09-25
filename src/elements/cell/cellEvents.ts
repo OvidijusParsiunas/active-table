@@ -28,7 +28,7 @@ export class CellEvents {
     if (CellEvents.executeUpdateOpration('updateContents', options)) etc.contents[rowIndex][columnIndex] = cellText; 
     if (options?.element) options.element.textContent = cellText;
     if (CellEvents.executeUpdateOpration('updateTableEvent', options)) etc.onTableUpdate(etc.contents);
-    // WORK - set inside a timeout
+    // not in timeout as functionality that calls updateCell calls etc.onTableUpdate after - should remain that way
     etc.onCellUpdate(cellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
   }
 

@@ -23,39 +23,37 @@ export class CellTypeTotalsUtils {
     return CELL_TYPE.Number;
   }
 
-  private static incrementType(cellTypeTotals: CellTypeTotals, type: CELL_TYPE) {
+  private static incrementType(type: CELL_TYPE, cellTypeTotals: CellTypeTotals) {
     cellTypeTotals[type] += 1;
   }
 
-  private static decrementType(cellTypeTotals: CellTypeTotals, type: CELL_TYPE) {
+  private static decrementType(type: CELL_TYPE, cellTypeTotals: CellTypeTotals) {
     cellTypeTotals[type] -= 1;
   }
 
-  // WORK - refactor to use bindings
   // prettier-ignore
   private static changeTypeAndSetColumnType(
-      columnDetails: ColumnDetailsT,
-      changeProps: [(cellTypeTotals: CellTypeTotals, type: CELL_TYPE) => void, CELL_TYPE][]) {
+      columnDetails: ColumnDetailsT, changeFuncs: ((cellTypeTotals: CellTypeTotals) => void)[]) {
     const {cellTypeTotals, elements} = columnDetails;
-    changeProps.forEach(([func, type]) => func(cellTypeTotals, type));
+    changeFuncs.forEach((func) => func(cellTypeTotals));
     columnDetails.columnType = CellTypeTotalsUtils.getColumnType(cellTypeTotals, elements.length - 1);
   }
 
   public static incrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, defaultValue: string, text: string) {
     const type = CellTypeTotalsUtils.parseType(text, defaultValue);
-    CellTypeTotalsUtils.changeTypeAndSetColumnType(columnDetails, [[CellTypeTotalsUtils.incrementType, type]]);
+    CellTypeTotalsUtils.changeTypeAndSetColumnType(columnDetails, [CellTypeTotalsUtils.incrementType.bind(this, type)]);
   }
 
   public static decrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, defaultValue: string, text: string) {
     const type = CellTypeTotalsUtils.parseType(text, defaultValue);
-    CellTypeTotalsUtils.changeTypeAndSetColumnType(columnDetails, [[CellTypeTotalsUtils.decrementType, type]]);
+    CellTypeTotalsUtils.changeTypeAndSetColumnType(columnDetails, [CellTypeTotalsUtils.decrementType.bind(this, type)]);
   }
 
   // prettier-ignore
   public static changeCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, oldType: CELL_TYPE, newType: CELL_TYPE) {
     if (oldType === newType) return;
     CellTypeTotalsUtils.changeTypeAndSetColumnType(columnDetails,
-      [[CellTypeTotalsUtils.decrementType, oldType], [CellTypeTotalsUtils.incrementType, newType]]);
+      [CellTypeTotalsUtils.decrementType.bind(this, oldType), CellTypeTotalsUtils.incrementType.bind(this, newType)]);
   }
 
   public static getColumnType(cellTypeTotals: CellTypeTotals, numberOfDataRows: number) {

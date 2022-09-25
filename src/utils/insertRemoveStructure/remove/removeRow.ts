@@ -7,20 +7,22 @@ import {ColumnsDetailsT} from '../../../types/columnDetails';
 
 export class RemoveRow {
   // prettier-ignore
-  private static decrementColumnCellTypeTotals(
-      removedRowData: TableRow, defaultCellValue: string, columnsDetails: ColumnsDetailsT) {
+  private static updateColumnDetails(
+      removedRowData: TableRow, defaultCellValue: string, columnsDetails: ColumnsDetailsT, rowIndex: number) {
     removedRowData.forEach((cellText: TableCellText, columnIndex: number) => {
-      CellTypeTotalsUtils.decrementCellTypeAndSetNewColumnType(
-        columnsDetails[columnIndex], defaultCellValue, cellText as string);
+      const columnDetails = columnsDetails[columnIndex];
+      columnDetails.elements.splice(rowIndex, 1);
+      CellTypeTotalsUtils.decrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, cellText as string);
     });
   }
+
   // prettier-ignore
   private static update(etc: EditableTableComponent,
       rowIndex: number, lastRowElement: HTMLElement, lastRowIndex: number, removedRowData: TableRow) {
     const lastRow = {element: lastRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(etc, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow);
     etc.onTableUpdate(etc.contents);
-    setTimeout(() =>  RemoveRow.decrementColumnCellTypeTotals(removedRowData, etc.defaultCellValue, etc.columnsDetails));
+    setTimeout(() => RemoveRow.updateColumnDetails(removedRowData, etc.defaultCellValue, etc.columnsDetails, rowIndex));
   }
 
   private static removeRow(etc: EditableTableComponent, rowIndex: number) {

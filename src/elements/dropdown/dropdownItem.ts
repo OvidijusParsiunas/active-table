@@ -14,7 +14,15 @@ export class DropdownItem {
   private static readonly DROPDOWN_BUTTON_CLASS = 'dropdown-button';
   private static readonly DROPDOWN_HOVERABLE_ITEM = 'dropdown-hoverable-item';
 
-  // WORK - open and close dropdown twice will result in incorrect text
+  // prettier-ignore
+  public static setUpInputElement(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement,
+      dropdownInutElement: HTMLInputElement, dropdownElement: HTMLElement) {
+    dropdownInutElement.value = etc.contents[0][columnIndex] as string;
+    // overwrites the oninput event
+    dropdownInutElement.oninput = DropdownItem.onInput.bind(
+      etc, columnIndex, cellElement, dropdownElement, dropdownInutElement);
+  }
+
   // prettier-ignore
   public static setContent(etc: EditableTableComponent,
       dropdownElement: HTMLElement, columnIndex: number, cellElement: HTMLElement) {
@@ -64,15 +72,6 @@ export class DropdownItem {
     dropdownElement.style.top = `${dimensions.bottom}px`;
   })
 }
-
-  // prettier-ignore
-  public static setUpInputElement(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement,
-      dropdownInutElement: HTMLInputElement, dropdownElement: HTMLElement) {
-    dropdownInutElement.value = etc.contents[0][columnIndex] as string;
-    // overwrites the oninput event
-    dropdownInutElement.oninput = DropdownItem.onInput.bind(
-      etc, columnIndex, cellElement, dropdownElement, dropdownInutElement);
-  }
 
   public static addInputItem(dropdownElement: HTMLElement) {
     const itemElement = DropdownItem.createItem(dropdownElement);
