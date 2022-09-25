@@ -1,17 +1,17 @@
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
+import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {OverlayElements} from '../../types/overlayElements';
 import {AddNewRowElement} from '../row/addNewRowElement';
 import {TableRow} from '../../types/tableContents';
-import {Dropdown} from '../dropdown/dropdown';
 import {TableEvents} from './tableEvents';
 
 export class TableElement {
   // prettier-ignore
   public static addAuxiliaryElements(etc: EditableTableComponent,
       tableElement: HTMLElement, overlayElementsState: OverlayElements, areHeadersEditable: boolean) {
-    const dropdownElenent = Dropdown.create(etc, areHeadersEditable);
+    const dropdownElenent = ColumnDropdown.create(etc, areHeadersEditable);
     tableElement.appendChild(dropdownElenent);
     overlayElementsState.columnDropdown = dropdownElenent;
   }

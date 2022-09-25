@@ -1,4 +1,5 @@
 import {FocusedCellUtils} from '../../utils/focusedCell/focusedCellUtils';
+import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
 import {Dropdown} from '../dropdown/dropdown';
@@ -30,7 +31,7 @@ export class HeaderCellEvents {
   private static mouseClick(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     const cellElement = event.target as HTMLElement;
     CellEvents.removeTextIfCellDefault(this, 0, columnIndex, event);
-    Dropdown.displayRelevantDropdownElements(this, columnIndex, event);
+    ColumnDropdown.displayRelevantDropdownElements(this, columnIndex, event);
     setTimeout(() => FocusedCellUtils.setHeaderCell(this.focusedCell, cellElement, columnIndex));
   }
 

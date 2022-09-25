@@ -98,12 +98,10 @@ export const ediTableStyle = css`
     vertical-align: middle;
   }
 
-  #editable-table-component-dropdown {
+  .editable-table-component-dropdown {
     position: absolute;
     box-shadow: rgb(232 232 232) 0px 2px 5px 0px;
     border-radius: 5px;
-    padding-top: 4px;
-    padding-bottom: 4px;
     background-color: white;
     z-index: 1;
   }
@@ -116,6 +114,7 @@ export const ediTableStyle = css`
     color: grey;
     cursor: pointer;
     user-select: none;
+    position: relative;
   }
 
   .dropdown-title-item {

@@ -1,7 +1,7 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {TableContents, TableRow} from '../../types/tableContents';
 import {CellEvents} from '../../elements/cell/cellEvents';
-import {CELL_TYPE} from '../../enums/cellType';
+import {COLUMN_TYPE} from '../../enums/cellType';
 
 export class Sort {
   // prettier-ignore
@@ -61,7 +61,7 @@ export class Sort {
   public static sortContentsColumn(etc: EditableTableComponent, columnIndex: number, asc: boolean) {
     const dataContents = etc.contents.slice(1);
     const columnType = etc.columnsDetails[columnIndex].columnType;
-    if (columnType === CELL_TYPE.Number) {
+    if (columnType === COLUMN_TYPE.Number) {
       Sort.sortNumbers(dataContents, columnIndex, asc);
     } else {
       Sort.sortStrings(dataContents, columnIndex, asc);

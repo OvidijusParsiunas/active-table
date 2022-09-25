@@ -1,4 +1,4 @@
-import {CELL_TYPE} from '../enums/cellType';
+import {CELL_TYPE, COLUMN_TYPE} from '../enums/cellType';
 import {Optional} from './optional';
 import {PX} from './pxDimension';
 
@@ -29,7 +29,7 @@ export type CellTypeTotals = {
 export interface ColumnDetailsT {
   elements: HTMLElement[];
   columnSizer: ColumnSizerT;
-  columnType: CELL_TYPE;
+  columnType: COLUMN_TYPE;
   cellTypeTotals: CellTypeTotals;
 }
 

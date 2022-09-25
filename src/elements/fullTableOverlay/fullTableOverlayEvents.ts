@@ -1,3 +1,4 @@
+import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {Dropdown} from '../dropdown/dropdown';
 
@@ -7,7 +8,7 @@ export class FullTableOverlayEvents {
     // window events will handle if the dropdown is open and the user clicks outside of the shadow dom
     if (Dropdown.isDisplayed(this.overlayElementsState.columnDropdown)
         && !Dropdown.isPartOfDropdownElement(event.target as HTMLElement)) {
-      Dropdown.processTextAndHide(this);
+      ColumnDropdown.processTextAndHide(this);
     }
   }
 }

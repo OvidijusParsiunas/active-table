@@ -1,3 +1,4 @@
+import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {Dropdown} from '../dropdown/dropdown';
 
@@ -10,7 +11,7 @@ export class WindowEvents {
     // if the user clicks outside of the shadow dom and the column dropdown is open,
     // close the column dropdown
     if (Dropdown.isDisplayed(this.overlayElementsState.columnDropdown)) {
-      Dropdown.processTextAndHide(this);
+      ColumnDropdown.processTextAndHide(this);
     }
   }
 }

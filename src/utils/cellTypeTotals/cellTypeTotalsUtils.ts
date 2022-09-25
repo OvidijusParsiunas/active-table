@@ -1,9 +1,8 @@
 import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
-import {CELL_TYPE} from '../../enums/cellType';
+import {CELL_TYPE, COLUMN_TYPE} from '../../enums/cellType';
 
 export class CellTypeTotalsUtils {
-  // column types are never set as CELL_TYPE.Default and are defaulted to CELL_TYPE.text
-  public static readonly DEFAULT_COLUMN_TYPE = CELL_TYPE.Text;
+  public static readonly DEFAULT_COLUMN_TYPE = COLUMN_TYPE.Text;
 
   public static createObj(): CellTypeTotals {
     return {
