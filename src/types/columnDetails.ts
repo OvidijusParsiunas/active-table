@@ -1,4 +1,5 @@
-import {CELL_TYPE, COLUMN_TYPE} from '../enums/cellType';
+import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../enums/columnType';
+import {CELL_TYPE} from '../enums/cellType';
 import {Optional} from './optional';
 import {PX} from './pxDimension';
 
@@ -29,8 +30,10 @@ export type CellTypeTotals = {
 export interface ColumnDetailsT {
   elements: HTMLElement[];
   columnSizer: ColumnSizerT;
-  columnType: COLUMN_TYPE;
-  userChosenColumnType: COLUMN_TYPE;
+  // column type that has been inferred automatically or set by user
+  activeColumnType: ACTIVE_COLUMN_TYPE;
+  // column type set by the user, set to auto by default
+  userSetColumnType: USER_SET_COLUMN_TYPE;
   cellTypeTotals: CellTypeTotals;
 }
 

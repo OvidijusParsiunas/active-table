@@ -42,8 +42,9 @@ export class DataCellEvents {
 
   private static focusCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const cellElement = event.target as HTMLElement;
+    // placed here and not in timeout because we need cells with a default value to be recorded before modification
+    FocusedCellUtils.setDataCell(this.focusedCell, cellElement, columnIndex, this.defaultCellValue);
     CellEvents.removeTextIfCellDefault(this, rowIndex, columnIndex, event);
-    setTimeout(() => FocusedCellUtils.setDataCell(this.focusedCell, cellElement, columnIndex, this.defaultCellValue));
   }
 
   public static set(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {

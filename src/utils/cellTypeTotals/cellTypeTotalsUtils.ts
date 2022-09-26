@@ -1,8 +1,9 @@
 import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
-import {CELL_TYPE, COLUMN_TYPE} from '../../enums/cellType';
+import {ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
+import {CELL_TYPE} from '../../enums/cellType';
 
 export class CellTypeTotalsUtils {
-  public static readonly DEFAULT_COLUMN_TYPE = COLUMN_TYPE.Text;
+  public static readonly DEFAULT_COLUMN_TYPE = ACTIVE_COLUMN_TYPE.Text;
 
   public static createObj(): CellTypeTotals {
     return {
@@ -35,7 +36,7 @@ export class CellTypeTotalsUtils {
       columnDetails: ColumnDetailsT, changeFuncs: ((cellTypeTotals: CellTypeTotals) => void)[]) {
     const {cellTypeTotals, elements} = columnDetails;
     changeFuncs.forEach((func) => func(cellTypeTotals));
-    columnDetails.columnType = CellTypeTotalsUtils.getColumnType(cellTypeTotals, elements.length - 1);
+    columnDetails.activeColumnType = CellTypeTotalsUtils.getActiveColumnType(cellTypeTotals, elements.length - 1);
   }
 
   public static incrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, defaultValue: string, text: string) {
@@ -55,7 +56,7 @@ export class CellTypeTotalsUtils {
       [CellTypeTotalsUtils.decrementType.bind(this, oldType), CellTypeTotalsUtils.incrementType.bind(this, newType)]);
   }
 
-  public static getColumnType(cellTypeTotals: CellTypeTotals, numberOfDataRows: number) {
+  public static getActiveColumnType(cellTypeTotals: CellTypeTotals, numberOfDataRows: number) {
     const cellTypes = Object.keys(cellTypeTotals) as unknown as CELL_TYPE[];
     // the logic does not take defaults into consideration as a column type, so if we have default as '-' and
     // the column contains the following data ['-','-',2,4], the column type is number
@@ -67,10 +68,11 @@ export class CellTypeTotalsUtils {
       if (cellTypes[i] !== CELL_TYPE.Default) {
         if (cellTypeTotals[cellTypes[i]] === numberOfRichRows) {
           // enum values are numbers anyway
-          return i;
+          return i as ACTIVE_COLUMN_TYPE;
         }
+        // if there is a mixture (exc. default)
         if (cellTypeTotals[cellTypes[i]] !== 0) {
-          return CELL_TYPE.Text;
+          return ACTIVE_COLUMN_TYPE.Text;
         }
       }
     }

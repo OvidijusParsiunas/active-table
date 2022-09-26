@@ -1,13 +1,13 @@
 import {CellTypeTotalsUtils} from '../cellTypeTotals/cellTypeTotalsUtils';
 import {ColumnDetailsTPartial} from '../../types/columnDetails';
-import {COLUMN_TYPE} from '../../enums/cellType';
+import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 
 export class ColumnDetails {
   public static createPartial(cellElement: HTMLElement): ColumnDetailsTPartial {
     return {
       elements: [cellElement],
-      columnType: CellTypeTotalsUtils.DEFAULT_COLUMN_TYPE,
-      userChosenColumnType: COLUMN_TYPE.Auto,
+      activeColumnType: CellTypeTotalsUtils.DEFAULT_COLUMN_TYPE,
+      userSetColumnType: USER_SET_COLUMN_TYPE.Auto,
       cellTypeTotals: CellTypeTotalsUtils.createObj(),
     };
   }
