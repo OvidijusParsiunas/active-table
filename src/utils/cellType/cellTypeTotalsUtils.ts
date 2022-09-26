@@ -1,5 +1,5 @@
 import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
-import {ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
+import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CELL_TYPE} from '../../enums/cellType';
 
 export class CellTypeTotalsUtils {
@@ -36,7 +36,9 @@ export class CellTypeTotalsUtils {
       columnDetails: ColumnDetailsT, changeFuncs: ((cellTypeTotals: CellTypeTotals) => void)[]) {
     const {cellTypeTotals, elements} = columnDetails;
     changeFuncs.forEach((func) => func(cellTypeTotals));
-    columnDetails.activeColumnType = CellTypeTotalsUtils.getActiveColumnType(cellTypeTotals, elements.length - 1);
+    if (columnDetails.userSetColumnType !== USER_SET_COLUMN_TYPE.Auto) {
+      columnDetails.activeColumnType = CellTypeTotalsUtils.getActiveColumnType(cellTypeTotals, elements.length - 1);
+    }
   }
 
   public static incrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, defaultValue: string, text: string) {
