@@ -8,4 +8,6 @@ export enum CELL_TYPE {
 export enum COLUMN_TYPE {
   Number = CELL_TYPE.Number,
   Text = CELL_TYPE.Text,
+  // this is the default column type which allows actual column type to be inferred automaticallly
+  Auto,
 }

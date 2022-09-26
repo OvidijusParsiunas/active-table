@@ -30,6 +30,7 @@ export interface ColumnDetailsT {
   elements: HTMLElement[];
   columnSizer: ColumnSizerT;
   columnType: COLUMN_TYPE;
+  userChosenColumnType: COLUMN_TYPE;
   cellTypeTotals: CellTypeTotals;
 }
 

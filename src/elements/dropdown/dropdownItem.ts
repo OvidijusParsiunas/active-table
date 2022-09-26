@@ -9,6 +9,9 @@ export class DropdownItem {
   private static readonly DROPDOWN_TITLE_ITEM_CLASS = 'dropdown-title-item';
   private static readonly DROPDOWN_HOVERABLE_ITEM = 'dropdown-hoverable-item';
   private static readonly DROPDOWN_NESTED_DROPDOWN_ITEM = 'dropdown-nested-dropdown-item';
+  // #ade8ff, #5cd1ff, #13bcff, #73d7ff
+  private static readonly ACTIVE_ITEM_BACKGROUND_COLOR = '#2244ba';
+  private static readonly ACTIVE_ITEM_TEXT_COLOR = 'white';
 
   private static createItem(dropdownElement: HTMLElement) {
     const itemElement = document.createElement('div');
@@ -78,6 +81,23 @@ export class DropdownItem {
       DropdownItem.addButtonItem(dropdownElement, itemName);
     });
     return dropdownElement;
+  }
+
+  public static resetNestedDropdownItemStyle(nestedDropdown: HTMLElement) {
+    Array.from(nestedDropdown.children).forEach((item) => {
+      const itemElement = item as HTMLElement;
+      itemElement.style.backgroundColor = '';
+      itemElement.style.color = '';
+    });
+  }
+
+  protected static setActiveNestedDropdownItem(nestedDropdownChildren: HTMLElement[], targetItemText: string) {
+    nestedDropdownChildren.forEach((item) => {
+      if (item.textContent === targetItemText) {
+        item.style.backgroundColor = DropdownItem.ACTIVE_ITEM_BACKGROUND_COLOR;
+        item.style.color = DropdownItem.ACTIVE_ITEM_TEXT_COLOR;
+      }
+    });
   }
 
   // prettier-ignore

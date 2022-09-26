@@ -73,32 +73,44 @@ export class ColumnDropdownItem extends DropdownItem {
   }
 
   private static setColumnType(columnDetails: ColumnDetailsT, newType: string) {
-    columnDetails.columnType = COLUMN_TYPE[newType as keyof typeof COLUMN_TYPE];
+    const newTypeEnum = COLUMN_TYPE[newType as keyof typeof COLUMN_TYPE];
+    columnDetails.columnType = newTypeEnum;
+    columnDetails.userChosenColumnType = newTypeEnum;
+  }
+
+  private static setActiveUserChosenColumnType(nestedDropdownChildren: HTMLElement[], columnDetails: ColumnDetailsT) {
+    const userChosenColumnTypeString = COLUMN_TYPE[columnDetails.userChosenColumnType];
+    DropdownItem.setActiveNestedDropdownItem(nestedDropdownChildren, userChosenColumnTypeString);
   }
 
   // prettier-ignore
-  private static rebindColumnTypeDropdownButtonItems(etc: EditableTableComponent, nestedDropdownChildren: HTMLCollection,
+  private static rebindColumnTypeDropdownButtonItems(etc: EditableTableComponent, nestedDropdownChildren: HTMLElement[],
       columnDetails: ColumnDetailsT) {
-    Array.from(nestedDropdownChildren).forEach((dropdownChildElement) => {
+    nestedDropdownChildren.forEach((dropdownChildElement) => {
       const dropdownItem = dropdownChildElement as HTMLElement;
       dropdownItem.onclick = ColumnDropdownItem.onClickMiddleware.bind(etc,
         ColumnDropdownItem.setColumnType.bind(this, columnDetails, dropdownItem.textContent as string));
     })
   }
 
-  // prettier-ignore
-  private static setColumnTypeItem(etc: EditableTableComponent, dropdownElement: HTMLElement, columnIndex: number) {
+  private static setUpColumnTypeDropdown(etc: EditableTableComponent, dropdownElement: HTMLElement, columnIndex: number) {
+    const columnDetails = etc.columnsDetails[columnIndex];
+    const nestedDropdownChilrenArr = Array.from(dropdownElement.children) as HTMLElement[];
+    ColumnDropdownItem.rebindColumnTypeDropdownButtonItems(etc, nestedDropdownChilrenArr, columnDetails);
+    ColumnDropdownItem.setActiveUserChosenColumnType(nestedDropdownChilrenArr, columnDetails);
+  }
+
+  private static setUpColumnType(etc: EditableTableComponent, dropdownElement: HTMLElement, columnIndex: number) {
     const columnTypeItem = dropdownElement.getElementsByClassName(ColumnDropdownItem.COLUMN_TYPE_ITEM_CLASS)[0];
     const textElement = columnTypeItem.children[0];
     textElement.textContent = CELL_TYPE[etc.columnsDetails[columnIndex].columnType];
-    ColumnDropdownItem.rebindColumnTypeDropdownButtonItems(
-      etc, (textElement.nextSibling as HTMLElement).children, etc.columnsDetails[columnIndex]);
+    ColumnDropdownItem.setUpColumnTypeDropdown(etc, textElement.nextSibling as HTMLElement, columnIndex);
   }
 
   // prettier-ignore
   public static setUpContent(etc: EditableTableComponent,
       dropdownElement: HTMLElement, columnIndex: number, cellElement: HTMLElement) {
-    ColumnDropdownItem.setColumnTypeItem(etc, dropdownElement, columnIndex);
+    ColumnDropdownItem.setUpColumnType(etc, dropdownElement, columnIndex);
     const dropdownInputElement = dropdownElement.getElementsByClassName(
       DropdownItem.DROPDOWN_INPUT_CLASS)[0] as HTMLInputElement;
     if (dropdownInputElement) {

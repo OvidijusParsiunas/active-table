@@ -24,6 +24,7 @@ export class ColumnDropdown extends Dropdown {
     HeaderCellEvents.fadeCell(cellElement as HTMLElement);
     GenericElementUtils.hideElements(
       columnDropdown as HTMLElement, fullTableOverlay as HTMLElement, columnTypeDropdown as HTMLElement);
+    DropdownItem.resetNestedDropdownItemStyle(columnTypeDropdown as HTMLElement)
     ColumnDropdown.resetDropdownPosition(columnDropdown as HTMLElement);
   }
 
@@ -80,6 +81,11 @@ export class ColumnDropdown extends Dropdown {
       }
     }
   }
+
+  // Dev gets to choose whether the column type is set from the start, but will default to Auto
+  // Auto will interpret the type (questionable on the icon)
+  // When going from one type to another - parse all elements and identify any that cannot be transformed - prompt to
+  // remove all - potential list of all the ones that cannot be transformed and their cells should be highlighted
 
   // WORK
   // should be text by default unless the user actually sets it to number, date, currency, etc.
