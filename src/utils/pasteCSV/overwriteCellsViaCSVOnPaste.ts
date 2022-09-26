@@ -1,7 +1,7 @@
 import {InsertNewColumn} from '../insertRemoveStructure/insert/insertNewColumn';
 import {InsertNewRow} from '../insertRemoveStructure/insert/insertNewRow';
-import {CellTypeTotalsUtils} from '../cellTypeTotals/cellTypeTotalsUtils';
 import {EditableTableComponent} from '../../editable-table-component';
+import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {DataUtils} from '../insertRemoveStructure/shared/dataUtils';
 import {TableCellText, TableRow} from '../../types/tableContents';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';

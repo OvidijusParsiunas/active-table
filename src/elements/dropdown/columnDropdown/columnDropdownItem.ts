@@ -1,8 +1,8 @@
 import {InsertNewColumn} from '../../../utils/insertRemoveStructure/insert/insertNewColumn';
 import {RemoveColumn} from '../../../utils/insertRemoveStructure/remove/removeColumn';
 import {ElementSiblingIterator} from '../../../utils/elements/elementSiblingIterator';
-import {CellTypeTotalsUtils} from '../../../utils/cellTypeTotals/cellTypeTotalsUtils';
 import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE} from '../../../enums/columnType';
+import {CellTypeTotalsUtils} from '../../../utils/cellType/cellTypeTotalsUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnDetailsT} from '../../../types/columnDetails';
 import {CELL_TYPE} from '../../../enums/cellType';

@@ -1,4 +1,4 @@
-import {CellTypeTotalsUtils} from '../cellTypeTotals/cellTypeTotalsUtils';
+import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {ColumnDetailsTPartial} from '../../types/columnDetails';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 

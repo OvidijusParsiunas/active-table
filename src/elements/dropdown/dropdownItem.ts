@@ -9,8 +9,8 @@ export class DropdownItem {
   private static readonly DROPDOWN_TITLE_ITEM_CLASS = 'dropdown-title-item';
   private static readonly DROPDOWN_HOVERABLE_ITEM = 'dropdown-hoverable-item';
   private static readonly DROPDOWN_NESTED_DROPDOWN_ITEM = 'dropdown-nested-dropdown-item';
-  // #ade8ff, #5cd1ff, #13bcff, #73d7ff
-  private static readonly ACTIVE_ITEM_BACKGROUND_COLOR = '#2244ba';
+  // #ade8ff, #5cd1ff, #13bcff, #73d7ff, #4a69d4
+  private static readonly ACTIVE_ITEM_BACKGROUND_COLOR = '#4a69d4';
   private static readonly ACTIVE_ITEM_TEXT_COLOR = 'white';
 
   private static createItem(dropdownElement: HTMLElement) {

@@ -1,7 +1,9 @@
 import {OverwriteCellsViaCSVOnPaste} from '../../utils/pasteCSV/overwriteCellsViaCSVOnPaste';
-import {CellTypeTotalsUtils} from '../../utils/cellTypeTotals/cellTypeTotalsUtils';
+import {CellTypeTotalsUtils} from '../../utils/cellType/cellTypeTotalsUtils';
 import {FocusedCellUtils} from '../../utils/focusedCell/focusedCellUtils';
 import {EditableTableComponent} from '../../editable-table-component';
+import {ValidateInput} from '../../utils/cellType/validateInput';
+import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CELL_TYPE} from '../../enums/cellType';
 import {CellEvents} from './cellEvents';
 
@@ -9,11 +11,19 @@ export class DataCellEvents {
   private static readonly PASTE_INPUT_TYPE = 'insertFromPaste';
   private static readonly TEXT_DATA_FORMAT = 'text/plain';
 
+  // WORK - paste
+  // WORK - bug with firefox where the cursor does not display at all
   private static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const inputEvent = event as InputEvent;
+    const cellElement = inputEvent.target as HTMLElement;
     if (inputEvent.inputType !== DataCellEvents.PASTE_INPUT_TYPE) {
-      const cellElement = inputEvent.target as HTMLElement;
-      CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex);
+      let isPrevented = false;
+      const {userSetColumnType} = this.columnsDetails[columnIndex];
+      // text type does not require validation
+      if (userSetColumnType !== USER_SET_COLUMN_TYPE.Auto && userSetColumnType !== USER_SET_COLUMN_TYPE.Text) {
+        isPrevented = ValidateInput.preventInsertionIfInvalid(this, cellElement, rowIndex, columnIndex, userSetColumnType);
+      }
+      if (!isPrevented) CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex);
     }
   }
 

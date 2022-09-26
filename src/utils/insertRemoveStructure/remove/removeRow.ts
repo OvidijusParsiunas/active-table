@@ -1,5 +1,5 @@
-import {CellTypeTotalsUtils} from '../../cellTypeTotals/cellTypeTotalsUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {TableCellText, TableRow} from '../../../types/tableContents';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';

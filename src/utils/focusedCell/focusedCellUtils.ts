@@ -1,4 +1,4 @@
-import {CellTypeTotalsUtils} from '../cellTypeTotals/cellTypeTotalsUtils';
+import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {FocusedCell} from '../../types/focusedCell';
 
 export class FocusedCellUtils {
