@@ -26,6 +26,22 @@ export class Sort {
     etc.onTableUpdate(etc.contents);
   }
 
+  private static sortDatesColumnAscending(contents: TableContents, columnIndex: number) {
+    contents.sort((a: TableRow, b: TableRow) => new Date(a[columnIndex]).getTime() - new Date(b[columnIndex]).getTime());
+  }
+
+  private static sortDatesColumnDescending(contents: TableContents, columnIndex: number) {
+    contents.sort((a: TableRow, b: TableRow) => new Date(b[columnIndex]).getTime() - new Date(a[columnIndex]).getTime());
+  }
+
+  private static sortDates(dataContents: TableContents, columnIndex: number, isAsc: boolean) {
+    if (isAsc) {
+      Sort.sortDatesColumnAscending(dataContents, columnIndex);
+    } else {
+      Sort.sortDatesColumnDescending(dataContents, columnIndex);
+    }
+  }
+
   private static sortNumbersColumnAscending(contents: TableContents, columnIndex: number) {
     contents.sort((a: TableRow, b: TableRow) => (a[columnIndex] as number) - (b[columnIndex] as number));
   }
@@ -34,8 +50,8 @@ export class Sort {
     contents.sort((a: TableRow, b: TableRow) => (b[columnIndex] as number) - (a[columnIndex] as number));
   }
 
-  private static sortNumbers(dataContents: TableContents, columnIndex: number, asc: boolean) {
-    if (asc) {
+  private static sortNumbers(dataContents: TableContents, columnIndex: number, isAsc: boolean) {
+    if (isAsc) {
       Sort.sortNumbersColumnAscending(dataContents, columnIndex);
     } else {
       Sort.sortNumbersColumnDescending(dataContents, columnIndex);
@@ -50,21 +66,23 @@ export class Sort {
     contents.sort((a: TableRow, b: TableRow) => (b[columnIndex] as string).localeCompare(a[columnIndex] as string));
   }
 
-  private static sortStrings(dataContents: TableContents, columnIndex: number, asc: boolean) {
-    if (asc) {
+  private static sortStrings(dataContents: TableContents, columnIndex: number, isAsc: boolean) {
+    if (isAsc) {
       Sort.sortStringsColumnAscending(dataContents, columnIndex);
     } else {
       Sort.sortStringsColumnDescending(dataContents, columnIndex);
     }
   }
 
-  public static sortContentsColumn(etc: EditableTableComponent, columnIndex: number, asc: boolean) {
+  public static sortContentsColumn(etc: EditableTableComponent, columnIndex: number, isAsc: boolean) {
     const dataContents = etc.contents.slice(1);
     const columnType = etc.columnsDetails[columnIndex].activeColumnType;
     if (columnType === ACTIVE_COLUMN_TYPE.Number) {
-      Sort.sortNumbers(dataContents, columnIndex, asc);
+      Sort.sortNumbers(dataContents, columnIndex, isAsc);
+    } else if (columnType === ACTIVE_COLUMN_TYPE.Date) {
+      Sort.sortDates(dataContents, columnIndex, isAsc);
     } else {
-      Sort.sortStrings(dataContents, columnIndex, asc);
+      Sort.sortStrings(dataContents, columnIndex, isAsc);
     }
     Sort.update(etc, dataContents);
   }
@@ -96,8 +114,8 @@ export class Sort {
 //   });
 // }
 
-// private static sortAny(dataContents: TableContents, columnIndex: number, asc: boolean) {
-//   if (asc) {
+// private static sortAny(dataContents: TableContents, columnIndex: number, isAsc: boolean) {
+//   if (isAsc) {
 //     Sort.sortAnyAscending(dataContents, columnIndex);
 //   } else {
 //     Sort.sortAnyDescending(dataContents, columnIndex);
