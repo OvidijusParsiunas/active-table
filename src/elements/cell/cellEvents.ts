@@ -21,7 +21,7 @@ export class CellEvents {
   // handles some of the instructions below inin a different order asynchronously for maximum efficiency
   // prettier-ignore
   public static updateCell(etc: EditableTableComponent,
-      cellText: string, rowIndex: number, columnIndex: number, options?: UpdateCellOptions): void {
+      cellText: string, rowIndex: number, columnIndex: number, options?: UpdateCellOptions) {
     if (CellEvents.executeUpdateOpration('processText', options)) {
       cellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText); 
     }
@@ -30,6 +30,7 @@ export class CellEvents {
     if (CellEvents.executeUpdateOpration('updateTableEvent', options)) etc.onTableUpdate(etc.contents);
     // not in timeout as functionality that calls updateCell calls etc.onTableUpdate after - should remain that way
     etc.onCellUpdate(cellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
+    return cellText;
   }
 
   // this is used for cases where updateCell should only be called if it has to be set to default

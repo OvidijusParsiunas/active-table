@@ -20,7 +20,6 @@ export class DataCellEvents {
 
   // TO-DO default types per column, cleanup e.g. currency or date will need to be provided by user
   // TO-DO allow user to set default as invalid
-  // WORK - paste
   // WORK - bug with firefox where the cursor does not display at all
   private static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const inputEvent = event as InputEvent;
@@ -51,10 +50,10 @@ export class DataCellEvents {
     const cellElement = event.target as HTMLElement;
     CellEvents.setCellToDefaultIfNeeded(this, rowIndex, columnIndex, cellElement);
     cellElement.style.color = DataCellEvents.DEFAULT_TEXT_COLOR;
+    const oldType = this.focusedCell.type as CELL_TYPE;
     setTimeout(() => {
       const newType = CellTypeTotalsUtils.parseType(cellElement.textContent as string, this.defaultCellValue);
-      CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(
-        this.columnsDetails[columnIndex], this.focusedCell.type as CELL_TYPE, newType);
+      CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(this.columnsDetails[columnIndex], oldType, newType);
     });
   }
 

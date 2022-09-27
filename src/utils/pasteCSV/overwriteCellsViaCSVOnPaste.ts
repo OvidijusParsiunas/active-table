@@ -44,9 +44,10 @@ export class OverwriteCellsViaCSVOnPaste {
     // the reason why columnIndex is multiplied by 2 is because there is a divider element after each cell
     const cellElement = rowElement.children[columnIndex * 2] as HTMLElement;
     const oldType = CellTypeTotalsUtils.parseType(cellElement.textContent as string, etc.defaultCellValue);
-    CellEvents.updateCell(etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
+    const processedNewCellText = CellEvents.updateCell(
+      etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
     setTimeout(() => {
-      const newType = CellTypeTotalsUtils.parseType(newCellText, etc.defaultCellValue);
+      const newType = CellTypeTotalsUtils.parseType(processedNewCellText, etc.defaultCellValue);
       CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(etc.columnsDetails[columnIndex], oldType, newType);
     });
   }
@@ -77,7 +78,9 @@ export class OverwriteCellsViaCSVOnPaste {
       const overflowData = dataToOverwriteRow.slice(numberOfCellsToOverwrite);
       dataForNewColumns.push(overflowData);
     });
-    setTimeout(() => OverwriteCellsViaCSVOnPaste.setFocusedCellType(etc, dataToOverwriteRows[0][0]));
+    setTimeout(() => {
+      OverwriteCellsViaCSVOnPaste.setFocusedCellType(etc, etc.contents[startRowIndex][startColumnIndex] as string);
+    });
     return dataForNewColumns;
   }
 
