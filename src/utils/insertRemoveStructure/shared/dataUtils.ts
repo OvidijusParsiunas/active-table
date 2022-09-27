@@ -1,7 +1,9 @@
 import {EditableTableComponent} from '../../../editable-table-component';
-import {CellEvents} from '../../../elements/cell/cellEvents';
-import {TableRow} from '../../../types/tableContents';
 import {NumberOfIdenticalCells} from '../../numberOfIdenticalCells';
+import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
+import {CellEvents} from '../../../elements/cell/cellEvents';
+import {ValidateInput} from '../../cellType/validateInput';
+import {TableRow} from '../../../types/tableContents';
 
 export class DataUtils {
   public static createDataArray(length: number, defaultCellValue: string): string[] {
@@ -16,19 +18,30 @@ export class DataUtils {
     return false;
   }
 
+  private static isDataValid(userSetColumnType: USER_SET_COLUMN_TYPE, text: string) {
+    if (userSetColumnType !== USER_SET_COLUMN_TYPE.Auto && userSetColumnType !== USER_SET_COLUMN_TYPE.Text) {
+      return ValidateInput.validate(text, userSetColumnType);
+    }
+    return true;
+  }
+
+  // TO-DO - initial table population should be subject to validation if type set beforehand
+  // currently etc.columnsDetails is set after the data is inserted which does not allow it to be validated
   // note that NumberOfIdenticalCells.get uses the etc.contents top row, so it needs to be up-to-date
   // prettier-ignore
-  private static shouldTextBeSetToDefault(text: string,
-      defaultCellValue: string, rowIndex: number, duplicateHeadersAllowed: boolean, headerContents: TableRow) {
+  private static shouldTextBeSetToDefault(text: string, defaultCellValue: string, rowIndex: number,
+      duplicateHeadersAllowed: boolean, headerContents: TableRow, userSetColumnType?: USER_SET_COLUMN_TYPE) {
     return DataUtils.isTextEmpty(defaultCellValue, text)
-      || (rowIndex === 0 && !duplicateHeadersAllowed && NumberOfIdenticalCells.get(text, headerContents) > 1)
+      || (rowIndex === 0 && (!duplicateHeadersAllowed && NumberOfIdenticalCells.get(text, headerContents) > 1))
+      || (rowIndex > 0 && userSetColumnType && !DataUtils.isDataValid(userSetColumnType, text));
   }
 
   // prettier-ignore
-  public static processCellText(etc: EditableTableComponent, rowIndex: number, cellText: string) {
+  public static processCellText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellText: string) {
     const trimmedText = typeof cellText === 'string' ? cellText.trim() : cellText;
     const shouldBeSetToDefault = DataUtils.shouldTextBeSetToDefault(
-      trimmedText, etc.defaultCellValue, rowIndex, etc.duplicateHeadersAllowed, etc.contents[0]);
+      trimmedText, etc.defaultCellValue, rowIndex, etc.duplicateHeadersAllowed, etc.contents[0],
+      etc.columnsDetails[columnIndex]?.userSetColumnType);
     return shouldBeSetToDefault ? etc.defaultCellValue : trimmedText;
   }
 }

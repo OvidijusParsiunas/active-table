@@ -1,13 +1,14 @@
-import {CELL_TYPE} from './cellType';
-
+// set by the user or inferred
 export enum ACTIVE_COLUMN_TYPE {
-  Number = CELL_TYPE.Number,
-  Text = CELL_TYPE.Text,
+  Number = 'Number',
+  Text = 'Text',
+  Date = 'Date',
 }
 
-export enum USER_SET_COLUMN_TYPE {
-  Number = ACTIVE_COLUMN_TYPE.Number,
-  Text = ACTIVE_COLUMN_TYPE.Text,
-  // this is the default column type which allows actual column type to be inferred automaticallly
-  Auto,
+// this is the default column type which defines that actual column type is inferred automaticallly
+enum AUTO {
+  Auto = 'Auto',
 }
+
+export const USER_SET_COLUMN_TYPE = {...ACTIVE_COLUMN_TYPE, ...AUTO};
+export type USER_SET_COLUMN_TYPE = ACTIVE_COLUMN_TYPE | AUTO;

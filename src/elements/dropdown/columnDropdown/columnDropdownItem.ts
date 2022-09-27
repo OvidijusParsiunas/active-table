@@ -15,15 +15,9 @@ export class ColumnDropdownItem extends DropdownItem {
   private static readonly SORT_ITEM_CLASS = 'dropdown-sort-item';
   private static readonly COLUMN_TYPE_ITEM_CLASS = 'dropdown-column-type-item';
 
-  private static getNestedDropdownNames() {
-    return Object.keys(USER_SET_COLUMN_TYPE).filter(
-      (key) => !isNaN(Number(USER_SET_COLUMN_TYPE[key as keyof typeof USER_SET_COLUMN_TYPE]))
-    );
-  }
-
   // prettier-ignore
   public static addColumnTypeNestedDropdownItem(dropdownElement: HTMLElement) {
-    const nestedDropdownKeys = ColumnDropdownItem.getNestedDropdownNames();
+    const nestedDropdownKeys = Object.keys(USER_SET_COLUMN_TYPE);
     return DropdownItem.addNestedDropdownItem(
       dropdownElement, '', nestedDropdownKeys, ColumnDropdownItem.COLUMN_TYPE_ITEM_CLASS);
   }

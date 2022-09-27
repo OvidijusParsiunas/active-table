@@ -37,7 +37,7 @@ export class InsertNewCell {
   // prettier-ignore
   public static insertToRow(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
-    const processedCellText = DataUtils.processCellText(etc, rowIndex, cellText);
+    const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex);
     setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(

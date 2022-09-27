@@ -11,6 +11,7 @@ export class DataCellEvents {
   private static readonly PASTE_INPUT_TYPE = 'insertFromPaste';
   private static readonly TEXT_DATA_FORMAT = 'text/plain';
 
+  // TO-DO default types per column
   // WORK - paste
   // WORK - bug with firefox where the cursor does not display at all
   private static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
@@ -19,9 +20,9 @@ export class DataCellEvents {
     if (inputEvent.inputType !== DataCellEvents.PASTE_INPUT_TYPE) {
       let isPrevented = false;
       const {userSetColumnType} = this.columnsDetails[columnIndex];
-      // text type does not require validation
-      if (userSetColumnType !== USER_SET_COLUMN_TYPE.Auto && userSetColumnType !== USER_SET_COLUMN_TYPE.Text) {
-        isPrevented = ValidateInput.preventInsertionIfInvalid(this, cellElement, rowIndex, columnIndex, userSetColumnType);
+      // only one that can be prevented when typing, WORK - potentially remove
+      if (userSetColumnType === USER_SET_COLUMN_TYPE.Number) {
+        isPrevented = ValidateInput.preventInsertionIfInvalid(this, cellElement, rowIndex, columnIndex);
       }
       if (!isPrevented) CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex);
     }

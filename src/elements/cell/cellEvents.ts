@@ -23,7 +23,7 @@ export class CellEvents {
   public static updateCell(etc: EditableTableComponent,
       cellText: string, rowIndex: number, columnIndex: number, options?: UpdateCellOptions): void {
     if (CellEvents.executeUpdateOpration('processText', options)) {
-      cellText = DataUtils.processCellText(etc, rowIndex, cellText); 
+      cellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText); 
     }
     if (CellEvents.executeUpdateOpration('updateContents', options)) etc.contents[rowIndex][columnIndex] = cellText; 
     if (options?.element) options.element.textContent = cellText;
@@ -32,12 +32,12 @@ export class CellEvents {
     etc.onCellUpdate(cellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
   }
 
-  // this is used for cases where you only want to update if a cell has to be set to default
+  // this is used for cases where updateCell should only be called if it has to be set to default
   // prettier-ignore
   public static setCellToDefaultIfNeeded(
       etc: EditableTableComponent, rowIndex: number, columnIndex: number, cell: HTMLElement) {
     const cellText = cell.textContent as string;
-    const processedCellText = DataUtils.processCellText(etc, rowIndex, cellText);
+    const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     if (processedCellText !== cellText) {
       CellEvents.updateCell(etc, processedCellText, rowIndex, columnIndex, { element: cell, processText: false });
     }

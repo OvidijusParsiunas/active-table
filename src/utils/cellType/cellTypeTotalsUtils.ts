@@ -1,6 +1,7 @@
-import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
 import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../enums/columnType';
+import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
 import {CELL_TYPE} from '../../enums/cellType';
+import {ValidateInput} from './validateInput';
 
 export class CellTypeTotalsUtils {
   public static readonly DEFAULT_COLUMN_TYPE = ACTIVE_COLUMN_TYPE.Text;
@@ -9,6 +10,7 @@ export class CellTypeTotalsUtils {
     return {
       [CELL_TYPE.Text]: 0,
       [CELL_TYPE.Number]: 0,
+      [CELL_TYPE.Date]: 0,
       [CELL_TYPE.Default]: 0,
     };
   }
@@ -17,10 +19,13 @@ export class CellTypeTotalsUtils {
     if (cellValue === defaultCellValue) {
       return CELL_TYPE.Default;
     }
-    if (isNaN(cellValue as unknown as number)) {
-      return CELL_TYPE.Text;
+    if (ValidateInput.VALIDATORS[ACTIVE_COLUMN_TYPE.Date]?.(cellValue)) {
+      return CELL_TYPE.Date;
     }
-    return CELL_TYPE.Number;
+    if (ValidateInput.VALIDATORS[ACTIVE_COLUMN_TYPE.Number]?.(cellValue)) {
+      return CELL_TYPE.Number;
+    }
+    return CELL_TYPE.Text;
   }
 
   private static incrementType(type: CELL_TYPE, cellTypeTotals: CellTypeTotals) {
@@ -36,7 +41,7 @@ export class CellTypeTotalsUtils {
       columnDetails: ColumnDetailsT, changeFuncs: ((cellTypeTotals: CellTypeTotals) => void)[]) {
     const {cellTypeTotals, elements} = columnDetails;
     changeFuncs.forEach((func) => func(cellTypeTotals));
-    if (columnDetails.userSetColumnType !== USER_SET_COLUMN_TYPE.Auto) {
+    if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Auto) {
       columnDetails.activeColumnType = CellTypeTotalsUtils.getActiveColumnType(cellTypeTotals, elements.length - 1);
     }
   }
@@ -58,7 +63,7 @@ export class CellTypeTotalsUtils {
       [CellTypeTotalsUtils.decrementType.bind(this, oldType), CellTypeTotalsUtils.incrementType.bind(this, newType)]);
   }
 
-  public static getActiveColumnType(cellTypeTotals: CellTypeTotals, numberOfDataRows: number) {
+  public static getActiveColumnType(cellTypeTotals: CellTypeTotals, numberOfDataRows: number): ACTIVE_COLUMN_TYPE {
     const cellTypes = Object.keys(cellTypeTotals) as unknown as CELL_TYPE[];
     // the logic does not take defaults into consideration as a column type, so if we have default as '-' and
     // the column contains the following data ['-','-',2,4], the column type is number
@@ -69,8 +74,7 @@ export class CellTypeTotalsUtils {
     for (let i = 0; i < cellTypes.length; i += 1) {
       if (cellTypes[i] !== CELL_TYPE.Default) {
         if (cellTypeTotals[cellTypes[i]] === numberOfRichRows) {
-          // enum values are numbers anyway
-          return i as ACTIVE_COLUMN_TYPE;
+          return cellTypes[i] as ACTIVE_COLUMN_TYPE;
         }
         // if there is a mixture (exc. default)
         if (cellTypeTotals[cellTypes[i]] !== 0) {
