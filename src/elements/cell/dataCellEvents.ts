@@ -2,29 +2,36 @@ import {OverwriteCellsViaCSVOnPaste} from '../../utils/pasteCSV/overwriteCellsVi
 import {CellTypeTotalsUtils} from '../../utils/cellType/cellTypeTotalsUtils';
 import {FocusedCellUtils} from '../../utils/focusedCell/focusedCellUtils';
 import {EditableTableComponent} from '../../editable-table-component';
+import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {ValidateInput} from '../../utils/cellType/validateInput';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
-import {CELL_TYPE} from '../../enums/cellType';
 import {CellEvents} from './cellEvents';
 
 export class DataCellEvents {
   private static readonly PASTE_INPUT_TYPE = 'insertFromPaste';
   private static readonly TEXT_DATA_FORMAT = 'text/plain';
+  private static readonly INVALID_TEXT_COLOR = 'grey';
+  private static readonly DEFAULT_TEXT_COLOR = '';
+
+  // prettier-ignore
+  private static setColorBasedOnValidity(cellElement: HTMLElement, userSetColumnType: VALIDABLE_CELL_TYPE) {
+    cellElement.style.color = ValidateInput.validate(cellElement.textContent as string, userSetColumnType)
+      ? DataCellEvents.DEFAULT_TEXT_COLOR : DataCellEvents.INVALID_TEXT_COLOR;
+  }
 
   // TO-DO default types per column
+  // TO-DO allow user to set default as invalid
   // WORK - paste
   // WORK - bug with firefox where the cursor does not display at all
   private static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const inputEvent = event as InputEvent;
     const cellElement = inputEvent.target as HTMLElement;
     if (inputEvent.inputType !== DataCellEvents.PASTE_INPUT_TYPE) {
-      let isPrevented = false;
       const {userSetColumnType} = this.columnsDetails[columnIndex];
-      // only one that can be prevented when typing, WORK - potentially remove
-      if (userSetColumnType === USER_SET_COLUMN_TYPE.Number) {
-        isPrevented = ValidateInput.preventInsertionIfInvalid(this, cellElement, rowIndex, columnIndex);
+      if (userSetColumnType === USER_SET_COLUMN_TYPE.Number || userSetColumnType === USER_SET_COLUMN_TYPE.Date) {
+        DataCellEvents.setColorBasedOnValidity(cellElement, userSetColumnType);
       }
-      if (!isPrevented) CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex);
+      CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex);
     }
   }
 
@@ -44,6 +51,7 @@ export class DataCellEvents {
   private static blurCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const cellElement = event.target as HTMLElement;
     CellEvents.setCellToDefaultIfNeeded(this, rowIndex, columnIndex, cellElement);
+    cellElement.style.color = DataCellEvents.DEFAULT_TEXT_COLOR;
     setTimeout(() => {
       const newType = CellTypeTotalsUtils.parseType(cellElement.textContent as string, this.defaultCellValue);
       CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(
