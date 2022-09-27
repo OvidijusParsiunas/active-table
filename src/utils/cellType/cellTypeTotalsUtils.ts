@@ -1,6 +1,6 @@
 import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
-import {CELL_TYPE} from '../../enums/cellType';
+import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {ValidateInput} from './validateInput';
 
 export class CellTypeTotalsUtils {
@@ -11,20 +11,25 @@ export class CellTypeTotalsUtils {
       [CELL_TYPE.Text]: 0,
       [CELL_TYPE.Number]: 0,
       [CELL_TYPE.Date]: 0,
+      [CELL_TYPE.Currency]: 0,
       [CELL_TYPE.Default]: 0,
     };
+  }
+
+  private static parseValidable(cellValue: string) {
+    const validableCellTypeKeys = Object.keys(VALIDABLE_CELL_TYPE) as (keyof typeof VALIDABLE_CELL_TYPE)[];
+    for (let i = 0; i < validableCellTypeKeys.length; i += 1) {
+      if (ValidateInput.VALIDATORS[validableCellTypeKeys[i]](cellValue)) return validableCellTypeKeys[i];
+    }
+    return null;
   }
 
   public static parseType(cellValue: string, defaultCellValue: string): CELL_TYPE {
     if (cellValue === defaultCellValue) {
       return CELL_TYPE.Default;
     }
-    if (ValidateInput.VALIDATORS[ACTIVE_COLUMN_TYPE.Date]?.(cellValue)) {
-      return CELL_TYPE.Date;
-    }
-    if (ValidateInput.VALIDATORS[ACTIVE_COLUMN_TYPE.Number]?.(cellValue)) {
-      return CELL_TYPE.Number;
-    }
+    const parsableCellType = CellTypeTotalsUtils.parseValidable(cellValue);
+    if (parsableCellType) return parsableCellType;
     return CELL_TYPE.Text;
   }
 

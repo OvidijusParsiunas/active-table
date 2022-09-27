@@ -3,6 +3,7 @@ export enum ACTIVE_COLUMN_TYPE {
   Number = 'Number',
   Text = 'Text',
   Date = 'Date',
+  Currency = 'Currency',
 }
 
 // this is the default column type which defines that actual column type is inferred automaticallly

@@ -1,7 +1,7 @@
 import {ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
 import {VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 
-type VALIDATORS = {[key in VALIDABLE_CELL_TYPE]?: (input: string) => boolean};
+type VALIDATORS = {[key in VALIDABLE_CELL_TYPE]: (input: string) => boolean};
 
 export class ValidateInput {
   // WORK - custom regex
@@ -10,13 +10,19 @@ export class ValidateInput {
     // in order to fit cases where the year might be at the start/end
     // and allow letter based months like NOV
     // IMPORTANT - this is a supplement to the new Date() validator and is useless without it
-    [ACTIVE_COLUMN_TYPE.Date]: new RegExp(/^[0-9]{1,4}[-|/.][a-zA-Z0-9]*[-|/.][0-9]{1,4}$/),
+    // \s*? is used to allow spaces between symbols
+    [ACTIVE_COLUMN_TYPE.Date]: new RegExp(/^[0-9]{1,4}\s*?[-|/.]\s*?[a-zA-Z0-9]*\s*?[-|/.]\s*?[0-9]{1,4}$/),
+    [ACTIVE_COLUMN_TYPE.Currency]: new RegExp(
+      // eslint-disable-next-line max-len
+      /^(([$€£¥]\s*?-?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?)|(-?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?\s*?[$€£¥]))$/
+    ),
   };
 
   public static readonly VALIDATORS: VALIDATORS = {
     [ACTIVE_COLUMN_TYPE.Number]: (input: string) => !isNaN(input as unknown as number),
     [ACTIVE_COLUMN_TYPE.Date]: (input: string) =>
-      isFinite(Number(new Date(input))) && ValidateInput.REGEX[ACTIVE_COLUMN_TYPE.Date].test(input),
+      !isNaN(Date.parse(input)) && ValidateInput.REGEX[ACTIVE_COLUMN_TYPE.Date].test(input),
+    [ACTIVE_COLUMN_TYPE.Currency]: (input: string) => ValidateInput.REGEX[ACTIVE_COLUMN_TYPE.Currency].test(input),
   };
 
   public static validate(cellText: string, userSetColumnType: VALIDABLE_CELL_TYPE) {

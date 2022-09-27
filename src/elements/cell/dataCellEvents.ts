@@ -4,7 +4,6 @@ import {FocusedCellUtils} from '../../utils/focusedCell/focusedCellUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {ValidateInput} from '../../utils/cellType/validateInput';
-import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellEvents} from './cellEvents';
 
 export class DataCellEvents {
@@ -19,7 +18,7 @@ export class DataCellEvents {
       ? DataCellEvents.DEFAULT_TEXT_COLOR : DataCellEvents.INVALID_TEXT_COLOR;
   }
 
-  // TO-DO default types per column
+  // TO-DO default types per column, cleanup e.g. currency or date will need to be provided by user
   // TO-DO allow user to set default as invalid
   // WORK - paste
   // WORK - bug with firefox where the cursor does not display at all
@@ -27,8 +26,8 @@ export class DataCellEvents {
     const inputEvent = event as InputEvent;
     const cellElement = inputEvent.target as HTMLElement;
     if (inputEvent.inputType !== DataCellEvents.PASTE_INPUT_TYPE) {
-      const {userSetColumnType} = this.columnsDetails[columnIndex];
-      if (userSetColumnType === USER_SET_COLUMN_TYPE.Number || userSetColumnType === USER_SET_COLUMN_TYPE.Date) {
+      const userSetColumnType = this.columnsDetails[columnIndex].userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
+      if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
         DataCellEvents.setColorBasedOnValidity(cellElement, userSetColumnType);
       }
       CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex);
