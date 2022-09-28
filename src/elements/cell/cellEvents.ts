@@ -2,9 +2,11 @@ import {DataUtils} from '../../utils/insertRemoveStructure/shared/dataUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
 
-// operates in an opt in basis for various operations
+// operates in an opt in or out basis for various operations
 interface UpdateCellOptions {
+  // opt in
   element?: HTMLElement;
+  // opt out
   updateTableEvent?: boolean;
   processText?: boolean;
   updateContents?: boolean;

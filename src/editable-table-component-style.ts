@@ -91,7 +91,6 @@ export const ediTableStyle = css`
 
   .add-new-row-row:hover {
     background-color: #f7f7f7;
-    cursor: pointer;
   }
 
   .add-new-row-cell {
@@ -101,6 +100,7 @@ export const ediTableStyle = css`
     font-size: 12px;
     color: #555555;
     vertical-align: middle;
+    cursor: pointer;
   }
 
   .editable-table-component-dropdown {

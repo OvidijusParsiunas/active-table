@@ -16,10 +16,10 @@ export class TableEvents {
     }
     // can be repurposed for other dropdowns (column dropdown does not need it as mouse hits the overlay first)
     if (Dropdown.isDisplayed(this.overlayElementsState.categoryDropdown)
-          && !element.classList.contains(CellElement.DATA_CELL_CLASS)
-          && !Dropdown.isPartOfDropdownElement(element)) {
-        CategoryDropdown.hide(this);
-      }
+        && !element.classList.contains(CellElement.DATA_CELL_CLASS)
+        && !Dropdown.isPartOfDropdownElement(element)) {
+      CategoryDropdown.hide(this);
+    }
   }
 
   // prettier-ignore

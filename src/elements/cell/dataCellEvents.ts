@@ -6,7 +6,10 @@ import {FocusedCellUtils} from '../../utils/focusedCell/focusedCellUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {ValidateInput} from '../../utils/cellType/validateInput';
+import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
+import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {Browser} from '../../utils/browser/browser';
+import {Dropdown} from '../dropdown/dropdown';
 import {CellEvents} from './cellEvents';
 
 export class DataCellEvents {
@@ -23,6 +26,7 @@ export class DataCellEvents {
 
   // TO-DO default types per column, cleanup e.g. currency or date will need to be provided by user
   // TO-DO allow user to set default as invalid
+  // using this instead of keydown is because when this is fired the new cell text is available
   private static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const inputEvent = event as InputEvent;
     const cellElement = inputEvent.target as HTMLElement;
@@ -60,24 +64,53 @@ export class DataCellEvents {
     });
   }
 
+  // when the user tabs onto a cell that is a category, dropdown needs to be opened manually
+  // prettier-ignore
+  private static displayCategoryDropdownIfNotOpen(etc: EditableTableComponent, rowIndex: number,
+      columnIndex: number, cellElement: HTMLElement) {
+    if (etc.columnsDetails[columnIndex].userSetColumnType === USER_SET_COLUMN_TYPE.Category
+        && Dropdown.isDisplayed(etc.overlayElementsState.categoryDropdown)) {
+      CategoryDropdown.display(etc, rowIndex, columnIndex, cellElement);
+    }
+  }
+
+  // prettier-ignore
   private static focusCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const cellElement = event.target as HTMLElement;
     if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.focusCell(cellElement, rowIndex);
     // placed here and not in timeout because we need cells with a default value to be recorded before modification
     FocusedCellUtils.setDataCell(this.focusedCell, cellElement, columnIndex, this.defaultCellValue);
     CellEvents.removeTextIfCellDefault(this, rowIndex, columnIndex, event);
+    setTimeout(() => DataCellEvents.displayCategoryDropdownIfNotOpen(this, rowIndex, columnIndex, cellElement));
   }
 
-  private static clickCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
+  private static clickCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
     const cellElement = event.target as HTMLElement;
-    CategoryDropdown.display(this, columnIndex, cellElement);
+    if (this.columnsDetails[columnIndex].userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+      CategoryDropdown.display(this, rowIndex, columnIndex, cellElement);
+    }
+  }
+
+  private static keyDownCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
+    if (event.key === KEYBOARD_KEY.TAB) {
+      if (Dropdown.isDisplayed(this.overlayElementsState.categoryDropdown)) {
+        CategoryDropdown.hide(this);
+      }
+    } else if (event.key === KEYBOARD_KEY.ENTER) {
+      event.preventDefault();
+      if (Dropdown.isDisplayed(this.overlayElementsState.categoryDropdown)) {
+        CategoryDropdown.hide(this);
+        this.columnsDetails[columnIndex].elements[rowIndex + 1]?.focus();
+      }
+    }
   }
 
   public static set(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     cellElement.oninput = DataCellEvents.inputCell.bind(etc, rowIndex, columnIndex);
+    cellElement.onkeydown = DataCellEvents.keyDownCell.bind(etc, rowIndex, columnIndex);
     cellElement.onpaste = DataCellEvents.pasteCell.bind(etc, rowIndex, columnIndex);
     cellElement.onblur = DataCellEvents.blurCell.bind(etc, rowIndex, columnIndex);
     cellElement.onfocus = DataCellEvents.focusCell.bind(etc, rowIndex, columnIndex);
-    cellElement.onclick = DataCellEvents.clickCell.bind(etc, columnIndex);
+    cellElement.onclick = DataCellEvents.clickCell.bind(etc, rowIndex, columnIndex);
   }
 }

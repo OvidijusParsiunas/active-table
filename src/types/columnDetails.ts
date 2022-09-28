@@ -27,6 +27,8 @@ export type CellTypeTotals = {
   [key in CELL_TYPE]: number;
 };
 
+export type ColumnCategories = {[cellText: string]: true};
+
 export interface ColumnDetailsT {
   elements: HTMLElement[];
   columnSizer: ColumnSizerT;
@@ -35,6 +37,7 @@ export interface ColumnDetailsT {
   // column type set by the user, set to auto by default
   userSetColumnType: USER_SET_COLUMN_TYPE;
   cellTypeTotals: CellTypeTotals;
+  categories: ColumnCategories;
 }
 
 // used for when column details initialised before the column sizer

@@ -2,9 +2,6 @@ import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {DropdownItem} from './dropdownItem';
 
 export class Dropdown {
-  protected static readonly ENTER_KEY = 'Enter';
-  protected static readonly ESCAPE_KEY = 'Escape';
-  protected static readonly TAB_KEY = 'Tab';
   protected static readonly DROPDOWN_CLASS = 'editable-table-component-dropdown';
   protected static readonly CSS_DISPLAY_VISIBLE = 'block';
   protected static readonly DROPDOWN_WIDTH = 176;

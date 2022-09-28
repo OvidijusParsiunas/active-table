@@ -2,6 +2,7 @@ import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ElementViewPort} from '../../../utils/elements/elementViewPort';
 import {HeaderCellEvents} from '../../cell/headerCellEvents';
+import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {ColumnDropdownItem} from './columnDropdownItem';
 import {CellEvents} from '../../cell/cellEvents';
 import {DropdownItem} from '../dropdownItem';
@@ -29,7 +30,7 @@ export class ColumnDropdown extends Dropdown {
   }
 
   private static onKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
-    if (event.key === Dropdown.ENTER_KEY) {
+    if (event.key === KEYBOARD_KEY.ENTER) {
       const itemElement = event.target as HTMLElement;
       if (DropdownItem.doesElementContainInputClass(itemElement)) {
         ColumnDropdown.processTextAndHide(this);
@@ -37,9 +38,9 @@ export class ColumnDropdown extends Dropdown {
         itemElement.dispatchEvent(new Event('mouseenter'));
         itemElement.dispatchEvent(new Event('click'));
       }
-    } else if (event.key === Dropdown.ESCAPE_KEY) {
+    } else if (event.key === KEYBOARD_KEY.ESCAPE) {
       ColumnDropdown.processTextAndHide(this);
-    } else if (event.key === Dropdown.TAB_KEY) {
+    } else if (event.key === KEYBOARD_KEY.TAB) {
       event.preventDefault();
       DropdownItem.focusNextItem(event.target as HTMLElement, dropdownElement);
     }

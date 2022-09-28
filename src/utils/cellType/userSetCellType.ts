@@ -1,3 +1,4 @@
+import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnsDetailsT} from '../../types/columnDetails';
@@ -49,6 +50,7 @@ export class UserSetCellType {
     if (newTypeEnum !== this.columnsDetails[columnIndex].userSetColumnType) {
       UserSetCellType.set(this, newTypeEnum, columnIndex);
       UserSetCellType.purgeInvalidCellsIfValidable(this, newTypeEnum as keyof typeof VALIDABLE_CELL_TYPE, columnIndex);
+      if (newTypeEnum === USER_SET_COLUMN_TYPE.Category) CategoryDropdown.populateItems(this, columnIndex);
     }
   }
 }
