@@ -1,15 +1,25 @@
+import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElement} from '../columnSizer/columnSizerElement';
 import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
+import {CellElement} from '../cell/cellElement';
+import {Dropdown} from '../dropdown/dropdown';
 
 export class TableEvents {
   // prettier-ignore
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
-    if ((event.target as HTMLElement).classList.contains(ColumnSizerElement.COLUMN_SIZER_CLASS)) {
-      this.tableElementEventState.selectedColumnSizer = event.target as HTMLElement;
+    const element = event.target as HTMLElement;
+    if (element.classList.contains(ColumnSizerElement.COLUMN_SIZER_CLASS)) {
+      this.tableElementEventState.selectedColumnSizer = element;
       ColumnSizerEvents.tableOnMouseDown(
-        this.tableElementEventState.selectedColumnSizer as HTMLElement, this.columnResizerStyle.click?.backgroundColor);
+        this.tableElementEventState.selectedColumnSizer, this.columnResizerStyle.click?.backgroundColor);
     }
+    // can be repurposed for other dropdowns (column dropdown does not need it as mouse hits the overlay first)
+    if (Dropdown.isDisplayed(this.overlayElementsState.categoryDropdown)
+          && !element.classList.contains(CellElement.DATA_CELL_CLASS)
+          && !Dropdown.isPartOfDropdownElement(element)) {
+        CategoryDropdown.hide(this);
+      }
   }
 
   // prettier-ignore

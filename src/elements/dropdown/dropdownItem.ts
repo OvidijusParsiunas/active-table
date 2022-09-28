@@ -9,12 +9,20 @@ export class DropdownItem {
   private static readonly DROPDOWN_TITLE_ITEM_CLASS = 'dropdown-title-item';
   private static readonly DROPDOWN_HOVERABLE_ITEM = 'dropdown-hoverable-item';
   private static readonly DROPDOWN_NESTED_DROPDOWN_ITEM = 'dropdown-nested-dropdown-item';
+  // this is used to identify if a mouse event is currently on a dropdown item
+  private static readonly DROPDOWN_ITEM_IDENTIFIER = 'dropdown-item-identifier';
   // #ade8ff, #5cd1ff, #13bcff, #73d7ff, #4a69d4
   private static readonly ACTIVE_ITEM_BACKGROUND_COLOR = '#4a69d4';
   private static readonly ACTIVE_ITEM_TEXT_COLOR = 'white';
 
+  private static createDropdownItemBaseElement(tag: keyof HTMLElementTagNameMap) {
+    const dropdownItemBaseDiv = document.createElement(tag);
+    dropdownItemBaseDiv.classList.add(DropdownItem.DROPDOWN_ITEM_IDENTIFIER);
+    return dropdownItemBaseDiv;
+  }
+
   private static createItem(dropdownElement: HTMLElement) {
-    const itemElement = document.createElement('div');
+    const itemElement = DropdownItem.createDropdownItemBaseElement('div');
     itemElement.tabIndex = dropdownElement.children.length;
     itemElement.classList.add(DropdownItem.DROPDOWN_ITEM_CLASS);
     return itemElement;
@@ -23,7 +31,7 @@ export class DropdownItem {
   public static addInputItem(dropdownElement: HTMLElement) {
     const itemElement = DropdownItem.createItem(dropdownElement);
     itemElement.classList.add(DropdownItem.DROPDOWN_INPUT_ITEM_CLASS);
-    const inputElement = document.createElement('input');
+    const inputElement = DropdownItem.createDropdownItemBaseElement('input');
     inputElement.classList.add(DropdownItem.DROPDOWN_INPUT_CLASS);
     // TO-DO hook up with the parent API
     inputElement.spellcheck = false;
@@ -31,21 +39,22 @@ export class DropdownItem {
     dropdownElement.appendChild(itemElement);
   }
 
-  public static addButtonItem(dropdownElement: HTMLElement, text: string, className?: string) {
+  public static addButtonItem(dropdownElement: HTMLElement, text: string, ...classNames: string[]) {
     const itemElement = DropdownItem.createItem(dropdownElement);
     itemElement.classList.add(DropdownItem.DROPDOWN_HOVERABLE_ITEM);
-    if (className) itemElement.classList.add(className);
-    const textElement = document.createElement('div');
+    if (classNames.length > 0) itemElement.classList.add(...classNames);
+    const textElement = DropdownItem.createDropdownItemBaseElement('div');
     textElement.textContent = text;
     itemElement.append(textElement);
     dropdownElement.appendChild(itemElement);
+    return itemElement;
   }
 
   public static addTitle(dropdownElement: HTMLElement, text: string) {
-    const title = document.createElement('div');
-    title.classList.add(DropdownItem.DROPDOWN_ITEM_CLASS, DropdownItem.DROPDOWN_TITLE_ITEM_CLASS);
-    title.textContent = text;
-    dropdownElement.appendChild(title);
+    const titleElement = DropdownItem.createDropdownItemBaseElement('div');
+    titleElement.classList.add(DropdownItem.DROPDOWN_ITEM_CLASS, DropdownItem.DROPDOWN_TITLE_ITEM_CLASS);
+    titleElement.textContent = text;
+    dropdownElement.appendChild(titleElement);
   }
 
   private static displayAndSetChildDropdownPosition(event: MouseEvent) {
@@ -103,22 +112,17 @@ export class DropdownItem {
   // prettier-ignore
   public static addNestedDropdownItem(dropdownElement: HTMLElement, text: string, nestedItemNames: string[],
       className?: string) {
-    const itemElement = DropdownItem.createItem(dropdownElement);
-    itemElement.classList.add(DropdownItem.DROPDOWN_HOVERABLE_ITEM, DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM);
-    if (className) itemElement.classList.add(className);
-    const textElement = document.createElement('div');
-    textElement.textContent = text;
-    itemElement.appendChild(textElement);
+    const buttonElement = DropdownItem.addButtonItem(
+      dropdownElement, text, DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM, className || '');
     const nestedDropdown = DropdownItem.createChildDropdown(nestedItemNames);
-    itemElement.appendChild(nestedDropdown);
-    itemElement.onmouseenter = DropdownItem.displayAndSetChildDropdownPosition;
-    itemElement.onmouseleave = DropdownItem.hideChildDropdown;
-    dropdownElement.appendChild(itemElement);
+    buttonElement.appendChild(nestedDropdown);
+    buttonElement.onmouseenter = DropdownItem.displayAndSetChildDropdownPosition;
+    buttonElement.onmouseleave = DropdownItem.hideChildDropdown;
     return nestedDropdown;
   }
 
   public static doesElementContainItemClass(element: HTMLElement) {
-    return element.classList.contains(DropdownItem.DROPDOWN_ITEM_CLASS);
+    return element.classList.contains(DropdownItem.DROPDOWN_ITEM_IDENTIFIER);
   }
 
   public static doesElementContainInputClass(element: HTMLElement) {

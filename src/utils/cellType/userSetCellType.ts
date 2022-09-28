@@ -6,7 +6,7 @@ import {CellTypeTotalsUtils} from './cellTypeTotalsUtils';
 import {VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {ValidateInput} from './validateInput';
 
-export class ChangeCellType {
+export class UserSetCellType {
   // prettier-ignore
   private static purgeInvalidCell(etc: EditableTableComponent, columnsDetails: ColumnsDetailsT,
       rowIndex: number, columnIndex: number) {
@@ -21,7 +21,7 @@ export class ChangeCellType {
     contents.slice(1).forEach((row, rowIndex) => {
       const cellText = row[columnIndex] as string;
       if (!ValidateInput.validate(cellText, newType)) {
-        ChangeCellType.purgeInvalidCell(etc, columnsDetails, rowIndex, columnIndex);
+        UserSetCellType.purgeInvalidCell(etc, columnsDetails, rowIndex, columnIndex);
         updateTableEvent = true;
       }
     });
@@ -31,7 +31,7 @@ export class ChangeCellType {
   // prettier-ignore
   private static purgeInvalidCellsIfValidable(etc: EditableTableComponent,
       newTypeEnum: VALIDABLE_CELL_TYPE, columnIndex: number) {
-    if (VALIDABLE_CELL_TYPE[newTypeEnum]) ChangeCellType.purgeInvalidCells(etc, columnIndex, newTypeEnum);
+    if (VALIDABLE_CELL_TYPE[newTypeEnum]) UserSetCellType.purgeInvalidCells(etc, columnIndex, newTypeEnum);
   }
 
   private static set(etc: EditableTableComponent, newTypeEnum: USER_SET_COLUMN_TYPE, columnIndex: number) {
@@ -47,8 +47,8 @@ export class ChangeCellType {
   public static setIfNew(this: EditableTableComponent, newType: string, columnIndex: number) {
     const newTypeEnum = USER_SET_COLUMN_TYPE[newType as keyof typeof USER_SET_COLUMN_TYPE];
     if (newTypeEnum !== this.columnsDetails[columnIndex].userSetColumnType) {
-      ChangeCellType.set(this, newTypeEnum, columnIndex);
-      ChangeCellType.purgeInvalidCellsIfValidable(this, newTypeEnum as keyof typeof VALIDABLE_CELL_TYPE, columnIndex);
+      UserSetCellType.set(this, newTypeEnum, columnIndex);
+      UserSetCellType.purgeInvalidCellsIfValidable(this, newTypeEnum as keyof typeof VALIDABLE_CELL_TYPE, columnIndex);
     }
   }
 }

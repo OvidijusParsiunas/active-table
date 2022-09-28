@@ -2,7 +2,7 @@ import {InsertNewColumn} from '../../../utils/insertRemoveStructure/insert/inser
 import {RemoveColumn} from '../../../utils/insertRemoveStructure/remove/removeColumn';
 import {ElementSiblingIterator} from '../../../utils/elements/elementSiblingIterator';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {ChangeCellType} from '../../../utils/cellType/changeCellType';
+import {UserSetCellType} from '../../../utils/cellType/userSetCellType';
 import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {ColumnDetailsT} from '../../../types/columnDetails';
 import {CELL_TYPE} from '../../../enums/cellType';
@@ -81,7 +81,7 @@ export class ColumnDropdownItem extends DropdownItem {
     nestedDropdownChildren.forEach((dropdownChildElement) => {
       const dropdownItem = dropdownChildElement as HTMLElement;
       dropdownItem.onclick = ColumnDropdownItem.onClickMiddleware.bind(etc,
-        ChangeCellType.setIfNew.bind(etc, dropdownItem.textContent as string, columnIndex));
+        UserSetCellType.setIfNew.bind(etc, dropdownItem.textContent as string, columnIndex));
     })
   }
 

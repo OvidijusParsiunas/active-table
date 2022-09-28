@@ -13,6 +13,8 @@ export class CellTypeTotalsUtils {
       [CELL_TYPE.Date]: 0,
       [CELL_TYPE.Currency]: 0,
       [CELL_TYPE.Default]: 0,
+      // this type will never be incremented, but is here as a stub for its cell type
+      [CELL_TYPE.Category]: 0,
     };
   }
 

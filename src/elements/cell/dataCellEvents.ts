@@ -1,5 +1,6 @@
 import {OverwriteCellsViaCSVOnPaste} from '../../utils/pasteCSV/overwriteCellsViaCSVOnPaste';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
+import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {CellTypeTotalsUtils} from '../../utils/cellType/cellTypeTotalsUtils';
 import {FocusedCellUtils} from '../../utils/focusedCell/focusedCellUtils';
 import {EditableTableComponent} from '../../editable-table-component';
@@ -67,10 +68,16 @@ export class DataCellEvents {
     CellEvents.removeTextIfCellDefault(this, rowIndex, columnIndex, event);
   }
 
+  private static clickCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
+    const cellElement = event.target as HTMLElement;
+    CategoryDropdown.display(this, columnIndex, cellElement);
+  }
+
   public static set(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     cellElement.oninput = DataCellEvents.inputCell.bind(etc, rowIndex, columnIndex);
     cellElement.onpaste = DataCellEvents.pasteCell.bind(etc, rowIndex, columnIndex);
     cellElement.onblur = DataCellEvents.blurCell.bind(etc, rowIndex, columnIndex);
     cellElement.onfocus = DataCellEvents.focusCell.bind(etc, rowIndex, columnIndex);
+    cellElement.onclick = DataCellEvents.clickCell.bind(etc, columnIndex);
   }
 }

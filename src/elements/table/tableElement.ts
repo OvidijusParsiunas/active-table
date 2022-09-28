@@ -1,5 +1,6 @@
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
+import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {OverlayElements} from '../../types/overlayElements';
@@ -11,9 +12,12 @@ export class TableElement {
   // prettier-ignore
   public static addAuxiliaryElements(etc: EditableTableComponent,
       tableElement: HTMLElement, overlayElementsState: OverlayElements, areHeadersEditable: boolean) {
-    const dropdownElenent = ColumnDropdown.create(etc, areHeadersEditable);
-    tableElement.appendChild(dropdownElenent);
-    overlayElementsState.columnDropdown = dropdownElenent;
+    const columnDropdownElement = ColumnDropdown.create(etc, areHeadersEditable);
+    const categoryDropdownElement = CategoryDropdown.create();
+    tableElement.appendChild(columnDropdownElement);
+    tableElement.appendChild(categoryDropdownElement);
+    overlayElementsState.columnDropdown = columnDropdownElement;
+    overlayElementsState.categoryDropdown = categoryDropdownElement;
   }
 
   private static addAuxiliaryBodyElements(etc: EditableTableComponent) {
