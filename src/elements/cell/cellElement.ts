@@ -1,5 +1,7 @@
+import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {EditableTableComponent} from '../../editable-table-component';
 import {HeaderCellEvents} from './headerCellEvents';
+import {Browser} from '../../utils/browser/browser';
 import {DataCellEvents} from './dataCellEvents';
 import {CSSStyle} from '../../types/cssStyle';
 
@@ -19,14 +21,24 @@ export class CellElement {
   public static create(cellStyle: CSSStyle, headerStyle: CSSStyle, isHeader = false) {
     const cellElement = document.createElement(isHeader ? 'th' : 'td');
     cellElement.classList.add('cell');
+    // role for assistive technologies
+    cellElement.setAttribute('role', 'textbox');
     Object.assign(cellElement.style, cellStyle, isHeader ? headerStyle : {});
     return cellElement;
   }
 
+  private static prepContentEditable(cellElement: HTMLElement, isHeader: boolean) {
+    if (Browser.IS_FIREFOX) {
+      FirefoxCaretDisplayFix.setAttributes(cellElement, isHeader);
+    } else {
+      cellElement.contentEditable = String(!isHeader);
+    }
+  }
+
   private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
     const cellElement = CellElement.create(etc.cellStyle, etc.headerStyle, isHeader);
-    cellElement.contentEditable = String(!isHeader);
     cellElement.textContent = cellText as string;
+    CellElement.prepContentEditable(cellElement, isHeader);
     if (isHeader) cellElement.style.width = CellElement.DEFAULT_COLUMN_WIDTH;
     return cellElement;
   }

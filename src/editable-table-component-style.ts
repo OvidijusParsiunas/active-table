@@ -29,6 +29,11 @@ export const ediTableStyle = css`
     user-select: none;
   }
 
+  td {
+    /* REF-2 */
+    cursor: text;
+  }
+
   .row > *:first-child {
     border-left: none !important;
     padding-left: 16px;

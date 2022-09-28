@@ -1,9 +1,11 @@
 import {OverwriteCellsViaCSVOnPaste} from '../../utils/pasteCSV/overwriteCellsViaCSVOnPaste';
+import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {CellTypeTotalsUtils} from '../../utils/cellType/cellTypeTotalsUtils';
 import {FocusedCellUtils} from '../../utils/focusedCell/focusedCellUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {ValidateInput} from '../../utils/cellType/validateInput';
+import {Browser} from '../../utils/browser/browser';
 import {CellEvents} from './cellEvents';
 
 export class DataCellEvents {
@@ -20,7 +22,6 @@ export class DataCellEvents {
 
   // TO-DO default types per column, cleanup e.g. currency or date will need to be provided by user
   // TO-DO allow user to set default as invalid
-  // WORK - bug with firefox where the cursor does not display at all
   private static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const inputEvent = event as InputEvent;
     const cellElement = inputEvent.target as HTMLElement;
@@ -48,6 +49,7 @@ export class DataCellEvents {
   // prettier-ignore
   private static blurCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const cellElement = event.target as HTMLElement;
+    if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.blurCell(cellElement);
     CellEvents.setCellToDefaultIfNeeded(this, rowIndex, columnIndex, cellElement);
     cellElement.style.color = DataCellEvents.DEFAULT_TEXT_COLOR;
     const oldType = this.focusedCell.type as CELL_TYPE;
@@ -59,6 +61,7 @@ export class DataCellEvents {
 
   private static focusCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const cellElement = event.target as HTMLElement;
+    if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.focusCell(cellElement, rowIndex);
     // placed here and not in timeout because we need cells with a default value to be recorded before modification
     FocusedCellUtils.setDataCell(this.focusedCell, cellElement, columnIndex, this.defaultCellValue);
     CellEvents.removeTextIfCellDefault(this, rowIndex, columnIndex, event);

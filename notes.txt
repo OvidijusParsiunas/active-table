@@ -19,3 +19,9 @@ These have been overriden in the css using !import
 The reason for this is because the use of custom border left or border right styles would leave one of the side borders uncovered and the use of both would
 result in thick middle borders
 For the table borders to be set, use tableStyle
+
+REF-2
+contentEditable does not display the caret correctly in shadow dom in FireFox
+the workaround is to set contentEditable every time the data cell is focused
+alternatively can refactor cells to be inputs
+https://pablo.berganza.dev/blog/shadow-dom-firefox-contenteditable/
