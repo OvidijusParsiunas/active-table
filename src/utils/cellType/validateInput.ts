@@ -26,7 +26,7 @@ export class ValidateInput {
   };
 
   public static validate(cellText: string, userSetColumnType: VALIDABLE_CELL_TYPE) {
-    return ValidateInput.VALIDATORS[userSetColumnType]?.(cellText);
+    return ValidateInput.VALIDATORS[userSetColumnType](cellText);
   }
 }
 

@@ -1,7 +1,7 @@
 import {EditableTableComponent} from '../../../editable-table-component';
 import {NumberOfIdenticalCells} from '../../numberOfIdenticalCells';
-import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {CellEvents} from '../../../elements/cell/cellEvents';
+import {VALIDABLE_CELL_TYPE} from '../../../enums/cellType';
 import {ValidateInput} from '../../cellType/validateInput';
 import {TableRow} from '../../../types/tableContents';
 
@@ -18,8 +18,8 @@ export class DataUtils {
     return false;
   }
 
-  private static isDataValid(userSetColumnType: USER_SET_COLUMN_TYPE, text: string) {
-    if (userSetColumnType !== USER_SET_COLUMN_TYPE.Auto && userSetColumnType !== USER_SET_COLUMN_TYPE.Text) {
+  private static isDataValid(userSetColumnType: VALIDABLE_CELL_TYPE, text: string) {
+    if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
       return ValidateInput.validate(text, userSetColumnType);
     }
     return true;
@@ -30,7 +30,7 @@ export class DataUtils {
   // note that NumberOfIdenticalCells.get uses the etc.contents top row, so it needs to be up-to-date
   // prettier-ignore
   private static shouldTextBeSetToDefault(text: string, defaultCellValue: string, rowIndex: number,
-      duplicateHeadersAllowed: boolean, headerContents: TableRow, userSetColumnType?: USER_SET_COLUMN_TYPE) {
+      duplicateHeadersAllowed: boolean, headerContents: TableRow, userSetColumnType?: VALIDABLE_CELL_TYPE) {
     return DataUtils.isTextEmpty(defaultCellValue, text)
       || (rowIndex === 0 && (!duplicateHeadersAllowed && NumberOfIdenticalCells.get(text, headerContents) > 1))
       || (rowIndex > 0 && userSetColumnType && !DataUtils.isDataValid(userSetColumnType, text));
@@ -41,7 +41,7 @@ export class DataUtils {
     const trimmedText = typeof cellText === 'string' ? cellText.trim() : cellText;
     const shouldBeSetToDefault = DataUtils.shouldTextBeSetToDefault(
       trimmedText, etc.defaultCellValue, rowIndex, etc.duplicateHeadersAllowed, etc.contents[0],
-      etc.columnsDetails[columnIndex]?.userSetColumnType);
+      etc.columnsDetails[columnIndex]?.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE);
     return shouldBeSetToDefault ? etc.defaultCellValue : trimmedText;
   }
 }

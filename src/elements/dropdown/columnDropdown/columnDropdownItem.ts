@@ -1,9 +1,9 @@
 import {InsertNewColumn} from '../../../utils/insertRemoveStructure/insert/insertNewColumn';
 import {RemoveColumn} from '../../../utils/insertRemoveStructure/remove/removeColumn';
 import {ElementSiblingIterator} from '../../../utils/elements/elementSiblingIterator';
-import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE} from '../../../enums/columnType';
-import {CellTypeTotalsUtils} from '../../../utils/cellType/cellTypeTotalsUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {ChangeCellType} from '../../../utils/cellType/changeCellType';
+import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {ColumnDetailsT} from '../../../types/columnDetails';
 import {CELL_TYPE} from '../../../enums/cellType';
 import {CellEvents} from '../../cell/cellEvents';
@@ -70,16 +70,6 @@ export class ColumnDropdownItem extends DropdownItem {
     // TO-DO - potential animation can be useful when a new column is inserted
   }
 
-  private static setColumnType(columnDetails: ColumnDetailsT, newType: string) {
-    const newTypeEnum = USER_SET_COLUMN_TYPE[newType as keyof typeof USER_SET_COLUMN_TYPE];
-    const {cellTypeTotals, elements} = columnDetails;
-    columnDetails.activeColumnType =
-      newTypeEnum === USER_SET_COLUMN_TYPE.Auto
-        ? CellTypeTotalsUtils.getActiveColumnType(cellTypeTotals, elements.length - 1)
-        : ACTIVE_COLUMN_TYPE[newType as keyof typeof ACTIVE_COLUMN_TYPE];
-    columnDetails.userSetColumnType = newTypeEnum;
-  }
-
   private static setActiveUserChosenColumnType(nestedDropdownChildren: HTMLElement[], columnDetails: ColumnDetailsT) {
     const userChosenColumnTypeString = USER_SET_COLUMN_TYPE[columnDetails.userSetColumnType];
     DropdownItem.setActiveNestedDropdownItem(nestedDropdownChildren, userChosenColumnTypeString);
@@ -87,19 +77,18 @@ export class ColumnDropdownItem extends DropdownItem {
 
   // prettier-ignore
   private static rebindColumnTypeDropdownButtonItems(etc: EditableTableComponent, nestedDropdownChildren: HTMLElement[],
-      columnDetails: ColumnDetailsT) {
+      columnIndex: number) {
     nestedDropdownChildren.forEach((dropdownChildElement) => {
       const dropdownItem = dropdownChildElement as HTMLElement;
       dropdownItem.onclick = ColumnDropdownItem.onClickMiddleware.bind(etc,
-        ColumnDropdownItem.setColumnType.bind(this, columnDetails, dropdownItem.textContent as string));
+        ChangeCellType.setIfNew.bind(etc, dropdownItem.textContent as string, columnIndex));
     })
   }
 
   private static setUpColumnTypeDropdown(etc: EditableTableComponent, dropdownElement: HTMLElement, columnIndex: number) {
-    const columnDetails = etc.columnsDetails[columnIndex];
     const nestedDropdownChilrenArr = Array.from(dropdownElement.children) as HTMLElement[];
-    ColumnDropdownItem.rebindColumnTypeDropdownButtonItems(etc, nestedDropdownChilrenArr, columnDetails);
-    ColumnDropdownItem.setActiveUserChosenColumnType(nestedDropdownChilrenArr, columnDetails);
+    ColumnDropdownItem.rebindColumnTypeDropdownButtonItems(etc, nestedDropdownChilrenArr, columnIndex);
+    ColumnDropdownItem.setActiveUserChosenColumnType(nestedDropdownChilrenArr, etc.columnsDetails[columnIndex]);
   }
 
   private static setUpColumnType(etc: EditableTableComponent, dropdownElement: HTMLElement, columnIndex: number) {

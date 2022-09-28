@@ -39,7 +39,7 @@ export class EditableTableComponent extends LitElement {
   onCellUpdate: (newText: string, cellRowIndex: number, cellColumnIndex: number, updateType: CELL_UPDATE_TYPE) => void =
     () => {};
 
-  @property()
+  @property({converter: LITElementTypeConverters.convertToFunction})
   onTableUpdate: (newTableContents: TableContents) => void = () => {};
 
   @property({

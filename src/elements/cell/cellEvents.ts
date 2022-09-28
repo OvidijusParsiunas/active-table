@@ -36,11 +36,12 @@ export class CellEvents {
   // this is used for cases where updateCell should only be called if it has to be set to default
   // prettier-ignore
   public static setCellToDefaultIfNeeded(
-      etc: EditableTableComponent, rowIndex: number, columnIndex: number, cell: HTMLElement) {
+      etc: EditableTableComponent, rowIndex: number, columnIndex: number, cell: HTMLElement, updateTableEvent = true) {
     const cellText = cell.textContent as string;
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     if (processedCellText !== cellText) {
-      CellEvents.updateCell(etc, processedCellText, rowIndex, columnIndex, { element: cell, processText: false });
+      CellEvents.updateCell(etc, processedCellText, rowIndex, columnIndex,
+        { element: cell, processText: false, updateTableEvent });
     }
   }
 
