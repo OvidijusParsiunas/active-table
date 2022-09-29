@@ -35,7 +35,21 @@ export class DataCellEvents {
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
         DataCellEvents.setColorBasedOnValidity(cellElement, userSetColumnType);
       }
-      CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex);
+      CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex, {processText: false});
+    }
+  }
+
+  private static keyDownCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
+    if (event.key === KEYBOARD_KEY.TAB) {
+      if (Dropdown.isDisplayed(this.overlayElementsState.categoryDropdown)) {
+        CategoryDropdown.hide(this);
+      }
+    } else if (event.key === KEYBOARD_KEY.ENTER) {
+      event.preventDefault();
+      if (Dropdown.isDisplayed(this.overlayElementsState.categoryDropdown)) {
+        CategoryDropdown.hide(this);
+        this.columnsDetails[columnIndex].elements[rowIndex + 1]?.focus();
+      }
     }
   }
 
@@ -88,20 +102,6 @@ export class DataCellEvents {
     const cellElement = event.target as HTMLElement;
     if (this.columnsDetails[columnIndex].userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryDropdown.display(this, rowIndex, columnIndex, cellElement);
-    }
-  }
-
-  private static keyDownCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
-    if (event.key === KEYBOARD_KEY.TAB) {
-      if (Dropdown.isDisplayed(this.overlayElementsState.categoryDropdown)) {
-        CategoryDropdown.hide(this);
-      }
-    } else if (event.key === KEYBOARD_KEY.ENTER) {
-      event.preventDefault();
-      if (Dropdown.isDisplayed(this.overlayElementsState.categoryDropdown)) {
-        CategoryDropdown.hide(this);
-        this.columnsDetails[columnIndex].elements[rowIndex + 1]?.focus();
-      }
     }
   }
 
