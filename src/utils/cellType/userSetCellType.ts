@@ -1,6 +1,7 @@
 import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
 import {EditableTableComponent} from '../../editable-table-component';
+import {DisplayedCellTypeName} from './displayedCellTypeName';
 import {ColumnsDetailsT} from '../../types/columnDetails';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {CellTypeTotalsUtils} from './cellTypeTotalsUtils';
@@ -46,7 +47,8 @@ export class UserSetCellType {
   }
 
   public static setIfNew(this: EditableTableComponent, newType: string, columnIndex: number) {
-    const newTypeEnum = USER_SET_COLUMN_TYPE[newType as keyof typeof USER_SET_COLUMN_TYPE];
+    const codeTypeName = DisplayedCellTypeName.get(newType); // from displayed name to code
+    const newTypeEnum = USER_SET_COLUMN_TYPE[codeTypeName as keyof typeof USER_SET_COLUMN_TYPE];
     if (newTypeEnum !== this.columnsDetails[columnIndex].userSetColumnType) {
       UserSetCellType.set(this, newTypeEnum, columnIndex);
       UserSetCellType.purgeInvalidCellsIfValidable(this, newTypeEnum as keyof typeof VALIDABLE_CELL_TYPE, columnIndex);

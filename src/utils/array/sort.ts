@@ -6,6 +6,7 @@ import {VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 
 export class Sort {
   private static EXTRACT_FLOAT_REGEX = /-?\d+(\.\d+)?$/g;
+  private static EXTRACT_INTEGER_REGEX = /\d+/g;
 
   // prettier-ignore
   private static update(etc: EditableTableComponent, sortedDataContents: TableContents,) {
@@ -30,11 +31,11 @@ export class Sort {
   }
 
   private static sortStringsColumnAscending(contents: TableContents, columnIndex: number) {
-    contents.sort((a: TableRow, b: TableRow) => (a[columnIndex] as string).localeCompare(b[columnIndex] as string));
+    contents.sort((a: TableRow, b: TableRow) => String(a[columnIndex]).localeCompare(String(b[columnIndex])));
   }
 
   private static sortStringsColumnDescending(contents: TableContents, columnIndex: number) {
-    contents.sort((a: TableRow, b: TableRow) => (b[columnIndex] as string).localeCompare(a[columnIndex] as string));
+    contents.sort((a: TableRow, b: TableRow) => String(b[columnIndex]).localeCompare(String(a[columnIndex])));
   }
 
   private static sortStrings(dataContents: TableContents, columnIndex: number, isAsc: boolean) {
@@ -79,23 +80,58 @@ export class Sort {
     }
   }
 
-  private static sortDatesColumnAscending(contents: TableContents, columnIndex: number) {
+  private static sortMDYDatesColumnAscending(contents: TableContents, columnIndex: number) {
     contents.sort(
       (a: TableRow, b: TableRow) => Date.parse(a[columnIndex] as string) - Date.parse(b[columnIndex] as string)
     );
   }
 
-  private static sortDatesColumnDescending(contents: TableContents, columnIndex: number) {
+  private static sortMDYDatesColumnDescending(contents: TableContents, columnIndex: number) {
     contents.sort(
       (a: TableRow, b: TableRow) => Date.parse(b[columnIndex] as string) - Date.parse(a[columnIndex] as string)
     );
   }
 
-  private static sortDates(dataContents: TableContents, columnIndex: number, isAsc: boolean) {
+  private static sortMDYDates(dataContents: TableContents, columnIndex: number, isAsc: boolean) {
     if (isAsc) {
-      Sort.sortDatesColumnAscending(dataContents, columnIndex);
+      Sort.sortMDYDatesColumnAscending(dataContents, columnIndex);
     } else {
-      Sort.sortDatesColumnDescending(dataContents, columnIndex);
+      Sort.sortMDYDatesColumnDescending(dataContents, columnIndex);
+    }
+  }
+
+  private static createMDYDateFromDMYString(dmyDateString: string) {
+    const numberStringArr = dmyDateString.match(Sort.EXTRACT_INTEGER_REGEX);
+    if (numberStringArr && numberStringArr.length === 3) {
+      // new Date(year, monthIndex, day)
+      return new Date(Number(numberStringArr[2]), Number(numberStringArr[1]) - 1, Number(numberStringArr[0]));
+    }
+    return null;
+  }
+
+  private static sortDMYDatesColumnAscending(contents: TableContents, columnIndex: number) {
+    contents.sort((a: TableRow, b: TableRow) => {
+      return (
+        (Sort.createMDYDateFromDMYString(a[columnIndex] as string)?.getTime() as number) -
+        (Sort.createMDYDateFromDMYString(b[columnIndex] as string)?.getTime() as number)
+      );
+    });
+  }
+
+  private static sortDMYDatesColumnDescending(contents: TableContents, columnIndex: number) {
+    contents.sort((a: TableRow, b: TableRow) => {
+      return (
+        (Sort.createMDYDateFromDMYString(b[columnIndex] as string)?.getTime() as number) -
+        (Sort.createMDYDateFromDMYString(a[columnIndex] as string)?.getTime() as number)
+      );
+    });
+  }
+
+  private static sortDMYDates(dataContents: TableContents, columnIndex: number, isAsc: boolean) {
+    if (isAsc) {
+      Sort.sortDMYDatesColumnAscending(dataContents, columnIndex);
+    } else {
+      Sort.sortDMYDatesColumnDescending(dataContents, columnIndex);
     }
   }
 
@@ -120,10 +156,12 @@ export class Sort {
   } = {
     [ACTIVE_COLUMN_TYPE.Number]: (dataContents: TableContents, columnIndex: number, isAsc: boolean) =>
       Sort.sortNumbers(dataContents, columnIndex, isAsc),
-    [ACTIVE_COLUMN_TYPE.Date]: (dataContents: TableContents, columnIndex: number, isAsc: boolean) =>
-      Sort.sortDates(dataContents, columnIndex, isAsc),
     [ACTIVE_COLUMN_TYPE.Currency]: (dataContents: TableContents, columnIndex: number, isAsc: boolean) =>
       Sort.sortCurrencies(dataContents, columnIndex, isAsc),
+    [ACTIVE_COLUMN_TYPE.Date_D_M_Y]: (dataContents: TableContents, columnIndex: number, isAsc: boolean) =>
+      Sort.sortDMYDates(dataContents, columnIndex, isAsc),
+    [ACTIVE_COLUMN_TYPE.Date_M_D_Y]: (dataContents: TableContents, columnIndex: number, isAsc: boolean) =>
+      Sort.sortMDYDates(dataContents, columnIndex, isAsc),
   };
 
   public static sortContentsColumn(etc: EditableTableComponent, columnIndex: number, isAsc: boolean) {

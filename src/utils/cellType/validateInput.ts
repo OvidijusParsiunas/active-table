@@ -6,23 +6,24 @@ type VALIDATORS = {[key in VALIDABLE_CELL_TYPE]: (input: string) => boolean};
 export class ValidateInput {
   // WORK - custom regex
   private static readonly REGEX = {
-    // the following regex allows up to 4 digits at the start, any numbers or characters in the middle and up to 4 at end
-    // in order to fit cases where the year might be at the start/end
-    // and allow letter based months like NOV
-    // IMPORTANT - this is a supplement to the new Date() validator and is useless without it
-    // \s*? is used to allow spaces between symbols
-    [ACTIVE_COLUMN_TYPE.Date]: new RegExp(/^[0-9]{1,4}\s*?[-|/.]\s*?[a-zA-Z0-9]*\s*?[-|/.]\s*?[0-9]{1,4}$/),
     [ACTIVE_COLUMN_TYPE.Currency]: new RegExp(
       // eslint-disable-next-line max-len
       /^(([$€£¥]\s*?-?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?)|(-?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?\s*?[$€£¥]))$/
+    ),
+    // \s*? is used to allow spaces between symbols
+    [ACTIVE_COLUMN_TYPE.Date_D_M_Y]: new RegExp(
+      /^(0?[1-9]|[12][0-9]|3[01])\s*?[/-]\s*?(0?[1-9]|1[012])\s*?[/-]\s*?\d{4}$/
+    ),
+    [ACTIVE_COLUMN_TYPE.Date_M_D_Y]: new RegExp(
+      /^(0?[1-9]|1[012])\s*?[/-]\s*?(0?[1-9]|[12][0-9]|3[01])\s*?[/-]\s*?\d{4}$/
     ),
   };
 
   public static readonly VALIDATORS: VALIDATORS = {
     [ACTIVE_COLUMN_TYPE.Number]: (input: string) => !isNaN(input as unknown as number),
-    [ACTIVE_COLUMN_TYPE.Date]: (input: string) =>
-      !isNaN(Date.parse(input)) && ValidateInput.REGEX[ACTIVE_COLUMN_TYPE.Date].test(input),
     [ACTIVE_COLUMN_TYPE.Currency]: (input: string) => ValidateInput.REGEX[ACTIVE_COLUMN_TYPE.Currency].test(input),
+    [ACTIVE_COLUMN_TYPE.Date_D_M_Y]: (input: string) => ValidateInput.REGEX[ACTIVE_COLUMN_TYPE.Date_D_M_Y].test(input),
+    [ACTIVE_COLUMN_TYPE.Date_M_D_Y]: (input: string) => ValidateInput.REGEX[ACTIVE_COLUMN_TYPE.Date_M_D_Y].test(input),
   };
 
   public static validate(cellText: string, userSetColumnType: VALIDABLE_CELL_TYPE) {

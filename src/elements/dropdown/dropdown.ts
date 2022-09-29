@@ -14,6 +14,7 @@ export class Dropdown {
     // alternative approach is to use a parent div for the dropdown which would be centered relativer to the cell
     // and there would be no need for an equation to center the dropdown using its width, but this is simpler
     dropdownElement.style.width = `${Dropdown.DROPDOWN_WIDTH}px`;
+    // padding specified to allow use of element style before displaying it
     dropdownElement.style.paddingTop = Dropdown.DROPDOWN_PADDING_TOP_BOTTOM_PX;
     dropdownElement.style.paddingBottom = Dropdown.DROPDOWN_PADDING_TOP_BOTTOM_PX;
     GenericElementUtils.hideElements(dropdownElement);

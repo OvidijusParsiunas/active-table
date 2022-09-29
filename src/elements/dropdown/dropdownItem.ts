@@ -57,37 +57,36 @@ export class DropdownItem {
     dropdownElement.appendChild(titleElement);
   }
 
-  private static displayAndSetChildDropdownPosition(event: MouseEvent) {
-    const childDropdownElement = (event.target as HTMLElement).children[1] as HTMLElement;
+  private static displayAndSetNestedDropdownPosition(event: MouseEvent) {
+    const nestedDropdownElement = (event.target as HTMLElement).children[1] as HTMLElement;
     const parentDropdownElement = (event.target as HTMLElement).parentElement as HTMLElement;
-    childDropdownElement.style.left = parentDropdownElement.style.width;
-    childDropdownElement.style.display = parentDropdownElement.style.display;
-    const visibilityDetails = ElementViewPort.getVisibilityDetails(childDropdownElement);
+    nestedDropdownElement.style.left = parentDropdownElement.style.width;
+    nestedDropdownElement.style.display = parentDropdownElement.style.display;
+    const visibilityDetails = ElementViewPort.getVisibilityDetails(nestedDropdownElement);
     if (!visibilityDetails.isFullyVisible) {
-      childDropdownElement.style.left = `-${parentDropdownElement.style.width}`;
-      const visibilityDetails = ElementViewPort.getVisibilityDetails(childDropdownElement);
+      nestedDropdownElement.style.left = `-${parentDropdownElement.style.width}`;
+      const visibilityDetails = ElementViewPort.getVisibilityDetails(nestedDropdownElement);
       if (!visibilityDetails.isFullyVisible) {
-        childDropdownElement.style.left = '';
+        nestedDropdownElement.style.left = '';
       }
     }
   }
 
-  private static resetDropdownPosition(childDropdownElement: HTMLElement) {
-    childDropdownElement.style.left = '';
+  private static resetDropdownPosition(nestedDropdownElement: HTMLElement) {
+    nestedDropdownElement.style.left = '';
   }
 
-  private static hideChildDropdown(event: MouseEvent) {
-    const childDropdownElement = (event.target as HTMLElement).children[1] as HTMLElement;
-    childDropdownElement.style.display = 'none';
-    DropdownItem.resetDropdownPosition(childDropdownElement);
+  private static hideNestedDropdown(event: MouseEvent) {
+    const nestedDropdownElement = (event.target as HTMLElement).children[1] as HTMLElement;
+    nestedDropdownElement.style.display = 'none';
+    DropdownItem.resetDropdownPosition(nestedDropdownElement);
   }
 
-  private static createChildDropdown(itemNames: string[]) {
+  private static createNestedDropdown(itemText: string[]) {
     const dropdownElement = Dropdown.createBase();
-    dropdownElement.style.left = dropdownElement.style.width;
-    dropdownElement.style.top = `-${dropdownElement.style.paddingTop}`;
-    itemNames.forEach((itemName) => {
-      DropdownItem.addButtonItem(dropdownElement, itemName);
+    dropdownElement.style.top = `-${Number.parseInt(dropdownElement.style.paddingTop) + 22}px`;
+    itemText.forEach((text) => {
+      DropdownItem.addButtonItem(dropdownElement, text);
     });
     return dropdownElement;
   }
@@ -110,14 +109,14 @@ export class DropdownItem {
   }
 
   // prettier-ignore
-  public static addNestedDropdownItem(dropdownElement: HTMLElement, text: string, nestedItemNames: string[],
+  public static addNestedDropdownItem(dropdownElement: HTMLElement, text: string, itemsText: string[],
       className?: string) {
     const buttonElement = DropdownItem.addButtonItem(
       dropdownElement, text, DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM, className || '');
-    const nestedDropdown = DropdownItem.createChildDropdown(nestedItemNames);
+    const nestedDropdown = DropdownItem.createNestedDropdown(itemsText);
     buttonElement.appendChild(nestedDropdown);
-    buttonElement.onmouseenter = DropdownItem.displayAndSetChildDropdownPosition;
-    buttonElement.onmouseleave = DropdownItem.hideChildDropdown;
+    buttonElement.onmouseenter = DropdownItem.displayAndSetNestedDropdownPosition;
+    buttonElement.onmouseleave = DropdownItem.hideNestedDropdown;
     return nestedDropdown;
   }
 
@@ -155,10 +154,10 @@ export class DropdownItem {
 
   public static focusNextItem(element: HTMLElement, dropdownElement: HTMLElement, startElement = false): void {
     if (element.classList.contains(DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM)) {
-      const childDropdownElement = element.children[1] as HTMLElement;
+      const nestedDropdownElement = element.children[1] as HTMLElement;
       // when on item that has open nested dropdown
-      if (childDropdownElement.style.display === 'block') {
-        return (childDropdownElement.children[0] as HTMLElement).focus();
+      if (nestedDropdownElement.style.display === 'block') {
+        return (nestedDropdownElement.children[0] as HTMLElement).focus();
       }
     }
     const nextElement = startElement ? element : (element.nextSibling as HTMLElement);

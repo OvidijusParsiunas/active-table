@@ -1,11 +1,11 @@
 import {InsertNewColumn} from '../../../utils/insertRemoveStructure/insert/insertNewColumn';
 import {RemoveColumn} from '../../../utils/insertRemoveStructure/remove/removeColumn';
 import {ElementSiblingIterator} from '../../../utils/elements/elementSiblingIterator';
+import {DisplayedCellTypeName} from '../../../utils/cellType/displayedCellTypeName';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {UserSetCellType} from '../../../utils/cellType/userSetCellType';
 import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {ColumnDetailsT} from '../../../types/columnDetails';
-import {CELL_TYPE} from '../../../enums/cellType';
 import {CellEvents} from '../../cell/cellEvents';
 import {ColumnDropdown} from './columnDropdown';
 import {Sort} from '../../../utils/array/sort';
@@ -17,9 +17,9 @@ export class ColumnDropdownItem extends DropdownItem {
 
   // prettier-ignore
   public static addColumnTypeNestedDropdownItem(dropdownElement: HTMLElement) {
-    const nestedDropdownKeys = Object.keys(USER_SET_COLUMN_TYPE);
+    const itemsText = Object.keys(USER_SET_COLUMN_TYPE).map((key) => DisplayedCellTypeName.get(key));
     return DropdownItem.addNestedDropdownItem(
-      dropdownElement, '', nestedDropdownKeys, ColumnDropdownItem.COLUMN_TYPE_ITEM_CLASS);
+      dropdownElement, '', itemsText, ColumnDropdownItem.COLUMN_TYPE_ITEM_CLASS);
   }
 
   // this is used as an ancher to identify the location of below buttons
@@ -94,7 +94,7 @@ export class ColumnDropdownItem extends DropdownItem {
   private static setUpColumnType(etc: EditableTableComponent, dropdownElement: HTMLElement, columnIndex: number) {
     const columnTypeItem = dropdownElement.getElementsByClassName(ColumnDropdownItem.COLUMN_TYPE_ITEM_CLASS)[0];
     const textElement = columnTypeItem.children[0];
-    textElement.textContent = CELL_TYPE[etc.columnsDetails[columnIndex].activeColumnType];
+    textElement.textContent = DisplayedCellTypeName.get(etc.columnsDetails[columnIndex].activeColumnType);
     ColumnDropdownItem.setUpColumnTypeDropdown(etc, textElement.nextSibling as HTMLElement, columnIndex);
   }
 

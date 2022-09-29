@@ -10,8 +10,10 @@ export class CellTypeTotalsUtils {
     return {
       [CELL_TYPE.Text]: 0,
       [CELL_TYPE.Number]: 0,
-      [CELL_TYPE.Date]: 0,
       [CELL_TYPE.Currency]: 0,
+      [CELL_TYPE.Date_D_M_Y]: 0,
+      [CELL_TYPE.Date_M_D_Y]: 0,
+      [CELL_TYPE.AllDateFormats]: 0,
       [CELL_TYPE.Default]: 0,
       // this type will never be incremented, but is here as a stub for its cell type
       [CELL_TYPE.Category]: 0,
@@ -30,9 +32,13 @@ export class CellTypeTotalsUtils {
     if (cellValue === defaultCellValue) {
       return CELL_TYPE.Default;
     }
-    const parsableCellType = CellTypeTotalsUtils.parseValidable(cellValue);
-    if (parsableCellType) return parsableCellType;
-    return CELL_TYPE.Text;
+    const parsedCellType = CellTypeTotalsUtils.parseValidable(cellValue);
+    if (!parsedCellType) return CELL_TYPE.Text;
+    // REF-3
+    if (parsedCellType === VALIDABLE_CELL_TYPE.Date_D_M_Y) {
+      if (ValidateInput.validate(cellValue, ACTIVE_COLUMN_TYPE.Date_M_D_Y)) return CELL_TYPE.AllDateFormats;
+    }
+    return parsedCellType;
   }
 
   private static incrementType(type: CELL_TYPE, cellTypeTotals: CellTypeTotals) {
@@ -70,6 +76,21 @@ export class CellTypeTotalsUtils {
       [CellTypeTotalsUtils.decrementType.bind(this, oldType), CellTypeTotalsUtils.incrementType.bind(this, newType)]);
   }
 
+  // prettier-ignore
+  // REF-3
+  private static getDateTypeIfAllDates(cellTypeTotals: CellTypeTotals, numberOfRichRows: number) {
+    const datesTotal = cellTypeTotals[CELL_TYPE.Date_D_M_Y]
+      + cellTypeTotals[CELL_TYPE.Date_M_D_Y] + cellTypeTotals[CELL_TYPE.AllDateFormats];
+    if (datesTotal === numberOfRichRows) {
+      // if all dates apply to both formats, return d/m/y as the primary format
+      if (cellTypeTotals[CELL_TYPE.AllDateFormats] == numberOfRichRows) return ACTIVE_COLUMN_TYPE.Date_D_M_Y;
+      numberOfRichRows -= cellTypeTotals[CELL_TYPE.AllDateFormats];
+      if (cellTypeTotals[CELL_TYPE.Date_D_M_Y] === numberOfRichRows) return ACTIVE_COLUMN_TYPE.Date_D_M_Y;
+      if (cellTypeTotals[CELL_TYPE.Date_M_D_Y] === numberOfRichRows) return ACTIVE_COLUMN_TYPE.Date_M_D_Y;
+    }
+    return null;
+  }
+
   public static getActiveColumnType(cellTypeTotals: CellTypeTotals, numberOfDataRows: number): ACTIVE_COLUMN_TYPE {
     const cellTypes = Object.keys(cellTypeTotals) as unknown as CELL_TYPE[];
     // the logic does not take defaults into consideration as a column type, so if we have default as '-' and
@@ -78,6 +99,8 @@ export class CellTypeTotalsUtils {
     const numberOfRichRows = numberOfDataRows - numberOfRowsWithDefaultText;
     // if the column has nothing but defaults, the column type is set to whatever the default should be
     if (numberOfRichRows === 0) return CellTypeTotalsUtils.DEFAULT_COLUMN_TYPE;
+    const dateType = CellTypeTotalsUtils.getDateTypeIfAllDates(cellTypeTotals, numberOfRichRows);
+    if (dateType) return dateType;
     for (let i = 0; i < cellTypes.length; i += 1) {
       if (cellTypes[i] !== CELL_TYPE.Default) {
         if (cellTypeTotals[cellTypes[i]] === numberOfRichRows) {
