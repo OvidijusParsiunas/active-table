@@ -1,6 +1,6 @@
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
+import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {ElementViewPort} from '../../../utils/elements/elementViewPort';
 import {HeaderCellEvents} from '../../cell/headerCellEvents';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {ColumnDropdownItem} from './columnDropdownItem';
@@ -72,7 +72,7 @@ export class ColumnDropdown extends Dropdown {
     dropdownElement.style.top = `${dimensions.bottom}px`;
     // needs to be displayed in order to evalute if in view port
     dropdownElement.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
-    const visibilityDetails = ElementViewPort.getVisibilityDetails(dropdownElement);
+    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement);
     if (!visibilityDetails.isFullyVisible) {
       const tableElement = dropdownElement.parentElement as HTMLElement;
       if (visibilityDetails.blockingSide === SIDE.LEFT) {

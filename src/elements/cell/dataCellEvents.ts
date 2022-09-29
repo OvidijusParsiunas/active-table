@@ -40,15 +40,27 @@ export class DataCellEvents {
   }
 
   private static keyDownCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
+    const {overlayElementsState, columnsDetails} = this;
+    const categoryDropdown = overlayElementsState.categoryDropdown as HTMLElement;
+    const columnDetails = columnsDetails[columnIndex];
     if (event.key === KEYBOARD_KEY.TAB) {
-      if (Dropdown.isDisplayed(this.overlayElementsState.categoryDropdown)) {
+      if (Dropdown.isDisplayed(categoryDropdown)) {
         CategoryDropdown.hide(this);
       }
     } else if (event.key === KEYBOARD_KEY.ENTER) {
-      event.preventDefault();
-      if (Dropdown.isDisplayed(this.overlayElementsState.categoryDropdown)) {
-        CategoryDropdown.hide(this);
-        this.columnsDetails[columnIndex].elements[rowIndex + 1]?.focus();
+      if (Dropdown.isDisplayed(categoryDropdown)) {
+        event.preventDefault();
+        CategoryDropdown.setTextAndFocusCellBelow(this, columnDetails, rowIndex, columnIndex, event.target as HTMLElement);
+      }
+    } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
+      if (Dropdown.isDisplayed(categoryDropdown)) {
+        event.preventDefault();
+        CategoryDropdown.highlightSiblingItem(columnDetails, 'nextSibling');
+      }
+    } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
+      if (Dropdown.isDisplayed(categoryDropdown)) {
+        event.preventDefault();
+        CategoryDropdown.highlightSiblingItem(columnDetails, 'previousSibling');
       }
     }
   }
@@ -83,7 +95,7 @@ export class DataCellEvents {
   private static displayCategoryDropdownIfNotOpen(etc: EditableTableComponent, rowIndex: number,
       columnIndex: number, cellElement: HTMLElement) {
     if (etc.columnsDetails[columnIndex].userSetColumnType === USER_SET_COLUMN_TYPE.Category
-        && Dropdown.isDisplayed(etc.overlayElementsState.categoryDropdown)) {
+        && !Dropdown.isDisplayed(etc.overlayElementsState.categoryDropdown)) {
       CategoryDropdown.display(etc, rowIndex, columnIndex, cellElement);
     }
   }

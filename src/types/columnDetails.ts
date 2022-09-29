@@ -38,6 +38,8 @@ export interface ColumnDetailsT {
   userSetColumnType: USER_SET_COLUMN_TYPE;
   cellTypeTotals: CellTypeTotals;
   categories: ColumnCategories;
+  // item element inside the category dropdown
+  hoveredCategoryItem?: HTMLElement;
 }
 
 // used for when column details initialised before the column sizer

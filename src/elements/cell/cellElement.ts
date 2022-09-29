@@ -7,7 +7,6 @@ import {CSSStyle} from '../../types/cssStyle';
 
 export class CellElement {
   public static readonly DEFAULT_COLUMN_WIDTH = '100px';
-  public static readonly DATA_CELL_CLASS = 'data-cell';
 
   // prettier-ignore
   public static setCellEvents(etc: EditableTableComponent,
@@ -38,7 +37,6 @@ export class CellElement {
 
   private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
     const cellElement = CellElement.create(etc.cellStyle, etc.headerStyle, isHeader);
-    if (!isHeader) cellElement.classList.add(CellElement.DATA_CELL_CLASS);
     cellElement.textContent = cellText as string;
     CellElement.prepContentEditable(cellElement, isHeader);
     if (isHeader) cellElement.style.width = CellElement.DEFAULT_COLUMN_WIDTH;

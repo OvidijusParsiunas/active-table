@@ -1,20 +1,64 @@
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
+import {ColumnCategories, ColumnDetailsT} from '../../../types/columnDetails';
+import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {ColumnCategories} from '../../../types/columnDetails';
 import {TableContents} from '../../../types/tableContents';
 import {CellEvents} from '../../cell/cellEvents';
 import {DropdownItem} from '../dropdownItem';
 import {Dropdown} from '../dropdown';
 
+// WORK - rename category to categories
 // TO-DO allow dev to control whether additional elements are allowed to be added
 // WORK - refactor here
 export class CategoryDropdown extends Dropdown {
   // open with first one focused, if enter - use that key
   // if user starts typing - no focus is needed
+  // prettier-ignore
+  public static setTextAndFocusCellBelow(etc: EditableTableComponent,
+      columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
+    const { hoveredCategoryItem } = columnDetails;
+    if (hoveredCategoryItem) {
+      CellEvents.updateCell(etc, hoveredCategoryItem.textContent as string,
+        rowIndex, columnIndex, {processText: false, element: cellElement});
+    }
+    CategoryDropdown.hide(etc);
+    columnDetails.elements[rowIndex + 1]?.focus();
+  }
 
-  private static addItems(uniqueCategories: ColumnCategories, categoryDropdown: HTMLElement) {
+  public static highlightItem(item: HTMLElement, color: string, columnDetails: ColumnDetailsT) {
+    if (columnDetails.hoveredCategoryItem) columnDetails.hoveredCategoryItem.style.backgroundColor = '';
+    item.style.backgroundColor = color;
+    if (!ElementVisibility.isVisibleInsideParent(item)) {
+      item.scrollIntoView(false);
+    }
+    columnDetails.hoveredCategoryItem = item;
+  }
+
+  public static highlightSiblingItem(columnDetails: ColumnDetailsT, sibling: 'previousSibling' | 'nextSibling') {
+    const {hoveredCategoryItem} = columnDetails;
+    if (hoveredCategoryItem?.[sibling]) {
+      CategoryDropdown.highlightItem(hoveredCategoryItem[sibling] as HTMLElement, 'yellow', columnDetails);
+    }
+  }
+
+  private static mouseLeaveItem(columnDetails: ColumnDetailsT, event: MouseEvent) {
+    const item = event.target as HTMLElement;
+    item.style.backgroundColor = '';
+    delete columnDetails.hoveredCategoryItem;
+  }
+
+  private static mouseEnterItem(color: string, columnDetails: ColumnDetailsT, event: MouseEvent) {
+    const item = event.target as HTMLElement;
+    CategoryDropdown.highlightItem(item, color, columnDetails);
+  }
+
+  // prettier-ignore
+  private static addItems(uniqueCategories: ColumnCategories, categoryDropdown: HTMLElement,
+      columnDetails: ColumnDetailsT) {
     Object.keys(uniqueCategories).forEach((content) => {
-      DropdownItem.addButtonItem(categoryDropdown as HTMLElement, content as string);
+      const item = DropdownItem.addPlaneButtonItem(categoryDropdown as HTMLElement, content as string);
+      item.onmouseenter = CategoryDropdown.mouseEnterItem.bind(this, 'yellow', columnDetails);
+      item.onmouseleave = CategoryDropdown.mouseLeaveItem.bind(this, columnDetails);
     });
   }
 
@@ -33,7 +77,7 @@ export class CategoryDropdown extends Dropdown {
     const { overlayElementsState: { categoryDropdown }, contents, defaultCellValue, columnsDetails } = etc;
     const uniqueCategories = CategoryDropdown.aggregateUniqueCategories(contents, columnIndex, defaultCellValue);
     columnsDetails[columnIndex].categories = uniqueCategories;
-    CategoryDropdown.addItems(uniqueCategories, categoryDropdown as HTMLElement);
+    CategoryDropdown.addItems(uniqueCategories, categoryDropdown as HTMLElement, columnsDetails[columnIndex]);
   }
 
   // Will need to populate upfront if user has set a column as category upfront
@@ -75,8 +119,11 @@ export class CategoryDropdown extends Dropdown {
     if (Object.keys(columnDetails.categories).length > 0) {
       const categoryDropdown = etc.overlayElementsState.categoryDropdown as HTMLElement;
       CategoryDropdown.setPosition(categoryDropdown, cellElement);
-      categoryDropdown.style.display = 'block';
       categoryDropdown.onclick = CategoryDropdown.dropdownClick.bind(etc, rowIndex, columnIndex);
+      // WORK - should focus the one that it is on - if not, enter the first one
+      const firstItem = categoryDropdown.children[0] as HTMLElement;
+      CategoryDropdown.highlightItem(firstItem, 'yellow', columnDetails);
+      categoryDropdown.style.display = 'block';
     } else if (Dropdown.isDisplayed(etc.overlayElementsState.categoryDropdown)) {
       CategoryDropdown.hide(etc);
     }

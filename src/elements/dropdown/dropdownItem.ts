@@ -1,5 +1,5 @@
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
-import {ElementViewPort} from '../../utils/elements/elementViewPort';
+import {ElementVisibility} from '../../utils/elements/elementVisibility';
 import {Dropdown} from './dropdown';
 
 export class DropdownItem {
@@ -39,15 +39,20 @@ export class DropdownItem {
     dropdownElement.appendChild(itemElement);
   }
 
-  public static addButtonItem(dropdownElement: HTMLElement, text: string, ...classNames: string[]) {
+  public static addPlaneButtonItem(dropdownElement: HTMLElement, text: string, ...classNames: string[]) {
     const itemElement = DropdownItem.createItem(dropdownElement);
-    itemElement.classList.add(DropdownItem.DROPDOWN_HOVERABLE_ITEM);
     if (classNames.length > 0) itemElement.classList.add(...classNames);
     const textElement = DropdownItem.createDropdownItemBaseElement('div');
     textElement.textContent = text;
     itemElement.append(textElement);
     dropdownElement.appendChild(itemElement);
     return itemElement;
+  }
+
+  public static addButtonItem(dropdownElement: HTMLElement, text: string, ...classNames: string[]) {
+    const buttonElement = DropdownItem.addPlaneButtonItem(dropdownElement, text, ...classNames);
+    buttonElement.classList.add(DropdownItem.DROPDOWN_HOVERABLE_ITEM);
+    return buttonElement;
   }
 
   public static addTitle(dropdownElement: HTMLElement, text: string) {
@@ -62,10 +67,10 @@ export class DropdownItem {
     const parentDropdownElement = (event.target as HTMLElement).parentElement as HTMLElement;
     nestedDropdownElement.style.left = parentDropdownElement.style.width;
     nestedDropdownElement.style.display = parentDropdownElement.style.display;
-    const visibilityDetails = ElementViewPort.getVisibilityDetails(nestedDropdownElement);
+    const visibilityDetails = ElementVisibility.getDetailsInWindow(nestedDropdownElement);
     if (!visibilityDetails.isFullyVisible) {
       nestedDropdownElement.style.left = `-${parentDropdownElement.style.width}`;
-      const visibilityDetails = ElementViewPort.getVisibilityDetails(nestedDropdownElement);
+      const visibilityDetails = ElementVisibility.getDetailsInWindow(nestedDropdownElement);
       if (!visibilityDetails.isFullyVisible) {
         nestedDropdownElement.style.left = '';
       }

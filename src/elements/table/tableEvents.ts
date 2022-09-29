@@ -2,7 +2,6 @@ import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElement} from '../columnSizer/columnSizerElement';
 import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
-import {CellElement} from '../cell/cellElement';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class TableEvents {
@@ -16,8 +15,7 @@ export class TableEvents {
     }
     // can be repurposed for other dropdowns (column dropdown does not need it as mouse hits the overlay first)
     if (Dropdown.isDisplayed(this.overlayElementsState.categoryDropdown)
-        && !element.classList.contains(CellElement.DATA_CELL_CLASS)
-        && !Dropdown.isPartOfDropdownElement(element)) {
+        && !Dropdown.isPartOfDropdownElement(element) && element !== this.focusedCell.element) {
       CategoryDropdown.hide(this);
     }
   }

@@ -1,12 +1,12 @@
 import {SIDE} from '../../types/side';
 
-interface BlockingSide {
+interface VisibilityDetails {
   isFullyVisible: boolean;
   blockingSide?: SIDE;
 }
 
-export class ElementViewPort {
-  public static getVisibilityDetails(element: HTMLElement): BlockingSide {
+export class ElementVisibility {
+  public static getDetailsInWindow(element: HTMLElement): VisibilityDetails {
     let top = element.offsetTop;
     let left = element.offsetLeft;
     const width = element.offsetWidth;
@@ -31,5 +31,19 @@ export class ElementViewPort {
       return {isFullyVisible: false, blockingSide: SIDE.RIGHT};
     }
     return {isFullyVisible: true};
+  }
+
+  public static isVisibleInsideParent(element: HTMLElement) {
+    const parentContainer = element.parentElement as HTMLElement;
+    const cTop = parentContainer.scrollTop;
+    const cBottom = cTop + parentContainer.clientHeight;
+
+    const eTop = element.offsetTop;
+    const eBottom = eTop + element.clientHeight;
+
+    const isTotal = eTop >= cTop && eBottom <= cBottom;
+    const isPartial = (eTop < cTop && eBottom > cTop) || (eBottom > cBottom && eTop < cBottom);
+
+    return isPartial ? false : isTotal;
   }
 }
