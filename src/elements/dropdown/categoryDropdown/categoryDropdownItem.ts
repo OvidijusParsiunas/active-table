@@ -28,11 +28,15 @@ export class CategoryDropdownItem {
     CategoryDropdownItem.focusOrBlurCellBelow(elements, rowIndex);
   }
 
+  // prettier-ignore
   public static blurItemHighlight(categoryDropdownItems: CategoryDropdownItems, typeOfItem: keyof CategoryDropdownItems) {
     const itemElement = categoryDropdownItems[typeOfItem];
     if (itemElement !== undefined) {
-      itemElement.style.backgroundColor = '';
-      delete categoryDropdownItems[typeOfItem];
+      if (typeOfItem === 'matchingWithCellText'
+          || (typeOfItem === 'hovered' && itemElement !== categoryDropdownItems.matchingWithCellText)) {
+        itemElement.style.backgroundColor = '';
+        delete categoryDropdownItems[typeOfItem];
+      }
     }
   }
 
@@ -40,25 +44,23 @@ export class CategoryDropdownItem {
   public static highlightSiblingItem(categoryDropdownItems: CategoryDropdownItems,
       sibling: 'previousSibling' | 'nextSibling') {
     const {hovered, matchingWithCellText} = categoryDropdownItems;
-    const activeItem = hovered || matchingWithCellText;
+    const currentlyHighlightedItem = hovered || matchingWithCellText;
     // firing event as the handler has the hover color binded to it
-    (activeItem?.[sibling] as HTMLElement)?.dispatchEvent(new MouseEvent('mouseenter'));
+    (currentlyHighlightedItem?.[sibling] as HTMLElement)?.dispatchEvent(new MouseEvent('mouseenter'));
   }
 
   private static highlightItem(color: string, categoryDropdownItems: CategoryDropdownItems, event: MouseEvent) {
     const item = event.target as HTMLElement;
     const {hovered, matchingWithCellText} = categoryDropdownItems;
-    if (hovered) hovered.style.backgroundColor = '';
+    if (hovered && hovered !== matchingWithCellText) hovered.style.backgroundColor = '';
     item.style.backgroundColor = color;
     if (!ElementVisibility.isVisibleInsideParent(item)) item.scrollIntoView({block: 'nearest'});
-    // do not set matching item to hovered item as hovered item background can be unset
-    if (matchingWithCellText !== item) categoryDropdownItems.hovered = item;
+    categoryDropdownItems.hovered = item;
   }
 
   // prettier-ignore
   public static focusMatchingCellCategoryItem(text: string, categoryDropdown: HTMLElement,
       categoryDropdownItems: CategoryDropdownItems) {
-    categoryDropdown.style.overflow = 'hidden';
     const childrenArr = Array.from(categoryDropdown.children);
     const item = childrenArr.find((item) => item.textContent === text);
     if (!item || categoryDropdownItems.matchingWithCellText !== item) {
@@ -68,7 +70,6 @@ export class CategoryDropdownItem {
       categoryDropdownItems.matchingWithCellText = item as HTMLElement;
       item.dispatchEvent(new MouseEvent('mouseenter'));
     }
-    setTimeout(() => (categoryDropdown.style.overflow = 'auto'));
   }
 
   private static aggregateUniqueCategories(contents: TableContents, columnIndex: number, defaultCellValue: string) {

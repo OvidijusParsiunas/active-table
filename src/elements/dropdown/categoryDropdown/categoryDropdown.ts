@@ -15,11 +15,13 @@ export class CategoryDropdown extends Dropdown {
   // prettier-ignore
   private static focusItemOnDropdownOpen(text: string, categoryDropdown: HTMLElement,
       categoryDropdownItems: CategoryDropdownItems) {
+    categoryDropdown.style.overflow = 'hidden';
     CategoryDropdownItem.focusMatchingCellCategoryItem(text, categoryDropdown, categoryDropdownItems);
     if (!categoryDropdownItems.matchingWithCellText) {
       const firstItem = categoryDropdown.children[0];
       firstItem?.dispatchEvent(new MouseEvent('mouseenter'));
     }
+    setTimeout(() => (categoryDropdown.style.overflow = 'auto'));
   }
 
   // instead of binding click event handlers with the context of current row index to individual item elements every
