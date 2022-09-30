@@ -18,8 +18,11 @@ export class CategoryDropdown extends Dropdown {
     categoryDropdown.style.overflow = 'hidden';
     CategoryDropdownItem.focusMatchingCellCategoryItem(text, categoryDropdown, categoryDropdownItems);
     if (!categoryDropdownItems.matchingWithCellText) {
-      const firstItem = categoryDropdown.children[0];
+      const firstItem = categoryDropdown.children[0] as HTMLElement;
+      // firing event as the handler has the hover color binded to it
       firstItem?.dispatchEvent(new MouseEvent('mouseenter'));
+      // needs to be in a timeout in order not to remove it when mouse enter item highlight function is triggered
+      setTimeout(() => categoryDropdownItems.tempFirstItem = firstItem);
     }
     setTimeout(() => (categoryDropdown.style.overflow = 'auto'));
   }
@@ -38,8 +41,7 @@ export class CategoryDropdown extends Dropdown {
   }
 
   private static setPosition(categoryDropdown: HTMLElement, cellElement: HTMLElement) {
-    const rect = cellElement.getBoundingClientRect();
-    categoryDropdown.style.left = `${rect.right}px`;
+    categoryDropdown.style.left = `${cellElement.offsetLeft + cellElement.offsetWidth}px`;
     categoryDropdown.style.top = `${cellElement.offsetTop}px`;
   }
 

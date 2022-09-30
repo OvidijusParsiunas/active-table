@@ -69,7 +69,7 @@ export class ColumnDropdown extends Dropdown {
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement) {
     const dimensions = cellElement.getBoundingClientRect();
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(dimensions);
-    dropdownElement.style.top = `${dimensions.bottom}px`;
+    dropdownElement.style.top = `${cellElement.offsetTop + cellElement.offsetHeight}px`;
     // needs to be displayed in order to evalute if in view port
     dropdownElement.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
     const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement);

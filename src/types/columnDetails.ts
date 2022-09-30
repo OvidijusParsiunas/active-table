@@ -32,6 +32,9 @@ export type UniqueCategories = {[cellText: string]: true};
 export interface CategoryDropdownItems {
   matchingWithCellText?: HTMLElement;
   hovered?: HTMLElement;
+  // when the category dropdown is first opened up and there is no matching item, the first item is selected
+  // because it is not a match we want it to blur when the user starts typing or hovers over another item
+  tempFirstItem?: HTMLElement;
 }
 
 export interface ColumnDetailsT {

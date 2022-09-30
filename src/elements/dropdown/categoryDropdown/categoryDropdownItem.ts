@@ -28,8 +28,18 @@ export class CategoryDropdownItem {
     CategoryDropdownItem.focusOrBlurCellBelow(elements, rowIndex);
   }
 
+  private static blurTempFirstItem(categoryDropdownItems: CategoryDropdownItems, itemToBeHighlighted?: HTMLElement) {
+    if (categoryDropdownItems.tempFirstItem) {
+      if (!itemToBeHighlighted || itemToBeHighlighted !== categoryDropdownItems.tempFirstItem) {
+        categoryDropdownItems.tempFirstItem.style.backgroundColor = '';
+      }
+      delete categoryDropdownItems.tempFirstItem;
+    }
+  }
+
   // prettier-ignore
   public static blurItemHighlight(categoryDropdownItems: CategoryDropdownItems, typeOfItem: keyof CategoryDropdownItems) {
+    CategoryDropdownItem.blurTempFirstItem(categoryDropdownItems);
     const itemElement = categoryDropdownItems[typeOfItem];
     if (itemElement !== undefined) {
       if (typeOfItem === 'matchingWithCellText'
@@ -44,31 +54,37 @@ export class CategoryDropdownItem {
   public static highlightSiblingItem(categoryDropdownItems: CategoryDropdownItems,
       sibling: 'previousSibling' | 'nextSibling') {
     const {hovered, matchingWithCellText} = categoryDropdownItems;
-    const currentlyHighlightedItem = hovered || matchingWithCellText;
-    // firing event as the handler has the hover color binded to it
-    (currentlyHighlightedItem?.[sibling] as HTMLElement)?.dispatchEvent(new MouseEvent('mouseenter'));
+    const currentlyHighlightedItem = hovered || matchingWithCellText as HTMLElement;
+    if (currentlyHighlightedItem[sibling]) {
+      CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'hovered')
+      // firing event as the handler has the hover color binded to it
+      currentlyHighlightedItem[sibling]?.dispatchEvent(new MouseEvent('mouseenter'));
+    }
   }
 
   private static highlightItem(color: string, categoryDropdownItems: CategoryDropdownItems, event: MouseEvent) {
-    const item = event.target as HTMLElement;
-    const {hovered, matchingWithCellText} = categoryDropdownItems;
-    if (hovered && hovered !== matchingWithCellText) hovered.style.backgroundColor = '';
-    item.style.backgroundColor = color;
-    if (!ElementVisibility.isVisibleInsideParent(item)) item.scrollIntoView({block: 'nearest'});
-    categoryDropdownItems.hovered = item;
+    const targetElement = event.target as HTMLElement;
+    targetElement.style.backgroundColor = color;
+    CategoryDropdownItem.blurTempFirstItem(categoryDropdownItems, targetElement);
+    if (!ElementVisibility.isVisibleInsideParent(targetElement)) targetElement.scrollIntoView({block: 'nearest'});
+    if (targetElement === categoryDropdownItems.matchingWithCellText) {
+      delete categoryDropdownItems.hovered;
+    } else {
+      categoryDropdownItems.hovered = targetElement;
+    }
   }
 
   // prettier-ignore
   public static focusMatchingCellCategoryItem(text: string, categoryDropdown: HTMLElement,
       categoryDropdownItems: CategoryDropdownItems) {
     const childrenArr = Array.from(categoryDropdown.children);
-    const item = childrenArr.find((item) => item.textContent === text);
-    if (!item || categoryDropdownItems.matchingWithCellText !== item) {
+    const itemElement = childrenArr.find((itemElement) => itemElement.textContent === text);
+    if (!itemElement || categoryDropdownItems.matchingWithCellText !== itemElement) {
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'matchingWithCellText');
     }
-    if (item) {
-      categoryDropdownItems.matchingWithCellText = item as HTMLElement;
-      item.dispatchEvent(new MouseEvent('mouseenter'));
+    if (itemElement) {
+      categoryDropdownItems.matchingWithCellText = itemElement as HTMLElement;
+      itemElement.dispatchEvent(new MouseEvent('mouseenter'));
     }
   }
 
@@ -86,10 +102,10 @@ export class CategoryDropdownItem {
   private static addItems(uniqueCategories: UniqueCategories, categoryDropdown: HTMLElement,
       categoryDropdownItems: CategoryDropdownItems) {
     Object.keys(uniqueCategories).forEach((content) => {
-      const item = DropdownItem.addPlaneButtonItem(categoryDropdown as HTMLElement, content as string);
-      item.onmouseenter = CategoryDropdownItem.highlightItem.bind(
+      const itemElement = DropdownItem.addPlaneButtonItem(categoryDropdown as HTMLElement, content as string);
+      itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(
         this, Color.getRandomPasteleColor(), categoryDropdownItems);
-      item.onmouseleave = CategoryDropdownItem.blurItemHighlight.bind(this, categoryDropdownItems, 'hovered');
+      itemElement.onmouseleave = CategoryDropdownItem.blurItemHighlight.bind(this, categoryDropdownItems, 'hovered');
     });
   }
 
