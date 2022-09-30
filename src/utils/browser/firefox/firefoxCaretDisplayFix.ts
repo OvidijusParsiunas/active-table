@@ -15,4 +15,12 @@ export class FirefoxCaretDisplayFix {
     // the reason why this is not applied in Chrome is because the TAB key does not go to the next cell
     if (!isHeader) cellElement.setAttribute('tabindex', '0');
   }
+
+  // caret is placed too far on top left
+  // this happens when cell text is programmatically set to empty or when the user doubeclicks text and clicks backspace
+  // natively firefox adds a 'br' element to replace the text when the user deletes it by clicking backspace for each
+  // letter however it does not for the cases outlined above, hence this is needed
+  public static addPaddingToEmptyCell(cellElement: HTMLElement, text: string) {
+    if (text === '' || cellElement.childNodes.length === 0) cellElement.appendChild(document.createElement('br'));
+  }
 }

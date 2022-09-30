@@ -10,6 +10,7 @@ import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {Browser} from '../../utils/browser/browser';
 import {Dropdown} from '../dropdown/dropdown';
+import {CellElement} from './cellElement';
 import {CellEvents} from './cellEvents';
 
 export class DataCellEvents {
@@ -19,7 +20,7 @@ export class DataCellEvents {
   private static readonly DEFAULT_TEXT_COLOR = '';
 
   // prettier-ignore
-  private static setColorBasedOnValidity(cellElement: HTMLElement, userSetColumnType: VALIDABLE_CELL_TYPE) {
+  private static setTextColorBasedOnValidity(cellElement: HTMLElement, userSetColumnType: VALIDABLE_CELL_TYPE) {
     cellElement.style.color = ValidateInput.validate(cellElement.textContent as string, userSetColumnType)
       ? DataCellEvents.DEFAULT_TEXT_COLOR : DataCellEvents.INVALID_TEXT_COLOR;
   }
@@ -27,13 +28,21 @@ export class DataCellEvents {
   // TO-DO default types per column, cleanup e.g. currency or date will need to be provided by user
   // TO-DO allow user to set default as invalid
   // using this instead of keydown is because when this is fired the new cell text is available
+  // prettier-ignore
   private static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const inputEvent = event as InputEvent;
     const cellElement = inputEvent.target as HTMLElement;
+    CellElement.processAndSetTextOnCell(cellElement, cellElement.textContent as string, false);
+    const categoryDropdown = this.overlayElementsState.categoryDropdown as HTMLElement;
+    const columnDetails = this.columnsDetails[columnIndex];
     if (inputEvent.inputType !== DataCellEvents.PASTE_INPUT_TYPE) {
-      const userSetColumnType = this.columnsDetails[columnIndex].userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
+      const userSetColumnType = columnDetails.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
-        DataCellEvents.setColorBasedOnValidity(cellElement, userSetColumnType);
+        DataCellEvents.setTextColorBasedOnValidity(cellElement, userSetColumnType);
+      }
+      if (Dropdown.isDisplayed(categoryDropdown)) {
+        CategoryDropdown.focusMatchingCellCategoryItem(cellElement.textContent as string,
+          categoryDropdown, columnDetails.categories.categoryDropdownItems);
       }
       CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex, {processText: false});
     }
@@ -55,16 +64,17 @@ export class DataCellEvents {
     } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
       if (Dropdown.isDisplayed(categoryDropdown)) {
         event.preventDefault();
-        CategoryDropdown.highlightSiblingItem(columnDetails, 'nextSibling');
+        CategoryDropdown.highlightSiblingItem(columnDetails.categories.categoryDropdownItems, 'nextSibling');
       }
     } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
       if (Dropdown.isDisplayed(categoryDropdown)) {
         event.preventDefault();
-        CategoryDropdown.highlightSiblingItem(columnDetails, 'previousSibling');
+        CategoryDropdown.highlightSiblingItem(columnDetails.categories.categoryDropdownItems, 'previousSibling');
       }
     }
   }
 
+  // WORK - add category on paste
   private static pasteCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: ClipboardEvent) {
     const clipboardText = JSON.stringify(event.clipboardData?.getData(DataCellEvents.TEXT_DATA_FORMAT));
     if (OverwriteCellsViaCSVOnPaste.isCSVData(clipboardText)) {
@@ -90,16 +100,6 @@ export class DataCellEvents {
     });
   }
 
-  // when the user tabs onto a cell that is a category, dropdown needs to be opened manually
-  // prettier-ignore
-  private static displayCategoryDropdownIfNotOpen(etc: EditableTableComponent, rowIndex: number,
-      columnIndex: number, cellElement: HTMLElement) {
-    if (etc.columnsDetails[columnIndex].userSetColumnType === USER_SET_COLUMN_TYPE.Category
-        && !Dropdown.isDisplayed(etc.overlayElementsState.categoryDropdown)) {
-      CategoryDropdown.display(etc, rowIndex, columnIndex, cellElement);
-    }
-  }
-
   // prettier-ignore
   private static focusCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const cellElement = event.target as HTMLElement;
@@ -107,11 +107,6 @@ export class DataCellEvents {
     // placed here and not in timeout because we need cells with a default value to be recorded before modification
     FocusedCellUtils.setDataCell(this.focusedCell, cellElement, columnIndex, this.defaultCellValue);
     CellEvents.removeTextIfCellDefault(this, rowIndex, columnIndex, event);
-    setTimeout(() => DataCellEvents.displayCategoryDropdownIfNotOpen(this, rowIndex, columnIndex, cellElement));
-  }
-
-  private static clickCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
-    const cellElement = event.target as HTMLElement;
     if (this.columnsDetails[columnIndex].userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryDropdown.display(this, rowIndex, columnIndex, cellElement);
     }
@@ -123,6 +118,5 @@ export class DataCellEvents {
     cellElement.onpaste = DataCellEvents.pasteCell.bind(etc, rowIndex, columnIndex);
     cellElement.onblur = DataCellEvents.blurCell.bind(etc, rowIndex, columnIndex);
     cellElement.onfocus = DataCellEvents.focusCell.bind(etc, rowIndex, columnIndex);
-    cellElement.onclick = DataCellEvents.clickCell.bind(etc, rowIndex, columnIndex);
   }
 }

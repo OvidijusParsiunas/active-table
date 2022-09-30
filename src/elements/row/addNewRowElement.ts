@@ -9,7 +9,7 @@ export class AddNewRowElement {
 
   private static createCell(cellStyle: CSSStyle) {
     const addNewRowCell = CellElement.create(cellStyle, {});
-    addNewRowCell.classList.add('add-new-row-cell');
+    addNewRowCell.id = 'add-new-row-cell';
     addNewRowCell.textContent = '+ New';
     // set to high number to always merge cells in this row
     addNewRowCell.colSpan = AddNewRowElement.DEFAULT_COL_SPAN;
@@ -18,7 +18,7 @@ export class AddNewRowElement {
 
   private static createRow(etc: EditableTableComponent) {
     const addNewRowRow = RowElement.create();
-    addNewRowRow.classList.add('add-new-row-row');
+    addNewRowRow.id = 'add-new-row-row';
     addNewRowRow.onclick = InsertNewRow.insertEvent.bind(etc, 2);
     return addNewRowRow;
   }

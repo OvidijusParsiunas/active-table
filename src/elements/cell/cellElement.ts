@@ -8,6 +8,12 @@ import {CSSStyle} from '../../types/cssStyle';
 export class CellElement {
   public static readonly DEFAULT_COLUMN_WIDTH = '100px';
 
+  // set text is optional as some functions may only need to augment the cell
+  public static processAndSetTextOnCell(cellElement: HTMLElement, text: string, setText = true) {
+    if (setText) cellElement.textContent = text;
+    FirefoxCaretDisplayFix.addPaddingToEmptyCell(cellElement, text);
+  }
+
   // prettier-ignore
   public static setCellEvents(etc: EditableTableComponent,
       cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
@@ -37,7 +43,7 @@ export class CellElement {
 
   private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
     const cellElement = CellElement.create(etc.cellStyle, etc.headerStyle, isHeader);
-    cellElement.textContent = cellText as string;
+    CellElement.processAndSetTextOnCell(cellElement, cellText);
     CellElement.prepContentEditable(cellElement, isHeader);
     if (isHeader) cellElement.style.width = CellElement.DEFAULT_COLUMN_WIDTH;
     return cellElement;

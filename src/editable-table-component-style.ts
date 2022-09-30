@@ -89,11 +89,11 @@ export const ediTableStyle = css`
     pointer-events: none;
   }
 
-  .add-new-row-row:hover {
+  #add-new-row-row:hover {
     background-color: #f7f7f7;
   }
 
-  .add-new-row-cell {
+  #add-new-row-cell {
     padding-top: 8px;
     min-height: 28px;
     line-height: 18px;

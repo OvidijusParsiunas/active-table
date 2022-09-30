@@ -27,7 +27,12 @@ export type CellTypeTotals = {
   [key in CELL_TYPE]: number;
 };
 
-export type ColumnCategories = {[cellText: string]: true};
+export type UniqueCategories = {[cellText: string]: true};
+
+export interface CategoryDropdownItems {
+  matchingWithCellText?: HTMLElement;
+  hovered?: HTMLElement;
+}
 
 export interface ColumnDetailsT {
   elements: HTMLElement[];
@@ -37,9 +42,11 @@ export interface ColumnDetailsT {
   // column type set by the user, set to auto by default
   userSetColumnType: USER_SET_COLUMN_TYPE;
   cellTypeTotals: CellTypeTotals;
-  categories: ColumnCategories;
-  // item element inside the category dropdown
-  hoveredCategoryItem?: HTMLElement;
+  categories: {
+    list: UniqueCategories;
+    // items that exhibit certain behaviours
+    categoryDropdownItems: CategoryDropdownItems;
+  };
 }
 
 // used for when column details initialised before the column sizer

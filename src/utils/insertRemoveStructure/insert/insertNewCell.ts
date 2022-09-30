@@ -28,7 +28,7 @@ export class InsertNewCell {
     } else {
       // TO-DO - not sure if all cell elements are needed, if this is not required in the future do not this code
       const columnDetails = etc.columnsDetails[columnIndex];
-      columnDetails.elements.push(cellElement);
+      columnDetails.elements.splice(rowIndex, 0, cellElement);
       setTimeout(() => CellTypeTotalsUtils.incrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, text));
     }
   }

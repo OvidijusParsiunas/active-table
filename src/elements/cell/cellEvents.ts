@@ -1,6 +1,7 @@
 import {DataUtils} from '../../utils/insertRemoveStructure/shared/dataUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
+import {CellElement} from './cellElement';
 
 // operates in an opt in or out basis for various operations
 interface UpdateCellOptions {
@@ -28,7 +29,7 @@ export class CellEvents {
       cellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText); 
     }
     if (CellEvents.executeUpdateOpration('updateContents', options)) etc.contents[rowIndex][columnIndex] = cellText; 
-    if (options?.element) options.element.textContent = cellText;
+    if (options?.element) CellElement.processAndSetTextOnCell(options.element, cellText);
     if (CellEvents.executeUpdateOpration('updateTableEvent', options)) etc.onTableUpdate(etc.contents);
     // not in timeout as functionality that calls updateCell calls etc.onTableUpdate after - should remain that way
     etc.onCellUpdate(cellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
