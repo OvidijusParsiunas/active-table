@@ -1,5 +1,6 @@
 import {OverwriteCellsViaCSVOnPaste} from '../../utils/pasteCSV/overwriteCellsViaCSVOnPaste';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
+import {CategoryDropdownItem} from '../dropdown/categoryDropdown/categoryDropdownItem';
 import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {CellTypeTotalsUtils} from '../../utils/cellType/cellTypeTotalsUtils';
 import {FocusedCellUtils} from '../../utils/focusedCell/focusedCellUtils';
@@ -41,7 +42,7 @@ export class DataCellEvents {
         DataCellEvents.setTextColorBasedOnValidity(cellElement, userSetColumnType);
       }
       if (Dropdown.isDisplayed(categoryDropdown)) {
-        CategoryDropdown.focusMatchingCellCategoryItem(cellElement.textContent as string,
+        CategoryDropdownItem.focusMatchingCellCategoryItem(cellElement.textContent as string,
           categoryDropdown, columnDetails.categories.categoryDropdownItems);
       }
       CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex, {processText: false});
@@ -52,24 +53,26 @@ export class DataCellEvents {
     const {overlayElementsState, columnsDetails} = this;
     const categoryDropdown = overlayElementsState.categoryDropdown as HTMLElement;
     const columnDetails = columnsDetails[columnIndex];
+    const cellElement = event.target as HTMLElement;
     if (event.key === KEYBOARD_KEY.TAB) {
       if (Dropdown.isDisplayed(categoryDropdown)) {
-        CategoryDropdown.hide(this);
+        CategoryDropdown.hide(categoryDropdown);
       }
     } else if (event.key === KEYBOARD_KEY.ENTER) {
       if (Dropdown.isDisplayed(categoryDropdown)) {
         event.preventDefault();
-        CategoryDropdown.setTextAndFocusCellBelow(this, columnDetails, rowIndex, columnIndex, event.target as HTMLElement);
+        CategoryDropdown.hide(categoryDropdown);
+        CategoryDropdownItem.setTextAndFocusCellBelow(this, columnDetails, rowIndex, columnIndex, cellElement);
       }
     } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
       if (Dropdown.isDisplayed(categoryDropdown)) {
         event.preventDefault();
-        CategoryDropdown.highlightSiblingItem(columnDetails.categories.categoryDropdownItems, 'nextSibling');
+        CategoryDropdownItem.highlightSiblingItem(columnDetails.categories.categoryDropdownItems, 'nextSibling');
       }
     } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
       if (Dropdown.isDisplayed(categoryDropdown)) {
         event.preventDefault();
-        CategoryDropdown.highlightSiblingItem(columnDetails.categories.categoryDropdownItems, 'previousSibling');
+        CategoryDropdownItem.highlightSiblingItem(columnDetails.categories.categoryDropdownItems, 'previousSibling');
       }
     }
   }

@@ -9,11 +9,12 @@ export class WindowEvents {
     // inside it, hence if the user clicks inside the element, the elements inside will
     // handle the click event instead (full table overlay element for column dropdown)
     if ((event.target as HTMLElement).tagName === EditableTableComponent.ELEMENT_TAG) return;
+    const {columnDropdown, categoryDropdown} = this.overlayElementsState;
     // if the user clicks outside of the shadow dom and a dropdown is open, close it
-    if (Dropdown.isDisplayed(this.overlayElementsState.columnDropdown)) {
+    if (Dropdown.isDisplayed(columnDropdown)) {
       ColumnDropdown.processTextAndHide(this);
-    } else if (Dropdown.isDisplayed(this.overlayElementsState.categoryDropdown)) {
-      CategoryDropdown.hide(this);
+    } else if (Dropdown.isDisplayed(categoryDropdown)) {
+      CategoryDropdown.hide(categoryDropdown as HTMLElement);
     }
   }
 }

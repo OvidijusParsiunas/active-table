@@ -13,10 +13,11 @@ export class TableEvents {
       ColumnSizerEvents.tableOnMouseDown(
         this.tableElementEventState.selectedColumnSizer, this.columnResizerStyle.click?.backgroundColor);
     }
+    const categoryDropdown = this.overlayElementsState.categoryDropdown as HTMLElement;
     // can be repurposed for other dropdowns (column dropdown does not need it as mouse hits the overlay first)
-    if (Dropdown.isDisplayed(this.overlayElementsState.categoryDropdown)
+    if (Dropdown.isDisplayed(categoryDropdown)
         && !Dropdown.isPartOfDropdownElement(element) && element !== this.focusedCell.element) {
-      CategoryDropdown.hide(this);
+      CategoryDropdown.hide(categoryDropdown);
     }
   }
 
