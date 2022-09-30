@@ -13,6 +13,11 @@ import {Dropdown} from '../dropdown';
 export class CategoryDropdown extends Dropdown {
   // open with first one focused, if enter - use that key
   // if user starts typing - no focus is needed
+
+  private static randomPasteleColor() {
+    return `hsl(${Math.floor(Math.random() * 360)}, 95%, 90%)`;
+  }
+
   // prettier-ignore
   public static setTextAndFocusCellBelow(etc: EditableTableComponent,
       columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
@@ -29,7 +34,7 @@ export class CategoryDropdown extends Dropdown {
     if (columnDetails.hoveredCategoryItem) columnDetails.hoveredCategoryItem.style.backgroundColor = '';
     item.style.backgroundColor = color;
     if (!ElementVisibility.isVisibleInsideParent(item)) {
-      item.scrollIntoView(false);
+      item.scrollIntoView({block: 'nearest'});
     }
     columnDetails.hoveredCategoryItem = item;
   }
@@ -37,7 +42,7 @@ export class CategoryDropdown extends Dropdown {
   public static highlightSiblingItem(columnDetails: ColumnDetailsT, sibling: 'previousSibling' | 'nextSibling') {
     const {hoveredCategoryItem} = columnDetails;
     if (hoveredCategoryItem?.[sibling]) {
-      CategoryDropdown.highlightItem(hoveredCategoryItem[sibling] as HTMLElement, 'yellow', columnDetails);
+      (hoveredCategoryItem[sibling] as HTMLElement).dispatchEvent(new MouseEvent('mouseenter'));
     }
   }
 
@@ -57,7 +62,7 @@ export class CategoryDropdown extends Dropdown {
       columnDetails: ColumnDetailsT) {
     Object.keys(uniqueCategories).forEach((content) => {
       const item = DropdownItem.addPlaneButtonItem(categoryDropdown as HTMLElement, content as string);
-      item.onmouseenter = CategoryDropdown.mouseEnterItem.bind(this, 'yellow', columnDetails);
+      item.onmouseenter = CategoryDropdown.mouseEnterItem.bind(this, CategoryDropdown.randomPasteleColor(), columnDetails);
       item.onmouseleave = CategoryDropdown.mouseLeaveItem.bind(this, columnDetails);
     });
   }
@@ -122,7 +127,7 @@ export class CategoryDropdown extends Dropdown {
       categoryDropdown.onclick = CategoryDropdown.dropdownClick.bind(etc, rowIndex, columnIndex);
       // WORK - should focus the one that it is on - if not, enter the first one
       const firstItem = categoryDropdown.children[0] as HTMLElement;
-      CategoryDropdown.highlightItem(firstItem, 'yellow', columnDetails);
+      firstItem.dispatchEvent(new MouseEvent('mouseenter'));
       categoryDropdown.style.display = 'block';
     } else if (Dropdown.isDisplayed(etc.overlayElementsState.categoryDropdown)) {
       CategoryDropdown.hide(etc);
