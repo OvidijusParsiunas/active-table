@@ -1,10 +1,12 @@
 import {ColumnDetailsT, CategoryDropdownItems, UniqueCategories} from '../../../types/columnDetails';
+import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {TableContents} from '../../../types/tableContents';
 import {CellEvents} from '../../cell/cellEvents';
 import {Color} from '../../../utils/color/color';
 import {DropdownItem} from '../dropdownItem';
+import {SIDE} from '../../../types/side';
 
 export class CategoryDropdownItem {
   private static focusOrBlurCellBelow(elements: HTMLElement[], rowIndex: number) {
@@ -20,27 +22,22 @@ export class CategoryDropdownItem {
   // prettier-ignore
   public static setTextAndFocusCellBelow(etc: EditableTableComponent,
       columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
-    const { categories: { categoryDropdownItems: { hovered } }, elements } = columnDetails;
-    if (hovered) {
-      CellEvents.updateCell(etc, hovered.textContent as string,
+    const { categories: { categoryDropdownItems }, elements } = columnDetails;
+    if (categoryDropdownItems.hovered && categoryDropdownItems.hovered.style.backgroundColor) {
+      CellEvents.updateCell(etc, categoryDropdownItems.hovered.textContent as string,
         rowIndex, columnIndex, {processText: false, element: cellElement});
+    } else {
+      // WORK - not sure if there is much need to maintain this
+      columnDetails.categories.list[cellElement.textContent as string] = true;
+      CategoryDropdownItem.addItem(cellElement.textContent as string,
+        etc.overlayElementsState.categoryDropdown as HTMLElement, categoryDropdownItems, true);
     }
     CategoryDropdownItem.focusOrBlurCellBelow(elements, rowIndex);
   }
 
-  private static blurTempFirstItem(categoryDropdownItems: CategoryDropdownItems, itemToBeHighlighted?: HTMLElement) {
-    if (categoryDropdownItems.tempFirstItem) {
-      if (!itemToBeHighlighted || itemToBeHighlighted !== categoryDropdownItems.tempFirstItem) {
-        categoryDropdownItems.tempFirstItem.style.backgroundColor = '';
-      }
-      delete categoryDropdownItems.tempFirstItem;
-    }
-  }
-
   // prettier-ignore
   public static blurItemHighlight(categoryDropdownItems: CategoryDropdownItems, typeOfItem: keyof CategoryDropdownItems) {
-    CategoryDropdownItem.blurTempFirstItem(categoryDropdownItems);
-    const itemElement = categoryDropdownItems[typeOfItem];
+    const itemElement = categoryDropdownItems[typeOfItem] as HTMLElement;
     if (itemElement !== undefined) {
       if (typeOfItem === 'matchingWithCellText'
           || (typeOfItem === 'hovered' && itemElement !== categoryDropdownItems.matchingWithCellText)) {
@@ -62,15 +59,42 @@ export class CategoryDropdownItem {
     }
   }
 
+  // prettier-ignore
+  private static scrollToItemIfNeeded(event: MouseEvent,
+      itemElement: HTMLElement, isHorizontalScrollPresent: boolean, dropdownElement: HTMLElement) {
+    // not automatically scrolling when user hovers their mouse over a partial item as it is bad UX
+    if (event.isTrusted) return; 
+    const visibilityDetails = ElementVisibility.isVerticallyVisibleInsideParent(itemElement);
+    if (!visibilityDetails.isFullyVisible) {
+      itemElement.scrollIntoView({block: 'nearest'});
+      // REF-4
+      if (isHorizontalScrollPresent && visibilityDetails.blockingSide === SIDE.BOTTOM) {
+        CategoryDropdownHorizontalScroll.scrollDownFurther(dropdownElement)
+      }
+    }
+  }
+
   private static highlightItem(color: string, categoryDropdownItems: CategoryDropdownItems, event: MouseEvent) {
-    const targetElement = event.target as HTMLElement;
-    targetElement.style.backgroundColor = color;
-    CategoryDropdownItem.blurTempFirstItem(categoryDropdownItems, targetElement);
-    if (!ElementVisibility.isVisibleInsideParent(targetElement)) targetElement.scrollIntoView({block: 'nearest'});
-    if (targetElement === categoryDropdownItems.matchingWithCellText) {
+    const itemElement = event.target as HTMLElement;
+    itemElement.style.backgroundColor = color;
+    const {hovered, matchingWithCellText, isHorizontalScrollPresent} = categoryDropdownItems;
+    // test this with highlight via arrow and the hover over another item
+    if (hovered) hovered.style.backgroundColor = '';
+    const dropdownElement = itemElement.parentElement as HTMLElement;
+    CategoryDropdownItem.scrollToItemIfNeeded(event, itemElement, isHorizontalScrollPresent, dropdownElement);
+    if (itemElement === matchingWithCellText) {
       delete categoryDropdownItems.hovered;
     } else {
-      categoryDropdownItems.hovered = targetElement;
+      categoryDropdownItems.hovered = itemElement;
+    }
+  }
+
+  private static hideHoveredItemHighlight(categoryDropdownItems: CategoryDropdownItems) {
+    const {hovered, matchingWithCellText} = categoryDropdownItems;
+    if (hovered) {
+      hovered.style.backgroundColor = '';
+    } else {
+      categoryDropdownItems.hovered = matchingWithCellText;
     }
   }
 
@@ -80,6 +104,8 @@ export class CategoryDropdownItem {
     const childrenArr = Array.from(categoryDropdown.children);
     const itemElement = childrenArr.find((itemElement) => itemElement.textContent === text);
     if (!itemElement || categoryDropdownItems.matchingWithCellText !== itemElement) {
+      // this is used to preserve the ability for the user to still allow the use of arrow keys to traverse the dropdown
+      CategoryDropdownItem.hideHoveredItemHighlight(categoryDropdownItems);
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'matchingWithCellText');
     }
     if (itemElement) {
@@ -99,13 +125,19 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
-  private static addItems(uniqueCategories: UniqueCategories, categoryDropdown: HTMLElement,
-      categoryDropdownItems: CategoryDropdownItems) {
+  private static addItem(text: string,
+      categoryDropdown: HTMLElement, categoryDropdownItems: CategoryDropdownItems, atStart = false) {
+    const itemElement = DropdownItem.addPlaneButtonItem(categoryDropdown as HTMLElement, text, atStart ? 0 : undefined);
+    itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(
+      this, Color.getRandomPasteleColor(), categoryDropdownItems);
+    itemElement.onmouseleave = CategoryDropdownItem.blurItemHighlight.bind(this, categoryDropdownItems, 'hovered');
+  }
+
+  // prettier-ignore
+  private static addItems(uniqueCategories: UniqueCategories,
+      categoryDropdown: HTMLElement, categoryDropdownItems: CategoryDropdownItems) {
     Object.keys(uniqueCategories).forEach((content) => {
-      const itemElement = DropdownItem.addPlaneButtonItem(categoryDropdown as HTMLElement, content as string);
-      itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(
-        this, Color.getRandomPasteleColor(), categoryDropdownItems);
-      itemElement.onmouseleave = CategoryDropdownItem.blurItemHighlight.bind(this, categoryDropdownItems, 'hovered');
+      CategoryDropdownItem.addItem(content, categoryDropdown, categoryDropdownItems);
     });
   }
 

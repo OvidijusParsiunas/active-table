@@ -33,17 +33,30 @@ export class ElementVisibility {
     return {isFullyVisible: true};
   }
 
-  public static isVisibleInsideParent(element: HTMLElement) {
+  public static isVerticallyVisibleInsideParent(element: HTMLElement): VisibilityDetails {
     const parentContainer = element.parentElement as HTMLElement;
-    const cTop = parentContainer.scrollTop;
-    const cBottom = cTop + parentContainer.clientHeight;
+    const containerScrollTop = parentContainer.scrollTop;
+    const containerScrollBottom = containerScrollTop + parentContainer.clientHeight;
 
-    const eTop = element.offsetTop;
-    const eBottom = eTop + element.clientHeight;
+    const elOffsetTop = element.offsetTop;
+    const elOffsetBottom = elOffsetTop + element.clientHeight;
 
-    const isTotal = eTop >= cTop && eBottom <= cBottom;
-    const isPartial = (eTop < cTop && eBottom > cTop) || (eBottom > cBottom && eTop < cBottom);
-
-    return isPartial ? false : isTotal;
+    // partial top
+    if (elOffsetTop < containerScrollTop && elOffsetBottom > containerScrollTop) {
+      return {isFullyVisible: false, blockingSide: SIDE.TOP};
+    }
+    // partial bottom
+    if (elOffsetBottom > containerScrollBottom && elOffsetTop < containerScrollBottom) {
+      return {isFullyVisible: false, blockingSide: SIDE.BOTTOM};
+    }
+    // fully hidden top
+    if (elOffsetTop < containerScrollTop) {
+      return {isFullyVisible: false, blockingSide: SIDE.TOP};
+    }
+    // fully hidden bottom
+    if (elOffsetBottom > containerScrollBottom) {
+      return {isFullyVisible: false, blockingSide: SIDE.BOTTOM};
+    }
+    return {isFullyVisible: true};
   }
 }

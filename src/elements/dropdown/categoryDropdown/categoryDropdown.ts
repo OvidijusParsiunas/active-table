@@ -1,3 +1,4 @@
+import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownItems} from '../../../types/columnDetails';
@@ -21,8 +22,6 @@ export class CategoryDropdown extends Dropdown {
       const firstItem = categoryDropdown.children[0] as HTMLElement;
       // firing event as the handler has the hover color binded to it
       firstItem?.dispatchEvent(new MouseEvent('mouseenter'));
-      // needs to be in a timeout in order not to remove it when mouse enter item highlight function is triggered
-      setTimeout(() => categoryDropdownItems.tempFirstItem = firstItem);
     }
     setTimeout(() => (categoryDropdown.style.overflow = 'auto'));
   }
@@ -54,6 +53,8 @@ export class CategoryDropdown extends Dropdown {
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'hovered');
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'matchingWithCellText');
       categoryDropdown.style.display = 'block';
+      // REF-4
+      CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categoryDropdown, categoryDropdownItems);
       CategoryDropdown.focusItemOnDropdownOpen(cellElement.textContent as string, categoryDropdown, categoryDropdownItems);
     } else if (Dropdown.isDisplayed(etc.overlayElementsState.categoryDropdown)) {
       CategoryDropdown.hide(categoryDropdown);

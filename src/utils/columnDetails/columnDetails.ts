@@ -9,7 +9,7 @@ export class ColumnDetails {
       activeColumnType: CellTypeTotalsUtils.DEFAULT_COLUMN_TYPE,
       userSetColumnType: USER_SET_COLUMN_TYPE.Auto,
       cellTypeTotals: CellTypeTotalsUtils.createObj(),
-      categories: {list: {}, categoryDropdownItems: {}},
+      categories: {list: {}, categoryDropdownItems: {isHorizontalScrollPresent: false}},
     };
   }
 }

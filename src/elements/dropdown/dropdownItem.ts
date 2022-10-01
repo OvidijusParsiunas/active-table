@@ -39,19 +39,23 @@ export class DropdownItem {
     dropdownElement.appendChild(itemElement);
   }
 
-  public static addPlaneButtonItem(dropdownElement: HTMLElement, text: string, ...classNames: string[]) {
+  public static addPlaneButtonItem(dropdownElement: HTMLElement, text: string, index?: number) {
     const itemElement = DropdownItem.createItem(dropdownElement);
-    if (classNames.length > 0) itemElement.classList.add(...classNames);
     const textElement = DropdownItem.createDropdownItemBaseElement('div');
     textElement.textContent = text;
     itemElement.append(textElement);
-    dropdownElement.appendChild(itemElement);
+    if (index !== undefined && dropdownElement.children[index]) {
+      dropdownElement.insertBefore(itemElement, dropdownElement.children[index]);
+    } else {
+      dropdownElement.appendChild(itemElement);
+    }
     return itemElement;
   }
 
   public static addButtonItem(dropdownElement: HTMLElement, text: string, ...classNames: string[]) {
-    const buttonElement = DropdownItem.addPlaneButtonItem(dropdownElement, text, ...classNames);
+    const buttonElement = DropdownItem.addPlaneButtonItem(dropdownElement, text);
     buttonElement.classList.add(DropdownItem.DROPDOWN_HOVERABLE_ITEM);
+    if (classNames.length > 0) buttonElement.classList.add(...classNames);
     return buttonElement;
   }
 
