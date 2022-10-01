@@ -1,8 +1,9 @@
-import {ColumnDetailsT, CategoryDropdownItems, UniqueCategories} from '../../../types/columnDetails';
+import {CategoryDropdownItems, UniqueCategories} from '../../../types/columnDetails';
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {TableContents} from '../../../types/tableContents';
+import {FocusedCell} from '../../../types/focusedCell';
 import {CellEvents} from '../../cell/cellEvents';
 import {Color} from '../../../utils/color/color';
 import {DropdownItem} from '../dropdownItem';
@@ -32,23 +33,23 @@ export class CategoryDropdownItem {
   // prettier-ignore
   private static updateCellElementIfNotUpdated(etc: EditableTableComponent,
       activeItem: HTMLElement, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
-    const newText = activeItem.textContent;
+    const newText = activeItem.textContent as string;
     if ((etc.contents[rowIndex][columnIndex] as string) !== newText) {
-      CellEvents.updateCell(etc, activeItem.textContent as string,
-        rowIndex, columnIndex, {processText: false, element: cellElement});
+      CellEvents.updateCell(etc, newText, rowIndex, columnIndex, {processText: false, element: cellElement});
     }
   }
 
   // prettier-ignore
-  public static setText(etc: EditableTableComponent,
-      columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
+  public static setText(etc: EditableTableComponent) {
+    const { rowIndex, columnIndex, element: cellElement} = etc.focusedCell as Required<FocusedCell>;
+    const columnDetails = etc.columnsDetails[columnIndex];
     const { categories: { categoryDropdownItems } } = columnDetails;
-    const { hovered, matchingWithCellText } = categoryDropdownItems;
     const categoryDropdown = etc.overlayElementsState.categoryDropdown as HTMLElement;
-    const activeItem = hovered || matchingWithCellText;
-    if (activeItem?.style.backgroundColor) {
-      CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItem, rowIndex, columnIndex, cellElement);
-      CategoryDropdownItem.moveItemToTop(activeItem, categoryDropdown)
+    const { hovered, matchingWithCellText } = categoryDropdownItems;
+    const activeItemElement = hovered || matchingWithCellText;
+    if (activeItemElement?.style.backgroundColor) {
+      CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItemElement, rowIndex, columnIndex, cellElement);
+      CategoryDropdownItem.moveItemToTop(activeItemElement, categoryDropdown)
     } else {
       // WORK - not sure if there is much need to maintain this
       columnDetails.categories.list[cellElement.textContent as string] = true;

@@ -53,16 +53,15 @@ export class DataCellEvents {
     const {overlayElementsState, columnsDetails} = this;
     const categoryDropdown = overlayElementsState.categoryDropdown as HTMLElement;
     const columnDetails = columnsDetails[columnIndex];
-    const cellElement = event.target as HTMLElement;
     // WORK - Esc
     if (event.key === KEYBOARD_KEY.TAB) {
       if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-        CategoryDropdown.hideAndSetText(this, columnDetails, rowIndex, columnIndex, cellElement, categoryDropdown);
+        CategoryDropdown.hideAndSetText(this, categoryDropdown);
       }
     } else if (event.key === KEYBOARD_KEY.ENTER) {
       if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
         event.preventDefault();
-        CategoryDropdown.hideAndSetText(this, columnDetails, rowIndex, columnIndex, cellElement, categoryDropdown);
+        CategoryDropdown.hideAndSetText(this, categoryDropdown);
         CategoryDropdownItem.focusOrBlurCellBelow(columnDetails.elements, rowIndex);
       }
     } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
@@ -112,7 +111,7 @@ export class DataCellEvents {
     FocusedCellUtils.setDataCell(this.focusedCell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
     CellEvents.removeTextIfCellDefault(this, rowIndex, columnIndex, event);
     if (this.columnsDetails[columnIndex].userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-      CategoryDropdown.display(this, rowIndex, columnIndex, cellElement);
+      CategoryDropdown.display(this, columnIndex, cellElement);
     }
   }
 

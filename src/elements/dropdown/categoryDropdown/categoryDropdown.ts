@@ -1,7 +1,7 @@
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {CategoryDropdownItems, ColumnDetailsT} from '../../../types/columnDetails';
+import {CategoryDropdownItems} from '../../../types/columnDetails';
 import {CategoryDropdownItem} from './categoryDropdownItem';
 import {Dropdown} from '../dropdown';
 
@@ -13,13 +13,11 @@ export class CategoryDropdown extends Dropdown {
     GenericElementUtils.hideElements(categoryDropdown);
   }
 
-  // prettier-ignore
-  public static hideAndSetText(etc: EditableTableComponent, columnDetails: ColumnDetailsT,
-      rowIndex: number, columnIndex: number, cellElement: HTMLElement, categoryDropdown: HTMLElement) {
-    CategoryDropdownItem.setText(etc, columnDetails, rowIndex, columnIndex, cellElement);
-      if (Dropdown.isDisplayed(categoryDropdown)) {
+  public static hideAndSetText(etc: EditableTableComponent, categoryDropdown: HTMLElement) {
+    if (Dropdown.isDisplayed(categoryDropdown)) {
       CategoryDropdown.hide(categoryDropdown);
     }
+    CategoryDropdownItem.setText(etc);
   }
 
   // prettier-ignore
@@ -38,14 +36,11 @@ export class CategoryDropdown extends Dropdown {
   // instead of binding click event handlers with the context of current row index to individual item elements every
   // time the dropdown is displayed, click events are handled on the dropdown instead, the reason for this is
   // because it can be expensive to rebind an arbitrary amount of items e.g. 10000+
-  // prettier-ignore
-  private static dropdownClick(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
+  private static dropdownClick(this: EditableTableComponent, dropdownElement: HTMLElement, event: MouseEvent) {
     // when user clicks on top/bottom paddding - it is dropdown element not item element
-    if ((event.target as HTMLElement).classList.contains(Dropdown.DROPDOWN_CLASS)) return;
-    const {columnsDetails, overlayElementsState: { categoryDropdown }} = this;
-    const cellElement = columnsDetails[columnIndex].elements[rowIndex];
-    CategoryDropdown.hideAndSetText(this,
-      columnsDetails[columnIndex], rowIndex, columnIndex, cellElement, categoryDropdown as HTMLElement);
+    const targetElement = event.target as HTMLElement;
+    if (targetElement.classList.contains(Dropdown.DROPDOWN_CLASS)) return;
+    CategoryDropdown.hideAndSetText(this, dropdownElement);
   }
 
   private static setPosition(categoryDropdown: HTMLElement, cellElement: HTMLElement) {
@@ -53,12 +48,11 @@ export class CategoryDropdown extends Dropdown {
     categoryDropdown.style.top = `${cellElement.offsetTop}px`;
   }
 
-  public static display(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
+  public static display(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
     const {list, categoryDropdownItems} = etc.columnsDetails[columnIndex].categories;
     const categoryDropdown = etc.overlayElementsState.categoryDropdown as HTMLElement;
     if (Object.keys(list).length > 0) {
       CategoryDropdown.setPosition(categoryDropdown, cellElement);
-      categoryDropdown.onclick = CategoryDropdown.dropdownClick.bind(etc, rowIndex, columnIndex);
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'hovered');
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'matchingWithCellText');
       categoryDropdown.scrollLeft = 0;
@@ -70,10 +64,11 @@ export class CategoryDropdown extends Dropdown {
   }
 
   // WORK - will need to populate upfront if user has set a column as category upfront
-  public static create() {
+  public static create(etc: EditableTableComponent) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.style.maxHeight = '150px';
     dropdownElement.style.overflow = 'auto';
+    dropdownElement.onclick = CategoryDropdown.dropdownClick.bind(etc, dropdownElement);
     return dropdownElement;
   }
 }

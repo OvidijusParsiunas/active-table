@@ -13,7 +13,7 @@ export class TableElement {
   public static addAuxiliaryElements(etc: EditableTableComponent,
       tableElement: HTMLElement, overlayElementsState: OverlayElements, areHeadersEditable: boolean) {
     const columnDropdownElement = ColumnDropdown.create(etc, areHeadersEditable);
-    const categoryDropdownElement = CategoryDropdown.create();
+    const categoryDropdownElement = CategoryDropdown.create(etc);
     tableElement.appendChild(columnDropdownElement);
     tableElement.appendChild(categoryDropdownElement);
     overlayElementsState.columnDropdown = columnDropdownElement;
