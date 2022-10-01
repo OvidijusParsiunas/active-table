@@ -2,20 +2,23 @@ import {CategoryDropdownItems} from '../../../types/columnDetails';
 
 // REF-4
 export class CategoryDropdownHorizontalScroll {
-  private static readonly BOTTOM_PADDING_IF_HORIZONTAL_SCROLL = '12px';
+  private static readonly NEW_BOTTOM_PADDING_IF_PRESENT = '12px';
   private static readonly SCROLL_FURTHER_BOTTOM_PX = 14;
+
+  private static isPresent(dropdownElement: HTMLElement) {
+    return dropdownElement.scrollWidth > dropdownElement.clientWidth;
+  }
 
   // prettier-ignore
   public static setPropertiesIfHorizontalScrollPresent(dropdownElement: HTMLElement,
       categoryDropdownItems: CategoryDropdownItems) {
-    const { scrollWidth, clientWidth, style } = dropdownElement;
-    if (scrollWidth > clientWidth && !categoryDropdownItems.isHorizontalScrollPresent) {
+    if (CategoryDropdownHorizontalScroll.isPresent(dropdownElement) && !categoryDropdownItems.isHorizontalScrollPresent) {
       categoryDropdownItems.isHorizontalScrollPresent = true;
-      style.paddingBottom = CategoryDropdownHorizontalScroll.BOTTOM_PADDING_IF_HORIZONTAL_SCROLL;
+      dropdownElement.style.paddingBottom = CategoryDropdownHorizontalScroll.NEW_BOTTOM_PADDING_IF_PRESENT;
     }
   }
 
   public static scrollDownFurther(dropdownElement: HTMLElement) {
-    dropdownElement.scrollBy(0, CategoryDropdownHorizontalScroll.SCROLL_FURTHER_BOTTOM_PX);
+    dropdownElement.scrollTop += CategoryDropdownHorizontalScroll.SCROLL_FURTHER_BOTTOM_PX;
   }
 }

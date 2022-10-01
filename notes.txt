@@ -35,3 +35,9 @@ both to text and number, hence it would probably also have to be incremented/dec
 The validation logic first checks the d/m/y and immediately returns it if it is valid, the parseType method additionally
 checks if the cell value applies to m/d/y as well and if it does, it sets the format as 
 Currently the primary date format is d/m/y so if all cells apply to both formats, that is the format that will be used
+
+REF-4
+Identified an issue where the scrollIntoView does not scroll down far enough to an element for it to be fully visible when
+there is a horizontal scroll bar as it is partially covered by it. This appears to only happen when the parent element
+(category drodpwon) is displayed and we immediately proceed to scroll to an element.
+The workaround for this is to identify that there is a horizontal scroll bar and programmatically scroll further down

@@ -3,7 +3,8 @@ import {DropdownItem} from './dropdownItem';
 
 export class Dropdown {
   protected static readonly DROPDOWN_CLASS = 'editable-table-component-dropdown';
-  protected static readonly CSS_DISPLAY_VISIBLE = 'block';
+  // when there is a horizontal overflow (categories) - this automatically stretches all items to the dropdown width
+  protected static readonly CSS_DISPLAY_VISIBLE = 'grid';
   protected static readonly DROPDOWN_WIDTH = 176;
   private static readonly DROPDOWN_PADDING_TOP_BOTTOM_PX = '4px';
 

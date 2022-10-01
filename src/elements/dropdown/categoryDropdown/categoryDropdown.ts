@@ -30,6 +30,8 @@ export class CategoryDropdown extends Dropdown {
   // time the dropdown is displayed, click events are handled on the dropdown instead, the reason for this is
   // because it can be expensive to rebind an arbitrary amount of items e.g. 10000+
   private static dropdownClick(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
+    // when user clicks on top/bottom paddding - it is dropdown element not item element
+    if ((event.target as HTMLElement).classList.contains(Dropdown.DROPDOWN_CLASS)) return;
     const newText = (event.target as HTMLElement).textContent as string;
     const {contents, columnsDetails} = this;
     const cellElement = columnsDetails[columnIndex].elements[rowIndex];
@@ -52,7 +54,8 @@ export class CategoryDropdown extends Dropdown {
       categoryDropdown.onclick = CategoryDropdown.dropdownClick.bind(etc, rowIndex, columnIndex);
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'hovered');
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'matchingWithCellText');
-      categoryDropdown.style.display = 'block';
+      categoryDropdown.scrollLeft = 0;
+      categoryDropdown.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
       // REF-4
       CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categoryDropdown, categoryDropdownItems);
       CategoryDropdown.focusItemOnDropdownOpen(cellElement.textContent as string, categoryDropdown, categoryDropdownItems);
