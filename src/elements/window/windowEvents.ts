@@ -4,6 +4,7 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class WindowEvents {
+  // prettier-ignore
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
     // window event.target can only identify the parent element in shadow dom, not elements
     // inside it, hence if the user clicks inside the element, the elements inside will
@@ -14,7 +15,10 @@ export class WindowEvents {
     if (Dropdown.isDisplayed(columnDropdown)) {
       ColumnDropdown.processTextAndHide(this);
     } else if (Dropdown.isDisplayed(categoryDropdown)) {
-      CategoryDropdown.hide(categoryDropdown as HTMLElement);
+      const { focusedCell: { rowIndex, columnIndex, element }, columnsDetails } = this;
+      const columnDetails = columnsDetails[columnIndex as number];
+      CategoryDropdown.hideAndSetText(this, columnDetails,
+        rowIndex as number, columnIndex as number, element as HTMLElement, categoryDropdown as HTMLElement);
     }
   }
 }

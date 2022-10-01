@@ -8,12 +8,16 @@ export class FocusedCellUtils {
 
   public static setHeaderCell(focusedCell: FocusedCell, cell: HTMLElement, columnIndex: number) {
     focusedCell.element = cell;
+    focusedCell.rowIndex = 0;
     focusedCell.columnIndex = columnIndex;
     delete focusedCell.type;
   }
 
-  public static setDataCell(focusedCell: FocusedCell, cell: HTMLElement, columnIndex: number, defaultCellValue: string) {
+  // prettier-ignore
+  public static setDataCell(focusedCell: FocusedCell, cell: HTMLElement, rowIndex: number, columnIndex: number,
+      defaultCellValue: string) {
     focusedCell.element = cell;
+    focusedCell.rowIndex = rowIndex;
     focusedCell.columnIndex = columnIndex;
     focusedCell.type = CellTypeTotalsUtils.parseType(focusedCell.element.textContent as string, defaultCellValue);
   }

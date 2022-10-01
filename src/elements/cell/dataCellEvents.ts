@@ -54,15 +54,16 @@ export class DataCellEvents {
     const categoryDropdown = overlayElementsState.categoryDropdown as HTMLElement;
     const columnDetails = columnsDetails[columnIndex];
     const cellElement = event.target as HTMLElement;
+    // WORK - Esc
     if (event.key === KEYBOARD_KEY.TAB) {
-      if (Dropdown.isDisplayed(categoryDropdown)) {
-        CategoryDropdown.hide(categoryDropdown);
+      if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+        CategoryDropdown.hideAndSetText(this, columnDetails, rowIndex, columnIndex, cellElement, categoryDropdown);
       }
     } else if (event.key === KEYBOARD_KEY.ENTER) {
-      if (Dropdown.isDisplayed(categoryDropdown)) {
+      if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
         event.preventDefault();
-        CategoryDropdown.hide(categoryDropdown);
-        CategoryDropdownItem.setTextAndFocusCellBelow(this, columnDetails, rowIndex, columnIndex, cellElement);
+        CategoryDropdown.hideAndSetText(this, columnDetails, rowIndex, columnIndex, cellElement, categoryDropdown);
+        CategoryDropdownItem.focusOrBlurCellBelow(columnDetails.elements, rowIndex);
       }
     } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
       if (Dropdown.isDisplayed(categoryDropdown)) {
@@ -108,7 +109,7 @@ export class DataCellEvents {
     const cellElement = event.target as HTMLElement;
     if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.focusCell(cellElement, rowIndex);
     // placed here and not in timeout because we need cells with a default value to be recorded before modification
-    FocusedCellUtils.setDataCell(this.focusedCell, cellElement, columnIndex, this.defaultCellValue);
+    FocusedCellUtils.setDataCell(this.focusedCell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
     CellEvents.removeTextIfCellDefault(this, rowIndex, columnIndex, event);
     if (this.columnsDetails[columnIndex].userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryDropdown.display(this, rowIndex, columnIndex, cellElement);

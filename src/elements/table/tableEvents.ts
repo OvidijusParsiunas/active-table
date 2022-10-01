@@ -17,7 +17,10 @@ export class TableEvents {
     // can be repurposed for other dropdowns (column dropdown does not need it as mouse hits the overlay first)
     if (Dropdown.isDisplayed(categoryDropdown)
         && !Dropdown.isPartOfDropdownElement(element) && element !== this.focusedCell.element) {
-      CategoryDropdown.hide(categoryDropdown);
+      const { focusedCell: { rowIndex, columnIndex, element }, columnsDetails } = this;
+      const columnDetails = columnsDetails[columnIndex as number];
+      CategoryDropdown.hideAndSetText(this, columnDetails,
+        rowIndex as number, columnIndex as number, element as HTMLElement, categoryDropdown);
     }
   }
 

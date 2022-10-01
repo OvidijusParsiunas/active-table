@@ -9,7 +9,7 @@ import {DropdownItem} from '../dropdownItem';
 import {SIDE} from '../../../types/side';
 
 export class CategoryDropdownItem {
-  private static focusOrBlurCellBelow(elements: HTMLElement[], rowIndex: number) {
+  public static focusOrBlurCellBelow(elements: HTMLElement[], rowIndex: number) {
     const cellBelow = elements[rowIndex + 1];
     if (cellBelow) {
       cellBelow.focus();
@@ -19,20 +19,41 @@ export class CategoryDropdownItem {
     }
   }
 
+  // WORK - perhaps moving item to top may not be the greatest idea as it just makes the whole thing confusing
+  private static moveItemToTop(item: HTMLElement, categoryDropdown: HTMLElement) {
+    categoryDropdown.removeChild(item);
+    if (categoryDropdown.children.length > 0) {
+      categoryDropdown.insertBefore(item, categoryDropdown.children[0]);
+    } else {
+      categoryDropdown.appendChild(item);
+    }
+  }
+
   // prettier-ignore
-  public static setTextAndFocusCellBelow(etc: EditableTableComponent,
-      columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
-    const { categories: { categoryDropdownItems }, elements } = columnDetails;
-    if (categoryDropdownItems.hovered && categoryDropdownItems.hovered.style.backgroundColor) {
-      CellEvents.updateCell(etc, categoryDropdownItems.hovered.textContent as string,
+  private static updateCellElementIfNotUpdated(etc: EditableTableComponent,
+      activeItem: HTMLElement, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
+    const newText = activeItem.textContent;
+    if ((etc.contents[rowIndex][columnIndex] as string) !== newText) {
+      CellEvents.updateCell(etc, activeItem.textContent as string,
         rowIndex, columnIndex, {processText: false, element: cellElement});
+    }
+  }
+
+  // prettier-ignore
+  public static setText(etc: EditableTableComponent,
+      columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
+    const { categories: { categoryDropdownItems } } = columnDetails;
+    const { hovered, matchingWithCellText } = categoryDropdownItems;
+    const categoryDropdown = etc.overlayElementsState.categoryDropdown as HTMLElement;
+    const activeItem = hovered || matchingWithCellText;
+    if (activeItem?.style.backgroundColor) {
+      CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItem, rowIndex, columnIndex, cellElement);
+      CategoryDropdownItem.moveItemToTop(activeItem, categoryDropdown)
     } else {
       // WORK - not sure if there is much need to maintain this
       columnDetails.categories.list[cellElement.textContent as string] = true;
-      CategoryDropdownItem.addItem(cellElement.textContent as string,
-        etc.overlayElementsState.categoryDropdown as HTMLElement, categoryDropdownItems, true);
+      CategoryDropdownItem.addItem(cellElement.textContent as string, categoryDropdown, categoryDropdownItems, true);
     }
-    CategoryDropdownItem.focusOrBlurCellBelow(elements, rowIndex);
   }
 
   // prettier-ignore
@@ -75,11 +96,11 @@ export class CategoryDropdownItem {
   }
 
   private static highlightItem(color: string, categoryDropdownItems: CategoryDropdownItems, event: MouseEvent) {
+    const {hovered, matchingWithCellText, isHorizontalScrollPresent} = categoryDropdownItems;
+    // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
+    if (hovered) hovered.style.backgroundColor = '';
     const itemElement = event.target as HTMLElement;
     itemElement.style.backgroundColor = color;
-    const {hovered, matchingWithCellText, isHorizontalScrollPresent} = categoryDropdownItems;
-    // test this with highlight via arrow and the hover over another item
-    if (hovered) hovered.style.backgroundColor = '';
     const dropdownElement = itemElement.parentElement as HTMLElement;
     CategoryDropdownItem.scrollToItemIfNeeded(event, itemElement, isHorizontalScrollPresent, dropdownElement);
     if (itemElement === matchingWithCellText) {

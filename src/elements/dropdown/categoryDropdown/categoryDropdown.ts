@@ -1,16 +1,25 @@
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {CategoryDropdownItems} from '../../../types/columnDetails';
+import {CategoryDropdownItems, ColumnDetailsT} from '../../../types/columnDetails';
 import {CategoryDropdownItem} from './categoryDropdownItem';
-import {CellEvents} from '../../cell/cellEvents';
 import {Dropdown} from '../dropdown';
 
 // WORK - rename category to categories
 // TO-DO allow dev to control whether additional elements are allowed to be added
 export class CategoryDropdown extends Dropdown {
+  // WORK - set to private if esc is not going to use it
   public static hide(categoryDropdown: HTMLElement) {
     GenericElementUtils.hideElements(categoryDropdown);
+  }
+
+  // prettier-ignore
+  public static hideAndSetText(etc: EditableTableComponent, columnDetails: ColumnDetailsT,
+      rowIndex: number, columnIndex: number, cellElement: HTMLElement, categoryDropdown: HTMLElement) {
+    CategoryDropdownItem.setText(etc, columnDetails, rowIndex, columnIndex, cellElement);
+      if (Dropdown.isDisplayed(categoryDropdown)) {
+      CategoryDropdown.hide(categoryDropdown);
+    }
   }
 
   // prettier-ignore
@@ -29,16 +38,14 @@ export class CategoryDropdown extends Dropdown {
   // instead of binding click event handlers with the context of current row index to individual item elements every
   // time the dropdown is displayed, click events are handled on the dropdown instead, the reason for this is
   // because it can be expensive to rebind an arbitrary amount of items e.g. 10000+
+  // prettier-ignore
   private static dropdownClick(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
     // when user clicks on top/bottom paddding - it is dropdown element not item element
     if ((event.target as HTMLElement).classList.contains(Dropdown.DROPDOWN_CLASS)) return;
-    const newText = (event.target as HTMLElement).textContent as string;
-    const {contents, columnsDetails} = this;
+    const {columnsDetails, overlayElementsState: { categoryDropdown }} = this;
     const cellElement = columnsDetails[columnIndex].elements[rowIndex];
-    if ((contents[rowIndex][columnIndex] as string) !== newText) {
-      CellEvents.updateCell(this, newText, rowIndex, columnIndex, {processText: false, element: cellElement});
-    }
-    CategoryDropdown.hide(this.overlayElementsState.categoryDropdown as HTMLElement);
+    CategoryDropdown.hideAndSetText(this,
+      columnsDetails[columnIndex], rowIndex, columnIndex, cellElement, categoryDropdown as HTMLElement);
   }
 
   private static setPosition(categoryDropdown: HTMLElement, cellElement: HTMLElement) {
@@ -59,8 +66,6 @@ export class CategoryDropdown extends Dropdown {
       // REF-4
       CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categoryDropdown, categoryDropdownItems);
       CategoryDropdown.focusItemOnDropdownOpen(cellElement.textContent as string, categoryDropdown, categoryDropdownItems);
-    } else if (Dropdown.isDisplayed(etc.overlayElementsState.categoryDropdown)) {
-      CategoryDropdown.hide(categoryDropdown);
     }
   }
 
