@@ -33,9 +33,8 @@ export class ColumnDropdownItem extends DropdownItem {
       columnIndex: number, cellElement: HTMLElement, dropdownElement: HTMLElement, dropdownInutElement: HTMLInputElement) {
     setTimeout(() => {
       CellEvents.updateCell(this, dropdownInutElement.value, 0, columnIndex, { element: cellElement, processText: false });
-      // when the header cell height changes - the dropdown moves up and
-      const dimensions = cellElement.getBoundingClientRect();
-      dropdownElement.style.top = `${dimensions.bottom}px`;
+      // when header cell height changes - dropdown changes position accordingly
+      dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement);
     });
   }
 
