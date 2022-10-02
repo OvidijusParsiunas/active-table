@@ -49,12 +49,10 @@ export class CellEvents {
   }
 
   // prettier-ignore
-  public static removeTextIfCellDefault(etc: EditableTableComponent,
-      rowIndex: number, columnIndex: number, event: FocusEvent) {
-    if (etc.defaultCellValue !== CellEvents.EMPTY_STRING
-        && etc.defaultCellValue === (event.target as HTMLElement).textContent) {
-      CellEvents.updateCell(etc, CellEvents.EMPTY_STRING, rowIndex, columnIndex,
-        { element: event.target as HTMLElement, processText: false });
+  public static removeTextIfDefault(etc: EditableTableComponent,
+      rowIndex: number, columnIndex: number, cell: HTMLElement) {
+    if (etc.defaultCellValue !== CellEvents.EMPTY_STRING && etc.defaultCellValue === cell.textContent) {
+      CellEvents.updateCell(etc, CellEvents.EMPTY_STRING, rowIndex, columnIndex, { element: cell, processText: false });
     }
   }
 }

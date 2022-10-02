@@ -2,11 +2,11 @@
 export class FirefoxCaretDisplayFix {
   private static readonly CONTENT_EDITABLE = 'contenteditable';
 
-  public static blurCell(cellElement: HTMLElement) {
+  public static removeContentEditable(cellElement: HTMLElement) {
     cellElement.removeAttribute(FirefoxCaretDisplayFix.CONTENT_EDITABLE);
   }
 
-  public static focusCell(cellElement: HTMLElement, rowIndex: number) {
+  public static setContentEditable(cellElement: HTMLElement, rowIndex: number) {
     if (rowIndex > 0) cellElement.setAttribute(FirefoxCaretDisplayFix.CONTENT_EDITABLE, 'true');
   }
 

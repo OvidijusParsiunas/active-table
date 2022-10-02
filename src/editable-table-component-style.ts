@@ -66,6 +66,17 @@ export const ediTableStyle = css`
     text-align: left;
   }
 
+  .category-cell-text {
+    outline: none;
+    overflow-wrap: anywhere;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-radius: 4px;
+    width: fit-content;
+  }
+
   .cell-divider {
     position: absolute;
     display: flex;

@@ -2,6 +2,7 @@ import {CategoryDropdownItems, UniqueCategories} from '../../../types/columnDeta
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CategoryCellElement} from '../../cell/categoryCellElement';
 import {TableContents} from '../../../types/tableContents';
 import {FocusedCell} from '../../../types/focusedCell';
 import {CellEvents} from '../../cell/cellEvents';
@@ -10,13 +11,14 @@ import {DropdownItem} from '../dropdownItem';
 import {SIDE} from '../../../types/side';
 
 export class CategoryDropdownItem {
-  public static focusOrBlurCellBelow(elements: HTMLElement[], rowIndex: number) {
-    const cellBelow = elements[rowIndex + 1];
-    if (cellBelow) {
-      cellBelow.focus();
+  public static focusOrBlurNextColumnCell(elements: HTMLElement[], rowIndex: number) {
+    const nextColumnCell = elements[rowIndex + 1];
+    if (nextColumnCell) {
+      // not using focus as we need the text caret to be set at the end of the text
+      nextColumnCell.dispatchEvent(new MouseEvent('mousedown'));
     } else {
-      // if no cell below - blur as the dropdown will be closed but the cursor would otherwise stay
-      elements[rowIndex].blur();
+      // if no next cell - blur it as the dropdown will be closed but the cursor would otherwise stay
+      (elements[rowIndex].children[0] as HTMLElement).blur();
     }
   }
 
@@ -51,9 +53,11 @@ export class CategoryDropdownItem {
       CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItemElement, rowIndex, columnIndex, cellElement);
       CategoryDropdownItem.moveItemToTop(activeItemElement, categoryDropdown)
     } else {
+      const newCategory = cellElement.textContent as string;
+      const newColor = Color.getRandomPasteleColor();
       // WORK - not sure if there is much need to maintain this
-      columnDetails.categories.list[cellElement.textContent as string] = true;
-      CategoryDropdownItem.addItem(cellElement.textContent as string, categoryDropdown, categoryDropdownItems, true);
+      columnDetails.categories.list[newCategory] = newColor;
+      CategoryDropdownItem.addItem(newCategory, newColor, categoryDropdown, categoryDropdownItems, true);
     }
   }
 
@@ -140,26 +144,35 @@ export class CategoryDropdownItem {
     const uniqueCategories: UniqueCategories = {};
     contents.slice(1).forEach((row) => {
       const cellText = row[columnIndex] as string;
-      uniqueCategories[cellText] = true;
+      uniqueCategories[cellText] = Color.getRandomPasteleColor();
     });
     delete uniqueCategories[defaultCellValue];
     return uniqueCategories;
   }
 
   // prettier-ignore
+  private static convertColumnCellsToCategories(etc: EditableTableComponent, elements: HTMLElement[],
+      uniqueCategories: UniqueCategories, columnIndex: number) {
+    elements.slice(1).forEach((cellElement: HTMLElement, dataIndex: number) => {
+      const relativeIndex = dataIndex + 1;
+      CategoryCellElement.convertFromDataToCategory(etc, relativeIndex, columnIndex,
+        cellElement, uniqueCategories[cellElement.textContent as string]);
+    });
+  }
+
+  // prettier-ignore
   private static addItem(text: string,
-      categoryDropdown: HTMLElement, categoryDropdownItems: CategoryDropdownItems, atStart = false) {
+      color: string, categoryDropdown: HTMLElement, categoryDropdownItems: CategoryDropdownItems, atStart = false) {
     const itemElement = DropdownItem.addPlaneButtonItem(categoryDropdown as HTMLElement, text, atStart ? 0 : undefined);
-    itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(
-      this, Color.getRandomPasteleColor(), categoryDropdownItems);
+    itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(this, color, categoryDropdownItems);
     itemElement.onmouseleave = CategoryDropdownItem.blurItemHighlight.bind(this, categoryDropdownItems, 'hovered');
   }
 
   // prettier-ignore
   private static addItems(uniqueCategories: UniqueCategories,
       categoryDropdown: HTMLElement, categoryDropdownItems: CategoryDropdownItems) {
-    Object.keys(uniqueCategories).forEach((content) => {
-      CategoryDropdownItem.addItem(content, categoryDropdown, categoryDropdownItems);
+    Object.keys(uniqueCategories).forEach((categoryName) => {
+      CategoryDropdownItem.addItem(categoryName, uniqueCategories[categoryName], categoryDropdown, categoryDropdownItems);
     });
   }
 
@@ -168,6 +181,8 @@ export class CategoryDropdownItem {
     const { overlayElementsState: { categoryDropdown }, contents, defaultCellValue, columnsDetails } = etc;
     const uniqueCategories = CategoryDropdownItem.aggregateUniqueCategories(contents, columnIndex, defaultCellValue);
     columnsDetails[columnIndex].categories.list = uniqueCategories;
+    CategoryDropdownItem.convertColumnCellsToCategories(
+      etc, columnsDetails[columnIndex].elements, uniqueCategories, columnIndex);
     CategoryDropdownItem.addItems(
       uniqueCategories, categoryDropdown as HTMLElement, columnsDetails[columnIndex].categories.categoryDropdownItems);
   }

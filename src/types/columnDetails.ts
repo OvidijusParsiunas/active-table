@@ -27,7 +27,7 @@ export type CellTypeTotals = {
   [key in CELL_TYPE]: number;
 };
 
-export type UniqueCategories = {[cellText: string]: true};
+export type UniqueCategories = {[cellText: string]: string};
 
 export interface CategoryDropdownItems {
   matchingWithCellText?: HTMLElement;
