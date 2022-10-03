@@ -11,7 +11,7 @@ export class UpdateCellsForColumns {
     if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
       CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
     }
-    etc.onCellUpdate(CellElement.getText(cellElement as HTMLElement), rowIndex, columnIndex, cellUpdateType);
+    etc.onCellUpdate(cellElement.textContent as string, rowIndex, columnIndex, cellUpdateType);
   }
 
   // prettier-ignore

@@ -5,7 +5,6 @@ import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryCellElement} from '../../cell/categoryCellElement';
 import {TableContents} from '../../../types/tableContents';
 import {FocusedCell} from '../../../types/focusedCell';
-import {CellElement} from '../../cell/cellElement';
 import {CellEvents} from '../../cell/cellEvents';
 import {Color} from '../../../utils/color/color';
 import {DropdownItem} from '../dropdownItem';
@@ -53,7 +52,7 @@ export class CategoryDropdownItem {
       CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItemElement, rowIndex, columnIndex, textElement);
       CategoryDropdownItem.moveItemToTop(activeItemElement, categoryDropdown)
     } else {
-      const newCategory = CellElement.getText(textElement);
+      const newCategory = textElement.textContent as string;
       const newColor = Color.getRandomPasteleColor();
       textElement.style.backgroundColor = newColor;
       // WORK - not sure if there is much need to maintain this

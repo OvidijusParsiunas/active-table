@@ -19,16 +19,6 @@ export class CellElement {
     return element;
   }
 
-  // WORK - may not need this as .textContent works even for the parent
-  public static getText(element: HTMLElement) {
-    return (
-      element.classList.contains(CellElement.CELL_CLASS) &&
-      element.children[0]?.classList.contains(CellElement.CATEGORY_CELL_TEXT_CLASS)
-        ? element.children[0].textContent
-        : element.textContent
-    ) as string;
-  }
-
   private static setText(element: HTMLElement, text: string) {
     if (element.classList.contains(CellElement.CATEGORY_CELL_TEXT_CLASS)) {
       element.children[0].textContent = text;

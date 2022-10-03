@@ -40,7 +40,7 @@ export class CellEvents {
   // prettier-ignore
   public static setCellToDefaultIfNeeded(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, textContainerElement: HTMLElement, updateTableEvent = true) {
-    const cellText = CellElement.getText(textContainerElement);
+    const cellText = textContainerElement.textContent as string;
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     if (processedCellText !== cellText) {
       CellEvents.updateCell(etc, processedCellText, rowIndex, columnIndex,
@@ -51,8 +51,7 @@ export class CellEvents {
   // prettier-ignore
   public static removeTextIfDefault(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
-    const { defaultCellValue } = etc;
-    if (defaultCellValue !== CellEvents.EMPTY_STRING && defaultCellValue === CellElement.getText(textContainerElement)) {
+    if (etc.defaultCellValue !== CellEvents.EMPTY_STRING && etc.defaultCellValue === textContainerElement.textContent) {
       CellEvents.updateCell(etc, CellEvents.EMPTY_STRING, rowIndex, columnIndex,
         { element: textContainerElement, processText: false });
     }

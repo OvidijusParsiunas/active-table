@@ -3,7 +3,6 @@ import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownItems} from '../../../types/columnDetails';
 import {CategoryDropdownItem} from './categoryDropdownItem';
-import {CellElement} from '../../cell/cellElement';
 import {Dropdown} from '../dropdown';
 
 // TO-DO allow dev to control whether additional elements are allowed to be added
@@ -58,7 +57,7 @@ export class CategoryDropdown extends Dropdown {
       categoryDropdown.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
       // REF-4
       CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categoryDropdown, categoryDropdownItems);
-      CategoryDropdown.focusItemOnDropdownOpen(CellElement.getText(cellElement), categoryDropdown, categoryDropdownItems);
+      CategoryDropdown.focusItemOnDropdownOpen(cellElement.textContent as string, categoryDropdown, categoryDropdownItems);
     }
   }
 

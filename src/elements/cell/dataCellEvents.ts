@@ -22,7 +22,7 @@ export class DataCellEvents {
   // prettier-ignore
   private static setTextColorBasedOnValidity(textContainerElement: HTMLElement, userSetColumnType: VALIDABLE_CELL_TYPE) {
     textContainerElement.style.color =
-      ValidateInput.validate(CellElement.getText(textContainerElement), userSetColumnType)
+      ValidateInput.validate(textContainerElement.textContent as string, userSetColumnType)
         ? DataCellEvents.DEFAULT_TEXT_COLOR : DataCellEvents.INVALID_TEXT_COLOR;
   }
 
@@ -34,7 +34,7 @@ export class DataCellEvents {
     const inputEvent = event as InputEvent;
     // can be cell element from this class or text element from categoryCellEvents class
     const textContainerElement = inputEvent.target as HTMLElement;
-    const text = CellElement.getText(textContainerElement);
+    const text = textContainerElement.textContent as string;
     // WORK - is this needed here?
     CellElement.processAndSetTextOnCell(textContainerElement, text, false);
     if (inputEvent.inputType !== DataCellEvents.PASTE_INPUT_TYPE) {
@@ -57,7 +57,7 @@ export class DataCellEvents {
     if (OverwriteCellsViaCSVOnPaste.isCSVData(clipboardText)) {
       OverwriteCellsViaCSVOnPaste.overwrite(this, clipboardText, event, rowIndex, columnIndex);
     } else {
-      const text = CellElement.getText(event.target as HTMLElement);
+      const text = (event.target as HTMLElement).textContent as string;
       setTimeout(() => CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false}));
     }
   }
@@ -71,7 +71,7 @@ export class DataCellEvents {
     const oldType = this.focusedCell.type as CELL_TYPE;
     FocusedCellUtils.purge(this.focusedCell);
     setTimeout(() => {
-      const newType = CellTypeTotalsUtils.parseType(CellElement.getText(textContainerElement), this.defaultCellValue);
+      const newType = CellTypeTotalsUtils.parseType(textContainerElement.textContent as string, this.defaultCellValue);
       CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(this.columnsDetails[columnIndex], oldType, newType);
     });
   }

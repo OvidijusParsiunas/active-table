@@ -52,4 +52,8 @@ If the user would click on that whitespace, the text editor caret would focus on
 Fortunately this can be fixed by shadowRoot.getSelection, however this is not available to all browsers. Hence, because
 the UX cannot be made good for all browsers, the table will continue to use plane text within its data cells to have as
 much of a better user experience as possible. It is true that in those instances the limitation will still be there when
-category cells are used, but at least it will only be problematic in those specific cells.  
+category cells are used, but at least it will only be problematic in those specific cells.
+
+REF-6
+Knowing that data cell elements contain a text node and category cells a text element with a text node inside,
+the .textContent grabs the text when used on the cell or the text element for all cases

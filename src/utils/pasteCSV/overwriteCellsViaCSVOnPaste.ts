@@ -5,7 +5,6 @@ import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {DataUtils} from '../insertRemoveStructure/shared/dataUtils';
 import {TableCellText, TableRow} from '../../types/tableContents';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
-import {CellElement} from '../../elements/cell/cellElement';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {ArrayUtils} from '../array/arrayUtils';
 import {CSV, CSVRow} from '../../types/CSV';
@@ -44,7 +43,7 @@ export class OverwriteCellsViaCSVOnPaste {
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, newCellText: string) {
     // the reason why columnIndex is multiplied by 2 is because there is a divider element after each cell
     const cellElement = rowElement.children[columnIndex * 2] as HTMLElement;
-    const oldType = CellTypeTotalsUtils.parseType(CellElement.getText(cellElement), etc.defaultCellValue);
+    const oldType = CellTypeTotalsUtils.parseType(cellElement.textContent as string, etc.defaultCellValue);
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
     setTimeout(() => {
