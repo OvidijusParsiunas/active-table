@@ -5,7 +5,6 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {CaretPosition} from '../../utils/cellFocus/caretPosition';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {DataCellEvents} from './dataCellEvents';
-import {Dropdown} from '../dropdown/dropdown';
 import {CellElement} from './cellElement';
 
 export class CategoryCellEvents extends DataCellEvents {
@@ -13,25 +12,21 @@ export class CategoryCellEvents extends DataCellEvents {
     const {overlayElementsState, columnsDetails} = this;
     const categoryDropdown = overlayElementsState.categoryDropdown as HTMLElement;
     const columnDetails = columnsDetails[columnIndex];
-    // WORK - Esc
-    if (event.key === KEYBOARD_KEY.TAB) {
+    if (event.key === KEYBOARD_KEY.ESCAPE) {
+      CategoryDropdown.hideAndSetText(this, categoryDropdown);
+      (event.target as HTMLElement).blur();
+    } else if (event.key === KEYBOARD_KEY.TAB) {
       CategoryDropdown.hideAndSetText(this, categoryDropdown);
     } else if (event.key === KEYBOARD_KEY.ENTER) {
       event.preventDefault();
       CategoryDropdown.hideAndSetText(this, categoryDropdown);
       CategoryDropdownItem.focusOrBlurNextColumnCell(columnDetails.elements, rowIndex);
     } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
-      // WORK - should be able to easily remove this
-      if (Dropdown.isDisplayed(categoryDropdown)) {
-        event.preventDefault();
-        CategoryDropdownItem.highlightSiblingItem(columnDetails.categories.categoryDropdownItems, 'nextSibling');
-      }
+      event.preventDefault();
+      CategoryDropdownItem.highlightSiblingItem(columnDetails.categories.categoryDropdownItems, 'nextSibling');
     } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
-      // WORK - should be able to easily remove this
-      if (Dropdown.isDisplayed(categoryDropdown)) {
-        event.preventDefault();
-        CategoryDropdownItem.highlightSiblingItem(columnDetails.categories.categoryDropdownItems, 'previousSibling');
-      }
+      event.preventDefault();
+      CategoryDropdownItem.highlightSiblingItem(columnDetails.categories.categoryDropdownItems, 'previousSibling');
     }
   }
 
@@ -39,11 +34,12 @@ export class CategoryCellEvents extends DataCellEvents {
   private static display(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement,
       textElement: HTMLElement) {
     if (etc.focusedCell.element !== cellElement) {
+      // also make sure this line is before others as this entire methods would get called twice when mouse down on text
+      // IMPORTANT for this to be called in mouse down as it needs to be called before onMouseDown is called in tableEvents
+      FocusedCellUtils.set(etc.focusedCell, cellElement, rowIndex, columnIndex, etc.defaultCellValue);
       CategoryDropdown.display(etc, columnIndex, cellElement);
       // will be overriden if mouse clicked on text 
       CaretPosition.setToEndOfText(etc, textElement);
-      // IMPORTANT for this to be called in mouse down as it needs to be called before onMouseDown is called in tableEvents
-      FocusedCellUtils.set(etc.focusedCell, cellElement, rowIndex, columnIndex, etc.defaultCellValue);
     }
   }
 

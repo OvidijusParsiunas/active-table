@@ -29,4 +29,11 @@ export class FocusedCellUtils {
       focusedCell.columnIndex += 1;
     }
   }
+
+  public static purge(focusedCell: FocusedCell) {
+    delete focusedCell.columnIndex;
+    delete focusedCell.element;
+    delete focusedCell.rowIndex;
+    delete focusedCell.type;
+  }
 }

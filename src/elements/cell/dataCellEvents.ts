@@ -67,6 +67,7 @@ export class DataCellEvents {
     CellEvents.setCellToDefaultIfNeeded(this, rowIndex, columnIndex, textContainerElement);
     textContainerElement.style.color = DataCellEvents.DEFAULT_TEXT_COLOR;
     const oldType = this.focusedCell.type as CELL_TYPE;
+    FocusedCellUtils.purge(this.focusedCell);
     setTimeout(() => {
       const newType = CellTypeTotalsUtils.parseType(textContainerElement.textContent as string, this.defaultCellValue);
       CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(this.columnsDetails[columnIndex], oldType, newType);

@@ -129,9 +129,11 @@ export const ediTableStyle = css`
     padding-right: 5px;
     padding-left: 5px;
     color: grey;
+    position: relative;
     cursor: pointer;
     user-select: none;
-    position: relative;
+    /* for safari */
+    -webkit-user-select: none;
   }
 
   .dropdown-title-item {
