@@ -5,6 +5,7 @@ import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryCellElement} from '../../cell/categoryCellElement';
 import {TableContents} from '../../../types/tableContents';
 import {FocusedCell} from '../../../types/focusedCell';
+import {CellElement} from '../../cell/cellElement';
 import {CellEvents} from '../../cell/cellEvents';
 import {Color} from '../../../utils/color/color';
 import {DropdownItem} from '../dropdownItem';
@@ -33,27 +34,28 @@ export class CategoryDropdownItem {
 
   // prettier-ignore
   private static updateCellElementIfNotUpdated(etc: EditableTableComponent,
-      activeItem: HTMLElement, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
+      activeItem: HTMLElement, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const newText = activeItem.textContent as string;
     if ((etc.contents[rowIndex][columnIndex] as string) !== newText) {
-      CellEvents.updateCell(etc, newText, rowIndex, columnIndex, {processText: false, element: cellElement});
+      CellEvents.updateCell(etc, newText, rowIndex, columnIndex, {processText: false, element: textElement});
     }
   }
 
   // prettier-ignore
   public static setText(etc: EditableTableComponent) {
-    const { rowIndex, columnIndex, element: cellElement} = etc.focusedCell as Required<FocusedCell>;
+    const { rowIndex, columnIndex, element: textElement} = etc.focusedCell as Required<FocusedCell>;
     const columnDetails = etc.columnsDetails[columnIndex];
     const { categories: { categoryDropdownItems } } = columnDetails;
     const categoryDropdown = etc.overlayElementsState.categoryDropdown as HTMLElement;
     const { hovered, matchingWithCellText } = categoryDropdownItems;
     const activeItemElement = hovered || matchingWithCellText;
     if (activeItemElement?.style.backgroundColor) {
-      CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItemElement, rowIndex, columnIndex, cellElement);
+      CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItemElement, rowIndex, columnIndex, textElement);
       CategoryDropdownItem.moveItemToTop(activeItemElement, categoryDropdown)
     } else {
-      const newCategory = cellElement.textContent as string;
+      const newCategory = CellElement.getText(textElement);
       const newColor = Color.getRandomPasteleColor();
+      textElement.style.backgroundColor = newColor;
       // WORK - not sure if there is much need to maintain this
       columnDetails.categories.list[newCategory] = newColor;
       CategoryDropdownItem.addItem(newCategory, newColor, categoryDropdown, categoryDropdownItems, true);

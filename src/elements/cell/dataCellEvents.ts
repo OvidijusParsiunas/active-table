@@ -20,30 +20,34 @@ export class DataCellEvents {
   private static readonly DEFAULT_TEXT_COLOR = '';
 
   // prettier-ignore
-  private static setTextColorBasedOnValidity(cellElement: HTMLElement, userSetColumnType: VALIDABLE_CELL_TYPE) {
-    cellElement.style.color = ValidateInput.validate(cellElement.textContent as string, userSetColumnType)
-      ? DataCellEvents.DEFAULT_TEXT_COLOR : DataCellEvents.INVALID_TEXT_COLOR;
+  private static setTextColorBasedOnValidity(textContainerElement: HTMLElement, userSetColumnType: VALIDABLE_CELL_TYPE) {
+    textContainerElement.style.color =
+      ValidateInput.validate(CellElement.getText(textContainerElement), userSetColumnType)
+        ? DataCellEvents.DEFAULT_TEXT_COLOR : DataCellEvents.INVALID_TEXT_COLOR;
   }
 
   // TO-DO default types per column, cleanup e.g. currency or date will need to be provided by user
   // TO-DO allow user to set default as invalid
-  // using this instead of keydown is because when this is fired the new cell text is available
+  // using this instead of keydown because when this is fired the new cell text is available
   // prettier-ignore
   private static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const inputEvent = event as InputEvent;
-    const cellElement = inputEvent.target as HTMLElement;
-    CellElement.processAndSetTextOnCell(cellElement, cellElement.textContent as string, false);
-    const categoryDropdown = this.overlayElementsState.categoryDropdown as HTMLElement;
-    const columnDetails = this.columnsDetails[columnIndex];
+    // can be cell element from this class or text element from categoryCellEvents class
+    const textContainerElement = inputEvent.target as HTMLElement;
+    const text = CellElement.getText(textContainerElement);
+    // WORK - is this needed here?
+    CellElement.processAndSetTextOnCell(textContainerElement, text, false);
     if (inputEvent.inputType !== DataCellEvents.PASTE_INPUT_TYPE) {
+      const categoryDropdown = this.overlayElementsState.categoryDropdown as HTMLElement;
+      const columnDetails = this.columnsDetails[columnIndex];
       const userSetColumnType = columnDetails.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
-        DataCellEvents.setTextColorBasedOnValidity(cellElement, userSetColumnType);
+        DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
       } else if (Dropdown.isDisplayed(categoryDropdown)) {
-        CategoryDropdownItem.focusMatchingCellCategoryItem(cellElement.textContent as string,
+        CategoryDropdownItem.focusMatchingCellCategoryItem(text,
           categoryDropdown, columnDetails.categories.categoryDropdownItems);
       }
-      CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex, {processText: false});
+      CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
     }
   }
 
@@ -53,10 +57,8 @@ export class DataCellEvents {
     if (OverwriteCellsViaCSVOnPaste.isCSVData(clipboardText)) {
       OverwriteCellsViaCSVOnPaste.overwrite(this, clipboardText, event, rowIndex, columnIndex);
     } else {
-      const cellElement = event.target as HTMLElement;
-      setTimeout(() => {
-        CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex, {processText: false});
-      });
+      const text = CellElement.getText(event.target as HTMLElement);
+      setTimeout(() => CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false}));
     }
   }
 
@@ -69,7 +71,7 @@ export class DataCellEvents {
     const oldType = this.focusedCell.type as CELL_TYPE;
     FocusedCellUtils.purge(this.focusedCell);
     setTimeout(() => {
-      const newType = CellTypeTotalsUtils.parseType(textContainerElement.textContent as string, this.defaultCellValue);
+      const newType = CellTypeTotalsUtils.parseType(CellElement.getText(textContainerElement), this.defaultCellValue);
       CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(this.columnsDetails[columnIndex], oldType, newType);
     });
   }

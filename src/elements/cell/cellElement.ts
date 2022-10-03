@@ -10,7 +10,8 @@ export class CellElement {
   public static readonly CELL_CLASS = 'cell';
   protected static readonly CATEGORY_CELL_TEXT_CLASS = 'category-cell-text';
 
-  // not the text element
+  // this is used for case where an element could be the cell element or the text inside a category cell
+  // hence we need the actual cell element here
   public static extractCellElement(element: HTMLElement) {
     if (element.classList.contains(CellElement.CATEGORY_CELL_TEXT_CLASS)) {
       return element.parentElement as HTMLElement;
@@ -18,6 +19,7 @@ export class CellElement {
     return element;
   }
 
+  // WORK - may not need this as .textContent works even for the parent
   public static getText(element: HTMLElement) {
     return (
       element.classList.contains(CellElement.CELL_CLASS) &&
@@ -27,10 +29,17 @@ export class CellElement {
     ) as string;
   }
 
+  private static setText(element: HTMLElement, text: string) {
+    if (element.classList.contains(CellElement.CATEGORY_CELL_TEXT_CLASS)) {
+      element.children[0].textContent = text;
+    }
+    element.textContent = text;
+  }
+
   // set text is optional as some functions may only need to augment the cell
-  public static processAndSetTextOnCell(cellElement: HTMLElement, text: string, setText = true) {
-    if (setText) cellElement.textContent = text;
-    FirefoxCaretDisplayFix.addPaddingToEmptyCell(cellElement, text);
+  public static processAndSetTextOnCell(textContainerElement: HTMLElement, text: string, setText = true) {
+    if (setText) CellElement.setText(textContainerElement, text);
+    FirefoxCaretDisplayFix.addPaddingToEmptyCell(textContainerElement, text);
   }
 
   // prettier-ignore

@@ -38,21 +38,23 @@ export class CellEvents {
 
   // this is used for cases where updateCell should only be called if it has to be set to default
   // prettier-ignore
-  public static setCellToDefaultIfNeeded(
-      etc: EditableTableComponent, rowIndex: number, columnIndex: number, cell: HTMLElement, updateTableEvent = true) {
-    const cellText = cell.textContent as string;
+  public static setCellToDefaultIfNeeded(etc: EditableTableComponent,
+      rowIndex: number, columnIndex: number, textContainerElement: HTMLElement, updateTableEvent = true) {
+    const cellText = CellElement.getText(textContainerElement);
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     if (processedCellText !== cellText) {
       CellEvents.updateCell(etc, processedCellText, rowIndex, columnIndex,
-        { element: cell, processText: false, updateTableEvent });
+        { element: textContainerElement, processText: false, updateTableEvent });
     }
   }
 
   // prettier-ignore
   public static removeTextIfDefault(etc: EditableTableComponent,
-      rowIndex: number, columnIndex: number, cell: HTMLElement) {
-    if (etc.defaultCellValue !== CellEvents.EMPTY_STRING && etc.defaultCellValue === cell.textContent) {
-      CellEvents.updateCell(etc, CellEvents.EMPTY_STRING, rowIndex, columnIndex, { element: cell, processText: false });
+      rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
+    const { defaultCellValue } = etc;
+    if (defaultCellValue !== CellEvents.EMPTY_STRING && defaultCellValue === CellElement.getText(textContainerElement)) {
+      CellEvents.updateCell(etc, CellEvents.EMPTY_STRING, rowIndex, columnIndex,
+        { element: textContainerElement, processText: false });
     }
   }
 }

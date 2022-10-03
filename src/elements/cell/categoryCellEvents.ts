@@ -30,41 +30,35 @@ export class CategoryCellEvents extends DataCellEvents {
     }
   }
 
-  // prettier-ignore
-  private static display(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement,
-      textElement: HTMLElement) {
-    if (etc.focusedCell.element !== cellElement) {
-      // also make sure this line is before others as this entire methods would get called twice when mouse down on text
-      // IMPORTANT for this to be called in mouse down as it needs to be called before onMouseDown is called in tableEvents
-      FocusedCellUtils.set(etc.focusedCell, cellElement, rowIndex, columnIndex, etc.defaultCellValue);
-      CategoryDropdown.display(etc, columnIndex, cellElement);
-      // will be overriden if mouse clicked on text 
-      CaretPosition.setToEndOfText(etc, textElement);
-    }
-  }
-
-  // only real purpose of this is to focus on tab and facilitate caret functionality for firefox
   private static focusText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const textElement = event.target as HTMLElement;
     const cellElement = textElement.parentElement as HTMLElement;
     DataCellEvents.prepareText(this, rowIndex, columnIndex, textElement);
-    CategoryCellEvents.display(this, rowIndex, columnIndex, cellElement, textElement);
+    CategoryDropdown.display(this, columnIndex, cellElement);
+    // if triggered by tab or enter
+    if (event.target) {
+      // contrary to mouseDownOnCell - this does not retrigger focus event
+      CaretPosition.setToEndOfText(this, textElement);
+      FocusedCellUtils.set(this.focusedCell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
+    }
   }
 
   private static mouseDownOnText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
     const textElement = event.target as HTMLElement;
     const cellElement = textElement.parentElement as HTMLElement;
     // this is called here because FocusedCellUtils.set needs to be called before mousedown is called in tableEvents
-    CategoryCellEvents.display(etc, rowIndex, columnIndex, cellElement, textElement);
+    FocusedCellUtils.set(etc.focusedCell, cellElement, rowIndex, columnIndex, etc.defaultCellValue);
   }
 
   private static mouseDownOnCell(etc: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
     const cellElement = event.target as HTMLElement;
     const textElement = cellElement.children[0] as HTMLElement;
+    // this is called here because FocusedCellUtils.set needs to be called before mousedown is called in tableEvents
+    FocusedCellUtils.set(etc.focusedCell, cellElement, rowIndex, columnIndex, etc.defaultCellValue);
+    // needed to set cursor at the end
     event.preventDefault();
-    // needs to be called for firefox in order to set content editable for the workaround
-    textElement.focus();
-    CategoryCellEvents.display(etc, rowIndex, columnIndex, cellElement, textElement);
+    // this also sends a focus event on the text element
+    CaretPosition.setToEndOfText(etc, textElement);
   }
 
   // prettier-ignore
