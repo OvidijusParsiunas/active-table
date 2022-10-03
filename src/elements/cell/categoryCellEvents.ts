@@ -1,7 +1,8 @@
 import {CategoryDropdownItem} from '../dropdown/categoryDropdown/categoryDropdownItem';
 import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
-import {FocusedCellUtils} from '../../utils/focusedCell/focusedCellUtils';
+import {FocusedCellUtils} from '../../utils/cellFocus/focusedCellUtils';
 import {EditableTableComponent} from '../../editable-table-component';
+import {CaretPosition} from '../../utils/cellFocus/caretPosition';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {DataCellEvents} from './dataCellEvents';
 import {Dropdown} from '../dropdown/dropdown';
@@ -35,49 +36,44 @@ export class CategoryCellEvents extends DataCellEvents {
   }
 
   // prettier-ignore
-  private static setTextAndDisplay(etc: EditableTableComponent, rowIndex: number, columnIndex: number,
-      cellElement: HTMLElement) {
+  private static display(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement,
+      textElement: HTMLElement) {
     if (etc.focusedCell.element !== cellElement) {
       CategoryDropdown.display(etc, columnIndex, cellElement);
-      // set on mouse down rather than focus as it needs to be called before onMouseDown is called in tableEvents
-      FocusedCellUtils.set(etc.focusedCell, cellElement, rowIndex, columnIndex, etc.defaultCellValue)
+      // will be overriden if mouse clicked on text 
+      CaretPosition.setToEndOfText(etc, textElement);
+      // IMPORTANT for this to be called in mouse down as it needs to be called before onMouseDown is called in tableEvents
+      FocusedCellUtils.set(etc.focusedCell, cellElement, rowIndex, columnIndex, etc.defaultCellValue);
     }
+  }
+
+  // only real purpose of this is to focus on tab and facilitate caret functionality for firefox
+  private static focusText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
+    const textElement = event.target as HTMLElement;
+    const cellElement = textElement.parentElement as HTMLElement;
+    DataCellEvents.prepareText(this, rowIndex, columnIndex, textElement);
+    CategoryCellEvents.display(this, rowIndex, columnIndex, cellElement, textElement);
   }
 
   private static mouseDownOnText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
     const textElement = event.target as HTMLElement;
     const cellElement = textElement.parentElement as HTMLElement;
-    CategoryCellEvents.setTextAndDisplay(etc, rowIndex, columnIndex, cellElement);
+    // this is called here because FocusedCellUtils.set needs to be called before mousedown is called in tableEvents
+    CategoryCellEvents.display(etc, rowIndex, columnIndex, cellElement, textElement);
   }
 
   private static mouseDownOnCell(etc: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
     const cellElement = event.target as HTMLElement;
     const textElement = cellElement.children[0] as HTMLElement;
-    CategoryCellEvents.setTextAndDisplay(etc, rowIndex, columnIndex, cellElement);
     event.preventDefault();
-    // textElement.innerHTML = ''
-    // const newElement = document.createElement('span');
-    // newElement.textContent = '123123';
-    // const newElement2 = document.createElement('br');
-    // textElement.onfocus = DataCellEvents.setFirefoxStuff.bind(this, textElement, rowIndex);
+    // needs to be called for firefox in order to set content editable for the workaround
     textElement.focus();
-    // const shadowRoot = etc.shadowRoot as unknown as Document;
-    // const selection = shadowRoot.getSelection() as Selection;
-    // const range = document.createRange();
-    // range.setStart(textElement.childNodes[0], textElement.textContent?.length || 0);
-    // range.collapse(true);
-    // selection.removeAllRanges();
-    // selection.addRange(range);
-    // setTimeout(() => {
-    //   textElement.insertBefore(newElement, textElement.childNodes[0]);
-    //   const content = document.createElement('span');
-    //   newElement.insertAdjacentElement('beforebegin', content);
-    //   content.textContent = 'asduyagsduygsadyu';
-    // }, 100);
-    // setTimeout(() => newElement.insertAdjacentText('beforebegin', 'asdsad'), 1000);
+    CategoryCellEvents.display(etc, rowIndex, columnIndex, cellElement, textElement);
   }
 
-  private static mouseDownCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
+  // prettier-ignore
+  private static mouseDownCategoryCell(this: EditableTableComponent,
+      rowIndex: number, columnIndex: number, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
     if (targetElement.classList.contains(CellElement.CELL_CLASS)) {
       CategoryCellEvents.mouseDownOnCell(this, rowIndex, columnIndex, event);
@@ -88,13 +84,13 @@ export class CategoryCellEvents extends DataCellEvents {
 
   // inherently using data cell events and overwriting the following
   public static addEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    cellElement.onmousedown = CategoryCellEvents.mouseDownCell.bind(etc, rowIndex, columnIndex);
+    cellElement.onmousedown = CategoryCellEvents.mouseDownCategoryCell.bind(etc, rowIndex, columnIndex);
     // onblur/onfocus do not work for firefox, hence using textElement and keeping it consistent across browsers
     cellElement.onblur = () => {};
     cellElement.onfocus = () => {};
     const textElement = cellElement.children[0] as HTMLElement;
     textElement.onblur = DataCellEvents.blur.bind(etc, rowIndex, columnIndex);
-    textElement.onfocus = DataCellEvents.prepareCell.bind(etc, rowIndex, columnIndex);
+    textElement.onfocus = CategoryCellEvents.focusText.bind(etc, rowIndex, columnIndex);
     textElement.onkeydown = CategoryCellEvents.keyDownText.bind(etc, rowIndex, columnIndex);
   }
 }

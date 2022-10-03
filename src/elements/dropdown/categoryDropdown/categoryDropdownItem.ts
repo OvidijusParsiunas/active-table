@@ -14,8 +14,7 @@ export class CategoryDropdownItem {
   public static focusOrBlurNextColumnCell(elements: HTMLElement[], rowIndex: number) {
     const nextColumnCell = elements[rowIndex + 1];
     if (nextColumnCell) {
-      // not using focus as we need the text caret to be set at the end of the text
-      nextColumnCell.dispatchEvent(new MouseEvent('mousedown'));
+      (nextColumnCell.children[0] as HTMLElement).focus();
     } else {
       // if no next cell - blur it as the dropdown will be closed but the cursor would otherwise stay
       (elements[rowIndex].children[0] as HTMLElement).blur();

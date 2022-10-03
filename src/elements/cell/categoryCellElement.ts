@@ -1,11 +1,16 @@
+import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CategoryCellEvents} from './categoryCellEvents';
+import {Browser} from '../../utils/browser/browser';
 import {CellElement} from './cellElement';
 
 export class CategoryCellElement extends CellElement {
-  private static changeDataCellProperties(dataCell: HTMLElement) {
+  private static setTextAsAnElement(dataCell: HTMLElement, textElement: HTMLElement) {
     dataCell.textContent = '';
     dataCell.contentEditable = 'false';
+    // not really part of the bug, but in the same area
+    if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeTabIndex(dataCell);
+    dataCell.appendChild(textElement);
   }
 
   private static createTextElement(text: string, backgroundColor: string) {
@@ -21,8 +26,7 @@ export class CategoryCellElement extends CellElement {
   public static convertFromDataToCategory(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, dataCell: HTMLElement, backgroundColor: string) {
     const textElement = CategoryCellElement.createTextElement(dataCell.textContent as string, backgroundColor);
-    dataCell.appendChild(textElement);
-    CategoryCellElement.changeDataCellProperties(dataCell);
+    CategoryCellElement.setTextAsAnElement(dataCell, textElement);
     CategoryCellEvents.addEvents(etc, dataCell, rowIndex, columnIndex);
   }
 }

@@ -54,7 +54,7 @@ export class CellElement {
 
   protected static prepContentEditable(cellElement: HTMLElement, isHeader: boolean) {
     if (Browser.IS_FIREFOX) {
-      FirefoxCaretDisplayFix.setAttributes(cellElement, isHeader);
+      FirefoxCaretDisplayFix.setTabIndex(cellElement, isHeader);
     } else {
       cellElement.contentEditable = String(!isHeader);
     }

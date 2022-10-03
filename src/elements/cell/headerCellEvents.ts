@@ -1,4 +1,4 @@
-import {FocusedCellUtils} from '../../utils/focusedCell/focusedCellUtils';
+import {FocusedCellUtils} from '../../utils/cellFocus/focusedCellUtils';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
