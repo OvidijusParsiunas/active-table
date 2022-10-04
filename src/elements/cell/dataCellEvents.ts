@@ -53,7 +53,7 @@ export class DataCellEvents {
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
         DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
       } else if (Dropdown.isDisplayed(categoryDropdown)) {
-        CategoryDropdownItem.focusMatchingCellCategoryItem(text,
+        CategoryDropdownItem.highlightMatchingCellCategoryItem(textContainerElement,
           categoryDropdown, columnDetails.categories.categoryDropdownItems);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});

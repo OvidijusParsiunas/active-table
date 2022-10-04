@@ -18,14 +18,14 @@ export class CategoryDropdown extends Dropdown {
     if (Dropdown.isDisplayed(categoryDropdown)) {
       CategoryDropdown.hide(categoryDropdown);
     }
-    CategoryDropdownItem.setText(etc, cellDetailsOnDropdownClick);
+    CategoryDropdownItem.confirmCategorySelection(etc, cellDetailsOnDropdownClick);
   }
 
   // prettier-ignore
-  private static focusItemOnDropdownOpen(text: string, categoryDropdown: HTMLElement,
+  private static focusItemOnDropdownOpen(textElement: HTMLElement, categoryDropdown: HTMLElement,
       categoryDropdownItems: CategoryDropdownItems) {
     categoryDropdown.style.overflow = 'hidden';
-    CategoryDropdownItem.focusMatchingCellCategoryItem(text, categoryDropdown, categoryDropdownItems);
+    CategoryDropdownItem.highlightMatchingCellCategoryItem(textElement, categoryDropdown, categoryDropdownItems);
     if (!categoryDropdownItems.matchingWithCellText) {
       const firstItem = categoryDropdown.children[0] as HTMLElement;
       // firing event as the handler has the hover color binded to it
@@ -65,7 +65,8 @@ export class CategoryDropdown extends Dropdown {
       categoryDropdown.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
       // REF-4
       CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categoryDropdown, categoryDropdownItems);
-      CategoryDropdown.focusItemOnDropdownOpen(cellElement.textContent as string, categoryDropdown, categoryDropdownItems);
+      const textElement = cellElement.children[0] as HTMLElement;
+      CategoryDropdown.focusItemOnDropdownOpen(textElement, categoryDropdown, categoryDropdownItems);
     }
   }
 

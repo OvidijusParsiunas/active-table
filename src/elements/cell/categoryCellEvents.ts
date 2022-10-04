@@ -9,10 +9,12 @@ import {DataCellEvents} from './dataCellEvents';
 import {CellElement} from './cellElement';
 
 export class CategoryCellEvents extends DataCellEvents {
+  // prettier-ignore
   private static keyDownText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
     const {overlayElementsState, columnsDetails} = this;
     const categoryDropdown = overlayElementsState.categoryDropdown as HTMLElement;
     const columnDetails = columnsDetails[columnIndex];
+    const { categories: { categoryDropdownItems}, elements } = columnDetails;
     if (event.key === KEYBOARD_KEY.ESCAPE) {
       CategoryDropdown.hideAndSetText(this, categoryDropdown);
       (event.target as HTMLElement).blur();
@@ -21,13 +23,13 @@ export class CategoryCellEvents extends DataCellEvents {
     } else if (event.key === KEYBOARD_KEY.ENTER) {
       event.preventDefault();
       CategoryDropdown.hideAndSetText(this, categoryDropdown);
-      CategoryDropdownItem.focusOrBlurNextColumnCell(columnDetails.elements, rowIndex);
-    } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
-      event.preventDefault();
-      CategoryDropdownItem.highlightSiblingItem(columnDetails.categories.categoryDropdownItems, 'nextSibling');
+      CategoryDropdownItem.focusOrBlurNextColumnCell(elements, rowIndex);
     } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
       event.preventDefault();
-      CategoryDropdownItem.highlightSiblingItem(columnDetails.categories.categoryDropdownItems, 'previousSibling');
+      CategoryDropdownItem.highlightSiblingItem(this, categoryDropdownItems, 'previousSibling');
+    } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
+      event.preventDefault();
+      CategoryDropdownItem.highlightSiblingItem(this, categoryDropdownItems, 'nextSibling');
     }
   }
 

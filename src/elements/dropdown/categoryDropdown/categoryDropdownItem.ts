@@ -1,7 +1,8 @@
-import {CategoryDropdownItems, UniqueCategories} from '../../../types/columnDetails';
+import {CategoryDropdownItems, ColumnDetailsT, UniqueCategories} from '../../../types/columnDetails';
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CaretPosition} from '../../../utils/cellFocus/caretPosition';
 import {CellDetails, FocusedCell} from '../../../types/focusedCell';
 import {CategoryCellElement} from '../../cell/categoryCellElement';
 import {TableContents} from '../../../types/tableContents';
@@ -47,26 +48,39 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
-  public static setText(etc: EditableTableComponent, cellDetailsOnDropdownClick?: CellDetails) {
+  private static selectExistingCategory(etc: EditableTableComponent, activeItemElement: HTMLElement,
+      rowIndex: number, columnIndex: number, textElement: HTMLElement, categoryDropdown: HTMLElement) {
+    CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItemElement, rowIndex, columnIndex, textElement);
+    CategoryDropdownItem.moveItemToTop(activeItemElement, categoryDropdown);
+    textElement.style.backgroundColor = activeItemElement?.style.backgroundColor;
+  }
+
+  // prettier-ignore
+  private static addNewCategory(textElement: HTMLElement, columnDetails: ColumnDetailsT,
+      categoryDropdown: HTMLElement, categoryDropdownItems: CategoryDropdownItems) {
+    const newCategory = textElement.textContent as string;
+    const newColor = Color.getLatestPasteleColorAndSetNew();
+    textElement.style.backgroundColor = newColor;
+    // WORK - not sure if there is much need to maintain this
+    columnDetails.categories.list[newCategory] = newColor;
+    CategoryDropdownItem.addItem(newCategory, newColor, categoryDropdown, categoryDropdownItems, true);
+    Color.setNewLatestPasteleColor();
+  }
+
+  // prettier-ignore
+  public static confirmCategorySelection(etc: EditableTableComponent, cellDetailsOnDropdownClick?: CellDetails) {
     const { rowIndex, columnIndex, element: cellElement} = CategoryDropdownItem
       .getCellDetails(etc.focusedCell, cellDetailsOnDropdownClick);
     const textElement = cellElement.children[0] as HTMLElement;
     const columnDetails = etc.columnsDetails[columnIndex];
     const { categories: { categoryDropdownItems } } = columnDetails;
     const { hovered, matchingWithCellText } = categoryDropdownItems;
-    const activeItemElement = hovered || matchingWithCellText;
+    const activeItem = hovered || matchingWithCellText;
     const categoryDropdown = etc.overlayElementsState.categoryDropdown as HTMLElement;
-    if (activeItemElement?.style.backgroundColor) {
-      CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItemElement, rowIndex, columnIndex, textElement);
-      CategoryDropdownItem.moveItemToTop(activeItemElement, categoryDropdown);
-      textElement.style.backgroundColor = activeItemElement?.style.backgroundColor;
+    if (activeItem?.style.backgroundColor) {
+      CategoryDropdownItem.selectExistingCategory(etc, activeItem, rowIndex, columnIndex, textElement, categoryDropdown);
     } else {
-      const newCategory = cellElement.textContent as string;
-      const newColor = Color.getRandomPasteleColor();
-      textElement.style.backgroundColor = newColor;
-      // WORK - not sure if there is much need to maintain this
-      columnDetails.categories.list[newCategory] = newColor;
-      CategoryDropdownItem.addItem(newCategory, newColor, categoryDropdown, categoryDropdownItems, true);
+      CategoryDropdownItem.addNewCategory(textElement, columnDetails, categoryDropdown, categoryDropdownItems);
     }
   }
 
@@ -82,15 +96,27 @@ export class CategoryDropdownItem {
     }
   }
 
+  private static updateFocusedCellWithHighlightedItem(etc: EditableTableComponent, highlightedItem: HTMLElement) {
+    const {element, rowIndex, columnIndex} = etc.focusedCell as CellDetails;
+    const textElement = element?.children[0] as HTMLElement;
+    textElement.textContent = highlightedItem.textContent;
+    textElement.style.backgroundColor = highlightedItem.style.backgroundColor;
+    CaretPosition.setToEndOfText(etc, textElement);
+    CategoryDropdownItem.updateCellElementIfNotUpdated(etc, highlightedItem, rowIndex, columnIndex, textElement);
+  }
+
   // prettier-ignore
-  public static highlightSiblingItem(categoryDropdownItems: CategoryDropdownItems,
-      sibling: 'previousSibling' | 'nextSibling') {
+  public static highlightSiblingItem(etc: EditableTableComponent,
+      categoryDropdownItems: CategoryDropdownItems, sibling: 'previousSibling' | 'nextSibling') {
     const {hovered, matchingWithCellText} = categoryDropdownItems;
     const currentlyHighlightedItem = hovered || matchingWithCellText as HTMLElement;
-    if (currentlyHighlightedItem[sibling]) {
+    const siblingElement = currentlyHighlightedItem[sibling] as HTMLElement;
+    if (siblingElement) {
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'hovered')
       // firing event as the handler has the hover color binded to it
-      currentlyHighlightedItem[sibling]?.dispatchEvent(new MouseEvent('mouseenter'));
+      siblingElement.dispatchEvent(new MouseEvent('mouseenter'));
+      // need to wait for mouseenter to trigger to get highlight color
+      setTimeout(() => CategoryDropdownItem.updateFocusedCellWithHighlightedItem(etc, siblingElement));
     }
   }
 
@@ -134,26 +160,36 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
-  public static focusMatchingCellCategoryItem(text: string, categoryDropdown: HTMLElement,
+  private static updateItemAndTextBasedOnCellText(itemElement: HTMLElement,
+      textContainerElement: HTMLElement, categoryDropdownItems: CategoryDropdownItems) {
+    if (itemElement) {
+      categoryDropdownItems.matchingWithCellText = itemElement;
+      itemElement.dispatchEvent(new MouseEvent('mouseenter'));
+      setTimeout(() => (textContainerElement.style.backgroundColor = itemElement.style.backgroundColor));
+    } else {
+      textContainerElement.style.backgroundColor = Color.getLatestNewPasteleColor();
+    }
+  }
+
+  // prettier-ignore
+  public static highlightMatchingCellCategoryItem(textContainerElement: HTMLElement, categoryDropdown: HTMLElement,
       categoryDropdownItems: CategoryDropdownItems) {
     const childrenArr = Array.from(categoryDropdown.children);
-    const itemElement = childrenArr.find((itemElement) => itemElement.textContent === text);
+    const text = textContainerElement.textContent as string;
+    const itemElement = childrenArr.find((itemElement) => itemElement.textContent === text) as HTMLElement || undefined;
     if (!itemElement || categoryDropdownItems.matchingWithCellText !== itemElement) {
       // this is used to preserve the ability for the user to still allow the use of arrow keys to traverse the dropdown
       CategoryDropdownItem.hideHoveredItemHighlight(categoryDropdownItems);
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'matchingWithCellText');
     }
-    if (itemElement) {
-      categoryDropdownItems.matchingWithCellText = itemElement as HTMLElement;
-      itemElement.dispatchEvent(new MouseEvent('mouseenter'));
-    }
+    CategoryDropdownItem.updateItemAndTextBasedOnCellText(itemElement, textContainerElement, categoryDropdownItems);
   }
 
   private static aggregateUniqueCategories(contents: TableContents, columnIndex: number, defaultCellValue: string) {
     const uniqueCategories: UniqueCategories = {};
     contents.slice(1).forEach((row) => {
       const cellText = row[columnIndex] as string;
-      uniqueCategories[cellText] = Color.getRandomPasteleColor();
+      uniqueCategories[cellText] = Color.getLatestPasteleColorAndSetNew();
     });
     delete uniqueCategories[defaultCellValue];
     return uniqueCategories;
