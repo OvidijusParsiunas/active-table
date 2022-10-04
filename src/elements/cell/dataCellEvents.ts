@@ -1,5 +1,6 @@
 import {OverwriteCellsViaCSVOnPaste} from '../../utils/pasteCSV/overwriteCellsViaCSVOnPaste';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
+import {CellKeyPressStateUtil} from '../../utils/cellKeyPressState/cellKeyPressStateUtil';
 import {CategoryDropdownItem} from '../dropdown/categoryDropdown/categoryDropdownItem';
 import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {CellTypeTotalsUtils} from '../../utils/cellType/cellTypeTotalsUtils';
@@ -8,6 +9,7 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {CaretPosition} from '../../utils/cellFocus/caretPosition';
 import {ValidateInput} from '../../utils/cellType/validateInput';
+import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {Browser} from '../../utils/browser/browser';
 import {Dropdown} from '../dropdown/dropdown';
 import {CellElement} from './cellElement';
@@ -18,6 +20,13 @@ export class DataCellEvents {
   private static readonly TEXT_DATA_FORMAT = 'text/plain';
   private static readonly INVALID_TEXT_COLOR = 'grey';
   private static readonly DEFAULT_TEXT_COLOR = '';
+
+  private static keyDownCell(this: EditableTableComponent, event: KeyboardEvent) {
+    // REF-7
+    if (event.key === KEYBOARD_KEY.TAB) {
+      CellKeyPressStateUtil.temporarilyIndicatePress(this.cellKeyPressState, KEYBOARD_KEY.TAB);
+    }
+  }
 
   // prettier-ignore
   private static setTextColorBasedOnValidity(textContainerElement: HTMLElement, userSetColumnType: VALIDABLE_CELL_TYPE) {
@@ -89,7 +98,8 @@ export class DataCellEvents {
   private static focusCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const cellElement = event.target as HTMLElement;
     DataCellEvents.prepareText(this, rowIndex, columnIndex, cellElement);
-    if (this.focusedCell.element !== cellElement) CaretPosition.setToEndOfText(this, cellElement);
+    // REF-7
+    if (this.cellKeyPressState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
   }
 
   private static mouseDownCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
@@ -105,5 +115,6 @@ export class DataCellEvents {
     cellElement.onblur = DataCellEvents.blur.bind(etc, rowIndex, columnIndex);
     cellElement.oninput = DataCellEvents.inputCell.bind(etc, rowIndex, columnIndex);
     cellElement.onpaste = DataCellEvents.pasteCell.bind(etc, rowIndex, columnIndex);
+    cellElement.onkeydown = DataCellEvents.keyDownCell.bind(etc);
   }
 }

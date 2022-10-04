@@ -3,6 +3,7 @@ import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownItems} from '../../../types/columnDetails';
 import {CategoryDropdownItem} from './categoryDropdownItem';
+import {CellDetails} from '../../../types/focusedCell';
 import {Dropdown} from '../dropdown';
 
 // TO-DO allow dev to control whether additional elements are allowed to be added
@@ -11,11 +12,13 @@ export class CategoryDropdown extends Dropdown {
     GenericElementUtils.hideElements(categoryDropdown);
   }
 
-  public static hideAndSetText(etc: EditableTableComponent, categoryDropdown: HTMLElement) {
+  // prettier-ignore
+  public static hideAndSetText(etc: EditableTableComponent, categoryDropdown: HTMLElement,
+      cellDetailsOnDropdownClick?: CellDetails) {
     if (Dropdown.isDisplayed(categoryDropdown)) {
       CategoryDropdown.hide(categoryDropdown);
     }
-    CategoryDropdownItem.setText(etc);
+    CategoryDropdownItem.setText(etc, cellDetailsOnDropdownClick);
   }
 
   // prettier-ignore
@@ -34,11 +37,13 @@ export class CategoryDropdown extends Dropdown {
   // instead of binding click event handlers with the context of current row index to individual item elements every
   // time the dropdown is displayed, click events are handled on the dropdown instead, the reason for this is
   // because it can be expensive to rebind an arbitrary amount of items e.g. 10000+
-  private static dropdownClick(this: EditableTableComponent, dropdownElement: HTMLElement, event: MouseEvent) {
+  // prettier-ignore
+  private static dropdownClick(this: EditableTableComponent,
+      dropdownElement: HTMLElement, cellDetailsOnDropdownClick: CellDetails, event: MouseEvent) {
     // when user clicks on top/bottom paddding - it is dropdown element not item element
     const targetElement = event.target as HTMLElement;
     if (targetElement.classList.contains(Dropdown.DROPDOWN_CLASS)) return;
-    CategoryDropdown.hideAndSetText(this, dropdownElement);
+    CategoryDropdown.hideAndSetText(this, dropdownElement, cellDetailsOnDropdownClick);
   }
 
   private static setPosition(categoryDropdown: HTMLElement, cellElement: HTMLElement) {
@@ -46,10 +51,13 @@ export class CategoryDropdown extends Dropdown {
     categoryDropdown.style.top = `${cellElement.offsetTop}px`;
   }
 
-  public static display(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
+  public static display(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
     const {list, categoryDropdownItems} = etc.columnsDetails[columnIndex].categories;
     const categoryDropdown = etc.overlayElementsState.categoryDropdown as HTMLElement;
     if (Object.keys(list).length > 0) {
+      // upon clicking on dropdown - the focused cell is blurred, hence this is an alternative to getting cell details
+      const cellDetailsOnDropdownClick = {element: cellElement, columnIndex, rowIndex} as CellDetails;
+      categoryDropdown.onclick = CategoryDropdown.dropdownClick.bind(etc, categoryDropdown, cellDetailsOnDropdownClick);
       CategoryDropdown.setPosition(categoryDropdown, cellElement);
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'hovered');
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'matchingWithCellText');
@@ -62,11 +70,10 @@ export class CategoryDropdown extends Dropdown {
   }
 
   // WORK - will need to populate upfront if user has set a column as category upfront
-  public static create(etc: EditableTableComponent) {
+  public static create() {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.style.maxHeight = '150px';
     dropdownElement.style.overflow = 'auto';
-    dropdownElement.onclick = CategoryDropdown.dropdownClick.bind(etc, dropdownElement);
     return dropdownElement;
   }
 }

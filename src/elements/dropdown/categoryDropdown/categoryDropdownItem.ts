@@ -2,9 +2,9 @@ import {CategoryDropdownItems, UniqueCategories} from '../../../types/columnDeta
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CellDetails, FocusedCell} from '../../../types/focusedCell';
 import {CategoryCellElement} from '../../cell/categoryCellElement';
 import {TableContents} from '../../../types/tableContents';
-import {FocusedCell} from '../../../types/focusedCell';
 import {CellEvents} from '../../cell/cellEvents';
 import {Color} from '../../../utils/color/color';
 import {DropdownItem} from '../dropdownItem';
@@ -14,7 +14,8 @@ export class CategoryDropdownItem {
   public static focusOrBlurNextColumnCell(elements: HTMLElement[], rowIndex: number) {
     const nextColumnCell = elements[rowIndex + 1];
     if (nextColumnCell) {
-      (nextColumnCell.children[0] as HTMLElement).focus();
+      // needs to be mousedown in order to set focusedCell
+      nextColumnCell.dispatchEvent(new Event('mousedown'));
     } else {
       // if no next cell - blur it as the dropdown will be closed but the cursor would otherwise stay
       (elements[rowIndex].children[0] as HTMLElement).blur();
@@ -40,19 +41,27 @@ export class CategoryDropdownItem {
     }
   }
 
+  // upon clicking on dropdown - the focused cell is blurred, hence tcellDetailsOnDropdownClick is an alternative
+  private static getCellDetails(focusedCell: FocusedCell, cellDetailsOnDropdownClick?: CellDetails) {
+    return (focusedCell.element ? focusedCell : cellDetailsOnDropdownClick) as CellDetails;
+  }
+
   // prettier-ignore
-  public static setText(etc: EditableTableComponent) {
-    const { rowIndex, columnIndex, element: textElement} = etc.focusedCell as Required<FocusedCell>;
+  public static setText(etc: EditableTableComponent, cellDetailsOnDropdownClick?: CellDetails) {
+    const { rowIndex, columnIndex, element: cellElement} = CategoryDropdownItem
+      .getCellDetails(etc.focusedCell, cellDetailsOnDropdownClick);
+    const textElement = cellElement.children[0] as HTMLElement;
     const columnDetails = etc.columnsDetails[columnIndex];
     const { categories: { categoryDropdownItems } } = columnDetails;
-    const categoryDropdown = etc.overlayElementsState.categoryDropdown as HTMLElement;
     const { hovered, matchingWithCellText } = categoryDropdownItems;
     const activeItemElement = hovered || matchingWithCellText;
+    const categoryDropdown = etc.overlayElementsState.categoryDropdown as HTMLElement;
     if (activeItemElement?.style.backgroundColor) {
       CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItemElement, rowIndex, columnIndex, textElement);
-      CategoryDropdownItem.moveItemToTop(activeItemElement, categoryDropdown)
+      CategoryDropdownItem.moveItemToTop(activeItemElement, categoryDropdown);
+      textElement.style.backgroundColor = activeItemElement?.style.backgroundColor;
     } else {
-      const newCategory = textElement.textContent as string;
+      const newCategory = cellElement.textContent as string;
       const newColor = Color.getRandomPasteleColor();
       textElement.style.backgroundColor = newColor;
       // WORK - not sure if there is much need to maintain this

@@ -10,19 +10,25 @@ export class CellElement {
   public static readonly CELL_CLASS = 'cell';
   protected static readonly CATEGORY_CELL_TEXT_CLASS = 'category-cell-text';
 
-  // this is used for case where an element could be the cell element or the text inside a category cell
+  // this is used for case where element could be the cell element or the text inside a category cell
   // hence we need the actual cell element here
   public static extractCellElement(element: HTMLElement) {
+    // if category cell text
     if (element.classList.contains(CellElement.CATEGORY_CELL_TEXT_CLASS)) {
       return element.parentElement as HTMLElement;
     }
+    // if category cell or data cell
     return element;
   }
 
+  // this is used for case where element could be the category cell element that contains a text element or
+  // that text element or a standard data element, hence we need to set it
   private static setText(element: HTMLElement, text: string) {
-    if (element.classList.contains(CellElement.CATEGORY_CELL_TEXT_CLASS)) {
+    // if category cell
+    if (element.children[0]?.classList.contains(CellElement.CATEGORY_CELL_TEXT_CLASS)) {
       element.children[0].textContent = text;
     }
+    // if data cell or category cell text
     element.textContent = text;
   }
 
