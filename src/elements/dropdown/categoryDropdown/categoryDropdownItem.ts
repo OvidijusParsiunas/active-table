@@ -1,11 +1,11 @@
-import {CategoryDropdownItems, ColumnDetailsT, UniqueCategories} from '../../../types/columnDetails';
+import {Categories, CategoryDropdownItems, ColumnDetailsT, UniqueCategories} from '../../../types/columnDetails';
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CaretPosition} from '../../../utils/cellFocus/caretPosition';
-import {CellDetails, FocusedCell} from '../../../types/focusedCell';
 import {CategoryCellElement} from '../../cell/categoryCellElement';
 import {TableContents} from '../../../types/tableContents';
+import {CellDetails} from '../../../types/focusedCell';
 import {CellEvents} from '../../cell/cellEvents';
 import {Color} from '../../../utils/color/color';
 import {DropdownItem} from '../dropdownItem';
@@ -42,13 +42,8 @@ export class CategoryDropdownItem {
     }
   }
 
-  // upon clicking on dropdown - the focused cell is blurred, hence tcellDetailsOnDropdownClick is an alternative
-  private static getCellDetails(focusedCell: FocusedCell, cellDetailsOnDropdownClick?: CellDetails) {
-    return (focusedCell.element ? focusedCell : cellDetailsOnDropdownClick) as CellDetails;
-  }
-
   // prettier-ignore
-  private static selectExistingCategory(etc: EditableTableComponent, activeItemElement: HTMLElement,
+  public static selectExistingCategory(etc: EditableTableComponent, activeItemElement: HTMLElement,
       rowIndex: number, columnIndex: number, textElement: HTMLElement, categoryDropdown: HTMLElement) {
     CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItemElement, rowIndex, columnIndex, textElement);
     CategoryDropdownItem.moveItemToTop(activeItemElement, categoryDropdown);
@@ -56,7 +51,7 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
-  private static addNewCategory(textElement: HTMLElement, columnDetails: ColumnDetailsT,
+  public static addNewCategory(textElement: HTMLElement, columnDetails: ColumnDetailsT,
       categoryDropdown: HTMLElement, categoryDropdownItems: CategoryDropdownItems) {
     const newCategory = textElement.textContent as string;
     const newColor = Color.getLatestPasteleColorAndSetNew();
@@ -65,23 +60,6 @@ export class CategoryDropdownItem {
     columnDetails.categories.list[newCategory] = newColor;
     CategoryDropdownItem.addItem(newCategory, newColor, categoryDropdown, categoryDropdownItems, true);
     Color.setNewLatestPasteleColor();
-  }
-
-  // prettier-ignore
-  public static confirmCategorySelection(etc: EditableTableComponent, cellDetailsOnDropdownClick?: CellDetails) {
-    const { rowIndex, columnIndex, element: cellElement} = CategoryDropdownItem
-      .getCellDetails(etc.focusedCell, cellDetailsOnDropdownClick);
-    const textElement = cellElement.children[0] as HTMLElement;
-    const columnDetails = etc.columnsDetails[columnIndex];
-    const { categories: { categoryDropdownItems } } = columnDetails;
-    const { hovered, matchingWithCellText } = categoryDropdownItems;
-    const activeItem = hovered || matchingWithCellText;
-    const categoryDropdown = etc.overlayElementsState.categoryDropdown as HTMLElement;
-    if (activeItem?.style.backgroundColor) {
-      CategoryDropdownItem.selectExistingCategory(etc, activeItem, rowIndex, columnIndex, textElement, categoryDropdown);
-    } else {
-      CategoryDropdownItem.addNewCategory(textElement, columnDetails, categoryDropdown, categoryDropdownItems);
-    }
   }
 
   // prettier-ignore
@@ -101,8 +79,8 @@ export class CategoryDropdownItem {
     const textElement = element?.children[0] as HTMLElement;
     textElement.textContent = highlightedItem.textContent;
     textElement.style.backgroundColor = highlightedItem.style.backgroundColor;
-    CaretPosition.setToEndOfText(etc, textElement);
     CategoryDropdownItem.updateCellElementIfNotUpdated(etc, highlightedItem, rowIndex, columnIndex, textElement);
+    CaretPosition.setToEndOfText(etc, textElement);
   }
 
   // prettier-ignore
@@ -160,29 +138,31 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
-  private static updateItemAndTextBasedOnCellText(itemElement: HTMLElement,
-      textContainerElement: HTMLElement, categoryDropdownItems: CategoryDropdownItems) {
+  private static updateItemAndTextBasedOnCellText(itemElement: HTMLElement | undefined,
+      textContainerElement: HTMLElement, categories: Categories) {
     if (itemElement) {
-      categoryDropdownItems.matchingWithCellText = itemElement;
+      categories.categoryDropdownItems.matchingWithCellText = itemElement;
       itemElement.dispatchEvent(new MouseEvent('mouseenter'));
       setTimeout(() => (textContainerElement.style.backgroundColor = itemElement.style.backgroundColor));
     } else {
-      textContainerElement.style.backgroundColor = Color.getLatestNewPasteleColor();
+      textContainerElement.style.backgroundColor = Color.getLatestPasteleColor();
     }
+    categories.isCellTextNewCategory = !itemElement;
   }
 
   // prettier-ignore
   public static highlightMatchingCellCategoryItem(textContainerElement: HTMLElement, categoryDropdown: HTMLElement,
-      categoryDropdownItems: CategoryDropdownItems) {
+      categories: Categories) {
     const childrenArr = Array.from(categoryDropdown.children);
     const text = textContainerElement.textContent as string;
-    const itemElement = childrenArr.find((itemElement) => itemElement.textContent === text) as HTMLElement || undefined;
+    const itemElement = childrenArr.find((itemElement) => itemElement.textContent === text) as (HTMLElement | undefined);
+    const { categoryDropdownItems } = categories;
     if (!itemElement || categoryDropdownItems.matchingWithCellText !== itemElement) {
       // this is used to preserve the ability for the user to still allow the use of arrow keys to traverse the dropdown
       CategoryDropdownItem.hideHoveredItemHighlight(categoryDropdownItems);
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'matchingWithCellText');
     }
-    CategoryDropdownItem.updateItemAndTextBasedOnCellText(itemElement, textContainerElement, categoryDropdownItems);
+    CategoryDropdownItem.updateItemAndTextBasedOnCellText(itemElement, textContainerElement, categories);
   }
 
   private static aggregateUniqueCategories(contents: TableContents, columnIndex: number, defaultCellValue: string) {

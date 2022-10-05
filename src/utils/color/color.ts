@@ -9,12 +9,12 @@ export class Color {
     Color.LATEST_PASTELE_COLOR = Color.generateNewPasteleColor();
   }
 
-  public static getLatestNewPasteleColor() {
+  public static getLatestPasteleColor() {
     return Color.LATEST_PASTELE_COLOR;
   }
 
   public static getLatestPasteleColorAndSetNew() {
-    const pasteleColor = Color.getLatestNewPasteleColor();
+    const pasteleColor = Color.getLatestPasteleColor();
     Color.setNewLatestPasteleColor();
     return pasteleColor;
   }

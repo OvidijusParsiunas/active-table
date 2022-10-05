@@ -8,7 +8,7 @@ import {CSSStyle} from '../../types/cssStyle';
 export class CellElement {
   public static readonly DEFAULT_COLUMN_WIDTH = '100px';
   public static readonly CELL_CLASS = 'cell';
-  protected static readonly CATEGORY_CELL_TEXT_CLASS = 'category-cell-text';
+  public static readonly CATEGORY_CELL_TEXT_CLASS = 'category-cell-text';
 
   // this is used for case where element could be the cell element or the text inside a category cell
   // hence we need the actual cell element here
@@ -57,7 +57,7 @@ export class CellElement {
     return cellElement;
   }
 
-  protected static prepContentEditable(cellElement: HTMLElement, isHeader: boolean) {
+  public static prepContentEditable(cellElement: HTMLElement, isHeader: boolean) {
     if (Browser.IS_FIREFOX) {
       FirefoxCaretDisplayFix.setTabIndex(cellElement, isHeader);
     } else {

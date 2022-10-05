@@ -11,7 +11,7 @@ import {ColumnDropdown} from './columnDropdown';
 import {Sort} from '../../../utils/array/sort';
 import {DropdownItem} from '../dropdownItem';
 
-export class ColumnDropdownItem extends DropdownItem {
+export class ColumnDropdownItem {
   private static readonly SORT_ITEM_CLASS = 'dropdown-sort-item';
   private static readonly COLUMN_TYPE_ITEM_CLASS = 'dropdown-column-type-item';
 

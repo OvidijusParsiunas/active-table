@@ -3,8 +3,8 @@ import {ElementVisibility} from '../../utils/elements/elementVisibility';
 import {Dropdown} from './dropdown';
 
 export class DropdownItem {
-  protected static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
-  protected static readonly DROPDOWN_INPUT_CLASS = 'dropdown-input';
+  public static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
+  public static readonly DROPDOWN_INPUT_CLASS = 'dropdown-input';
   private static readonly DROPDOWN_INPUT_ITEM_CLASS = 'dropdown-input-item';
   private static readonly DROPDOWN_TITLE_ITEM_CLASS = 'dropdown-title-item';
   private static readonly DROPDOWN_HOVERABLE_ITEM = 'dropdown-hoverable-item';
@@ -108,7 +108,7 @@ export class DropdownItem {
     });
   }
 
-  protected static setActiveNestedDropdownItem(nestedDropdownChildren: HTMLElement[], targetItemText: string) {
+  public static setActiveNestedDropdownItem(nestedDropdownChildren: HTMLElement[], targetItemText: string) {
     nestedDropdownChildren.forEach((item) => {
       if (item.textContent === targetItemText) {
         item.style.backgroundColor = DropdownItem.ACTIVE_ITEM_BACKGROUND_COLOR;

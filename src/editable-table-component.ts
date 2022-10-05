@@ -79,6 +79,9 @@ export class EditableTableComponent extends LitElement {
   focusedCell: FocusedCell = {};
 
   @state()
+  focusedCategoryDropdown: {element?: HTMLElement} = {};
+
+  @state()
   overlayElementsState: OverlayElements = OverlayElementsState.createNew();
 
   @state()

@@ -9,7 +9,7 @@ import {DropdownItem} from '../dropdownItem';
 import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
 
-export class ColumnDropdown extends Dropdown {
+export class ColumnDropdown {
   private static resetDropdownPosition(dropdownElement: HTMLElement) {
     dropdownElement.style.left = '';
   }
@@ -49,7 +49,7 @@ export class ColumnDropdown extends Dropdown {
   public static create(etc: EditableTableComponent, areHeadersEditable: boolean) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.onkeydown = ColumnDropdown.onKeyDown.bind(etc, dropdownElement);
-    if (areHeadersEditable) ColumnDropdownItem.addInputItem(dropdownElement);
+    if (areHeadersEditable) DropdownItem.addInputItem(dropdownElement);
     DropdownItem.addTitle(dropdownElement, 'Property type');
     const columnDropdown = ColumnDropdownItem.addColumnTypeNestedDropdownItem(dropdownElement);
     etc.overlayElementsState.columnTypeDropdown = columnDropdown;
@@ -105,8 +105,8 @@ export class ColumnDropdown extends Dropdown {
     const cellElement = event.target as HTMLElement;
     ColumnDropdownItem.setUpContent(etc, dropdownElement, columnIndex, cellElement);
     ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
-    const inputElement = ColumnDropdownItem.getInputElement(dropdownElement)
-    if (inputElement) ColumnDropdownItem.focusInputElement(inputElement as HTMLElement);
+    const inputElement = DropdownItem.getInputElement(dropdownElement)
+    if (inputElement) DropdownItem.focusInputElement(inputElement as HTMLElement);
     ColumnDropdownItem.rebindButtonItems(etc, columnIndex, dropdownElement);
     fullTableOverlay.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
   }

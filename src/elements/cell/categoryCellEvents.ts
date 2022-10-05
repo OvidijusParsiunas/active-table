@@ -8,21 +8,17 @@ import {Browser} from '../../utils/browser/browser';
 import {DataCellEvents} from './dataCellEvents';
 import {CellElement} from './cellElement';
 
-export class CategoryCellEvents extends DataCellEvents {
+export class CategoryCellEvents {
   // prettier-ignore
   private static keyDownText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
-    const {overlayElementsState, columnsDetails} = this;
-    const categoryDropdown = overlayElementsState.categoryDropdown as HTMLElement;
-    const columnDetails = columnsDetails[columnIndex];
-    const { categories: { categoryDropdownItems}, elements } = columnDetails;
-    if (event.key === KEYBOARD_KEY.ESCAPE) {
-      CategoryDropdown.hideAndSetText(this, categoryDropdown);
+    const { categories: { categoryDropdownItems}, elements } = this.columnsDetails[columnIndex];
+    if (event.key === KEYBOARD_KEY.ESCAPE || event.key === KEYBOARD_KEY.TAB) {
       (event.target as HTMLElement).blur();
-    } else if (event.key === KEYBOARD_KEY.TAB) {
-      CategoryDropdown.hideAndSetText(this, categoryDropdown);
+      // the above will not trigger the CategoryCellEvents.blur functionality if dropdown has been focused, but will blur
+      // the element in the dom, the following will trigger the required programmatic functionality
+      if (this.focusedCategoryDropdown.element) CategoryCellEvents.blur(this, rowIndex, columnIndex, event);
     } else if (event.key === KEYBOARD_KEY.ENTER) {
       event.preventDefault();
-      CategoryDropdown.hideAndSetText(this, categoryDropdown);
       CategoryDropdownItem.focusOrBlurNextColumnCell(elements, rowIndex);
     } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
       event.preventDefault();
@@ -37,10 +33,7 @@ export class CategoryCellEvents extends DataCellEvents {
     const textElement = event.target as HTMLElement;
     const cellElement = textElement.parentElement as HTMLElement;
     DataCellEvents.prepareText(this, rowIndex, columnIndex, textElement);
-    CategoryDropdown.display(this, rowIndex, columnIndex, cellElement);
-    // this is called here as well as mousedown, the reason for that is because of the following event sequence
-    // mouse click cell text -> mouse click table -> blur focused cell -> focus text
-    // mouse click table event is relevant as it analyzes whether the dropdown should be closed
+    CategoryDropdown.display(this, columnIndex, cellElement);
     FocusedCellUtils.set(this.focusedCell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
     if (this.cellKeyPressState[KEYBOARD_KEY.TAB]) {
       // contrary to this being called on mouseDownOnCell - this does not retrigger focus event
@@ -48,45 +41,48 @@ export class CategoryCellEvents extends DataCellEvents {
     }
   }
 
-  private static mouseDownOnText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
-    const textElement = event.target as HTMLElement;
-    const cellElement = textElement.parentElement as HTMLElement;
-    // this is called here because FocusedCellUtils.set needs to be called before mousedown is called in tableEvents
-    FocusedCellUtils.set(etc.focusedCell, cellElement, rowIndex, columnIndex, etc.defaultCellValue);
+  private static blur(etc: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
+    const {overlayElementsState, columnsDetails} = etc;
+    const columnDetails = columnsDetails[columnIndex];
+    const {isCellTextNewCategory: isTypedNewCategory, categoryDropdownItems} = columnDetails.categories;
+    const categoryDropdown = overlayElementsState.categoryDropdown as HTMLElement;
+    CategoryDropdown.hide(categoryDropdown);
+    if (isTypedNewCategory) {
+      const textElement = event.target as HTMLElement;
+      CategoryDropdownItem.addNewCategory(textElement, columnDetails, categoryDropdown, categoryDropdownItems);
+    }
+    DataCellEvents.blur.bind(etc, rowIndex, columnIndex, event);
   }
 
-  private static mouseDownOnCell(etc: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
-    const cellElement = event.target as HTMLElement;
-    const textElement = cellElement.children[0] as HTMLElement;
-    // this is called here because FocusedCellUtils.set needs to be called before mousedown is called in tableEvents
-    FocusedCellUtils.set(etc.focusedCell, cellElement, rowIndex, columnIndex, etc.defaultCellValue);
-    // needed to set cursor at the end
-    event.preventDefault();
-    // Firefox does not fire the focus event for CaretPosition.setToEndOfText
-    if (Browser.IS_FIREFOX) textElement.focus();
-    // in non firefox browsers this also focuses
-    CaretPosition.setToEndOfText(etc, textElement);
+  private static blurText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
+    if (!this.focusedCategoryDropdown.element) {
+      CategoryCellEvents.blur(this, rowIndex, columnIndex, event);
+    }
   }
 
-  // prettier-ignore
-  private static mouseDownCategoryCell(this: EditableTableComponent,
-      rowIndex: number, columnIndex: number, event: MouseEvent) {
+  private static mouseDownCell(this: EditableTableComponent, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
+    // this is also triggered by text, but we only want when cell to focus
     if (targetElement.classList.contains(CellElement.CELL_CLASS)) {
-      CategoryCellEvents.mouseDownOnCell(this, rowIndex, columnIndex, event);
-    } else {
-      CategoryCellEvents.mouseDownOnText(this, rowIndex, columnIndex, event);
+      const cellElement = event.target as HTMLElement;
+      const textElement = cellElement.children[0] as HTMLElement;
+      // needed to set cursor at the end
+      event.preventDefault();
+      // Firefox does not fire the focus event for CaretPosition.setToEndOfText
+      if (Browser.IS_FIREFOX) textElement.focus();
+      // in non firefox browsers this also focuses
+      CaretPosition.setToEndOfText(this, textElement);
     }
   }
 
   // inherently using data cell events and overwriting the following
   public static addEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    cellElement.onmousedown = CategoryCellEvents.mouseDownCategoryCell.bind(etc, rowIndex, columnIndex);
+    cellElement.onmousedown = CategoryCellEvents.mouseDownCell.bind(etc);
     // onblur/onfocus do not work for firefox, hence using textElement and keeping it consistent across browsers
     cellElement.onblur = () => {};
     cellElement.onfocus = () => {};
     const textElement = cellElement.children[0] as HTMLElement;
-    textElement.onblur = DataCellEvents.blur.bind(etc, rowIndex, columnIndex);
+    textElement.onblur = CategoryCellEvents.blurText.bind(etc, rowIndex, columnIndex);
     textElement.onfocus = CategoryCellEvents.focusText.bind(etc, rowIndex, columnIndex);
     textElement.onkeydown = CategoryCellEvents.keyDownText.bind(etc, rowIndex, columnIndex);
   }

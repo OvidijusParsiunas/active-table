@@ -2,7 +2,6 @@ import {OverwriteCellsViaCSVOnPaste} from '../../utils/pasteCSV/overwriteCellsVi
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {CellKeyPressStateUtil} from '../../utils/cellKeyPressState/cellKeyPressStateUtil';
 import {CategoryDropdownItem} from '../dropdown/categoryDropdown/categoryDropdownItem';
-import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {CellTypeTotalsUtils} from '../../utils/cellType/cellTypeTotalsUtils';
 import {FocusedCellUtils} from '../../utils/cellFocus/focusedCellUtils';
 import {EditableTableComponent} from '../../editable-table-component';
@@ -54,7 +53,7 @@ export class DataCellEvents {
         DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
       } else if (Dropdown.isDisplayed(categoryDropdown)) {
         CategoryDropdownItem.highlightMatchingCellCategoryItem(textContainerElement,
-          categoryDropdown, columnDetails.categories.categoryDropdownItems);
+          categoryDropdown, columnDetails.categories);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
     }
@@ -71,7 +70,7 @@ export class DataCellEvents {
     }
   }
 
-  protected static blur(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
+  public static blur(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     // can be cell element from this class or text element from categoryCellEvents class
     const textContainerElement = event.target as HTMLElement;
     if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeContentEditable(textContainerElement);
@@ -87,7 +86,7 @@ export class DataCellEvents {
 
   // prettier-ignore
   // textContainerElement can be cell element from this class or text element from categoryCellEvents class
-  protected static prepareText(etc: EditableTableComponent, rowIndex: number, columnIndex: number,
+  public static prepareText(etc: EditableTableComponent, rowIndex: number, columnIndex: number,
       textContainerElement: HTMLElement) {
     // THIS HAS TO BE CALLED IN A FOCUS EVENT!!!!!!!!!!!!!!!!!
     if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.setContentEditable(textContainerElement, rowIndex);
@@ -100,17 +99,10 @@ export class DataCellEvents {
     DataCellEvents.prepareText(this, rowIndex, columnIndex, cellElement);
     // REF-7
     if (this.cellKeyPressState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
-  }
-
-  private static mouseDownCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
-    const categoryDropdown = this.overlayElementsState.categoryDropdown as HTMLElement;
-    if (Dropdown.isDisplayed(categoryDropdown)) CategoryDropdown.hideAndSetText(this, categoryDropdown);
-    // this needs to be set on mouse down in order to be able to set cursor at end when focusing it via the tab key
     FocusedCellUtils.set(this.focusedCell, event.target as HTMLElement, rowIndex, columnIndex, this.defaultCellValue);
   }
 
   public static set(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    cellElement.onmousedown = DataCellEvents.mouseDownCell.bind(etc, rowIndex, columnIndex);
     cellElement.onfocus = DataCellEvents.focusCell.bind(etc, rowIndex, columnIndex);
     cellElement.onblur = DataCellEvents.blur.bind(etc, rowIndex, columnIndex);
     cellElement.oninput = DataCellEvents.inputCell.bind(etc, rowIndex, columnIndex);

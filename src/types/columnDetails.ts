@@ -35,6 +35,13 @@ export interface CategoryDropdownItems {
   isHorizontalScrollPresent: boolean;
 }
 
+export interface Categories {
+  list: UniqueCategories;
+  // items that exhibit certain behaviours
+  categoryDropdownItems: CategoryDropdownItems;
+  isCellTextNewCategory: boolean;
+}
+
 export interface ColumnDetailsT {
   elements: HTMLElement[];
   columnSizer: ColumnSizerT;
@@ -45,11 +52,7 @@ export interface ColumnDetailsT {
   // column type set by the user, set to auto by default
   userSetColumnType: USER_SET_COLUMN_TYPE;
   cellTypeTotals: CellTypeTotals;
-  categories: {
-    list: UniqueCategories;
-    // items that exhibit certain behaviours
-    categoryDropdownItems: CategoryDropdownItems;
-  };
+  categories: Categories;
 }
 
 // used for when column details initialised before the column sizer
