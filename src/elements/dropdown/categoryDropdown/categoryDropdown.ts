@@ -11,19 +11,19 @@ import {Dropdown} from '../dropdown';
 
 // TO-DO allow dev to control whether additional elements are allowed to be added
 export class CategoryDropdown {
+  private static readonly CATEGORY_DROPDOWN_CLASS = 'category-dropdown';
+
   public static hide(categoryDropdown: HTMLElement) {
     GenericElementUtils.hideElements(categoryDropdown);
   }
 
   private static focusItemOnDropdownOpen(textElement: HTMLElement, categoryDropdown: HTMLElement, categories: Categories) {
-    categoryDropdown.style.overflow = 'hidden';
     CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categoryDropdown, categories);
     if (!categories.categoryDropdownItems.matchingWithCellText) {
       const firstItem = categoryDropdown.children[0] as HTMLElement;
       // firing event as the handler has the hover color binded to it
       firstItem?.dispatchEvent(new MouseEvent('mouseenter'));
     }
-    setTimeout(() => (categoryDropdown.style.overflow = 'auto'));
   }
 
   private static setPosition(categoryDropdown: HTMLElement, cellElement: HTMLElement) {
@@ -77,7 +77,7 @@ export class CategoryDropdown {
   public static create() {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.style.maxHeight = '150px';
-    dropdownElement.style.overflow = 'auto';
+    dropdownElement.classList.add(CategoryDropdown.CATEGORY_DROPDOWN_CLASS);
     return dropdownElement;
   }
 }

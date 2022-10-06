@@ -123,6 +123,10 @@ export const ediTableStyle = css`
     z-index: 1;
   }
 
+  .category-dropdown {
+    overflow: auto;
+  }
+
   .dropdown-item {
     padding-top: 1px;
     padding-bottom: 1px;
