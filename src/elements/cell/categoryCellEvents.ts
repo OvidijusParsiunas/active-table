@@ -20,10 +20,10 @@ export class CategoryCellEvents {
       CategoryDropdownItem.focusOrBlurNextColumnCell(elements, rowIndex);
     } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
       event.preventDefault();
-      CategoryDropdownItem.highlightSiblingItem(this, categoryDropdownItems, 'previousSibling');
+      CategoryDropdownItem.setSiblingItemOnCell(this, categoryDropdownItems, 'previousSibling');
     } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
       event.preventDefault();
-      CategoryDropdownItem.highlightSiblingItem(this, categoryDropdownItems, 'nextSibling');
+      CategoryDropdownItem.setSiblingItemOnCell(this, categoryDropdownItems, 'nextSibling');
     }
   }
 

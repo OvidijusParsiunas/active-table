@@ -6,6 +6,7 @@ import {FocusedElements} from '../../../types/focusedElements';
 import {CategoryDropdownItem} from './categoryDropdownItem';
 import {Categories} from '../../../types/columnDetails';
 import {CellDetails} from '../../../types/focusedCell';
+import {DropdownItem} from '../dropdownItem';
 import {Dropdown} from '../dropdown';
 
 // TO-DO allow dev to control whether additional elements are allowed to be added
@@ -16,7 +17,7 @@ export class CategoryDropdown {
 
   private static focusItemOnDropdownOpen(textElement: HTMLElement, categoryDropdown: HTMLElement, categories: Categories) {
     categoryDropdown.style.overflow = 'hidden';
-    CategoryDropdownItem.highlightMatchingCellCategoryItem(textElement, categoryDropdown, categories);
+    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categoryDropdown, categories);
     if (!categories.categoryDropdownItems.matchingWithCellText) {
       const firstItem = categoryDropdown.children[0] as HTMLElement;
       // firing event as the handler has the hover color binded to it
@@ -38,9 +39,10 @@ export class CategoryDropdown {
     const targetElement = event.target as HTMLElement;
     // when user clicks on top/bottom paddding instead of an item
     if (targetElement.classList.contains(Dropdown.DROPDOWN_CLASS)) return;
-    const { rowIndex, columnIndex, element: cellElement } = this.focusedElements.cell as CellDetails;
     CategoryCellEvents.programmaticBlur(this);
-    const itemElement = targetElement.classList.contains('dropdown-item') ? targetElement : targetElement.parentElement;
+    const { rowIndex, columnIndex, element: cellElement } = this.focusedElements.cell as CellDetails;
+    const itemElement = targetElement.classList.contains(DropdownItem.DROPDOWN_ITEM_CLASS)
+      ? targetElement : targetElement.parentElement;
     CategoryDropdownItem.selectExistingCategory(this, itemElement as HTMLElement, rowIndex, columnIndex,
       cellElement.children[0] as HTMLElement, dropdownElement);
   }
