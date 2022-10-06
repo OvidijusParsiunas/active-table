@@ -173,15 +173,6 @@ export class CategoryDropdownItem {
       CategoryDropdownItem.addItem(categoryName, uniqueCategories[categoryName], categoryDropdown, categoryDropdownItems);
     });
   }
-  // prettier-ignore
-  private static convertColumnCellsToCategories(etc: EditableTableComponent, elements: HTMLElement[],
-      uniqueCategories: UniqueCategories, columnIndex: number) {
-    elements.slice(1).forEach((cellElement: HTMLElement, dataIndex: number) => {
-      const relativeIndex = dataIndex + 1;
-      CategoryCellElement.convertFromDataToCategory(etc, relativeIndex, columnIndex,
-        cellElement, uniqueCategories[cellElement.textContent as string]);
-    });
-  }
 
   private static aggregateUniqueCategories(contents: TableContents, columnIndex: number, defaultCellValue: string) {
     const uniqueCategories: UniqueCategories = {};
@@ -198,8 +189,7 @@ export class CategoryDropdownItem {
     const { overlayElementsState: { categoryDropdown }, contents, defaultCellValue, columnsDetails } = etc;
     const uniqueCategories = CategoryDropdownItem.aggregateUniqueCategories(contents, columnIndex, defaultCellValue);
     columnsDetails[columnIndex].categories.list = uniqueCategories;
-    CategoryDropdownItem.convertColumnCellsToCategories(
-      etc, columnsDetails[columnIndex].elements, uniqueCategories, columnIndex);
+    CategoryCellElement.convertColumnFromDataToCategory(etc, uniqueCategories, columnIndex);
     CategoryDropdownItem.addItems(
       uniqueCategories, categoryDropdown as HTMLElement, columnsDetails[columnIndex].categories.categoryDropdownItems);
   }

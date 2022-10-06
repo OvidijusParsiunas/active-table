@@ -51,8 +51,8 @@ export class ColumnDropdown {
     dropdownElement.onkeydown = ColumnDropdown.onKeyDown.bind(etc, dropdownElement);
     if (areHeadersEditable) DropdownItem.addInputItem(dropdownElement);
     DropdownItem.addTitle(dropdownElement, 'Property type');
-    const columnDropdown = ColumnDropdownItem.addColumnTypeNestedDropdownItem(dropdownElement);
-    etc.overlayElementsState.columnTypeDropdown = columnDropdown;
+    const columnTypeDropdown = ColumnDropdownItem.addColumnTypeNestedDropdownItem(dropdownElement);
+    etc.overlayElementsState.columnTypeDropdown = columnTypeDropdown;
     ColumnDropdownItem.addSortButton(dropdownElement, 'Ascending');
     ColumnDropdownItem.addSortButton(dropdownElement, 'Descending');
     DropdownItem.addButtonItem(dropdownElement, 'Insert Right');

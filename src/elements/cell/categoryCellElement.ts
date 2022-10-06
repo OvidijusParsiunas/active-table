@@ -3,6 +3,7 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {CategoryCellEvents} from './categoryCellEvents';
 import {Browser} from '../../utils/browser/browser';
 import {CellElement} from './cellElement';
+import {UniqueCategories} from '../../types/columnDetails';
 
 export class CategoryCellElement {
   private static setTextAsAnElement(dataCell: HTMLElement, textElement: HTMLElement) {
@@ -23,10 +24,21 @@ export class CategoryCellElement {
   }
 
   // prettier-ignore
-  public static convertFromDataToCategory(etc: EditableTableComponent,
-      rowIndex: number, columnIndex: number, dataCell: HTMLElement, backgroundColor: string) {
-    const textElement = CategoryCellElement.createTextElement(dataCell.textContent as string, backgroundColor);
-    CategoryCellElement.setTextAsAnElement(dataCell, textElement);
-    CategoryCellEvents.addEvents(etc, dataCell, rowIndex, columnIndex);
+  private static convertCellFromDataToCategory(etc: EditableTableComponent,
+      rowIndex: number, columnIndex: number, cell: HTMLElement, backgroundColor: string) {
+    const textElement = CategoryCellElement.createTextElement(cell.textContent as string, backgroundColor);
+    CategoryCellElement.setTextAsAnElement(cell, textElement);
+    CategoryCellEvents.setEvents(etc, cell, rowIndex, columnIndex);
+  }
+
+  // prettier-ignore
+  public static convertColumnFromDataToCategory(etc: EditableTableComponent,
+      uniqueCategories: UniqueCategories, columnIndex: number) {
+    const { elements } = etc.columnsDetails[columnIndex];
+    elements.slice(1).forEach((cellElement: HTMLElement, dataIndex: number) => {
+      const relativeIndex = dataIndex + 1;
+      CategoryCellElement.convertCellFromDataToCategory(etc, relativeIndex, columnIndex,
+        cellElement, uniqueCategories[cellElement.textContent as string]);
+    });
   }
 }

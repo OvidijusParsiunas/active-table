@@ -35,7 +35,7 @@ export class HeaderCellEvents {
     setTimeout(() => FocusedCellUtils.setHeaderCell(this.focusedElements.cell, cellElement, columnIndex));
   }
 
-  public static set(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
+  public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
     cellElement.onmouseenter = HeaderCellEvents.mouseEnterCell.bind(etc, columnIndex);
     cellElement.onmouseleave = HeaderCellEvents.mouseLeaveCell.bind(etc, columnIndex);
     cellElement.onclick = HeaderCellEvents.mouseClick.bind(etc, columnIndex);

@@ -107,11 +107,13 @@ export class DataCellEvents {
     FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
   }
 
-  public static set(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+  public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     cellElement.onfocus = DataCellEvents.focusCell.bind(etc, rowIndex, columnIndex);
     cellElement.onblur = DataCellEvents.blurCell.bind(etc, rowIndex, columnIndex);
     cellElement.oninput = DataCellEvents.inputCell.bind(etc, rowIndex, columnIndex);
     cellElement.onpaste = DataCellEvents.pasteCell.bind(etc, rowIndex, columnIndex);
     cellElement.onkeydown = DataCellEvents.keyDownCell.bind(etc);
+    // used by category element and overwritten when converted from
+    cellElement.onmousedown = () => {};
   }
 }

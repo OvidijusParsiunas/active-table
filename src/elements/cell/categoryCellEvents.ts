@@ -85,7 +85,7 @@ export class CategoryCellEvents {
   }
 
   // inherently using data cell events and overwriting the following
-  public static addEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+  public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     cellElement.onmousedown = CategoryCellEvents.mouseDownCell.bind(etc);
     // onblur/onfocus do not work for firefox, hence using textElement and keeping it consistent across browsers
     cellElement.onblur = () => {};

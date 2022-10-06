@@ -42,9 +42,9 @@ export class CellElement {
   public static setCellEvents(etc: EditableTableComponent,
       cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     if (rowIndex === 0) {
-      HeaderCellEvents.set(etc, cellElement, columnIndex);
+      HeaderCellEvents.setEvents(etc, cellElement, columnIndex);
     } else {
-      DataCellEvents.set(etc, cellElement, rowIndex, columnIndex);
+      DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
     }
   }
 
@@ -60,6 +60,7 @@ export class CellElement {
   public static prepContentEditable(cellElement: HTMLElement, isHeader: boolean) {
     if (Browser.IS_FIREFOX) {
       FirefoxCaretDisplayFix.setTabIndex(cellElement, isHeader);
+      FirefoxCaretDisplayFix.removeContentEditable(cellElement);
     } else {
       cellElement.contentEditable = String(!isHeader);
     }
