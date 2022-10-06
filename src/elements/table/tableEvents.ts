@@ -1,20 +1,20 @@
-import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElement} from '../columnSizer/columnSizerElement';
 import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
+import {CategoryCellEvents} from '../cell/categoryCellEvents';
 import {CellElement} from '../cell/cellElement';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class TableEvents {
+  // cell blur will not activate when the dropdown has been clicked and will not close if its scrollbar or padding are
+  // clicked, hence once that happens, we close the dropdown programmatically as follows
   // prettier-ignore
   private static closeCategoryDropdown(etc: EditableTableComponent, targetElement: HTMLElement) {
-    const { focusedElements, overlayElementsState: { categoryDropdown } } = etc;
+    const { focusedElements } = etc;
     if (focusedElements.categoryDropdown && !Dropdown.isPartOfDropdownElement(targetElement)) {
       if (focusedElements.cell.element !== CellElement.extractCellElement(targetElement)) {
-        CategoryDropdown.hide(categoryDropdown as HTMLElement);
+        CategoryCellEvents.programmaticBlur(etc);
       }
-      // remove the reference as the dropdown is no longer focused
-      delete focusedElements.categoryDropdown;
     }
   }
 

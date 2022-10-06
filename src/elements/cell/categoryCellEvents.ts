@@ -5,6 +5,7 @@ import {CaretPosition} from '../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../editable-table-component';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {Browser} from '../../utils/browser/browser';
+import {CellDetails} from '../../types/focusedCell';
 import {DataCellEvents} from './dataCellEvents';
 import {CellElement} from './cellElement';
 
@@ -13,10 +14,7 @@ export class CategoryCellEvents {
   private static keyDownText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
     const { categories: { categoryDropdownItems}, elements } = this.columnsDetails[columnIndex];
     if (event.key === KEYBOARD_KEY.ESCAPE || event.key === KEYBOARD_KEY.TAB) {
-      (event.target as HTMLElement).blur();
-      // the above will not trigger the CategoryCellEvents.blur functionality if dropdown has been focused, but will blur
-      // the element in the dom, the following will trigger the required programmatic functionality
-      if (this.focusedElements.categoryDropdown) CategoryCellEvents.blur(this, rowIndex, columnIndex, event);
+      CategoryCellEvents.programmaticBlur(this);
     } else if (event.key === KEYBOARD_KEY.ENTER) {
       event.preventDefault();
       CategoryDropdownItem.focusOrBlurNextColumnCell(elements, rowIndex);
@@ -41,22 +39,33 @@ export class CategoryCellEvents {
     }
   }
 
-  private static blur(etc: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
+  public static blurring(etc: EditableTableComponent, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const {overlayElementsState, columnsDetails} = etc;
     const columnDetails = columnsDetails[columnIndex];
-    const {isCellTextNewCategory: isTypedNewCategory, categoryDropdownItems} = columnDetails.categories;
+    const {isCellTextNewCategory, categoryDropdownItems} = columnDetails.categories;
     const categoryDropdown = overlayElementsState.categoryDropdown as HTMLElement;
     CategoryDropdown.hide(categoryDropdown);
-    if (isTypedNewCategory) {
-      const textElement = event.target as HTMLElement;
+    if (isCellTextNewCategory) {
       CategoryDropdownItem.addNewCategory(textElement, columnDetails, categoryDropdown, categoryDropdownItems);
     }
-    DataCellEvents.blur.bind(etc, rowIndex, columnIndex, event);
+    DataCellEvents.blur(etc, rowIndex, columnIndex, textElement);
   }
 
   private static blurText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     if (!this.focusedElements.categoryDropdown) {
-      CategoryCellEvents.blur(this, rowIndex, columnIndex, event);
+      CategoryCellEvents.blurring(this, rowIndex, columnIndex, event.target as HTMLElement);
+    }
+  }
+
+  public static programmaticBlur(etc: EditableTableComponent) {
+    const {rowIndex, columnIndex, element} = etc.focusedElements.cell as CellDetails;
+    const textElement = element.children[0] as HTMLElement;
+    textElement.blur();
+    // the above will not trigger the CategoryCellEvents.blur functionality if dropdown has been focused, but will blur
+    // the element in the dom, the following will trigger the required programmatic functionality
+    if (etc.focusedElements.categoryDropdown) {
+      CategoryCellEvents.blurring(etc, rowIndex, columnIndex, textElement);
+      delete etc.focusedElements.categoryDropdown;
     }
   }
 

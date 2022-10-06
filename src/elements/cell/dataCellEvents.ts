@@ -70,18 +70,23 @@ export class DataCellEvents {
     }
   }
 
-  public static blur(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
-    // can be cell element from this class or text element from categoryCellEvents class
-    const textContainerElement = event.target as HTMLElement;
+  // prettier-ignore
+  // textContainerElement be cell element from this class or text element from categoryCellEvents class
+  public static blur(etc: EditableTableComponent,
+      rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
     if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeContentEditable(textContainerElement);
-    CellEvents.setCellToDefaultIfNeeded(this, rowIndex, columnIndex, textContainerElement);
+    CellEvents.setCellToDefaultIfNeeded(etc, rowIndex, columnIndex, textContainerElement);
     textContainerElement.style.color = DataCellEvents.DEFAULT_TEXT_COLOR;
-    const oldType = this.focusedElements.cell.type as CELL_TYPE;
-    FocusedCellUtils.purge(this.focusedElements.cell);
+    const oldType = etc.focusedElements.cell.type as CELL_TYPE;
+    FocusedCellUtils.purge(etc.focusedElements.cell);
     setTimeout(() => {
-      const newType = CellTypeTotalsUtils.parseType(textContainerElement.textContent as string, this.defaultCellValue);
-      CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(this.columnsDetails[columnIndex], oldType, newType);
+      const newType = CellTypeTotalsUtils.parseType(textContainerElement.textContent as string, etc.defaultCellValue);
+      CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(etc.columnsDetails[columnIndex], oldType, newType);
     });
+  }
+
+  private static blurCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
+    DataCellEvents.blur(this, rowIndex, columnIndex, event.target as HTMLElement);
   }
 
   // prettier-ignore
@@ -104,7 +109,7 @@ export class DataCellEvents {
 
   public static set(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     cellElement.onfocus = DataCellEvents.focusCell.bind(etc, rowIndex, columnIndex);
-    cellElement.onblur = DataCellEvents.blur.bind(etc, rowIndex, columnIndex);
+    cellElement.onblur = DataCellEvents.blurCell.bind(etc, rowIndex, columnIndex);
     cellElement.oninput = DataCellEvents.inputCell.bind(etc, rowIndex, columnIndex);
     cellElement.onpaste = DataCellEvents.pasteCell.bind(etc, rowIndex, columnIndex);
     cellElement.onkeydown = DataCellEvents.keyDownCell.bind(etc);

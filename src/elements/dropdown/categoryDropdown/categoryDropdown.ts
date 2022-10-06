@@ -1,6 +1,7 @@
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CategoryCellEvents} from '../../cell/categoryCellEvents';
 import {FocusedElements} from '../../../types/focusedElements';
 import {CategoryDropdownItem} from './categoryDropdownItem';
 import {Categories} from '../../../types/columnDetails';
@@ -37,12 +38,11 @@ export class CategoryDropdown {
     const targetElement = event.target as HTMLElement;
     // when user clicks on top/bottom paddding instead of an item
     if (targetElement.classList.contains(Dropdown.DROPDOWN_CLASS)) return;
-    CategoryDropdown.hide(dropdownElement);
     const { rowIndex, columnIndex, element: cellElement } = this.focusedElements.cell as CellDetails;
+    CategoryCellEvents.programmaticBlur(this);
     const itemElement = targetElement.classList.contains('dropdown-item') ? targetElement : targetElement.parentElement;
     CategoryDropdownItem.selectExistingCategory(this, itemElement as HTMLElement, rowIndex, columnIndex,
       cellElement.children[0] as HTMLElement, dropdownElement);
-    delete this.focusedElements.categoryDropdown;
   }
 
   // this is required to record to stop cell blur from closing the dropdown
@@ -62,8 +62,8 @@ export class CategoryDropdown {
       CategoryDropdown.setPosition(categoryDropdown, cellElement);
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'hovered');
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'matchingWithCellText');
-      categoryDropdown.scrollLeft = 0;
       categoryDropdown.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
+      categoryDropdown.scrollLeft = 0;
       // REF-4
       CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categoryDropdown, categoryDropdownItems);
       const textElement = cellElement.children[0] as HTMLElement;
