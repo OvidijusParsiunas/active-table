@@ -1,5 +1,6 @@
 import {CellKeyPressStateUtil} from './utils/cellKeyPressState/cellKeyPressStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
+import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableElementEventState} from './types/tableElementEventState';
 import {customElement, property, state} from 'lit/decorators.js';
@@ -10,9 +11,9 @@ import {CellKeyPressState} from './types/cellKeyPressState';
 import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {OverlayElements} from './types/overlayElements';
+import {FocusedElements} from './types/focusedElements';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
-import {FocusedCell} from './types/focusedCell';
 import {LitElement} from 'lit';
 
 // TO-DO
@@ -76,10 +77,7 @@ export class EditableTableComponent extends LitElement {
   tableBodyElementRef: HTMLElement | null = null;
 
   @state()
-  focusedCell: FocusedCell = {};
-
-  @state()
-  focusedCategoryDropdown: {element?: HTMLElement} = {};
+  focusedElements: FocusedElements = FocusedElementsUtils.createEmpty();
 
   @state()
   overlayElementsState: OverlayElements = OverlayElementsState.createNew();

@@ -1,8 +1,8 @@
 import {Categories, CategoryDropdownItems, ColumnDetailsT, UniqueCategories} from '../../../types/columnDetails';
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
+import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {CaretPosition} from '../../../utils/cellFocus/caretPosition';
 import {CategoryCellElement} from '../../cell/categoryCellElement';
 import {TableContents} from '../../../types/tableContents';
 import {CellDetails} from '../../../types/focusedCell';
@@ -75,7 +75,7 @@ export class CategoryDropdownItem {
   }
 
   private static updateFocusedCellWithHighlightedItem(etc: EditableTableComponent, highlightedItem: HTMLElement) {
-    const {element, rowIndex, columnIndex} = etc.focusedCell as CellDetails;
+    const {element, rowIndex, columnIndex} = etc.focusedElements.cell as CellDetails;
     const textElement = element?.children[0] as HTMLElement;
     textElement.textContent = highlightedItem.textContent;
     textElement.style.backgroundColor = highlightedItem.style.backgroundColor;

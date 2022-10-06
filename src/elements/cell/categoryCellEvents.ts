@@ -1,8 +1,8 @@
 import {CategoryDropdownItem} from '../dropdown/categoryDropdown/categoryDropdownItem';
 import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
-import {FocusedCellUtils} from '../../utils/cellFocus/focusedCellUtils';
+import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
+import {CaretPosition} from '../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../editable-table-component';
-import {CaretPosition} from '../../utils/cellFocus/caretPosition';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {Browser} from '../../utils/browser/browser';
 import {DataCellEvents} from './dataCellEvents';
@@ -16,7 +16,7 @@ export class CategoryCellEvents {
       (event.target as HTMLElement).blur();
       // the above will not trigger the CategoryCellEvents.blur functionality if dropdown has been focused, but will blur
       // the element in the dom, the following will trigger the required programmatic functionality
-      if (this.focusedCategoryDropdown.element) CategoryCellEvents.blur(this, rowIndex, columnIndex, event);
+      if (this.focusedElements.categoryDropdown) CategoryCellEvents.blur(this, rowIndex, columnIndex, event);
     } else if (event.key === KEYBOARD_KEY.ENTER) {
       event.preventDefault();
       CategoryDropdownItem.focusOrBlurNextColumnCell(elements, rowIndex);
@@ -34,7 +34,7 @@ export class CategoryCellEvents {
     const cellElement = textElement.parentElement as HTMLElement;
     DataCellEvents.prepareText(this, rowIndex, columnIndex, textElement);
     CategoryDropdown.display(this, columnIndex, cellElement);
-    FocusedCellUtils.set(this.focusedCell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
+    FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
     if (this.cellKeyPressState[KEYBOARD_KEY.TAB]) {
       // contrary to this being called on mouseDownOnCell - this does not retrigger focus event
       CaretPosition.setToEndOfText(this, textElement);
@@ -55,7 +55,7 @@ export class CategoryCellEvents {
   }
 
   private static blurText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
-    if (!this.focusedCategoryDropdown.element) {
+    if (!this.focusedElements.categoryDropdown) {
       CategoryCellEvents.blur(this, rowIndex, columnIndex, event);
     }
   }

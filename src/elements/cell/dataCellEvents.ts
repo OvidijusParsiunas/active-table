@@ -2,11 +2,11 @@ import {OverwriteCellsViaCSVOnPaste} from '../../utils/pasteCSV/overwriteCellsVi
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {CellKeyPressStateUtil} from '../../utils/cellKeyPressState/cellKeyPressStateUtil';
 import {CategoryDropdownItem} from '../dropdown/categoryDropdown/categoryDropdownItem';
+import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
 import {CellTypeTotalsUtils} from '../../utils/cellType/cellTypeTotalsUtils';
-import {FocusedCellUtils} from '../../utils/cellFocus/focusedCellUtils';
+import {CaretPosition} from '../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
-import {CaretPosition} from '../../utils/cellFocus/caretPosition';
 import {ValidateInput} from '../../utils/cellType/validateInput';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {Browser} from '../../utils/browser/browser';
@@ -76,8 +76,8 @@ export class DataCellEvents {
     if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeContentEditable(textContainerElement);
     CellEvents.setCellToDefaultIfNeeded(this, rowIndex, columnIndex, textContainerElement);
     textContainerElement.style.color = DataCellEvents.DEFAULT_TEXT_COLOR;
-    const oldType = this.focusedCell.type as CELL_TYPE;
-    FocusedCellUtils.purge(this.focusedCell);
+    const oldType = this.focusedElements.cell.type as CELL_TYPE;
+    FocusedCellUtils.purge(this.focusedElements.cell);
     setTimeout(() => {
       const newType = CellTypeTotalsUtils.parseType(textContainerElement.textContent as string, this.defaultCellValue);
       CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(this.columnsDetails[columnIndex], oldType, newType);
@@ -99,7 +99,7 @@ export class DataCellEvents {
     DataCellEvents.prepareText(this, rowIndex, columnIndex, cellElement);
     // REF-7
     if (this.cellKeyPressState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
-    FocusedCellUtils.set(this.focusedCell, event.target as HTMLElement, rowIndex, columnIndex, this.defaultCellValue);
+    FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
   }
 
   public static set(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {

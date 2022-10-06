@@ -1,4 +1,4 @@
-import {FocusedCellUtils} from '../../utils/cellFocus/focusedCellUtils';
+import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
@@ -32,7 +32,7 @@ export class HeaderCellEvents {
     const cellElement = event.target as HTMLElement;
     CellEvents.removeTextIfDefault(this, 0, columnIndex, cellElement);
     ColumnDropdown.displayRelevantDropdownElements(this, columnIndex, event);
-    setTimeout(() => FocusedCellUtils.setHeaderCell(this.focusedCell, cellElement, columnIndex));
+    setTimeout(() => FocusedCellUtils.setHeaderCell(this.focusedElements.cell, cellElement, columnIndex));
   }
 
   public static set(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {

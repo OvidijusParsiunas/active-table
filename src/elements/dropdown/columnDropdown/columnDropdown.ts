@@ -18,7 +18,7 @@ export class ColumnDropdown {
   public static processTextAndHide(etc: EditableTableComponent) {
     const {
       overlayElementsState: {columnDropdown, columnTypeDropdown, fullTableOverlay},
-      focusedCell: {element: cellElement, columnIndex}} = etc;
+      focusedElements: { cell: {element: cellElement, columnIndex} }} = etc;
     // setCellToDefaultIfNeeded will not work without etc.contents containing trimmed text
     etc.contents[0][columnIndex as number] = (cellElement?.textContent as string).trim();
     CellEvents.setCellToDefaultIfNeeded(etc, 0, columnIndex as number, cellElement as HTMLElement);

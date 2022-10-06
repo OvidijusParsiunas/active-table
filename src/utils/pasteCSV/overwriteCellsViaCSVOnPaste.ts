@@ -62,7 +62,7 @@ export class OverwriteCellsViaCSVOnPaste {
   }
 
   private static setFocusedCellType(etc: EditableTableComponent, cellText: string) {
-    etc.focusedCell.type = CellTypeTotalsUtils.parseType(cellText, etc.defaultCellValue);
+    etc.focusedElements.cell.type = CellTypeTotalsUtils.parseType(cellText, etc.defaultCellValue);
   }
 
   // prettier-ignore

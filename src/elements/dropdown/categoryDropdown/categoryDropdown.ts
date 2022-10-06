@@ -1,6 +1,7 @@
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {FocusedElements} from '../../../types/focusedElements';
 import {CategoryDropdownItem} from './categoryDropdownItem';
 import {Categories} from '../../../types/columnDetails';
 import {CellDetails} from '../../../types/focusedCell';
@@ -34,20 +35,20 @@ export class CategoryDropdown {
   // prettier-ignore
   private static click(this: EditableTableComponent, dropdownElement: HTMLElement, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
-    const { rowIndex, columnIndex, element: cellElement } = this.focusedCell as CellDetails;
     // when user clicks on top/bottom paddding instead of an item
     if (targetElement.classList.contains(Dropdown.DROPDOWN_CLASS)) return;
     CategoryDropdown.hide(dropdownElement);
+    const { rowIndex, columnIndex, element: cellElement } = this.focusedElements.cell as CellDetails;
     const itemElement = targetElement.classList.contains('dropdown-item') ? targetElement : targetElement.parentElement;
     CategoryDropdownItem.selectExistingCategory(this, itemElement as HTMLElement, rowIndex, columnIndex,
       cellElement.children[0] as HTMLElement, dropdownElement);
-    delete this.focusedCategoryDropdown.element;
+    delete this.focusedElements.categoryDropdown;
   }
 
-  // prettier-ignore
-  // WORK - refactor focusedCategoryDropdown
-  private static mouseDown(focusedCategoryDropdown: { element?: HTMLElement }, dropdownElement: HTMLElement) {
-    focusedCategoryDropdown.element = dropdownElement;
+  // this is required to record to stop cell blur from closing the dropdown
+  // additionally if the user clicks on dropdown scroll or padding, this will
+  private static mouseDown(focusedElements: FocusedElements, dropdownElement: HTMLElement) {
+    focusedElements.categoryDropdown = dropdownElement;
   }
 
   // prettier-ignore
@@ -56,7 +57,7 @@ export class CategoryDropdown {
     const {list, categoryDropdownItems} = categories;
     const categoryDropdown = etc.overlayElementsState.categoryDropdown as HTMLElement;
     if (Object.keys(list).length > 0) {
-      categoryDropdown.onmousedown = CategoryDropdown.mouseDown.bind(this, etc.focusedCategoryDropdown, categoryDropdown);
+      categoryDropdown.onmousedown = CategoryDropdown.mouseDown.bind(this, etc.focusedElements, categoryDropdown);
       categoryDropdown.onclick = CategoryDropdown.click.bind(etc, categoryDropdown);
       CategoryDropdown.setPosition(categoryDropdown, cellElement);
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'hovered');

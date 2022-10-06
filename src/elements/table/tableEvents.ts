@@ -8,13 +8,13 @@ import {Dropdown} from '../dropdown/dropdown';
 export class TableEvents {
   // prettier-ignore
   private static closeCategoryDropdown(etc: EditableTableComponent, targetElement: HTMLElement) {
-    const { focusedCategoryDropdown, focusedCell, overlayElementsState: { categoryDropdown } } = etc;
-    if (focusedCategoryDropdown.element && !Dropdown.isPartOfDropdownElement(targetElement)) {
-      if (focusedCell.element !== CellElement.extractCellElement(targetElement)) {
+    const { focusedElements, overlayElementsState: { categoryDropdown } } = etc;
+    if (focusedElements.categoryDropdown && !Dropdown.isPartOfDropdownElement(targetElement)) {
+      if (focusedElements.cell.element !== CellElement.extractCellElement(targetElement)) {
         CategoryDropdown.hide(categoryDropdown as HTMLElement);
       }
       // remove the reference as the dropdown is no longer focused
-      delete focusedCategoryDropdown.element;
+      delete focusedElements.categoryDropdown;
     }
   }
 
