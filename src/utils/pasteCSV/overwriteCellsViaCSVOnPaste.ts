@@ -1,10 +1,12 @@
 import {InsertNewColumn} from '../insertRemoveStructure/insert/insertNewColumn';
+import {CategoryCellElement} from '../../elements/cell/categoryCellElement';
 import {InsertNewRow} from '../insertRemoveStructure/insert/insertNewRow';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {DataUtils} from '../insertRemoveStructure/shared/dataUtils';
 import {TableCellText, TableRow} from '../../types/tableContents';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
+import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {ArrayUtils} from '../array/arrayUtils';
 import {CSV, CSVRow} from '../../types/CSV';
@@ -46,9 +48,13 @@ export class OverwriteCellsViaCSVOnPaste {
     const oldType = CellTypeTotalsUtils.parseType(cellElement.textContent as string, etc.defaultCellValue);
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
+    const columnDetails = etc.columnsDetails[columnIndex];
+    if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+      CategoryCellElement.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
+    }
     setTimeout(() => {
       const newType = CellTypeTotalsUtils.parseType(processedNewCellText, etc.defaultCellValue);
-      CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(etc.columnsDetails[columnIndex], oldType, newType);
+      CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(columnDetails, oldType, newType);
     });
   }
 

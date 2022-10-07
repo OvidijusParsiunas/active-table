@@ -27,9 +27,9 @@ export class CellElement {
     // if category cell
     if (element.children[0]?.classList.contains(CellElement.CATEGORY_CELL_TEXT_CLASS)) {
       element.children[0].textContent = text;
+    } else {
+      element.textContent = text;
     }
-    // if data cell or category cell text
-    element.textContent = text;
   }
 
   // set text is optional as some functions may only need to augment the cell

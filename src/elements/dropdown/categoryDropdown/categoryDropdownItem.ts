@@ -1,4 +1,4 @@
-import {Categories, ActiveCategoryItems, UniqueCategories} from '../../../types/columnDetails';
+import {Categories, ActiveCategoryItems, CategoryDropdownProps} from '../../../types/columnDetails';
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
@@ -10,6 +10,10 @@ import {CellEvents} from '../../cell/cellEvents';
 import {Color} from '../../../utils/color/color';
 import {DropdownItem} from '../dropdownItem';
 import {SIDE} from '../../../types/side';
+
+interface CategoryToColor {
+  [cellText: string]: string;
+}
 
 export class CategoryDropdownItem {
   public static focusOrBlurNextColumnCell(elements: HTMLElement[], rowIndex: number) {
@@ -50,13 +54,11 @@ export class CategoryDropdownItem {
     textElement.style.backgroundColor = activeItemElement?.style.backgroundColor;
   }
 
-  public static addNewCategory(textElement: HTMLElement, categories: Categories) {
+  public static addNewCategory(textElement: HTMLElement, dropdown: CategoryDropdownProps) {
     const newCategory = textElement.textContent as string;
     const newColor = Color.getLatestPasteleColorAndSetNew();
     textElement.style.backgroundColor = newColor;
-    // WORK - not sure if there is much need to maintain this
-    categories.list[newCategory] = newColor;
-    CategoryDropdownItem.addItem(newCategory, newColor, categories, true);
+    CategoryDropdownItem.addCategoryItem(newCategory, newColor, dropdown);
     Color.setNewLatestPasteleColor();
   }
 
@@ -81,7 +83,7 @@ export class CategoryDropdownItem {
     if (itemElement) {
       categories.dropdown.activeItems.matchingWithCellText = itemElement;
       itemElement.dispatchEvent(new MouseEvent('mouseenter'));
-      setTimeout(() => (textElement.style.backgroundColor = itemElement.style.backgroundColor));
+      textElement.style.backgroundColor = categories.dropdown.categoryToItem[textElement.textContent as string].color;
     } else {
       textElement.style.backgroundColor = Color.getLatestPasteleColor();
     }
@@ -112,11 +114,9 @@ export class CategoryDropdownItem {
   // prettier-ignore
   public static attemptHighlightMatchingCellCategoryItem(textElement: HTMLElement,
       categories: Categories, matchingCellElement?: HTMLElement) {
-    const { dropdown: { element, activeItems } } = categories;
-    const itemsArr = Array.from(element.children);
-    const text = textElement.textContent as string;
-    const itemElement = matchingCellElement || itemsArr.find(
-      (itemElement) => itemElement.textContent === text) as (HTMLElement | undefined);
+    const {dropdown: {activeItems, categoryToItem}} = categories;
+    const targetText = textElement.textContent as string;
+    const itemElement = matchingCellElement || categoryToItem[targetText]?.element;
     if (!itemElement || activeItems.matchingWithCellText !== itemElement) {
       // this is used to preserve the ability for the user to still allow the use of arrow keys to traverse the dropdown
       CategoryDropdownItem.hideHoveredItemHighlight(activeItems);
@@ -142,8 +142,8 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
-  private static highlightItem(color: string, categories: Categories, event: MouseEvent) {
-    const {dropdown: {isHorizontalScrollPresent, activeItems}} = categories;
+  private static highlightItem(color: string, dropdown: CategoryDropdownProps, event: MouseEvent) {
+    const {isHorizontalScrollPresent, activeItems} = dropdown;
     // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
     if (activeItems.hovered) activeItems.hovered.style.backgroundColor = '';
     const itemElement = event.target as HTMLElement;
@@ -157,35 +157,40 @@ export class CategoryDropdownItem {
     }
   }
 
-  private static addItem(text: string, color: string, categories: Categories, atStart = false) {
-    const {dropdown} = categories;
+  private static addItemElement(text: string, color: string, dropdown: CategoryDropdownProps, atStart = false) {
     const itemElement = DropdownItem.addPlaneButtonItem(dropdown.element, text, atStart ? 0 : undefined);
-    itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(this, color, categories);
+    itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(this, color, dropdown);
     itemElement.onmouseleave = CategoryDropdownItem.blurItemHighlight.bind(this, dropdown.activeItems, 'hovered');
+    return itemElement;
   }
 
-  private static addItems(uniqueCategories: UniqueCategories, categories: Categories) {
-    Object.keys(uniqueCategories).forEach((categoryName) => {
-      CategoryDropdownItem.addItem(categoryName, uniqueCategories[categoryName], categories);
+  private static addCategoryItem(categoryName: string, color: string, dropdown: CategoryDropdownProps) {
+    dropdown.categoryToItem[categoryName] = {
+      color,
+      element: CategoryDropdownItem.addItemElement(categoryName, color, dropdown),
+    };
+  }
+
+  private static addCategoryItems(categoryToColor: CategoryToColor, dropdown: CategoryDropdownProps) {
+    Object.keys(categoryToColor).forEach((categoryName) => {
+      CategoryDropdownItem.addCategoryItem(categoryName, categoryToColor[categoryName], dropdown);
     });
   }
 
-  private static aggregateUniqueCategories(contents: TableContents, columnIndex: number, defaultCellValue: string) {
-    const uniqueCategories: UniqueCategories = {};
+  private static aggregateCategoryToColor(contents: TableContents, columnIndex: number, defaultCellValue: string) {
+    const categoryToColor: CategoryToColor = {};
     contents.slice(1).forEach((row) => {
       const cellText = row[columnIndex] as string;
-      uniqueCategories[cellText] = Color.getLatestPasteleColorAndSetNew();
+      categoryToColor[cellText] = Color.getLatestPasteleColorAndSetNew();
     });
-    delete uniqueCategories[defaultCellValue];
-    return uniqueCategories;
+    delete categoryToColor[defaultCellValue];
+    return categoryToColor;
   }
 
   public static populateItems(etc: EditableTableComponent, columnIndex: number) {
     const {contents, defaultCellValue, columnsDetails} = etc;
-    const uniqueCategories = CategoryDropdownItem.aggregateUniqueCategories(contents, columnIndex, defaultCellValue);
-    const {categories} = columnsDetails[columnIndex];
-    categories.list = uniqueCategories;
-    CategoryCellElement.convertColumnFromDataToCategory(etc, uniqueCategories, columnIndex);
-    CategoryDropdownItem.addItems(uniqueCategories, categories);
+    const categoryToColor = CategoryDropdownItem.aggregateCategoryToColor(contents, columnIndex, defaultCellValue);
+    CategoryDropdownItem.addCategoryItems(categoryToColor, columnsDetails[columnIndex].categories.dropdown);
+    CategoryCellElement.convertColumnFromDataToCategory(etc, columnIndex);
   }
 }

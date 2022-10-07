@@ -21,7 +21,6 @@ export class CategoryDropdown {
     CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categories);
     if (!categories.dropdown.activeItems.matchingWithCellText) {
       const firstItem = dropdown.children[0] as HTMLElement;
-      // firing event as the handler has the hover color binded to it
       firstItem?.dispatchEvent(new MouseEvent('mouseenter'));
     }
   }
@@ -56,8 +55,8 @@ export class CategoryDropdown {
   // prettier-ignore
   public static display(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
     const {categories} = etc.columnsDetails[columnIndex];
-    const {list, dropdown: {element: dropdown, activeItems}} = categories;
-    if (Object.keys(list).length > 0) {
+    const {dropdown: {element: dropdown, activeItems, categoryToItem}} = categories;
+    if (Object.keys(categoryToItem).length > 0) {
       dropdown.onmousedown = CategoryDropdown.mouseDown.bind(this, etc.focusedElements, dropdown);
       dropdown.onclick = CategoryDropdown.click.bind(etc, dropdown);
       CategoryDropdown.setPosition(dropdown, cellElement);

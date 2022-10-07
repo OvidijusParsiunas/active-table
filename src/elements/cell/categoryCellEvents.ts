@@ -43,7 +43,7 @@ export class CategoryCellEvents {
   public static blurring(etc: EditableTableComponent, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const {dropdown, isCellTextNewCategory} = etc.columnsDetails[columnIndex].categories;
     CategoryDropdown.hide(dropdown.element);
-    if (isCellTextNewCategory) CategoryCellElement.processNewCategoryCellText(etc, textElement, columnIndex);
+    if (isCellTextNewCategory) CategoryCellElement.finaliseEditedText(etc, textElement, columnIndex);
     DataCellEvents.blur(etc, rowIndex, columnIndex, textElement);
   }
 

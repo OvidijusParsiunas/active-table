@@ -118,7 +118,7 @@ export class EditableTableComponent extends LitElement {
     const tableElement = TableElement.createBase(this);
     TableElement.addAuxiliaryElements(this, tableElement, this.overlayElementsState, this.areHeadersEditable);
     this.shadowRoot?.appendChild(tableElement);
-    WindowElement.addEvents(this);
+    WindowElement.setEvents(this);
     this.onTableUpdate(this.contents);
   }
 }

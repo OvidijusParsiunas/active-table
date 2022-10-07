@@ -1,17 +1,30 @@
+import {CategoryCellEvents} from '../../../elements/cell/categoryCellEvents';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ExtractElements} from '../../elements/extractElements';
+import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {ElementDetails} from '../../../types/elementDetails';
 
 export class UpdateCellsForRows {
   // prettier-ignore
+  private static resetCellEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number,
+      columnIndex: number) {
+    CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
+    const userSetColumnType = etc.columnsDetails[columnIndex].userSetColumnType;
+    if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+      CategoryCellEvents.setEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
+    }
+  }
+
+  // prettier-ignore
   private static updateRowCells(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
     const dataCellElements = ExtractElements.textCellsArrFromRow(rowElement);
+    const resetEvents = cellUpdateType !== CELL_UPDATE_TYPE.REMOVED && rowIndex < etc.contents.length - 1;
     dataCellElements.forEach((cellElement: Node, columnIndex: number) => {
-      if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
-        CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
+      if (resetEvents) {
+        UpdateCellsForRows.resetCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
       }
       etc.onCellUpdate(cellElement.textContent as string, rowIndex, columnIndex, cellUpdateType);
     });
@@ -42,7 +55,7 @@ export class UpdateCellsForRows {
   // prettier-ignore
   public static rebindAndFireUpdates(
       etc: EditableTableComponent, startRowIndex: number, lastRowUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {
-    UpdateCellsForRows.updateLowerBeforeLastRows(etc, startRowIndex, lastRow.index)
+    UpdateCellsForRows.updateLowerBeforeLastRows(etc, startRowIndex, lastRow.index);
     UpdateCellsForRows.updateLastRow(etc, lastRowUpdateType, lastRow);
   }
 }

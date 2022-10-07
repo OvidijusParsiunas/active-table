@@ -1,7 +1,6 @@
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {CategoryDropdownItem} from '../dropdown/categoryDropdown/categoryDropdownItem';
 import {EditableTableComponent} from '../../editable-table-component';
-import {UniqueCategories} from '../../types/columnDetails';
 import {CategoryCellEvents} from './categoryCellEvents';
 import {Browser} from '../../utils/browser/browser';
 import {CellElement} from './cellElement';
@@ -25,7 +24,7 @@ export class CategoryCellElement {
   }
 
   // prettier-ignore
-  private static convertCellFromDataToCategory(etc: EditableTableComponent,
+  public static convertCellFromDataToCategory(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, cell: HTMLElement, backgroundColor: string) {
     const textElement = CategoryCellElement.createTextElement(cell.textContent as string, backgroundColor);
     CategoryCellElement.setTextAsAnElement(cell, textElement);
@@ -33,21 +32,26 @@ export class CategoryCellElement {
   }
 
   // prettier-ignore
-  public static convertColumnFromDataToCategory(etc: EditableTableComponent,
-      uniqueCategories: UniqueCategories, columnIndex: number) {
-    const { elements } = etc.columnsDetails[columnIndex];
+  public static convertColumnFromDataToCategory(etc: EditableTableComponent, columnIndex: number) {
+    const { elements, categories: {dropdown: { categoryToItem }} } = etc.columnsDetails[columnIndex];
     elements.slice(1).forEach((cellElement: HTMLElement, dataIndex: number) => {
       const relativeIndex = dataIndex + 1;
       CategoryCellElement.convertCellFromDataToCategory(etc, relativeIndex, columnIndex,
-        cellElement, uniqueCategories[cellElement.textContent as string]);
+        cellElement, categoryToItem[cellElement.textContent as string].color);
     });
   }
 
-  public static processNewCategoryCellText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number) {
+  // prettier-ignore
+  public static finaliseEditedText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number,
+      processMatching = false) {
+    const {dropdown} = etc.columnsDetails[columnIndex].categories;
+    const color = dropdown.categoryToItem[textElement.textContent as string]?.color;
     if (textElement.textContent === '' || textElement.textContent === etc.defaultCellValue) {
       textElement.style.backgroundColor = '';
+    } else if (processMatching && color) {
+      textElement.style.backgroundColor = color;
     } else {
-      CategoryDropdownItem.addNewCategory(textElement, etc.columnsDetails[columnIndex].categories);
+      CategoryDropdownItem.addNewCategory(textElement, dropdown);
     }
   }
 }

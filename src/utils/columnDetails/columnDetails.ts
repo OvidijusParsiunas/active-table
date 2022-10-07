@@ -10,9 +10,9 @@ export class ColumnDetails {
       userSetColumnType: USER_SET_COLUMN_TYPE.Auto,
       cellTypeTotals: CellTypeTotalsUtils.createObj(),
       categories: {
-        list: {},
         isCellTextNewCategory: false,
         dropdown: {
+          categoryToItem: {},
           activeItems: {},
           element: categoryDropdown,
           isHorizontalScrollPresent: false,

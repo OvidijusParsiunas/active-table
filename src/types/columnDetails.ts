@@ -27,23 +27,31 @@ export type CellTypeTotals = {
   [key in CELL_TYPE]: number;
 };
 
-export type UniqueCategories = {[cellText: string]: string};
-
 export interface ActiveCategoryItems {
   matchingWithCellText?: HTMLElement;
   hovered?: HTMLElement;
 }
 
-export interface CategoryDropdownProps {
-  // items that exhibit certain behaviours
-  activeItems: ActiveCategoryItems;
-  isHorizontalScrollPresent: boolean;
-  // REF-8
+export interface CategoryItemDetails {
+  color: string;
   element: HTMLElement;
 }
 
+export interface CategoryToItem {
+  [cellText: string]: CategoryItemDetails;
+}
+
+export interface CategoryDropdownProps {
+  // dropdown item
+  categoryToItem: CategoryToItem;
+  // items that exhibit certain behaviours
+  activeItems: ActiveCategoryItems;
+  // REF-8
+  element: HTMLElement;
+  isHorizontalScrollPresent: boolean;
+}
+
 export interface Categories {
-  list: UniqueCategories;
   isCellTextNewCategory: boolean;
   dropdown: CategoryDropdownProps;
 }

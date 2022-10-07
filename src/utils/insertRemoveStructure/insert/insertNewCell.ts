@@ -1,10 +1,12 @@
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {InsertRemoveColumnSizer} from '../../columnSizer/insertRemoveColumnSizer';
+import {CategoryCellElement} from '../../../elements/cell/categoryCellElement';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
+import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {ColumnDetailsT} from '../../../types/columnDetails';
 import {DataUtils} from '../shared/dataUtils';
 
@@ -35,12 +37,20 @@ export class InsertNewCell {
     }
   }
 
+  private static create(etc: EditableTableComponent, processedCellText: string, rowIndex: number, columnIndex: number) {
+    const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
+    if (etc.columnsDetails[columnIndex]?.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+      CategoryCellElement.convertCellFromDataToCategory(etc, rowIndex, columnIndex, newCellElement, '');
+    }
+    return newCellElement;
+  }
+
   // isNewText indicates whether rowData is already in the contents state or if it needs to be added
   // prettier-ignore
   public static insertToRow(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
-    const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
+    const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex);
     setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(
       etc, rowIndex, columnIndex, newCellElement, processedCellText));
