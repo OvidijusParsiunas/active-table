@@ -29,19 +29,23 @@ export type CellTypeTotals = {
 
 export type UniqueCategories = {[cellText: string]: string};
 
-export interface CategoryDropdownItems {
+export interface ActiveCategoryItems {
   matchingWithCellText?: HTMLElement;
   hovered?: HTMLElement;
+}
+
+export interface CategoryDropdownProps {
+  // items that exhibit certain behaviours
+  activeItems: ActiveCategoryItems;
   isHorizontalScrollPresent: boolean;
+  // REF-8
+  element: HTMLElement;
 }
 
 export interface Categories {
   list: UniqueCategories;
-  // items that exhibit certain behaviours
-  categoryDropdownItems: CategoryDropdownItems;
   isCellTextNewCategory: boolean;
-  // REF-8
-  dropdown: HTMLElement;
+  dropdown: CategoryDropdownProps;
 }
 
 export interface ColumnDetailsT {

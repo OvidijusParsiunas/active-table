@@ -19,7 +19,7 @@ export class CategoryDropdown {
 
   private static focusItemOnDropdownOpen(textElement: HTMLElement, dropdown: HTMLElement, categories: Categories) {
     CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categories);
-    if (!categories.categoryDropdownItems.matchingWithCellText) {
+    if (!categories.dropdown.activeItems.matchingWithCellText) {
       const firstItem = dropdown.children[0] as HTMLElement;
       // firing event as the handler has the hover color binded to it
       firstItem?.dispatchEvent(new MouseEvent('mouseenter'));
@@ -56,17 +56,17 @@ export class CategoryDropdown {
   // prettier-ignore
   public static display(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
     const {categories} = etc.columnsDetails[columnIndex];
-    const {list, categoryDropdownItems, dropdown} = categories;
+    const {list, dropdown: {element: dropdown, activeItems}} = categories;
     if (Object.keys(list).length > 0) {
       dropdown.onmousedown = CategoryDropdown.mouseDown.bind(this, etc.focusedElements, dropdown);
       dropdown.onclick = CategoryDropdown.click.bind(etc, dropdown);
       CategoryDropdown.setPosition(dropdown, cellElement);
-      CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'hovered');
-      CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'matchingWithCellText');
+      CategoryDropdownItem.blurItemHighlight(activeItems, 'hovered');
+      CategoryDropdownItem.blurItemHighlight(activeItems, 'matchingWithCellText');
       dropdown.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
       dropdown.scrollLeft = 0;
       // REF-4
-      CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(dropdown, categoryDropdownItems);
+      CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categories.dropdown);
       const textElement = cellElement.children[0] as HTMLElement;
       CategoryDropdown.focusItemOnDropdownOpen(textElement, dropdown, categories);
     }

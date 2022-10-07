@@ -11,9 +11,12 @@ export class ColumnDetails {
       cellTypeTotals: CellTypeTotalsUtils.createObj(),
       categories: {
         list: {},
-        categoryDropdownItems: {isHorizontalScrollPresent: false},
         isCellTextNewCategory: false,
-        dropdown: categoryDropdown,
+        dropdown: {
+          activeItems: {},
+          element: categoryDropdown,
+          isHorizontalScrollPresent: false,
+        },
       },
     };
   }

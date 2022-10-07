@@ -50,7 +50,7 @@ export class DataCellEvents {
       const userSetColumnType = columnDetails.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
         DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
-      } else if (Dropdown.isDisplayed(columnDetails.categories.dropdown)) {
+      } else if (Dropdown.isDisplayed(columnDetails.categories.dropdown.element)) {
         CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textContainerElement, columnDetails.categories);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});

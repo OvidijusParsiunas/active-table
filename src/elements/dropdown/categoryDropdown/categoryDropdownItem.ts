@@ -1,4 +1,4 @@
-import {Categories, CategoryDropdownItems, UniqueCategories} from '../../../types/columnDetails';
+import {Categories, ActiveCategoryItems, UniqueCategories} from '../../../types/columnDetails';
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
@@ -79,7 +79,7 @@ export class CategoryDropdownItem {
   private static updateItemAndTextColorBasedOnMatch(itemElement: HTMLElement | undefined,
       textElement: HTMLElement, categories: Categories) {
     if (itemElement) {
-      categories.categoryDropdownItems.matchingWithCellText = itemElement;
+      categories.dropdown.activeItems.matchingWithCellText = itemElement;
       itemElement.dispatchEvent(new MouseEvent('mouseenter'));
       setTimeout(() => (textElement.style.backgroundColor = itemElement.style.backgroundColor));
     } else {
@@ -89,46 +89,46 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
-  public static blurItemHighlight(categoryDropdownItems: CategoryDropdownItems, typeOfItem: keyof CategoryDropdownItems) {
-    const itemElement = categoryDropdownItems[typeOfItem] as HTMLElement;
+  public static blurItemHighlight(activeItems: ActiveCategoryItems, typeOfItem: keyof ActiveCategoryItems) {
+    const itemElement = activeItems[typeOfItem] as HTMLElement;
     if (itemElement !== undefined) {
       if (typeOfItem === 'matchingWithCellText'
-          || (typeOfItem === 'hovered' && itemElement !== categoryDropdownItems.matchingWithCellText)) {
+          || (typeOfItem === 'hovered' && itemElement !== activeItems.matchingWithCellText)) {
         itemElement.style.backgroundColor = '';
-        delete categoryDropdownItems[typeOfItem];
+        delete activeItems[typeOfItem];
       }
     }
   }
 
-  private static hideHoveredItemHighlight(categoryDropdownItems: CategoryDropdownItems) {
-    const {hovered, matchingWithCellText} = categoryDropdownItems;
+  private static hideHoveredItemHighlight(activeItems: ActiveCategoryItems) {
+    const {hovered, matchingWithCellText} = activeItems;
     if (hovered) {
       hovered.style.backgroundColor = '';
     } else {
-      categoryDropdownItems.hovered = matchingWithCellText;
+      activeItems.hovered = matchingWithCellText;
     }
   }
 
   // prettier-ignore
   public static attemptHighlightMatchingCellCategoryItem(textElement: HTMLElement,
       categories: Categories, matchingCellElement?: HTMLElement) {
-    const { categoryDropdownItems, dropdown } = categories;
-    const itemsArr = Array.from(dropdown.children);
+    const { dropdown: { element, activeItems } } = categories;
+    const itemsArr = Array.from(element.children);
     const text = textElement.textContent as string;
     const itemElement = matchingCellElement || itemsArr.find(
       (itemElement) => itemElement.textContent === text) as (HTMLElement | undefined);
-    if (!itemElement || categoryDropdownItems.matchingWithCellText !== itemElement) {
+    if (!itemElement || activeItems.matchingWithCellText !== itemElement) {
       // this is used to preserve the ability for the user to still allow the use of arrow keys to traverse the dropdown
-      CategoryDropdownItem.hideHoveredItemHighlight(categoryDropdownItems);
-      CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'matchingWithCellText');
+      CategoryDropdownItem.hideHoveredItemHighlight(activeItems);
+      CategoryDropdownItem.blurItemHighlight(activeItems, 'matchingWithCellText');
     }
     CategoryDropdownItem.updateItemAndTextColorBasedOnMatch(itemElement, textElement, categories);
   }
 
   // prettier-ignore
   public static setSiblingItemOnCell(etc: EditableTableComponent,
-      categoryDropdownItems: CategoryDropdownItems, sibling: 'previousSibling' | 'nextSibling') {
-    const {hovered, matchingWithCellText} = categoryDropdownItems;
+      activeItems: ActiveCategoryItems, sibling: 'previousSibling' | 'nextSibling') {
+    const {hovered, matchingWithCellText} = activeItems;
     const currentlyHighlightedItem = hovered || matchingWithCellText as HTMLElement;
     const siblingItem = currentlyHighlightedItem[sibling] as HTMLElement;
     if (siblingItem) {
@@ -141,26 +141,27 @@ export class CategoryDropdownItem {
     }
   }
 
-  private static highlightItem(color: string, categoryDropdownItems: CategoryDropdownItems, event: MouseEvent) {
-    const {hovered, matchingWithCellText, isHorizontalScrollPresent} = categoryDropdownItems;
+  // prettier-ignore
+  private static highlightItem(color: string, categories: Categories, event: MouseEvent) {
+    const {dropdown: {isHorizontalScrollPresent, activeItems}} = categories;
     // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
-    if (hovered) hovered.style.backgroundColor = '';
+    if (activeItems.hovered) activeItems.hovered.style.backgroundColor = '';
     const itemElement = event.target as HTMLElement;
     itemElement.style.backgroundColor = color;
     const dropdownElement = itemElement.parentElement as HTMLElement;
     CategoryDropdownItem.scrollToItemIfNeeded(event, itemElement, isHorizontalScrollPresent, dropdownElement);
-    if (itemElement === matchingWithCellText) {
-      delete categoryDropdownItems.hovered;
+    if (itemElement === activeItems.matchingWithCellText) {
+      delete activeItems.hovered;
     } else {
-      categoryDropdownItems.hovered = itemElement;
+      activeItems.hovered = itemElement;
     }
   }
 
   private static addItem(text: string, color: string, categories: Categories, atStart = false) {
-    const {dropdown, categoryDropdownItems} = categories;
-    const itemElement = DropdownItem.addPlaneButtonItem(dropdown, text, atStart ? 0 : undefined);
-    itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(this, color, categoryDropdownItems);
-    itemElement.onmouseleave = CategoryDropdownItem.blurItemHighlight.bind(this, categoryDropdownItems, 'hovered');
+    const {dropdown} = categories;
+    const itemElement = DropdownItem.addPlaneButtonItem(dropdown.element, text, atStart ? 0 : undefined);
+    itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(this, color, categories);
+    itemElement.onmouseleave = CategoryDropdownItem.blurItemHighlight.bind(this, dropdown.activeItems, 'hovered');
   }
 
   private static addItems(uniqueCategories: UniqueCategories, categories: Categories) {

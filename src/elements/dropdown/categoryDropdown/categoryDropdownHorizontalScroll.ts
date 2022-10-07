@@ -1,4 +1,4 @@
-import {CategoryDropdownItems} from '../../../types/columnDetails';
+import {CategoryDropdownProps} from '../../../types/columnDetails';
 
 // REF-4
 export class CategoryDropdownHorizontalScroll {
@@ -9,12 +9,11 @@ export class CategoryDropdownHorizontalScroll {
     return dropdownElement.scrollWidth > dropdownElement.clientWidth;
   }
 
-  // prettier-ignore
-  public static setPropertiesIfHorizontalScrollPresent(dropdownElement: HTMLElement,
-      categoryDropdownItems: CategoryDropdownItems) {
-    if (CategoryDropdownHorizontalScroll.isPresent(dropdownElement) && !categoryDropdownItems.isHorizontalScrollPresent) {
-      categoryDropdownItems.isHorizontalScrollPresent = true;
-      dropdownElement.style.paddingBottom = CategoryDropdownHorizontalScroll.NEW_BOTTOM_PADDING_IF_PRESENT;
+  public static setPropertiesIfHorizontalScrollPresent(dropdown: CategoryDropdownProps) {
+    const {element, isHorizontalScrollPresent} = dropdown;
+    if (CategoryDropdownHorizontalScroll.isPresent(element) && !isHorizontalScrollPresent) {
+      dropdown.isHorizontalScrollPresent = true;
+      element.style.paddingBottom = CategoryDropdownHorizontalScroll.NEW_BOTTOM_PADDING_IF_PRESENT;
     }
   }
 

@@ -13,7 +13,7 @@ import {CellElement} from './cellElement';
 export class CategoryCellEvents {
   // prettier-ignore
   private static keyDownText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
-    const { categories: { categoryDropdownItems}, elements } = this.columnsDetails[columnIndex];
+    const {categories: {dropdown: {activeItems}}, elements} = this.columnsDetails[columnIndex];
     if (event.key === KEYBOARD_KEY.ESCAPE || event.key === KEYBOARD_KEY.TAB) {
       CategoryCellEvents.programmaticBlur(this);
     } else if (event.key === KEYBOARD_KEY.ENTER) {
@@ -21,10 +21,10 @@ export class CategoryCellEvents {
       CategoryDropdownItem.focusOrBlurNextColumnCell(elements, rowIndex);
     } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
       event.preventDefault();
-      CategoryDropdownItem.setSiblingItemOnCell(this, categoryDropdownItems, 'previousSibling');
+      CategoryDropdownItem.setSiblingItemOnCell(this, activeItems, 'previousSibling');
     } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
       event.preventDefault();
-      CategoryDropdownItem.setSiblingItemOnCell(this, categoryDropdownItems, 'nextSibling');
+      CategoryDropdownItem.setSiblingItemOnCell(this, activeItems, 'nextSibling');
     }
   }
 
@@ -42,7 +42,7 @@ export class CategoryCellEvents {
 
   public static blurring(etc: EditableTableComponent, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const {dropdown, isCellTextNewCategory} = etc.columnsDetails[columnIndex].categories;
-    CategoryDropdown.hide(dropdown);
+    CategoryDropdown.hide(dropdown.element);
     if (isCellTextNewCategory) CategoryCellElement.processNewCategoryCellText(etc, textElement, columnIndex);
     DataCellEvents.blur(etc, rowIndex, columnIndex, textElement);
   }
