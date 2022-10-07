@@ -3,6 +3,7 @@ import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
 import {CaretPosition} from '../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../editable-table-component';
+import {CategoryCellElement} from './categoryCellElement';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {Browser} from '../../utils/browser/browser';
 import {CellDetails} from '../../types/focusedCell';
@@ -41,12 +42,9 @@ export class CategoryCellEvents {
 
   public static blurring(etc: EditableTableComponent, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const {overlayElementsState, columnsDetails} = etc;
-    const columnDetails = columnsDetails[columnIndex];
-    const {isCellTextNewCategory, categoryDropdownItems} = columnDetails.categories;
-    const categoryDropdown = overlayElementsState.categoryDropdown as HTMLElement;
-    CategoryDropdown.hide(categoryDropdown);
-    if (isCellTextNewCategory) {
-      CategoryDropdownItem.addNewCategory(textElement, columnDetails, categoryDropdown, categoryDropdownItems);
+    CategoryDropdown.hide(overlayElementsState.categoryDropdown as HTMLElement);
+    if (columnsDetails[columnIndex].categories.isCellTextNewCategory) {
+      CategoryCellElement.processNewCategoryCellText(etc, textElement, columnIndex);
     }
     DataCellEvents.blur(etc, rowIndex, columnIndex, textElement);
   }

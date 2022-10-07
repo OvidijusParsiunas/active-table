@@ -39,12 +39,12 @@ export class CategoryDropdown {
     const targetElement = event.target as HTMLElement;
     // when user clicks on top/bottom paddding instead of an item
     if (targetElement.classList.contains(Dropdown.DROPDOWN_CLASS)) return;
-    CategoryCellEvents.programmaticBlur(this);
     const { rowIndex, columnIndex, element: cellElement } = this.focusedElements.cell as CellDetails;
     const itemElement = targetElement.classList.contains(DropdownItem.DROPDOWN_ITEM_CLASS)
       ? targetElement : targetElement.parentElement;
     CategoryDropdownItem.selectExistingCategory(this, itemElement as HTMLElement, rowIndex, columnIndex,
       cellElement.children[0] as HTMLElement, dropdownElement);
+    CategoryCellEvents.programmaticBlur(this);
   }
 
   // this is required to record to stop cell blur from closing the dropdown
