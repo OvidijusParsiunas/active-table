@@ -1,4 +1,5 @@
-import {InsertRemoveColumnSizer} from '../../columnSizer/manipulateColumnSizer';
+import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
+import {InsertRemoveColumnSizer} from '../../columnSizer/insertRemoveColumnSizer';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
@@ -33,9 +34,10 @@ export class RemoveColumn {
   }
 
   public static remove(etc: EditableTableComponent, columnIndex: number) {
-    etc.columnsDetails.splice(columnIndex, 1);
+    const removedDetails = etc.columnsDetails.splice(columnIndex, 1)[0];
     RemoveColumn.removeCellFromAllRows(etc, columnIndex);
     setTimeout(() => {
+      CategoryDropdown.remove(etc.tableElementRef as HTMLElement, removedDetails.categories.dropdown);
       InsertRemoveColumnSizer.remove(etc.columnsDetails, columnIndex);
       etc.onTableUpdate(etc.contents);
     });

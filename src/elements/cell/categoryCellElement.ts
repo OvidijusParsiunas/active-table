@@ -47,11 +47,7 @@ export class CategoryCellElement {
     if (textElement.textContent === '' || textElement.textContent === etc.defaultCellValue) {
       textElement.style.backgroundColor = '';
     } else {
-      const {overlayElementsState, columnsDetails} = etc;
-      const columnDetails = columnsDetails[columnIndex];
-      const {categoryDropdownItems} = columnDetails.categories;
-      const categoryDropdown = overlayElementsState.categoryDropdown as HTMLElement;
-      CategoryDropdownItem.addNewCategory(textElement, columnDetails, categoryDropdown, categoryDropdownItems);
+      CategoryDropdownItem.addNewCategory(textElement, etc.columnsDetails[columnIndex].categories);
     }
   }
 }

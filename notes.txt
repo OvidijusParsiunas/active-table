@@ -61,3 +61,7 @@ the .textContent grabs the text when used on the cell or the text element for al
 REF-7
 Because there is no way in firefox to distinguish if element focus was fired by tab key or mouse down, the cellKeyPressState
 is used to hold temporary state to indicate this. Primarily used to decide whether move caret via the setToEndOfText method
+
+REF-8
+The reason why there are multiple category dropdowns is because each one contains multiple items dependant on the column it
+is on. Hence it is very inefficient to repopulate the dropdown when it is clicked on a different column cell.

@@ -40,6 +40,8 @@ export interface Categories {
   // items that exhibit certain behaviours
   categoryDropdownItems: CategoryDropdownItems;
   isCellTextNewCategory: boolean;
+  // REF-8
+  dropdown: HTMLElement;
 }
 
 export interface ColumnDetailsT {

@@ -1,4 +1,4 @@
-import {Categories, CategoryDropdownItems, ColumnDetailsT, UniqueCategories} from '../../../types/columnDetails';
+import {Categories, CategoryDropdownItems, UniqueCategories} from '../../../types/columnDetails';
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
@@ -50,15 +50,13 @@ export class CategoryDropdownItem {
     textElement.style.backgroundColor = activeItemElement?.style.backgroundColor;
   }
 
-  // prettier-ignore
-  public static addNewCategory(textElement: HTMLElement, columnDetails: ColumnDetailsT,
-      categoryDropdown: HTMLElement, categoryDropdownItems: CategoryDropdownItems) {
+  public static addNewCategory(textElement: HTMLElement, categories: Categories) {
     const newCategory = textElement.textContent as string;
     const newColor = Color.getLatestPasteleColorAndSetNew();
     textElement.style.backgroundColor = newColor;
     // WORK - not sure if there is much need to maintain this
-    columnDetails.categories.list[newCategory] = newColor;
-    CategoryDropdownItem.addItem(newCategory, newColor, categoryDropdown, categoryDropdownItems, true);
+    categories.list[newCategory] = newColor;
+    CategoryDropdownItem.addItem(newCategory, newColor, categories, true);
     Color.setNewLatestPasteleColor();
   }
 
@@ -112,13 +110,13 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
-  public static attemptHighlightMatchingCellCategoryItem(textElement: HTMLElement, categoryDropdown: HTMLElement,
+  public static attemptHighlightMatchingCellCategoryItem(textElement: HTMLElement,
       categories: Categories, matchingCellElement?: HTMLElement) {
-    const childrenArr = Array.from(categoryDropdown.children);
+    const { categoryDropdownItems, dropdown } = categories;
+    const itemsArr = Array.from(dropdown.children);
     const text = textElement.textContent as string;
-    const itemElement = matchingCellElement || childrenArr.find(
+    const itemElement = matchingCellElement || itemsArr.find(
       (itemElement) => itemElement.textContent === text) as (HTMLElement | undefined);
-    const { categoryDropdownItems } = categories;
     if (!itemElement || categoryDropdownItems.matchingWithCellText !== itemElement) {
       // this is used to preserve the ability for the user to still allow the use of arrow keys to traverse the dropdown
       CategoryDropdownItem.hideHoveredItemHighlight(categoryDropdownItems);
@@ -138,7 +136,7 @@ export class CategoryDropdownItem {
       const textElement = element.children[0] as HTMLElement;
       CategoryDropdownItem.updateCellElementIfNotUpdated(etc, siblingItem, rowIndex, columnIndex, textElement);
       CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, 
-        etc.overlayElementsState.categoryDropdown as HTMLElement, etc.columnsDetails[columnIndex].categories, siblingItem);
+        etc.columnsDetails[columnIndex].categories, siblingItem);
       CaretPosition.setToEndOfText(etc, textElement);
     }
   }
@@ -158,19 +156,16 @@ export class CategoryDropdownItem {
     }
   }
 
-  // prettier-ignore
-  private static addItem(text: string,
-    color: string, categoryDropdown: HTMLElement, categoryDropdownItems: CategoryDropdownItems, atStart = false) {
-  const itemElement = DropdownItem.addPlaneButtonItem(categoryDropdown as HTMLElement, text, atStart ? 0 : undefined);
-  itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(this, color, categoryDropdownItems);
-  itemElement.onmouseleave = CategoryDropdownItem.blurItemHighlight.bind(this, categoryDropdownItems, 'hovered');
-}
+  private static addItem(text: string, color: string, categories: Categories, atStart = false) {
+    const {dropdown, categoryDropdownItems} = categories;
+    const itemElement = DropdownItem.addPlaneButtonItem(dropdown, text, atStart ? 0 : undefined);
+    itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(this, color, categoryDropdownItems);
+    itemElement.onmouseleave = CategoryDropdownItem.blurItemHighlight.bind(this, categoryDropdownItems, 'hovered');
+  }
 
-  // prettier-ignore
-  private static addItems(uniqueCategories: UniqueCategories,
-      categoryDropdown: HTMLElement, categoryDropdownItems: CategoryDropdownItems) {
+  private static addItems(uniqueCategories: UniqueCategories, categories: Categories) {
     Object.keys(uniqueCategories).forEach((categoryName) => {
-      CategoryDropdownItem.addItem(categoryName, uniqueCategories[categoryName], categoryDropdown, categoryDropdownItems);
+      CategoryDropdownItem.addItem(categoryName, uniqueCategories[categoryName], categories);
     });
   }
 
@@ -184,13 +179,12 @@ export class CategoryDropdownItem {
     return uniqueCategories;
   }
 
-  // prettier-ignore
   public static populateItems(etc: EditableTableComponent, columnIndex: number) {
-    const { overlayElementsState: { categoryDropdown }, contents, defaultCellValue, columnsDetails } = etc;
+    const {contents, defaultCellValue, columnsDetails} = etc;
     const uniqueCategories = CategoryDropdownItem.aggregateUniqueCategories(contents, columnIndex, defaultCellValue);
-    columnsDetails[columnIndex].categories.list = uniqueCategories;
+    const {categories} = columnsDetails[columnIndex];
+    categories.list = uniqueCategories;
     CategoryCellElement.convertColumnFromDataToCategory(etc, uniqueCategories, columnIndex);
-    CategoryDropdownItem.addItems(
-      uniqueCategories, categoryDropdown as HTMLElement, columnsDetails[columnIndex].categories.categoryDropdownItems);
+    CategoryDropdownItem.addItems(uniqueCategories, categories);
   }
 }

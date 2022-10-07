@@ -13,22 +13,22 @@ import {Dropdown} from '../dropdown';
 export class CategoryDropdown {
   private static readonly CATEGORY_DROPDOWN_CLASS = 'category-dropdown';
 
-  public static hide(categoryDropdown: HTMLElement) {
-    GenericElementUtils.hideElements(categoryDropdown);
+  public static hide(dropdown: HTMLElement) {
+    GenericElementUtils.hideElements(dropdown);
   }
 
-  private static focusItemOnDropdownOpen(textElement: HTMLElement, categoryDropdown: HTMLElement, categories: Categories) {
-    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categoryDropdown, categories);
+  private static focusItemOnDropdownOpen(textElement: HTMLElement, dropdown: HTMLElement, categories: Categories) {
+    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categories);
     if (!categories.categoryDropdownItems.matchingWithCellText) {
-      const firstItem = categoryDropdown.children[0] as HTMLElement;
+      const firstItem = dropdown.children[0] as HTMLElement;
       // firing event as the handler has the hover color binded to it
       firstItem?.dispatchEvent(new MouseEvent('mouseenter'));
     }
   }
 
-  private static setPosition(categoryDropdown: HTMLElement, cellElement: HTMLElement) {
-    categoryDropdown.style.left = `${cellElement.offsetLeft + cellElement.offsetWidth}px`;
-    categoryDropdown.style.top = `${cellElement.offsetTop}px`;
+  private static setPosition(dropdown: HTMLElement, cellElement: HTMLElement) {
+    dropdown.style.left = `${cellElement.offsetLeft + cellElement.offsetWidth}px`;
+    dropdown.style.top = `${cellElement.offsetTop}px`;
   }
 
   // instead of binding click event handlers with the context of current row index to individual item elements every
@@ -56,28 +56,32 @@ export class CategoryDropdown {
   // prettier-ignore
   public static display(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
     const {categories} = etc.columnsDetails[columnIndex];
-    const {list, categoryDropdownItems} = categories;
-    const categoryDropdown = etc.overlayElementsState.categoryDropdown as HTMLElement;
+    const {list, categoryDropdownItems, dropdown} = categories;
     if (Object.keys(list).length > 0) {
-      categoryDropdown.onmousedown = CategoryDropdown.mouseDown.bind(this, etc.focusedElements, categoryDropdown);
-      categoryDropdown.onclick = CategoryDropdown.click.bind(etc, categoryDropdown);
-      CategoryDropdown.setPosition(categoryDropdown, cellElement);
+      dropdown.onmousedown = CategoryDropdown.mouseDown.bind(this, etc.focusedElements, dropdown);
+      dropdown.onclick = CategoryDropdown.click.bind(etc, dropdown);
+      CategoryDropdown.setPosition(dropdown, cellElement);
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'hovered');
       CategoryDropdownItem.blurItemHighlight(categoryDropdownItems, 'matchingWithCellText');
-      categoryDropdown.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
-      categoryDropdown.scrollLeft = 0;
+      dropdown.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
+      dropdown.scrollLeft = 0;
       // REF-4
-      CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categoryDropdown, categoryDropdownItems);
+      CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(dropdown, categoryDropdownItems);
       const textElement = cellElement.children[0] as HTMLElement;
-      CategoryDropdown.focusItemOnDropdownOpen(textElement, categoryDropdown, categories);
+      CategoryDropdown.focusItemOnDropdownOpen(textElement, dropdown, categories);
     }
   }
 
   // WORK - will need to populate upfront if user has set a column as category upfront
-  public static create() {
+  public static createAndAppend(tableElement: HTMLElement) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.style.maxHeight = '150px';
     dropdownElement.classList.add(CategoryDropdown.CATEGORY_DROPDOWN_CLASS);
+    tableElement.appendChild(dropdownElement);
     return dropdownElement;
+  }
+
+  public static remove(tableElement: HTMLElement, dropdown: HTMLElement) {
+    tableElement.removeChild(dropdown);
   }
 }

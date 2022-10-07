@@ -3,7 +3,7 @@ import {ColumnDetailsTPartial} from '../../types/columnDetails';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 
 export class ColumnDetails {
-  public static createPartial(cellElement: HTMLElement): ColumnDetailsTPartial {
+  public static createPartial(cellElement: HTMLElement, categoryDropdown: HTMLElement): ColumnDetailsTPartial {
     return {
       elements: [cellElement],
       activeColumnType: CellTypeTotalsUtils.DEFAULT_COLUMN_TYPE,
@@ -13,6 +13,7 @@ export class ColumnDetails {
         list: {},
         categoryDropdownItems: {isHorizontalScrollPresent: false},
         isCellTextNewCategory: false,
+        dropdown: categoryDropdown,
       },
     };
   }

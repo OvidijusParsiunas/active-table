@@ -1,4 +1,5 @@
-import {InsertRemoveColumnSizer} from '../../columnSizer/manipulateColumnSizer';
+import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
+import {InsertRemoveColumnSizer} from '../../columnSizer/insertRemoveColumnSizer';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
@@ -22,7 +23,8 @@ export class InsertNewCell {
       etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement, text: string) {
     const { columnsDetails, defaultCellValue } = etc;
     if (rowIndex === 0) {
-      const columnDetails = ColumnDetails.createPartial(cellElement);
+      const categoryDropdown = CategoryDropdown.createAndAppend(etc.tableElementRef as HTMLElement);
+      const columnDetails = ColumnDetails.createPartial(cellElement, categoryDropdown);
       columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
       InsertRemoveColumnSizer.insert(etc, columnsDetails, columnDetails, columnIndex);
     } else {

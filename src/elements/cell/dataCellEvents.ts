@@ -46,14 +46,12 @@ export class DataCellEvents {
     // WORK - is this needed here?
     CellElement.processAndSetTextOnCell(textContainerElement, text, false);
     if (inputEvent.inputType !== DataCellEvents.PASTE_INPUT_TYPE) {
-      const categoryDropdown = this.overlayElementsState.categoryDropdown as HTMLElement;
       const columnDetails = this.columnsDetails[columnIndex];
       const userSetColumnType = columnDetails.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
         DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
-      } else if (Dropdown.isDisplayed(categoryDropdown)) {
-        CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textContainerElement,
-          categoryDropdown, columnDetails.categories);
+      } else if (Dropdown.isDisplayed(columnDetails.categories.dropdown)) {
+        CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textContainerElement, columnDetails.categories);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
     }
