@@ -1,3 +1,4 @@
+import {CategoryDropdownItem} from '../../elements/dropdown/categoryDropdown/categoryDropdownItem';
 import {InsertNewColumn} from '../insertRemoveStructure/insert/insertNewColumn';
 import {CategoryCellElement} from '../../elements/cell/categoryCellElement';
 import {InsertNewRow} from '../insertRemoveStructure/insert/insertNewRow';
@@ -5,6 +6,7 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {DataUtils} from '../insertRemoveStructure/shared/dataUtils';
 import {TableCellText, TableRow} from '../../types/tableContents';
+import {CaretPosition} from '../focusedElements/caretPosition';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellEvents} from '../../elements/cell/cellEvents';
@@ -67,8 +69,25 @@ export class OverwriteCellsViaCSVOnPaste {
     });
   }
 
-  private static setFocusedCellType(etc: EditableTableComponent, cellText: string) {
-    etc.focusedElements.cell.type = CellTypeTotalsUtils.parseType(cellText, etc.defaultCellValue);
+  // prettier-ignore
+  private static setCaretToEndAndHighlightIfCategory(etc: EditableTableComponent, cellElement: HTMLElement,
+      columnIndex: number) {
+    const {userSetColumnType, categories} = etc.columnsDetails[columnIndex];
+    if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+      const textElement = cellElement.children[0] as HTMLElement;
+      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categories);
+      CaretPosition.setToEndOfText(etc, textElement);
+    } else {
+      CaretPosition.setToEndOfText(etc, cellElement);
+    }
+  }
+
+  // prettier-ignore
+  private static processFocusedCell(etc: EditableTableComponent, columnIndex: number) {
+    const cellElement = etc.focusedElements.cell.element as HTMLElement;
+    const text = cellElement.textContent as string;
+    etc.focusedElements.cell.type = CellTypeTotalsUtils.parseType(text, etc.defaultCellValue);
+    OverwriteCellsViaCSVOnPaste.setCaretToEndAndHighlightIfCategory(etc, cellElement, columnIndex);
   }
 
   // prettier-ignore
@@ -84,9 +103,7 @@ export class OverwriteCellsViaCSVOnPaste {
       const overflowData = dataToOverwriteRow.slice(numberOfCellsToOverwrite);
       dataForNewColumns.push(overflowData);
     });
-    setTimeout(() => {
-      OverwriteCellsViaCSVOnPaste.setFocusedCellType(etc, etc.contents[startRowIndex][startColumnIndex] as string);
-    });
+    setTimeout(() => OverwriteCellsViaCSVOnPaste.processFocusedCell(etc, startColumnIndex));
     return dataForNewColumns;
   }
 

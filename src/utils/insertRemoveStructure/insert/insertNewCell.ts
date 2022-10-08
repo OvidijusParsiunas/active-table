@@ -39,8 +39,10 @@ export class InsertNewCell {
 
   private static create(etc: EditableTableComponent, processedCellText: string, rowIndex: number, columnIndex: number) {
     const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
-    if (etc.columnsDetails[columnIndex]?.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+    const columnDetail = etc.columnsDetails[columnIndex];
+    if (columnDetail?.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryCellElement.convertCellFromDataToCategory(etc, rowIndex, columnIndex, newCellElement, '');
+      CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
     }
     return newCellElement;
   }

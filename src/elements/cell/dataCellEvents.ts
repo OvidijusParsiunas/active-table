@@ -8,6 +8,7 @@ import {CaretPosition} from '../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {ValidateInput} from '../../utils/cellType/validateInput';
+import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {Browser} from '../../utils/browser/browser';
 import {Dropdown} from '../dropdown/dropdown';
@@ -57,14 +58,24 @@ export class DataCellEvents {
     }
   }
 
+  private static updatePastedCellIfCategory(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
+    const {userSetColumnType, categories} = etc.columnsDetails[columnIndex];
+    if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(cellElement, categories);
+    }
+  }
+
   // WORK - add category on paste
   private static pasteCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: ClipboardEvent) {
     const clipboardText = JSON.stringify(event.clipboardData?.getData(DataCellEvents.TEXT_DATA_FORMAT));
     if (OverwriteCellsViaCSVOnPaste.isCSVData(clipboardText)) {
       OverwriteCellsViaCSVOnPaste.overwrite(this, clipboardText, event, rowIndex, columnIndex);
     } else {
-      const text = (event.target as HTMLElement).textContent as string;
-      setTimeout(() => CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false}));
+      const cellElement = event.target as HTMLElement;
+      setTimeout(() => {
+        DataCellEvents.updatePastedCellIfCategory(this, cellElement, columnIndex);
+        CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex, {processText: false});
+      });
     }
   }
 
