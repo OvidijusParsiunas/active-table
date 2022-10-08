@@ -5,9 +5,6 @@ import {ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
 import {VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 
 export class Sort {
-  private static EXTRACT_FLOAT_REGEX = /-?\d+(\.\d+)?$/g;
-  private static EXTRACT_INTEGER_REGEX = /\d+/g;
-
   // prettier-ignore
   private static update(etc: EditableTableComponent, sortedDataContents: TableContents,) {
     const rowElements = (etc.tableBodyElementRef as HTMLElement).children;
@@ -47,7 +44,8 @@ export class Sort {
   }
 
   private static extractNumberFromString(text: string) {
-    const numberStringArr = text.match(Sort.EXTRACT_FLOAT_REGEX);
+    // regex is extracting float number
+    const numberStringArr = text.match(/-?\d+(\.\d+)?$/g);
     if (numberStringArr && numberStringArr.length > 0) {
       return Number(numberStringArr[0]);
     }
@@ -101,7 +99,8 @@ export class Sort {
   }
 
   private static createMDYDateFromDMYString(dmyDateString: string) {
-    const numberStringArr = dmyDateString.match(Sort.EXTRACT_INTEGER_REGEX);
+    // regex is extracting integer number
+    const numberStringArr = dmyDateString.match(/\d+/g);
     if (numberStringArr && numberStringArr.length === 3) {
       // new Date(year, monthIndex, day)
       return new Date(Number(numberStringArr[2]), Number(numberStringArr[1]) - 1, Number(numberStringArr[0]));
