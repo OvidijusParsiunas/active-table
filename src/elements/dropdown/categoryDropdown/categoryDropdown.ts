@@ -17,8 +17,10 @@ export class CategoryDropdown {
     GenericElementUtils.hideElements(dropdown);
   }
 
-  private static focusItemOnDropdownOpen(textElement: HTMLElement, dropdown: HTMLElement, categories: Categories) {
-    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categories);
+  // prettier-ignore
+  private static focusItemOnDropdownOpen(textElement: HTMLElement,
+      dropdown: HTMLElement, categories: Categories, defaultCellValue: string) {
+    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categories, defaultCellValue);
     if (!categories.dropdown.activeItems.matchingWithCellText) {
       const firstItem = dropdown.children[0] as HTMLElement;
       firstItem?.dispatchEvent(new MouseEvent('mouseenter'));
@@ -67,7 +69,7 @@ export class CategoryDropdown {
       // REF-4
       CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categories.dropdown);
       const textElement = cellElement.children[0] as HTMLElement;
-      CategoryDropdown.focusItemOnDropdownOpen(textElement, dropdown, categories);
+      CategoryDropdown.focusItemOnDropdownOpen(textElement, dropdown, categories, etc.defaultCellValue);
     }
   }
 

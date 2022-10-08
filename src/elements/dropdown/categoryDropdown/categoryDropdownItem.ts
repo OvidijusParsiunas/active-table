@@ -63,8 +63,8 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
-  private static scrollToItemIfNeeded(event: MouseEvent,
-      itemElement: HTMLElement, isHorizontalScrollPresent: boolean, dropdownElement: HTMLElement) {
+  private static scrollToItemIfNeeded(itemElement: HTMLElement,
+      isHorizontalScrollPresent: boolean, dropdownElement: HTMLElement, event: MouseEvent,) {
     // not automatically scrolling when user hovers their mouse over a partial item as it is bad UX
     if (event.isTrusted) return; 
     const visibilityDetails = ElementVisibility.isVerticallyVisibleInsideParent(itemElement);
@@ -79,11 +79,13 @@ export class CategoryDropdownItem {
 
   // prettier-ignore
   private static updateItemAndTextColorBasedOnMatch(itemElement: HTMLElement | undefined,
-      textElement: HTMLElement, categories: Categories) {
+      textElement: HTMLElement, categories: Categories, defaultCellValue: string) {
     if (itemElement) {
       categories.dropdown.activeItems.matchingWithCellText = itemElement;
       itemElement.dispatchEvent(new MouseEvent('mouseenter'));
       textElement.style.backgroundColor = categories.dropdown.categoryToItem[textElement.textContent as string].color;
+    } else if (textElement.textContent === '' || textElement.textContent === defaultCellValue) {
+      textElement.style.backgroundColor = '';
     } else {
       textElement.style.backgroundColor = Color.getLatestPasteleColor();
     }
@@ -113,7 +115,7 @@ export class CategoryDropdownItem {
 
   // prettier-ignore
   public static attemptHighlightMatchingCellCategoryItem(textElement: HTMLElement,
-      categories: Categories, matchingCellElement?: HTMLElement) {
+      categories: Categories, defaultCellValue: string, matchingCellElement?: HTMLElement) {
     const {dropdown: {activeItems, categoryToItem}} = categories;
     const targetText = textElement.textContent as string;
     const itemElement = matchingCellElement || categoryToItem[targetText]?.element;
@@ -122,7 +124,7 @@ export class CategoryDropdownItem {
       CategoryDropdownItem.hideHoveredItemHighlight(activeItems);
       CategoryDropdownItem.blurItemHighlight(activeItems, 'matchingWithCellText');
     }
-    CategoryDropdownItem.updateItemAndTextColorBasedOnMatch(itemElement, textElement, categories);
+    CategoryDropdownItem.updateItemAndTextColorBasedOnMatch(itemElement, textElement, categories, defaultCellValue);
   }
 
   // prettier-ignore
@@ -136,7 +138,7 @@ export class CategoryDropdownItem {
       const textElement = element.children[0] as HTMLElement;
       CategoryDropdownItem.updateCellElementIfNotUpdated(etc, siblingItem, rowIndex, columnIndex, textElement);
       CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, 
-        etc.columnsDetails[columnIndex].categories, siblingItem);
+        etc.columnsDetails[columnIndex].categories, etc.defaultCellValue, siblingItem);
       CaretPosition.setToEndOfText(etc, textElement);
     }
   }
@@ -149,7 +151,7 @@ export class CategoryDropdownItem {
     const itemElement = event.target as HTMLElement;
     itemElement.style.backgroundColor = color;
     const dropdownElement = itemElement.parentElement as HTMLElement;
-    CategoryDropdownItem.scrollToItemIfNeeded(event, itemElement, isHorizontalScrollPresent, dropdownElement);
+    CategoryDropdownItem.scrollToItemIfNeeded(itemElement, isHorizontalScrollPresent, dropdownElement, event);
     if (itemElement === activeItems.matchingWithCellText) {
       delete activeItems.hovered;
     } else {

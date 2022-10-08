@@ -52,7 +52,8 @@ export class DataCellEvents {
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
         DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
       } else if (Dropdown.isDisplayed(columnDetails.categories.dropdown.element)) {
-        CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textContainerElement, columnDetails.categories);
+        CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textContainerElement, columnDetails.categories,
+          this.defaultCellValue);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
     }
@@ -61,7 +62,7 @@ export class DataCellEvents {
   private static updatePastedCellIfCategory(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
     const {userSetColumnType, categories} = etc.columnsDetails[columnIndex];
     if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(cellElement, categories);
+      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(cellElement, categories, etc.defaultCellValue);
     }
   }
 
