@@ -4,6 +4,7 @@ import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryCellElement} from '../../cell/categoryCellElement';
+import {CategoryDeleteButton} from './categoryDeleteButton';
 import {TableContents} from '../../../types/tableContents';
 import {CellDetails} from '../../../types/focusedCell';
 import {CellEvents} from '../../cell/cellEvents';
@@ -40,7 +41,7 @@ export class CategoryDropdownItem {
   // prettier-ignore
   private static updateCellElementIfNotUpdated(etc: EditableTableComponent,
       activeItem: HTMLElement, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
-    const newText = activeItem.textContent as string;
+    const newText = (activeItem.children[0] as HTMLElement).textContent as string;
     if ((etc.contents[rowIndex][columnIndex] as string) !== newText) {
       CellEvents.updateCell(etc, newText, rowIndex, columnIndex, {processText: false, element: textElement});
     }
@@ -93,7 +94,7 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
-  public static blurItemHighlight(activeItems: ActiveCategoryItems, typeOfItem: keyof ActiveCategoryItems) {
+  public static blurItem(activeItems: ActiveCategoryItems, typeOfItem: keyof ActiveCategoryItems, event?: MouseEvent) {
     const itemElement = activeItems[typeOfItem] as HTMLElement;
     if (itemElement !== undefined) {
       if (typeOfItem === 'matchingWithCellText'
@@ -102,6 +103,7 @@ export class CategoryDropdownItem {
         delete activeItems[typeOfItem];
       }
     }
+    if (event) CategoryDeleteButton.changeDisplay(event, false);
   }
 
   private static hideHoveredItemHighlight(activeItems: ActiveCategoryItems) {
@@ -122,7 +124,7 @@ export class CategoryDropdownItem {
     if (!itemElement || activeItems.matchingWithCellText !== itemElement) {
       // this is used to preserve the ability for the user to still allow the use of arrow keys to traverse the dropdown
       CategoryDropdownItem.hideHoveredItemHighlight(activeItems);
-      CategoryDropdownItem.blurItemHighlight(activeItems, 'matchingWithCellText');
+      CategoryDropdownItem.blurItem(activeItems, 'matchingWithCellText');
     }
     CategoryDropdownItem.updateItemAndTextColorBasedOnMatch(itemElement, textElement, categories, defaultCellValue);
   }
@@ -157,12 +159,15 @@ export class CategoryDropdownItem {
     } else {
       activeItems.hovered = itemElement;
     }
+    CategoryDeleteButton.changeDisplay(event, true);
   }
 
   private static addItemElement(text: string, color: string, dropdown: CategoryDropdownProps, atStart = false) {
     const itemElement = DropdownItem.addPlaneButtonItem(dropdown.element, text, atStart ? 0 : undefined);
+    const deleteIcon = CategoryDeleteButton.create();
+    itemElement.appendChild(deleteIcon);
     itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(this, color, dropdown);
-    itemElement.onmouseleave = CategoryDropdownItem.blurItemHighlight.bind(this, dropdown.activeItems, 'hovered');
+    itemElement.onmouseleave = CategoryDropdownItem.blurItem.bind(this, dropdown.activeItems, 'hovered');
     return itemElement;
   }
 

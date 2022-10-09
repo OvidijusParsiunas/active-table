@@ -37,7 +37,7 @@ export class CategoryCellElement {
     elements.slice(1).forEach((cellElement: HTMLElement, dataIndex: number) => {
       const relativeIndex = dataIndex + 1;
       CategoryCellElement.convertCellFromDataToCategory(etc, relativeIndex, columnIndex,
-        cellElement, categoryToItem[cellElement.textContent as string].color);
+        cellElement, categoryToItem[cellElement.textContent as string]?.color || '');
     });
   }
 

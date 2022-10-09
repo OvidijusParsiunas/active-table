@@ -4,6 +4,7 @@ import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryCellEvents} from '../../cell/categoryCellEvents';
 import {FocusedElements} from '../../../types/focusedElements';
 import {CategoryDropdownItem} from './categoryDropdownItem';
+import {CategoryDeleteButton} from './categoryDeleteButton';
 import {Categories} from '../../../types/columnDetails';
 import {CellDetails} from '../../../types/focusedCell';
 import {DropdownItem} from '../dropdownItem';
@@ -38,8 +39,9 @@ export class CategoryDropdown {
   // prettier-ignore
   private static click(this: EditableTableComponent, dropdownElement: HTMLElement, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
-    // when user clicks on top/bottom paddding instead of an item
-    if (targetElement.classList.contains(Dropdown.DROPDOWN_CLASS)) return;
+    // target is dropdown when clicked on top/bottom paddding
+    if (targetElement.classList.contains(Dropdown.DROPDOWN_CLASS)
+      || targetElement.classList.contains(CategoryDeleteButton.CATEGORY_DELETE_BUTTON_CLASS)) return;
     const { rowIndex, columnIndex, element: cellElement } = this.focusedElements.cell as CellDetails;
     const itemElement = targetElement.classList.contains(DropdownItem.DROPDOWN_ITEM_CLASS)
       ? targetElement : targetElement.parentElement;
@@ -62,8 +64,8 @@ export class CategoryDropdown {
       dropdown.onmousedown = CategoryDropdown.mouseDown.bind(this, etc.focusedElements, dropdown);
       dropdown.onclick = CategoryDropdown.click.bind(etc, dropdown);
       CategoryDropdown.setPosition(dropdown, cellElement);
-      CategoryDropdownItem.blurItemHighlight(activeItems, 'hovered');
-      CategoryDropdownItem.blurItemHighlight(activeItems, 'matchingWithCellText');
+      CategoryDropdownItem.blurItem(activeItems, 'hovered');
+      CategoryDropdownItem.blurItem(activeItems, 'matchingWithCellText');
       dropdown.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
       dropdown.scrollLeft = 0;
       // REF-4

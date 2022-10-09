@@ -152,6 +152,41 @@ export const ediTableStyle = css`
     background-color: #eaeaea;
   }
 
+  .category-delete-button-container {
+    position: absolute;
+    width: 100%;
+    height: 0px;
+    top: 5px;
+    left: -5px;
+    display: none;
+  }
+
+  .category-delete-button {
+    height: 13px;
+    width: 13px;
+    position: sticky;
+    background-color: #ffffff70;
+    left: 140px;
+    z-index: 1;
+    border-radius: 12px;
+    opacity: 0.3;
+    background-color: white;
+  }
+
+  .category-delete-button:hover {
+    opacity: 1;
+  }
+
+  .category-delete-button-icon {
+    position: absolute;
+    color: grey;
+    left: 2px;
+    top: -3px;
+    font-size: 14px;
+    pointer-events: none;
+    color: black;
+  }
+
   #full-table-overlay {
     position: absolute;
     top: 0;

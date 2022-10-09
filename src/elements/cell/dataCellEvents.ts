@@ -66,7 +66,6 @@ export class DataCellEvents {
     }
   }
 
-  // WORK - add category on paste
   private static pasteCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: ClipboardEvent) {
     const clipboardText = JSON.stringify(event.clipboardData?.getData(DataCellEvents.TEXT_DATA_FORMAT));
     if (OverwriteCellsViaCSVOnPaste.isCSVData(clipboardText)) {
