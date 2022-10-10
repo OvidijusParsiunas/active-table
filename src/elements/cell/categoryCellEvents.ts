@@ -13,7 +13,7 @@ import {CellElement} from './cellElement';
 export class CategoryCellEvents {
   // prettier-ignore
   private static keyDownText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
-    const {categories: {dropdown: {activeItems}}, elements} = this.columnsDetails[columnIndex];
+    const {categoryDropdown: {activeItems}, elements} = this.columnsDetails[columnIndex];
     if (event.key === KEYBOARD_KEY.ESCAPE || event.key === KEYBOARD_KEY.TAB) {
       CategoryCellEvents.programmaticBlur(this);
     } else if (event.key === KEYBOARD_KEY.ENTER) {
@@ -40,9 +40,8 @@ export class CategoryCellEvents {
     }
   }
 
-  // prettier-ignore
   public static blurring(etc: EditableTableComponent, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
-    const {dropdown: {element, categoryToItem}} = etc.columnsDetails[columnIndex].categories;
+    const {element, categoryToItem} = etc.columnsDetails[columnIndex].categoryDropdown;
     CategoryDropdown.hide(element);
     if (!categoryToItem[textElement.textContent as string]) {
       CategoryCellElement.finaliseEditedText(etc, textElement, columnIndex);

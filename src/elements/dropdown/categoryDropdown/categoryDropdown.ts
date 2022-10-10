@@ -3,9 +3,9 @@ import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryCellEvents} from '../../cell/categoryCellEvents';
 import {FocusedElements} from '../../../types/focusedElements';
+import {CategoryDropdownT} from '../../../types/columnDetails';
 import {CategoryDropdownItem} from './categoryDropdownItem';
 import {CategoryDeleteButton} from './categoryDeleteButton';
-import {Categories} from '../../../types/columnDetails';
 import {CellDetails} from '../../../types/focusedCell';
 import {DropdownItem} from '../dropdownItem';
 import {Dropdown} from '../dropdown';
@@ -18,16 +18,14 @@ export class CategoryDropdown {
     GenericElementUtils.hideElements(dropdown);
   }
 
-  // prettier-ignore
-  private static focusItemOnDropdownOpen(textElement: HTMLElement,
-      dropdown: HTMLElement, categories: Categories, defaultCellValue: string) {
+  private static focusItemOnDropdownOpen(textElement: HTMLElement, dropdown: CategoryDropdownT, defaultCellValue: string) {
     // the updateCellText parameter is set to false for a case where the user clicks on a category cell which has
     // its text with a background color but one for a category that has been deleted, hence we do not want to
     // highlight it with a new background color
-    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categories, defaultCellValue, false);
+    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, dropdown, defaultCellValue, false);
     // WORK - probably no need here
-    if (!categories.dropdown.activeItems.matchingWithCellText) {
-      const firstItem = dropdown.children[0] as HTMLElement;
+    if (!dropdown.activeItems.matchingWithCellText) {
+      const firstItem = dropdown.element.children[0] as HTMLElement;
       firstItem?.dispatchEvent(new MouseEvent('mouseenter'));
     }
   }
@@ -60,22 +58,21 @@ export class CategoryDropdown {
     focusedElements.categoryDropdown = dropdownElement;
   }
 
-  // prettier-ignore
   public static display(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
-    const {categories} = etc.columnsDetails[columnIndex];
-    const {dropdown: {element: dropdown, activeItems, categoryToItem}} = categories;
+    const {categoryDropdown} = etc.columnsDetails[columnIndex];
+    const {element: dropdownEl, activeItems, categoryToItem} = categoryDropdown;
     if (Object.keys(categoryToItem).length > 0) {
-      dropdown.onmousedown = CategoryDropdown.mouseDown.bind(this, etc.focusedElements, dropdown);
-      dropdown.onclick = CategoryDropdown.click.bind(etc, dropdown);
-      CategoryDropdown.setPosition(dropdown, cellElement);
+      dropdownEl.onmousedown = CategoryDropdown.mouseDown.bind(this, etc.focusedElements, dropdownEl);
+      dropdownEl.onclick = CategoryDropdown.click.bind(etc, dropdownEl);
+      CategoryDropdown.setPosition(dropdownEl, cellElement);
       CategoryDropdownItem.blurItem(activeItems, 'hovered');
       CategoryDropdownItem.blurItem(activeItems, 'matchingWithCellText');
-      dropdown.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
-      dropdown.scrollLeft = 0;
+      dropdownEl.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
+      dropdownEl.scrollLeft = 0;
       // REF-4
-      CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categories.dropdown);
+      CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categoryDropdown);
       const textElement = cellElement.children[0] as HTMLElement;
-      CategoryDropdown.focusItemOnDropdownOpen(textElement, dropdown, categories, etc.defaultCellValue);
+      CategoryDropdown.focusItemOnDropdownOpen(textElement, categoryDropdown, etc.defaultCellValue);
     }
   }
 

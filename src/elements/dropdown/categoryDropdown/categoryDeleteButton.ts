@@ -1,7 +1,7 @@
 import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {CategoryDropdownProps} from '../../../types/columnDetails';
 import {CategoryCellEvents} from '../../cell/categoryCellEvents';
+import {CategoryDropdownT} from '../../../types/columnDetails';
 import {DropdownItem} from '../dropdownItem';
 
 export class CategoryDeleteButton {
@@ -10,7 +10,7 @@ export class CategoryDeleteButton {
   private static readonly CATEGORY_DELETE_BUTTON_ICON_CLASS = 'category-delete-button-icon';
   private static readonly DELETE_ICON_TEXT = '×';
 
-  private static delete(this: EditableTableComponent, categoryDropdownProps: CategoryDropdownProps, event: MouseEvent) {
+  private static delete(this: EditableTableComponent, categoryDropdownProps: CategoryDropdownT, event: MouseEvent) {
     const buttonElement = event.target as HTMLElement;
     const containerElement = buttonElement.parentElement as HTMLElement;
     const itemElement = containerElement.parentElement as HTMLElement;
@@ -30,7 +30,7 @@ export class CategoryDeleteButton {
     return iconElement;
   }
 
-  private static createButton(etc: EditableTableComponent, categoryDropdownProps: CategoryDropdownProps) {
+  private static createButton(etc: EditableTableComponent, categoryDropdownProps: CategoryDropdownT) {
     const buttonElement = document.createElement('div');
     buttonElement.classList.add(DropdownItem.DROPDOWN_ITEM_IDENTIFIER, CategoryDeleteButton.CATEGORY_DELETE_BUTTON_CLASS);
     buttonElement.onclick = CategoryDeleteButton.delete.bind(etc, categoryDropdownProps);
@@ -44,7 +44,7 @@ export class CategoryDeleteButton {
   }
 
   // WORK - mouse on and use arrow keys
-  public static create(etc: EditableTableComponent, categoryDropdownProps: CategoryDropdownProps) {
+  public static create(etc: EditableTableComponent, categoryDropdownProps: CategoryDropdownT) {
     const containerElement = CategoryDeleteButton.createContainer();
     const buttonElement = CategoryDeleteButton.createButton(etc, categoryDropdownProps);
     const iconElement = CategoryDeleteButton.createIcon();

@@ -33,7 +33,7 @@ export class CategoryCellElement {
 
   // prettier-ignore
   public static convertColumnFromDataToCategory(etc: EditableTableComponent, columnIndex: number) {
-    const { elements, categories: {dropdown: { categoryToItem }} } = etc.columnsDetails[columnIndex];
+    const {elements, categoryDropdown: {categoryToItem}} = etc.columnsDetails[columnIndex];
     elements.slice(1).forEach((cellElement: HTMLElement, dataIndex: number) => {
       const relativeIndex = dataIndex + 1;
       CategoryCellElement.convertCellFromDataToCategory(etc, relativeIndex, columnIndex,
@@ -44,15 +44,15 @@ export class CategoryCellElement {
   // prettier-ignore
   public static finaliseEditedText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number,
       processMatching = false) {
-    const {dropdown} = etc.columnsDetails[columnIndex].categories;
-    const color = dropdown.categoryToItem[textElement.textContent as string]?.color;
+    const {categoryDropdown} = etc.columnsDetails[columnIndex];
+    const color = categoryDropdown.categoryToItem[textElement.textContent as string]?.color;
     if (textElement.textContent === '' || textElement.textContent === etc.defaultCellValue) {
       textElement.style.backgroundColor = '';
     } else if (processMatching && color) {
       textElement.style.backgroundColor = color;
     } else {
       // if a category is deleted and then added with an already existing text element, use its current background
-      CategoryDropdownItem.addNewCategory(etc, textElement, dropdown, textElement.style.backgroundColor);
+      CategoryDropdownItem.addNewCategory(etc, textElement, categoryDropdown, textElement.style.backgroundColor);
     }
   }
 }

@@ -9,13 +9,11 @@ export class ColumnDetails {
       activeColumnType: CellTypeTotalsUtils.DEFAULT_COLUMN_TYPE,
       userSetColumnType: USER_SET_COLUMN_TYPE.Auto,
       cellTypeTotals: CellTypeTotalsUtils.createObj(),
-      categories: {
-        dropdown: {
-          categoryToItem: {},
-          activeItems: {},
-          element: categoryDropdown,
-          isHorizontalScrollPresent: false,
-        },
+      categoryDropdown: {
+        categoryToItem: {},
+        activeItems: {},
+        element: categoryDropdown,
+        isHorizontalScrollPresent: false,
       },
     };
   }

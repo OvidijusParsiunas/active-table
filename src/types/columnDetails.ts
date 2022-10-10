@@ -41,7 +41,7 @@ export interface CategoryToItem {
   [cellText: string]: CategoryItemDetails;
 }
 
-export interface CategoryDropdownProps {
+export interface CategoryDropdownT {
   // dropdown item
   categoryToItem: CategoryToItem;
   // items that exhibit certain behaviours
@@ -49,10 +49,6 @@ export interface CategoryDropdownProps {
   // REF-8
   element: HTMLElement;
   isHorizontalScrollPresent: boolean;
-}
-
-export interface Categories {
-  dropdown: CategoryDropdownProps;
 }
 
 export interface ColumnDetailsT {
@@ -65,7 +61,7 @@ export interface ColumnDetailsT {
   // column type set by the user, set to auto by default
   userSetColumnType: USER_SET_COLUMN_TYPE;
   cellTypeTotals: CellTypeTotals;
-  categories: Categories;
+  categoryDropdown: CategoryDropdownT;
 }
 
 // used for when column details initialised before the column sizer

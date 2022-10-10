@@ -1,4 +1,4 @@
-import {CategoryDropdownProps} from '../../../types/columnDetails';
+import {CategoryDropdownT} from '../../../types/columnDetails';
 
 // REF-4
 export class CategoryDropdownHorizontalScroll {
@@ -10,7 +10,7 @@ export class CategoryDropdownHorizontalScroll {
     return dropdownElement.scrollWidth > dropdownElement.clientWidth;
   }
 
-  public static setPropertiesIfHorizontalScrollPresent(dropdown: CategoryDropdownProps) {
+  public static setPropertiesIfHorizontalScrollPresent(dropdown: CategoryDropdownT) {
     const {element, isHorizontalScrollPresent} = dropdown;
     if (CategoryDropdownHorizontalScroll.isPresent(element) && !isHorizontalScrollPresent) {
       dropdown.isHorizontalScrollPresent = true;

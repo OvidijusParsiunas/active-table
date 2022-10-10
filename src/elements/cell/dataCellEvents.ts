@@ -51,8 +51,7 @@ export class DataCellEvents {
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
         DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
       } else if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-        // WORK - reset back to original color if deleted
-        CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textContainerElement, columnDetails.categories,
+        CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textContainerElement, columnDetails.categoryDropdown,
           this.defaultCellValue, true);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
@@ -60,9 +59,9 @@ export class DataCellEvents {
   }
 
   private static updatePastedCellIfCategory(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
-    const {userSetColumnType, categories} = etc.columnsDetails[columnIndex];
+    const {userSetColumnType, categoryDropdown: dropdown} = etc.columnsDetails[columnIndex];
     if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(cellElement, categories, etc.defaultCellValue, true);
+      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(cellElement, dropdown, etc.defaultCellValue, true);
     }
   }
 

@@ -72,10 +72,10 @@ export class OverwriteCellsViaCSVOnPaste {
   // prettier-ignore
   private static setCaretToEndAndHighlightIfCategory(etc: EditableTableComponent, cellElement: HTMLElement,
       columnIndex: number) {
-    const {userSetColumnType, categories} = etc.columnsDetails[columnIndex];
+    const {userSetColumnType, categoryDropdown: dropdown} = etc.columnsDetails[columnIndex];
     if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       const textElement = cellElement.children[0] as HTMLElement;
-      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categories, etc.defaultCellValue, true);
+      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, dropdown, etc.defaultCellValue, true);
       CaretPosition.setToEndOfText(etc, textElement);
     } else {
       CaretPosition.setToEndOfText(etc, cellElement);
