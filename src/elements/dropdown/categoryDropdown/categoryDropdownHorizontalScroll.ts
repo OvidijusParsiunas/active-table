@@ -3,6 +3,7 @@ import {CategoryDropdownProps} from '../../../types/columnDetails';
 // REF-4
 export class CategoryDropdownHorizontalScroll {
   private static readonly NEW_BOTTOM_PADDING_IF_PRESENT = '12px';
+  private static readonly DEFAULT_BOTTOM_PADDING_IF_PRESENT = '1px';
   private static readonly SCROLL_FURTHER_BOTTOM_PX = 14;
 
   private static isPresent(dropdownElement: HTMLElement) {
@@ -14,6 +15,8 @@ export class CategoryDropdownHorizontalScroll {
     if (CategoryDropdownHorizontalScroll.isPresent(element) && !isHorizontalScrollPresent) {
       dropdown.isHorizontalScrollPresent = true;
       element.style.paddingBottom = CategoryDropdownHorizontalScroll.NEW_BOTTOM_PADDING_IF_PRESENT;
+    } else {
+      element.style.paddingBottom = CategoryDropdownHorizontalScroll.DEFAULT_BOTTOM_PADDING_IF_PRESENT;
     }
   }
 

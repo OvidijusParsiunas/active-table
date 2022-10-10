@@ -34,7 +34,7 @@ export class ColumnSizerEvents {
 
   public static cellMouseLeave(columnsDetails: ColumnsDetailsT, columnIndex: number) {
     ColumnSizerEvents.hideColumnSizer(columnsDetails[columnIndex - 1]?.columnSizer);
-    ColumnSizerEvents.hideColumnSizer(columnsDetails[columnIndex].columnSizer);
+    ColumnSizerEvents.hideColumnSizer(columnsDetails[columnIndex]?.columnSizer);
   }
 
   private static displayColumnSizer(columnSizer: ColumnSizerT, height: PX) {

@@ -21,7 +21,11 @@ export class CategoryDropdown {
   // prettier-ignore
   private static focusItemOnDropdownOpen(textElement: HTMLElement,
       dropdown: HTMLElement, categories: Categories, defaultCellValue: string) {
-    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categories, defaultCellValue);
+    // the updateCellText parameter is set to false for a case where the user clicks on a category cell which has
+    // its text with a background color but one for a category that has been deleted, hence we do not want to
+    // highlight it with a new background color
+    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categories, defaultCellValue, false);
+    // WORK - probably no need here
     if (!categories.dropdown.activeItems.matchingWithCellText) {
       const firstItem = dropdown.children[0] as HTMLElement;
       firstItem?.dispatchEvent(new MouseEvent('mouseenter'));

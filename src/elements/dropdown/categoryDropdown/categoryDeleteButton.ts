@@ -1,3 +1,7 @@
+import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
+import {EditableTableComponent} from '../../../editable-table-component';
+import {CategoryDropdownProps} from '../../../types/columnDetails';
+import {CategoryCellEvents} from '../../cell/categoryCellEvents';
 import {DropdownItem} from '../dropdownItem';
 
 export class CategoryDeleteButton {
@@ -6,41 +10,54 @@ export class CategoryDeleteButton {
   private static readonly CATEGORY_DELETE_BUTTON_ICON_CLASS = 'category-delete-button-icon';
   private static readonly DELETE_ICON_TEXT = '×';
 
-  private static click() {
-    console.log('click');
+  // prettier-ignore
+  private static delete(this: EditableTableComponent, categoryDropdownProps: CategoryDropdownProps, event: MouseEvent) {
+    // needs to be called at the start in order to not create a new category when blurred
+    if (Object.keys(categoryDropdownProps.categoryToItem).length === 1) {
+      CategoryCellEvents.programmaticBlur(this);
+    }
+    const buttonElement = event.target as HTMLElement;
+    const containerElement = buttonElement.parentElement as HTMLElement;
+    const itemElement = containerElement.parentElement as HTMLElement;
+    delete categoryDropdownProps.categoryToItem[itemElement.children[0].textContent as string];
+    categoryDropdownProps.element.removeChild(itemElement);
+    if (Object.keys(categoryDropdownProps.categoryToItem).length > 0) {
+      CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categoryDropdownProps);
+    }
   }
 
   private static createIcon() {
-    const icon = document.createElement('div');
-    icon.classList.add(CategoryDeleteButton.CATEGORY_DELETE_BUTTON_ICON_CLASS);
-    icon.textContent = CategoryDeleteButton.DELETE_ICON_TEXT;
-    return icon;
+    const iconElement = document.createElement('div');
+    iconElement.classList.add(CategoryDeleteButton.CATEGORY_DELETE_BUTTON_ICON_CLASS);
+    iconElement.textContent = CategoryDeleteButton.DELETE_ICON_TEXT;
+    return iconElement;
   }
 
-  private static createButton() {
-    const button = document.createElement('div');
-    button.classList.add(DropdownItem.DROPDOWN_ITEM_IDENTIFIER, CategoryDeleteButton.CATEGORY_DELETE_BUTTON_CLASS);
-    button.onclick = CategoryDeleteButton.click;
-    return button;
+  private static createButton(etc: EditableTableComponent, categoryDropdownProps: CategoryDropdownProps) {
+    const buttonElement = document.createElement('div');
+    buttonElement.classList.add(DropdownItem.DROPDOWN_ITEM_IDENTIFIER, CategoryDeleteButton.CATEGORY_DELETE_BUTTON_CLASS);
+    buttonElement.onclick = CategoryDeleteButton.delete.bind(etc, categoryDropdownProps);
+    return buttonElement;
   }
 
   private static createContainer() {
-    const container = document.createElement('div');
-    container.classList.add(CategoryDeleteButton.CATEGORY_DELETE_BUTTON_CONTAINER_CLASS);
-    return container;
+    const containerElement = document.createElement('div');
+    containerElement.classList.add(CategoryDeleteButton.CATEGORY_DELETE_BUTTON_CONTAINER_CLASS);
+    return containerElement;
   }
 
   // WORK - mouse on and use arrow keys
-  public static create() {
-    const container = CategoryDeleteButton.createContainer();
-    const button = CategoryDeleteButton.createButton();
-    const icon = CategoryDeleteButton.createIcon();
-    button.appendChild(icon);
-    container.appendChild(button);
-    return container;
+  public static create(etc: EditableTableComponent, categoryDropdownProps: CategoryDropdownProps) {
+    const containerElement = CategoryDeleteButton.createContainer();
+    const buttonElement = CategoryDeleteButton.createButton(etc, categoryDropdownProps);
+    const iconElement = CategoryDeleteButton.createIcon();
+    buttonElement.appendChild(iconElement);
+    containerElement.appendChild(buttonElement);
+    return containerElement;
   }
 
   public static changeDisplay(event: MouseEvent, display: boolean) {
+    // event.isTrusted ensures that the item only appears when using a mouse
     if (event.isTrusted) {
       const itemElement = event.target as HTMLElement;
       const buttonContainerElement = itemElement.children[1] as HTMLElement;

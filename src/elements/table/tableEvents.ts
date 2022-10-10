@@ -6,15 +6,15 @@ import {CellElement} from '../cell/cellElement';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class TableEvents {
-  // cell blur will not activate when the dropdown has been clicked and will not close if its scrollbar or padding are
-  // clicked, hence once that happens, we close the dropdown programmatically as follows
+  // text blur will not activate when the dropdown has been clicked and will not close if its scrollbar, padding
+  // or delete cateogory buttons are clicked, hence once that happens and the user clicks elsewhere on the table,
+  // the dropdown is closed programmatically as follows
   // prettier-ignore
   private static closeCategoryDropdown(etc: EditableTableComponent, targetElement: HTMLElement) {
-    const { focusedElements } = etc;
-    if (focusedElements.categoryDropdown && !Dropdown.isPartOfDropdownElement(targetElement)) {
-      if (focusedElements.cell.element !== CellElement.extractCellElement(targetElement)) {
-        CategoryCellEvents.programmaticBlur(etc);
-      }
+    const {focusedElements} = etc;
+    if (focusedElements.categoryDropdown && !Dropdown.isPartOfDropdownElement(targetElement)
+        && focusedElements.cell.element !== CellElement.extractCellElement(targetElement)) {
+      CategoryCellEvents.programmaticBlur(etc);
     }
   }
 

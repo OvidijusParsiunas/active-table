@@ -11,7 +11,6 @@ import {ValidateInput} from '../../utils/cellType/validateInput';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {Browser} from '../../utils/browser/browser';
-import {Dropdown} from '../dropdown/dropdown';
 import {CellElement} from './cellElement';
 import {CellEvents} from './cellEvents';
 
@@ -51,9 +50,10 @@ export class DataCellEvents {
       const userSetColumnType = columnDetails.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
         DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
-      } else if (Dropdown.isDisplayed(columnDetails.categories.dropdown.element)) {
+      } else if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+        // WORK - reset back to original color if deleted
         CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textContainerElement, columnDetails.categories,
-          this.defaultCellValue);
+          this.defaultCellValue, true);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
     }
@@ -62,7 +62,7 @@ export class DataCellEvents {
   private static updatePastedCellIfCategory(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
     const {userSetColumnType, categories} = etc.columnsDetails[columnIndex];
     if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(cellElement, categories, etc.defaultCellValue);
+      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(cellElement, categories, etc.defaultCellValue, true);
     }
   }
 

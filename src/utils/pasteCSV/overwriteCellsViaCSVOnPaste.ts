@@ -75,7 +75,7 @@ export class OverwriteCellsViaCSVOnPaste {
     const {userSetColumnType, categories} = etc.columnsDetails[columnIndex];
     if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       const textElement = cellElement.children[0] as HTMLElement;
-      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categories, etc.defaultCellValue);
+      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categories, etc.defaultCellValue, true);
       CaretPosition.setToEndOfText(etc, textElement);
     } else {
       CaretPosition.setToEndOfText(etc, cellElement);

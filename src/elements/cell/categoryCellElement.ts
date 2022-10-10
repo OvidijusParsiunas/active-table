@@ -51,7 +51,8 @@ export class CategoryCellElement {
     } else if (processMatching && color) {
       textElement.style.backgroundColor = color;
     } else {
-      CategoryDropdownItem.addNewCategory(textElement, dropdown);
+      // if a category is deleted and then added with an already existing text element, use its current background
+      CategoryDropdownItem.addNewCategory(etc, textElement, dropdown, textElement.style.backgroundColor);
     }
   }
 }

@@ -40,10 +40,15 @@ export class CategoryCellEvents {
     }
   }
 
+  // prettier-ignore
   public static blurring(etc: EditableTableComponent, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const {dropdown, isCellTextNewCategory} = etc.columnsDetails[columnIndex].categories;
     CategoryDropdown.hide(dropdown.element);
-    if (isCellTextNewCategory) CategoryCellElement.finaliseEditedText(etc, textElement, columnIndex);
+    // WORK - refactor - no need for isCellTextNewCategory
+    if (isCellTextNewCategory
+        || (!dropdown.categoryToItem[textElement.textContent as string] && textElement.style.backgroundColor)) {
+      CategoryCellElement.finaliseEditedText(etc, textElement, columnIndex);
+    }
     DataCellEvents.blur(etc, rowIndex, columnIndex, textElement);
   }
 
@@ -73,6 +78,12 @@ export class CategoryCellEvents {
       const textElement = cellElement.children[0] as HTMLElement;
       // needed to set cursor at the end
       event.preventDefault();
+      // text blur will not activate when the dropdown has been clicked and will not close if its scrollbar, padding
+      // or delete cateogory buttons are clicked, hence once that happens and the user clicks on another category
+      // cell, the dropdown is closed programmatically as follows
+      if (this.focusedElements.categoryDropdown) {
+        CategoryCellEvents.programmaticBlur(this);
+      }
       // Firefox does not fire the focus event for CaretPosition.setToEndOfText
       if (Browser.IS_FIREFOX) textElement.focus();
       // in non firefox browsers this also focuses
