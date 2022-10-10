@@ -10,7 +10,6 @@ export class ColumnDetails {
       userSetColumnType: USER_SET_COLUMN_TYPE.Auto,
       cellTypeTotals: CellTypeTotalsUtils.createObj(),
       categories: {
-        isCellTextNewCategory: false,
         dropdown: {
           categoryToItem: {},
           activeItems: {},

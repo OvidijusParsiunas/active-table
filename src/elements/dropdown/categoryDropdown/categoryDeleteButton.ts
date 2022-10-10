@@ -10,18 +10,15 @@ export class CategoryDeleteButton {
   private static readonly CATEGORY_DELETE_BUTTON_ICON_CLASS = 'category-delete-button-icon';
   private static readonly DELETE_ICON_TEXT = '×';
 
-  // prettier-ignore
   private static delete(this: EditableTableComponent, categoryDropdownProps: CategoryDropdownProps, event: MouseEvent) {
-    // needs to be called at the start in order to not create a new category when blurred
-    if (Object.keys(categoryDropdownProps.categoryToItem).length === 1) {
-      CategoryCellEvents.programmaticBlur(this);
-    }
     const buttonElement = event.target as HTMLElement;
     const containerElement = buttonElement.parentElement as HTMLElement;
     const itemElement = containerElement.parentElement as HTMLElement;
     delete categoryDropdownProps.categoryToItem[itemElement.children[0].textContent as string];
     categoryDropdownProps.element.removeChild(itemElement);
-    if (Object.keys(categoryDropdownProps.categoryToItem).length > 0) {
+    if (Object.keys(categoryDropdownProps.categoryToItem).length === 0) {
+      CategoryCellEvents.programmaticBlur(this);
+    } else {
       CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categoryDropdownProps);
     }
   }

@@ -134,7 +134,6 @@ export class CategoryDropdownItem {
     }
     CategoryDropdownItem.updateItemColor(itemElement, categories);
     if (updateCellText) CategoryDropdownItem.updateCellTextBgColor(itemElement, textElement, categories, defaultCellValue);
-    categories.isCellTextNewCategory = !itemElement;
   }
 
   // prettier-ignore

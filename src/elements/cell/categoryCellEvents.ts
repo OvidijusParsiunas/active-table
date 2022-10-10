@@ -42,11 +42,9 @@ export class CategoryCellEvents {
 
   // prettier-ignore
   public static blurring(etc: EditableTableComponent, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
-    const {dropdown, isCellTextNewCategory} = etc.columnsDetails[columnIndex].categories;
-    CategoryDropdown.hide(dropdown.element);
-    // WORK - refactor - no need for isCellTextNewCategory
-    if (isCellTextNewCategory
-        || (!dropdown.categoryToItem[textElement.textContent as string] && textElement.style.backgroundColor)) {
+    const {dropdown: {element, categoryToItem}} = etc.columnsDetails[columnIndex].categories;
+    CategoryDropdown.hide(element);
+    if (!categoryToItem[textElement.textContent as string]) {
       CategoryCellElement.finaliseEditedText(etc, textElement, columnIndex);
     }
     DataCellEvents.blur(etc, rowIndex, columnIndex, textElement);

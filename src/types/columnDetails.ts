@@ -52,7 +52,6 @@ export interface CategoryDropdownProps {
 }
 
 export interface Categories {
-  isCellTextNewCategory: boolean;
   dropdown: CategoryDropdownProps;
 }
 
