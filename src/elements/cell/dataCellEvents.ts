@@ -20,7 +20,7 @@ export class DataCellEvents {
   private static readonly INVALID_TEXT_COLOR = 'grey';
   private static readonly DEFAULT_TEXT_COLOR = '';
 
-  private static keyDownCell(this: EditableTableComponent, event: KeyboardEvent) {
+  public static keyDownCell(this: EditableTableComponent, event: KeyboardEvent) {
     // REF-7
     if (event.key === KEYBOARD_KEY.TAB) {
       CellKeyPressStateUtil.temporarilyIndicatePress(this.cellKeyPressState, KEYBOARD_KEY.TAB);

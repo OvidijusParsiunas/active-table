@@ -1,9 +1,18 @@
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CategoryCellEvents} from '../cell/categoryCellEvents';
+import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
+import {CellDetails} from '../../types/focusedCell';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class WindowEvents {
+  public static onKeyDown(this: EditableTableComponent, event: KeyboardEvent) {
+    const {columnIndex, rowIndex} = this.focusedElements.cell as CellDetails;
+    if (this.columnsDetails[columnIndex]?.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+      CategoryCellEvents.keyDownText(this, columnIndex, rowIndex, event);
+    }
+  }
+
   // prettier-ignore
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
     // window event.target can only identify the parent element in shadow dom, not elements

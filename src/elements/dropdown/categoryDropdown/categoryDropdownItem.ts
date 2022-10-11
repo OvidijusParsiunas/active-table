@@ -17,17 +17,6 @@ interface CategoryToColor {
 }
 
 export class CategoryDropdownItem {
-  public static focusOrBlurNextColumnCell(elements: HTMLElement[], rowIndex: number) {
-    const nextColumnCell = elements[rowIndex + 1];
-    if (nextColumnCell) {
-      // needs to be mousedown in order to set focusedCell
-      nextColumnCell.dispatchEvent(new Event('mousedown'));
-    } else {
-      // if no next cell - blur it as the dropdown will be closed but the cursor would otherwise stay
-      (elements[rowIndex].children[0] as HTMLElement).blur();
-    }
-  }
-
   // WORK - perhaps moving item to top may not be the greatest idea as it just makes the whole thing confusing
   private static moveItemToTop(item: HTMLElement, categoryDropdown: HTMLElement) {
     categoryDropdown.removeChild(item);

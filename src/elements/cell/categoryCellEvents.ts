@@ -1,6 +1,7 @@
 import {CategoryDropdownItem} from '../dropdown/categoryDropdown/categoryDropdownItem';
 import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
+import {FocusNextCellFromCategoryCell} from './focusNextCellFromCategoryCell';
 import {CaretPosition} from '../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CategoryCellElement} from './categoryCellElement';
@@ -11,20 +12,25 @@ import {DataCellEvents} from './dataCellEvents';
 import {CellElement} from './cellElement';
 
 export class CategoryCellEvents {
+  // the reason why this is triggered by window is because when the user clicks on dropdown padding or delete button
+  // keydown events will no longer be fired through the cell text - however we need to maintain the same behaviour
   // prettier-ignore
-  private static keyDownText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
-    const {categoryDropdown: {activeItems}, elements} = this.columnsDetails[columnIndex];
-    if (event.key === KEYBOARD_KEY.ESCAPE || event.key === KEYBOARD_KEY.TAB) {
-      CategoryCellEvents.programmaticBlur(this);
+  public static keyDownText(etc: EditableTableComponent, columnIndex: number, rowIndex: number, event: KeyboardEvent) {
+    const {categoryDropdown: {activeItems}, elements} = etc.columnsDetails[columnIndex];
+    if (event.key === KEYBOARD_KEY.ESCAPE) {
+      CategoryCellEvents.programmaticBlur(etc);
+    } else if (event.key === KEYBOARD_KEY.TAB) {
+      event.preventDefault();
+      FocusNextCellFromCategoryCell.focusOrBlurRowNextCell(etc, columnIndex, rowIndex, event);
     } else if (event.key === KEYBOARD_KEY.ENTER) {
       event.preventDefault();
-      CategoryDropdownItem.focusOrBlurNextColumnCell(elements, rowIndex);
+      FocusNextCellFromCategoryCell.focusOrBlurColumnNextCell(elements, rowIndex);
     } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
       event.preventDefault();
-      CategoryDropdownItem.setSiblingItemOnCell(this, activeItems, 'previousSibling');
+      CategoryDropdownItem.setSiblingItemOnCell(etc, activeItems, 'previousSibling');
     } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
       event.preventDefault();
-      CategoryDropdownItem.setSiblingItemOnCell(this, activeItems, 'nextSibling');
+      CategoryDropdownItem.setSiblingItemOnCell(etc, activeItems, 'nextSibling');
     }
   }
 
@@ -97,6 +103,5 @@ export class CategoryCellEvents {
     const textElement = cellElement.children[0] as HTMLElement;
     textElement.onblur = CategoryCellEvents.blurText.bind(etc, rowIndex, columnIndex);
     textElement.onfocus = CategoryCellEvents.focusText.bind(etc, rowIndex, columnIndex);
-    textElement.onkeydown = CategoryCellEvents.keyDownText.bind(etc, rowIndex, columnIndex);
   }
 }

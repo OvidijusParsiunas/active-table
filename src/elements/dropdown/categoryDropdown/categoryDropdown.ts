@@ -48,7 +48,7 @@ export class CategoryDropdown {
   }
 
   // this is required to record to stop cell blur from closing the dropdown
-  // additionally if the user clicks on dropdown scroll or padding, this will
+  // additionally if the user clicks on dropdown scroll or padding, this will record it
   private static mouseDown(focusedElements: FocusedElements, dropdownElement: HTMLElement) {
     focusedElements.categoryDropdown = dropdownElement;
   }
