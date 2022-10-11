@@ -23,11 +23,6 @@ export class CategoryDropdown {
     // its text with a background color but one for a category that has been deleted, hence we do not want to
     // highlight it with a new background color
     CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, dropdown, defaultCellValue, false);
-    // WORK - probably no need here
-    if (!dropdown.activeItems.matchingWithCellText) {
-      const firstItem = dropdown.element.children[0] as HTMLElement;
-      firstItem?.dispatchEvent(new MouseEvent('mouseenter'));
-    }
   }
 
   private static setPosition(dropdown: HTMLElement, cellElement: HTMLElement) {
