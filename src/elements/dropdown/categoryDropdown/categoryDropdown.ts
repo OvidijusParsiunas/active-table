@@ -1,4 +1,4 @@
-import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
+import {CategoryDropdownHorizontalScrollFix} from './categoryDropdownHorizontalScrollFix';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryCellEvents} from '../../cell/categoryCellEvents';
@@ -65,7 +65,7 @@ export class CategoryDropdown {
       dropdownEl.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
       dropdownEl.scrollLeft = 0;
       // REF-4
-      CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categoryDropdown);
+      CategoryDropdownHorizontalScrollFix.setPropertiesIfHorizontalScrollPresent(categoryDropdown);
       const textElement = cellElement.children[0] as HTMLElement;
       CategoryDropdown.focusItemOnDropdownOpen(textElement, categoryDropdown, etc.defaultCellValue);
     }

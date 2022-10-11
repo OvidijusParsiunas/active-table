@@ -1,9 +1,10 @@
-import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
+import {CategoryDropdownHorizontalScrollFix} from './categoryDropdownHorizontalScrollFix';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryCellEvents} from '../../cell/categoryCellEvents';
 import {CategoryDropdownT} from '../../../types/columnDetails';
 import {DropdownItem} from '../dropdownItem';
 
+// WORK - the delete button should be closer to the right side if there is no vertical scroll bar
 export class CategoryDeleteButton {
   private static readonly CATEGORY_DELETE_BUTTON_CONTAINER_CLASS = 'category-delete-button-container';
   public static readonly CATEGORY_DELETE_BUTTON_CLASS = 'category-delete-button';
@@ -19,7 +20,7 @@ export class CategoryDeleteButton {
     if (Object.keys(categoryDropdownProps.categoryToItem).length === 0) {
       CategoryCellEvents.programmaticBlur(this);
     } else {
-      CategoryDropdownHorizontalScroll.setPropertiesIfHorizontalScrollPresent(categoryDropdownProps);
+      CategoryDropdownHorizontalScrollFix.setPropertiesIfHorizontalScrollPresent(categoryDropdownProps);
     }
   }
 

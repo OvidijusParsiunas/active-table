@@ -1,5 +1,5 @@
+import {CategoryDropdownHorizontalScrollFix} from './categoryDropdownHorizontalScrollFix';
 import {ActiveCategoryItems, CategoryDropdownT} from '../../../types/columnDetails';
-import {CategoryDropdownHorizontalScroll} from './categoryDropdownHorizontalScroll';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -75,7 +75,7 @@ export class CategoryDropdownItem {
       itemElement.scrollIntoView({block: 'nearest'});
       // REF-4
       if (isHorizontalScrollPresent && visibilityDetails.blockingSide === SIDE.BOTTOM) {
-        CategoryDropdownHorizontalScroll.scrollDownFurther(dropdownElement)
+        CategoryDropdownHorizontalScrollFix.scrollDownFurther(dropdownElement)
       }
     }
   }
