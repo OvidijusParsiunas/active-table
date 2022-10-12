@@ -126,18 +126,32 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
+  private static setItemOnCell(etc: EditableTableComponent, item: HTMLElement) {
+    const {element, rowIndex, columnIndex} = etc.focusedElements.cell as CellDetails;
+    const textElement = element.children[0] as HTMLElement;
+    CategoryDropdownItem.updateCellElementIfNotUpdated(etc, item, rowIndex, columnIndex, textElement);
+    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, 
+      etc.columnsDetails[columnIndex].categoryDropdown, etc.defaultCellValue, true, item);
+  }
+
+  // prettier-ignore
   public static setSiblingItemOnCell(etc: EditableTableComponent,
       activeItems: ActiveCategoryItems, sibling: 'previousSibling' | 'nextSibling') {
     const {hovered, matchingWithCellText} = activeItems;
     const currentlyHighlightedItem = hovered || matchingWithCellText as HTMLElement;
-    const siblingItem = currentlyHighlightedItem[sibling] as HTMLElement;
+    const siblingItem = currentlyHighlightedItem?.[sibling] as HTMLElement;
     if (siblingItem) {
-      const {element, rowIndex, columnIndex} = etc.focusedElements.cell as CellDetails;
-      const textElement = element.children[0] as HTMLElement;
-      CategoryDropdownItem.updateCellElementIfNotUpdated(etc, siblingItem, rowIndex, columnIndex, textElement);
-      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, 
-        etc.columnsDetails[columnIndex].categoryDropdown, etc.defaultCellValue, true, siblingItem);
-      CaretPosition.setToEndOfText(etc, textElement);
+      CategoryDropdownItem.setItemOnCell(etc, siblingItem);
+    } else {
+      const {columnIndex} = etc.focusedElements.cell as CellDetails;
+      const dropdownElement = etc.columnsDetails[columnIndex].categoryDropdown.element as HTMLElement;
+      if (sibling === 'nextSibling') {
+        const firstItem = dropdownElement.children[0] as HTMLElement;
+        if (firstItem) CategoryDropdownItem.setItemOnCell(etc, firstItem);
+      } else {
+        const lastItem = dropdownElement.children[dropdownElement.children.length - 1] as HTMLElement;
+        if (lastItem) CategoryDropdownItem.setItemOnCell(etc, lastItem);
+      }
     }
   }
 

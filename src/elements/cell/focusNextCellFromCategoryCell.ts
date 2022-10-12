@@ -12,6 +12,7 @@ export class FocusNextCellFromCategoryCell {
       cellElement.dispatchEvent(new Event('mousedown'));
     } else {
       CategoryCellEvents.programmaticBlur(etc);
+      // dispatchEvent(new Event('focus')); does not return a selection in forefox for window.document.getSelection()
       cellElement.focus();
     }
   }
