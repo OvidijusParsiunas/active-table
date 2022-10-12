@@ -59,7 +59,7 @@ Knowing that data cell elements contain a text node and category cells a text el
 the .textContent grabs the text when used on the cell or the text element for all cases
 
 REF-7
-Because there is no way in firefox to distinguish if element focus was fired by tab key or mouse down, the cellKeyPressState
+Because there is no way in firefox to distinguish if element focus was fired by tab key or mouse down, the cellKeyEventState
 is used to hold temporary state to indicate this. Primarily used to decide whether move caret via the setToEndOfText method
 
 REF-8

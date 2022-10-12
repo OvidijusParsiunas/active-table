@@ -21,7 +21,8 @@ export class CategoryCellEvents {
       CategoryCellEvents.programmaticBlur(etc);
     } else if (event.key === KEYBOARD_KEY.TAB) {
       event.preventDefault();
-      FocusNextCellFromCategoryCell.focusOrBlurRowNextCell(etc, columnIndex, rowIndex, event);
+      DataCellEvents.keyDownCell.bind(etc)(event);
+      FocusNextCellFromCategoryCell.focusOrBlurRowNextCell(etc, columnIndex, rowIndex);
     } else if (event.key === KEYBOARD_KEY.ENTER) {
       event.preventDefault();
       FocusNextCellFromCategoryCell.focusOrBlurColumnNextCell(elements, rowIndex);
