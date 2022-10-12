@@ -34,7 +34,7 @@ export class CategoryDropdown {
   // time the dropdown is displayed, click events are handled on the dropdown instead, the reason for this is
   // because it can be expensive to rebind an arbitrary amount of items e.g. 10000+
   // prettier-ignore
-  private static click(this: EditableTableComponent, dropdownElement: HTMLElement, event: MouseEvent) {
+  private static click(this: EditableTableComponent, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
     // target is dropdown when clicked on top/bottom paddding
     if (targetElement.classList.contains(Dropdown.DROPDOWN_CLASS)
@@ -43,7 +43,7 @@ export class CategoryDropdown {
     const itemElement = targetElement.classList.contains(DropdownItem.DROPDOWN_ITEM_CLASS)
       ? targetElement : targetElement.parentElement;
     CategoryDropdownItem.selectExistingCategory(this, itemElement as HTMLElement, rowIndex, columnIndex,
-      cellElement.children[0] as HTMLElement, dropdownElement);
+      cellElement.children[0] as HTMLElement);
     CategoryCellEvents.programmaticBlur(this);
   }
 
@@ -58,7 +58,7 @@ export class CategoryDropdown {
     const {element: dropdownEl, activeItems, categoryToItem} = categoryDropdown;
     if (Object.keys(categoryToItem).length > 0) {
       dropdownEl.onmousedown = CategoryDropdown.mouseDown.bind(this, etc.focusedElements, dropdownEl);
-      dropdownEl.onclick = CategoryDropdown.click.bind(etc, dropdownEl);
+      dropdownEl.onclick = CategoryDropdown.click.bind(etc);
       CategoryDropdown.setPosition(dropdownEl, cellElement);
       CategoryDropdownItem.blurItem(activeItems, 'hovered');
       CategoryDropdownItem.blurItem(activeItems, 'matchingWithCellText');

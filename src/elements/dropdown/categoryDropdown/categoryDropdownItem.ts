@@ -17,16 +17,6 @@ interface CategoryToColor {
 }
 
 export class CategoryDropdownItem {
-  // WORK - perhaps moving item to top may not be the greatest idea as it just makes the whole thing confusing
-  private static moveItemToTop(item: HTMLElement, categoryDropdown: HTMLElement) {
-    categoryDropdown.removeChild(item);
-    if (categoryDropdown.children.length > 0) {
-      categoryDropdown.insertBefore(item, categoryDropdown.children[0]);
-    } else {
-      categoryDropdown.appendChild(item);
-    }
-  }
-
   // prettier-ignore
   private static updateCellElementIfNotUpdated(etc: EditableTableComponent,
       activeItem: HTMLElement, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
@@ -37,10 +27,9 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
-  public static selectExistingCategory(etc: EditableTableComponent, activeItemElement: HTMLElement,
-      rowIndex: number, columnIndex: number, textElement: HTMLElement, categoryDropdown: HTMLElement) {
+  public static selectExistingCategory(etc: EditableTableComponent,
+      activeItemElement: HTMLElement, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItemElement, rowIndex, columnIndex, textElement);
-    CategoryDropdownItem.moveItemToTop(activeItemElement, categoryDropdown);
     textElement.style.backgroundColor = activeItemElement?.style.backgroundColor;
   }
 
@@ -132,6 +121,7 @@ export class CategoryDropdownItem {
     CategoryDropdownItem.updateCellElementIfNotUpdated(etc, item, rowIndex, columnIndex, textElement);
     CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, 
       etc.columnsDetails[columnIndex].categoryDropdown, etc.defaultCellValue, true, item);
+    CaretPosition.setToEndOfText(etc, textElement);
   }
 
   // prettier-ignore
