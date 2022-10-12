@@ -1,6 +1,6 @@
-import {OverwriteCellsViaCSVOnPaste} from '../../utils/pasteCSV/overwriteCellsViaCSVOnPaste';
+import {OverwriteCellsViaCSVOnPaste} from '../../utils/paste/CSV/overwriteCellsViaCSVOnPaste';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
-import {CellKeyPressStateUtil} from '../../utils/cellKeyPressState/cellKeyPressStateUtil';
+import {CellKeyEventStateUtil} from '../../utils/cellKeyEventState/cellKeyEventStateUtil';
 import {CategoryDropdownItem} from '../dropdown/categoryDropdown/categoryDropdownItem';
 import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
 import {CellTypeTotalsUtils} from '../../utils/cellType/cellTypeTotalsUtils';
@@ -9,21 +9,21 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {ValidateInput} from '../../utils/cellType/validateInput';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
+import {KEYBOARD_EVENT} from '../../consts/keyboardEvents';
+import {PasteUtils} from '../../utils/paste/pasteUtils';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {Browser} from '../../utils/browser/browser';
 import {CellElement} from './cellElement';
 import {CellEvents} from './cellEvents';
 
 export class DataCellEvents {
-  private static readonly PASTE_INPUT_TYPE = 'insertFromPaste';
-  private static readonly TEXT_DATA_FORMAT = 'text/plain';
   private static readonly INVALID_TEXT_COLOR = 'grey';
   private static readonly DEFAULT_TEXT_COLOR = '';
 
   public static keyDownCell(this: EditableTableComponent, event: KeyboardEvent) {
     // REF-7
     if (event.key === KEYBOARD_KEY.TAB) {
-      CellKeyPressStateUtil.temporarilyIndicatePress(this.cellKeyPressState, KEYBOARD_KEY.TAB);
+      CellKeyEventStateUtil.temporarilyIndicateEvent(this.cellKeyEventState, KEYBOARD_KEY.TAB);
     }
   }
 
@@ -43,9 +43,9 @@ export class DataCellEvents {
     // can be cell element from this class or text element from categoryCellEvents class
     const textContainerElement = inputEvent.target as HTMLElement;
     const text = textContainerElement.textContent as string;
-    // WORK - is this needed here?
-    CellElement.processAndSetTextOnCell(textContainerElement, text, false);
-    if (inputEvent.inputType !== DataCellEvents.PASTE_INPUT_TYPE) {
+    // sanitizePastedTextContent causes inputType to no longer be insertFromPaste, hence using this instead
+    if (!this.cellKeyEventState[KEYBOARD_EVENT.PASTE]) {
+      CellElement.processAndSetTextOnCell(textContainerElement, text, false);
       const columnDetails = this.columnsDetails[columnIndex];
       const userSetColumnType = columnDetails.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
@@ -66,7 +66,9 @@ export class DataCellEvents {
   }
 
   private static pasteCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: ClipboardEvent) {
-    const clipboardText = JSON.stringify(event.clipboardData?.getData(DataCellEvents.TEXT_DATA_FORMAT));
+    CellKeyEventStateUtil.temporarilyIndicateEvent(this.cellKeyEventState, KEYBOARD_EVENT.PASTE);
+    PasteUtils.sanitizePastedTextContent(event);
+    const clipboardText = PasteUtils.extractClipboardText(event);
     if (OverwriteCellsViaCSVOnPaste.isCSVData(clipboardText)) {
       OverwriteCellsViaCSVOnPaste.overwrite(this, clipboardText, event, rowIndex, columnIndex);
     } else {
@@ -111,7 +113,7 @@ export class DataCellEvents {
     const cellElement = event.target as HTMLElement;
     DataCellEvents.prepareText(this, rowIndex, columnIndex, cellElement);
     // REF-7
-    if (this.cellKeyPressState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
+    if (this.cellKeyEventState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
     FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
   }
 

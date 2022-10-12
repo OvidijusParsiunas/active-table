@@ -1,4 +1,4 @@
-import {CSV} from '../../types/CSV';
+import {CSV} from '../../../types/CSV';
 
 export class ParseCSVClipboardText {
   private static readonly STRING_QUOTE_SYMBOL = '"';

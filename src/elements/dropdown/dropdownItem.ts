@@ -28,6 +28,7 @@ export class DropdownItem {
     return itemElement;
   }
 
+  // no need to sanitize paste as input element already does it
   public static addInputItem(dropdownElement: HTMLElement) {
     const itemElement = DropdownItem.createItem(dropdownElement);
     itemElement.classList.add(DropdownItem.DROPDOWN_INPUT_ITEM_CLASS);

@@ -1,17 +1,17 @@
-import {CategoryDropdownItem} from '../../elements/dropdown/categoryDropdown/categoryDropdownItem';
-import {InsertNewColumn} from '../insertRemoveStructure/insert/insertNewColumn';
-import {CategoryCellElement} from '../../elements/cell/categoryCellElement';
-import {InsertNewRow} from '../insertRemoveStructure/insert/insertNewRow';
-import {EditableTableComponent} from '../../editable-table-component';
-import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
-import {DataUtils} from '../insertRemoveStructure/shared/dataUtils';
-import {TableCellText, TableRow} from '../../types/tableContents';
-import {CaretPosition} from '../focusedElements/caretPosition';
+import {CategoryDropdownItem} from '../../../elements/dropdown/categoryDropdown/categoryDropdownItem';
+import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
+import {CategoryCellElement} from '../../../elements/cell/categoryCellElement';
+import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
+import {EditableTableComponent} from '../../../editable-table-component';
+import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
+import {DataUtils} from '../../insertRemoveStructure/shared/dataUtils';
+import {TableRow, TableCellText} from '../../../types/tableContents';
+import {CaretPosition} from '../../focusedElements/caretPosition';
+import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
-import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
-import {CellEvents} from '../../elements/cell/cellEvents';
-import {ArrayUtils} from '../array/arrayUtils';
-import {CSV, CSVRow} from '../../types/CSV';
+import {CellEvents} from '../../../elements/cell/cellEvents';
+import {ArrayUtils} from '../../array/arrayUtils';
+import {CSVRow, CSV} from '../../../types/CSV';
 
 export class OverwriteCellsViaCSVOnPaste {
   // if the data array does not fill the full structure, fill cells with the default value
