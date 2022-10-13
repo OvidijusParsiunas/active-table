@@ -1,6 +1,6 @@
-import {CategoryDropdownHorizontalScrollFix} from './categoryDropdownHorizontalScrollFix';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CategoryDropdownScrollbar} from './categoryDropdownScrollbar';
 import {CategoryCellEvents} from '../../cell/categoryCellEvents';
 import {FocusedElements} from '../../../types/focusedElements';
 import {CategoryDropdownT} from '../../../types/columnDetails';
@@ -55,17 +55,16 @@ export class CategoryDropdown {
 
   public static display(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
     const {categoryDropdown} = etc.columnsDetails[columnIndex];
-    const {element: dropdownEl, activeItems, categoryToItem} = categoryDropdown;
+    const {element: dropdownEl, categoryToItem} = categoryDropdown;
     if (Object.keys(categoryToItem).length > 0) {
       dropdownEl.onmousedown = CategoryDropdown.mouseDown.bind(this, etc.focusedElements, dropdownEl);
       dropdownEl.onclick = CategoryDropdown.click.bind(etc);
       CategoryDropdown.setPosition(dropdownEl, cellElement);
-      CategoryDropdownItem.blurItem(activeItems, 'hovered');
-      CategoryDropdownItem.blurItem(activeItems, 'matchingWithCellText');
+      CategoryDropdownItem.blurItem(categoryDropdown, 'hovered');
+      CategoryDropdownItem.blurItem(categoryDropdown, 'matchingWithCellText');
       dropdownEl.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
       dropdownEl.scrollLeft = 0;
-      // REF-4
-      CategoryDropdownHorizontalScrollFix.setPropertiesIfHorizontalScrollPresent(categoryDropdown);
+      CategoryDropdownScrollbar.setProperties(categoryDropdown);
       const textElement = cellElement.children[0] as HTMLElement;
       CategoryDropdown.focusItemOnDropdownOpen(textElement, categoryDropdown, etc.defaultCellValue);
     }

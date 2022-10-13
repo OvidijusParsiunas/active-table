@@ -27,6 +27,11 @@ export type CellTypeTotals = {
   [key in CELL_TYPE]: number;
 };
 
+export interface ScrollbarPresence {
+  horizontal: boolean;
+  vertical: boolean;
+}
+
 export interface ActiveCategoryItems {
   matchingWithCellText?: HTMLElement;
   hovered?: HTMLElement;
@@ -48,7 +53,7 @@ export interface CategoryDropdownT {
   activeItems: ActiveCategoryItems;
   // REF-8
   element: HTMLElement;
-  isHorizontalScrollPresent: boolean;
+  scrollbarPresence: ScrollbarPresence;
 }
 
 export interface ColumnDetailsT {

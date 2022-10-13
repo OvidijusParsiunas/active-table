@@ -13,7 +13,10 @@ export class ColumnDetails {
         categoryToItem: {},
         activeItems: {},
         element: categoryDropdown,
-        isHorizontalScrollPresent: false,
+        scrollbarPresence: {
+          horizontal: false,
+          vertical: false,
+        },
       },
     };
   }

@@ -78,7 +78,8 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
-  public static blurItem(activeItems: ActiveCategoryItems, typeOfItem: keyof ActiveCategoryItems, event?: MouseEvent) {
+  public static blurItem(dropdown: CategoryDropdownT, typeOfItem: keyof ActiveCategoryItems, event?: MouseEvent) {
+    const { activeItems, scrollbarPresence } = dropdown;
     const itemElement = activeItems[typeOfItem] as HTMLElement;
     if (itemElement !== undefined) {
       if (typeOfItem === 'matchingWithCellText'
@@ -87,7 +88,7 @@ export class CategoryDropdownItem {
         delete activeItems[typeOfItem];
       }
     }
-    if (event) CategoryDeleteButton.changeDisplay(event, false);
+    if (event) CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, false);
   }
 
   private static hideHoveredItemHighlight(activeItems: ActiveCategoryItems) {
@@ -108,7 +109,7 @@ export class CategoryDropdownItem {
     if (!itemElement || activeItems.matchingWithCellText !== itemElement) {
       // this is used to preserve the ability for the user to still allow the use of arrow keys to traverse the dropdown
       CategoryDropdownItem.hideHoveredItemHighlight(activeItems);
-      CategoryDropdownItem.blurItem(activeItems, 'matchingWithCellText');
+      CategoryDropdownItem.blurItem(dropdown, 'matchingWithCellText');
     }
     CategoryDropdownItem.updateItemColor(itemElement, activeItems);
     if (updateCellText) CategoryDropdownItem.updateCellTextBgColor(itemElement, textElement, dropdown, defaultCellValue);
@@ -145,21 +146,20 @@ export class CategoryDropdownItem {
     }
   }
 
-  // prettier-ignore
   private static highlightItem(color: string, dropdown: CategoryDropdownT, event: MouseEvent) {
-    const {isHorizontalScrollPresent, activeItems} = dropdown;
+    const {scrollbarPresence, activeItems} = dropdown;
     // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
     if (activeItems.hovered) activeItems.hovered.style.backgroundColor = '';
     const itemElement = event.target as HTMLElement;
     itemElement.style.backgroundColor = color;
     const dropdownElement = itemElement.parentElement as HTMLElement;
-    CategoryDropdownItem.scrollToItemIfNeeded(itemElement, isHorizontalScrollPresent, dropdownElement, event);
+    CategoryDropdownItem.scrollToItemIfNeeded(itemElement, scrollbarPresence.horizontal, dropdownElement, event);
     if (itemElement === activeItems.matchingWithCellText) {
       delete activeItems.hovered;
     } else {
       activeItems.hovered = itemElement;
     }
-    CategoryDeleteButton.changeDisplay(event, true);
+    CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, true);
   }
 
   // prettier-ignore
@@ -169,7 +169,7 @@ export class CategoryDropdownItem {
     const deleteButtonElement = CategoryDeleteButton.create(etc, dropdown);
     itemElement.appendChild(deleteButtonElement);
     itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(this, color, dropdown);
-    itemElement.onmouseleave = CategoryDropdownItem.blurItem.bind(this, dropdown.activeItems, 'hovered');
+    itemElement.onmouseleave = CategoryDropdownItem.blurItem.bind(this, dropdown, 'hovered');
     return itemElement;
   }
 

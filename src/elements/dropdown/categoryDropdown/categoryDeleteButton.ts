@@ -1,5 +1,5 @@
-import {CategoryDropdownHorizontalScrollFix} from './categoryDropdownHorizontalScrollFix';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CategoryDropdownScrollbar} from './categoryDropdownScrollbar';
 import {CategoryCellEvents} from '../../cell/categoryCellEvents';
 import {CategoryDropdownT} from '../../../types/columnDetails';
 import {DropdownItem} from '../dropdownItem';
@@ -11,16 +11,16 @@ export class CategoryDeleteButton {
   private static readonly CATEGORY_DELETE_BUTTON_ICON_CLASS = 'category-delete-button-icon';
   private static readonly DELETE_ICON_TEXT = '×';
 
-  private static delete(this: EditableTableComponent, categoryDropdownProps: CategoryDropdownT, event: MouseEvent) {
+  private static delete(this: EditableTableComponent, categoryDropdown: CategoryDropdownT, event: MouseEvent) {
     const buttonElement = event.target as HTMLElement;
     const containerElement = buttonElement.parentElement as HTMLElement;
     const itemElement = containerElement.parentElement as HTMLElement;
-    delete categoryDropdownProps.categoryToItem[itemElement.children[0].textContent as string];
-    categoryDropdownProps.element.removeChild(itemElement);
-    if (Object.keys(categoryDropdownProps.categoryToItem).length === 0) {
+    delete categoryDropdown.categoryToItem[itemElement.children[0].textContent as string];
+    categoryDropdown.element.removeChild(itemElement);
+    if (Object.keys(categoryDropdown.categoryToItem).length === 0) {
       CategoryCellEvents.programmaticBlur(this);
     } else {
-      CategoryDropdownHorizontalScrollFix.setPropertiesIfHorizontalScrollPresent(categoryDropdownProps);
+      CategoryDropdownScrollbar.setProperties(categoryDropdown);
     }
   }
 
@@ -31,10 +31,10 @@ export class CategoryDeleteButton {
     return iconElement;
   }
 
-  private static createButton(etc: EditableTableComponent, categoryDropdownProps: CategoryDropdownT) {
+  private static createButton(etc: EditableTableComponent, categoryDropdown: CategoryDropdownT) {
     const buttonElement = document.createElement('div');
     buttonElement.classList.add(DropdownItem.DROPDOWN_ITEM_IDENTIFIER, CategoryDeleteButton.CATEGORY_DELETE_BUTTON_CLASS);
-    buttonElement.onclick = CategoryDeleteButton.delete.bind(etc, categoryDropdownProps);
+    buttonElement.onclick = CategoryDeleteButton.delete.bind(etc, categoryDropdown);
     return buttonElement;
   }
 
@@ -45,21 +45,25 @@ export class CategoryDeleteButton {
   }
 
   // WORK - mouse on and use arrow keys
-  public static create(etc: EditableTableComponent, categoryDropdownProps: CategoryDropdownT) {
+  public static create(etc: EditableTableComponent, categoryDropdown: CategoryDropdownT) {
     const containerElement = CategoryDeleteButton.createContainer();
-    const buttonElement = CategoryDeleteButton.createButton(etc, categoryDropdownProps);
+    const buttonElement = CategoryDeleteButton.createButton(etc, categoryDropdown);
     const iconElement = CategoryDeleteButton.createIcon();
     buttonElement.appendChild(iconElement);
     containerElement.appendChild(buttonElement);
     return containerElement;
   }
 
-  public static changeDisplay(event: MouseEvent, display: boolean) {
+  public static changeVisibility(event: MouseEvent, isVerticalScrollPresent: boolean, display: boolean) {
     // event.isTrusted ensures that the item only appears when using a mouse
     if (event.isTrusted) {
       const itemElement = event.target as HTMLElement;
       const buttonContainerElement = itemElement.children[1] as HTMLElement;
       buttonContainerElement.style.display = display ? 'block' : 'none';
+      if (display) {
+        const buttonElement = buttonContainerElement.children[0] as HTMLElement;
+        buttonElement.style.left = isVerticalScrollPresent ? '145px' : '160px';
+      }
     }
   }
 }
