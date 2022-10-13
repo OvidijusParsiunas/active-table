@@ -34,7 +34,7 @@ export class ColumnDropdownItem {
     setTimeout(() => {
       CellEvents.updateCell(this, dropdownInutElement.value, 0, columnIndex, { element: cellElement, processText: false });
       // when header cell height changes - dropdown changes position accordingly
-      dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement);
+      dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement, this.tableElementRef as HTMLElement);
     });
   }
 
