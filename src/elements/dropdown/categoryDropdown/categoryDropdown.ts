@@ -25,9 +25,10 @@ export class CategoryDropdown {
     CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, dropdown, defaultCellValue, false);
   }
 
-  private static setPosition(dropdown: HTMLElement, cellElement: HTMLElement) {
-    dropdown.style.left = `${cellElement.offsetLeft + cellElement.offsetWidth}px`;
-    dropdown.style.top = `${cellElement.offsetTop}px`;
+  private static setPosition(dropdown: HTMLElement, cellElement: HTMLElement, tableElement: HTMLElement) {
+    const rightOfCellRelativeToTable = cellElement.offsetLeft + cellElement.offsetWidth;
+    dropdown.style.left = `${rightOfCellRelativeToTable + tableElement.getBoundingClientRect().left}px`;
+    dropdown.style.top = `${cellElement.offsetTop + tableElement.getBoundingClientRect().top}px`;
   }
 
   // instead of binding click event handlers with the context of current row index to individual item elements every
@@ -59,7 +60,7 @@ export class CategoryDropdown {
     if (Object.keys(categoryToItem).length > 0) {
       dropdownEl.onmousedown = CategoryDropdown.mouseDown.bind(this, etc.focusedElements, dropdownEl);
       dropdownEl.onclick = CategoryDropdown.click.bind(etc);
-      CategoryDropdown.setPosition(dropdownEl, cellElement);
+      CategoryDropdown.setPosition(dropdownEl, cellElement, etc.tableElementRef as HTMLElement);
       CategoryDropdownItem.blurItem(categoryDropdown, 'hovered');
       CategoryDropdownItem.blurItem(categoryDropdown, 'matchingWithCellText');
       dropdownEl.style.display = Dropdown.CSS_DISPLAY_VISIBLE;

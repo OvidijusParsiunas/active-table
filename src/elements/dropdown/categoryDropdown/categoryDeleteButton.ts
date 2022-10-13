@@ -4,7 +4,6 @@ import {CategoryCellEvents} from '../../cell/categoryCellEvents';
 import {CategoryDropdownT} from '../../../types/columnDetails';
 import {DropdownItem} from '../dropdownItem';
 
-// WORK - the delete button should be closer to the right side if there is no vertical scroll bar
 export class CategoryDeleteButton {
   private static readonly CATEGORY_DELETE_BUTTON_CONTAINER_CLASS = 'category-delete-button-container';
   public static readonly CATEGORY_DELETE_BUTTON_CLASS = 'category-delete-button';
@@ -44,7 +43,6 @@ export class CategoryDeleteButton {
     return containerElement;
   }
 
-  // WORK - mouse on and use arrow keys
   public static create(etc: EditableTableComponent, categoryDropdown: CategoryDropdownT) {
     const containerElement = CategoryDeleteButton.createContainer();
     const buttonElement = CategoryDeleteButton.createButton(etc, categoryDropdown);

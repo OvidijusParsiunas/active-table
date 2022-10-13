@@ -10,7 +10,6 @@ export const ediTableStyle = css`
     border-spacing: 0px;
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    position: relative;
   }
 
   tbody {
