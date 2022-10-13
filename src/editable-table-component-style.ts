@@ -166,7 +166,6 @@ export const ediTableStyle = css`
     width: 13px;
     position: sticky;
     background-color: #ffffff70;
-    left: 140px;
     z-index: 1;
     border-radius: 12px;
     opacity: 0.3;
