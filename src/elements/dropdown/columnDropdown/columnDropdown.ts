@@ -61,8 +61,8 @@ export class ColumnDropdown {
     return dropdownElement;
   }
 
-  public static getDropdownTopPosition(headerCellElement: HTMLElement, tableElement: HTMLElement): `${number}px` {
-    return `${headerCellElement.getBoundingClientRect().bottom - tableElement.getBoundingClientRect().top}px`;
+  public static getDropdownTopPosition(headerCellElement: HTMLElement): `${number}px` {
+    return `${headerCellElement.getBoundingClientRect().bottom}px`;
   }
 
   private static getLeftPropertyToCenterDropdown(cellDimensions: DOMRect) {
@@ -73,12 +73,12 @@ export class ColumnDropdown {
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement) {
     const dimensions = cellElement.getBoundingClientRect();
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(dimensions);
-    const tableElement = dropdownElement.parentElement as HTMLElement;
-    dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement, tableElement);
+    dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement);
     // needs to be displayed in order to evalute if in view port
     dropdownElement.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
     const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement);
     if (!visibilityDetails.isFullyVisible) {
+      const tableElement = dropdownElement.parentElement as HTMLElement;
       if (visibilityDetails.blockingSide === SIDE.LEFT) {
         dropdownElement.style.left = `${tableElement.getBoundingClientRect().left}px`;
       } else if (visibilityDetails.blockingSide === SIDE.RIGHT) {
