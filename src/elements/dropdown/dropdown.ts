@@ -8,6 +8,9 @@ export class Dropdown {
   public static readonly DROPDOWN_WIDTH = 176;
   private static readonly DROPDOWN_PADDING_TOP_BOTTOM_PX = '4px';
 
+  // TO-DO - dropdowns could potentially be placed inside the tbody which has relative positioning so that we wouldn't need
+  // to use getBoundClientRect to set their position (cannot have table with relative positioning as it jumps when the
+  // dropdown is not fully visible on the right side) Have not done this yet as it may not work correctly with scroll
   public static createBase() {
     const dropdownElement = document.createElement('div');
     dropdownElement.classList.add(Dropdown.DROPDOWN_CLASS);
