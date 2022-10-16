@@ -15,6 +15,7 @@ export class FocusNextCellFromCategoryCell {
       // dispatchEvent(new Event('focus')); does not return a selection in forefox for window.document.getSelection()
       cellElement.focus();
     }
+    cellElement.scrollIntoView({block: 'nearest'});
   }
 
   private static focusOrBlurNextRowFirstCell(etc: EditableTableComponent, columnIndex: number, rowIndex: number) {
@@ -43,6 +44,7 @@ export class FocusNextCellFromCategoryCell {
     if (nextColumnCell) {
       // needs to be mousedown in order to set focusedCell
       nextColumnCell.dispatchEvent(new Event('mousedown'));
+      nextColumnCell.scrollIntoView({block: 'nearest'});
     } else {
       // if no next cell - blur current as the dropdown will be closed but the cursor would otherwise stay
       (elements[rowIndex].children[0] as HTMLElement).blur();

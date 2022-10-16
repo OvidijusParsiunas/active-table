@@ -1,9 +1,15 @@
 import {SIDE} from '../../types/side';
 
-interface VisibilityDetails {
-  isFullyVisible: boolean;
-  blockingSide?: SIDE;
+interface FullyVisible {
+  isFullyVisible: true;
 }
+
+interface PartiallyVisible {
+  isFullyVisible: false;
+  blockingSides: Set<SIDE>;
+}
+
+type VisibilityDetails = FullyVisible | PartiallyVisible;
 
 export class ElementVisibility {
   public static getDetailsInWindow(element: HTMLElement): VisibilityDetails {
@@ -17,22 +23,24 @@ export class ElementVisibility {
       top += element.offsetTop;
       left += element.offsetLeft;
     }
-
+    const blockingSides: Set<SIDE> = new Set();
     if (top < window.pageYOffset) {
-      return {isFullyVisible: false, blockingSide: SIDE.TOP};
+      blockingSides.add(SIDE.TOP);
     }
     if (top + height > window.pageYOffset + window.innerHeight) {
-      return {isFullyVisible: false, blockingSide: SIDE.BOTTOM};
+      blockingSides.add(SIDE.BOTTOM);
     }
     if (left < window.pageXOffset) {
-      return {isFullyVisible: false, blockingSide: SIDE.LEFT};
+      blockingSides.add(SIDE.LEFT);
     }
     if (left + width > window.pageXOffset + window.innerWidth) {
-      return {isFullyVisible: false, blockingSide: SIDE.RIGHT};
+      blockingSides.add(SIDE.RIGHT);
     }
+    if (blockingSides.size > 0) return {isFullyVisible: false, blockingSides};
     return {isFullyVisible: true};
   }
 
+  // no real need to take care of multiple blockages for now
   public static isVerticallyVisibleInsideParent(element: HTMLElement): VisibilityDetails {
     const parentContainer = element.parentElement as HTMLElement;
     const containerScrollTop = parentContainer.scrollTop;
@@ -41,21 +49,22 @@ export class ElementVisibility {
     const elOffsetTop = element.offsetTop;
     const elOffsetBottom = elOffsetTop + element.clientHeight;
 
+    // this can be simplified
     // partial top
     if (elOffsetTop < containerScrollTop && elOffsetBottom > containerScrollTop) {
-      return {isFullyVisible: false, blockingSide: SIDE.TOP};
+      return {isFullyVisible: false, blockingSides: new Set([SIDE.TOP])};
     }
     // partial bottom
     if (elOffsetBottom > containerScrollBottom && elOffsetTop < containerScrollBottom) {
-      return {isFullyVisible: false, blockingSide: SIDE.BOTTOM};
+      return {isFullyVisible: false, blockingSides: new Set([SIDE.BOTTOM])};
     }
     // fully hidden top
     if (elOffsetTop < containerScrollTop) {
-      return {isFullyVisible: false, blockingSide: SIDE.TOP};
+      return {isFullyVisible: false, blockingSides: new Set([SIDE.TOP])};
     }
     // fully hidden bottom
     if (elOffsetBottom > containerScrollBottom) {
-      return {isFullyVisible: false, blockingSide: SIDE.BOTTOM};
+      return {isFullyVisible: false, blockingSides: new Set([SIDE.BOTTOM])};
     }
     return {isFullyVisible: true};
   }

@@ -1,4 +1,5 @@
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
+import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownScrollbar} from './categoryDropdownScrollbar';
 import {CategoryCellEvents} from '../../cell/categoryCellEvents';
@@ -8,6 +9,7 @@ import {CategoryDropdownItem} from './categoryDropdownItem';
 import {CategoryDeleteButton} from './categoryDeleteButton';
 import {CellDetails} from '../../../types/focusedCell';
 import {DropdownItem} from '../dropdownItem';
+import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
 
 // TO-DO allow dev to control whether additional elements are allowed to be added
@@ -25,10 +27,18 @@ export class CategoryDropdown {
     CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, dropdown, defaultCellValue, false);
   }
 
-  private static setPosition(dropdown: HTMLElement, cellElement: HTMLElement, tableElement: HTMLElement) {
-    const rightOfCellRelativeToTable = cellElement.offsetLeft + cellElement.offsetWidth;
-    dropdown.style.left = `${rightOfCellRelativeToTable + tableElement.getBoundingClientRect().left}px`;
-    dropdown.style.top = `${cellElement.offsetTop + tableElement.getBoundingClientRect().top}px`;
+  private static setPosition(dropdown: HTMLElement, cellElement: HTMLElement) {
+    dropdown.style.left = `${cellElement.offsetLeft + cellElement.offsetWidth}px`;
+    dropdown.style.top = `${cellElement.offsetTop}px`;
+    const details = ElementVisibility.getDetailsInWindow(dropdown);
+    if (!details.isFullyVisible) {
+      if (details.blockingSides.has(SIDE.RIGHT)) {
+        dropdown.style.left = `${cellElement.offsetLeft - Dropdown.DROPDOWN_WIDTH}px`;
+      }
+      if (details.blockingSides.has(SIDE.BOTTOM)) {
+        dropdown.style.top = `${cellElement.offsetTop - dropdown.offsetHeight + 10}px`;
+      }
+    }
   }
 
   // instead of binding click event handlers with the context of current row index to individual item elements every
@@ -60,10 +70,10 @@ export class CategoryDropdown {
     if (Object.keys(categoryToItem).length > 0) {
       dropdownEl.onmousedown = CategoryDropdown.mouseDown.bind(this, etc.focusedElements, dropdownEl);
       dropdownEl.onclick = CategoryDropdown.click.bind(etc);
-      CategoryDropdown.setPosition(dropdownEl, cellElement, etc.tableElementRef as HTMLElement);
       CategoryDropdownItem.blurItem(categoryDropdown, 'hovered');
       CategoryDropdownItem.blurItem(categoryDropdown, 'matchingWithCellText');
       dropdownEl.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
+      CategoryDropdown.setPosition(dropdownEl, cellElement);
       dropdownEl.scrollLeft = 0;
       CategoryDropdownScrollbar.setProperties(categoryDropdown);
       const textElement = cellElement.children[0] as HTMLElement;

@@ -52,7 +52,7 @@ export class CategoryDropdownItem {
     if (!visibilityDetails.isFullyVisible) {
       itemElement.scrollIntoView({block: 'nearest'});
       // REF-4
-      if (isHorizontalScrollPresent && visibilityDetails.blockingSide === SIDE.BOTTOM) {
+      if (isHorizontalScrollPresent && visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
         CategoryDropdownHorizontalScrollFix.scrollDownFurther(dropdownElement)
       }
     }
