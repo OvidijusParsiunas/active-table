@@ -49,23 +49,41 @@ export class ElementVisibility {
     const elOffsetTop = element.offsetTop;
     const elOffsetBottom = elOffsetTop + element.clientHeight;
 
-    // this can be simplified
-    // partial top
-    if (elOffsetTop < containerScrollTop && elOffsetBottom > containerScrollTop) {
-      return {isFullyVisible: false, blockingSides: new Set([SIDE.TOP])};
-    }
-    // partial bottom
-    if (elOffsetBottom > containerScrollBottom && elOffsetTop < containerScrollBottom) {
-      return {isFullyVisible: false, blockingSides: new Set([SIDE.BOTTOM])};
-    }
-    // fully hidden top
     if (elOffsetTop < containerScrollTop) {
       return {isFullyVisible: false, blockingSides: new Set([SIDE.TOP])};
     }
-    // fully hidden bottom
     if (elOffsetBottom > containerScrollBottom) {
       return {isFullyVisible: false, blockingSides: new Set([SIDE.BOTTOM])};
     }
     return {isFullyVisible: true};
   }
 }
+
+// The following example contains a way to identify if an element is partailly visible:
+
+// public static isVerticallyVisibleInsideParent(element: HTMLElement): VisibilityDetails {
+//   const parentContainer = element.parentElement as HTMLElement;
+//   const containerScrollTop = parentContainer.scrollTop;
+//   const containerScrollBottom = containerScrollTop + parentContainer.clientHeight;
+
+//   const elOffsetTop = element.offsetTop;
+//   const elOffsetBottom = elOffsetTop + element.clientHeight;
+
+//   // partial top
+//   if (elOffsetTop < containerScrollTop && elOffsetBottom > containerScrollTop) {
+//     return {isFullyVisible: false, blockingSides: new Set([SIDE.TOP])};
+//   }
+//   // partial bottom
+//   if (elOffsetBottom > containerScrollBottom && elOffsetTop < containerScrollBottom) {
+//     return {isFullyVisible: false, blockingSides: new Set([SIDE.BOTTOM])};
+//   }
+//   // fully hidden top
+//   if (elOffsetTop < containerScrollTop) {
+//     return {isFullyVisible: false, blockingSides: new Set([SIDE.TOP])};
+//   }
+//   // fully hidden bottom
+//   if (elOffsetBottom > containerScrollBottom) {
+//     return {isFullyVisible: false, blockingSides: new Set([SIDE.BOTTOM])};
+//   }
+//   return {isFullyVisible: true};
+// }

@@ -90,11 +90,6 @@ export class ColumnDropdown {
   // When going from one type to another - parse all elements and identify any that cannot be transformed - prompt to
   // remove all - potential list of all the ones that cannot be transformed and their cells should be highlighted
 
-  // WORK
-  // should be text by default unless the user actually sets it to number, date, currency, etc.
-  // option to place input masks if type has been set by user or placed inside a config
-  // option to automatically infer the type on blur
-
   // prettier-ignore
   // WORK - how will this positioning work with scrolling
   public static displayRelevantDropdownElements(etc: EditableTableComponent, columnIndex: number, event: MouseEvent) {
