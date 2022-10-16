@@ -108,7 +108,6 @@ export class EditableTableComponent extends LitElement {
   }
 
   private refreshTableBodyState() {
-    OverlayElementsState.resetTableBodyProperties(this.overlayElementsState);
     this.tableElementEventState = {};
     this.columnsDetails = [];
   }

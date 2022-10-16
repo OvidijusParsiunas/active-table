@@ -11,6 +11,11 @@ export class TableElement {
   // prettier-ignore
   public static addAuxiliaryElements(etc: EditableTableComponent,
       tableElement: HTMLElement, overlayElementsState: OverlayElements, areHeadersEditable: boolean) {
+    // full table overlay for column dropdown
+    const fullTableOverlay = FullTableOverlayElement.create(etc);
+    tableElement.appendChild(fullTableOverlay);
+    overlayElementsState.fullTableOverlay = fullTableOverlay;
+    // column dropdown
     const columnDropdownElement = ColumnDropdown.create(etc, areHeadersEditable);
     tableElement.appendChild(columnDropdownElement);
     overlayElementsState.columnDropdown = columnDropdownElement;
@@ -22,9 +27,6 @@ export class TableElement {
       const addNewRowElement = AddNewRowElement.create(etc);
       etc.tableBodyElementRef?.appendChild(addNewRowElement);
     }
-    // full table overlay element
-    etc.overlayElementsState.fullTableOverlay = FullTableOverlayElement.create(etc);
-    etc.tableBodyElementRef?.appendChild(etc.overlayElementsState.fullTableOverlay);
   }
 
   public static populateBody(etc: EditableTableComponent) {

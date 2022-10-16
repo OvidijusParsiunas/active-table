@@ -50,8 +50,8 @@ export class ColumnSizerEvents {
     ColumnSizerEvents.displayColumnSizer(columnsDetails[columnIndex]?.columnSizer, height);
   }
 
-  private static setNewColumnWidth(columnElement: HTMLElement, colWidth: number, newXMovement: number) {
-    const newWidth = `${colWidth + newXMovement}px`;
+  private static setNewColumnWidth(columnElement: HTMLElement, newXMovement: number) {
+    const newWidth = `${columnElement.offsetWidth + newXMovement}px`;
     columnElement.style.width = newWidth;
   }
 
@@ -67,11 +67,10 @@ export class ColumnSizerEvents {
     const { columnSizer, elements: [columnElement] } =
       ColumnSizerEvents.getColumnDetailsViaElementId(selectedColumnSizer.id, columnsDetails);
     ColumnSizerElement.unsetTransitionTime(columnSizer.element);
-    const {width, height} = columnElement.getBoundingClientRect();
-    ColumnSizerEvents.setNewColumnWidth(columnElement, width, newXMovement);
+    ColumnSizerEvents.setNewColumnWidth(columnElement, newXMovement);
     // if the header cell size increases or decreases as the width is changed
     // the reason why it is set in a timeout is in order to try to minimize the upfront operations for performance
-    setTimeout(() => (selectedColumnSizer.style.height = `${height}px`));
+    setTimeout(() => (selectedColumnSizer.style.height = `${columnElement.offsetHeight}px`));
   }
 
   public static tableOnMouseDown(selectedColumnSizer: HTMLElement, customColor?: string) {
