@@ -65,24 +65,22 @@ export class ColumnDropdown {
     return `${headerCellElement.getBoundingClientRect().bottom}px`;
   }
 
-  private static getLeftPropertyToCenterDropdown(cellDimensions: DOMRect) {
-    return `${cellDimensions.left + cellDimensions.width / 2 - Dropdown.DROPDOWN_WIDTH / 2}px`;
+  private static getLeftPropertyToCenterDropdown(cellElement: HTMLElement) {
+    return `${cellElement.offsetLeft + cellElement.offsetWidth / 2 - Dropdown.DROPDOWN_WIDTH / 2}px`;
   }
 
   // TO-DO will this work correctly when a scrollbar is introduced
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement) {
-    const dimensions = cellElement.getBoundingClientRect();
-    dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(dimensions);
-    dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement);
+    dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
+    dropdownElement.style.top = `${cellElement.offsetTop + cellElement.offsetHeight}px`;
     // needs to be displayed in order to evalute if in view port
     dropdownElement.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
     const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement);
     if (!visibilityDetails.isFullyVisible) {
-      const tableElement = dropdownElement.parentElement as HTMLElement;
       if (visibilityDetails.blockingSide === SIDE.LEFT) {
-        dropdownElement.style.left = `${tableElement.getBoundingClientRect().left}px`;
+        dropdownElement.style.left = '0px';
       } else if (visibilityDetails.blockingSide === SIDE.RIGHT) {
-        dropdownElement.style.left = `${tableElement.getBoundingClientRect().right - Dropdown.DROPDOWN_WIDTH}px`;
+        dropdownElement.style.left = `${cellElement.offsetLeft + cellElement.offsetWidth - Dropdown.DROPDOWN_WIDTH}px`;
       }
     }
   }
