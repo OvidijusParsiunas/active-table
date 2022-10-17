@@ -1,5 +1,6 @@
 import {CategoryDropdownItem} from '../../elements/dropdown/categoryDropdown/categoryDropdownItem';
 import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
+import {CategoryCellElement} from '../../elements/cell/categoryCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {DataCellElement} from '../../elements/cell/dataCellElement';
 import {DisplayedCellTypeName} from './displayedCellTypeName';
@@ -57,7 +58,11 @@ export class UserSetCellType {
       }
       UserSetCellType.set(this, newTypeEnum, columnIndex);
       UserSetCellType.purgeInvalidCellsIfValidable(this, newTypeEnum as keyof typeof VALIDABLE_CELL_TYPE, columnIndex);
-      if (newTypeEnum === USER_SET_COLUMN_TYPE.Category) CategoryDropdownItem.populateItems(this, columnIndex);
+      if (newTypeEnum === USER_SET_COLUMN_TYPE.Category) {
+        CategoryDropdownItem.populateItems(this, columnIndex);
+        // items need to be populated before we know what color each cell text needs to be turned into
+        CategoryCellElement.convertColumnFromDataToCategory(this, columnIndex);
+      }
     }
   }
 }

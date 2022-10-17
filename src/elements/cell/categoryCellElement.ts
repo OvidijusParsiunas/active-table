@@ -6,12 +6,12 @@ import {Browser} from '../../utils/browser/browser';
 import {CellElement} from './cellElement';
 
 export class CategoryCellElement {
-  private static setTextAsAnElement(dataCell: HTMLElement, textElement: HTMLElement) {
-    dataCell.textContent = '';
-    dataCell.contentEditable = 'false';
+  private static setTextAsAnElement(cellElement: HTMLElement, textElement: HTMLElement) {
+    cellElement.textContent = '';
+    cellElement.contentEditable = 'false';
     // not really part of the bug, but in the same area
-    if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeTabIndex(dataCell);
-    dataCell.appendChild(textElement);
+    if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeTabIndex(cellElement);
+    cellElement.appendChild(textElement);
   }
 
   private static createTextElement(text: string, backgroundColor: string) {

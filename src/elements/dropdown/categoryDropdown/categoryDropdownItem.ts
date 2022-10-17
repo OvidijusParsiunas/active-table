@@ -205,6 +205,5 @@ export class CategoryDropdownItem {
     const categoryToColor = CategoryDropdownItem.aggregateCategoryToColor(contents, columnIndex, defaultCellValue);
     const {categoryDropdown} = columnsDetails[columnIndex];
     CategoryDropdownItem.addCategoryItems(etc, categoryToColor, categoryDropdown);
-    CategoryCellElement.convertColumnFromDataToCategory(etc, columnIndex);
   }
 }
