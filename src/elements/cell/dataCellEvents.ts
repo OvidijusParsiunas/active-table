@@ -1,7 +1,7 @@
 import {OverwriteCellsViaCSVOnPaste} from '../../utils/paste/CSV/overwriteCellsViaCSVOnPaste';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
-import {CellKeyEventStateUtil} from '../../utils/cellKeyEventState/cellKeyEventStateUtil';
 import {CategoryDropdownItem} from '../dropdown/categoryDropdown/categoryDropdownItem';
+import {UserKeyEventsStateUtil} from '../../utils/userEventsState/userEventsStateUtil';
 import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
 import {CellTypeTotalsUtils} from '../../utils/cellType/cellTypeTotalsUtils';
 import {CaretPosition} from '../../utils/focusedElements/caretPosition';
@@ -23,7 +23,7 @@ export class DataCellEvents {
   public static keyDownCell(this: EditableTableComponent, event: KeyboardEvent) {
     // REF-7
     if (event.key === KEYBOARD_KEY.TAB) {
-      CellKeyEventStateUtil.temporarilyIndicateEvent(this.cellKeyEventState, KEYBOARD_KEY.TAB);
+      UserKeyEventsStateUtil.temporarilyIndicateEvent(this.userKeyEventsState, KEYBOARD_KEY.TAB);
     }
   }
 
@@ -44,7 +44,7 @@ export class DataCellEvents {
     const textContainerElement = inputEvent.target as HTMLElement;
     const text = textContainerElement.textContent as string;
     // sanitizePastedTextContent causes inputType to no longer be insertFromPaste, hence using this instead
-    if (!this.cellKeyEventState[KEYBOARD_EVENT.PASTE]) {
+    if (!this.userKeyEventsState[KEYBOARD_EVENT.PASTE]) {
       CellElement.processAndSetTextOnCell(textContainerElement, text, false);
       const columnDetails = this.columnsDetails[columnIndex];
       const userSetColumnType = columnDetails.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
@@ -66,7 +66,7 @@ export class DataCellEvents {
   }
 
   private static pasteCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: ClipboardEvent) {
-    CellKeyEventStateUtil.temporarilyIndicateEvent(this.cellKeyEventState, KEYBOARD_EVENT.PASTE);
+    UserKeyEventsStateUtil.temporarilyIndicateEvent(this.userKeyEventsState, KEYBOARD_EVENT.PASTE);
     PasteUtils.sanitizePastedTextContent(event);
     const clipboardText = PasteUtils.extractClipboardText(event);
     if (OverwriteCellsViaCSVOnPaste.isCSVData(clipboardText)) {
@@ -113,7 +113,7 @@ export class DataCellEvents {
     const cellElement = event.target as HTMLElement;
     DataCellEvents.prepareText(this, rowIndex, columnIndex, cellElement);
     // REF-7
-    if (this.cellKeyEventState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
+    if (this.userKeyEventsState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
     FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
   }
 
