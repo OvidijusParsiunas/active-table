@@ -1,3 +1,4 @@
+// if the element is set - it means that it is visible
 export interface OverlayElements {
   columnDropdown?: HTMLElement;
   columnTypeDropdown?: HTMLElement;

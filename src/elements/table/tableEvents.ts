@@ -1,7 +1,9 @@
+import {UserKeyEventsStateUtil} from '../../utils/userEventsState/userEventsStateUtil';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElement} from '../columnSizer/columnSizerElement';
 import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
 import {CategoryCellEvents} from '../cell/categoryCellEvents';
+import {MOUSE_EVENT} from '../../consts/mouseEvents';
 import {CellElement} from '../cell/cellElement';
 import {Dropdown} from '../dropdown/dropdown';
 
@@ -18,13 +20,12 @@ export class TableEvents {
     }
   }
 
-  // prettier-ignore
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
+    UserKeyEventsStateUtil.temporarilyIndicateEvent(this.userKeyEventsState, MOUSE_EVENT.DOWN);
     if (targetElement.classList.contains(ColumnSizerElement.COLUMN_SIZER_CLASS)) {
       this.tableElementEventState.selectedColumnSizer = targetElement;
-      ColumnSizerEvents.tableOnMouseDown(
-        this.tableElementEventState.selectedColumnSizer, this.columnResizerStyle.click?.backgroundColor);
+      ColumnSizerEvents.tableOnMouseDown(targetElement, this.columnResizerStyle.click?.backgroundColor);
     }
     TableEvents.closeCategoryDropdown(this, targetElement);
   }

@@ -1,6 +1,7 @@
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
 import {EditableTableComponent} from '../../editable-table-component';
+import {MOUSE_EVENT} from '../../consts/mouseEvents';
 import {Browser} from '../../utils/browser/browser';
 import {CellElement} from './cellElement';
 import {CellEvents} from './cellEvents';
@@ -73,11 +74,13 @@ export class DateCellElement {
     return `${integers[2]}-${integers[1]}-${integers[0]}`;
   }
 
-  // click on a button inside the datepicker
+  // this is to prevent a bug where if the user opens the date picker, uses arrow keys to navigate and clicks back on
+  // the cell - this event is fired
   private static change(this: EditableTableComponent, event: Event) {
-    console.log('change');
-    DateCellElement.hideDatePicker(event.target as HTMLInputElement);
-    delete this.overlayElementsState.datePickerInput;
+    if (!this.userKeyEventsState[MOUSE_EVENT.DOWN]) {
+      DateCellElement.hideDatePicker(event.target as HTMLInputElement);
+      delete this.overlayElementsState.datePickerInput;
+    }
   }
 
   private static input(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
@@ -99,7 +102,6 @@ export class DateCellElement {
   }
 
   private static mouseEnter(event: MouseEvent) {
-    console.log('entering');
     const cell = event.target as HTMLElement;
     (cell.children[1] as HTMLElement).style.display = 'block';
   }
