@@ -1,6 +1,7 @@
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
 import {EditableTableComponent} from '../../editable-table-component';
+import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {MOUSE_EVENT} from '../../consts/mouseEvents';
 import {Browser} from '../../utils/browser/browser';
 import {CellElement} from './cellElement';
@@ -74,13 +75,18 @@ export class DateCellElement {
     return `${integers[2]}-${integers[1]}-${integers[0]}`;
   }
 
-  // this is to prevent a bug where if the user opens the date picker, uses arrow keys to navigate and clicks back on
-  // the cell - this event is fired
+  // this is triggered when the user clicks on picker buttons
   private static change(this: EditableTableComponent, event: Event) {
-    if (!this.userKeyEventsState[MOUSE_EVENT.DOWN]) {
+    if (
+      // this.userKeyEventsState[MOUSE_EVENT.DOWN] is used to prevent a bug where if the user opens the date picker,
+      // uses arrow keys to navigate and clicks back on the cell - this event is fired
+      !this.userKeyEventsState[MOUSE_EVENT.DOWN] &&
+      // do not hide when currently hovered
+      this.hoveredElements.dateCell !== DateCellElement.getCellElement(event.target as HTMLElement)
+    ) {
       DateCellElement.hideDatePicker(event.target as HTMLInputElement);
-      delete this.overlayElementsState.datePickerInput;
     }
+    delete this.overlayElementsState.datePickerInput;
   }
 
   private static input(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
@@ -101,15 +107,32 @@ export class DateCellElement {
     setTimeout(() => (this.overlayElementsState.datePickerInput = inputElement));
   }
 
-  private static mouseEnter(event: MouseEvent) {
+  private static mouseEnter(this: EditableTableComponent, event: MouseEvent) {
     const cell = event.target as HTMLElement;
+    this.hoveredElements.dateCell = cell;
     (cell.children[1] as HTMLElement).style.display = 'block';
   }
 
   private static mouseLeave(this: EditableTableComponent, event: MouseEvent) {
     const cell = event.target as HTMLElement;
+    delete this.hoveredElements.dateCell;
     if (this.overlayElementsState.datePickerInput === cell?.children[1]?.children[0]) return;
     (cell.children[1] as HTMLElement).style.display = 'none';
+  }
+
+  // outstanding bug is when the user opens picker and moves with arrow keys, then clicks enter
+  // the picker fires a clear event and does not actuall close itself and instead goes to the
+  // initially opened up date. The key up event for the escape button is also not fired.
+  private static keyUp(this: EditableTableComponent, event: KeyboardEvent) {
+    if (
+      event.key === KEYBOARD_KEY.ESCAPE &&
+      this.overlayElementsState.datePickerInput &&
+      // do not hide when currently hovered
+      this.hoveredElements.dateCell !== DateCellElement.getCellElement(event.target as HTMLElement)
+    ) {
+      DateCellElement.hideDatePicker(this.overlayElementsState.datePickerInput);
+      delete this.overlayElementsState.datePickerInput;
+    }
   }
 
   // prettier-ignore
@@ -119,12 +142,13 @@ export class DateCellElement {
     textElement.onfocus = DateCellElement.focusText.bind(etc, rowIndex, columnIndex);
     DateCellElement.setTextAsAnElement(cellElement, textElement);
     DateCellElement.addDateInputElement(cellElement);
-    cellElement.onmouseenter = DateCellElement.mouseEnter;
+    cellElement.onmouseenter = DateCellElement.mouseEnter.bind(etc);
     cellElement.onmouseleave = DateCellElement.mouseLeave.bind(etc);
     const inputElement = cellElement.children[1] as HTMLInputElement;
-    inputElement.oninput = DateCellElement.input.bind(etc, rowIndex, columnIndex);
-    inputElement.onchange = DateCellElement.change.bind(etc);
     inputElement.onmousedown = DateCellElement.markDatePicker.bind(etc, rowIndex, columnIndex);
+    inputElement.onchange = DateCellElement.change.bind(etc);
+    inputElement.oninput = DateCellElement.input.bind(etc, rowIndex, columnIndex);
+    inputElement.onkeyup = DateCellElement.keyUp.bind(etc);
   }
 
   public static convertColumnFromDataToCategory(etc: EditableTableComponent, columnIndex: number) {
