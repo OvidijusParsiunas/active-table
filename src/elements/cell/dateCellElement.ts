@@ -8,6 +8,7 @@ import {CellElement} from './cellElement';
 import {CellEvents} from './cellEvents';
 
 // WORK - refactor functions
+// WORK - insert text on paste
 // some browsers may not support date input picker
 export class DateCellElement {
   private static readonly DATE_INPUT_CLASS = 'date-input';

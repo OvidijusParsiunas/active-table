@@ -3,11 +3,25 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElement} from '../columnSizer/columnSizerElement';
 import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
 import {CategoryCellEvents} from '../cell/categoryCellEvents';
+import {OverlayElements} from '../../types/overlayElements';
+import {DateCellElement} from '../cell/dateCellElement';
 import {MOUSE_EVENT} from '../../consts/mouseEvents';
 import {CellElement} from '../cell/cellElement';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class TableEvents {
+  // not using hoveredElements state as the targetElement will be the element clicked, hence need to use
+  // overlayElementsState.datePickerInput to get the cell of the date picker input
+  // prettier-ignore
+  private static closeDatePicker(overlayElementsState: OverlayElements, targetElement: HTMLElement) {
+    if (overlayElementsState.datePickerInput) {
+      if (DateCellElement.getCellElement(overlayElementsState.datePickerInput)
+          !== DateCellElement.getCellElement(targetElement)) {
+        DateCellElement.hideDatePicker(overlayElementsState.datePickerInput);
+      }
+      delete overlayElementsState.datePickerInput;
+    }
+  }
   // text blur will not activate when the dropdown has been clicked and will not close if its scrollbar, padding
   // or delete cateogory buttons are clicked, hence once that happens and the user clicks elsewhere on the table,
   // the dropdown is closed programmatically as follows
@@ -28,6 +42,7 @@ export class TableEvents {
       ColumnSizerEvents.tableOnMouseDown(targetElement, this.columnResizerStyle.click?.backgroundColor);
     }
     TableEvents.closeCategoryDropdown(this, targetElement);
+    TableEvents.closeDatePicker(this.overlayElementsState, event.target as HTMLElement);
   }
 
   // prettier-ignore
