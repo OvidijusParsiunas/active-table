@@ -183,6 +183,22 @@ export const ediTableStyle = css`
     color: black;
   }
 
+  .date-input-container {
+    position: relative;
+    float: right;
+    cursor: pointer;
+  }
+
+  .date-input {
+    width: 14px;
+    height: 20px;
+    border: unset;
+    padding: 0px;
+    right: -7px;
+    position: absolute;
+    outline: none;
+  }
+
   #full-table-overlay {
     position: absolute;
     top: 0;

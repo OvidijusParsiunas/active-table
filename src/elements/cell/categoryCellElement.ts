@@ -17,7 +17,7 @@ export class CategoryCellElement {
   private static createTextElement(text: string, backgroundColor: string) {
     const textElement = document.createElement('div');
     textElement.textContent = text;
-    textElement.classList.add(CellElement.CATEGORY_CELL_TEXT_CLASS);
+    textElement.classList.add(CellElement.CELL_TEXT_DIV_CLASS);
     textElement.style.backgroundColor = backgroundColor;
     CellElement.prepContentEditable(textElement, false);
     return textElement;

@@ -8,13 +8,16 @@ import {CSSStyle} from '../../types/cssStyle';
 export class CellElement {
   public static readonly DEFAULT_COLUMN_WIDTH = '100px';
   public static readonly CELL_CLASS = 'cell';
-  public static readonly CATEGORY_CELL_TEXT_CLASS = 'category-cell-text';
+  // used for encapsulating text within a nested element
+  // category - used to color the text
+  // date - used to display a calendar beside the text
+  public static readonly CELL_TEXT_DIV_CLASS = 'cell-text-div';
 
   // this is used for case where element could be the cell element or the text inside a category cell
-  // hence we need the actual cell element here
+  // hence we need the actual cell  element here
   public static extractCellElement(element: HTMLElement) {
     // if category cell text
-    if (element.classList.contains(CellElement.CATEGORY_CELL_TEXT_CLASS)) {
+    if (element.classList.contains(CellElement.CELL_TEXT_DIV_CLASS)) {
       return element.parentElement as HTMLElement;
     }
     // if category cell or data cell
@@ -25,7 +28,7 @@ export class CellElement {
   // that text element or a standard data element, hence we need to set it
   private static setText(element: HTMLElement, text: string) {
     // if category cell
-    if (element.children[0]?.classList.contains(CellElement.CATEGORY_CELL_TEXT_CLASS)) {
+    if (element.children[0]?.classList.contains(CellElement.CELL_TEXT_DIV_CLASS)) {
       element.children[0].textContent = text;
     } else {
       element.textContent = text;

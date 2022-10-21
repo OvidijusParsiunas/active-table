@@ -20,7 +20,7 @@ export class DateCellElement {
 
   public static getCellElement(element: HTMLElement) {
     if (
-      element.classList.contains(CellElement.CATEGORY_CELL_TEXT_CLASS) ||
+      element.classList.contains(CellElement.CELL_TEXT_DIV_CLASS) ||
       element.classList.contains(DateCellElement.DATE_INPUT_CONTAINER_CLASS)
     ) {
       return element.parentElement as HTMLElement;
@@ -31,21 +31,12 @@ export class DateCellElement {
   }
 
   // WORK - need calendar icon
-  private static addDateInputElement(cellElement: HTMLElement) {
+  private static addDateInputElement(cellElement: HTMLElement, textElement: HTMLElement, defaultCellValue: string) {
     const inputContainer = document.createElement('div');
-    inputContainer.style.position = 'relative';
-    inputContainer.style.float = 'right';
-    // WORK - click container open calendar
-    inputContainer.style.cursor = 'pointer';
     inputContainer.classList.add(DateCellElement.DATE_INPUT_CONTAINER_CLASS);
     const inputElement = document.createElement('input');
     inputElement.type = 'date';
-    inputElement.style.width = '14px';
-    inputElement.style.height = '20px';
-    inputElement.style.border = 'unset';
-    inputElement.style.padding = '0px';
-    inputElement.style.right = '-7px';
-    inputElement.style.position = 'absolute';
+    inputElement.value = DateCellElement.convertYYYMMDDToDDMMYYYY(textElement.textContent as string, defaultCellValue);
     inputElement.classList.add(DateCellElement.DATE_INPUT_CLASS);
     inputContainer.style.display = 'none';
     inputContainer.appendChild(inputElement);
@@ -60,17 +51,34 @@ export class DateCellElement {
     cellElement.appendChild(textElement);
   }
 
-  private static createTextElement(text: string) {
+  private static textDivInput(defaultCellValue: string, event: Event) {
+    const textElement = event.target as HTMLElement;
+    const cellElement = (textElement as HTMLElement).parentElement as HTMLElement;
+    const inputElementContainer = cellElement.children[1] as HTMLElement;
+    const inputElement = inputElementContainer.children[0] as HTMLInputElement;
+    inputElement.value = DateCellElement.convertYYYMMDDToDDMMYYYY(textElement.textContent as string, defaultCellValue);
+  }
+
+  private static createTextElement(text: string, defaultCellValue: string) {
     const textElement = document.createElement('div');
     textElement.textContent = text;
     textElement.style.float = 'left';
-    textElement.classList.add(CellElement.CATEGORY_CELL_TEXT_CLASS);
+    textElement.classList.add(CellElement.CELL_TEXT_DIV_CLASS);
+    textElement.oninput = DateCellElement.textDivInput.bind(this, defaultCellValue);
     CellElement.prepContentEditable(textElement, false);
     return textElement;
   }
 
+  private static convertYYYMMDDToDDMMYYYY(chosenDate: string, defaultCellValue: string) {
+    const integers = chosenDate.match(/\d+/g) as RegExpMatchArray;
+    if (integers?.length === 3) {
+      return `${integers[2]}-${integers[1]}-${integers[0]}`;
+    }
+    return defaultCellValue;
+  }
+
   // try to use cell type title to create date - so if the user has / separator, use -
-  private static convertToAppropriateFormat(chosenDate: string) {
+  private static convertDDMMYYYYToYYYMMDD(chosenDate: string) {
     const integers = chosenDate.match(/\d+/g) as RegExpMatchArray;
     return `${integers[2]}-${integers[1]}-${integers[0]}`;
   }
@@ -91,7 +99,7 @@ export class DateCellElement {
 
   private static input(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const chosenDate = (event.target as HTMLInputElement).value;
-    const appropariateFormatDate = chosenDate ? DateCellElement.convertToAppropriateFormat(chosenDate) : '';
+    const appropariateFormatDate = chosenDate ? DateCellElement.convertDDMMYYYYToYYYMMDD(chosenDate) : '';
     const element = this.columnsDetails[columnIndex].elements[rowIndex];
     CellEvents.updateCell(this, appropariateFormatDate, rowIndex, columnIndex, {element});
   }
@@ -138,10 +146,10 @@ export class DateCellElement {
   // prettier-ignore
   public static convertCellFromDataToCategory(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
-    const textElement = DateCellElement.createTextElement(cellElement.textContent as string);
+    const textElement = DateCellElement.createTextElement(cellElement.textContent as string, etc.defaultCellValue);
     textElement.onfocus = DateCellElement.focusText.bind(etc, rowIndex, columnIndex);
     DateCellElement.setTextAsAnElement(cellElement, textElement);
-    DateCellElement.addDateInputElement(cellElement);
+    DateCellElement.addDateInputElement(cellElement, textElement, etc.defaultCellValue);
     cellElement.onmouseenter = DateCellElement.mouseEnter.bind(etc);
     cellElement.onmouseleave = DateCellElement.mouseLeave.bind(etc);
     const inputElement = cellElement.children[1] as HTMLInputElement;

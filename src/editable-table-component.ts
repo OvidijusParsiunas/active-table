@@ -12,6 +12,7 @@ import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {OverlayElements} from './types/overlayElements';
 import {FocusedElements} from './types/focusedElements';
+import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
 import {LitElement} from 'lit';
@@ -78,6 +79,9 @@ export class EditableTableComponent extends LitElement {
 
   @state()
   focusedElements: FocusedElements = FocusedElementsUtils.createEmpty();
+
+  @state()
+  hoveredElements: HoveredElements = {};
 
   @state()
   overlayElementsState: OverlayElements = OverlayElementsState.createNew();
