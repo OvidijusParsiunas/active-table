@@ -14,6 +14,10 @@ export class DateCellElement {
   private static readonly DATE_INPUT_CLASS = 'date-input';
   private static readonly DATE_INPUT_CONTAINER_CLASS = 'date-input-container';
 
+  public static isDateInputElement(element?: Element): element is HTMLInputElement {
+    return (element as HTMLInputElement)?.type === 'date';
+  }
+
   private static focusText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const cellElement = (event.target as HTMLElement).parentElement as HTMLElement;
     FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
@@ -53,6 +57,7 @@ export class DateCellElement {
   }
 
   private static textDivInput(defaultCellValue: string, event: Event) {
+    // WORK - handle on paste event
     const textElement = event.target as HTMLElement;
     const cellElement = (textElement as HTMLElement).parentElement as HTMLElement;
     const inputElementContainer = cellElement.children[1] as HTMLElement;

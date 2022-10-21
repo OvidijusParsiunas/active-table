@@ -13,6 +13,7 @@ import {KEYBOARD_EVENT} from '../../consts/keyboardEvents';
 import {PasteUtils} from '../../utils/paste/pasteUtils';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {Browser} from '../../utils/browser/browser';
+import {DateCellElement} from './dateCellElement';
 import {CellElement} from './cellElement';
 import {CellEvents} from './cellEvents';
 
@@ -40,8 +41,10 @@ export class DataCellEvents {
   // prettier-ignore
   private static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const inputEvent = event as InputEvent;
-    // can be cell element from this class or text element from categoryCellEvents class
+    // can be cell element for data cell, text element for category and date cells, or even input element from date picker
+    // which is not processed here as its textContent property value is empty and the date value needs to be processed
     const textContainerElement = inputEvent.target as HTMLElement;
+    if (DateCellElement.isDateInputElement(textContainerElement)) return;
     const text = textContainerElement.textContent as string;
     // sanitizePastedTextContent causes inputType to no longer be insertFromPaste, hence using this instead
     if (!this.userKeyEventsState[KEYBOARD_EVENT.PASTE]) {
