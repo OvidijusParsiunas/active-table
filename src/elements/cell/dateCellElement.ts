@@ -1,14 +1,19 @@
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
+import {CaretPosition} from '../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../editable-table-component';
+import {FocusedElements} from '../../types/focusedElements';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {MOUSE_EVENT} from '../../consts/mouseEvents';
 import {Browser} from '../../utils/browser/browser';
+import {DataCellEvents} from './dataCellEvents';
 import {CellElement} from './cellElement';
 import {CellEvents} from './cellEvents';
 
+// WORK - no cursor when text element is empty!!
 // WORK - refactor functions
 // WORK - insert text on paste
+// WORK - tab out of the cell
 // some browsers may not support date input picker
 export class DateCellElement {
   private static readonly DATE_INPUT_CLASS = 'date-input';
@@ -18,9 +23,17 @@ export class DateCellElement {
     return (element as HTMLInputElement)?.type === 'date';
   }
 
-  private static focusText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
+  // prettier-ignore
+  private static focusText(this: EditableTableComponent, rowIndex: number, columnIndex: number,
+      focusedElements: FocusedElements, defaultCellValue: string, event: Event) {
+    const textElement = event.target as HTMLElement;
     const cellElement = (event.target as HTMLElement).parentElement as HTMLElement;
-    FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
+    DataCellEvents.prepareText(this, rowIndex, columnIndex, textElement);
+    FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, columnIndex, defaultCellValue);
+    if (this.userKeyEventsState[KEYBOARD_KEY.TAB]) {
+      // contrary to this being called on mouseDownCell - this does not retrigger focus event
+      CaretPosition.setToEndOfText(this, textElement);
+    }
   }
 
   public static getCellElement(element: HTMLElement) {
@@ -65,12 +78,16 @@ export class DateCellElement {
     inputElement.value = DateCellElement.convertYYYMMDDToDDMMYYYY(textElement.textContent as string, defaultCellValue);
   }
 
-  private static createTextElement(text: string, defaultCellValue: string) {
+  // prettier-ignore
+  private static createTextElement(etc: EditableTableComponent, rowIndex: number, columnIndex: number, text: string) {
     const textElement = document.createElement('div');
     textElement.textContent = text;
     textElement.style.float = 'left';
+    textElement.onfocus = DateCellElement.focusText.bind(etc, rowIndex, columnIndex,
+      etc.focusedElements, etc.defaultCellValue);
+    textElement.oninput = DateCellElement.textDivInput.bind(this, etc.defaultCellValue);
+    textElement.onblur = DateCellElement.blur.bind(etc, rowIndex, columnIndex);
     textElement.classList.add(CellElement.CELL_TEXT_DIV_CLASS);
-    textElement.oninput = DateCellElement.textDivInput.bind(this, defaultCellValue);
     CellElement.prepContentEditable(textElement, false);
     return textElement;
   }
@@ -149,15 +166,35 @@ export class DateCellElement {
     }
   }
 
+  private static blur(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
+    const textElement = event.target as HTMLElement;
+    DataCellEvents.blur(this, rowIndex, columnIndex, textElement);
+  }
+
+  private static mouseDownCell(this: EditableTableComponent, event: MouseEvent) {
+    const targetElement = event.target as HTMLElement;
+    // this is also triggered by text, but we only want when cell to focus
+    if (targetElement.classList.contains(CellElement.CELL_CLASS)) {
+      const cellElement = event.target as HTMLElement;
+      const textElement = cellElement.children[0] as HTMLElement;
+      // needed to set cursor at the end
+      event.preventDefault();
+      // Firefox does not fire the focus event for CaretPosition.setToEndOfText
+      if (Browser.IS_FIREFOX) textElement.focus();
+      // in non firefox browsers this also focuses
+      CaretPosition.setToEndOfText(this, textElement);
+    }
+  }
+
   // prettier-ignore
   public static convertCellFromDataToCategory(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
-    const textElement = DateCellElement.createTextElement(cellElement.textContent as string, etc.defaultCellValue);
-    textElement.onfocus = DateCellElement.focusText.bind(etc, rowIndex, columnIndex);
+    const textElement = DateCellElement.createTextElement(etc, rowIndex, columnIndex, cellElement.textContent as string);
     DateCellElement.setTextAsAnElement(cellElement, textElement);
     DateCellElement.addDateInputElement(cellElement, textElement, etc.defaultCellValue);
     cellElement.onmouseenter = DateCellElement.mouseEnter.bind(etc);
     cellElement.onmouseleave = DateCellElement.mouseLeave.bind(etc);
+    cellElement.onmousedown = DateCellElement.mouseDownCell.bind(etc);
     const inputElement = cellElement.children[1] as HTMLInputElement;
     inputElement.onmousedown = DateCellElement.markDatePicker.bind(etc, rowIndex, columnIndex);
     inputElement.onchange = DateCellElement.change.bind(etc);

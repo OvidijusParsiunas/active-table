@@ -42,7 +42,7 @@ export class CategoryCellEvents {
     CategoryDropdown.display(this, columnIndex, cellElement);
     FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
     if (this.userKeyEventsState[KEYBOARD_KEY.TAB]) {
-      // contrary to this being called on mouseDownOnCell - this does not retrigger focus event
+      // contrary to this being called on mouseDownCell - this does not retrigger focus event
       CaretPosition.setToEndOfText(this, textElement);
     }
   }
