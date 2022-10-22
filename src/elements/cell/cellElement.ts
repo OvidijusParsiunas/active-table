@@ -36,9 +36,12 @@ export class CellElement {
   }
 
   // set text is optional as some functions may only need to augment the cell
-  public static processAndSetTextOnCell(textContainerElement: HTMLElement, text: string, setText = true) {
+  // prettier-ignore
+  public static processAndSetTextOnCell(etc: EditableTableComponent, textContainerElement: HTMLElement, text: string,
+      isUndo: boolean, setText = true) {
     if (setText) CellElement.setText(textContainerElement, text);
-    FirefoxCaretDisplayFix.addPaddingToEmptyCell(textContainerElement, text);
+    // called in all browsers for consistency
+    FirefoxCaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo);
   }
 
   // prettier-ignore
@@ -71,7 +74,7 @@ export class CellElement {
 
   private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
     const cellElement = CellElement.create(etc.cellStyle, etc.headerStyle, isHeader);
-    CellElement.processAndSetTextOnCell(cellElement, cellText);
+    CellElement.processAndSetTextOnCell(etc, cellElement, cellText, false);
     CellElement.prepContentEditable(cellElement, isHeader);
     if (isHeader) cellElement.style.width = CellElement.DEFAULT_COLUMN_WIDTH;
     return cellElement;

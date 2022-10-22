@@ -12,6 +12,7 @@ import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {KEYBOARD_EVENT} from '../../consts/keyboardEvents';
 import {PasteUtils} from '../../utils/paste/pasteUtils';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
+import {UNDO_INPUT_TYPE} from '../../consts/domEvents';
 import {Browser} from '../../utils/browser/browser';
 import {DateCellElement} from './dateCellElement';
 import {CellElement} from './cellElement';
@@ -48,7 +49,8 @@ export class DataCellEvents {
     const text = textContainerElement.textContent as string;
     // sanitizePastedTextContent causes inputType to no longer be insertFromPaste, hence using this instead
     if (!this.userKeyEventsState[KEYBOARD_EVENT.PASTE]) {
-      CellElement.processAndSetTextOnCell(textContainerElement, text, false);
+      const isUndo = inputEvent.inputType === UNDO_INPUT_TYPE;
+      CellElement.processAndSetTextOnCell(this, textContainerElement, text, isUndo, false);
       const columnDetails = this.columnsDetails[columnIndex];
       const userSetColumnType = columnDetails.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
