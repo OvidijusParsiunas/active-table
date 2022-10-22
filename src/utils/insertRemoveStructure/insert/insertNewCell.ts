@@ -1,6 +1,6 @@
+import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {InsertRemoveColumnSizer} from '../../columnSizer/insertRemoveColumnSizer';
-import {CategoryCellElement} from '../../../elements/cell/categoryCellElement';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';

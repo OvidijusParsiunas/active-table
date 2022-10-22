@@ -1,9 +1,9 @@
-import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
-import {CategoryDropdownItem} from '../dropdown/categoryDropdown/categoryDropdownItem';
-import {EditableTableComponent} from '../../editable-table-component';
+import {FirefoxCaretDisplayFix} from '../../../utils/browser/firefox/firefoxCaretDisplayFix';
+import {CategoryDropdownItem} from '../../dropdown/categoryDropdown/categoryDropdownItem';
+import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryCellEvents} from './categoryCellEvents';
-import {Browser} from '../../utils/browser/browser';
-import {CellElement} from './cellElement';
+import {Browser} from '../../../utils/browser/browser';
+import {CellElement} from '../cellElement';
 
 export class CategoryCellElement {
   private static setTextAsAnElement(cellElement: HTMLElement, textElement: HTMLElement) {

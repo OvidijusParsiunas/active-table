@@ -1,15 +1,15 @@
-import {FocusNextCellFromCategoryCell} from '../../utils/focusedElements/focusNextCellFromCategoryCell';
-import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
-import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
-import {CaretPosition} from '../../utils/focusedElements/caretPosition';
-import {EditableTableComponent} from '../../editable-table-component';
-import {FocusedElements} from '../../types/focusedElements';
-import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
-import {MOUSE_EVENT} from '../../consts/mouseEvents';
-import {Browser} from '../../utils/browser/browser';
-import {DataCellEvents} from './dataCellEvents';
-import {CellElement} from './cellElement';
-import {CellEvents} from './cellEvents';
+import {FocusNextCellFromCategoryCell} from '../../../utils/focusedElements/focusNextCellFromCategoryCell';
+import {FirefoxCaretDisplayFix} from '../../../utils/browser/firefox/firefoxCaretDisplayFix';
+import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
+import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
+import {EditableTableComponent} from '../../../editable-table-component';
+import {FocusedElements} from '../../../types/focusedElements';
+import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
+import {MOUSE_EVENT} from '../../../consts/mouseEvents';
+import {Browser} from '../../../utils/browser/browser';
+import {DataCellEvents} from '../dataCellEvents';
+import {CellElement} from '../cellElement';
+import {CellEvents} from '../cellEvents';
 
 // WORK - refactor functions
 // WORK - insert text on paste

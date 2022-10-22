@@ -1,4 +1,4 @@
-import {CategoryCellEvents} from '../../../elements/cell/categoryCellEvents';
+import {CategoryCellEvents} from '../../../elements/cell/cellsWithTextDiv/categoryCellEvents';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellElement} from '../../../elements/cell/cellElement';

@@ -1,15 +1,15 @@
-import {FocusNextCellFromCategoryCell} from '../../utils/focusedElements/focusNextCellFromCategoryCell';
-import {CategoryDropdownItem} from '../dropdown/categoryDropdown/categoryDropdownItem';
-import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
-import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
-import {CaretPosition} from '../../utils/focusedElements/caretPosition';
-import {EditableTableComponent} from '../../editable-table-component';
+import {FocusNextCellFromCategoryCell} from '../../../utils/focusedElements/focusNextCellFromCategoryCell';
+import {CategoryDropdownItem} from '../../dropdown/categoryDropdown/categoryDropdownItem';
+import {CategoryDropdown} from '../../dropdown/categoryDropdown/categoryDropdown';
+import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
+import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
+import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryCellElement} from './categoryCellElement';
-import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
-import {Browser} from '../../utils/browser/browser';
-import {CellDetails} from '../../types/focusedCell';
-import {DataCellEvents} from './dataCellEvents';
-import {CellElement} from './cellElement';
+import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
+import {Browser} from '../../../utils/browser/browser';
+import {CellDetails} from '../../../types/focusedCell';
+import {DataCellEvents} from '../dataCellEvents';
+import {CellElement} from '../cellElement';
 
 export class CategoryCellEvents {
   // the reason why this is triggered by window is because when the user clicks on dropdown padding or delete button

@@ -1,6 +1,6 @@
 import {CategoryDropdownItem} from '../../elements/dropdown/categoryDropdown/categoryDropdownItem';
+import {CategoryCellElement} from '../../elements/cell/cellsWithTextDiv/categoryCellElement';
 import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
-import {CategoryCellElement} from '../../elements/cell/categoryCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {DataCellElement} from '../../elements/cell/dataCellElement';
 import {DisplayedCellTypeName} from './displayedCellTypeName';

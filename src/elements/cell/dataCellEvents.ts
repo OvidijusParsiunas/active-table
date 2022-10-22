@@ -7,6 +7,7 @@ import {CellTypeTotalsUtils} from '../../utils/cellType/cellTypeTotalsUtils';
 import {CaretPosition} from '../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
+import {DateCellElement} from './cellsWithTextDiv/dateCellElement';
 import {ValidateInput} from '../../utils/cellType/validateInput';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {KEYBOARD_EVENT} from '../../consts/keyboardEvents';
@@ -14,7 +15,6 @@ import {PasteUtils} from '../../utils/paste/pasteUtils';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {UNDO_INPUT_TYPE} from '../../consts/domEvents';
 import {Browser} from '../../utils/browser/browser';
-import {DateCellElement} from './dateCellElement';
 import {CellElement} from './cellElement';
 import {CellEvents} from './cellEvents';
 

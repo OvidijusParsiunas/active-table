@@ -3,7 +3,6 @@ import {ActiveCategoryItems, CategoryDropdownT} from '../../../types/columnDetai
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {CategoryCellElement} from '../../cell/categoryCellElement';
 import {CategoryDeleteButton} from './categoryDeleteButton';
 import {TableContents} from '../../../types/tableContents';
 import {CellDetails} from '../../../types/focusedCell';

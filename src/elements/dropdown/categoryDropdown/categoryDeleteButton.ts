@@ -1,6 +1,6 @@
+import {CategoryCellEvents} from '../../cell/cellsWithTextDiv/categoryCellEvents';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownScrollbar} from './categoryDropdownScrollbar';
-import {CategoryCellEvents} from '../../cell/categoryCellEvents';
 import {CategoryDropdownT} from '../../../types/columnDetails';
 import {DropdownItem} from '../dropdownItem';
 

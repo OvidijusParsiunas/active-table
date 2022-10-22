@@ -1,6 +1,6 @@
 import {CategoryDropdownItem} from '../../../elements/dropdown/categoryDropdown/categoryDropdownItem';
+import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCellElement';
 import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
-import {CategoryCellElement} from '../../../elements/cell/categoryCellElement';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
