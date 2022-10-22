@@ -86,7 +86,7 @@ export class DataCellEvents {
   }
 
   // prettier-ignore
-  // textContainerElement be cell element from this class or text element from categoryCellEvents class
+  // textContainerElement can be cell element for data cell, text element for category and date cells
   public static blur(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
     if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeContentEditable(textContainerElement);
@@ -105,7 +105,7 @@ export class DataCellEvents {
   }
 
   // prettier-ignore
-  // textContainerElement can be cell element from this class or text element from categoryCellEvents class
+  // textContainerElement can be cell element for data cell, text element for category and date cells
   public static prepareText(etc: EditableTableComponent, rowIndex: number, columnIndex: number,
       textContainerElement: HTMLElement) {
     // THIS HAS TO BE CALLED IN A FOCUS EVENT!!!!!!!!!!!!!!!!!

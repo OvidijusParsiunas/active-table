@@ -1,3 +1,4 @@
+import {FocusNextCellFromCategoryCell} from '../../utils/focusedElements/focusNextCellFromCategoryCell';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
 import {CaretPosition} from '../../utils/focusedElements/caretPosition';
@@ -10,10 +11,8 @@ import {DataCellEvents} from './dataCellEvents';
 import {CellElement} from './cellElement';
 import {CellEvents} from './cellEvents';
 
-// WORK - no cursor when text element is empty!!
 // WORK - refactor functions
 // WORK - insert text on paste
-// WORK - tab out of the cell
 // some browsers may not support date input picker
 export class DateCellElement {
   private static readonly DATE_INPUT_CLASS = 'date-input';
@@ -69,6 +68,14 @@ export class DateCellElement {
     cellElement.appendChild(textElement);
   }
 
+  private static keyDownOnText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
+    if (event.key === KEYBOARD_KEY.TAB) {
+      event.preventDefault();
+      DataCellEvents.keyDownCell.bind(this)(event);
+      FocusNextCellFromCategoryCell.focusOrBlurRowNextCell(this, columnIndex, rowIndex);
+    }
+  }
+
   private static textDivInput(defaultCellValue: string, event: Event) {
     // WORK - handle on paste event
     const textElement = event.target as HTMLElement;
@@ -88,6 +95,7 @@ export class DateCellElement {
     textElement.oninput = DateCellElement.textDivInput.bind(this, etc.defaultCellValue);
     textElement.onblur = DateCellElement.blur.bind(etc, rowIndex, columnIndex);
     textElement.classList.add(CellElement.CELL_TEXT_DIV_CLASS);
+    textElement.onkeydown = DateCellElement.keyDownOnText.bind(etc, rowIndex, columnIndex)
     CellElement.prepContentEditable(textElement, false);
     return textElement;
   }
