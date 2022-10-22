@@ -1,3 +1,4 @@
+import {CellsWithTextEvents} from '../cell/cellsWithTextDiv/cellsWithTextEvents';
 import {CategoryCellEvents} from '../cell/cellsWithTextDiv/categoryCellEvents';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {DateCellElement} from '../cell/cellsWithTextDiv/dateCellElement';
@@ -28,7 +29,7 @@ export class WindowEvents {
     // cell blur will not activate when the dropdown has been clicked and will not close if its scrollbar or padding are
     // clicked, hence once that happens, we close the dropdown programmatically as follows
     } else if (focusedElements.categoryDropdown) {
-      CategoryCellEvents.programmaticBlur(this);
+      CellsWithTextEvents.programmaticBlur(this);
     } else if (this.overlayElementsState.datePickerInput) {
       DateCellElement.hideDatePicker(this.overlayElementsState.datePickerInput);
       delete this.overlayElementsState.datePickerInput;

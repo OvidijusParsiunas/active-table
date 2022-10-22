@@ -1,4 +1,4 @@
-import {CategoryCellEvents} from '../../cell/cellsWithTextDiv/categoryCellEvents';
+import {CellsWithTextEvents} from '../../cell/cellsWithTextDiv/cellsWithTextEvents';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -55,7 +55,7 @@ export class CategoryDropdown {
       ? targetElement : targetElement.parentElement;
     CategoryDropdownItem.selectExistingCategory(this, itemElement as HTMLElement, rowIndex, columnIndex,
       cellElement.children[0] as HTMLElement);
-    CategoryCellEvents.programmaticBlur(this);
+    CellsWithTextEvents.programmaticBlur(this);
   }
 
   // this is required to record to stop cell blur from closing the dropdown

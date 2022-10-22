@@ -6,8 +6,8 @@ import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryCellElement} from './categoryCellElement';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
+import {CellsWithTextEvents} from './cellsWithTextEvents';
 import {Browser} from '../../../utils/browser/browser';
-import {CellDetails} from '../../../types/focusedCell';
 import {DataCellEvents} from '../dataCellEvents';
 import {CellElement} from '../cellElement';
 
@@ -18,7 +18,7 @@ export class CategoryCellEvents {
   public static keyDownText(etc: EditableTableComponent, columnIndex: number, rowIndex: number, event: KeyboardEvent) {
     const {categoryDropdown: {activeItems}, elements} = etc.columnsDetails[columnIndex];
     if (event.key === KEYBOARD_KEY.ESCAPE) {
-      CategoryCellEvents.programmaticBlur(etc);
+      CellsWithTextEvents.programmaticBlur(etc);
     } else if (event.key === KEYBOARD_KEY.TAB) {
       event.preventDefault();
       DataCellEvents.keyDownCell.bind(etc)(event);
@@ -62,18 +62,6 @@ export class CategoryCellEvents {
     }
   }
 
-  public static programmaticBlur(etc: EditableTableComponent) {
-    const {rowIndex, columnIndex, element} = etc.focusedElements.cell as CellDetails;
-    const textElement = element.children[0] as HTMLElement;
-    textElement.blur();
-    // the above will not trigger the CategoryCellEvents.blur functionality if dropdown has been focused, but will blur
-    // the element in the dom, the following will trigger the required programmatic functionality
-    if (etc.focusedElements.categoryDropdown) {
-      CategoryCellEvents.blurring(etc, rowIndex, columnIndex, textElement);
-      delete etc.focusedElements.categoryDropdown;
-    }
-  }
-
   private static mouseDownCell(this: EditableTableComponent, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
     // this is also triggered by text, but we only want when cell to focus
@@ -86,7 +74,7 @@ export class CategoryCellEvents {
       // or delete cateogory buttons are clicked, hence once that happens and the user clicks on another category
       // cell, the dropdown is closed programmatically as follows
       if (this.focusedElements.categoryDropdown) {
-        CategoryCellEvents.programmaticBlur(this);
+        CellsWithTextEvents.programmaticBlur(this);
       }
       // Firefox does not fire the focus event for CaretPosition.setToEndOfText
       if (Browser.IS_FIREFOX) textElement.focus();

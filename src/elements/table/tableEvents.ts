@@ -1,5 +1,5 @@
 import {UserKeyEventsStateUtil} from '../../utils/userEventsState/userEventsStateUtil';
-import {CategoryCellEvents} from '../cell/cellsWithTextDiv/categoryCellEvents';
+import {CellsWithTextEvents} from '../cell/cellsWithTextDiv/cellsWithTextEvents';
 import {DateCellElement} from '../cell/cellsWithTextDiv/dateCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElement} from '../columnSizer/columnSizerElement';
@@ -30,7 +30,7 @@ export class TableEvents {
     const {focusedElements} = etc;
     if (focusedElements.categoryDropdown && !Dropdown.isPartOfDropdownElement(targetElement)
         && focusedElements.cell.element !== CellElement.extractCellElement(targetElement)) {
-      CategoryCellEvents.programmaticBlur(etc);
+      CellsWithTextEvents.programmaticBlur(etc);
     }
   }
 

@@ -1,4 +1,4 @@
-import {CategoryCellEvents} from '../../elements/cell/cellsWithTextDiv/categoryCellEvents';
+import {CellsWithTextEvents} from '../../elements/cell/cellsWithTextDiv/cellsWithTextEvents';
 import {EditableTableComponent} from '../../editable-table-component';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {ColumnDetailsT} from '../../types/columnDetails';
@@ -11,7 +11,7 @@ export class FocusNextColumnCellFromTextDiv {
       // needs to be mousedown in order to set focusedCell
       cellElement.dispatchEvent(new Event('mousedown'));
     } else {
-      CategoryCellEvents.programmaticBlur(etc);
+      CellsWithTextEvents.programmaticBlur(etc);
       // dispatchEvent(new Event('focus')); does not return a selection in forefox for window.document.getSelection()
       cellElement.focus();
     }
