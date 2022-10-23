@@ -15,6 +15,7 @@ export enum ACTIVE_COLUMN_TYPE {
 // Date_D_M_Y and Date_M_D_Y are added here by the populateDefaultDateTypes method invocation
 export const DATE_COLUMN_TYPE: GenericObject = {};
 
+// cell elements that have their text abstracted within a div to facilitate other functionality
 export const TEXT_DIV_COLUMN_TYPE: GenericObject = {[ACTIVE_COLUMN_TYPE.Category]: ACTIVE_COLUMN_TYPE.Category};
 
 // this is the default column type which defines that actual column type is inferred automaticallly

@@ -1,6 +1,6 @@
 import {UserKeyEventsStateUtil} from '../../utils/userEventsState/userEventsStateUtil';
+import {DateCellElement} from '../cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CellsWithTextEvents} from '../cell/cellsWithTextDiv/cellsWithTextEvents';
-import {DateCellElement} from '../cell/cellsWithTextDiv/dateCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElement} from '../columnSizer/columnSizerElement';
 import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';

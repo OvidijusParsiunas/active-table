@@ -1,6 +1,6 @@
+import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
-import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCellElement';
 import {InsertRemoveColumnSizer} from '../../columnSizer/insertRemoveColumnSizer';
 import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
@@ -45,7 +45,7 @@ export class InsertNewCell {
       CategoryCellElement.convertCellFromDataToCategory(etc, rowIndex, columnIndex, newCellElement, '');
       CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (DATE_COLUMN_TYPE[columnDetail.userSetColumnType]) {
-      DateCellElement.convertCellFromDataToCategory(etc,
+      DateCellElement.convertCellFromDataToDate(etc,
         rowIndex, columnIndex, newCellElement, columnDetail.userSetColumnType);
     }
   }

@@ -11,6 +11,7 @@ import {Browser} from '../../../utils/browser/browser';
 import {DataCellEvents} from '../dataCellEvents';
 import {CellElement} from '../cellElement';
 
+// the logic for cell and text divs is handled here
 export class CategoryCellEvents {
   // the reason why this is triggered by window is because when the user clicks on dropdown padding or delete button
   // keydown events will no longer be fired through the cell text - however we need to maintain the same behaviour
@@ -85,10 +86,13 @@ export class CategoryCellEvents {
 
   // inherently using data cell events and overwriting the following
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    cellElement.onmousedown = CategoryCellEvents.mouseDownCell.bind(etc);
     // onblur/onfocus do not work for firefox, hence using textElement and keeping it consistent across browsers
     cellElement.onblur = () => {};
     cellElement.onfocus = () => {};
+    // these are used in date cells and overwritten when converted from
+    cellElement.onmouseenter = () => {};
+    cellElement.onmouseleave = () => {};
+    cellElement.onmousedown = CategoryCellEvents.mouseDownCell.bind(etc);
     const textElement = cellElement.children[0] as HTMLElement;
     textElement.onblur = CategoryCellEvents.blurText.bind(etc, rowIndex, columnIndex);
     textElement.onfocus = CategoryCellEvents.focusText.bind(etc, rowIndex, columnIndex);

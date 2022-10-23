@@ -4,10 +4,10 @@ import {CategoryDropdownItem} from '../dropdown/categoryDropdown/categoryDropdow
 import {UserKeyEventsStateUtil} from '../../utils/userEventsState/userEventsStateUtil';
 import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
 import {CellTypeTotalsUtils} from '../../utils/cellType/cellTypeTotalsUtils';
+import {DateCellElement} from './cellsWithTextDiv/dateCell/dateCellElement';
 import {CaretPosition} from '../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
-import {DateCellElement} from './cellsWithTextDiv/dateCellElement';
 import {ValidateInput} from '../../utils/cellType/validateInput';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {KEYBOARD_EVENT} from '../../consts/keyboardEvents';
@@ -125,10 +125,13 @@ export class DataCellEvents {
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     cellElement.onfocus = DataCellEvents.focusCell.bind(etc, rowIndex, columnIndex);
     cellElement.onblur = DataCellEvents.blurCell.bind(etc, rowIndex, columnIndex);
+    // these are used in date cells and overwritten when converted from
+    cellElement.onmouseenter = () => {};
+    cellElement.onmouseleave = () => {};
+    // this is used by category element and overwritten when converted from
+    cellElement.onmousedown = () => {};
     cellElement.oninput = DataCellEvents.inputCell.bind(etc, rowIndex, columnIndex);
     cellElement.onpaste = DataCellEvents.pasteCell.bind(etc, rowIndex, columnIndex);
     cellElement.onkeydown = DataCellEvents.keyDownCell.bind(etc);
-    // used by category element and overwritten when converted from
-    cellElement.onmousedown = () => {};
   }
 }

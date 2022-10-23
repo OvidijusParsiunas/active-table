@@ -1,7 +1,7 @@
+import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
-import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCellElement';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableElementEventState} from './types/tableElementEventState';
 import {customElement, property, state} from 'lit/decorators.js';
