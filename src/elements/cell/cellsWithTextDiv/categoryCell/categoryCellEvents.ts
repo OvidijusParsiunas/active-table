@@ -1,15 +1,15 @@
-import {FocusNextCellFromCategoryCell} from '../../../utils/focusedElements/focusNextCellFromCategoryCell';
-import {CategoryDropdownItem} from '../../dropdown/categoryDropdown/categoryDropdownItem';
-import {CategoryDropdown} from '../../dropdown/categoryDropdown/categoryDropdown';
-import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
-import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
-import {EditableTableComponent} from '../../../editable-table-component';
+import {FocusNextCellFromCategoryCell} from '../../../../utils/focusedElements/focusNextCellFromCategoryCell';
+import {CategoryDropdownItem} from '../../../dropdown/categoryDropdown/categoryDropdownItem';
+import {CategoryDropdown} from '../../../dropdown/categoryDropdown/categoryDropdown';
+import {FocusedCellUtils} from '../../../../utils/focusedElements/focusedCellUtils';
+import {CaretPosition} from '../../../../utils/focusedElements/caretPosition';
+import {EditableTableComponent} from '../../../../editable-table-component';
+import {KEYBOARD_KEY} from '../../../../consts/keyboardKeys';
+import {DataCellEvents} from '../../dataCell/dataCellEvents';
+import {CellsWithTextEvents} from '../cellsWithTextEvents';
 import {CategoryCellElement} from './categoryCellElement';
-import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
-import {CellsWithTextEvents} from './cellsWithTextEvents';
-import {Browser} from '../../../utils/browser/browser';
-import {DataCellEvents} from '../dataCellEvents';
-import {CellElement} from '../cellElement';
+import {Browser} from '../../../../utils/browser/browser';
+import {CellElement} from '../../cellElement';
 
 // the logic for cell and text divs is handled here
 export class CategoryCellEvents {

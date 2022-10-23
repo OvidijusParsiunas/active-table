@@ -1,9 +1,9 @@
-import {FocusedCellUtils} from '../../utils/focusedElements/focusedCellUtils';
-import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
-import {EditableTableComponent} from '../../editable-table-component';
-import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
-import {Dropdown} from '../dropdown/dropdown';
-import {CellEvents} from './cellEvents';
+import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
+import {ColumnDropdown} from '../../dropdown/columnDropdown/columnDropdown';
+import {EditableTableComponent} from '../../../editable-table-component';
+import {ColumnSizerEvents} from '../../columnSizer/columnSizerEvents';
+import {Dropdown} from '../../dropdown/dropdown';
+import {CellEvents} from '../cellEvents';
 
 export class HeaderCellEvents {
   private static readonly HOVER_BACKGROUND_COLOR = '#f7f7f7';

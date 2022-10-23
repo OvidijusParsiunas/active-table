@@ -1,7 +1,7 @@
+import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
 import {DATE_COLUMN_TYPE, TEXT_DIV_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {DateCellTextEvents} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellTextEvents';
 import {CategoryDropdownItem} from '../../../elements/dropdown/categoryDropdown/categoryDropdownItem';
-import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCellElement';
 import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {EditableTableComponent} from '../../../editable-table-component';

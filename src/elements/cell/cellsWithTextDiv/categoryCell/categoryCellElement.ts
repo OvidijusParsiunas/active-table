@@ -1,10 +1,10 @@
-import {FirefoxCaretDisplayFix} from '../../../utils/browser/firefox/firefoxCaretDisplayFix';
-import {CategoryDropdownItem} from '../../dropdown/categoryDropdown/categoryDropdownItem';
-import {EditableTableComponent} from '../../../editable-table-component';
-import {TEXT_DIV_COLUMN_TYPE} from '../../../enums/columnType';
+import {FirefoxCaretDisplayFix} from '../../../../utils/browser/firefox/firefoxCaretDisplayFix';
+import {CategoryDropdownItem} from '../../../dropdown/categoryDropdown/categoryDropdownItem';
+import {EditableTableComponent} from '../../../../editable-table-component';
+import {TEXT_DIV_COLUMN_TYPE} from '../../../../enums/columnType';
+import {Browser} from '../../../../utils/browser/browser';
 import {CategoryCellEvents} from './categoryCellEvents';
-import {Browser} from '../../../utils/browser/browser';
-import {CellElement} from '../cellElement';
+import {CellElement} from '../../cellElement';
 
 // the logic for cell and text divs is handled here
 export class CategoryCellElement {

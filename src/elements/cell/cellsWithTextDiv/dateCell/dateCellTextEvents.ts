@@ -4,8 +4,8 @@ import {CaretPosition} from '../../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {FocusedElements} from '../../../../types/focusedElements';
 import {KEYBOARD_KEY} from '../../../../consts/keyboardKeys';
+import {DataCellEvents} from '../../dataCell/dataCellEvents';
 import {DateCellInputElement} from './dateCellInputElement';
-import {DataCellEvents} from '../../dataCellEvents';
 
 export class DateCellTextEvents {
   private static blur(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {

@@ -1,5 +1,5 @@
 import {EditableTableComponent} from '../../../editable-table-component';
-import {CategoryCellEvents} from './categoryCellEvents';
+import {CategoryCellEvents} from './categoryCell/categoryCellEvents';
 import {CellDetails} from '../../../types/focusedCell';
 
 export class CellsWithTextEvents {

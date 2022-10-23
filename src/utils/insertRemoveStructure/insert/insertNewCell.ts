@@ -1,5 +1,5 @@
+import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
-import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {InsertRemoveColumnSizer} from '../../columnSizer/insertRemoveColumnSizer';
 import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';

@@ -1,9 +1,9 @@
 import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE, DATE_COLUMN_TYPE, TEXT_DIV_COLUMN_TYPE} from '../../enums/columnType';
+import {CategoryCellElement} from '../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
 import {CategoryDropdownItem} from '../../elements/dropdown/categoryDropdown/categoryDropdownItem';
 import {DateCellElement} from '../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
-import {CategoryCellElement} from '../../elements/cell/cellsWithTextDiv/categoryCellElement';
+import {DataCellElement} from '../../elements/cell/dataCell/dataCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
-import {DataCellElement} from '../../elements/cell/dataCellElement';
 import {DisplayedCellTypeName} from './displayedCellTypeName';
 import {ColumnsDetailsT} from '../../types/columnDetails';
 import {CellEvents} from '../../elements/cell/cellEvents';

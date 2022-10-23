@@ -1,6 +1,6 @@
+import {CategoryCellEvents} from '../cell/cellsWithTextDiv/categoryCell/categoryCellEvents';
 import {DateCellElement} from '../cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CellsWithTextEvents} from '../cell/cellsWithTextDiv/cellsWithTextEvents';
-import {CategoryCellEvents} from '../cell/cellsWithTextDiv/categoryCellEvents';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';

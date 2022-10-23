@@ -1,8 +1,8 @@
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {EditableTableComponent} from '../../editable-table-component';
-import {HeaderCellEvents} from './headerCellEvents';
+import {HeaderCellEvents} from './headerCell/headerCellEvents';
+import {DataCellEvents} from './dataCell/dataCellEvents';
 import {Browser} from '../../utils/browser/browser';
-import {DataCellEvents} from './dataCellEvents';
 import {CSSStyle} from '../../types/cssStyle';
 
 export class CellElement {

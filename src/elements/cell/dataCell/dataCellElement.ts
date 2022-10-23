@@ -1,6 +1,6 @@
-import {EditableTableComponent} from '../../editable-table-component';
+import {EditableTableComponent} from '../../../editable-table-component';
 import {DataCellEvents} from './dataCellEvents';
-import {CellElement} from './cellElement';
+import {CellElement} from '../cellElement';
 
 export class DataCellElement {
   // prettier-ignore
