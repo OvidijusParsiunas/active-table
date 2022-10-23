@@ -1,5 +1,7 @@
+import {DATE_COLUMN_TYPE, TEXT_DIV_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {CategoryDropdownItem} from '../../../elements/dropdown/categoryDropdown/categoryDropdownItem';
 import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCellElement';
+import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCellElement';
 import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -7,7 +9,6 @@ import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {DataUtils} from '../../insertRemoveStructure/shared/dataUtils';
 import {TableRow, TableCellText} from '../../../types/tableContents';
 import {CaretPosition} from '../../focusedElements/caretPosition';
-import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
 import {CellEvents} from '../../../elements/cell/cellEvents';
 import {ArrayUtils} from '../../array/arrayUtils';
@@ -53,6 +54,8 @@ export class OverwriteCellsViaCSVOnPaste {
     const columnDetails = etc.columnsDetails[columnIndex];
     if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryCellElement.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
+    } else if (DATE_COLUMN_TYPE[columnDetails.userSetColumnType]) {
+      DateCellElement.updateInputBasedOnTextDiv(etc.defaultCellValue, columnDetails.userSetColumnType, cellElement);
     }
     setTimeout(() => {
       const newType = CellTypeTotalsUtils.parseType(processedNewCellText, etc.defaultCellValue);
@@ -73,10 +76,12 @@ export class OverwriteCellsViaCSVOnPaste {
   private static setCaretToEndAndHighlightIfCategory(etc: EditableTableComponent, cellElement: HTMLElement,
       columnIndex: number) {
     const {userSetColumnType, categoryDropdown: dropdown} = etc.columnsDetails[columnIndex];
-    if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+    if (TEXT_DIV_COLUMN_TYPE[userSetColumnType]) {
       const textElement = cellElement.children[0] as HTMLElement;
-      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, dropdown, etc.defaultCellValue, true);
       CaretPosition.setToEndOfText(etc, textElement);
+      if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+        CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, dropdown, etc.defaultCellValue, true);
+      }
     } else {
       CaretPosition.setToEndOfText(etc, cellElement);
     }

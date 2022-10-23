@@ -1,4 +1,6 @@
+import {GenericObject} from '../types/genericObject';
 // WORK - this is not static and should be eligible for the user to edit
+
 // set by the user or inferred
 export enum ACTIVE_COLUMN_TYPE {
   Number = 'Number',
@@ -11,7 +13,9 @@ export enum ACTIVE_COLUMN_TYPE {
 }
 
 // Date_D_M_Y and Date_M_D_Y are added here by the populateDefaultDateTypes method invocation
-export const DATE_COLUMN_TYPE: {[key: string]: string} = {};
+export const DATE_COLUMN_TYPE: GenericObject = {};
+
+export const TEXT_DIV_COLUMN_TYPE: GenericObject = {[ACTIVE_COLUMN_TYPE.Category]: ACTIVE_COLUMN_TYPE.Category};
 
 // this is the default column type which defines that actual column type is inferred automaticallly
 enum AUTO {

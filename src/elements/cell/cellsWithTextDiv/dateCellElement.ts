@@ -1,8 +1,8 @@
 import {FocusNextCellFromCategoryCell} from '../../../utils/focusedElements/focusNextCellFromCategoryCell';
+import {ACTIVE_COLUMN_TYPE, DATE_COLUMN_TYPE, TEXT_DIV_COLUMN_TYPE} from '../../../enums/columnType';
 import {FirefoxCaretDisplayFix} from '../../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {DateProperties, DateTypeToProperties} from '../../../types/dateTypeToProperties';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
-import {ACTIVE_COLUMN_TYPE, DATE_COLUMN_TYPE} from '../../../enums/columnType';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {FocusedElements} from '../../../types/focusedElements';
@@ -14,7 +14,6 @@ import {CellElement} from '../cellElement';
 import {CellEvents} from '../cellEvents';
 
 // WORK - refactor functions
-// WORK - insert text on paste
 // some browsers may not support date input picker
 export class DateCellElement {
   private static readonly DATE_INPUT_CLASS = 'date-input';
@@ -25,6 +24,7 @@ export class DateCellElement {
   public static addNewDateType(dateTypeName: string, dateProperties: DateProperties) {
     DateCellElement.DATE_TYPE_TO_PROPERTIES[dateTypeName] = dateProperties;
     DATE_COLUMN_TYPE[dateTypeName] = dateTypeName;
+    TEXT_DIV_COLUMN_TYPE[dateTypeName] = dateTypeName;
   }
 
   // added through addNewDateType method instead of direct in order perform other important operations
@@ -108,14 +108,18 @@ export class DateCellElement {
     }
   }
 
-  private static textDivInput(defaultCellValue: string, dateType: string, event: Event) {
-    // WORK - handle on paste event
-    const textElement = event.target as HTMLElement;
-    const cellElement = (textElement as HTMLElement).parentElement as HTMLElement;
+  public static updateInputBasedOnTextDiv(defaultCellValue: string, dateType: string, cellElement: HTMLElement) {
+    const textElement = cellElement.children[0] as HTMLElement;
     const inputElementContainer = cellElement.children[1] as HTMLElement;
     const inputElement = inputElementContainer.children[0] as HTMLInputElement;
     const date = DateCellElement.convertToInput(textElement.textContent as string, defaultCellValue, dateType);
     inputElement.value = date;
+  }
+
+  private static textDivInput(defaultCellValue: string, dateType: string, event: Event) {
+    const textElement = event.target as HTMLElement;
+    const cellElement = textElement.parentElement as HTMLElement;
+    DateCellElement.updateInputBasedOnTextDiv(defaultCellValue, dateType, cellElement);
   }
 
   // prettier-ignore
