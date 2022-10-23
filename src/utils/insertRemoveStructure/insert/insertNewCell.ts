@@ -1,12 +1,13 @@
 import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
+import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCellElement';
 import {InsertRemoveColumnSizer} from '../../columnSizer/insertRemoveColumnSizer';
+import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
-import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {ColumnDetailsT} from '../../../types/columnDetails';
 import {DataUtils} from '../shared/dataUtils';
 
@@ -37,13 +38,22 @@ export class InsertNewCell {
     }
   }
 
+  // prettier-ignore
+  private static convertCell(etc: EditableTableComponent,
+      columnDetail: ColumnDetailsT, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
+    if (columnDetail.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+      CategoryCellElement.convertCellFromDataToCategory(etc, rowIndex, columnIndex, newCellElement, '');
+      CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
+    } else if (DATE_COLUMN_TYPE[columnDetail.userSetColumnType]) {
+      DateCellElement.convertCellFromDataToCategory(etc,
+        rowIndex, columnIndex, newCellElement, columnDetail.userSetColumnType);
+    }
+  }
+
   private static create(etc: EditableTableComponent, processedCellText: string, rowIndex: number, columnIndex: number) {
     const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
     const columnDetail = etc.columnsDetails[columnIndex];
-    if (columnDetail?.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-      CategoryCellElement.convertCellFromDataToCategory(etc, rowIndex, columnIndex, newCellElement, '');
-      CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
-    }
+    if (columnDetail) InsertNewCell.convertCell(etc, columnDetail, rowIndex, columnIndex, newCellElement);
     return newCellElement;
   }
 
