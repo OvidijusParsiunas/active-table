@@ -1,3 +1,4 @@
+// WORK - this is not static and should be eligible for the user to edit
 // set by the user or inferred
 export enum ACTIVE_COLUMN_TYPE {
   Number = 'Number',
@@ -8,6 +9,9 @@ export enum ACTIVE_COLUMN_TYPE {
   Date_M_D_Y = 'Date_M_D_Y',
   Category = 'Category',
 }
+
+// Date_D_M_Y and Date_M_D_Y are added here by the populateDefaultDateTypes method invocation
+export const DATE_COLUMN_TYPE: {[key: string]: string} = {};
 
 // this is the default column type which defines that actual column type is inferred automaticallly
 enum AUTO {

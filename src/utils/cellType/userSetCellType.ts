@@ -1,6 +1,7 @@
 import {CategoryDropdownItem} from '../../elements/dropdown/categoryDropdown/categoryDropdownItem';
+import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE, DATE_COLUMN_TYPE} from '../../enums/columnType';
 import {CategoryCellElement} from '../../elements/cell/cellsWithTextDiv/categoryCellElement';
-import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
+import {DateCellElement} from '../../elements/cell/cellsWithTextDiv/dateCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {DataCellElement} from '../../elements/cell/dataCellElement';
 import {DisplayedCellTypeName} from './displayedCellTypeName';
@@ -50,18 +51,20 @@ export class UserSetCellType {
 
   public static setIfNew(this: EditableTableComponent, newType: string, columnIndex: number) {
     const codeTypeName = DisplayedCellTypeName.get(newType); // from displayed name to code
-    const newTypeEnum = USER_SET_COLUMN_TYPE[codeTypeName as keyof typeof USER_SET_COLUMN_TYPE];
+    const newTypeEnumStr = USER_SET_COLUMN_TYPE[codeTypeName as keyof typeof USER_SET_COLUMN_TYPE];
     const previousTypeEnum = this.columnsDetails[columnIndex].userSetColumnType;
-    if (newTypeEnum !== previousTypeEnum) {
+    if (newTypeEnumStr !== previousTypeEnum) {
       if (previousTypeEnum === USER_SET_COLUMN_TYPE.Category) {
         DataCellElement.convertColumnFromCategoryToData(this, columnIndex);
       }
-      UserSetCellType.set(this, newTypeEnum, columnIndex);
-      UserSetCellType.purgeInvalidCellsIfValidable(this, newTypeEnum as keyof typeof VALIDABLE_CELL_TYPE, columnIndex);
-      if (newTypeEnum === USER_SET_COLUMN_TYPE.Category) {
+      UserSetCellType.set(this, newTypeEnumStr, columnIndex);
+      UserSetCellType.purgeInvalidCellsIfValidable(this, newTypeEnumStr as keyof typeof VALIDABLE_CELL_TYPE, columnIndex);
+      if (newTypeEnumStr === USER_SET_COLUMN_TYPE.Category) {
         CategoryDropdownItem.populateItems(this, columnIndex);
         // items need to be populated before we know what color each cell text needs to be turned into
         CategoryCellElement.convertColumnFromDataToCategory(this, columnIndex);
+      } else if (DATE_COLUMN_TYPE[newTypeEnumStr as keyof typeof DATE_COLUMN_TYPE]) {
+        DateCellElement.convertColumnFromDataToCategory(this, columnIndex, newTypeEnumStr);
       }
     }
   }
