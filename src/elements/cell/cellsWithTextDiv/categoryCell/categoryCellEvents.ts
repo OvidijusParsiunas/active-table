@@ -6,9 +6,9 @@ import {CaretPosition} from '../../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {KEYBOARD_KEY} from '../../../../consts/keyboardKeys';
 import {DataCellEvents} from '../../dataCell/dataCellEvents';
-import {CellsWithTextEvents} from '../cellsWithTextEvents';
 import {CategoryCellElement} from './categoryCellElement';
 import {Browser} from '../../../../utils/browser/browser';
+import {CellWithTextEvents} from '../cellWithTextEvents';
 import {CellElement} from '../../cellElement';
 
 // the logic for cell and text divs is handled here
@@ -19,7 +19,7 @@ export class CategoryCellEvents {
   public static keyDownText(etc: EditableTableComponent, columnIndex: number, rowIndex: number, event: KeyboardEvent) {
     const {categoryDropdown: {activeItems}, elements} = etc.columnsDetails[columnIndex];
     if (event.key === KEYBOARD_KEY.ESCAPE) {
-      CellsWithTextEvents.programmaticBlur(etc);
+      CellWithTextEvents.programmaticBlur(etc);
     } else if (event.key === KEYBOARD_KEY.TAB) {
       event.preventDefault();
       DataCellEvents.keyDownCell.bind(etc)(event);
@@ -75,7 +75,7 @@ export class CategoryCellEvents {
       // or delete cateogory buttons are clicked, hence once that happens and the user clicks on another category
       // cell, the dropdown is closed programmatically as follows
       if (this.focusedElements.categoryDropdown) {
-        CellsWithTextEvents.programmaticBlur(this);
+        CellWithTextEvents.programmaticBlur(this);
       }
       // Firefox does not fire the focus event for CaretPosition.setToEndOfText
       if (Browser.IS_FIREFOX) textElement.focus();

@@ -1,6 +1,6 @@
+import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {UserKeyEventsStateUtil} from '../../utils/userEventsState/userEventsStateUtil';
-import {DateCellElement} from '../cell/cellsWithTextDiv/dateCell/dateCellElement';
-import {CellsWithTextEvents} from '../cell/cellsWithTextDiv/cellsWithTextEvents';
+import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElement} from '../columnSizer/columnSizerElement';
 import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
@@ -15,9 +15,9 @@ export class TableEvents {
   // prettier-ignore
   private static closeDatePicker(overlayElementsState: OverlayElements, targetElement: HTMLElement) {
     if (overlayElementsState.datePickerInput) {
-      if (DateCellElement.getCellElement(overlayElementsState.datePickerInput)
-          !== DateCellElement.getCellElement(targetElement)) {
-        DateCellElement.hideDatePicker(overlayElementsState.datePickerInput);
+      if (CellElement.extractCellElement(overlayElementsState.datePickerInput)
+          !== CellElement.extractCellElement(targetElement)) {
+        DateCellInputElement.hideDatePicker(overlayElementsState.datePickerInput);
       }
       delete overlayElementsState.datePickerInput;
     }
@@ -30,7 +30,7 @@ export class TableEvents {
     const {focusedElements} = etc;
     if (focusedElements.categoryDropdown && !Dropdown.isPartOfDropdownElement(targetElement)
         && focusedElements.cell.element !== CellElement.extractCellElement(targetElement)) {
-      CellsWithTextEvents.programmaticBlur(etc);
+      CellWithTextEvents.programmaticBlur(etc);
     }
   }
 

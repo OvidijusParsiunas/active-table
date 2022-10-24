@@ -1,8 +1,10 @@
 import {FocusedCellUtils} from '../../../../utils/focusedElements/focusedCellUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {KEYBOARD_KEY} from '../../../../consts/keyboardKeys';
+import {DateCellInputElement} from './dateCellInputElement';
 import {MOUSE_EVENT} from '../../../../consts/mouseEvents';
 import {DateCellElement} from './dateCellElement';
+import {CellElement} from '../../cellElement';
 import {CellEvents} from '../../cellEvents';
 
 export class DateCellInputEvents {
@@ -26,9 +28,9 @@ export class DateCellInputEvents {
       // uses arrow keys to navigate and clicks back on the cell - this event is fired
       !this.userKeyEventsState[MOUSE_EVENT.DOWN] &&
       // do not hide when currently hovered
-      this.hoveredElements.dateCell !== DateCellElement.getCellElement(event.target as HTMLElement)
+      this.hoveredElements.dateCell !== CellElement.extractCellElement(event.target as HTMLElement)
     ) {
-      DateCellElement.hideDatePicker(event.target as HTMLInputElement);
+      DateCellInputElement.hideDatePicker(event.target as HTMLInputElement);
     }
     delete this.overlayElementsState.datePickerInput;
   }
@@ -41,9 +43,9 @@ export class DateCellInputEvents {
       event.key === KEYBOARD_KEY.ESCAPE &&
       this.overlayElementsState.datePickerInput &&
       // do not hide when currently hovered
-      this.hoveredElements.dateCell !== DateCellElement.getCellElement(event.target as HTMLElement)
+      this.hoveredElements.dateCell !== CellElement.extractCellElement(event.target as HTMLElement)
     ) {
-      DateCellElement.hideDatePicker(this.overlayElementsState.datePickerInput);
+      DateCellInputElement.hideDatePicker(this.overlayElementsState.datePickerInput);
       delete this.overlayElementsState.datePickerInput;
     }
   }
@@ -59,7 +61,7 @@ export class DateCellInputEvents {
 
   private static markDatePicker(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
     const inputElement = event.target as HTMLInputElement;
-    const cellElement = DateCellElement.getCellElement(inputElement);
+    const cellElement = CellElement.extractCellElement(inputElement);
     FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
     setTimeout(() => (this.overlayElementsState.datePickerInput = inputElement));
   }

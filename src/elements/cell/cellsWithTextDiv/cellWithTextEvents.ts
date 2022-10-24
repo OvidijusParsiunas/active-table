@@ -2,7 +2,7 @@ import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryCellEvents} from './categoryCell/categoryCellEvents';
 import {CellDetails} from '../../../types/focusedCell';
 
-export class CellsWithTextEvents {
+export class CellWithTextEvents {
   public static programmaticBlur(etc: EditableTableComponent) {
     const {rowIndex, columnIndex, element} = etc.focusedElements.cell as CellDetails;
     const textElement = element.children[0] as HTMLElement;

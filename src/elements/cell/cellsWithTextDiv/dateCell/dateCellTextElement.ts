@@ -1,4 +1,5 @@
 import {FirefoxCaretDisplayFix} from '../../../../utils/browser/firefox/firefoxCaretDisplayFix';
+import {CellWithTextElement} from '../cellWithTextElement';
 import {Browser} from '../../../../utils/browser/browser';
 import {CellElement} from '../../cellElement';
 
@@ -15,7 +16,7 @@ export class DateCellTextElement {
     const textElement = document.createElement('div');
     textElement.textContent = text;
     textElement.style.float = 'left';
-    textElement.classList.add(CellElement.CELL_TEXT_DIV_CLASS);
+    textElement.classList.add(CellWithTextElement.CELL_TEXT_DIV_CLASS);
     CellElement.prepContentEditable(textElement, false);
     return textElement;
   }

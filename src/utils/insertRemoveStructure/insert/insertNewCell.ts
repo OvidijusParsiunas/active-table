@@ -45,8 +45,8 @@ export class InsertNewCell {
       CategoryCellElement.convertCellFromDataToCategory(etc, rowIndex, columnIndex, newCellElement, '');
       CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (DATE_COLUMN_TYPE[columnDetail.userSetColumnType]) {
-      DateCellElement.convertCellFromDataToDate(etc,
-        rowIndex, columnIndex, newCellElement, columnDetail.userSetColumnType);
+      DateCellElement.convertCellFromDataToDate(columnDetail.userSetColumnType,
+        etc, rowIndex, columnIndex, newCellElement);
     }
   }
 

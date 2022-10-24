@@ -1,4 +1,4 @@
-import {CellsWithTextEvents} from '../../cell/cellsWithTextDiv/cellsWithTextEvents';
+import {CellWithTextEvents} from '../../cell/cellsWithTextDiv/cellWithTextEvents';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownScrollbar} from './categoryDropdownScrollbar';
 import {CategoryDropdownT} from '../../../types/columnDetails';
@@ -17,7 +17,7 @@ export class CategoryDeleteButton {
     delete categoryDropdown.categoryToItem[itemElement.children[0].textContent as string];
     categoryDropdown.element.removeChild(itemElement);
     if (Object.keys(categoryDropdown.categoryToItem).length === 0) {
-      CellsWithTextEvents.programmaticBlur(this);
+      CellWithTextEvents.programmaticBlur(this);
     } else {
       CategoryDropdownScrollbar.setProperties(categoryDropdown);
     }

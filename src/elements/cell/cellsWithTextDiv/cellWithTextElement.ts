@@ -1,0 +1,31 @@
+import {EditableTableComponent} from '../../../editable-table-component';
+import {TEXT_DIV_COLUMN_TYPE} from '../../../enums/columnType';
+
+type ConvertFunc = (etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement) => void;
+
+export class CellWithTextElement {
+  // used for encapsulating text within a nested element
+  // category - used to color the text
+  // date - used to display a calendar beside the text
+  public static readonly CELL_TEXT_DIV_CLASS = 'cell-text-div';
+
+  // prettier-ignore
+  public static convertColumnToTextType(etc: EditableTableComponent, columnIndex: number, previousType: string,
+      convertCell: ConvertFunc) {
+    const {elements} = etc.columnsDetails[columnIndex];
+    // if the previous column tyoe is not simple data
+    const shouldResetContents = Boolean(TEXT_DIV_COLUMN_TYPE[previousType]);
+    elements.slice(1).forEach((cellElement: HTMLElement, dataRowIndex: number) => {
+      // this is a very simple way to clear the previous content inside the cell so it would be date-like
+      // it may not be as efficient as text div element from date to category may not need to be wiped
+      // and this if statement also called every time, however no efficiency issues have been seen on
+      // the browser so far
+      if (shouldResetContents) {
+        const text = (cellElement.children[0] as HTMLElement).textContent as string;
+        cellElement.textContent = text;
+      }
+      const relativeRowIndex = dataRowIndex + 1;
+      convertCell(etc, relativeRowIndex, columnIndex, cellElement);
+    });
+  }
+}

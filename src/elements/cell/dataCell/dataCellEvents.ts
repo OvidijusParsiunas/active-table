@@ -2,9 +2,9 @@ import {OverwriteCellsViaCSVOnPaste} from '../../../utils/paste/CSV/overwriteCel
 import {FirefoxCaretDisplayFix} from '../../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {CategoryDropdownItem} from '../../dropdown/categoryDropdown/categoryDropdownItem';
 import {UserKeyEventsStateUtil} from '../../../utils/userEventsState/userEventsStateUtil';
+import {DateCellInputElement} from '../cellsWithTextDiv/dateCell/dateCellInputElement';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {CellTypeTotalsUtils} from '../../../utils/cellType/cellTypeTotalsUtils';
-import {DateCellElement} from '../cellsWithTextDiv/dateCell/dateCellElement';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../../enums/cellType';
@@ -45,7 +45,7 @@ export class DataCellEvents {
     // can be cell element for data cell, text element for category and date cells, or even input element from date picker
     // which is not processed here as its textContent property value is empty and the date value needs to be processed
     const textContainerElement = inputEvent.target as HTMLElement;
-    if (DateCellElement.isDateInputElement(textContainerElement)) return;
+    if (DateCellInputElement.isDateInputElement(textContainerElement)) return;
     const text = textContainerElement.textContent as string;
     // sanitizePastedTextContent causes inputType to no longer be insertFromPaste, hence using this instead
     if (!this.userKeyEventsState[KEYBOARD_EVENT.PASTE]) {

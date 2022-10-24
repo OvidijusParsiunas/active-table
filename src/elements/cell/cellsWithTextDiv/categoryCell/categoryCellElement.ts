@@ -1,7 +1,7 @@
 import {FirefoxCaretDisplayFix} from '../../../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {CategoryDropdownItem} from '../../../dropdown/categoryDropdown/categoryDropdownItem';
 import {EditableTableComponent} from '../../../../editable-table-component';
-import {TEXT_DIV_COLUMN_TYPE} from '../../../../enums/columnType';
+import {CellWithTextElement} from '../cellWithTextElement';
 import {Browser} from '../../../../utils/browser/browser';
 import {CategoryCellEvents} from './categoryCellEvents';
 import {CellElement} from '../../cellElement';
@@ -19,7 +19,7 @@ export class CategoryCellElement {
   private static createTextElement(text: string, backgroundColor: string) {
     const textElement = document.createElement('div');
     textElement.textContent = text;
-    textElement.classList.add(CellElement.CELL_TEXT_DIV_CLASS);
+    textElement.classList.add(CellWithTextElement.CELL_TEXT_DIV_CLASS);
     textElement.style.backgroundColor = backgroundColor;
     CellElement.prepContentEditable(textElement, false);
     return textElement;
@@ -34,21 +34,17 @@ export class CategoryCellElement {
   }
 
   // prettier-ignore
-  public static convertColumnToCategoryType(etc: EditableTableComponent, columnIndex: number, previousType: string) {
-    const {elements, categoryDropdown: {categoryToItem}} = etc.columnsDetails[columnIndex];
-    const shouldResetContents = Boolean(TEXT_DIV_COLUMN_TYPE[previousType]);
-    elements.slice(1).forEach((cellElement: HTMLElement, dataIndex: number) => {
-      // this is a very simple way to clear the previous content inside the cell and replace it with cell text
-      // additionallity it may not be as efficient because this if statement will be called every time,
-      // however no efficiency issues have been seen on the browser so far
-      if (shouldResetContents) {
-        const text = (cellElement.children[0] as HTMLElement).textContent as string;
-        cellElement.textContent = text;
-      }
-      const relativeIndex = dataIndex + 1;
-      CategoryCellElement.convertCellFromDataToCategory(etc, relativeIndex, columnIndex,
-        cellElement, categoryToItem[cellElement.textContent as string]?.color || '');
-    });
+  private static convertExistingCellFromDataToCategory(etc: EditableTableComponent, rowIndex: number, columnIndex: number,
+      cellElement: HTMLElement) {
+    const { categoryDropdown: {categoryToItem}} = etc.columnsDetails[columnIndex];
+    CategoryCellElement.convertCellFromDataToCategory(etc, rowIndex, columnIndex,
+      cellElement, categoryToItem[cellElement.textContent as string]?.color || '');
+  }
+
+  // prettier-ignore
+  public static convertColumnTypeToCategory(etc: EditableTableComponent, columnIndex: number, previousType: string) {
+    CellWithTextElement.convertColumnToTextType(
+      etc, columnIndex, previousType, CategoryCellElement.convertExistingCellFromDataToCategory);
   }
 
   // prettier-ignore

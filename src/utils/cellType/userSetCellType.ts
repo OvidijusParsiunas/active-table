@@ -61,7 +61,7 @@ export class UserSetCellType {
       } else if (newTypeEnumStr === USER_SET_COLUMN_TYPE.Category) {
         CategoryDropdownItem.populateItems(this, columnIndex);
         // items need to be populated before we know what color each cell text needs to be turned into
-        CategoryCellElement.convertColumnToCategoryType(this, columnIndex, previousTypeEnum);
+        CategoryCellElement.convertColumnTypeToCategory(this, columnIndex, previousTypeEnum);
       } else if (DATE_COLUMN_TYPE[newTypeEnumStr]) {
         DateCellElement.convertColumnTypeToDate(this, columnIndex, previousTypeEnum, newTypeEnumStr);
       }

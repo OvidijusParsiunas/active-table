@@ -1,8 +1,17 @@
 import {DateCellElement} from './dateCellElement';
 
 export class DateCellInputElement {
+  public static readonly ELEMENT_TYPE = 'date';
   public static readonly DATE_INPUT_CLASS = 'date-input';
   public static readonly DATE_INPUT_CONTAINER_CLASS = 'date-input-container';
+
+  public static isDateInputElement(element?: Element): element is HTMLInputElement {
+    return (element as HTMLInputElement)?.type === DateCellInputElement.ELEMENT_TYPE;
+  }
+
+  public static hideDatePicker(datePickerInput: HTMLElement) {
+    (datePickerInput.parentElement as HTMLElement).style.display = 'none';
+  }
 
   // TO-DO will need a way for user to define where is DD/MM etc when they define their custom cell type
   // try to use cell type title to create date - so if the user has / separator, use -
@@ -22,7 +31,7 @@ export class DateCellInputElement {
 
   public static creteInputElement() {
     const inputElement = document.createElement('input');
-    inputElement.type = 'date';
+    inputElement.type = DateCellInputElement.ELEMENT_TYPE;
     return inputElement;
   }
 

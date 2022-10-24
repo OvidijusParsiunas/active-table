@@ -1,6 +1,6 @@
 import {CategoryCellEvents} from '../cell/cellsWithTextDiv/categoryCell/categoryCellEvents';
-import {DateCellElement} from '../cell/cellsWithTextDiv/dateCell/dateCellElement';
-import {CellsWithTextEvents} from '../cell/cellsWithTextDiv/cellsWithTextEvents';
+import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
+import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
@@ -29,9 +29,9 @@ export class WindowEvents {
     // cell blur will not activate when the dropdown has been clicked and will not close if its scrollbar or padding are
     // clicked, hence once that happens, we close the dropdown programmatically as follows
     } else if (focusedElements.categoryDropdown) {
-      CellsWithTextEvents.programmaticBlur(this);
+      CellWithTextEvents.programmaticBlur(this);
     } else if (this.overlayElementsState.datePickerInput) {
-      DateCellElement.hideDatePicker(this.overlayElementsState.datePickerInput);
+      DateCellInputElement.hideDatePicker(this.overlayElementsState.datePickerInput);
       delete this.overlayElementsState.datePickerInput;
     }
   }

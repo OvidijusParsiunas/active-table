@@ -1,4 +1,6 @@
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
+import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
+import {CellWithTextElement} from './cellsWithTextDiv/cellWithTextElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {HeaderCellEvents} from './headerCell/headerCellEvents';
 import {DataCellEvents} from './dataCell/dataCellEvents';
@@ -8,27 +10,28 @@ import {CSSStyle} from '../../types/cssStyle';
 export class CellElement {
   public static readonly DEFAULT_COLUMN_WIDTH = '100px';
   public static readonly CELL_CLASS = 'cell';
-  // used for encapsulating text within a nested element
-  // category - used to color the text
-  // date - used to display a calendar beside the text
-  public static readonly CELL_TEXT_DIV_CLASS = 'cell-text-div';
 
   // this is used for case where element could be the cell element or the text inside a category cell
-  // hence we need the actual cell  element here
   public static extractCellElement(element: HTMLElement) {
-    // if category cell text
-    if (element.classList.contains(CellElement.CELL_TEXT_DIV_CLASS)) {
+    // if category cell text or date cell text/input container
+    if (
+      element.classList.contains(CellWithTextElement.CELL_TEXT_DIV_CLASS) ||
+      element.classList.contains(DateCellInputElement.DATE_INPUT_CONTAINER_CLASS)
+    ) {
       return element.parentElement as HTMLElement;
+      // if date cell input
+    } else if (element.classList.contains(DateCellInputElement.DATE_INPUT_CLASS)) {
+      return (element.parentElement as HTMLElement).parentElement as HTMLElement;
     }
-    // if category cell or data cell
+    // if cell
     return element;
   }
 
-  // this is used for case where element could be the category cell element that contains a text element or
-  // that text element or a standard data element, hence we need to set it
+  // this is used for case where element could be cell element that contains a text div element,
+  // hence we need to set the text into the correct container
   private static setText(element: HTMLElement, text: string) {
-    // if category cell
-    if (element.children[0]?.classList.contains(CellElement.CELL_TEXT_DIV_CLASS)) {
+    // if category or date cell
+    if (element.children[0]?.classList.contains(CellWithTextElement.CELL_TEXT_DIV_CLASS)) {
       element.children[0].textContent = text;
     } else {
       element.textContent = text;
