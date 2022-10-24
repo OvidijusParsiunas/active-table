@@ -17,7 +17,7 @@ export class TableEvents {
     if (overlayElementsState.datePickerInput) {
       if (CellElement.extractCellElement(overlayElementsState.datePickerInput)
           !== CellElement.extractCellElement(targetElement)) {
-        DateCellInputElement.hideDatePicker(overlayElementsState.datePickerInput);
+        DateCellInputElement.toggle(overlayElementsState.datePickerInput, false);
       }
       delete overlayElementsState.datePickerInput;
     }

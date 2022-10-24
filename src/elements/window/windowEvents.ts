@@ -9,9 +9,9 @@ import {Dropdown} from '../dropdown/dropdown';
 
 export class WindowEvents {
   public static onKeyDown(this: EditableTableComponent, event: KeyboardEvent) {
-    const {columnIndex, rowIndex} = this.focusedElements.cell as CellDetails;
+    const {rowIndex, columnIndex} = this.focusedElements.cell as CellDetails;
     if (this.columnsDetails[columnIndex]?.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-      CategoryCellEvents.keyDownText(this, columnIndex, rowIndex, event);
+      CategoryCellEvents.keyDownText(this, rowIndex, columnIndex, event);
     }
   }
 
@@ -31,7 +31,7 @@ export class WindowEvents {
     } else if (focusedElements.categoryDropdown) {
       CellWithTextEvents.programmaticBlur(this);
     } else if (this.overlayElementsState.datePickerInput) {
-      DateCellInputElement.hideDatePicker(this.overlayElementsState.datePickerInput);
+      DateCellInputElement.toggle(this.overlayElementsState.datePickerInput, false);
       delete this.overlayElementsState.datePickerInput;
     }
   }

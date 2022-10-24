@@ -3,6 +3,7 @@ import {TableContents, TableRow} from '../../types/tableContents';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
 import {VALIDABLE_CELL_TYPE} from '../../enums/cellType';
+import {RegexUtils} from '../regex/regexUtils';
 
 export class Sort {
   // prettier-ignore
@@ -44,8 +45,7 @@ export class Sort {
   }
 
   private static extractNumberFromString(text: string) {
-    // regex is extracting float number
-    const numberStringArr = text.match(/-?\d+(\.\d+)?$/g);
+    const numberStringArr = RegexUtils.extractFloatValues(text);
     if (numberStringArr && numberStringArr.length > 0) {
       return Number(numberStringArr[0]);
     }
@@ -99,8 +99,7 @@ export class Sort {
   }
 
   private static createMDYDateFromDMYString(dmyDateString: string) {
-    // regex is extracting integer number
-    const numberStringArr = dmyDateString.match(/\d+/g);
+    const numberStringArr = RegexUtils.extractIntegerValues(dmyDateString);
     if (numberStringArr && numberStringArr.length === 3) {
       // new Date(year, monthIndex, day)
       return new Date(Number(numberStringArr[2]), Number(numberStringArr[1]) - 1, Number(numberStringArr[0]));

@@ -4,11 +4,6 @@ import {TEXT_DIV_COLUMN_TYPE} from '../../../enums/columnType';
 type ConvertFunc = (etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement) => void;
 
 export class CellWithTextElement {
-  // used for encapsulating text within a nested element
-  // category - used to color the text
-  // date - used to display a calendar beside the text
-  public static readonly CELL_TEXT_DIV_CLASS = 'cell-text-div';
-
   // prettier-ignore
   public static convertColumnToTextType(etc: EditableTableComponent, columnIndex: number, previousType: string,
       convertCell: ConvertFunc) {

@@ -5,5 +5,5 @@ export class Browser {
   // this has not been tested on non supported browsers and element may need to be added to the dom before the check
   // can be made to determine if input is supported
   public static readonly IS_INPUT_DATE_SUPPORTED =
-    DateCellInputElement.creteInputElement().type === DateCellInputElement.ELEMENT_TYPE;
+    DateCellInputElement.createInputElement().type === DateCellInputElement.ELEMENT_TYPE;
 }

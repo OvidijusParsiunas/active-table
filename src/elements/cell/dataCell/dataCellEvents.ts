@@ -45,7 +45,7 @@ export class DataCellEvents {
     // can be cell element for data cell, text element for category and date cells, or even input element from date picker
     // which is not processed here as its textContent property value is empty and the date value needs to be processed
     const textContainerElement = inputEvent.target as HTMLElement;
-    if (DateCellInputElement.isDateInputElement(textContainerElement)) return;
+    if (DateCellInputElement.isInputElement(textContainerElement)) return;
     const text = textContainerElement.textContent as string;
     // sanitizePastedTextContent causes inputType to no longer be insertFromPaste, hence using this instead
     if (!this.userKeyEventsState[KEYBOARD_EVENT.PASTE]) {

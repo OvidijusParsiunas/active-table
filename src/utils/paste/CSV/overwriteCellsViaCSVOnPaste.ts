@@ -1,6 +1,6 @@
 import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
+import {DateCellInputElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {DATE_COLUMN_TYPE, TEXT_DIV_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
-import {DateCellTextEvents} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellTextEvents';
 import {CategoryDropdownItem} from '../../../elements/dropdown/categoryDropdown/categoryDropdownItem';
 import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
@@ -55,7 +55,7 @@ export class OverwriteCellsViaCSVOnPaste {
     if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryCellElement.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (DATE_COLUMN_TYPE[columnDetails.userSetColumnType]) {
-      DateCellTextEvents.updateInputBasedOnTextDiv(etc.defaultCellValue, columnDetails.userSetColumnType, cellElement);
+      DateCellInputElement.updateInputBasedOnTextDiv(columnDetails.userSetColumnType, cellElement);
     }
     setTimeout(() => {
       const newType = CellTypeTotalsUtils.parseType(processedNewCellText, etc.defaultCellValue);

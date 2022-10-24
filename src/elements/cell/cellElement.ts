@@ -1,6 +1,6 @@
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
-import {CellWithTextElement} from './cellsWithTextDiv/cellWithTextElement';
+import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {HeaderCellEvents} from './headerCell/headerCellEvents';
 import {DataCellEvents} from './dataCell/dataCellEvents';
@@ -15,7 +15,7 @@ export class CellElement {
   public static extractCellElement(element: HTMLElement) {
     // if category cell text or date cell text/input container
     if (
-      element.classList.contains(CellWithTextElement.CELL_TEXT_DIV_CLASS) ||
+      element.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS) ||
       element.classList.contains(DateCellInputElement.DATE_INPUT_CONTAINER_CLASS)
     ) {
       return element.parentElement as HTMLElement;
@@ -31,7 +31,7 @@ export class CellElement {
   // hence we need to set the text into the correct container
   private static setText(element: HTMLElement, text: string) {
     // if category or date cell
-    if (element.children[0]?.classList.contains(CellWithTextElement.CELL_TEXT_DIV_CLASS)) {
+    if (element.children[0]?.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS)) {
       element.children[0].textContent = text;
     } else {
       element.textContent = text;

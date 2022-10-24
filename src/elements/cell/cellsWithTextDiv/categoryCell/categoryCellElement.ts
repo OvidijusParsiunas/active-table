@@ -1,36 +1,21 @@
-import {FirefoxCaretDisplayFix} from '../../../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {CategoryDropdownItem} from '../../../dropdown/categoryDropdown/categoryDropdownItem';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {CellWithTextElement} from '../cellWithTextElement';
-import {Browser} from '../../../../utils/browser/browser';
+import {CellTextElement} from '../text/cellTextElement';
 import {CategoryCellEvents} from './categoryCellEvents';
-import {CellElement} from '../../cellElement';
 
 // the logic for cell and text divs is handled here
 export class CategoryCellElement {
-  private static setTextAsAnElement(cellElement: HTMLElement, textElement: HTMLElement) {
-    cellElement.textContent = '';
-    cellElement.contentEditable = 'false';
-    // not really part of the bug, but in the same area
-    if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeTabIndex(cellElement);
-    cellElement.appendChild(textElement);
-  }
-
-  private static createTextElement(text: string, backgroundColor: string) {
-    const textElement = document.createElement('div');
-    textElement.textContent = text;
-    textElement.classList.add(CellWithTextElement.CELL_TEXT_DIV_CLASS);
+  private static setCellTextAsAnElement(cellElement: HTMLElement, backgroundColor: string) {
+    const textElement = CellTextElement.setCellTextAsAnElement(cellElement);
     textElement.style.backgroundColor = backgroundColor;
-    CellElement.prepContentEditable(textElement, false);
-    return textElement;
   }
 
   // prettier-ignore
   public static convertCellFromDataToCategory(etc: EditableTableComponent,
-      rowIndex: number, columnIndex: number, cell: HTMLElement, backgroundColor: string) {
-    const textElement = CategoryCellElement.createTextElement(cell.textContent as string, backgroundColor);
-    CategoryCellElement.setTextAsAnElement(cell, textElement);
-    CategoryCellEvents.setEvents(etc, cell, rowIndex, columnIndex);
+      rowIndex: number, columnIndex: number, cellElement: HTMLElement, backgroundColor: string) {
+    CategoryCellElement.setCellTextAsAnElement(cellElement, backgroundColor);
+    CategoryCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
   }
 
   // prettier-ignore

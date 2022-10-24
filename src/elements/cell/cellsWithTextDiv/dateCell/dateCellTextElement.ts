@@ -1,23 +1,25 @@
-import {FirefoxCaretDisplayFix} from '../../../../utils/browser/firefox/firefoxCaretDisplayFix';
-import {CellWithTextElement} from '../cellWithTextElement';
-import {Browser} from '../../../../utils/browser/browser';
-import {CellElement} from '../../cellElement';
+import {RegexUtils} from '../../../../utils/regex/regexUtils';
+import {CellTextElement} from '../text/cellTextElement';
+import {DateCellElement} from './dateCellElement';
 
 export class DateCellTextElement {
-  public static setTextAsAnElement(cellElement: HTMLElement, textElement: HTMLElement) {
-    cellElement.textContent = '';
-    cellElement.contentEditable = 'false';
-    // not really part of the bug, but in the same area
-    if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeTabIndex(cellElement);
-    cellElement.appendChild(textElement);
+  public static convertInputValueToText(inputDate: string, defaultCellValue: string, dateType: string) {
+    const integerArr = RegexUtils.extractIntegerValues(inputDate);
+    if (integerArr?.length === 3) {
+      const dateTypeToProperties = DateCellElement.DATE_TYPE_TO_PROPERTIES[dateType];
+      const dateArr = new Array<string>();
+      // changing the YYYY-MM-DD format to target type
+      dateArr[dateTypeToProperties.structureIndexes.day] = integerArr[2];
+      dateArr[dateTypeToProperties.structureIndexes.month] = integerArr[1];
+      dateArr[dateTypeToProperties.structureIndexes.year] = integerArr[0];
+      return dateArr.join(dateTypeToProperties.separator);
+    }
+    return defaultCellValue;
   }
 
-  public static createTextElement(text: string) {
-    const textElement = document.createElement('div');
-    textElement.textContent = text;
+  public static setCellTextAsAnElement(cellElement: HTMLElement) {
+    const textElement = CellTextElement.setCellTextAsAnElement(cellElement);
     textElement.style.float = 'left';
-    textElement.classList.add(CellWithTextElement.CELL_TEXT_DIV_CLASS);
-    CellElement.prepContentEditable(textElement, false);
     return textElement;
   }
 }

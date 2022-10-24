@@ -1,3 +1,5 @@
+import {RegexUtils} from '../../../../utils/regex/regexUtils';
+import {Browser} from '../../../../utils/browser/browser';
 import {DateCellElement} from './dateCellElement';
 
 export class DateCellInputElement {
@@ -5,47 +7,60 @@ export class DateCellInputElement {
   public static readonly DATE_INPUT_CLASS = 'date-input';
   public static readonly DATE_INPUT_CONTAINER_CLASS = 'date-input-container';
 
-  public static isDateInputElement(element?: Element): element is HTMLInputElement {
+  public static updateInputBasedOnTextDiv(dateType: string, cellElement: HTMLElement) {
+    if (!Browser.IS_INPUT_DATE_SUPPORTED) return;
+    const dateValue = DateCellInputElement.convertTextToInputValue(cellElement.textContent as string, dateType);
+    DateCellInputElement.extractInputFromCell(cellElement).value = dateValue;
+  }
+
+  public static isInputElement(element?: Element): element is HTMLInputElement {
     return (element as HTMLInputElement)?.type === DateCellInputElement.ELEMENT_TYPE;
   }
 
-  public static hideDatePicker(datePickerInput: HTMLElement) {
-    (datePickerInput.parentElement as HTMLElement).style.display = 'none';
+  public static extractInputFromCell(cellElement: HTMLElement) {
+    return (cellElement.children[1] as HTMLElement).children[0] as HTMLInputElement;
   }
 
-  // TO-DO will need a way for user to define where is DD/MM etc when they define their custom cell type
-  // try to use cell type title to create date - so if the user has / separator, use -
-  public static convertToInput(chosenDate: string, defaultCellValue: string, dateType: string) {
-    const integers = chosenDate?.match(/\d+/g) as RegExpMatchArray;
-    if (integers?.length === 3) {
-      const properties = DateCellElement.DATE_TYPE_TO_PROPERTIES[dateType];
-      const date = [
-        integers[properties.structureIndexes.year],
-        integers[properties.structureIndexes.month].padStart(2, '0'),
-        integers[properties.structureIndexes.day].padStart(2, '0'),
-      ];
-      return date.join('-');
+  public static toggle(inputElement: HTMLElement, isDisplay: boolean) {
+    (inputElement.parentElement as HTMLElement).style.display = isDisplay ? 'block' : 'none';
+  }
+
+  private static convertTextToInputValue(textDate: string, dateType: string): string {
+    const integerArr = RegexUtils.extractIntegerValues(textDate);
+    if (integerArr?.length === 3) {
+      const dateTypeToProperties = DateCellElement.DATE_TYPE_TO_PROPERTIES[dateType];
+      return [
+        integerArr[dateTypeToProperties.structureIndexes.year],
+        integerArr[dateTypeToProperties.structureIndexes.month].padStart(2, '0'),
+        integerArr[dateTypeToProperties.structureIndexes.day].padStart(2, '0'),
+      ].join('-');
     }
-    return defaultCellValue;
+    return '-';
   }
 
-  public static creteInputElement() {
+  public static createInputElement(text: string, dateType: string): HTMLInputElement;
+  public static createInputElement(): HTMLInputElement;
+  public static createInputElement(text?: string, dateType?: string): HTMLInputElement {
     const inputElement = document.createElement('input');
     inputElement.type = DateCellInputElement.ELEMENT_TYPE;
+    inputElement.classList.add(DateCellInputElement.DATE_INPUT_CLASS);
+    if (text !== undefined && dateType !== undefined) {
+      inputElement.value = DateCellInputElement.convertTextToInputValue(text, dateType);
+    }
     return inputElement;
   }
 
-  // WORK - need calendar icon
-  // prettier-ignore
-  public static addDateInputElement(cellElement: HTMLElement, textElement: HTMLElement, defaultCellValue: string,
-      dateType: string) {
+  private static createInputElementContainer() {
     const inputContainer = document.createElement('div');
     inputContainer.classList.add(DateCellInputElement.DATE_INPUT_CONTAINER_CLASS);
-    const inputElement = DateCellInputElement.creteInputElement();
-    inputElement.value = DateCellInputElement.convertToInput(
-      textElement.textContent as string, defaultCellValue, dateType);
-    inputElement.classList.add(DateCellInputElement.DATE_INPUT_CLASS);
     inputContainer.style.display = 'none';
+    return inputContainer;
+  }
+
+  // WORK - need calendar icon
+  public static addDateInputElement(cellElement: HTMLElement, textElement: HTMLElement, dateType: string) {
+    const inputContainer = DateCellInputElement.createInputElementContainer();
+    const inputElement = DateCellInputElement.createInputElement(textElement.textContent as string, dateType);
     inputContainer.appendChild(inputElement);
     cellElement.appendChild(inputContainer);
   }

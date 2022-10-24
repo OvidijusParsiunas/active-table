@@ -1,38 +1,27 @@
-import {CaretPosition} from '../../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../../editable-table-component';
+import {DateCellInputElement} from './dateCellInputElement';
 import {Browser} from '../../../../utils/browser/browser';
 import {DateCellInputEvents} from './dateCellInputEvents';
+import {CellWithTextEvents} from '../cellWithTextEvents';
 import {DateCellTextEvents} from './dateCellTextEvents';
-import {CellElement} from '../../cellElement';
 
 export class DateCellEvents {
-  private static mouseEnter(this: EditableTableComponent, event: MouseEvent) {
-    const cell = event.target as HTMLElement;
-    this.hoveredElements.dateCell = cell;
-    if (Browser.IS_INPUT_DATE_SUPPORTED) (cell.children[1] as HTMLElement).style.display = 'block';
-  }
-
-  private static mouseLeave(this: EditableTableComponent, event: MouseEvent) {
-    const cell = event.target as HTMLElement;
+  private static mouseLeaveCell(this: EditableTableComponent, event: MouseEvent) {
     delete this.hoveredElements.dateCell;
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
-      if (this.overlayElementsState.datePickerInput === cell?.children[1]?.children[0]) return;
-      (cell.children[1] as HTMLElement).style.display = 'none';
+      const cell = event.target as HTMLElement;
+      const input = DateCellInputElement.extractInputFromCell(cell);
+      // if the date picker is opened, do not hide container
+      if (this.overlayElementsState.datePickerInput === input) return;
+      DateCellInputElement.toggle(input, false);
     }
   }
 
-  private static mouseDownCell(this: EditableTableComponent, event: MouseEvent) {
-    const targetElement = event.target as HTMLElement;
-    // this is also triggered by text, but we only want when cell to focus
-    if (targetElement.classList.contains(CellElement.CELL_CLASS)) {
-      const cellElement = event.target as HTMLElement;
-      const textElement = cellElement.children[0] as HTMLElement;
-      // needed to set cursor at the end
-      event.preventDefault();
-      // Firefox does not fire the focus event for CaretPosition.setToEndOfText
-      if (Browser.IS_FIREFOX) textElement.focus();
-      // in non firefox browsers this also focuses
-      CaretPosition.setToEndOfText(this, textElement);
+  private static mouseEnterCell(this: EditableTableComponent, event: MouseEvent) {
+    const cell = event.target as HTMLElement;
+    this.hoveredElements.dateCell = cell;
+    if (Browser.IS_INPUT_DATE_SUPPORTED) {
+      DateCellInputElement.toggle(DateCellInputElement.extractInputFromCell(cell), true);
     }
   }
 
@@ -43,9 +32,9 @@ export class DateCellEvents {
     // onblur/onfocus do not work for firefox, hence using them on text element to keep it consistent across browsers
     cellElement.onblur = () => {};
     cellElement.onfocus = () => {};
-    cellElement.onmouseenter = DateCellEvents.mouseEnter.bind(etc);
-    cellElement.onmouseleave = DateCellEvents.mouseLeave.bind(etc);
-    cellElement.onmousedown = DateCellEvents.mouseDownCell.bind(etc);
+    cellElement.onmouseenter = DateCellEvents.mouseEnterCell.bind(etc);
+    cellElement.onmouseleave = DateCellEvents.mouseLeaveCell.bind(etc);
+    cellElement.onmousedown = CellWithTextEvents.mouseDownCell.bind(etc, null);
     const textElement = cellElement.children[0] as HTMLElement;
     DateCellTextEvents.setEvents(etc, textElement, rowIndex, columnIndex, dateType);
     if (Browser.IS_INPUT_DATE_SUPPORTED) {

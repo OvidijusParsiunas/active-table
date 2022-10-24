@@ -41,11 +41,8 @@ export class DateCellElement {
   // prettier-ignore
   public static convertCellFromDataToDate(dateType: string, etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
-    const textElement = DateCellTextElement.createTextElement(cellElement.textContent as string);
-    DateCellTextElement.setTextAsAnElement(cellElement, textElement);
-    if (Browser.IS_INPUT_DATE_SUPPORTED) {
-      DateCellInputElement.addDateInputElement(cellElement, textElement, etc.defaultCellValue, dateType);
-    }
+    const textElement = DateCellTextElement.setCellTextAsAnElement(cellElement);
+    if (Browser.IS_INPUT_DATE_SUPPORTED) DateCellInputElement.addDateInputElement(cellElement, textElement, dateType);
     DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex, dateType);
   }
 
