@@ -6,6 +6,7 @@ import {FocusedElements} from '../../../../types/focusedElements';
 import {KEYBOARD_KEY} from '../../../../consts/keyboardKeys';
 import {DataCellEvents} from '../../dataCell/dataCellEvents';
 import {DateCellInputElement} from './dateCellInputElement';
+import {Browser} from '../../../../utils/browser/browser';
 
 export class DateCellTextEvents {
   private static blur(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
@@ -35,6 +36,7 @@ export class DateCellTextEvents {
   }
 
   public static updateInputBasedOnTextDiv(defaultCellValue: string, dateType: string, cellElement: HTMLElement) {
+    if (!Browser.IS_INPUT_DATE_SUPPORTED) return;
     const textElement = cellElement.children[0] as HTMLElement;
     const inputElementContainer = cellElement.children[1] as HTMLElement;
     const inputElement = inputElementContainer.children[0] as HTMLInputElement;

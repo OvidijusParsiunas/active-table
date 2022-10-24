@@ -9,14 +9,16 @@ export class DateCellEvents {
   private static mouseEnter(this: EditableTableComponent, event: MouseEvent) {
     const cell = event.target as HTMLElement;
     this.hoveredElements.dateCell = cell;
-    (cell.children[1] as HTMLElement).style.display = 'block';
+    if (Browser.IS_INPUT_DATE_SUPPORTED) (cell.children[1] as HTMLElement).style.display = 'block';
   }
 
   private static mouseLeave(this: EditableTableComponent, event: MouseEvent) {
     const cell = event.target as HTMLElement;
     delete this.hoveredElements.dateCell;
-    if (this.overlayElementsState.datePickerInput === cell?.children[1]?.children[0]) return;
-    (cell.children[1] as HTMLElement).style.display = 'none';
+    if (Browser.IS_INPUT_DATE_SUPPORTED) {
+      if (this.overlayElementsState.datePickerInput === cell?.children[1]?.children[0]) return;
+      (cell.children[1] as HTMLElement).style.display = 'none';
+    }
   }
 
   private static mouseDownCell(this: EditableTableComponent, event: MouseEvent) {
@@ -37,6 +39,7 @@ export class DateCellEvents {
   // prettier-ignore
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number,
       dateType: string) {
+    // important to note that this is still using data events that have not be overwritten here
     // onblur/onfocus do not work for firefox, hence using them on text element to keep it consistent across browsers
     cellElement.onblur = () => {};
     cellElement.onfocus = () => {};
@@ -45,7 +48,9 @@ export class DateCellEvents {
     cellElement.onmousedown = DateCellEvents.mouseDownCell.bind(etc);
     const textElement = cellElement.children[0] as HTMLElement;
     DateCellTextEvents.setEvents(etc, textElement, rowIndex, columnIndex, dateType);
-    const inputElement = cellElement.children[1] as HTMLInputElement;
-    DateCellInputEvents.setEvents(etc, inputElement, rowIndex, columnIndex, dateType);
+    if (Browser.IS_INPUT_DATE_SUPPORTED) {
+      const inputElement = cellElement.children[1] as HTMLInputElement;
+      DateCellInputEvents.setEvents(etc, inputElement, rowIndex, columnIndex, dateType);
+    }
   }
 }

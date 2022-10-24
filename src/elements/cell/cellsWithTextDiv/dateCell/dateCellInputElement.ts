@@ -20,14 +20,19 @@ export class DateCellInputElement {
     return defaultCellValue;
   }
 
+  public static creteInputElement() {
+    const inputElement = document.createElement('input');
+    inputElement.type = 'date';
+    return inputElement;
+  }
+
   // WORK - need calendar icon
   // prettier-ignore
   public static addDateInputElement(cellElement: HTMLElement, textElement: HTMLElement, defaultCellValue: string,
       dateType: string) {
     const inputContainer = document.createElement('div');
     inputContainer.classList.add(DateCellInputElement.DATE_INPUT_CONTAINER_CLASS);
-    const inputElement = document.createElement('input');
-    inputElement.type = 'date';
+    const inputElement = DateCellInputElement.creteInputElement();
     inputElement.value = DateCellInputElement.convertToInput(
       textElement.textContent as string, defaultCellValue, dateType);
     inputElement.classList.add(DateCellInputElement.DATE_INPUT_CLASS);

@@ -84,8 +84,8 @@ export class CategoryCellEvents {
     }
   }
 
-  // inherently using data cell events and overwriting the following
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    // important to note that this is still using data events that have not be overwritten here
     // onblur/onfocus do not work for firefox, hence using textElement and keeping it consistent across browsers
     cellElement.onblur = () => {};
     cellElement.onfocus = () => {};

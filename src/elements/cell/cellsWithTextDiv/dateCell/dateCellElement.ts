@@ -3,11 +3,11 @@ import {DateProperties, DateTypeToProperties} from '../../../../types/dateTypeTo
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {DateCellInputElement} from './dateCellInputElement';
 import {DateCellTextElement} from './dateCellTextElement';
+import {Browser} from '../../../../utils/browser/browser';
 import {DateCellEvents} from './dateCellEvents';
 import {CellElement} from '../../cellElement';
 
 // WORK - refactor functions
-// some browsers may not support date input picker
 export class DateCellElement {
   public static readonly DATE_TYPE_TO_PROPERTIES: DateTypeToProperties = {};
 
@@ -63,7 +63,9 @@ export class DateCellElement {
       rowIndex: number, columnIndex: number, cellElement: HTMLElement, dateType: string) {
     const textElement = DateCellTextElement.createTextElement(cellElement.textContent as string);
     DateCellTextElement.setTextAsAnElement(cellElement, textElement);
-    DateCellInputElement.addDateInputElement(cellElement, textElement, etc.defaultCellValue, dateType);
+    if (Browser.IS_INPUT_DATE_SUPPORTED) {
+      DateCellInputElement.addDateInputElement(cellElement, textElement, etc.defaultCellValue, dateType);
+    }
     DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex, dateType);
   }
 
