@@ -1,5 +1,4 @@
 import {RegexUtils} from '../../../../utils/regex/regexUtils';
-import {Browser} from '../../../../utils/browser/browser';
 import {DateCellElement} from './dateCellElement';
 
 export class DateCellInputElement {
@@ -8,16 +7,15 @@ export class DateCellInputElement {
   public static readonly DATE_INPUT_CONTAINER_CLASS = 'date-input-container';
 
   public static updateInputBasedOnTextDiv(dateType: string, cellElement: HTMLElement) {
-    if (!Browser.IS_INPUT_DATE_SUPPORTED) return;
     const dateValue = DateCellInputElement.convertTextToInputValue(cellElement.textContent as string, dateType);
-    DateCellInputElement.extractInputFromCell(cellElement).value = dateValue;
+    DateCellInputElement.extractInputElementFromCell(cellElement).value = dateValue;
   }
 
   public static isInputElement(element?: Element): element is HTMLInputElement {
     return (element as HTMLInputElement)?.type === DateCellInputElement.ELEMENT_TYPE;
   }
 
-  public static extractInputFromCell(cellElement: HTMLElement) {
+  public static extractInputElementFromCell(cellElement: HTMLElement) {
     return (cellElement.children[1] as HTMLElement).children[0] as HTMLInputElement;
   }
 

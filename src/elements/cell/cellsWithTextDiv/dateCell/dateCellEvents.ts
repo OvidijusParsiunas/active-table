@@ -10,7 +10,7 @@ export class DateCellEvents {
     delete this.hoveredElements.dateCell;
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
       const cell = event.target as HTMLElement;
-      const input = DateCellInputElement.extractInputFromCell(cell);
+      const input = DateCellInputElement.extractInputElementFromCell(cell);
       // if the date picker is opened, do not hide container
       if (this.overlayElementsState.datePickerInput === input) return;
       DateCellInputElement.toggle(input, false);
@@ -21,7 +21,7 @@ export class DateCellEvents {
     const cell = event.target as HTMLElement;
     this.hoveredElements.dateCell = cell;
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
-      DateCellInputElement.toggle(DateCellInputElement.extractInputFromCell(cell), true);
+      DateCellInputElement.toggle(DateCellInputElement.extractInputElementFromCell(cell), true);
     }
   }
 

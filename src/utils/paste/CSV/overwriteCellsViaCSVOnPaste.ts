@@ -13,6 +13,7 @@ import {ParseCSVClipboardText} from './parseCSVClipboardText';
 import {CellEvents} from '../../../elements/cell/cellEvents';
 import {ArrayUtils} from '../../array/arrayUtils';
 import {CSVRow, CSV} from '../../../types/CSV';
+import {Browser} from '../../browser/browser';
 
 export class OverwriteCellsViaCSVOnPaste {
   // if the data array does not fill the full structure, fill cells with the default value
@@ -54,7 +55,7 @@ export class OverwriteCellsViaCSVOnPaste {
     const columnDetails = etc.columnsDetails[columnIndex];
     if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryCellElement.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
-    } else if (DATE_COLUMN_TYPE[columnDetails.userSetColumnType]) {
+    } else if (DATE_COLUMN_TYPE[columnDetails.userSetColumnType] && Browser.IS_INPUT_DATE_SUPPORTED) {
       DateCellInputElement.updateInputBasedOnTextDiv(columnDetails.userSetColumnType, cellElement);
     }
     setTimeout(() => {

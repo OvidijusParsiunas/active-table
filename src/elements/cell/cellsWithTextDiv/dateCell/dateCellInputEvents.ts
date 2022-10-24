@@ -36,14 +36,15 @@ export class DateCellInputEvents {
 
   // this is triggered when the user clicks on picker buttons
   private static changeInput(this: EditableTableComponent, event: Event) {
+    const inputElement = event.target as HTMLInputElement;
     if (
       // this.userKeyEventsState[MOUSE_EVENT.DOWN] is used to prevent a bug where if the user opens the date picker,
       // uses arrow keys to navigate and clicks mouse down back on the cell - this event is fired
       !this.userKeyEventsState[MOUSE_EVENT.DOWN] &&
       // do not hide icon when currently hovered
-      this.hoveredElements.dateCell !== CellElement.extractCellElement(event.target as HTMLElement)
+      this.hoveredElements.dateCell !== CellElement.extractCellElement(inputElement)
     ) {
-      DateCellInputElement.toggle(event.target as HTMLInputElement, false);
+      DateCellInputElement.toggle(inputElement, false);
     }
     delete this.overlayElementsState.datePickerInput;
   }
@@ -52,6 +53,8 @@ export class DateCellInputEvents {
     const inputElement = event.target as HTMLInputElement;
     const cellElement = CellElement.extractCellElement(inputElement);
     FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
+    // the reason why this is in a timeout is because this method is triggered before window mouse down event is triggered
+    // hence delete his.overlayElementsState.datePickerInput is called after it and the setter needs to be called after
     setTimeout(() => (this.overlayElementsState.datePickerInput = inputElement));
   }
 

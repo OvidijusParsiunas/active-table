@@ -2,6 +2,7 @@ import {EditableTableComponent} from '../../../../editable-table-component';
 import {KEYBOARD_KEY} from '../../../../consts/keyboardKeys';
 import {DataCellEvents} from '../../dataCell/dataCellEvents';
 import {DateCellInputElement} from './dateCellInputElement';
+import {Browser} from '../../../../utils/browser/browser';
 import {CellWithTextEvents} from '../cellWithTextEvents';
 import {CellTextEvents} from '../text/cellTextEvents';
 import {CellElement} from '../../cellElement';
@@ -12,8 +13,10 @@ export class DateCellTextEvents {
   }
 
   private static inputText(dateType: string, event: Event) {
-    const cellElement = CellElement.extractCellElement(event.target as HTMLElement);
-    DateCellInputElement.updateInputBasedOnTextDiv(dateType, cellElement);
+    if (Browser.IS_INPUT_DATE_SUPPORTED) {
+      const cellElement = CellElement.extractCellElement(event.target as HTMLElement);
+      DateCellInputElement.updateInputBasedOnTextDiv(dateType, cellElement);
+    }
   }
 
   private static blurText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
