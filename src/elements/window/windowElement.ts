@@ -4,6 +4,7 @@ import {WindowEvents} from './windowEvents';
 export class WindowElement {
   public static setEvents(etc: EditableTableComponent) {
     window.onkeydown = WindowEvents.onKeyDown.bind(etc);
+    window.onkeyup = WindowEvents.onKeyUp.bind(etc);
     window.onmousedown = WindowEvents.onMouseDown.bind(etc);
   }
 }

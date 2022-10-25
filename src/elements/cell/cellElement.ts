@@ -1,3 +1,4 @@
+import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellCalendarIconElement';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
@@ -20,7 +21,10 @@ export class CellElement {
     ) {
       return element.parentElement as HTMLElement;
       // if date cell input
-    } else if (element.classList.contains(DateCellInputElement.DATE_INPUT_CLASS)) {
+    } else if (
+      element.classList.contains(DateCellInputElement.DATE_INPUT_CLASS) ||
+      element.classList.contains(DateCellCalendarIconElement.CALENDAR_ICON_CONTAINER_CLASS)
+    ) {
       return (element.parentElement as HTMLElement).parentElement as HTMLElement;
     }
     // if cell

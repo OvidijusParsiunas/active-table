@@ -1,3 +1,4 @@
+import {DateCellCalendarIconElement} from './dateCellCalendarIconElement';
 import {RegexUtils} from '../../../../utils/regex/regexUtils';
 import {DateCellElement} from './dateCellElement';
 
@@ -19,7 +20,7 @@ export class DateCellInputElement {
     return (cellElement.children[1] as HTMLElement).children[0] as HTMLInputElement;
   }
 
-  public static toggle(inputElement: HTMLElement, isDisplay: boolean) {
+  public static toggle(inputElement: HTMLInputElement, isDisplay: boolean) {
     (inputElement.parentElement as HTMLElement).style.display = isDisplay ? 'block' : 'none';
   }
 
@@ -55,11 +56,12 @@ export class DateCellInputElement {
     return inputContainer;
   }
 
-  // WORK - need calendar icon
   public static addDateInputElement(cellElement: HTMLElement, textElement: HTMLElement, dateType: string) {
     const inputContainer = DateCellInputElement.createInputElementContainer();
     const inputElement = DateCellInputElement.createInputElement(textElement.textContent as string, dateType);
     inputContainer.appendChild(inputElement);
+    const svgImage = DateCellCalendarIconElement.get();
+    inputContainer.appendChild(svgImage);
     cellElement.appendChild(inputContainer);
   }
 }

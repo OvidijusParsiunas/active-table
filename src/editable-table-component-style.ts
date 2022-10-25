@@ -191,13 +191,23 @@ export const ediTableStyle = css`
   }
 
   .date-input {
-    width: 14px;
-    height: 20px;
+    top: 17px;
+    width: 0px;
+    height: 0px;
     border: unset;
     padding: 0px;
-    right: -7px;
+    right: 9px;
     position: absolute;
     outline: none;
+  }
+
+  .calender-icon-container {
+    position: absolute;
+    right: -5px;
+    top: -4px;
+    width: 15px;
+    height: 25px;
+    text-align: center;
   }
 
   #full-table-overlay {

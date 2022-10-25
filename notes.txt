@@ -68,3 +68,10 @@ is on. Hence it is very inefficient to repopulate the dropdown when it is clicke
 
 REF-9
 Relative positioning does not work on tbody in safari which causes absolute elements to use the screen
+
+REF-10
+SVG elements are constructed by parsing a string instead of using an actual file. This is because I did not want to introduce extra
+plugins and bundling complexity for adding SVGs into the resultant bundle
+Additionally not using the lit element way for inserting svg templates as it has been considered to potentially stop using lit
+element and instead go native, hence the current approach of parsing a string will make it easier if moving to that direction
+However if opted to stay with lit element - use the following approach: https://lit.dev/docs/api/templates/#svg

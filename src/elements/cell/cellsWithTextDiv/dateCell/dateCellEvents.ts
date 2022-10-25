@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../../../editable-table-component';
+import {DateCellCalendarIconEvents} from './dateCellCalendarIconEvents';
 import {DateCellInputElement} from './dateCellInputElement';
 import {Browser} from '../../../../utils/browser/browser';
 import {DateCellInputEvents} from './dateCellInputEvents';
@@ -38,8 +39,10 @@ export class DateCellEvents {
     const textElement = cellElement.children[0] as HTMLElement;
     DateCellTextEvents.setEvents(etc, textElement, rowIndex, columnIndex, dateType);
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
-      const inputElement = cellElement.children[1] as HTMLInputElement;
-      DateCellInputEvents.setEvents(etc, inputElement, rowIndex, columnIndex, dateType);
+      const inputContainer = cellElement.children[1] as HTMLElement;
+      DateCellInputEvents.setEvents(etc, inputContainer, rowIndex, columnIndex, dateType);
+      const calendarElement = inputContainer.children[1] as HTMLElement;
+      DateCellCalendarIconEvents.setEvents(etc, calendarElement, rowIndex, columnIndex);
     }
   }
 }
