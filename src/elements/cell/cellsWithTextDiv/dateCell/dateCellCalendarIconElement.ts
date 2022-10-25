@@ -1,8 +1,8 @@
 import {CALENDAR_ICON_SVG_STRING} from './calendarIconSVGString';
 
 export class DateCellCalendarIconElement {
-  private static readonly CALENDAR_ICON_ELEMENT = DateCellCalendarIconElement.createSVG();
   public static readonly CALENDAR_ICON_CONTAINER_CLASS = 'calender-icon-container';
+  private static readonly CALENDAR_ICON_ELEMENT = DateCellCalendarIconElement.createSVG();
 
   // need a container as mousedown target kept being different parts of svg
   // hence svgIcon has no pointer events
