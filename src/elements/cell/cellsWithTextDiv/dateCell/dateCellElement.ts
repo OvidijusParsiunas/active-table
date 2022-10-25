@@ -7,7 +7,6 @@ import {DateCellTextElement} from './dateCellTextElement';
 import {Browser} from '../../../../utils/browser/browser';
 import {DateCellEvents} from './dateCellEvents';
 
-// WORK - refactor functions
 export class DateCellElement {
   public static readonly DATE_TYPE_TO_PROPERTIES: DateTypeToProperties = {};
 

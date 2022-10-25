@@ -12,7 +12,7 @@ export class FocusNextColumnCellFromTextDiv {
       cellElement.dispatchEvent(new Event('mousedown'));
     } else {
       CellWithTextEvents.programmaticBlur(etc);
-      // dispatchEvent(new Event('focus')); does not return a selection in forefox for window.document.getSelection()
+      // dispatchEvent(new Event('focus')); does not return a selection in firefox for window.document.getSelection()
       cellElement.focus();
     }
     cellElement.scrollIntoView({block: 'nearest'});
