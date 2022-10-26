@@ -68,7 +68,11 @@ export const ediTableStyle = css`
     overflow-wrap: anywhere;
     border-radius: 4px;
     width: fit-content;
-    /* padding is also important for the cursor to show up */
+    /* need padding for the cursor to show up */
+    padding-left: 1px;
+  }
+
+  .category-text-div {
     padding-left: 6px;
     padding-right: 6px;
     padding-top: 2px;

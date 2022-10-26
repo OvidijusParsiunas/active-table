@@ -85,20 +85,13 @@ export class ColumnDropdown {
     }
   }
 
-  // Dev gets to choose whether the column type is set from the start, but will default to Auto
-  // Auto will interpret the type (questionable on the icon)
-  // When going from one type to another - parse all elements and identify any that cannot be transformed - prompt to
-  // remove all - potential list of all the ones that cannot be transformed and their cells should be highlighted
-
-  // prettier-ignore
-  // WORK - how will this positioning work with scrolling
   public static displayRelevantDropdownElements(etc: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     const fullTableOverlay = etc.overlayElementsState.fullTableOverlay as HTMLElement;
     const dropdownElement = etc.overlayElementsState.columnDropdown as HTMLElement;
     const cellElement = event.target as HTMLElement;
     ColumnDropdownItem.setUpContent(etc, dropdownElement, columnIndex, cellElement);
     ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
-    const inputElement = DropdownItem.getInputElement(dropdownElement)
+    const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItem.focusInputElement(inputElement as HTMLElement);
     ColumnDropdownItem.rebindButtonItems(etc, columnIndex, dropdownElement);
     fullTableOverlay.style.display = Dropdown.CSS_DISPLAY_VISIBLE;

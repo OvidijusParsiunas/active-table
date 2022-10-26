@@ -1,6 +1,7 @@
 export class Color {
   private static LATEST_PASTELE_COLOR = Color.generateNewPasteleColor();
 
+  // WORK - find a better way to increase variation
   private static generateNewPasteleColor() {
     return `hsl(${Math.floor(Math.random() * 360)}, 95%, 90%)`;
   }

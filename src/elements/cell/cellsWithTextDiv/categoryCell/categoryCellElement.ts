@@ -6,8 +6,11 @@ import {CategoryCellEvents} from './categoryCellEvents';
 
 // the logic for cell and text divs is handled here
 export class CategoryCellElement {
+  private static readonly CATEGORY_TEXT_DIV_CLASS = 'category-text-div';
+
   private static setCellTextAsAnElement(cellElement: HTMLElement, backgroundColor: string) {
     const textElement = CellTextElement.setCellTextAsAnElement(cellElement);
+    textElement.classList.add(CategoryCellElement.CATEGORY_TEXT_DIV_CLASS);
     textElement.style.backgroundColor = backgroundColor;
   }
 
