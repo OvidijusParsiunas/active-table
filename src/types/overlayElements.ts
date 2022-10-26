@@ -4,5 +4,6 @@ export interface OverlayElements {
   columnTypeDropdown?: HTMLElement;
   fullTableOverlay?: HTMLElement;
   // cannot get the actual date picker as its native browser element is not accessible
-  datePickerInput?: HTMLInputElement;
+  // the cell is probably not the best element for this but its use is very efficient
+  datePickerCell?: HTMLElement;
 }

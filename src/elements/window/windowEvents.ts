@@ -38,9 +38,9 @@ export class WindowEvents {
     // clicked, hence once that happens, we close the dropdown programmatically as follows
     } else if (focusedElements.categoryDropdown) {
       CellWithTextEvents.programmaticBlur(this);
-    } else if (this.overlayElementsState.datePickerInput) {
-      DateCellInputElement.toggle(this.overlayElementsState.datePickerInput, false);
-      delete this.overlayElementsState.datePickerInput;
+    } else if (this.overlayElementsState.datePickerCell) {
+      DateCellInputElement.toggle(this.overlayElementsState.datePickerCell, false);
+      delete this.overlayElementsState.datePickerCell;
     }
   }
 }

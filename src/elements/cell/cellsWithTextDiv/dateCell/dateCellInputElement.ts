@@ -7,6 +7,10 @@ export class DateCellInputElement {
   public static readonly DATE_INPUT_CLASS = 'date-input';
   public static readonly DATE_INPUT_CONTAINER_CLASS = 'date-input-container';
 
+  private static extractInputElementFromCell(cellElement: HTMLElement) {
+    return (cellElement.children[1] as HTMLElement).children[0] as HTMLInputElement;
+  }
+
   public static updateInputBasedOnTextDiv(dateType: string, cellElement: HTMLElement) {
     const dateValue = DateCellInputElement.convertTextToInputValue(cellElement.textContent as string, dateType);
     DateCellInputElement.extractInputElementFromCell(cellElement).value = dateValue;
@@ -16,12 +20,10 @@ export class DateCellInputElement {
     return (element as HTMLInputElement)?.type === DateCellInputElement.ELEMENT_TYPE;
   }
 
-  public static extractInputElementFromCell(cellElement: HTMLElement) {
-    return (cellElement.children[1] as HTMLElement).children[0] as HTMLInputElement;
-  }
-
-  public static toggle(inputElement: HTMLInputElement, isDisplay: boolean) {
-    (inputElement.parentElement as HTMLElement).style.display = isDisplay ? 'block' : 'none';
+  public static toggle(cellElement: HTMLElement | undefined, isDisplay: boolean) {
+    if (!cellElement) return;
+    const inputContainer = cellElement.children[1] as HTMLElement;
+    inputContainer.style.display = isDisplay ? 'block' : 'none';
   }
 
   private static convertTextToInputValue(textDate: string, dateType: string): string {

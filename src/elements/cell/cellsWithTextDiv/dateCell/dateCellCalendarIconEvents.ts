@@ -24,8 +24,12 @@ export class DateCellCalendarIconEvents {
       // which purges the selected cell ref
       FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
       // this is in a timeout because mouseDownIcon is triggered before window mouse down event which calls
-      // delete his.overlayElementsState.datePickerInput, thus this setter needs to be called after
-      this.overlayElementsState.datePickerInput = inputElement;
+      // delete his.overlayElementsState.datePickerCell, thus this setter needs to be called after
+      this.overlayElementsState.datePickerCell = cellElement;
+      // displaying the picker on mouse down in order to keep it consistent with mouse down display for category,
+      // however if it feels more natural to do it on mouse up, can move it to that, but keep in mind that it
+      // does not feel right for firefox as there is an additional timeout - hence may need to keep it here
+      // for this particular browser
       // firefox date picker has a fade out animation which does not allow the user to open up another date picker
       // while the current one is open, hence need to wait for animation to finish
       inputElement.showPicker();

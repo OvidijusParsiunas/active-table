@@ -10,13 +10,13 @@ export class DateCellInputEvents {
   // the picker fires a clear event and does not actually close itself and instead goes to the
   // initially opened up date. The key up event for the escape button is also not fired.
   public static escapeKeyInput(etc: EditableTableComponent) {
-    if (etc.overlayElementsState.datePickerInput) {
+    if (etc.overlayElementsState.datePickerCell) {
       const focusedCell = etc.focusedElements.cell.element as HTMLElement;
       // do not hide when currently hovered
       if (etc.hoveredElements.dateCell !== focusedCell) {
-        DateCellInputElement.toggle(DateCellInputElement.extractInputElementFromCell(focusedCell), false);
+        DateCellInputElement.toggle(focusedCell, false);
       }
-      delete etc.overlayElementsState.datePickerInput;
+      delete etc.overlayElementsState.datePickerCell;
     }
   }
 
@@ -38,11 +38,11 @@ export class DateCellInputEvents {
       // uses arrow keys to navigate and clicks mouse down back on the cell - this event is fired
       !this.userKeyEventsState[MOUSE_EVENT.DOWN] &&
       // do not hide icon when currently hovered
-      this.hoveredElements.dateCell !== (this.focusedElements.cell.element as HTMLElement)
+      this.hoveredElements.dateCell !== focusedCell
     ) {
-      DateCellInputElement.toggle(DateCellInputElement.extractInputElementFromCell(focusedCell), false);
+      DateCellInputElement.toggle(focusedCell, false);
     }
-    delete this.overlayElementsState.datePickerInput;
+    delete this.overlayElementsState.datePickerCell;
   }
 
   // the user does not use the actual input element and the events are triggered via the date picker

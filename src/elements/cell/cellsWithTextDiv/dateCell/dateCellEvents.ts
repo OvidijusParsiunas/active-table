@@ -8,21 +8,20 @@ import {DateCellTextEvents} from './dateCellTextEvents';
 
 export class DateCellEvents {
   private static mouseLeaveCell(this: EditableTableComponent, event: MouseEvent) {
+    // this needs to be here as otherwise it would not be called due to the return statement below
     delete this.hoveredElements.dateCell;
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
-      const cell = event.target as HTMLElement;
-      const input = DateCellInputElement.extractInputElementFromCell(cell);
+      const cellElement = event.target as HTMLElement;
       // if the date picker is opened, do not hide container
-      if (this.overlayElementsState.datePickerInput === input) return;
-      DateCellInputElement.toggle(input, false);
+      if (this.overlayElementsState.datePickerCell === cellElement) return;
+      DateCellInputElement.toggle(cellElement, false);
     }
   }
 
   private static mouseEnterCell(this: EditableTableComponent, event: MouseEvent) {
-    const cell = event.target as HTMLElement;
-    this.hoveredElements.dateCell = cell;
+    this.hoveredElements.dateCell = event.target as HTMLElement;
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
-      DateCellInputElement.toggle(DateCellInputElement.extractInputElementFromCell(cell), true);
+      DateCellInputElement.toggle(this.hoveredElements.dateCell, true);
     }
   }
 

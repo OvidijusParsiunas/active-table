@@ -11,15 +11,14 @@ import {Dropdown} from '../dropdown/dropdown';
 
 export class TableEvents {
   // not using hoveredElements state as the targetElement will be the element clicked, hence need to use
-  // overlayElementsState.datePickerInput to get the cell of the date picker input
+  // overlayElementsState.datePickerCell to get the cell of the date picker input
   // prettier-ignore
   private static closeDatePicker(overlayElementsState: OverlayElements, targetElement: HTMLElement) {
-    if (overlayElementsState.datePickerInput) {
-      if (CellElement.extractCellElement(overlayElementsState.datePickerInput)
-          !== CellElement.extractCellElement(targetElement)) {
-        DateCellInputElement.toggle(overlayElementsState.datePickerInput, false);
+    if (overlayElementsState.datePickerCell) {
+      if (overlayElementsState.datePickerCell !== CellElement.extractCellElement(targetElement)) {
+        DateCellInputElement.toggle(overlayElementsState.datePickerCell, false);
       }
-      delete overlayElementsState.datePickerInput;
+      delete overlayElementsState.datePickerCell;
     }
   }
   // text blur will not activate when the dropdown has been clicked and will not close if its scrollbar, padding
