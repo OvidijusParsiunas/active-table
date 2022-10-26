@@ -16,6 +16,7 @@ import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
+import {Browser} from './utils/browser/browser';
 import {LitElement} from 'lit';
 
 // TO-DO
@@ -106,15 +107,18 @@ export class EditableTableComponent extends LitElement {
   @property({type: Boolean})
   displayAddRowCell = true;
 
+  // this is triggered twice on startup in Firefox
   override render() {
-    this.refreshTableBodyState();
+    this.refreshTableState();
     TableElement.populateBody(this);
     this.onTableUpdate(this.contents);
   }
 
-  private refreshTableBodyState() {
+  private refreshTableState() {
     this.tableElementEventState = {};
     this.columnsDetails = [];
+    // REF-11
+    if (Browser.IS_SAFARI) (this.tableElementRef as HTMLElement).style.width = '0px';
   }
 
   override connectedCallback() {

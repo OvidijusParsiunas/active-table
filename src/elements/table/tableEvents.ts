@@ -58,7 +58,7 @@ export class TableEvents {
   public static onMouseMove(this: EditableTableComponent, event: MouseEvent) {
     const { tableElementEventState: { selectedColumnSizer }, columnsDetails } = this;
     if (selectedColumnSizer) {
-      ColumnSizerEvents.tableOnMouseMove(selectedColumnSizer, columnsDetails, event.movementX);
+      ColumnSizerEvents.tableOnMouseMove(this, selectedColumnSizer, columnsDetails, event.movementX);
     }
   }
 

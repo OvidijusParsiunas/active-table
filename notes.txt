@@ -75,3 +75,9 @@ plugins and bundling complexity for adding SVGs into the resultant bundle
 Additionally not using the lit element way for inserting svg templates as it has been considered to potentially stop using lit
 element and instead go native, hence the current approach of parsing a string will make it easier if moving to that direction
 However if opted to stay with lit element - use the following approach: https://lit.dev/docs/api/templates/#svg
+
+REF-11
+Safari has a bug where column widths for cell elements that contain wrapped text (text that oveflows the width) is increased to what
+the width would be without the wrapping. This has been fixed by programmatically setting the table width based on the column widths.
+I have raised a stack overflow question to see if this can be fixed automatically via plain css without a manual workaround:
+https://stackoverflow.com/questions/73920147/table-element-width-using-column-widths-safari

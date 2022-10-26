@@ -10,8 +10,14 @@ import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../../types/columnDetails';
 import {DataUtils} from '../shared/dataUtils';
+import {Browser} from '../../browser/browser';
 
 export class InsertNewCell {
+  // REF-11
+  private static setTableWidthBasedOnColumns(tableElementRef: HTMLElement) {
+    tableElementRef.style.width = `${tableElementRef.offsetWidth + CellElement.DEFAULT_COLUMN_WIDTH}px`;
+  }
+
   private static insertElementsToRow(rowElement: HTMLElement, newCellElement: HTMLElement, columnIndex: number) {
     // the reason why columnIndex is multiplied by 2 is because there is a divider element after each cell
     // if child is undefined, the element is added at the end
@@ -63,6 +69,7 @@ export class InsertNewCell {
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);
+    if (Browser.IS_SAFARI && rowIndex === 0) InsertNewCell.setTableWidthBasedOnColumns(etc.tableElementRef as HTMLElement);
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex);
     setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(
       etc, rowIndex, columnIndex, newCellElement, processedCellText));

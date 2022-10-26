@@ -9,7 +9,8 @@ import {Browser} from '../../utils/browser/browser';
 import {CSSStyle} from '../../types/cssStyle';
 
 export class CellElement {
-  public static readonly DEFAULT_COLUMN_WIDTH = '100px';
+  public static readonly DEFAULT_COLUMN_WIDTH = 100;
+  public static readonly DEFAULT_COLUMN_WIDTH_PX = `${CellElement.DEFAULT_COLUMN_WIDTH}px`;
   public static readonly CELL_CLASS = 'cell';
 
   // this is used for case where element could be the cell element or the text inside a category cell
@@ -83,7 +84,7 @@ export class CellElement {
     const cellElement = CellElement.create(etc.cellStyle, etc.headerStyle, isHeader);
     CellElement.processAndSetTextOnCell(etc, cellElement, cellText, false);
     CellElement.prepContentEditable(cellElement, isHeader);
-    if (isHeader) cellElement.style.width = CellElement.DEFAULT_COLUMN_WIDTH;
+    if (isHeader) cellElement.style.width = CellElement.DEFAULT_COLUMN_WIDTH_PX;
     return cellElement;
   }
 
