@@ -10,6 +10,13 @@ import {CellElement} from '../cell/cellElement';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class TableEvents {
+  private static selectColumnSizer(etc: EditableTableComponent, targetElement: HTMLElement) {
+    if (targetElement.classList.contains(ColumnSizerElement.COLUMN_SIZER_CLASS)) {
+      etc.tableElementEventState.selectedColumnSizer = targetElement;
+      ColumnSizerEvents.tableOnMouseDown(etc, targetElement, etc.columnResizerStyle.click?.backgroundColor);
+    }
+  }
+
   // not using hoveredElements state as the targetElement will be the element clicked, hence need to use
   // overlayElementsState.datePickerCell to get the cell of the date picker input
   // prettier-ignore
@@ -36,10 +43,7 @@ export class TableEvents {
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
     UserKeyEventsStateUtil.temporarilyIndicateEvent(this.userKeyEventsState, MOUSE_EVENT.DOWN);
-    if (targetElement.classList.contains(ColumnSizerElement.COLUMN_SIZER_CLASS)) {
-      this.tableElementEventState.selectedColumnSizer = targetElement;
-      ColumnSizerEvents.tableOnMouseDown(targetElement, this.columnResizerStyle.click?.backgroundColor);
-    }
+    TableEvents.selectColumnSizer(this, targetElement);
     TableEvents.closeCategoryDropdown(this, targetElement);
     TableEvents.closeDatePicker(this.overlayElementsState, event.target as HTMLElement);
   }

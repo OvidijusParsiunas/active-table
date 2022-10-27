@@ -66,16 +66,36 @@ export class ColumnSizerEvents {
     // REF-11
     if (Browser.IS_SAFARI) {
       if (nextColumn) {
-        const columnElement2 = nextColumn.elements[0];
-        ColumnSizerEvents.changeElementWidth(columnElement2, newXMovement * -1);
+        const nextHeaderCell = nextColumn.elements[0];
+        // * -1 sets positive to negative and negative to positive
+        ColumnSizerEvents.changeElementWidth(nextHeaderCell, newXMovement * -1);
       } else {
-        ColumnSizerEvents.changeElementWidth(tableElementRef, newXMovement);
+        ColumnSizerEvents.changeElementWidth(tableElementRef as HTMLElement, newXMovement);
       }
     }
   }
 
-  // the reason why table events are used to track mouse move events on column sizers is because otherwise when
-  // the mouse moves quickly - it can leave the column sizer and events would stop firing
+  // when the user moves their cursor too quickly or over one of the neighbouring cells, the total of the two cells
+  // will no longer be the same, hence causing the column sizes to not add up to the total of the table
+  private static correctWidths(siblingCellsTotalWidth: number, headerCell: HTMLElement, nextColumn: ColumnDetailsT) {
+    if (nextColumn) {
+      const nextHeaderCell = nextColumn.elements[0];
+      if (headerCell.offsetWidth + nextHeaderCell.offsetWidth !== siblingCellsTotalWidth) {
+        nextHeaderCell.style.width = `${siblingCellsTotalWidth - headerCell.offsetWidth}px`;
+        // when the user moves mouse over the neighbour cell - the widths are set incorrectly and do not match up
+        // to the offset widths (easiest way to test is to use sizer between the last and second last) which
+        // causes further attempts at resizing any columns to jump to incorrect column sizes
+        // additionally this prevents the column widths from jumping when the mouse moves over the neighbour columns
+        if (nextHeaderCell.style.width !== `${nextHeaderCell.offsetWidth}px`) {
+          nextHeaderCell.style.width = `${nextHeaderCell.offsetWidth}px`;
+          headerCell.style.width = `${siblingCellsTotalWidth - nextHeaderCell.offsetWidth}px`;
+        }
+      }
+    }
+  }
+
+  // the reason why table events are used to track mouse move events on column sizers is because otherwise when the mouse
+  // moves quickly - it can leave the column sizer and events would stop firing
   // prettier-ignore
   public static tableOnMouseMove(etc: EditableTableComponent, selectedColumnSizer: HTMLElement,
       columnsDetails: ColumnsDetailsT, newXMovement: number) {
@@ -85,15 +105,30 @@ export class ColumnSizerEvents {
     ColumnSizerEvents.changeElementWidth(headerCell, newXMovement);
     const nextColumnDetails = columnsDetails[sizerNumber + 1];
     ColumnSizerEvents.updateNextColumnIfNeeded(nextColumnDetails, newXMovement, etc.tableElementRef as HTMLElement);
+    ColumnSizerEvents.correctWidths(columnSizer.siblingCellsTotalWidth as number, headerCell, nextColumnDetails)
     // if the header cell size increases or decreases as the width is changed
     // the reason why it is set in a timeout is in order to try to minimize the upfront operations for performance
     setTimeout(() => (selectedColumnSizer.style.height = `${headerCell.offsetHeight}px`));
   }
 
-  public static tableOnMouseDown(selectedColumnSizer: HTMLElement, customColor?: string) {
+  // prettier-ignore
+  private static setPreResizeSiblingCellTotalWidth(columnsDetails: ColumnsDetailsT, selectedColumnSizer: HTMLElement) {
+    const {columnSizer, headerCell, sizerNumber} = ColumnSizerEvents.getSizerDetailsViaElementId(
+      selectedColumnSizer.id, columnsDetails);
+    const nextColumn = columnsDetails[sizerNumber + 1];
+    if (nextColumn) {
+      const nextColumnHeaderCell = columnsDetails[sizerNumber + 1].elements[0];
+      columnSizer.siblingCellsTotalWidth = headerCell.offsetWidth + nextColumnHeaderCell.offsetWidth;
+    }
+  }
+
+  public static tableOnMouseDown(etc: EditableTableComponent, selectedColumnSizer: HTMLElement, customColor?: string) {
     ColumnSizerElement.setColors(selectedColumnSizer, customColor || ColumnSizerElement.MOUSE_DOWN_COLOR);
     ColumnSizerElementOverlay.setMouseDownColor(selectedColumnSizer.children[0] as HTMLElement);
     ColumnSizerElement.unsetTransitionTime(selectedColumnSizer);
+    if (Browser.IS_SAFARI) {
+      ColumnSizerEvents.setPreResizeSiblingCellTotalWidth(etc.columnsDetails, selectedColumnSizer);
+    }
   }
 
   // the following method allows us to track when the user stops dragging mouse even when not on the column sizer

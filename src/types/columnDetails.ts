@@ -21,6 +21,7 @@ export interface ColumnSizerT {
   isSideCellHovered: boolean;
   isSizerHovered: boolean;
   styles: ColumnSizerStyles;
+  siblingCellsTotalWidth?: number;
 }
 
 export type CellTypeTotals = {
