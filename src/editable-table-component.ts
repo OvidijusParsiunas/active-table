@@ -18,6 +18,7 @@ import {HoveredElements} from './types/hoveredElements';
 import {TableDimensions} from './types/tableDimensions';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
+import {Browser} from './utils/browser/browser';
 import {LitElement} from 'lit';
 
 // TO-DO
@@ -122,7 +123,11 @@ export class EditableTableComponent extends LitElement {
   private refreshTableState() {
     this.tableElementEventState = {};
     this.columnsDetails = [];
-    StaticTableWidthUtils.setInitialTableWidth(this.tableDimensions, this.tableElementRef as HTMLElement);
+    StaticTableWidthUtils.setInitialTableWidth(
+      this.tableDimensions,
+      this.tableElementRef as HTMLElement,
+      Browser.IS_SAFARI
+    );
   }
 
   override connectedCallback() {
