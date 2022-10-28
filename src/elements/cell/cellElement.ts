@@ -4,13 +4,14 @@ import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputEle
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {HeaderCellEvents} from './headerCell/headerCellEvents';
+import {TableDimensions} from '../../types/tableDimensions';
 import {DataCellEvents} from './dataCell/dataCellEvents';
+import {TableContents} from '../../types/tableContents';
 import {Browser} from '../../utils/browser/browser';
 import {CSSStyle} from '../../types/cssStyle';
 
 export class CellElement {
-  public static readonly DEFAULT_COLUMN_WIDTH = 100;
-  public static readonly DEFAULT_COLUMN_WIDTH_PX = `${CellElement.DEFAULT_COLUMN_WIDTH}px`;
+  public static NEW_COLUMN_WIDTH = 100;
   public static readonly CELL_CLASS = 'cell';
 
   // this is used for case where element could be the cell element or the text inside a category cell
@@ -30,26 +31,6 @@ export class CellElement {
     }
     // if cell
     return element;
-  }
-
-  // this is used for case where element could be cell element that contains a text div element,
-  // hence we need to set the text into the correct container
-  private static setText(element: HTMLElement, text: string) {
-    // if category or date cell
-    if (element.children[0]?.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS)) {
-      element.children[0].textContent = text;
-    } else {
-      element.textContent = text;
-    }
-  }
-
-  // set text is optional as some functions may only need to augment the cell
-  // prettier-ignore
-  public static processAndSetTextOnCell(etc: EditableTableComponent, textContainerElement: HTMLElement, text: string,
-      isUndo: boolean, setText = true) {
-    if (setText) CellElement.setText(textContainerElement, text);
-    // called in all browsers for consistency
-    FirefoxCaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo);
   }
 
   // prettier-ignore
@@ -80,11 +61,38 @@ export class CellElement {
     }
   }
 
+  private static setHeaderWidth(tableDimensions: TableDimensions, contents: TableContents, cellElement: HTMLElement) {
+    if (tableDimensions.width) {
+      CellElement.NEW_COLUMN_WIDTH = tableDimensions.width / contents[0].length;
+    }
+    cellElement.style.width = `${CellElement.NEW_COLUMN_WIDTH}px`;
+  }
+
+  // this is used for case where element could be cell element that contains a text div element,
+  // hence we need to set the text into the correct container
+  private static setText(element: HTMLElement, text: string) {
+    // if category or date cell
+    if (element.children[0]?.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS)) {
+      element.children[0].textContent = text;
+    } else {
+      element.textContent = text;
+    }
+  }
+
+  // set text is optional as some functions may only need to augment the cell
+  // prettier-ignore
+  public static processAndSetTextOnCell(etc: EditableTableComponent, textContainerElement: HTMLElement, text: string,
+      isUndo: boolean, setText = true) {
+    if (setText) CellElement.setText(textContainerElement, text);
+    // called in all browsers for consistency
+    FirefoxCaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo);
+  }
+
   private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
     const cellElement = CellElement.create(etc.cellStyle, etc.headerStyle, isHeader);
     CellElement.processAndSetTextOnCell(etc, cellElement, cellText, false);
     CellElement.prepContentEditable(cellElement, isHeader);
-    if (isHeader) cellElement.style.width = CellElement.DEFAULT_COLUMN_WIDTH_PX;
+    if (isHeader) CellElement.setHeaderWidth(etc.tableDimensions, etc.contents, cellElement);
     return cellElement;
   }
 

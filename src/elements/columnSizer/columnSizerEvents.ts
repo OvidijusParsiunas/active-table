@@ -62,9 +62,10 @@ export class ColumnSizerEvents {
     return {columnSizer: columnDetails.columnSizer, headerCell: columnDetails.elements[0], sizerNumber};
   }
 
-  private static updateNextColumnIfNeeded(nextColumn: ColumnDetailsT, newXMovement: number, tableElementRef: HTMLElement) {
+  private static updateNextColumnIfNeeded(etc: EditableTableComponent, nextColumn: ColumnDetailsT, newXMovement: number) {
+    const {tableElementRef, tableDimensions} = etc;
     // REF-11
-    if (Browser.IS_SAFARI) {
+    if (tableDimensions.width || Browser.IS_SAFARI) {
       if (nextColumn) {
         const nextHeaderCell = nextColumn.elements[0];
         // * -1 sets positive to negative and negative to positive
@@ -76,7 +77,7 @@ export class ColumnSizerEvents {
   }
 
   // when the user moves their cursor too quickly or over one of the neighbouring cells, the total of the two cells
-  // will no longer be the same, hence causing the column sizes to not add up to the total of the table
+  // will no longer be the same, hence this is used to make sure the original is kept
   private static correctWidths(siblingCellsTotalWidth: number, headerCell: HTMLElement, nextColumn: ColumnDetailsT) {
     if (nextColumn) {
       const nextHeaderCell = nextColumn.elements[0];
@@ -104,7 +105,7 @@ export class ColumnSizerEvents {
     ColumnSizerElement.unsetTransitionTime(columnSizer.element);
     ColumnSizerEvents.changeElementWidth(headerCell, newXMovement);
     const nextColumnDetails = columnsDetails[sizerNumber + 1];
-    ColumnSizerEvents.updateNextColumnIfNeeded(nextColumnDetails, newXMovement, etc.tableElementRef as HTMLElement);
+    ColumnSizerEvents.updateNextColumnIfNeeded(etc, nextColumnDetails, newXMovement);
     ColumnSizerEvents.correctWidths(columnSizer.siblingCellsTotalWidth as number, headerCell, nextColumnDetails)
     // if the header cell size increases or decreases as the width is changed
     // the reason why it is set in a timeout is in order to try to minimize the upfront operations for performance
@@ -112,12 +113,14 @@ export class ColumnSizerEvents {
   }
 
   // prettier-ignore
-  private static setPreResizeSiblingCellTotalWidth(columnsDetails: ColumnsDetailsT, selectedColumnSizer: HTMLElement) {
+  // when the user moves their cursor too quickly or over one of the neighbouring cells, the total of the two cells
+  // will no longer be the same, hence this is used to make sure the original is kept
+  private static setPreResizeSiblingCellsTotalWidth(columnsDetails: ColumnsDetailsT, selectedColumnSizer: HTMLElement) {
     const {columnSizer, headerCell, sizerNumber} = ColumnSizerEvents.getSizerDetailsViaElementId(
       selectedColumnSizer.id, columnsDetails);
     const nextColumn = columnsDetails[sizerNumber + 1];
     if (nextColumn) {
-      const nextColumnHeaderCell = columnsDetails[sizerNumber + 1].elements[0];
+      const nextColumnHeaderCell = nextColumn.elements[0];
       columnSizer.siblingCellsTotalWidth = headerCell.offsetWidth + nextColumnHeaderCell.offsetWidth;
     }
   }
@@ -126,8 +129,8 @@ export class ColumnSizerEvents {
     ColumnSizerElement.setColors(selectedColumnSizer, customColor || ColumnSizerElement.MOUSE_DOWN_COLOR);
     ColumnSizerElementOverlay.setMouseDownColor(selectedColumnSizer.children[0] as HTMLElement);
     ColumnSizerElement.unsetTransitionTime(selectedColumnSizer);
-    if (Browser.IS_SAFARI) {
-      ColumnSizerEvents.setPreResizeSiblingCellTotalWidth(etc.columnsDetails, selectedColumnSizer);
+    if (etc.tableDimensions.width || Browser.IS_SAFARI) {
+      ColumnSizerEvents.setPreResizeSiblingCellsTotalWidth(etc.columnsDetails, selectedColumnSizer);
     }
   }
 

@@ -13,11 +13,6 @@ import {DataUtils} from '../shared/dataUtils';
 import {Browser} from '../../browser/browser';
 
 export class InsertNewCell {
-  // REF-11
-  private static setTableWidthBasedOnColumns(tableElementRef: HTMLElement) {
-    tableElementRef.style.width = `${tableElementRef.offsetWidth + CellElement.DEFAULT_COLUMN_WIDTH}px`;
-  }
-
   private static insertElementsToRow(rowElement: HTMLElement, newCellElement: HTMLElement, columnIndex: number) {
     // the reason why columnIndex is multiplied by 2 is because there is a divider element after each cell
     // if child is undefined, the element is added at the end
@@ -25,6 +20,18 @@ export class InsertNewCell {
     rowElement.insertBefore(newCellElement, rowElement.children[childIndex]);
     const newCellDividerElement = CellDividerElement.create();
     rowElement.insertBefore(newCellDividerElement, rowElement.children[childIndex + 1]);
+  }
+
+  private static setColumnWidthsIfNeeded(etc: EditableTableComponent) {
+    const {tableElementRef, tableDimensions, columnsDetails} = etc;
+    if (tableDimensions.width) {
+      columnsDetails.forEach((columnDetails) => {
+        columnDetails.elements[0].style.width = `${CellElement.NEW_COLUMN_WIDTH}px`;
+      });
+      // REF-11
+    } else if (Browser.IS_SAFARI && tableElementRef) {
+      tableElementRef.style.width = `${tableElementRef.offsetWidth + CellElement.NEW_COLUMN_WIDTH}px`;
+    }
   }
 
   // prettier-ignore
@@ -69,7 +76,7 @@ export class InsertNewCell {
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);
-    if (Browser.IS_SAFARI && rowIndex === 0) InsertNewCell.setTableWidthBasedOnColumns(etc.tableElementRef as HTMLElement);
+    if (rowIndex === 0) InsertNewCell.setColumnWidthsIfNeeded(etc);
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex);
     setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(
       etc, rowIndex, columnIndex, newCellElement, processedCellText));

@@ -14,6 +14,7 @@ import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {OverlayElements} from './types/overlayElements';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
+import {TableDimensions} from './types/tableDimensions';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
 import {Browser} from './utils/browser/browser';
@@ -107,6 +108,10 @@ export class EditableTableComponent extends LitElement {
   @property({type: Boolean})
   displayAddRowCell = true;
 
+  // TO-DO height
+  @property({type: Object})
+  tableDimensions: TableDimensions = {};
+
   // this is triggered twice on startup in Firefox
   override render() {
     this.refreshTableState();
@@ -117,8 +122,14 @@ export class EditableTableComponent extends LitElement {
   private refreshTableState() {
     this.tableElementEventState = {};
     this.columnsDetails = [];
-    // REF-11
-    if (Browser.IS_SAFARI) (this.tableElementRef as HTMLElement).style.width = '0px';
+    this.setInitialTableWidth();
+  }
+
+  private setInitialTableWidth() {
+    if (this.tableDimensions.width) {
+      (this.tableElementRef as HTMLElement).style.width = `${this.tableDimensions.width}px`;
+      // REF-11
+    } else if (Browser.IS_SAFARI) (this.tableElementRef as HTMLElement).style.width = '0px';
   }
 
   override connectedCallback() {
