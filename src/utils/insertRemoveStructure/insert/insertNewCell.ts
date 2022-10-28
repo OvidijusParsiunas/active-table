@@ -1,6 +1,7 @@
 import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
+import {StaticTableWidthUtils} from '../../staticTableWidthsUtils/staticTableWidthUtils';
 import {InsertRemoveColumnSizer} from '../../columnSizer/insertRemoveColumnSizer';
 import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
@@ -10,7 +11,6 @@ import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../../types/columnDetails';
 import {DataUtils} from '../shared/dataUtils';
-import {Browser} from '../../browser/browser';
 
 export class InsertNewCell {
   private static insertElementsToRow(rowElement: HTMLElement, newCellElement: HTMLElement, columnIndex: number) {
@@ -20,18 +20,6 @@ export class InsertNewCell {
     rowElement.insertBefore(newCellElement, rowElement.children[childIndex]);
     const newCellDividerElement = CellDividerElement.create();
     rowElement.insertBefore(newCellDividerElement, rowElement.children[childIndex + 1]);
-  }
-
-  private static setColumnWidthsIfNeeded(etc: EditableTableComponent) {
-    const {tableElementRef, tableDimensions, columnsDetails} = etc;
-    if (tableDimensions.width) {
-      columnsDetails.forEach((columnDetails) => {
-        columnDetails.elements[0].style.width = `${CellElement.NEW_COLUMN_WIDTH}px`;
-      });
-      // REF-11
-    } else if (Browser.IS_SAFARI && tableElementRef) {
-      tableElementRef.style.width = `${tableElementRef.offsetWidth + CellElement.NEW_COLUMN_WIDTH}px`;
-    }
   }
 
   // prettier-ignore
@@ -76,7 +64,7 @@ export class InsertNewCell {
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);
-    if (rowIndex === 0) InsertNewCell.setColumnWidthsIfNeeded(etc);
+    if (rowIndex === 0) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc);
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex);
     setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(
       etc, rowIndex, columnIndex, newCellElement, processedCellText));

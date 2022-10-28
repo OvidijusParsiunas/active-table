@@ -1,9 +1,9 @@
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
+import {ColumnSizerEvents, ColumnSizerMoveFunc} from '../columnSizer/columnSizerEvents';
 import {UserKeyEventsStateUtil} from '../../utils/userEventsState/userEventsStateUtil';
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerElement} from '../columnSizer/columnSizerElement';
-import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
 import {OverlayElements} from '../../types/overlayElements';
 import {MOUSE_EVENT} from '../../consts/mouseEvents';
 import {CellElement} from '../cell/cellElement';
@@ -59,10 +59,10 @@ export class TableEvents {
   }
 
   // prettier-ignore
-  public static onMouseMove(this: EditableTableComponent, event: MouseEvent) {
+  public static onMouseMove(this: EditableTableComponent, columnSizerMoveFunc: ColumnSizerMoveFunc, event: MouseEvent) {
     const { tableElementEventState: { selectedColumnSizer }, columnsDetails } = this;
     if (selectedColumnSizer) {
-      ColumnSizerEvents.tableOnMouseMove(this, selectedColumnSizer, columnsDetails, event.movementX);
+      columnSizerMoveFunc(selectedColumnSizer, columnsDetails, event.movementX, this);
     }
   }
 

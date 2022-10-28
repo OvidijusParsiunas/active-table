@@ -1,4 +1,5 @@
 import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellCalendarIconElement';
+import {StaticTableWidthUtils} from '../../utils/staticTableWidthsUtils/staticTableWidthUtils';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
@@ -11,7 +12,6 @@ import {Browser} from '../../utils/browser/browser';
 import {CSSStyle} from '../../types/cssStyle';
 
 export class CellElement {
-  public static NEW_COLUMN_WIDTH = 100;
   public static readonly CELL_CLASS = 'cell';
 
   // this is used for case where element could be the cell element or the text inside a category cell
@@ -63,9 +63,9 @@ export class CellElement {
 
   private static setHeaderWidth(tableDimensions: TableDimensions, contents: TableContents, cellElement: HTMLElement) {
     if (tableDimensions.width) {
-      CellElement.NEW_COLUMN_WIDTH = tableDimensions.width / contents[0].length;
+      StaticTableWidthUtils.NEW_COLUMN_WIDTH = tableDimensions.width / contents[0].length;
     }
-    cellElement.style.width = `${CellElement.NEW_COLUMN_WIDTH}px`;
+    cellElement.style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
   }
 
   // this is used for case where element could be cell element that contains a text div element,

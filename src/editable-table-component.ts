@@ -1,3 +1,4 @@
+import {StaticTableWidthUtils} from './utils/staticTableWidthsUtils/staticTableWidthUtils';
 import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
@@ -17,7 +18,6 @@ import {HoveredElements} from './types/hoveredElements';
 import {TableDimensions} from './types/tableDimensions';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
-import {Browser} from './utils/browser/browser';
 import {LitElement} from 'lit';
 
 // TO-DO
@@ -122,14 +122,7 @@ export class EditableTableComponent extends LitElement {
   private refreshTableState() {
     this.tableElementEventState = {};
     this.columnsDetails = [];
-    this.setInitialTableWidth();
-  }
-
-  private setInitialTableWidth() {
-    if (this.tableDimensions.width) {
-      (this.tableElementRef as HTMLElement).style.width = `${this.tableDimensions.width}px`;
-      // REF-11
-    } else if (Browser.IS_SAFARI) (this.tableElementRef as HTMLElement).style.width = '0px';
+    StaticTableWidthUtils.setInitialTableWidth(this.tableDimensions, this.tableElementRef as HTMLElement);
   }
 
   override connectedCallback() {
