@@ -106,6 +106,18 @@ export const ediTableStyle = css`
     pointer-events: none;
   }
 
+  .movable-column-sizer {
+    position: absolute;
+    z-index: 1;
+    cursor: col-resize;
+    justify-content: center;
+  }
+
+  .movable-column-sizer-vertical-line {
+    width: 1px;
+    pointer-events: none;
+  }
+
   #add-new-row-row:hover {
     background-color: #f7f7f7;
   }

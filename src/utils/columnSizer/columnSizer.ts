@@ -1,9 +1,12 @@
 import {BorderWidths, ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement';
+import {MovableColumnSizerElement} from '../../elements/columnSizer/movableColumnSizerElement';
 import {ColumnSizerEvents} from '../../elements/columnSizer/columnSizerEvents';
 import {ColumnsDetailsT, ColumnSizerT} from '../../types/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PX} from '../../types/pxDimension';
+import {Optional} from '../../types/optional';
 
+// WORK - place this back into the elements section
 export class ColumnSizer {
   public static shouldWidthBeIncreased(widthPx: number) {
     return widthPx > 4;
@@ -50,14 +53,16 @@ export class ColumnSizer {
   }
 
   // prettier-ignore
-  public static createObject(columnSizerElement: HTMLElement,
-      columnsDetails: ColumnsDetailsT, sizerIndex: number, tableElement?: HTMLElement): ColumnSizerT {
+  public static createObject(columnSizerElement: HTMLElement, columnsDetails: ColumnsDetailsT,
+      sizerIndex: number, movableColumnSizer?: HTMLElement, tableElement?: HTMLElement): ColumnSizerT {
     const borderWidthsInfo = ColumnSizer.generateBorderWidthsInfo(columnsDetails, sizerIndex);
     const totalCellBorderWidth = ColumnSizer.getTotalCellBorderWidth(borderWidthsInfo);
     const marginLeft = ColumnSizer.getMarginLeft(borderWidthsInfo);
     const backgroundImage = ColumnSizer.getBackgroundImage(totalCellBorderWidth,
       borderWidthsInfo.beforeLeftCellRight, columnsDetails.length - 1 === sizerIndex, tableElement);
-    const columnSizerState: ColumnSizerT = {
+    // movableElement should be treated as always present in columnSizer, but InsertRemoveColumnSizer needs to create
+    // a new object to overwrite its other properties
+    const columnSizerState: Optional<ColumnSizerT, 'movableElement'> = {
       element: columnSizerElement,
       styles: {
         default: {
@@ -74,15 +79,17 @@ export class ColumnSizer {
       isSizerHovered: false,
       isSideCellHovered: false,
     };
-    return columnSizerState;
+    if (movableColumnSizer) columnSizerState.movableElement = movableColumnSizer;
+    return columnSizerState as ColumnSizerT;
   }
 
   // prettier-ignore
   public static create(etc: EditableTableComponent, sizerIndex: number) {
     const { columnsDetails, tableElementRef, columnResizerStyle } = etc;
     const columnSizerElement = ColumnSizerElement.create(sizerIndex, columnResizerStyle.hover?.backgroundColor);
+    const movableColumnSizer = MovableColumnSizerElement.create(columnResizerStyle);
     const columnSizer = ColumnSizer.createObject(
-      columnSizerElement, columnsDetails, sizerIndex, tableElementRef as HTMLElement);
+      columnSizerElement, columnsDetails, sizerIndex, movableColumnSizer, tableElementRef as HTMLElement);
     columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);
     columnSizerElement.onmouseleave = ColumnSizerEvents.sizerOnMouseLeave.bind(etc, columnSizer);
     return columnSizer;

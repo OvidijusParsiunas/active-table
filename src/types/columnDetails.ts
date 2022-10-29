@@ -18,6 +18,7 @@ interface ColumnSizerStyles {
 
 export interface ColumnSizerT {
   element: HTMLElement;
+  movableElement: HTMLElement;
   isSideCellHovered: boolean;
   isSizerHovered: boolean;
   styles: ColumnSizerStyles;

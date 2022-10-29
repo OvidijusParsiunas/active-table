@@ -25,6 +25,7 @@ export class InsertRemoveColumnSizer {
     const columnSizer = ColumnSizer.create(etc, columnIndex);
     newColumnDetails.columnSizer = columnSizer;
     cellDividerElement.appendChild(columnSizer.element);
+    cellDividerElement.appendChild(columnSizer.movableElement);
     InsertRemoveColumnSizer.applySizerStateToElement(columnSizer.element, columnSizer);
   }
 
@@ -35,7 +36,8 @@ export class InsertRemoveColumnSizer {
     // no need for full creation as there is a need to retain the element and its bindings
     const newColumnSizer = ColumnSizer.createObject(columnSizer.element, columnsDetails, previousIndex);
     InsertRemoveColumnSizer.applySizerStateToElement(newColumnSizer.element, newColumnSizer);
-    // cannot simply overwright columnSizer it has already binded to elements
+    // cannot simply overwright columnSizer object as it has already binded to elements
+    // movableElement ref is not overwritten
     Object.assign(columnSizer, newColumnSizer);
   }
 
