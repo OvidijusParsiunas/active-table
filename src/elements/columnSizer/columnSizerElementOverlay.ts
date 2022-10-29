@@ -3,21 +3,21 @@ import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {ColumnSizerElement} from './columnSizerElement';
 import {PX} from '../../types/pxDimension';
 
+// this element is used to prevent a bug where upon hovering a column sizer that is on top of a cell border
+// the cell border color (e.g. black) will still remain for a short period during the expand animation
+// as the transition time causes a blend effect
+// this is explicitly used to cover that color without a transition period
 export class ColumnSizerElementOverlay {
-  // this element is used to prevent a bug where upon hovering a column sizer that is on top of a cell border
-  // the cell border color (e.g. black) will still remain for a short period during the expand animation
-  // as the transition time causes a blend effect
-  // this is explicitly used to cover that color without a transition period
-  public static create(customBackgroundColor?: string) {
+  public static setDefaultColor(overlayElement: HTMLElement, customColor?: string) {
+    overlayElement.style.backgroundColor = customColor || ColumnSizerElement.DEFAULT_COLOR;
+  }
+
+  public static create(customHoverColor?: string) {
     const overlayElement = document.createElement('div');
-    ColumnSizerElementOverlay.setDefaultColor(overlayElement, customBackgroundColor);
+    ColumnSizerElementOverlay.setDefaultColor(overlayElement, customHoverColor);
     overlayElement.classList.add('column-sizer-overlay');
     overlayElement.style.display = 'none';
     return overlayElement;
-  }
-
-  public static setDefaultColor(overlayElement: HTMLElement, customColor?: string) {
-    overlayElement.style.backgroundColor = customColor || ColumnSizerElement.DEFAULT_COLOR;
   }
 
   public static setMouseDownColor(overlayElement: HTMLElement) {
