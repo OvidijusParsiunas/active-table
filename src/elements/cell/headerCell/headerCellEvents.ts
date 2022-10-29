@@ -17,15 +17,19 @@ export class HeaderCellEvents {
   }
 
   private static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
-    HeaderCellEvents.highlightCell(event.target as HTMLElement);
-    ColumnSizerEvents.cellMouseEnter(this.columnsDetails, columnIndex, event);
+    if (!this.tableElementEventState.selectedColumnSizer) {
+      HeaderCellEvents.highlightCell(event.target as HTMLElement);
+      ColumnSizerEvents.cellMouseEnter(this.columnsDetails, columnIndex, event);
+    }
   }
 
   private static mouseLeaveCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     if (!Dropdown.isDisplayed(this.overlayElementsState.columnDropdown)) {
       HeaderCellEvents.fadeCell(event.target as HTMLElement);
     }
-    ColumnSizerEvents.cellMouseLeave(this.columnsDetails, columnIndex);
+    if (!this.tableElementEventState.selectedColumnSizer) {
+      ColumnSizerEvents.cellMouseLeave(this.columnsDetails, columnIndex);
+    }
   }
 
   private static mouseClick(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {

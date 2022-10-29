@@ -2,7 +2,6 @@ import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayEleme
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
-import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
 import {OverlayElements} from '../../types/overlayElements';
 import {AddNewRowElement} from '../row/addNewRowElement';
 import {TableRow} from '../../types/tableContents';
@@ -48,9 +47,6 @@ export class TableElement {
     Object.assign(tableElement.style, etc.tableStyle);
     tableElement.onmousedown = TableEvents.onMouseDown.bind(etc);
     tableElement.onmouseup = TableEvents.onMouseUp.bind(etc);
-    const columnSizerMoveFunc = ColumnSizerEvents.getTableMouseMoveFunc(etc.tableDimensions);
-    tableElement.onmousemove = TableEvents.onMouseMove.bind(etc, columnSizerMoveFunc);
-    tableElement.onmouseleave = TableEvents.onMouseLeave.bind(etc);
     return tableElement;
   }
 
