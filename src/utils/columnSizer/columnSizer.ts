@@ -1,10 +1,11 @@
 import {BorderWidths, ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement';
 import {MovableColumnSizerElement} from '../../elements/columnSizer/movableColumnSizerElement';
 import {ColumnSizerEvents} from '../../elements/columnSizer/columnSizerEvents';
-import {ColumnsDetailsT, ColumnSizerT} from '../../types/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
-import {PX} from '../../types/pxDimension';
+import {ColumnsDetailsT} from '../../types/columnDetails';
+import {ColumnSizerT} from '../../types/columnSizer';
 import {Optional} from '../../types/optional';
+import {PX} from '../../types/pxDimension';
 
 // WORK - place this back into the elements section
 export class ColumnSizer {
@@ -76,8 +77,9 @@ export class ColumnSizer {
           marginLeft,
         }
       },
-      isSizerHovered: false,
       isSideCellHovered: false,
+      isSizerHovered: false,
+      isMouseUpOnSizer: false,
     };
     if (movableColumnSizer) columnSizerState.movableElement = movableColumnSizer;
     return columnSizerState as ColumnSizerT;

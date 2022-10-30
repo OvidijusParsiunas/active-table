@@ -1,29 +1,7 @@
 import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../enums/columnType';
 import {CELL_TYPE} from '../enums/cellType';
+import {ColumnSizerT} from './columnSizer';
 import {Optional} from './optional';
-import {PX} from './pxDimension';
-
-interface ColumnSizerStyles {
-  default: {
-    backgroundImage: string;
-    width: PX;
-  };
-  hover: {
-    width: PX;
-  };
-  permanent: {
-    marginLeft: PX;
-  };
-}
-
-export interface ColumnSizerT {
-  element: HTMLElement;
-  movableElement: HTMLElement;
-  isSideCellHovered: boolean;
-  isSizerHovered: boolean;
-  styles: ColumnSizerStyles;
-  siblingCellsTotalWidth?: number;
-}
 
 export type CellTypeTotals = {
   [key in CELL_TYPE]: number;

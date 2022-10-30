@@ -3,8 +3,8 @@ import {RegexUtils} from '../../utils/regex/regexUtils';
 
 // these methods are used by column sizer events and static table width column sizer events
 export class ColumnSizerEventsUtils {
-  public static changeElementWidth(columnElement: HTMLElement, newXMovement: number) {
-    const newWidth = `${columnElement.offsetWidth + newXMovement}px`;
+  public static changeElementWidth(columnElement: HTMLElement, widthDelta: number) {
+    const newWidth = `${Math.max(0, columnElement.offsetWidth + widthDelta)}px`;
     columnElement.style.width = newWidth;
   }
 

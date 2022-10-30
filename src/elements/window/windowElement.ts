@@ -6,5 +6,7 @@ export class WindowElement {
     window.onkeydown = WindowEvents.onKeyDown.bind(etc);
     window.onkeyup = WindowEvents.onKeyUp.bind(etc);
     window.onmousedown = WindowEvents.onMouseDown.bind(etc);
+    window.onmouseup = WindowEvents.onMouseUp.bind(etc);
+    window.onmousemove = WindowEvents.onMouseMove.bind(etc);
   }
 }

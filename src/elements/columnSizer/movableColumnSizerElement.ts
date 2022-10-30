@@ -1,5 +1,5 @@
 import {ColumnResizerStyle} from '../../types/cssStyle';
-import {ColumnSizerT} from '../../types/columnDetails';
+import {ColumnSizerT} from '../../types/columnSizer';
 
 // WORK - rapidly click on the sizer and will notice vertical lines
 // WORK - test when cell has borders

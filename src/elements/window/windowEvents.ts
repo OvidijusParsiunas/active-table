@@ -1,9 +1,11 @@
 import {CategoryCellEvents} from '../cell/cellsWithTextDiv/categoryCell/categoryCellEvents';
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
+import {MovableColumnSizerEvents} from '../columnSizer/movableColumnSizerEvents';
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
+import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {CellDetails} from '../../types/focusedCell';
@@ -42,5 +44,13 @@ export class WindowEvents {
       DateCellInputElement.toggle(this.overlayElementsState.datePickerCell, false);
       delete this.overlayElementsState.datePickerCell;
     }
+  }
+
+  public static onMouseUp(this: EditableTableComponent) {
+    if (this.tableElementEventState.columnSizer.selected) ColumnSizerEvents.windowOnMouseUp(this);
+  }
+
+  public static onMouseMove(this: EditableTableComponent, event: MouseEvent) {
+    if (this.tableElementEventState.columnSizer.selected) MovableColumnSizerEvents.attemptMove(this, event.movementX);
   }
 }

@@ -1,7 +1,8 @@
-import {ColumnsDetailsT, ColumnSizerT, ColumnDetailsT, ColumnDetailsTPartial} from '../../types/columnDetails';
+import {ColumnsDetailsT, ColumnDetailsT, ColumnDetailsTPartial} from '../../types/columnDetails';
 import {ColumnSizerElementOverlay} from '../../elements/columnSizer/columnSizerElementOverlay';
 import {ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement';
 import {EditableTableComponent} from '../../editable-table-component';
+import {ColumnSizerT} from '../../types/columnSizer';
 import {ColumnSizer} from './columnSizer';
 
 export class InsertRemoveColumnSizer {

@@ -2,6 +2,8 @@ import {ColumnSizerElementOverlay} from './columnSizerElementOverlay';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {PX} from '../../types/pxDimension';
 
+// WORK - hovering over the sizer some times does not really display it at the correct area
+// README - explain anatomy of a column sizer
 export interface BorderWidths {
   leftCellRight: number;
   rightCellLeft: number;
@@ -14,13 +16,10 @@ export interface BorderWidths {
 // it before hovering over a cell which makes state management difficult - e.g from top/below
 // another reason is because the column sizer neeeds to know which column it is manipulating and needs to
 // be binded to the header cell
-// another reason is that by having each one be statically placed after cells does not require any further
-// calculations for moving it when the user drags it with the mouse
 export class ColumnSizerElement {
   public static readonly FILLED_BACKGROUND_IMAGE =
     'linear-gradient(180deg, #cdcdcd, #cdcdcd 75%, transparent 75%, transparent 100%)';
   public static readonly EMPTY_BACKGROUND_IMAGE = 'none';
-  public static readonly MOUSE_DOWN_COLOR = '#4668ed';
   public static readonly DEFAULT_COLOR = 'grey';
   public static readonly COLUMN_SIZER_CLASS = 'column-sizer';
   public static readonly COLUMN_SIZER_ID_PREFIX = `${ColumnSizerElement.COLUMN_SIZER_CLASS}-`;
@@ -63,11 +62,11 @@ export class ColumnSizerElement {
     columnSizerElement.id = `${ColumnSizerElement.COLUMN_SIZER_ID_PREFIX}${sizerIndex}`;
   }
 
-  public static create(sizerIndex: number, customColor?: string) {
+  public static create(sizerIndex: number, customHoverColor?: string) {
     const columnSizerElement = document.createElement('div');
     ColumnSizerElement.setElementId(columnSizerElement, sizerIndex);
     columnSizerElement.classList.add(ColumnSizerElement.COLUMN_SIZER_CLASS);
-    const middleOverlayElement = ColumnSizerElementOverlay.create(customColor);
+    const middleOverlayElement = ColumnSizerElementOverlay.create(customHoverColor);
     columnSizerElement.append(middleOverlayElement);
     ColumnSizerElement.hide(columnSizerElement);
     return columnSizerElement;
@@ -104,9 +103,9 @@ export class ColumnSizerElement {
     }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
   }
 
-  public static setHoverProperties(columnSizerElement: HTMLElement, width: PX, customColor?: string) {
+  public static setHoverStyle(columnSizerElement: HTMLElement, width: PX, setTransition: boolean, customColor?: string) {
     ColumnSizerElementOverlay.display(columnSizerElement.children[0] as HTMLElement);
-    ColumnSizerElement.setTransitionTime(columnSizerElement);
+    if (setTransition) ColumnSizerElement.setTransitionTime(columnSizerElement);
     ColumnSizerElement.setColors(columnSizerElement, customColor || ColumnSizerElement.DEFAULT_COLOR);
     columnSizerElement.style.width = width;
   }
