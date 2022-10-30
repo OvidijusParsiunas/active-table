@@ -137,7 +137,7 @@ export class ColumnSizerEvents {
     ColumnSizerEvents.immediatelySetSizerStyleToDefault(columnSizer, movableElement.style.backgroundColor);
     setTimeout(() => {
       ColumnSizerElement.setTransitionTime(sizerElement);
-      ColumnSizerElement.setDefaultProperties(sizerElement, sizerStyles.default.width);
+      ColumnSizerElement.setDefaultProperties(sizerElement, sizerStyles.default.width, false);
       ColumnSizerElement.setPropertiesAfterBlurAnimation(sizerElement, sizerStyles.default.backgroundImage);
       ColumnSizerElement.hideAfterBlurAnimation(sizerElement);
     });
@@ -151,7 +151,6 @@ export class ColumnSizerEvents {
       (selected as HTMLElement).id, columnsDetails);
     ColumnSizerEvents.mouseUpSizer((moveLimits as SizerMoveLimits).currentOffset, columnSizer,
       headerCell, etc.tableElementEventState);
-    ColumnSizerElement.hide(selected as HTMLElement);
     ColumnSizerEvents.blurSizerOnMouseUp(columnSizer)
   }
 
@@ -166,10 +165,11 @@ export class ColumnSizerEvents {
       headerCell, etc.tableElementEventState);
     if (MovableColumnSizerElement.isMovableColumnSizer(target)) {
       columnSizer.isMouseUpOnSizer = true;
+      ColumnSizerEvents.immediatelySetSizerStyleToDefault(columnSizer, etc.columnResizerStyle.hover?.backgroundColor);
       setTimeout(() => {
         columnSizer.isMouseUpOnSizer = false;
+        ColumnSizerElement.setTransitionTime(columnSizer.element);
       })
-      ColumnSizerEvents.immediatelySetSizerStyleToDefault(columnSizer, etc.columnResizerStyle.hover?.backgroundColor);
     } else {
       ColumnSizerEvents.blurSizerOnMouseUp(columnSizer);
     }

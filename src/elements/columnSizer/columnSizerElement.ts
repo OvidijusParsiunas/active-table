@@ -48,10 +48,10 @@ export class ColumnSizerElement {
   }
 
   // properties that can be overwritten by hover
-  public static setDefaultProperties(columnSizerElement: HTMLElement, width: PX) {
-    columnSizerElement.style.width = width;
-    ColumnSizerElement.setColors(columnSizerElement, SEMI_TRANSPARENT_COLOR);
+  public static setDefaultProperties(columnSizerElement: HTMLElement, width: PX, setColors = true) {
     ColumnSizerElementOverlay.hide(columnSizerElement.children[0] as HTMLElement);
+    if (setColors) ColumnSizerElement.setColors(columnSizerElement, SEMI_TRANSPARENT_COLOR);
+    columnSizerElement.style.width = width;
   }
 
   public static setPermanentProperties(columnSizerElement: HTMLElement, marginLeft: string) {
@@ -99,6 +99,7 @@ export class ColumnSizerElement {
       ColumnSizerElement.setBackgroundImage(columnSizerElement, backgroundImage);
       setTimeout(() => {
         ColumnSizerElement.unsetTransitionTime(columnSizerElement);
+        ColumnSizerElement.setColors(columnSizerElement, SEMI_TRANSPARENT_COLOR);
       }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
     }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
   }
