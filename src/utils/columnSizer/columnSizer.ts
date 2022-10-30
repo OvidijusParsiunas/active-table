@@ -87,9 +87,9 @@ export class ColumnSizer {
 
   // prettier-ignore
   public static create(etc: EditableTableComponent, sizerIndex: number) {
-    const { columnsDetails, tableElementRef, columnResizerStyle } = etc;
-    const columnSizerElement = ColumnSizerElement.create(sizerIndex, columnResizerStyle.hover?.backgroundColor);
-    const movableColumnSizer = MovableColumnSizerElement.create(columnResizerStyle);
+    const { columnsDetails, tableElementRef, columnResizerStyle: userSetColumnSizerStyle } = etc;
+    const columnSizerElement = ColumnSizerElement.create(sizerIndex, userSetColumnSizerStyle.hover?.backgroundColor);
+    const movableColumnSizer = MovableColumnSizerElement.create(userSetColumnSizerStyle);
     const columnSizer = ColumnSizer.createObject(
       columnSizerElement, columnsDetails, sizerIndex, movableColumnSizer, tableElementRef as HTMLElement);
     columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);

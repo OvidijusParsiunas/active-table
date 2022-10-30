@@ -47,10 +47,10 @@ export class ColumnSizerElement {
     columnSizerElement.style.transition = '0.0s';
   }
 
-  // properties that can be overwritten by hover
-  public static setDefaultProperties(columnSizerElement: HTMLElement, width: PX, setColors = true) {
-    ColumnSizerElementOverlay.hide(columnSizerElement.children[0] as HTMLElement);
+  // does not unset the background image
+  public static unsetElementsToDefault(columnSizerElement: HTMLElement, width: PX, setColors = true) {
     if (setColors) ColumnSizerElement.setColors(columnSizerElement, SEMI_TRANSPARENT_COLOR);
+    ColumnSizerElementOverlay.hide(columnSizerElement.children[0] as HTMLElement);
     columnSizerElement.style.width = width;
   }
 

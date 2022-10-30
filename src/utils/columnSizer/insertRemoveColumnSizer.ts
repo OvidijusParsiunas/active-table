@@ -14,7 +14,7 @@ export class InsertRemoveColumnSizer {
   }
 
   private static applySizerStateToElement(columnSizerElement: HTMLElement, columnSizer: ColumnSizerT) {
-    ColumnSizerElement.setDefaultProperties(columnSizerElement, columnSizer.styles.default.width);
+    ColumnSizerElement.unsetElementsToDefault(columnSizerElement, columnSizer.styles.default.width);
     ColumnSizerElementOverlay.setWidth(columnSizer.element.children[0] as HTMLElement, columnSizer.styles.default.width);
     ColumnSizerElement.setPermanentProperties(columnSizerElement, columnSizer.styles.permanent.marginLeft);
     ColumnSizerElement.setBackgroundImage(columnSizerElement, columnSizer.styles.default.backgroundImage);

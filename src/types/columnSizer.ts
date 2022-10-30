@@ -1,3 +1,4 @@
+import {StatefulCSSS, CSSStyle} from './cssStyle';
 import {PX} from './pxDimension';
 
 export interface SizerMoveLimits {
@@ -28,3 +29,5 @@ export interface ColumnSizerT {
   isSizerHovered: boolean;
   isMouseUpOnSizer: boolean;
 }
+
+export type UserSetColumnSizerStyle = Omit<StatefulCSSS<Pick<CSSStyle, 'backgroundColor'>>, 'default'>;

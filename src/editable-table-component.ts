@@ -7,9 +7,9 @@ import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableElementEventState} from './types/tableElementEventState';
 import {customElement, property, state} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
-import {ColumnResizerStyle, CSSStyle} from './types/cssStyle';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
+import {UserSetColumnSizerStyle} from './types/columnSizer';
 import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {OverlayElements} from './types/overlayElements';
@@ -19,6 +19,7 @@ import {TableDimensions} from './types/tableDimensions';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
 import {Browser} from './utils/browser/browser';
+import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
 
 // TO-DO
@@ -102,9 +103,9 @@ export class EditableTableComponent extends LitElement {
   @property({type: Object})
   cellStyle: CSSStyle = {};
 
-  // in code - columnResizer is called columnSizer for simplicity
+  // columnResizer for the client - columnSizer in code for efficiency
   @property({type: Object})
-  columnResizerStyle: ColumnResizerStyle = {};
+  columnResizerStyle: UserSetColumnSizerStyle = {};
 
   @property({type: Boolean})
   displayAddRowCell = true;
