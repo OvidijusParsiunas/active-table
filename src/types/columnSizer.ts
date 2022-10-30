@@ -6,7 +6,7 @@ export interface SizerMoveLimits {
   currentOffset: number;
 }
 
-interface ColumnSizerStyles {
+export interface ColumnSizerStyles {
   default: {
     backgroundImage: string;
     width: PX;

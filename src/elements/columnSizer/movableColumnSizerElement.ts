@@ -1,7 +1,6 @@
 import {ColumnResizerStyle} from '../../types/cssStyle';
 import {ColumnSizerT} from '../../types/columnSizer';
 
-// WORK - rapidly click on the sizer and will notice vertical lines
 // WORK - test when cell has borders
 export class MovableColumnSizerElement {
   private static readonly DEFAULT_BACKGROUND_COLOR = '#4668ed';

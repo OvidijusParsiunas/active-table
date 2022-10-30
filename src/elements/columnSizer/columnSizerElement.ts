@@ -23,9 +23,9 @@ export class ColumnSizerElement {
   public static readonly DEFAULT_COLOR = 'grey';
   public static readonly COLUMN_SIZER_CLASS = 'column-sizer';
   public static readonly COLUMN_SIZER_ID_PREFIX = `${ColumnSizerElement.COLUMN_SIZER_CLASS}-`;
-  private static readonly TRANSITION_TIME_ML = 200;
+  public static readonly TRANSITION_TIME_ML = 200;
   private static readonly TRANSITION_TIME = `${ColumnSizerElement.TRANSITION_TIME_ML / 1000}s`;
-  private static readonly HALF_TRANSITION_TIME_ML = ColumnSizerElement.TRANSITION_TIME_ML / 2;
+  public static readonly HALF_TRANSITION_TIME_ML = ColumnSizerElement.TRANSITION_TIME_ML / 2;
 
   public static isHovered(columnSizerElement: HTMLElement) {
     return columnSizerElement.style.backgroundImage === ColumnSizerElement.EMPTY_BACKGROUND_IMAGE;
@@ -81,27 +81,10 @@ export class ColumnSizerElement {
     columnSizerElement.style.display = 'none';
   }
 
-  public static hideAfterBlurAnimation(columnSizerElement: HTMLElement) {
-    setTimeout(() => {
-      ColumnSizerElement.hide(columnSizerElement);
-    }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
-  }
-
   public static setColors(columnSizerElement: HTMLElement, color: string) {
     columnSizerElement.style.backgroundColor = color;
     columnSizerElement.style.borderLeftColor = color;
     columnSizerElement.style.borderRightColor = color;
-  }
-
-  // properties that are reset when columnSizer is no longer hovered
-  public static setPropertiesAfterBlurAnimation(columnSizerElement: HTMLElement, backgroundImage: string) {
-    setTimeout(() => {
-      ColumnSizerElement.setBackgroundImage(columnSizerElement, backgroundImage);
-      setTimeout(() => {
-        ColumnSizerElement.unsetTransitionTime(columnSizerElement);
-        ColumnSizerElement.setColors(columnSizerElement, SEMI_TRANSPARENT_COLOR);
-      }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
-    }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
   }
 
   public static setHoverStyle(columnSizerElement: HTMLElement, width: PX, setTransition: boolean, customColor?: string) {
