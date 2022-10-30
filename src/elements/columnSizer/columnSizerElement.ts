@@ -87,10 +87,10 @@ export class ColumnSizerElement {
     columnSizerElement.style.borderRightColor = color;
   }
 
-  public static setHoverStyle(columnSizerElement: HTMLElement, width: PX, setTransition: boolean, customColor?: string) {
+  public static setHoverStyle(columnSizerElement: HTMLElement, width: PX, color: string, setTransition: boolean) {
     ColumnSizerElementOverlay.display(columnSizerElement.children[0] as HTMLElement);
     if (setTransition) ColumnSizerElement.setTransitionTime(columnSizerElement);
-    ColumnSizerElement.setColors(columnSizerElement, customColor || ColumnSizerElement.DEFAULT_COLOR);
+    ColumnSizerElement.setColors(columnSizerElement, color);
     columnSizerElement.style.width = width;
   }
 }

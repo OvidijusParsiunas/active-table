@@ -1,9 +1,9 @@
 import {BorderWidths, ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement';
 import {MovableColumnSizerElement} from '../../elements/columnSizer/movableColumnSizerElement';
 import {ColumnSizerEvents} from '../../elements/columnSizer/columnSizerEvents';
+import {ColumnSizerT, UserSetColumnSizerStyle} from '../../types/columnSizer';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnsDetailsT} from '../../types/columnDetails';
-import {ColumnSizerT} from '../../types/columnSizer';
 import {Optional} from '../../types/optional';
 import {PX} from '../../types/pxDimension';
 
@@ -55,7 +55,8 @@ export class ColumnSizer {
 
   // prettier-ignore
   public static createObject(columnSizerElement: HTMLElement, columnsDetails: ColumnsDetailsT,
-      sizerIndex: number, movableColumnSizer?: HTMLElement, tableElement?: HTMLElement): ColumnSizerT {
+      sizerIndex: number, userSetColumnSizerStyle?: UserSetColumnSizerStyle,
+      movableColumnSizer?: HTMLElement, tableElement?: HTMLElement): ColumnSizerT {
     const borderWidthsInfo = ColumnSizer.generateBorderWidthsInfo(columnsDetails, sizerIndex);
     const totalCellBorderWidth = ColumnSizer.getTotalCellBorderWidth(borderWidthsInfo);
     const marginLeft = ColumnSizer.getMarginLeft(borderWidthsInfo);
@@ -72,6 +73,7 @@ export class ColumnSizer {
         },
         hover: {
           width: ColumnSizer.shouldWidthBeIncreased(totalCellBorderWidth) ? `${totalCellBorderWidth * 1.5}px` : '7px',
+          backgroundColor: userSetColumnSizerStyle?.hover?.backgroundColor || ColumnSizerElement.DEFAULT_COLOR,
         },
         permanent: {
           marginLeft,
@@ -90,8 +92,9 @@ export class ColumnSizer {
     const { columnsDetails, tableElementRef, columnResizerStyle: userSetColumnSizerStyle } = etc;
     const columnSizerElement = ColumnSizerElement.create(sizerIndex, userSetColumnSizerStyle.hover?.backgroundColor);
     const movableColumnSizer = MovableColumnSizerElement.create(userSetColumnSizerStyle);
-    const columnSizer = ColumnSizer.createObject(
-      columnSizerElement, columnsDetails, sizerIndex, movableColumnSizer, tableElementRef as HTMLElement);
+    const columnSizer = ColumnSizer.createObject(columnSizerElement, columnsDetails, sizerIndex,
+        userSetColumnSizerStyle, movableColumnSizer, tableElementRef as HTMLElement);
+    columnSizerElement.onmousedown = ColumnSizerEvents.sizerOnMouseDown.bind(etc);
     columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);
     columnSizerElement.onmouseleave = ColumnSizerEvents.sizerOnMouseLeave.bind(etc, columnSizer);
     return columnSizer;

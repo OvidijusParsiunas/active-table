@@ -1,6 +1,6 @@
 import {StaticTableWidthColumnSizerEvents} from '../../utils/staticTableWidthsUtils/staticTableWidthColumnSizerEvents';
-import {ColumnSizerT, SizerMoveLimits, UserSetColumnSizerStyle} from '../../types/columnSizer';
 import {TableElementEventState} from '../../types/tableElementEventState';
+import {ColumnSizerT, SizerMoveLimits} from '../../types/columnSizer';
 import {EditableTableComponent} from '../../editable-table-component';
 import {MovableColumnSizerElement} from './movableColumnSizerElement';
 import {ColumnSizerEventsUtils} from './columnSizerEventsUtils';
@@ -94,27 +94,28 @@ export class ColumnSizerEvents {
 
   // WORK - can potentially have this on the element itself?
   // prettier-ignore
-  public static tableOnMouseDown(etc: EditableTableComponent, selectedColumnSizer: HTMLElement) {
+  public static sizerOnMouseDown(this: EditableTableComponent, event: MouseEvent) {
     const {columnSizer, sizerNumber} = ColumnSizerEventsUtils.getSizerDetailsViaElementId(
-      selectedColumnSizer.id, etc.columnsDetails);
-    etc.tableElementEventState.columnSizer.selected = columnSizer.element;
-    MovableColumnSizerElement.display(etc.tableBodyElementRef as HTMLElement, columnSizer, etc.displayAddRowCell)
-    ColumnSizerElement.unsetElementsToDefault(columnSizer.element, columnSizer.styles.default.width);
-    ColumnSizerElement.setBackgroundImage(columnSizer.element, columnSizer.styles.default.backgroundImage);
+      (event.target as HTMLElement).id, this.columnsDetails);
+    const {element: sizerElement, styles: sizerStyles} = columnSizer;
+    this.tableElementEventState.columnSizer.selected = sizerElement;
+    MovableColumnSizerElement.display(this.tableBodyElementRef as HTMLElement, columnSizer, this.displayAddRowCell)
+    ColumnSizerElement.unsetElementsToDefault(sizerElement, sizerStyles.default.width);
+    ColumnSizerElement.setBackgroundImage(sizerElement, sizerStyles.default.backgroundImage);
     // WORK - take into consideration border size and padding
     // const rightColumnsWidth = etc.offsetWidth -
     //   etc.columnsDetails[sizerNumber + 1].elements[0].offsetLeft;
     // WORK
-    const rightColumnsWidth = (etc.parentElement as HTMLElement).offsetWidth -
-      etc.columnsDetails[sizerNumber + 1].elements[0].offsetLeft - etc.offsetLeft;
-    etc.tableElementEventState.columnSizer.moveLimits = {
-      left: -etc.columnsDetails[sizerNumber].elements[0].offsetWidth,
+    const rightColumnsWidth = (this.parentElement as HTMLElement).offsetWidth -
+    this.columnsDetails[sizerNumber + 1].elements[0].offsetLeft - this.offsetLeft;
+    this.tableElementEventState.columnSizer.moveLimits = {
+      left: -this.columnsDetails[sizerNumber].elements[0].offsetWidth,
       right: rightColumnsWidth,
       currentOffset: 0,
     }
     // REF-11
-    if (etc.tableDimensions.width || Browser.IS_SAFARI) {
-      StaticTableWidthColumnSizerEvents.setPreResizeSiblingCellsTotalWidth(etc.columnsDetails, columnSizer.element);
+    if (this.tableDimensions.width || Browser.IS_SAFARI) {
+      StaticTableWidthColumnSizerEvents.setPreResizeSiblingCellsTotalWidth(this.columnsDetails, sizerElement);
     }
   }
 
@@ -126,10 +127,9 @@ export class ColumnSizerEvents {
     delete tableElementEventState.columnSizer.selected;
   }
 
-  // prettier-ignore
-  private static setSizerStyleToHoverNoAnimation(columnSizer: ColumnSizerT, customBackgroundColor?: string) {
-    ColumnSizerElement.setHoverStyle(
-      columnSizer.element, columnSizer.styles.hover.width, false, customBackgroundColor);
+  private static setSizerStyleToHoverNoAnimation(columnSizer: ColumnSizerT, anotherColor?: string) {
+    const {width, backgroundColor} = columnSizer.styles.hover;
+    ColumnSizerElement.setHoverStyle(columnSizer.element, width, anotherColor || backgroundColor, false);
     ColumnSizerElement.unsetBackgroundImage(columnSizer.element);
   }
 
@@ -161,8 +161,8 @@ export class ColumnSizerEvents {
     ColumnSizerEvents.mouseUpNotOnSizer(columnSizer);
   }
 
-  private static mouseUpOnSizer(columnSizer: ColumnSizerT, userSetColumnSizerStyle: UserSetColumnSizerStyle) {
-    ColumnSizerEvents.setSizerStyleToHoverNoAnimation(columnSizer, userSetColumnSizerStyle.hover?.backgroundColor);
+  private static mouseUpOnSizer(columnSizer: ColumnSizerT) {
+    ColumnSizerEvents.setSizerStyleToHoverNoAnimation(columnSizer);
     columnSizer.isMouseUpOnSizer = true;
     setTimeout(() => {
       columnSizer.isMouseUpOnSizer = false;
@@ -179,19 +179,18 @@ export class ColumnSizerEvents {
     ColumnSizerEvents.mouseUp((moveLimits as SizerMoveLimits).currentOffset, columnSizer,
       headerCell, etc.tableElementEventState);
     if (MovableColumnSizerElement.isMovableColumnSizer(target)) {
-      ColumnSizerEvents.mouseUpOnSizer(columnSizer, etc.columnResizerStyle);
+      ColumnSizerEvents.mouseUpOnSizer(columnSizer);
     } else {
       ColumnSizerEvents.mouseUpNotOnSizer(columnSizer);
     }
   }
 
-  // prettier-ignore
-  public static sizerOnMouseEnter(this: EditableTableComponent, columnSizer: ColumnSizerT) {
+  public static sizerOnMouseEnter(columnSizer: ColumnSizerT) {
     columnSizer.isSizerHovered = true;
     // mouse up on sizer triggers this event, but we do not want to execute it here as the animation will not be correct
     if (columnSizer.isMouseUpOnSizer) return;
-    ColumnSizerElement.setHoverStyle(
-      columnSizer.element, columnSizer.styles.hover.width, true, this.columnResizerStyle.hover?.backgroundColor);
+    const {width, backgroundColor} = columnSizer.styles.hover;
+    ColumnSizerElement.setHoverStyle(columnSizer.element, width, backgroundColor, true);
     // only remove the background image if the user is definitely hovering over it
     setTimeout(() => {
       if (columnSizer.isSizerHovered) ColumnSizerElement.unsetBackgroundImage(columnSizer.element);
@@ -208,19 +207,18 @@ export class ColumnSizerEvents {
     }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
   }
 
-  // prettier-ignore
   public static sizerOnMouseLeave(this: EditableTableComponent, columnSizer: ColumnSizerT) {
     columnSizer.isSizerHovered = false;
     if (this.tableElementEventState.columnSizer.selected) return;
-    ColumnSizerElement.unsetElementsToDefault(columnSizer.element, columnSizer.styles.default.width);
+    const {element: sizerElement, styles: sizerStyles} = columnSizer;
+    ColumnSizerElement.unsetElementsToDefault(sizerElement, sizerStyles.default.width);
     // cannot use columnSizer.isSizerHovered because it can be set to false before this method is called, hence using
     // the background image as an indicator and then checking if the sizer is in fact not hovered in a timeout
-    const isHovered = ColumnSizerElement.isHovered(columnSizer.element);
+    const isHovered = ColumnSizerElement.isHovered(sizerElement);
     // only reset if the user is definitely not hovering over it
     setTimeout(() => {
       if (!this.tableElementEventState.columnSizer.selected && !columnSizer.isSizerHovered) {
-        ColumnSizerEvents.unsetColorDuringTransition(columnSizer.element,
-          columnSizer.styles.default.backgroundImage);
+        ColumnSizerEvents.unsetColorDuringTransition(sizerElement, sizerStyles.default.backgroundImage);
         ColumnSizerEvents.hideWhenCellNotHovered(columnSizer, isHovered);
       }
     }, ColumnSizerEvents.MOUSE_PASSTHROUGH_TIME_ML);

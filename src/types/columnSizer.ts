@@ -14,6 +14,7 @@ export interface ColumnSizerStyles {
   };
   hover: {
     width: PX;
+    backgroundColor: string;
   };
   permanent: {
     marginLeft: PX;
