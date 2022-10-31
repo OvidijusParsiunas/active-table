@@ -14,16 +14,18 @@ export class ColumnSizer {
   }
 
   // prettier-ignore
-  private static getBackgroundImage(
-      totalCellBorderWidth: number, beforeLeftCellRight: number, isLastCell: boolean, tableElement?: HTMLElement) {
+  private static getBackgroundImage(totalCellBorderWidth: number,
+      leftCellLeft: number, beforeLeftCellRight: number, isLastCell: boolean, tableElement?: HTMLElement) {
     // REF-1
-    // because right border is not placed on the rightmost cell and is instead controlled by the table border
-    // the strategy here is to have a filled column sizer background image if the table has no border or even if it does
-    // and the cells do not as they will too have filled borders and hence this will maintain consistency
-    // empty sizer background image if both cells and table have a border
+    // for last column sizer
+    // the strategy is to have a filled column sizer background image if the table has no border or even if it does
+    // and the cells do not as they will too have filled backgrounds, hence this will maintain the consistency
+    // empty background image if both cells and table have borders
+    // for first to second last column sizer
+    // filled background if no border and empty if present
     if (isLastCell && tableElement) {
       if (Number.parseInt(tableElement.style.borderRightWidth) > 0
-          && (totalCellBorderWidth > 0 || beforeLeftCellRight > 0)) {
+          && (leftCellLeft > 0 || beforeLeftCellRight > 0)) {
         return ColumnSizerElement.EMPTY_BACKGROUND_IMAGE;
       }
     } else if (totalCellBorderWidth > 0) {
@@ -32,9 +34,9 @@ export class ColumnSizer {
     return ColumnSizerElement.FILLED_BACKGROUND_IMAGE;
   }
 
-  private static getMarginRight(borderWidths: BorderWidths): PX {
-    const marginRight = borderWidths ? borderWidths.leftCellRight - borderWidths.rightCellLeft : 0;
-    return `${marginRight}px`;
+  private static getMarginRight(borderWidths: BorderWidths, isLastCell: boolean): PX {
+    if (isLastCell || !borderWidths) return '0px';
+    return `${borderWidths.leftCellRight - borderWidths.rightCellLeft}px`;
   }
 
   private static getTotalCellBorderWidth(borderWidths: BorderWidths) {
@@ -42,11 +44,14 @@ export class ColumnSizer {
   }
 
   private static generateBorderWidthsInfo(columnsDetails: ColumnsDetailsT, sizerIndex: number): BorderWidths {
-    const borderWidths: BorderWidths = {rightCellLeft: 0, leftCellRight: 0, beforeLeftCellRight: 0};
+    const borderWidths: BorderWidths = {rightCellLeft: 0, leftCellLeft: 0, leftCellRight: 0, beforeLeftCellRight: 0};
     const beforeLeftCell = columnsDetails[sizerIndex - 1]?.elements[0];
     if (beforeLeftCell) borderWidths.beforeLeftCellRight = Number.parseInt(beforeLeftCell.style.borderRightWidth) || 0;
     const leftCell = columnsDetails[sizerIndex]?.elements[0];
-    if (leftCell) borderWidths.leftCellRight = Number.parseInt(leftCell.style.borderRightWidth) || 0;
+    if (leftCell) {
+      borderWidths.leftCellLeft = Number.parseInt(leftCell.style.borderLeftWidth) || 0;
+      borderWidths.leftCellRight = Number.parseInt(leftCell.style.borderRightWidth) || 0;
+    }
     const rightCell = columnsDetails[sizerIndex + 1]?.elements[0];
     if (rightCell) borderWidths.rightCellLeft = Number.parseInt(rightCell.style.borderLeftWidth) || 0;
     return borderWidths;
@@ -57,9 +62,10 @@ export class ColumnSizer {
       sizerIndex: number, movableColumnSizer?: HTMLElement, tableElement?: HTMLElement): ColumnSizerT {
     const borderWidthsInfo = ColumnSizer.generateBorderWidthsInfo(columnsDetails, sizerIndex);
     const totalCellBorderWidth = ColumnSizer.getTotalCellBorderWidth(borderWidthsInfo);
-    const marginRight = ColumnSizer.getMarginRight(borderWidthsInfo);
+    const isLastCell = columnsDetails.length - 1 === sizerIndex;
+    const marginRight = ColumnSizer.getMarginRight(borderWidthsInfo, isLastCell);
     const backgroundImage = ColumnSizer.getBackgroundImage(totalCellBorderWidth,
-      borderWidthsInfo.beforeLeftCellRight, columnsDetails.length - 1 === sizerIndex, tableElement);
+      borderWidthsInfo.leftCellLeft, borderWidthsInfo.beforeLeftCellRight, isLastCell, tableElement);
     // movableElement should be treated as always present in columnSizer, but InsertRemoveColumnSizer needs to create
     // a new object to overwrite its other properties
     const columnSizerState: Optional<ColumnSizerT, 'movableElement'> = {

@@ -1,5 +1,4 @@
 import {ColumnSizer} from '../../utils/columnSizer/columnSizer';
-import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {ColumnSizerElement} from './columnSizerElement';
 import {PX} from '../../types/pxDimension';
 
@@ -18,12 +17,6 @@ export class ColumnSizerElementOverlay {
     overlayElement.classList.add('column-sizer-overlay');
     overlayElement.style.display = 'none';
     return overlayElement;
-  }
-
-  public static setMouseDownColor(overlayElement: HTMLElement) {
-    // this is almost a fully transparent color that allows the column sizer on click animation to change color
-    // using any transition period and not cause overlay to stand out
-    overlayElement.style.backgroundColor = SEMI_TRANSPARENT_COLOR;
   }
 
   public static setWidth(overlayElement: HTMLElement, width: PX) {

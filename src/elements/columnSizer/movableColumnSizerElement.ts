@@ -1,6 +1,5 @@
 import {ColumnSizerT, UserSetColumnSizerStyle} from '../../types/columnSizer';
 
-// WORK - test when cell has borders
 export class MovableColumnSizerElement {
   private static readonly DEFAULT_BACKGROUND_COLOR = '#4668ed';
   private static readonly MOVABLE_SIZER_CLASS = 'movable-column-sizer';

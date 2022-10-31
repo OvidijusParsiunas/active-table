@@ -8,6 +8,7 @@ import {PX} from '../../types/pxDimension';
 export interface BorderWidths {
   leftCellRight: number;
   rightCellLeft: number;
+  leftCellLeft: number;
   // the reason why this is needed is the last cell cannot see if left cell has border right as it is overriden
   // hence we can find out if it is supposed to have cell right by looking at the cell before the left one
   beforeLeftCellRight: number;

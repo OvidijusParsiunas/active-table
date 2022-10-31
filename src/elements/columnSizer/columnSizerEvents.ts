@@ -66,7 +66,7 @@ export class ColumnSizerEvents {
       element: sizerElement,
       moveLimits: {
         left: -this.columnsDetails[sizerNumber].elements[0].offsetWidth + columnSizerOffset,
-        right: ColumnSizerEvents.getRightColumnLimit(this, sizerNumber),
+        right: ColumnSizerEvents.getRightColumnLimit(this, sizerNumber) + columnSizerOffset,
       },
       initialOffset: columnSizerOffset,
       mouseMoveOffset: columnSizerOffset,

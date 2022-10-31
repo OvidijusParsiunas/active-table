@@ -44,7 +44,8 @@ export class TableElement {
 
   private static createTableElement(etc: EditableTableComponent) {
     const tableElement = document.createElement('table');
-    Object.assign(tableElement.style, etc.tableStyle);
+    // placing it in a timeout for firefox
+    setTimeout(() => Object.assign(tableElement.style, etc.tableStyle));
     tableElement.onmousedown = TableEvents.onMouseDown.bind(etc);
     tableElement.onmouseup = TableEvents.onMouseUp.bind(etc);
     return tableElement;
