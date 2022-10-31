@@ -77,7 +77,7 @@ export class EditableTableComponent extends LitElement {
   tableElementRef: HTMLElement | null = null;
 
   @state()
-  tableElementEventState: TableElementEventState = {columnSizer: {}};
+  tableElementEventState: TableElementEventState = {};
 
   @state()
   tableBodyElementRef: HTMLElement | null = null;
@@ -110,7 +110,7 @@ export class EditableTableComponent extends LitElement {
   @property({type: Boolean})
   displayAddRowCell = true;
 
-  // TO-DO height
+  // TO-DO height - keep in mind that by resizing columns - the height can change
   @property({type: Object})
   tableDimensions: TableDimensions = {};
 
@@ -122,7 +122,7 @@ export class EditableTableComponent extends LitElement {
   }
 
   private refreshTableState() {
-    this.tableElementEventState = {columnSizer: {}};
+    this.tableElementEventState = {};
     this.columnsDetails = [];
     StaticTableWidthUtils.setInitialTableWidth(
       this.tableDimensions,

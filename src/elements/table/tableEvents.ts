@@ -40,7 +40,7 @@ export class TableEvents {
   }
 
   public static onMouseUp(this: EditableTableComponent, event: MouseEvent) {
-    if (this.tableElementEventState.columnSizer.selected) {
+    if (this.tableElementEventState.selectedColumnSizer) {
       ColumnSizerEvents.tableOnMouseUp(this, event.target as HTMLElement);
     }
   }

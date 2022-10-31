@@ -12,11 +12,13 @@ export class MovableColumnSizerEvents {
 
   // prettier-ignore
   public static attemptMove(etc: EditableTableComponent, newXMovement: number) {
-    const { tableElementEventState: { columnSizer: {moveLimits, selected } }, columnsDetails } = etc;
-    if (moveLimits) {
-      moveLimits.currentOffset += newXMovement;
-      if (moveLimits.currentOffset > moveLimits.left && moveLimits.currentOffset < moveLimits.right) {
-        MovableColumnSizerEvents.move(selected as HTMLElement, columnsDetails, newXMovement);
+    const {tableElementEventState: {selectedColumnSizer}, columnsDetails} = etc;
+    if (selectedColumnSizer) {
+      const {moveLimits, element} = selectedColumnSizer;
+      selectedColumnSizer.mouseMoveOffset += newXMovement;
+      if (selectedColumnSizer.mouseMoveOffset > moveLimits.left
+          && selectedColumnSizer.mouseMoveOffset < moveLimits.right) {
+        MovableColumnSizerEvents.move(element, columnsDetails, newXMovement);
       }
     }
   }

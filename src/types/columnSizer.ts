@@ -4,7 +4,6 @@ import {PX} from './pxDimension';
 export interface SizerMoveLimits {
   left: number;
   right: number;
-  currentOffset: number;
 }
 
 // these are styles that are dynamic and also depend on the column index
@@ -34,6 +33,12 @@ export interface ColumnSizerT {
   isSideCellHovered: boolean;
   isSizerHovered: boolean;
   isMouseUpOnSizer: boolean;
+}
+
+export interface SelectedColumnSizer {
+  element: HTMLElement;
+  moveLimits: SizerMoveLimits;
+  mouseMoveOffset: number;
 }
 
 export type UserSetColumnSizerStyle = Omit<StatefulCSSS<Pick<CSSStyle, 'backgroundColor'>>, 'default'>;

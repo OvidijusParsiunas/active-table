@@ -47,10 +47,10 @@ export class WindowEvents {
   }
 
   public static onMouseUp(this: EditableTableComponent) {
-    if (this.tableElementEventState.columnSizer.selected) ColumnSizerEvents.windowOnMouseUp(this);
+    if (this.tableElementEventState.selectedColumnSizer) ColumnSizerEvents.windowOnMouseUp(this);
   }
 
   public static onMouseMove(this: EditableTableComponent, event: MouseEvent) {
-    if (this.tableElementEventState.columnSizer.selected) MovableColumnSizerEvents.attemptMove(this, event.movementX);
+    if (this.tableElementEventState.selectedColumnSizer) MovableColumnSizerEvents.attemptMove(this, event.movementX);
   }
 }

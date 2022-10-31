@@ -17,7 +17,7 @@ export class HeaderCellEvents {
   }
 
   private static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
-    if (!this.tableElementEventState.columnSizer.selected) {
+    if (!this.tableElementEventState.selectedColumnSizer) {
       HeaderCellEvents.highlightCell(event.target as HTMLElement);
       ColumnSizerCellEvents.cellMouseEnter(this.columnsDetails, columnIndex, event);
     }
@@ -27,7 +27,7 @@ export class HeaderCellEvents {
     if (!Dropdown.isDisplayed(this.overlayElementsState.columnDropdown)) {
       HeaderCellEvents.fadeCell(event.target as HTMLElement);
     }
-    if (!this.tableElementEventState.columnSizer.selected) {
+    if (!this.tableElementEventState.selectedColumnSizer) {
       ColumnSizerCellEvents.cellMouseLeave(this.columnsDetails, columnIndex);
     }
   }
