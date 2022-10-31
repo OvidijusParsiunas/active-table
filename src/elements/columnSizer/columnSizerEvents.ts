@@ -8,59 +8,9 @@ import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {ColumnsDetailsT} from '../../types/columnDetails';
 import {ColumnSizerElement} from './columnSizerElement';
 import {Browser} from '../../utils/browser/browser';
-import {PX} from '../../types/pxDimension';
 
 export class ColumnSizerEvents {
   private static readonly MOUSE_PASSTHROUGH_TIME_ML = 50;
-
-  private static hideWithBlurAnimation(columnSizerElement: HTMLElement) {
-    setTimeout(() => {
-      ColumnSizerElement.hide(columnSizerElement);
-    }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
-  }
-
-  private static hideWhenCellNotHovered(columnSizer: ColumnSizerT, wasHovered: boolean) {
-    // do not hide if the other side cell is hovered
-    if (columnSizer.isSideCellHovered) return;
-    if (wasHovered) {
-      ColumnSizerEvents.hideWithBlurAnimation(columnSizer.element);
-    } else {
-      ColumnSizerElement.hide(columnSizer.element);
-    }
-  }
-
-  private static hideColumnSizer(columnSizer: ColumnSizerT) {
-    if (!columnSizer) return;
-    columnSizer.isSideCellHovered = false;
-    // cannot use columnSizer.isSizerHovered to identify if animation is present as it can be set to false before
-    // this method is called, hence using the background image as an indicator and then checking if the sizer is
-    // in fact not hovered in a timeout
-    const isHovered = ColumnSizerElement.isHovered(columnSizer.element);
-    setTimeout(() => {
-      // check if mouse has not left the cell for the column sizer
-      if (!columnSizer.isSizerHovered) {
-        ColumnSizerEvents.hideWhenCellNotHovered(columnSizer, isHovered);
-      }
-    });
-  }
-
-  public static cellMouseLeave(columnsDetails: ColumnsDetailsT, columnIndex: number) {
-    ColumnSizerEvents.hideColumnSizer(columnsDetails[columnIndex - 1]?.columnSizer);
-    ColumnSizerEvents.hideColumnSizer(columnsDetails[columnIndex]?.columnSizer);
-  }
-
-  private static displayColumnSizer(columnSizer: ColumnSizerT, height: PX) {
-    if (!columnSizer) return;
-    ColumnSizerElement.display(columnSizer.element, height);
-    columnSizer.isSideCellHovered = true;
-  }
-
-  public static cellMouseEnter(columnsDetails: ColumnsDetailsT, columnIndex: number, event: MouseEvent) {
-    const headerCellElement = event.target as HTMLElement;
-    const height: PX = `${headerCellElement.offsetHeight}px`;
-    ColumnSizerEvents.displayColumnSizer(columnsDetails[columnIndex - 1]?.columnSizer, height);
-    ColumnSizerEvents.displayColumnSizer(columnsDetails[columnIndex]?.columnSizer, height);
-  }
 
   // WORK - remove
   // prettier-ignore
@@ -141,7 +91,7 @@ export class ColumnSizerEvents {
     setTimeout(() => {
       ColumnSizerElement.setTransitionTime(sizerElement);
       ColumnSizerElement.unsetElementsToDefault(sizerElement, sizerStyles.default.width, false);
-      ColumnSizerEvents.hideWithBlurAnimation(sizerElement);
+      ColumnSizerElement.hideWhenCellNotHovered(columnSizer, true);
     });
     // reset properties after the animation so we have the right properties for mouse enter
     setTimeout(() => {
@@ -197,12 +147,16 @@ export class ColumnSizerEvents {
     }, ColumnSizerEvents.MOUSE_PASSTHROUGH_TIME_ML);
   }
 
-  private static unsetColorDuringTransition(columnSizerElement: HTMLElement, backgroundImage: string) {
+  // the constant if statement checking is used to prevent a bug where if a mouse leaves the sizer and immediately reenters
+  // the timeouts would still proceed to execute the code below
+  private static unsetColorDuringTransition(columnSizer: ColumnSizerT) {
     setTimeout(() => {
-      ColumnSizerElement.setBackgroundImage(columnSizerElement, backgroundImage);
+      if (columnSizer.isSizerHovered) return;
+      ColumnSizerElement.setBackgroundImage(columnSizer.element, columnSizer.styles.default.backgroundImage);
       setTimeout(() => {
-        ColumnSizerElement.unsetTransitionTime(columnSizerElement);
-        ColumnSizerElement.setColors(columnSizerElement, SEMI_TRANSPARENT_COLOR);
+        if (columnSizer.isSizerHovered) return;
+        ColumnSizerElement.unsetTransitionTime(columnSizer.element);
+        ColumnSizerElement.setColors(columnSizer.element, SEMI_TRANSPARENT_COLOR);
       }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
     }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
   }
@@ -218,8 +172,8 @@ export class ColumnSizerEvents {
     // only reset if the user is definitely not hovering over it
     setTimeout(() => {
       if (!this.tableElementEventState.columnSizer.selected && !columnSizer.isSizerHovered) {
-        ColumnSizerEvents.unsetColorDuringTransition(sizerElement, sizerStyles.default.backgroundImage);
-        ColumnSizerEvents.hideWhenCellNotHovered(columnSizer, isHovered);
+        ColumnSizerEvents.unsetColorDuringTransition(columnSizer);
+        ColumnSizerElement.hideWhenCellNotHovered(columnSizer, isHovered);
       }
     }, ColumnSizerEvents.MOUSE_PASSTHROUGH_TIME_ML);
   }

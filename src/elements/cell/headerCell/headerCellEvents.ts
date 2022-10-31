@@ -1,7 +1,7 @@
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
+import {ColumnSizerCellEvents} from '../../columnSizer/columnSizerCellEvents';
 import {ColumnDropdown} from '../../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {ColumnSizerEvents} from '../../columnSizer/columnSizerEvents';
 import {Dropdown} from '../../dropdown/dropdown';
 import {CellEvents} from '../cellEvents';
 
@@ -19,7 +19,7 @@ export class HeaderCellEvents {
   private static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     if (!this.tableElementEventState.columnSizer.selected) {
       HeaderCellEvents.highlightCell(event.target as HTMLElement);
-      ColumnSizerEvents.cellMouseEnter(this.columnsDetails, columnIndex, event);
+      ColumnSizerCellEvents.cellMouseEnter(this.columnsDetails, columnIndex, event);
     }
   }
 
@@ -28,7 +28,7 @@ export class HeaderCellEvents {
       HeaderCellEvents.fadeCell(event.target as HTMLElement);
     }
     if (!this.tableElementEventState.columnSizer.selected) {
-      ColumnSizerEvents.cellMouseLeave(this.columnsDetails, columnIndex);
+      ColumnSizerCellEvents.cellMouseLeave(this.columnsDetails, columnIndex);
     }
   }
 

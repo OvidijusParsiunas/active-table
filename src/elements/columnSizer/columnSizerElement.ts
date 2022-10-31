@@ -1,5 +1,6 @@
 import {ColumnSizerElementOverlay} from './columnSizerElementOverlay';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
+import {ColumnSizerT} from '../../types/columnSizer';
 import {PX} from '../../types/pxDimension';
 
 // WORK - hovering over the sizer some times does not really display it at the correct area
@@ -21,8 +22,8 @@ export class ColumnSizerElement {
     'linear-gradient(180deg, #cdcdcd, #cdcdcd 75%, transparent 75%, transparent 100%)';
   public static readonly EMPTY_BACKGROUND_IMAGE = 'none';
   public static readonly DEFAULT_COLOR = 'grey';
-  public static readonly COLUMN_SIZER_CLASS = 'column-sizer';
-  public static readonly COLUMN_SIZER_ID_PREFIX = `${ColumnSizerElement.COLUMN_SIZER_CLASS}-`;
+  private static readonly COLUMN_SIZER_CLASS = 'column-sizer';
+  private static readonly COLUMN_SIZER_ID_PREFIX = `${ColumnSizerElement.COLUMN_SIZER_CLASS}-`;
   public static readonly TRANSITION_TIME_ML = 200;
   private static readonly TRANSITION_TIME = `${ColumnSizerElement.TRANSITION_TIME_ML / 1000}s`;
   public static readonly HALF_TRANSITION_TIME_ML = ColumnSizerElement.TRANSITION_TIME_ML / 2;
@@ -47,7 +48,7 @@ export class ColumnSizerElement {
     columnSizerElement.style.transition = '0.0s';
   }
 
-  // does not unset the background image
+  // is not used to unset background image
   public static unsetElementsToDefault(columnSizerElement: HTMLElement, width: PX, setColors = true) {
     if (setColors) ColumnSizerElement.setColors(columnSizerElement, SEMI_TRANSPARENT_COLOR);
     ColumnSizerElementOverlay.hide(columnSizerElement.children[0] as HTMLElement);
@@ -77,8 +78,24 @@ export class ColumnSizerElement {
     columnSizerElement.style.display = 'flex';
   }
 
-  public static hide(columnSizerElement: HTMLElement) {
+  private static hide(columnSizerElement: HTMLElement) {
     columnSizerElement.style.display = 'none';
+  }
+
+  private static hideWithBlurAnimation(columnSizerElement: HTMLElement) {
+    setTimeout(() => {
+      ColumnSizerElement.hide(columnSizerElement);
+    }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
+  }
+
+  public static hideWhenCellNotHovered(columnSizer: ColumnSizerT, wasHovered: boolean) {
+    // do not hide if the other side cell is hovered
+    if (columnSizer.isSideCellHovered) return;
+    if (wasHovered) {
+      ColumnSizerElement.hideWithBlurAnimation(columnSizer.element);
+    } else {
+      ColumnSizerElement.hide(columnSizer.element);
+    }
   }
 
   public static setColors(columnSizerElement: HTMLElement, color: string) {
