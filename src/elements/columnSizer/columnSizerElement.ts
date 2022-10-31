@@ -1,6 +1,6 @@
+import {ColumnSizerT, UserSetColumnSizerStyle} from '../../types/columnSizer';
 import {ColumnSizerElementOverlay} from './columnSizerElementOverlay';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
-import {ColumnSizerT} from '../../types/columnSizer';
 import {PX} from '../../types/pxDimension';
 
 // WORK - hovering over the sizer some times does not really display it at the correct area
@@ -21,7 +21,8 @@ export class ColumnSizerElement {
   public static readonly FILLED_BACKGROUND_IMAGE =
     'linear-gradient(180deg, #cdcdcd, #cdcdcd 75%, transparent 75%, transparent 100%)';
   public static readonly EMPTY_BACKGROUND_IMAGE = 'none';
-  public static readonly DEFAULT_COLOR = 'grey';
+  // this is not part of the ColumnSizerStyles object as it remains consistent for all sizers after setting it once
+  public static HOVER_COLOR = 'grey';
   private static readonly COLUMN_SIZER_CLASS = 'column-sizer';
   private static readonly COLUMN_SIZER_ID_PREFIX = `${ColumnSizerElement.COLUMN_SIZER_CLASS}-`;
   public static readonly TRANSITION_TIME_ML = 200;
@@ -55,19 +56,26 @@ export class ColumnSizerElement {
     columnSizerElement.style.width = width;
   }
 
-  public static setPermanentProperties(columnSizerElement: HTMLElement, marginLeft: string) {
-    columnSizerElement.style.marginLeft = marginLeft;
+  // this is recalculated as it depends on the column index that the sizer is on
+  public static setStaticProperties(columnSizerElement: HTMLElement, marginRight: string) {
+    columnSizerElement.style.marginRight = marginRight;
   }
 
   public static setElementId(columnSizerElement: HTMLElement, sizerIndex: number) {
     columnSizerElement.id = `${ColumnSizerElement.COLUMN_SIZER_ID_PREFIX}${sizerIndex}`;
   }
 
-  public static create(sizerIndex: number, customHoverColor?: string) {
+  private static setHoverColorProperty(userSetColumnSizerStyle: UserSetColumnSizerStyle) {
+    const backgroundColor = userSetColumnSizerStyle?.hover?.backgroundColor;
+    if (backgroundColor) ColumnSizerElement.HOVER_COLOR = backgroundColor;
+  }
+
+  public static create(sizerIndex: number, userSetColumnSizerStyle: UserSetColumnSizerStyle) {
     const columnSizerElement = document.createElement('div');
     ColumnSizerElement.setElementId(columnSizerElement, sizerIndex);
+    ColumnSizerElement.setHoverColorProperty(userSetColumnSizerStyle);
     columnSizerElement.classList.add(ColumnSizerElement.COLUMN_SIZER_CLASS);
-    const middleOverlayElement = ColumnSizerElementOverlay.create(customHoverColor);
+    const middleOverlayElement = ColumnSizerElementOverlay.create();
     columnSizerElement.append(middleOverlayElement);
     ColumnSizerElement.hide(columnSizerElement);
     return columnSizerElement;
@@ -104,10 +112,10 @@ export class ColumnSizerElement {
     columnSizerElement.style.borderRightColor = color;
   }
 
-  public static setHoverStyle(columnSizerElement: HTMLElement, width: PX, color: string, setTransition: boolean) {
+  public static setHoverStyle(columnSizerElement: HTMLElement, width: PX, setTransition: boolean, anotherColor?: string) {
     ColumnSizerElementOverlay.display(columnSizerElement.children[0] as HTMLElement);
     if (setTransition) ColumnSizerElement.setTransitionTime(columnSizerElement);
-    ColumnSizerElement.setColors(columnSizerElement, color);
+    ColumnSizerElement.setColors(columnSizerElement, anotherColor || ColumnSizerElement.HOVER_COLOR);
     columnSizerElement.style.width = width;
   }
 }

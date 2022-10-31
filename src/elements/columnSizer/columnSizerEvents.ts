@@ -78,8 +78,8 @@ export class ColumnSizerEvents {
   }
 
   private static setSizerStyleToHoverNoAnimation(columnSizer: ColumnSizerT, anotherColor?: string) {
-    const {width, backgroundColor} = columnSizer.styles.hover;
-    ColumnSizerElement.setHoverStyle(columnSizer.element, width, anotherColor || backgroundColor, false);
+    const {width} = columnSizer.styles.hover;
+    ColumnSizerElement.setHoverStyle(columnSizer.element, width, false, anotherColor);
     ColumnSizerElement.unsetBackgroundImage(columnSizer.element);
   }
 
@@ -139,8 +139,8 @@ export class ColumnSizerEvents {
     columnSizer.isSizerHovered = true;
     // mouse up on sizer triggers this event, but we do not want to execute it here as the animation will not be correct
     if (columnSizer.isMouseUpOnSizer) return;
-    const {width, backgroundColor} = columnSizer.styles.hover;
-    ColumnSizerElement.setHoverStyle(columnSizer.element, width, backgroundColor, true);
+    const {width} = columnSizer.styles.hover;
+    ColumnSizerElement.setHoverStyle(columnSizer.element, width, true);
     // only remove the background image if the user is definitely hovering over it
     setTimeout(() => {
       if (columnSizer.isSizerHovered) ColumnSizerElement.unsetBackgroundImage(columnSizer.element);

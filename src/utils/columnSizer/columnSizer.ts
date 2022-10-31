@@ -1,9 +1,9 @@
 import {BorderWidths, ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement';
 import {MovableColumnSizerElement} from '../../elements/columnSizer/movableColumnSizerElement';
 import {ColumnSizerEvents} from '../../elements/columnSizer/columnSizerEvents';
-import {ColumnSizerT, UserSetColumnSizerStyle} from '../../types/columnSizer';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnsDetailsT} from '../../types/columnDetails';
+import {ColumnSizerT} from '../../types/columnSizer';
 import {Optional} from '../../types/optional';
 import {PX} from '../../types/pxDimension';
 
@@ -17,11 +17,10 @@ export class ColumnSizer {
   private static getBackgroundImage(
       totalCellBorderWidth: number, beforeLeftCellRight: number, isLastCell: boolean, tableElement?: HTMLElement) {
     // REF-1
-    // right border is not placed on the rightmost cell and is instead controlled by the table border
-    // the strategy here is to have a default column sizer background image if the table has no border or even if it does
-    // and the cells do not as to maintain consistency
-    // howver do not have a default column sizer background image if both cells and table have a border, for the  purposes
-    // of consistency
+    // because right border is not placed on the rightmost cell and is instead controlled by the table border
+    // the strategy here is to have a filled column sizer background image if the table has no border or even if it does
+    // and the cells do not as they will too have filled borders and hence this will maintain consistency
+    // empty sizer background image if both cells and table have a border
     if (isLastCell && tableElement) {
       if (Number.parseInt(tableElement.style.borderRightWidth) > 0
           && (totalCellBorderWidth > 0 || beforeLeftCellRight > 0)) {
@@ -33,9 +32,9 @@ export class ColumnSizer {
     return ColumnSizerElement.FILLED_BACKGROUND_IMAGE;
   }
 
-  private static getMarginLeft(borderWidths: BorderWidths): PX {
-    const marginLeft = borderWidths ? borderWidths.leftCellRight - borderWidths.rightCellLeft : 0;
-    return `${-marginLeft}px`;
+  private static getMarginRight(borderWidths: BorderWidths): PX {
+    const marginRight = borderWidths ? borderWidths.leftCellRight - borderWidths.rightCellLeft : 0;
+    return `${marginRight}px`;
   }
 
   private static getTotalCellBorderWidth(borderWidths: BorderWidths) {
@@ -55,11 +54,10 @@ export class ColumnSizer {
 
   // prettier-ignore
   public static createObject(columnSizerElement: HTMLElement, columnsDetails: ColumnsDetailsT,
-      sizerIndex: number, userSetColumnSizerStyle?: UserSetColumnSizerStyle,
-      movableColumnSizer?: HTMLElement, tableElement?: HTMLElement): ColumnSizerT {
+      sizerIndex: number, movableColumnSizer?: HTMLElement, tableElement?: HTMLElement): ColumnSizerT {
     const borderWidthsInfo = ColumnSizer.generateBorderWidthsInfo(columnsDetails, sizerIndex);
     const totalCellBorderWidth = ColumnSizer.getTotalCellBorderWidth(borderWidthsInfo);
-    const marginLeft = ColumnSizer.getMarginLeft(borderWidthsInfo);
+    const marginRight = ColumnSizer.getMarginRight(borderWidthsInfo);
     const backgroundImage = ColumnSizer.getBackgroundImage(totalCellBorderWidth,
       borderWidthsInfo.beforeLeftCellRight, columnsDetails.length - 1 === sizerIndex, tableElement);
     // movableElement should be treated as always present in columnSizer, but InsertRemoveColumnSizer needs to create
@@ -73,10 +71,9 @@ export class ColumnSizer {
         },
         hover: {
           width: ColumnSizer.shouldWidthBeIncreased(totalCellBorderWidth) ? `${totalCellBorderWidth * 1.5}px` : '7px',
-          backgroundColor: userSetColumnSizerStyle?.hover?.backgroundColor || ColumnSizerElement.DEFAULT_COLOR,
         },
-        permanent: {
-          marginLeft,
+        static: {
+          marginRight,
         }
       },
       isSideCellHovered: false,
@@ -90,10 +87,10 @@ export class ColumnSizer {
   // prettier-ignore
   public static create(etc: EditableTableComponent, sizerIndex: number) {
     const { columnsDetails, tableElementRef, columnResizerStyle: userSetColumnSizerStyle } = etc;
-    const columnSizerElement = ColumnSizerElement.create(sizerIndex, userSetColumnSizerStyle.hover?.backgroundColor);
+    const columnSizerElement = ColumnSizerElement.create(sizerIndex, userSetColumnSizerStyle);
     const movableColumnSizer = MovableColumnSizerElement.create(userSetColumnSizerStyle);
     const columnSizer = ColumnSizer.createObject(columnSizerElement, columnsDetails, sizerIndex,
-        userSetColumnSizerStyle, movableColumnSizer, tableElementRef as HTMLElement);
+      movableColumnSizer, tableElementRef as HTMLElement);
     columnSizerElement.onmousedown = ColumnSizerEvents.sizerOnMouseDown.bind(etc);
     columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);
     columnSizerElement.onmouseleave = ColumnSizerEvents.sizerOnMouseLeave.bind(etc, columnSizer);

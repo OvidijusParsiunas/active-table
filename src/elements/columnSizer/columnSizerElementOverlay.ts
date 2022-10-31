@@ -8,13 +8,13 @@ import {PX} from '../../types/pxDimension';
 // as the transition time causes a blend effect
 // this is explicitly used to cover that color without a transition period
 export class ColumnSizerElementOverlay {
-  public static setDefaultColor(overlayElement: HTMLElement, customColor?: string) {
-    overlayElement.style.backgroundColor = customColor || ColumnSizerElement.DEFAULT_COLOR;
+  public static setDefaultColor(overlayElement: HTMLElement) {
+    overlayElement.style.backgroundColor = ColumnSizerElement.HOVER_COLOR;
   }
 
-  public static create(customHoverColor?: string) {
+  public static create() {
     const overlayElement = document.createElement('div');
-    ColumnSizerElementOverlay.setDefaultColor(overlayElement, customHoverColor);
+    ColumnSizerElementOverlay.setDefaultColor(overlayElement);
     overlayElement.classList.add('column-sizer-overlay');
     overlayElement.style.display = 'none';
     return overlayElement;

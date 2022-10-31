@@ -7,17 +7,22 @@ export interface SizerMoveLimits {
   currentOffset: number;
 }
 
+// these are styles that are dynamic and also depend on the column index
 export interface ColumnSizerStyles {
   default: {
+    // this is dynamic as it can depend on the index of the column this is on
     backgroundImage: string;
     width: PX;
   };
   hover: {
     width: PX;
-    backgroundColor: string;
   };
-  permanent: {
-    marginLeft: PX;
+  static: {
+    // using margin right to help center the sizers because movable sizer is using the offsetLeft for the callculation
+    // of the new width which would marginLeft interfer with
+    // the reason why it is stored in state is because it involves a calculation with a result that can change
+    // depending on the index that the column sizer is on
+    marginRight: PX;
   };
 }
 

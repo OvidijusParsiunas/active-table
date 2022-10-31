@@ -6,6 +6,11 @@ export class MovableColumnSizerElement {
   private static readonly MOVABLE_SIZER_CLASS = 'movable-column-sizer';
   private static readonly VERTICAL_LINE_CLASS = 'movable-column-sizer-vertical-line';
 
+  // this is recalculated as it depends on the column index that the sizer is on
+  public static setStaticProperties(movableSizerElement: HTMLElement, marginRight: string) {
+    movableSizerElement.style.marginRight = marginRight;
+  }
+
   // the vertical line has no pointer events, hence it should not be expected to be passed in here
   public static isMovableColumnSizer(element: HTMLElement) {
     return element.classList.contains(MovableColumnSizerElement.MOVABLE_SIZER_CLASS);
