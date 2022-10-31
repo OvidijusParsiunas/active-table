@@ -39,6 +39,8 @@ export interface SelectedColumnSizer {
   element: HTMLElement;
   moveLimits: SizerMoveLimits;
   mouseMoveOffset: number;
+  // this is to reflect the offset that the sizer is at in order to center itself in the cell divider
+  initialOffset: number;
 }
 
 export type UserSetColumnSizerStyle = Omit<StatefulCSSS<Pick<CSSStyle, 'backgroundColor'>>, 'default'>;

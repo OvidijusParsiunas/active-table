@@ -50,7 +50,6 @@ export class ColumnSizerEvents {
     return 0;
   }
 
-  // WORK - try to move between the limit and you will notice it slowly decreases
   // prettier-ignore
   public static sizerOnMouseDown(this: EditableTableComponent, event: MouseEvent) {
     const {columnSizer, sizerNumber} = ColumnSizerEventsUtils.getSizerDetailsViaElementId(
@@ -59,14 +58,18 @@ export class ColumnSizerEvents {
     MovableColumnSizerElement.display(this.tableBodyElementRef as HTMLElement, columnSizer, this.displayAddRowCell)
     ColumnSizerElement.unsetElementsToDefault(sizerElement, sizerStyles.default.width);
     ColumnSizerElement.setBackgroundImage(sizerElement, sizerStyles.default.backgroundImage);
+    // column is centered and starts with an offset, hence mouseMoveOffset starts with that offset in order to place
+    // the vertical line at the correct left limit
     // WORK
+    const columnSizerOffset = columnSizer.movableElement.offsetLeft;
     this.tableElementEventState.selectedColumnSizer = {
       element: sizerElement,
       moveLimits: {
-        left: -this.columnsDetails[sizerNumber].elements[0].offsetWidth,
+        left: -this.columnsDetails[sizerNumber].elements[0].offsetWidth + columnSizerOffset,
         right: ColumnSizerEvents.getRightColumnLimit(this, sizerNumber),
       },
-      mouseMoveOffset: 0,
+      initialOffset: columnSizerOffset,
+      mouseMoveOffset: columnSizerOffset,
     }
     // REF-11
     if (this.tableDimensions.width || Browser.IS_SAFARI) {

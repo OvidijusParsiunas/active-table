@@ -14,9 +14,9 @@ export class ColumnSizerEventsUtils {
   }
 
   public static changeElementWidth(selectedColumnSizer: SelectedColumnSizer, columnElement: HTMLElement) {
-    const {moveLimits, mouseMoveOffset} = selectedColumnSizer;
+    const {moveLimits, mouseMoveOffset, initialOffset} = selectedColumnSizer;
     const newDelta = ColumnSizerEventsUtils.getWidthDelta(mouseMoveOffset, moveLimits);
-    const newWidth = `${Math.max(0, columnElement.offsetWidth + newDelta)}px`;
+    const newWidth = `${Math.max(0, columnElement.offsetWidth + newDelta - initialOffset)}px`;
     columnElement.style.width = newWidth;
   }
 

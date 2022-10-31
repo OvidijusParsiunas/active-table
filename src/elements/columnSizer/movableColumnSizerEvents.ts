@@ -3,11 +3,9 @@ import {ColumnSizerEventsUtils} from './columnSizerEventsUtils';
 import {ColumnsDetailsT} from '../../types/columnDetails';
 
 export class MovableColumnSizerEvents {
-  private static move(selectedColumnSizer: HTMLElement, columnsDetails: ColumnsDetailsT, newXMovement: number) {
+  private static move(selectedColumnSizer: HTMLElement, columnsDetails: ColumnsDetailsT, newLeft: number) {
     const {columnSizer} = ColumnSizerEventsUtils.getSizerDetailsViaElementId(selectedColumnSizer.id, columnsDetails);
-    const {movableElement} = columnSizer;
-    const left = movableElement.offsetLeft + newXMovement;
-    movableElement.style.left = `${left}px`;
+    columnSizer.movableElement.style.left = `${newLeft}px`;
   }
 
   // prettier-ignore
@@ -18,7 +16,7 @@ export class MovableColumnSizerEvents {
       selectedColumnSizer.mouseMoveOffset += newXMovement;
       if (selectedColumnSizer.mouseMoveOffset > moveLimits.left
           && selectedColumnSizer.mouseMoveOffset < moveLimits.right) {
-        MovableColumnSizerEvents.move(element, columnsDetails, newXMovement);
+        MovableColumnSizerEvents.move(element, columnsDetails, selectedColumnSizer.mouseMoveOffset);
       }
     }
   }
