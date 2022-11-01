@@ -21,8 +21,8 @@ export class InsertRemoveColumnSizer {
     ColumnSizerElementOverlay.setWidth(sizerElement.children[0] as HTMLElement, styles.default.width);
     ColumnSizerElement.setStaticProperties(sizerElement, styles.static.marginRight);
     ColumnSizerElement.setBackgroundImage(sizerElement, styles.default.backgroundImage);
-    MovableColumnSizerElement.setStaticProperties(movableElement, styles.static.marginRight);
-    ColumnSizerOverlayElement.setStaticProperties(overlayElement, styles.static.marginRight);
+    MovableColumnSizerElement.setStaticProperties(movableElement, styles.static.marginRight, styles.hover.width);
+    ColumnSizerOverlayElement.setStaticProperties(overlayElement, styles.static.marginRight, styles.hover.width);
   }
 
   private static insertAtIndex(etc: EditableTableComponent, newColumnDetails: ColumnDetailsTPartial, columnIndex: number) {

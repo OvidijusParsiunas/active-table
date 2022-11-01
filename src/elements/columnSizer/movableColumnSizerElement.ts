@@ -1,4 +1,5 @@
 import {ColumnSizerT, UserSetColumnSizerStyle} from '../../types/columnSizer';
+import {PX} from '../../types/pxDimension';
 
 export class MovableColumnSizerElement {
   private static readonly DEFAULT_BACKGROUND_COLOR = '#4668ed';
@@ -6,8 +7,11 @@ export class MovableColumnSizerElement {
   private static readonly VERTICAL_LINE_CLASS = 'movable-column-sizer-vertical-line';
 
   // this is recalculated as it depends on the column index that the sizer is on
-  public static setStaticProperties(movableSizerElement: HTMLElement, marginRight: string) {
+  public static setStaticProperties(movableSizerElement: HTMLElement, marginRight: string, width: PX) {
     movableSizerElement.style.marginRight = marginRight;
+    const widthNumber = Number.parseInt(width);
+    const totalSizerBorderWidth = 2;
+    movableSizerElement.style.width = `${widthNumber + totalSizerBorderWidth}px`;
   }
 
   // the vertical line has no pointer events, hence it should not be expected to be passed in here
@@ -53,8 +57,6 @@ export class MovableColumnSizerElement {
     const backgroundColor = MovableColumnSizerElement.getBackgroundColor(userSetColumnSizerStyle) as string;
     const movableSizer = document.createElement('div');
     movableSizer.style.backgroundColor = backgroundColor;
-    // WORK - width will need to be dynamic and tested with
-    movableSizer.style.width = '9px';
     movableSizer.classList.add(MovableColumnSizerElement.MOVABLE_SIZER_CLASS);
     MovableColumnSizerElement.hide(movableSizer);
     const verticalLine = MovableColumnSizerElement.createVerticalLine(backgroundColor);

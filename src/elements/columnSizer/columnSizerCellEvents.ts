@@ -12,9 +12,7 @@ export class ColumnSizerCellEvents {
     const isHovered = ColumnSizerElement.isHovered(columnSizer.element);
     setTimeout(() => {
       // check if mouse has not left the cell for the column sizer
-      if (!columnSizer.isSizerHovered) {
-        ColumnSizerElement.hideWhenCellNotHovered(columnSizer, isHovered);
-      }
+      if (!columnSizer.isSizerHovered) ColumnSizerElement.hideWhenCellNotHovered(columnSizer, isHovered);
     });
   }
 
