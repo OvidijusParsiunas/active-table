@@ -1,6 +1,7 @@
 import {ColumnSizerT, UserSetColumnSizerStyle} from '../../types/columnSizer';
 import {PX} from '../../types/pxDimension';
 
+// REF-12
 export class MovableColumnSizerElement {
   private static readonly DEFAULT_BACKGROUND_COLOR = '#4668ed';
   private static readonly MOVABLE_SIZER_CLASS = 'movable-column-sizer';

@@ -2,6 +2,7 @@ import {ColumnSizer} from '../../utils/columnSizer/columnSizer';
 import {ColumnSizerElement} from './columnSizerElement';
 import {PX} from '../../types/pxDimension';
 
+// REF-12
 // this element is used to prevent a bug where upon hovering a column sizer that is on top of a cell border
 // the cell border color (e.g. black) will still remain for a short period during the expand animation
 // as the transition time causes a blend effect

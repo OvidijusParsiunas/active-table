@@ -3,7 +3,6 @@ import {ColumnSizerFillerElement} from './columnSizerFillerElement';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {PX} from '../../types/pxDimension';
 
-// README - explain anatomy of a column sizer
 export interface BorderWidths {
   leftCellRight: number;
   rightCellLeft: number;
@@ -13,6 +12,7 @@ export interface BorderWidths {
   beforeLeftCellRight: number;
 }
 
+// REF-12
 // the reason why there is a unique column sizer for each column is because sometimes the user may hover over
 // it before hovering over a cell which makes state management difficult - e.g from top/below
 // another reason is because the column sizer neeeds to know which column it is manipulating and needs to

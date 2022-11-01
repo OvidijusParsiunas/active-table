@@ -4,6 +4,7 @@ import {ColumnSizer} from '../../utils/columnSizer/columnSizer';
 import {ColumnSizerT} from '../../types/columnSizer';
 import {PX} from '../../types/pxDimension';
 
+// REF-12
 export class ColumnSizerOverlayElement {
   private static readonly SIZER_OVERLAY_CLASS = 'column-sizer-overlay';
 

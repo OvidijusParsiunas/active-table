@@ -59,16 +59,14 @@ export class ColumnSizerOverlayEvents {
     }, ColumnSizerOverlayEvents.MOUSE_PASSTHROUGH_TIME_ML);
   }
 
-  private static getRightColumnLimit(etc: EditableTableComponent, sizerNumber: number) {
+  private static getRightColumnLimit(etc: EditableTableComponent, headerCell: HTMLElement, columnSizerOffset: number) {
     // WORK - take into consideration border size and padding
-    const rightColumn = etc.columnsDetails[sizerNumber + 1];
-    if (rightColumn) {
-      const rightColumnsWidth = etc.offsetWidth - rightColumn.elements[0].offsetLeft;
-      // const rightColumnsWidth = (etc.parentElement as HTMLElement).offsetWidth -
-      //   rightColumn.elements[0].offsetLeft - etc.offsetLeft;
-      return rightColumnsWidth;
-    }
-    return 0;
+    const parentOffset = (etc.parentElement as HTMLElement).offsetWidth;
+    const offsetInParent = etc.offsetLeft;
+    const cellRightBorderOffset = headerCell.offsetLeft + headerCell.offsetWidth;
+    const width = etc.offsetWidth;
+    // return width - cellRightBorderOffset + columnSizerOffset;
+    return parentOffset - cellRightBorderOffset - offsetInParent + columnSizerOffset;
   }
 
   public static overlayMouseDown(this: EditableTableComponent, sizerId: string) {
@@ -77,16 +75,17 @@ export class ColumnSizerOverlayEvents {
     MovableColumnSizerElement.display(this.tableBodyElementRef as HTMLElement, columnSizer, this.displayAddRowCell);
     ColumnSizerElement.unsetElementsToDefault(sizerElement, sizerStyles.default.width);
     ColumnSizerElement.setBackgroundImage(sizerElement, sizerStyles.default.backgroundImage);
-    // column is centered and starts with an offset, hence mouseMoveOffset starts with that offset in order to place
-    // the vertical line at the correct left limit
     // WORK
     // take note of cell and table borders
+    const headerCell = this.columnsDetails[sizerNumber].elements[0];
+    // column is centered and starts with an offset, hence mouseMoveOffset starts with that offset in order to place
+    // the vertical line at the correct left limit
     const columnSizerOffset = columnSizer.movableElement.offsetLeft;
     this.tableElementEventState.selectedColumnSizer = {
       element: sizerElement,
       moveLimits: {
-        left: -this.columnsDetails[sizerNumber].elements[0].offsetWidth + columnSizerOffset,
-        right: ColumnSizerOverlayEvents.getRightColumnLimit(this, sizerNumber) + columnSizerOffset,
+        left: -headerCell.offsetWidth + columnSizerOffset,
+        right: ColumnSizerOverlayEvents.getRightColumnLimit(this, headerCell, columnSizerOffset),
       },
       initialOffset: columnSizerOffset,
       mouseMoveOffset: columnSizerOffset,
