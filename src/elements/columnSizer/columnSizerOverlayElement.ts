@@ -5,7 +5,7 @@ import {ColumnSizerT} from '../../types/columnSizer';
 import {PX} from '../../types/pxDimension';
 
 export class ColumnSizerOverlayElement {
-  private static readonly OVERLAY_ELEMENT = 'column-sizer-overlay';
+  private static readonly SIZER_OVERLAY_CLASS = 'column-sizer-overlay';
 
   // this is recalculated as it depends on the column index that the sizer is on
   public static setStaticProperties(overlayElement: HTMLElement, marginRight: string, width: PX) {
@@ -22,7 +22,7 @@ export class ColumnSizerOverlayElement {
 
   public static create() {
     const overlayElement = document.createElement('div');
-    overlayElement.classList.add(ColumnSizerOverlayElement.OVERLAY_ELEMENT);
+    overlayElement.classList.add(ColumnSizerOverlayElement.SIZER_OVERLAY_CLASS);
     return overlayElement;
   }
 }

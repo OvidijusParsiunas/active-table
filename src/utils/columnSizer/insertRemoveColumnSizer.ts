@@ -1,7 +1,7 @@
 import {ColumnsDetailsT, ColumnDetailsT, ColumnDetailsTPartial} from '../../types/columnDetails';
 import {ColumnSizerOverlayElement} from '../../elements/columnSizer/columnSizerOverlayElement';
 import {MovableColumnSizerElement} from '../../elements/columnSizer/movableColumnSizerElement';
-import {ColumnSizerElementOverlay} from '../../elements/columnSizer/columnSizerElementOverlay';
+import {ColumnSizerFillerElement} from '../../elements/columnSizer/columnSizerFillerElement';
 import {ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerT} from '../../types/columnSizer';
@@ -18,7 +18,7 @@ export class InsertRemoveColumnSizer {
   private static applySizerStateToElements(columnSizer: ColumnSizerT) {
     const {element: sizerElement, movableElement, overlayElement, styles} = columnSizer;
     ColumnSizerElement.unsetElementsToDefault(sizerElement, styles.default.width);
-    ColumnSizerElementOverlay.setWidth(sizerElement.children[0] as HTMLElement, styles.default.width);
+    ColumnSizerFillerElement.setWidth(sizerElement.children[0] as HTMLElement, styles.default.width);
     ColumnSizerElement.setStaticProperties(sizerElement, styles.static.marginRight);
     ColumnSizerElement.setBackgroundImage(sizerElement, styles.default.backgroundImage);
     MovableColumnSizerElement.setStaticProperties(movableElement, styles.static.marginRight, styles.hover.width);

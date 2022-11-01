@@ -1,5 +1,5 @@
 import {ColumnSizerT, UserSetColumnSizerStyle} from '../../types/columnSizer';
-import {ColumnSizerElementOverlay} from './columnSizerElementOverlay';
+import {ColumnSizerFillerElement} from './columnSizerFillerElement';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {PX} from '../../types/pxDimension';
 
@@ -52,7 +52,7 @@ export class ColumnSizerElement {
   // is not used to unset background image
   public static unsetElementsToDefault(columnSizerElement: HTMLElement, width: PX, setColors = true) {
     if (setColors) ColumnSizerElement.setColors(columnSizerElement, SEMI_TRANSPARENT_COLOR);
-    ColumnSizerElementOverlay.hide(columnSizerElement.children[0] as HTMLElement);
+    ColumnSizerFillerElement.hide(columnSizerElement.children[0] as HTMLElement);
     columnSizerElement.style.width = width;
   }
 
@@ -75,8 +75,8 @@ export class ColumnSizerElement {
     ColumnSizerElement.setElementId(columnSizerElement, sizerIndex);
     ColumnSizerElement.setHoverColorProperty(userSetColumnSizerStyle);
     columnSizerElement.classList.add(ColumnSizerElement.COLUMN_SIZER_CLASS);
-    const middleOverlayElement = ColumnSizerElementOverlay.create();
-    columnSizerElement.append(middleOverlayElement);
+    const fillerElement = ColumnSizerFillerElement.create();
+    columnSizerElement.append(fillerElement);
     ColumnSizerElement.hide(columnSizerElement);
     return columnSizerElement;
   }
@@ -112,7 +112,7 @@ export class ColumnSizerElement {
   }
 
   public static setHoverStyle(columnSizerElement: HTMLElement, width: PX, setTransition: boolean, anotherColor?: string) {
-    ColumnSizerElementOverlay.display(columnSizerElement.children[0] as HTMLElement);
+    ColumnSizerFillerElement.display(columnSizerElement.children[0] as HTMLElement);
     if (setTransition) ColumnSizerElement.setTransitionTime(columnSizerElement);
     ColumnSizerElement.setColors(columnSizerElement, anotherColor || ColumnSizerElement.HOVER_COLOR);
     columnSizerElement.style.width = width;
