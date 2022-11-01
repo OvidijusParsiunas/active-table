@@ -27,7 +27,6 @@ export class MovableColumnSizerElement {
   public static display(tableElement: HTMLElement, columnSizer: ColumnSizerT, addRowCellPresent: boolean) {
     const movableSizer = columnSizer.movableElement;
     movableSizer.style.display = 'flex';
-    movableSizer.style.height = `${columnSizer.element.offsetHeight}px`;
     const verticalLine = movableSizer.children[0] as HTMLElement;
     verticalLine.style.height = `${MovableColumnSizerElement.getVerticalLineHeight(tableElement, addRowCellPresent)}px`;
   }
@@ -57,6 +56,7 @@ export class MovableColumnSizerElement {
     // WORK - width will need to be dynamic and tested with
     movableSizer.style.width = '9px';
     movableSizer.classList.add(MovableColumnSizerElement.MOVABLE_SIZER_CLASS);
+    MovableColumnSizerElement.hide(movableSizer);
     const verticalLine = MovableColumnSizerElement.createVerticalLine(backgroundColor);
     movableSizer.appendChild(verticalLine);
     return movableSizer;

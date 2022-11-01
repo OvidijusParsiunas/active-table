@@ -6,15 +6,12 @@ import {PX} from '../../types/pxDimension';
 // the cell border color (e.g. black) will still remain for a short period during the expand animation
 // as the transition time causes a blend effect
 // this is explicitly used to cover that color without a transition period
+// WORK - rename to columnSizerElementFiller
 export class ColumnSizerElementOverlay {
-  public static setDefaultColor(overlayElement: HTMLElement) {
-    overlayElement.style.backgroundColor = ColumnSizerElement.HOVER_COLOR;
-  }
-
   public static create() {
     const overlayElement = document.createElement('div');
-    ColumnSizerElementOverlay.setDefaultColor(overlayElement);
-    overlayElement.classList.add('column-sizer-overlay');
+    overlayElement.style.backgroundColor = ColumnSizerElement.HOVER_COLOR;
+    overlayElement.classList.add('column-sizer-filler');
     overlayElement.style.display = 'none';
     return overlayElement;
   }

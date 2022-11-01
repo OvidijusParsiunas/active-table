@@ -1,6 +1,6 @@
 import {BorderWidths, ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement';
 import {MovableColumnSizerElement} from '../../elements/columnSizer/movableColumnSizerElement';
-import {ColumnSizerEvents} from '../../elements/columnSizer/columnSizerEvents';
+import {ColumnSizerOverlayElement} from '../../elements/columnSizer/columnSizerOverlayElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnsDetailsT} from '../../types/columnDetails';
 import {ColumnSizerT} from '../../types/columnSizer';
@@ -58,8 +58,8 @@ export class ColumnSizer {
   }
 
   // prettier-ignore
-  public static createObject(columnSizerElement: HTMLElement, columnsDetails: ColumnsDetailsT,
-      sizerIndex: number, movableColumnSizer?: HTMLElement, tableElement?: HTMLElement): ColumnSizerT {
+  public static createObject(columnSizerElement: HTMLElement, columnsDetails: ColumnsDetailsT, sizerIndex: number,
+      overlayElement?: HTMLElement, movableColumnSizer?: HTMLElement, tableElement?: HTMLElement): ColumnSizerT {
     const borderWidthsInfo = ColumnSizer.generateBorderWidthsInfo(columnsDetails, sizerIndex);
     const totalCellBorderWidth = ColumnSizer.getTotalCellBorderWidth(borderWidthsInfo);
     const isLastCell = columnsDetails.length - 1 === sizerIndex;
@@ -68,7 +68,7 @@ export class ColumnSizer {
       borderWidthsInfo.leftCellLeft, borderWidthsInfo.beforeLeftCellRight, isLastCell, tableElement);
     // movableElement should be treated as always present in columnSizer, but InsertRemoveColumnSizer needs to create
     // a new object to overwrite its other properties
-    const columnSizerState: Optional<ColumnSizerT, 'movableElement'> = {
+    const columnSizerState: Optional<ColumnSizerT, 'movableElement' | 'overlayElement'> = {
       element: columnSizerElement,
       styles: {
         default: {
@@ -87,6 +87,7 @@ export class ColumnSizer {
       isMouseUpOnSizer: false,
     };
     if (movableColumnSizer) columnSizerState.movableElement = movableColumnSizer;
+    if (overlayElement) columnSizerState.overlayElement = overlayElement;
     return columnSizerState as ColumnSizerT;
   }
 
@@ -95,11 +96,10 @@ export class ColumnSizer {
     const { columnsDetails, tableElementRef, columnResizerStyle: userSetColumnSizerStyle } = etc;
     const columnSizerElement = ColumnSizerElement.create(sizerIndex, userSetColumnSizerStyle);
     const movableColumnSizer = MovableColumnSizerElement.create(userSetColumnSizerStyle);
+    const overlayElement = ColumnSizerOverlayElement.create();
     const columnSizer = ColumnSizer.createObject(columnSizerElement, columnsDetails, sizerIndex,
-      movableColumnSizer, tableElementRef as HTMLElement);
-    columnSizerElement.onmousedown = ColumnSizerEvents.sizerOnMouseDown.bind(etc);
-    columnSizerElement.onmouseenter = ColumnSizerEvents.sizerOnMouseEnter.bind(etc, columnSizer);
-    columnSizerElement.onmouseleave = ColumnSizerEvents.sizerOnMouseLeave.bind(etc, columnSizer);
+      overlayElement, movableColumnSizer, tableElementRef as HTMLElement);
+    ColumnSizerOverlayElement.applyEvents(etc, columnSizer);
     return columnSizer;
   }
 }

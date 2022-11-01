@@ -3,7 +3,6 @@ import {ColumnSizerElementOverlay} from './columnSizerElementOverlay';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {PX} from '../../types/pxDimension';
 
-// WORK - hovering over the sizer some times does not really display it at the correct area
 // README - explain anatomy of a column sizer
 export interface BorderWidths {
   leftCellRight: number;
@@ -82,8 +81,7 @@ export class ColumnSizerElement {
     return columnSizerElement;
   }
 
-  public static display(columnSizerElement: HTMLElement, height: PX) {
-    columnSizerElement.style.height = height;
+  public static display(columnSizerElement: HTMLElement) {
     columnSizerElement.style.display = 'flex';
   }
 

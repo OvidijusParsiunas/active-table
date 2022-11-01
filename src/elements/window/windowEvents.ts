@@ -1,11 +1,10 @@
 import {CategoryCellEvents} from '../cell/cellsWithTextDiv/categoryCell/categoryCellEvents';
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
-import {MovableColumnSizerEvents} from '../columnSizer/movableColumnSizerEvents';
+import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
-import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {CellDetails} from '../../types/focusedCell';
@@ -47,10 +46,10 @@ export class WindowEvents {
   }
 
   public static onMouseUp(this: EditableTableComponent) {
-    if (this.tableElementEventState.selectedColumnSizer) ColumnSizerEvents.windowOnMouseUp(this);
+    if (this.tableElementEventState.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseUp(this);
   }
 
   public static onMouseMove(this: EditableTableComponent, event: MouseEvent) {
-    if (this.tableElementEventState.selectedColumnSizer) MovableColumnSizerEvents.attemptMove(this, event.movementX);
+    if (this.tableElementEventState.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseMove(this, event.movementX);
   }
 }

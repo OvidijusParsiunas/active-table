@@ -1,4 +1,5 @@
 import {ColumnsDetailsT, ColumnDetailsT, ColumnDetailsTPartial} from '../../types/columnDetails';
+import {ColumnSizerOverlayElement} from '../../elements/columnSizer/columnSizerOverlayElement';
 import {MovableColumnSizerElement} from '../../elements/columnSizer/movableColumnSizerElement';
 import {ColumnSizerElementOverlay} from '../../elements/columnSizer/columnSizerElementOverlay';
 import {ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement';
@@ -15,12 +16,13 @@ export class InsertRemoveColumnSizer {
   }
 
   private static applySizerStateToElements(columnSizer: ColumnSizerT) {
-    const {element: sizerElement, movableElement, styles} = columnSizer;
+    const {element: sizerElement, movableElement, overlayElement, styles} = columnSizer;
     ColumnSizerElement.unsetElementsToDefault(sizerElement, styles.default.width);
     ColumnSizerElementOverlay.setWidth(sizerElement.children[0] as HTMLElement, styles.default.width);
     ColumnSizerElement.setStaticProperties(sizerElement, styles.static.marginRight);
     ColumnSizerElement.setBackgroundImage(sizerElement, styles.default.backgroundImage);
     MovableColumnSizerElement.setStaticProperties(movableElement, styles.static.marginRight);
+    ColumnSizerOverlayElement.setStaticProperties(overlayElement, styles.static.marginRight);
   }
 
   private static insertAtIndex(etc: EditableTableComponent, newColumnDetails: ColumnDetailsTPartial, columnIndex: number) {
@@ -29,6 +31,7 @@ export class InsertRemoveColumnSizer {
     const columnSizer = ColumnSizer.create(etc, columnIndex);
     newColumnDetails.columnSizer = columnSizer;
     cellDividerElement.appendChild(columnSizer.element);
+    cellDividerElement.appendChild(columnSizer.overlayElement);
     cellDividerElement.appendChild(columnSizer.movableElement);
     InsertRemoveColumnSizer.applySizerStateToElements(columnSizer);
   }

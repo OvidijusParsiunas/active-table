@@ -19,7 +19,7 @@ export class HeaderCellEvents {
   private static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     if (!this.tableElementEventState.selectedColumnSizer) {
       HeaderCellEvents.highlightCell(event.target as HTMLElement);
-      ColumnSizerCellEvents.cellMouseEnter(this.columnsDetails, columnIndex, event);
+      ColumnSizerCellEvents.cellMouseEnter(this.columnsDetails, columnIndex);
     }
   }
 

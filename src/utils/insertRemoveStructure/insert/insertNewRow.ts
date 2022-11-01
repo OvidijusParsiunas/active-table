@@ -4,6 +4,7 @@ import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ElementDetails} from '../../../types/elementDetails';
 import {RowElement} from '../../../elements/row/rowElement';
+import {UpdateRowElement} from '../update/updateRowElement';
 import {InsertNewCell} from './insertNewCell';
 import {DataUtils} from '../shared/dataUtils';
 
@@ -31,14 +32,16 @@ export class InsertNewRow {
     // don't need a timeout as addition of row with new text is not expensive
     if (isNewText) etc.contents.splice(rowIndex, 0, []);
     InsertNewRow.addCells(etc, newRowData, newRowElement, rowIndex, isNewText);
+    return newRowElement;
   }
 
   // isNewText indicates whether rowData is already in the contents state or if it needs to be added
   public static insert(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
-    InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
-    if (isNewText) {
-      setTimeout(() => InsertNewRow.fireCellUpdates(etc, rowIndex));
-    }
+    const neRowElement = InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
+    setTimeout(() => {
+      if (rowIndex === 0) UpdateRowElement.updateHeaderHeight(neRowElement);
+      if (isNewText) InsertNewRow.fireCellUpdates(etc, rowIndex);
+    });
   }
 
   public static insertEvent(this: EditableTableComponent, rowIndex: number) {

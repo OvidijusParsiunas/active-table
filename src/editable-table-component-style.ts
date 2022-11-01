@@ -86,6 +86,15 @@ export const ediTableStyle = css`
     position: absolute;
     display: flex;
     justify-content: center;
+    height: inherit;
+  }
+
+  .cell-divider > * {
+    user-select: none;
+    position: absolute;
+    cursor: col-resize;
+    justify-content: center;
+    height: inherit;
   }
 
   .column-sizer {
@@ -93,24 +102,16 @@ export const ediTableStyle = css`
     border-right: 1px solid;
     background-size: 20px 5px;
     position: absolute;
-    user-select: none;
-    cursor: col-resize;
-    display: flex;
-    justify-content: center;
-    z-index: 1;
   }
 
-  .column-sizer-overlay {
+  .column-sizer-filler {
     height: inherit;
     position: absolute;
     pointer-events: none;
   }
 
-  .movable-column-sizer {
-    position: absolute;
-    z-index: 1;
-    cursor: col-resize;
-    justify-content: center;
+  .column-sizer-overlay {
+    background-color: #ff000001;
   }
 
   .movable-column-sizer-vertical-line {

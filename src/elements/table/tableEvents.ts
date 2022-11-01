@@ -1,8 +1,8 @@
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {UserKeyEventsStateUtil} from '../../utils/userEventsState/userEventsStateUtil';
+import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {EditableTableComponent} from '../../editable-table-component';
-import {ColumnSizerEvents} from '../columnSizer/columnSizerEvents';
 import {OverlayElements} from '../../types/overlayElements';
 import {MOUSE_EVENT} from '../../consts/mouseEvents';
 import {CellElement} from '../cell/cellElement';
@@ -41,7 +41,7 @@ export class TableEvents {
 
   public static onMouseUp(this: EditableTableComponent, event: MouseEvent) {
     if (this.tableElementEventState.selectedColumnSizer) {
-      ColumnSizerEvents.tableOnMouseUp(this, event.target as HTMLElement);
+      ColumnSizerExtrinsicEvents.tableMouseUp(this, event.target as HTMLElement);
     }
   }
 }

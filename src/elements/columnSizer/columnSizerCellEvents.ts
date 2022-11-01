@@ -1,7 +1,6 @@
 import {ColumnsDetailsT} from '../../types/columnDetails';
 import {ColumnSizerElement} from './columnSizerElement';
 import {ColumnSizerT} from '../../types/columnSizer';
-import {PX} from '../../types/pxDimension';
 
 export class ColumnSizerCellEvents {
   private static hideColumnSizer(columnSizer: ColumnSizerT) {
@@ -24,16 +23,14 @@ export class ColumnSizerCellEvents {
     ColumnSizerCellEvents.hideColumnSizer(columnsDetails[columnIndex]?.columnSizer);
   }
 
-  private static displayColumnSizer(columnSizer: ColumnSizerT, height: PX) {
+  private static displayColumnSizer(columnSizer: ColumnSizerT) {
     if (!columnSizer) return;
-    ColumnSizerElement.display(columnSizer.element, height);
+    ColumnSizerElement.display(columnSizer.element);
     columnSizer.isSideCellHovered = true;
   }
 
-  public static cellMouseEnter(columnsDetails: ColumnsDetailsT, columnIndex: number, event: MouseEvent) {
-    const headerCellElement = event.target as HTMLElement;
-    const height: PX = `${headerCellElement.offsetHeight}px`;
-    ColumnSizerCellEvents.displayColumnSizer(columnsDetails[columnIndex - 1]?.columnSizer, height);
-    ColumnSizerCellEvents.displayColumnSizer(columnsDetails[columnIndex]?.columnSizer, height);
+  public static cellMouseEnter(columnsDetails: ColumnsDetailsT, columnIndex: number) {
+    ColumnSizerCellEvents.displayColumnSizer(columnsDetails[columnIndex - 1]?.columnSizer);
+    ColumnSizerCellEvents.displayColumnSizer(columnsDetails[columnIndex]?.columnSizer);
   }
 }

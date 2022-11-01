@@ -28,6 +28,7 @@ export interface ColumnSizerStyles {
 export interface ColumnSizerT {
   element: HTMLElement;
   movableElement: HTMLElement;
+  overlayElement: HTMLElement;
   styles: ColumnSizerStyles;
   siblingCellsTotalWidth?: number;
   isSideCellHovered: boolean;
