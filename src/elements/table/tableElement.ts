@@ -1,9 +1,11 @@
+import {StaticTableWidthUtils} from '../../utils/staticTableWidthsUtils/staticTableWidthUtils';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {OverlayElements} from '../../types/overlayElements';
 import {AddNewRowElement} from '../row/addNewRowElement';
+import {Browser} from '../../utils/browser/browser';
 import {TableRow} from '../../types/tableContents';
 import {TableEvents} from './tableEvents';
 
@@ -34,6 +36,7 @@ export class TableElement {
     etc.tableBodyElementRef?.replaceChildren();
     // header/data rows
     etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
+    setTimeout(() => StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, Browser.IS_SAFARI));
     // new row row and full table overlay
     TableElement.addAuxiliaryBodyElements(etc);
   }

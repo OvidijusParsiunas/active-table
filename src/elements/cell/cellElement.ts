@@ -5,9 +5,7 @@ import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputEle
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {HeaderCellEvents} from './headerCell/headerCellEvents';
-import {TableDimensions} from '../../types/tableDimensions';
 import {DataCellEvents} from './dataCell/dataCellEvents';
-import {TableContents} from '../../types/tableContents';
 import {Browser} from '../../utils/browser/browser';
 import {CSSStyle} from '../../types/cssStyle';
 
@@ -61,13 +59,6 @@ export class CellElement {
     }
   }
 
-  private static setHeaderWidth(tableDimensions: TableDimensions, contents: TableContents, cellElement: HTMLElement) {
-    if (tableDimensions.width) {
-      StaticTableWidthUtils.NEW_COLUMN_WIDTH = tableDimensions.width / contents[0].length;
-    }
-    cellElement.style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
-  }
-
   // this is used for case where element could be cell element that contains a text div element,
   // hence we need to set the text into the correct container
   private static setText(element: HTMLElement, text: string) {
@@ -92,7 +83,7 @@ export class CellElement {
     const cellElement = CellElement.create(etc.cellStyle, etc.headerStyle, isHeader);
     CellElement.processAndSetTextOnCell(etc, cellElement, cellText, false);
     CellElement.prepContentEditable(cellElement, isHeader);
-    if (isHeader) CellElement.setHeaderWidth(etc.tableDimensions, etc.contents, cellElement);
+    if (isHeader) cellElement.style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`; // overwritten if static table
     return cellElement;
   }
 

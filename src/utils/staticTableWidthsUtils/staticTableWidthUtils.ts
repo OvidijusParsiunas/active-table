@@ -1,9 +1,21 @@
 import {EditableTableComponent} from '../../editable-table-component';
+import {GenericElementUtils} from '../elements/genericElementUtils';
 import {TableDimensions} from '../../types/tableDimensions';
+import {TableRow} from '../../types/tableContents';
 
 // table width is considered static when the user sets its width or the width needs to be kept track of for Safari
 export class StaticTableWidthUtils {
   public static NEW_COLUMN_WIDTH = 100;
+  private static TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH = -1;
+
+  private static setWidth(tableElement: HTMLElement, tableWidth: number, firstRow: TableRow) {
+    if (StaticTableWidthUtils.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH) {
+      StaticTableWidthUtils.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH =
+        GenericElementUtils.getElementTotalHorizontalSideBorderWidth(tableElement);
+    }
+    StaticTableWidthUtils.NEW_COLUMN_WIDTH =
+      (tableWidth - StaticTableWidthUtils.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH) / firstRow.length;
+  }
 
   // the reason why isSafari needs to be passed down via a parameter is because the static methods are used in
   // the component's render function hence Browser.IS_SAFARI has a chance of not being initialised yet
@@ -19,8 +31,9 @@ export class StaticTableWidthUtils {
   // the reason why isSafari needs to be passed down via a parameter is because the static methods are used in
   // the component's render function hence Browser.IS_SAFARI has a chance of not being initialised yet
   public static changeWidthsBasedOnColumnInsertRemove(etc: EditableTableComponent, isSafari: boolean) {
-    const {tableElementRef, tableDimensions, columnsDetails} = etc;
-    if (tableDimensions.width) {
+    const {tableElementRef, tableDimensions, columnsDetails, contents} = etc;
+    if (tableDimensions.width && tableElementRef) {
+      StaticTableWidthUtils.setWidth(tableElementRef, tableDimensions.width, contents[0]);
       columnsDetails.forEach((columnDetails) => {
         columnDetails.elements[0].style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
       });
