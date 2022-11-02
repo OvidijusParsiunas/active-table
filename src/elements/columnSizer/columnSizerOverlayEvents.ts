@@ -4,6 +4,7 @@ import {ColumnSizerGenericUtils} from './columnSizerGenericUtils';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {ColumnSizerElement} from './columnSizerElement';
 import {ColumnSizerT} from '../../types/columnSizer';
+import {Browser} from '../../utils/browser/browser';
 
 export class ColumnSizerOverlayEvents {
   public static readonly MOUSE_PASSTHROUGH_TIME_ML = 50;
@@ -57,14 +58,15 @@ export class ColumnSizerOverlayEvents {
     }, ColumnSizerOverlayEvents.MOUSE_PASSTHROUGH_TIME_ML);
   }
 
-  private static getRightColumnLimit(etc: EditableTableComponent, headerCell: HTMLElement, columnSizerOffset: number) {
+  private static getRightColumnLimit(etc: EditableTableComponent, headerCell: HTMLElement, nextHeaderCell?: HTMLElement) {
     // WORK - take into consideration border size and padding
+    const cellRightBorderOffset = headerCell.offsetLeft + headerCell.offsetWidth;
+    if (etc.tableDimensions.width || Browser.IS_SAFARI) {
+      return nextHeaderCell?.offsetWidth || 0;
+    }
     const parentOffset = (etc.parentElement as HTMLElement).offsetWidth;
     const offsetInParent = etc.offsetLeft;
-    const cellRightBorderOffset = headerCell.offsetLeft + headerCell.offsetWidth;
-    const width = etc.offsetWidth;
-    // return width - cellRightBorderOffset + columnSizerOffset;
-    return parentOffset - cellRightBorderOffset - offsetInParent + columnSizerOffset;
+    return parentOffset - offsetInParent - cellRightBorderOffset;
   }
 
   public static overlayMouseDown(this: EditableTableComponent, sizerId: string) {
@@ -75,7 +77,9 @@ export class ColumnSizerOverlayEvents {
     ColumnSizerElement.setBackgroundImage(sizerElement, sizerStyles.default.backgroundImage);
     // WORK
     // take note of cell and table borders
+    // last column should not have the next sizer if it is
     const headerCell = this.columnsDetails[sizerNumber].elements[0];
+    const nextHeaderCell = this.columnsDetails[sizerNumber + 1]?.elements[0];
     // column is centered and starts with an offset, hence mouseMoveOffset starts with that offset in order to place
     // the vertical line at the correct left limit
     const columnSizerOffset = columnSizer.movableElement.offsetLeft;
@@ -83,7 +87,7 @@ export class ColumnSizerOverlayEvents {
       element: sizerElement,
       moveLimits: {
         left: -headerCell.offsetWidth + columnSizerOffset,
-        right: ColumnSizerOverlayEvents.getRightColumnLimit(this, headerCell, columnSizerOffset),
+        right: ColumnSizerOverlayEvents.getRightColumnLimit(this, headerCell, nextHeaderCell) + columnSizerOffset,
       },
       initialOffset: columnSizerOffset,
       mouseMoveOffset: columnSizerOffset,
