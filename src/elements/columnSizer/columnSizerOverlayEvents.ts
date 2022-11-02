@@ -1,11 +1,9 @@
-import {StaticTableWidthColumnSizerEvents} from '../../utils/staticTableWidthsUtils/staticTableWidthColumnSizerEvents';
 import {EditableTableComponent} from '../../editable-table-component';
 import {MovableColumnSizerElement} from './movableColumnSizerElement';
-import {ColumnSizerEventsUtils} from './columnSizerEventsUtils';
+import {ColumnSizerGenericUtils} from './columnSizerGenericUtils';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {ColumnSizerElement} from './columnSizerElement';
 import {ColumnSizerT} from '../../types/columnSizer';
-import {Browser} from '../../utils/browser/browser';
 
 export class ColumnSizerOverlayEvents {
   public static readonly MOUSE_PASSTHROUGH_TIME_ML = 50;
@@ -70,7 +68,7 @@ export class ColumnSizerOverlayEvents {
   }
 
   public static overlayMouseDown(this: EditableTableComponent, sizerId: string) {
-    const {columnSizer, sizerNumber} = ColumnSizerEventsUtils.getSizerDetailsViaElementId(sizerId, this.columnsDetails);
+    const {columnSizer, sizerNumber} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(sizerId, this.columnsDetails);
     const {element: sizerElement, styles: sizerStyles} = columnSizer;
     MovableColumnSizerElement.display(this.tableBodyElementRef as HTMLElement, columnSizer, this.displayAddRowCell);
     ColumnSizerElement.unsetElementsToDefault(sizerElement, sizerStyles.default.width);
@@ -90,9 +88,5 @@ export class ColumnSizerOverlayEvents {
       initialOffset: columnSizerOffset,
       mouseMoveOffset: columnSizerOffset,
     };
-    // REF-11
-    if (this.tableDimensions.width || Browser.IS_SAFARI) {
-      StaticTableWidthColumnSizerEvents.setPreResizeSiblingCellsTotalWidth(this.columnsDetails, sizerElement);
-    }
   }
 }

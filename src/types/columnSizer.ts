@@ -30,7 +30,6 @@ export interface ColumnSizerT {
   movableElement: HTMLElement;
   overlayElement: HTMLElement;
   styles: ColumnSizerStyles;
-  siblingCellsTotalWidth?: number;
   isSideCellHovered: boolean;
   isSizerHovered: boolean;
   isMouseUpOnSizer: boolean;
@@ -40,6 +39,7 @@ export interface SelectedColumnSizer {
   element: HTMLElement;
   moveLimits: SizerMoveLimits;
   mouseMoveOffset: number;
+  wasAutoresized?: boolean;
   // this is to reflect the offset that the sizer is at in order to center itself in the cell divider
   initialOffset: number;
 }

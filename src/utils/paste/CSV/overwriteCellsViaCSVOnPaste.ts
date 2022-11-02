@@ -128,7 +128,8 @@ export class OverwriteCellsViaCSVOnPaste {
     etc.onTableUpdate(etc.contents);
   }
 
-  // WORK - upon pasting into the header, reset the row height if the cell height changes
+  // WORK - upon pasting into the header, update the row height if the cell height changes
+  // updateHeaderHeight
   // prettier-ignore
   public static overwrite(etc: EditableTableComponent,
       clipboardText: string, event: ClipboardEvent, rowIndex: number, columnIndex: number,) {

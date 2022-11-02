@@ -81,3 +81,22 @@ Safari has a bug where column widths for cell elements that contain wrapped text
 the width would be without the wrapping. This has been fixed by programmatically setting the table width based on the column widths.
 I have raised a stack overflow question to see if this can be fixed automatically via plain css without a manual workaround:
 https://stackoverflow.com/questions/73920147/table-element-width-using-column-widths-safari
+
+REF-12
+Anatomy of a column sizer (known as the resizer to the user):
+|               |       |        || |         | |           ||
+|               |       |        || |         | |           ||
+| cell divider  | sizer | filler || | overlay | |  movable  ||
+|               |       |        || |         | |           ||
+|               |       |        || |         | |           ||
+|               |       |        || |         | |           ||
+
+A cell divider contains a sizer and 2 other sizer related components that help it perform the functionality that it requires
+The sizer element itself contains a filler element which is used to prevent a bug where during the entrance animation - the cell
+border tends to bleed out onto the middle of the sizer causing its color to be visible
+The sizer element itself does not have any events and all of them are actually performed on the sizer overlay. The reason for this
+is because by default the sizer width is short, hence when the user tries to hover over it to have it expand - the area of hover
+is actually really small and it may sometimes be hard to hover over it - this is where the overlay comes in and triggers the hover
+event before the sizer element is actually reached - thus allowing better experience for the user.
+The movable sizer element is the element that follows the cursor whilst the actual sizer element remains static in its position
+
