@@ -31,13 +31,19 @@ export class StaticTableWidthUtils {
 
   // the reason why isSafari needs to be passed down via a parameter is because the static methods are used in
   // the component's render function hence Browser.IS_SAFARI has a chance of not being initialised yet
-  public static changeWidthsBasedOnColumnInsertRemove(etc: EditableTableComponent, isSafari: boolean) {
+  // the newCellElement parameter is used when a new column is inserted but columnsDetails is updated asynchronously
+  // and cannot be accessed directly yet, however because we want to update all cell widths immediately we can pass the
+  // element directly as a parameter
+  // prettier-ignore
+  public static changeWidthsBasedOnColumnInsertRemove(etc: EditableTableComponent, isSafari: boolean,
+      newCellElement?: HTMLElement) {
     const {tableElementRef, tableDimensions, columnsDetails, contents} = etc;
     if (tableDimensions.width && tableElementRef) {
       StaticTableWidthUtils.setWidth(tableElementRef, tableDimensions.width, contents[0]);
       columnsDetails.forEach((columnDetails) => {
         columnDetails.elements[0].style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
       });
+      if (newCellElement) newCellElement.style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
       // REF-11
     } else if (isSafari && tableElementRef) {
       tableElementRef.style.width = `${tableElementRef.offsetWidth + StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;

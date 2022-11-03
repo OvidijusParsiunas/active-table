@@ -65,11 +65,13 @@ export class InsertNewCell {
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);
-    if (rowIndex === 0 && isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, Browser.IS_SAFARI);
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex);
     setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(
       etc, rowIndex, columnIndex, newCellElement, processedCellText));
     // cannot place in a timeout as etc.contents length is used to get last row index
     etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
+    if (rowIndex === 0 && isNewText) {
+      StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, Browser.IS_SAFARI, newCellElement);
+    }
   }
 }
