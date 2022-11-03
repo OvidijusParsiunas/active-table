@@ -35,7 +35,7 @@ export interface ColumnSizerT {
   isMouseUpOnSizer: boolean;
 }
 
-export interface SelectedColumnSizer {
+export interface SelectedColumnSizerT {
   element: HTMLElement;
   moveLimits: SizerMoveLimits;
   mouseMoveOffset: number;

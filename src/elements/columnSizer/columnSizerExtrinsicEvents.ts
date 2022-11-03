@@ -1,5 +1,5 @@
 import {UpdateRowElement} from '../../utils/insertRemoveStructure/update/updateRowElement';
-import {ColumnSizerT, SelectedColumnSizer} from '../../types/columnSizer';
+import {ColumnSizerT, SelectedColumnSizerT} from '../../types/columnSizer';
 import {TableElementEventState} from '../../types/tableElementEventState';
 import {EditableTableComponent} from '../../editable-table-component';
 import {MovableColumnSizerElement} from './movableColumnSizerElement';
@@ -22,8 +22,8 @@ export class ColumnSizerExtrinsicEvents {
     if (selectedColumnSizer) {
       const {moveLimits, element} = selectedColumnSizer;
       selectedColumnSizer.mouseMoveOffset += newXMovement;
-      if (selectedColumnSizer.mouseMoveOffset > moveLimits.left
-          && selectedColumnSizer.mouseMoveOffset < moveLimits.right) {
+      if (selectedColumnSizer.mouseMoveOffset >= moveLimits.left
+          && selectedColumnSizer.mouseMoveOffset <= moveLimits.right) {
         ColumnSizerExtrinsicEvents.moveMovableElement(element, columnsDetails, selectedColumnSizer.mouseMoveOffset);
       }
     }
@@ -31,7 +31,7 @@ export class ColumnSizerExtrinsicEvents {
 
   // WORK - once right column is not resizable rightHeader won't have to be optional
   // prettier-ignore
-  public static setWidth(selectedColumnSizer: SelectedColumnSizer, tableDimensions: TableDimensions,
+  public static setWidth(selectedColumnSizer: SelectedColumnSizerT, tableDimensions: TableDimensions,
       leftHeader: HTMLElement, rightHeader?: HTMLElement) {
     ColumnSizerElement.unsetTransitionTime(selectedColumnSizer.element);
     ColumnSizerSetWidth.set(selectedColumnSizer, tableDimensions, leftHeader, rightHeader);
@@ -43,10 +43,11 @@ export class ColumnSizerExtrinsicEvents {
   // prettier-ignore
   private static mouseUp(tableElementEventState: TableElementEventState, columnsDetails: ColumnsDetailsT,
       tableDimensions: TableDimensions) {
+    const selectedColumnSizer = tableElementEventState.selectedColumnSizer as SelectedColumnSizerT;
     const {columnSizer, headerCell, sizerNumber} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(
-      (tableElementEventState.selectedColumnSizer as SelectedColumnSizer).element.id, columnsDetails);
-    ColumnSizerExtrinsicEvents.setWidth(tableElementEventState.selectedColumnSizer as SelectedColumnSizer, tableDimensions,
-      headerCell, columnsDetails[sizerNumber + 1]?.elements[0]);
+      selectedColumnSizer.element.id, columnsDetails);
+    ColumnSizerExtrinsicEvents.setWidth(selectedColumnSizer, tableDimensions,headerCell,
+      columnsDetails[sizerNumber + 1]?.elements[0]);
     MovableColumnSizerElement.hide(columnSizer.movableElement);
   }
 
@@ -78,7 +79,7 @@ export class ColumnSizerExtrinsicEvents {
   public static windowMouseUp(etc: EditableTableComponent) {
     const {tableElementEventState, columnsDetails, tableDimensions} = etc;
     const {columnSizer} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(
-      (tableElementEventState.selectedColumnSizer as SelectedColumnSizer).element.id, columnsDetails);
+      (tableElementEventState.selectedColumnSizer as SelectedColumnSizerT).element.id, columnsDetails);
     ColumnSizerExtrinsicEvents.mouseUp(tableElementEventState, columnsDetails, tableDimensions);
     ColumnSizerExtrinsicEvents.mouseUpNotOnSizer(columnSizer);
     delete tableElementEventState.selectedColumnSizer;
@@ -97,7 +98,7 @@ export class ColumnSizerExtrinsicEvents {
   // prettier-ignore
   public static tableMouseUp(etc: EditableTableComponent, target: HTMLElement) {
     const {tableElementEventState, columnsDetails, tableDimensions} = etc;
-    const selectedColumnSizer = tableElementEventState.selectedColumnSizer as SelectedColumnSizer;
+    const selectedColumnSizer = tableElementEventState.selectedColumnSizer as SelectedColumnSizerT;
     const {columnSizer} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(
       selectedColumnSizer.element.id, columnsDetails);
     ColumnSizerExtrinsicEvents.mouseUp(tableElementEventState, columnsDetails, tableDimensions);
