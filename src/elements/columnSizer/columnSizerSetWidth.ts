@@ -12,15 +12,15 @@ export class ColumnSizerSetWidth {
     return mouseMoveOffset;
   }
 
-  private static getColumnWidthDelta(selectedColumnSizer: SelectedColumnSizer) {
+  private static getNewColumnWidth(selectedColumnSizer: SelectedColumnSizer, columnElement: HTMLElement) {
     const {moveLimits, mouseMoveOffset, initialOffset} = selectedColumnSizer;
-    return ColumnSizerSetWidth.getWidthDelta(mouseMoveOffset, moveLimits) - initialOffset;
+    const newWidthDelta = ColumnSizerSetWidth.getWidthDelta(mouseMoveOffset, moveLimits) - initialOffset;
+    return Math.max(0, columnElement.offsetWidth + newWidthDelta);
   }
 
   private static setColumnWidth(selectedColumnSizer: SelectedColumnSizer, columnElement: HTMLElement) {
-    const widthDelta = ColumnSizerSetWidth.getColumnWidthDelta(selectedColumnSizer);
-    const newWidth = `${columnElement.offsetWidth + widthDelta}px`;
-    columnElement.style.width = newWidth;
+    const newWidth = ColumnSizerSetWidth.getNewColumnWidth(selectedColumnSizer, columnElement);
+    columnElement.style.width = `${newWidth}px`;
   }
 
   // when the user moves the sizer to the start/end of a column in an attempt to completely crush the column,
@@ -42,9 +42,8 @@ export class ColumnSizerSetWidth {
   // prettier-ignore
   private static setWidths(selectedColumnSizer: SelectedColumnSizer, leftHeader: HTMLElement,
       rightHeader: HTMLElement, initialWidthsTotal: number) {
-    const leftColumnWidthDelta = ColumnSizerSetWidth.getColumnWidthDelta(selectedColumnSizer);
-    const newLeftWidth = leftHeader.offsetWidth + leftColumnWidthDelta;
-    const newRightWidth = initialWidthsTotal - newLeftWidth;
+    const newLeftWidth = ColumnSizerSetWidth.getNewColumnWidth(selectedColumnSizer, leftHeader);
+    const newRightWidth = Math.max(0, initialWidthsTotal - newLeftWidth);
     leftHeader.style.width = `${newLeftWidth}px`;
     rightHeader.style.width = `${newRightWidth}px`;
   }
