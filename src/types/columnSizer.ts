@@ -38,9 +38,9 @@ export interface ColumnSizerT {
 export interface SelectedColumnSizerT {
   element: HTMLElement;
   moveLimits: SizerMoveLimits;
-  mouseMoveOffset: number;
   wasAutoresized?: boolean;
-  // this is to reflect the offset that the sizer is at in order to center itself in the cell divider
+  mouseMoveOffset: number;
+  // this is to reflect the initial sizer offset to center itself in the cell divider
   initialOffset: number;
 }
 

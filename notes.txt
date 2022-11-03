@@ -83,7 +83,11 @@ I have raised a stack overflow question to see if this can be fixed automaticall
 https://stackoverflow.com/questions/73920147/table-element-width-using-column-widths-safari
 
 REF-12
-Anatomy of a column sizer (known as the resizer to the user):
+The original architecture of a column sizer (known as the resizer to the user) allowed it to change the column width as it was moving,
+however this was deemed too computationaly expensive when the table had many rows as the render speed was very slow, hence it was
+rebuilt to only change column width once the user triggers a mouse up event.
+
+Anatomy of a column sizer :
 |               |       |        || |         | |           ||
 |               |       |        || |         | |           ||
 | cell divider  | sizer | filler || | overlay | |  movable  ||
@@ -100,3 +104,11 @@ is actually really small and it may sometimes be hard to hover over it - this is
 event before the sizer element is actually reached - thus allowing better experience for the user.
 The movable sizer element is the element that follows the cursor whilst the actual sizer element remains static in its position
 
+
+
+
+
+
+CAUTION-1
+When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across
+the table as they will no longer be constant and will need some dynamicity

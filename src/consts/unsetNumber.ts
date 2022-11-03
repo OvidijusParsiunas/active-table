@@ -1,0 +1,1 @@
+export const UNSET_NUMBER_IDENTIFIER = -1;

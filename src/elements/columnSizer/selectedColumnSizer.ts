@@ -1,56 +1,81 @@
 import {ColumnSizerT, SelectedColumnSizerT} from '../../types/columnSizer';
 import {EditableTableComponent} from '../../editable-table-component';
+import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {Browser} from '../../utils/browser/browser';
 
 export class SelectedColumnSizer {
-  // prettier-ignore
-  private static getRightColumnLimit(etc: EditableTableComponent, leftHeader: HTMLElement,
-      rightHeader?: HTMLElement, headerAfterRight = false) {
-    // WORK - take into consideration border size and padding
-    const cellRightBorderOffset = leftHeader.offsetLeft + leftHeader.offsetWidth;
-    if (etc.tableDimensions.width || Browser.IS_SAFARI) {
-      let rightLimit = rightHeader?.offsetWidth || 0;
-      if (!headerAfterRight) {
-        // these ain't going to change so can store them in state
-        rightLimit += Number.parseInt(leftHeader.style.borderRightWidth) || 0;
-      }
-      return rightLimit;
+  // borders of the side cells tend to breach over the limits of the table by half their width, causing the offsets to
+  // give incorrect data and set the limit beyond the table limits, this is used to prevent it
+  private static SIDE_LIMIT_DELTA = UNSET_NUMBER_IDENTIFIER;
+
+  private static setSideLimitDelta(headerElement: HTMLElement) {
+    SelectedColumnSizer.SIDE_LIMIT_DELTA = 0;
+    if (headerElement.style.borderRightWidth) {
+      SelectedColumnSizer.SIDE_LIMIT_DELTA += Number.parseInt(headerElement.style.borderRightWidth) / 2;
     }
-    const parentOffset = (etc.parentElement as HTMLElement).offsetWidth;
-    const offsetInParent = etc.offsetLeft;
-    return parentOffset - offsetInParent - cellRightBorderOffset;
+    if (headerElement.style.borderLeftWidth) {
+      SelectedColumnSizer.SIDE_LIMIT_DELTA -= Number.parseInt(headerElement.style.borderLeftWidth) / 2;
+    }
   }
 
-  private static getLeftLimit(leftHeader: HTMLElement, headerBeforeLeft?: boolean) {
-    let leftLimit = -leftHeader.offsetWidth;
-    if (!headerBeforeLeft) {
-      // these ain't going to change so can store them in state
-      leftLimit -= Number.parseInt(leftHeader.style.borderLeftWidth) || 0;
+  private static getRightLimitDynamicWidthTable(etc: EditableTableComponent) {
+    const parentElement = etc.parentElement as HTMLElement;
+    const parentWidth = parentElement.offsetWidth;
+    // parent element may already have an offset which will affect the table offset
+    // bug where if the parent element is the <body> tag, then the offset will not display but that has been accepted
+    const tableOffsetInParent = etc.offsetLeft - parentElement.offsetLeft;
+    return parentWidth - tableOffsetInParent - etc.offsetWidth;
+  }
+
+  private static getRightLimitStaticWidthTable(isSecondLastSizer: boolean, rightHeader?: HTMLElement) {
+    let rightLimit = rightHeader?.offsetWidth || 0;
+    if (!isSecondLastSizer) rightLimit += SelectedColumnSizer.SIDE_LIMIT_DELTA;
+    return rightLimit;
+  }
+
+  private static getRightLimit(etc: EditableTableComponent, isSecondLastSizer: boolean, rightHeader?: HTMLElement) {
+    if (etc.tableDimensions.width || Browser.IS_SAFARI) {
+      return SelectedColumnSizer.getRightLimitStaticWidthTable(isSecondLastSizer, rightHeader);
     }
+    return SelectedColumnSizer.getRightLimitDynamicWidthTable(etc);
+  }
+
+  private static getLeftLimit(leftHeader: HTMLElement, isFirstSizer: boolean) {
+    let leftLimit = -leftHeader.offsetWidth;
+    if (!isFirstSizer) leftLimit += SelectedColumnSizer.SIDE_LIMIT_DELTA;
     return leftLimit;
   }
 
-  public static get(etc: EditableTableComponent, sizerNumber: number, columnSizer: ColumnSizerT): SelectedColumnSizerT {
-    // WORK
-    // take note of cell and table borders
-    // last column should not have the next sizer if it is
-    // use the number instead of overreaching
-    const headerBeforeLeft = etc.columnsDetails[sizerNumber - 1];
-    const leftHeader = etc.columnsDetails[sizerNumber].elements[0];
-    const rightHeader = etc.columnsDetails[sizerNumber + 1]?.elements[0];
-    const headerAfterRight = etc.columnsDetails[sizerNumber + 2];
-    // column is centered and starts with an offset, hence mouseMoveOffset starts with that offset in order to place
-    // the vertical line at the correct left limit
+  // prettier-ignore
+  private static generateObject(etc: EditableTableComponent, columnSizer: ColumnSizerT, isFirstSizer: boolean,
+      isSecondLastSizer: boolean, leftHeader: HTMLElement, rightHeader: HTMLElement, ): SelectedColumnSizerT {
+    // sizer is centered within the cell divider and starts with an offset, hence mouseMoveOffset is set
+    // with that offset in order to limit the vertical line at the correct cell offset position
     const columnSizerOffset = columnSizer.movableElement.offsetLeft;
     return {
       element: columnSizer.element,
       moveLimits: {
-        left: SelectedColumnSizer.getLeftLimit(leftHeader, !!headerBeforeLeft) + columnSizerOffset,
-        right:
-          SelectedColumnSizer.getRightColumnLimit(etc, leftHeader, rightHeader, !!headerAfterRight) + columnSizerOffset,
+        left: SelectedColumnSizer.getLeftLimit(leftHeader, isFirstSizer) + columnSizerOffset,
+        right: SelectedColumnSizer.getRightLimit(etc, isSecondLastSizer, rightHeader) + columnSizerOffset,
       },
+      // this is to reflect the initial sizer offset to center itself in the cell divider
       initialOffset: columnSizerOffset,
       mouseMoveOffset: columnSizerOffset,
     };
+  }
+
+  public static get(etc: EditableTableComponent, sizerNumber: number, columnSizer: ColumnSizerT): SelectedColumnSizerT {
+    // WORK
+    // last column should not have the next sizer if it is
+    const isFirstSizer = sizerNumber === 0;
+    const isSecondLastSizer = etc.columnsDetails.length > sizerNumber + 2;
+    const leftHeader = etc.columnsDetails[sizerNumber].elements[0];
+    const rightHeader = etc.columnsDetails[sizerNumber + 1]?.elements[0];
+    if (SelectedColumnSizer.SIDE_LIMIT_DELTA === UNSET_NUMBER_IDENTIFIER) {
+      // (CAUTION-1)
+      // only needs to be set once
+      SelectedColumnSizer.setSideLimitDelta(leftHeader);
+    }
+    return SelectedColumnSizer.generateObject(etc, columnSizer, isFirstSizer, isSecondLastSizer, leftHeader, rightHeader);
   }
 }

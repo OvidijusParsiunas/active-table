@@ -1,15 +1,16 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {GenericElementUtils} from '../elements/genericElementUtils';
+import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {TableDimensions} from '../../types/tableDimensions';
 import {TableRow} from '../../types/tableContents';
 
 // table width is considered static when the user sets its width or the width needs to be kept track of for Safari
 export class StaticTableWidthUtils {
   public static NEW_COLUMN_WIDTH = 100;
-  private static TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH = -1;
+  private static TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH = UNSET_NUMBER_IDENTIFIER;
 
   private static setWidth(tableElement: HTMLElement, tableWidth: number, firstRow: TableRow) {
-    if (StaticTableWidthUtils.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH) {
+    if (StaticTableWidthUtils.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH === UNSET_NUMBER_IDENTIFIER) {
       StaticTableWidthUtils.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH =
         GenericElementUtils.getElementTotalHorizontalSideBorderWidth(tableElement);
     }
