@@ -1,6 +1,5 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerOverlayEvents} from './columnSizerOverlayEvents';
-import {ColumnSizer} from '../../utils/columnSizer/columnSizer';
 import {ColumnSizerT} from '../../types/columnSizer';
 import {PX} from '../../types/pxDimension';
 
@@ -11,8 +10,7 @@ export class ColumnSizerOverlayElement {
   // this is recalculated as it depends on the column index that the sizer is on
   public static setStaticProperties(overlayElement: HTMLElement, marginRight: string, width: PX) {
     overlayElement.style.marginRight = marginRight;
-    const widthNumber = Number.parseInt(width);
-    overlayElement.style.width = `${ColumnSizer.shouldWidthBeIncreased(widthNumber) ? widthNumber - 2 : widthNumber}px`;
+    overlayElement.style.width = width;
   }
 
   public static applyEvents(etc: EditableTableComponent, columnSizer: ColumnSizerT) {

@@ -11,7 +11,7 @@ export class MovableColumnSizerElement {
   public static setStaticProperties(movableSizerElement: HTMLElement, marginRight: string, width: PX) {
     movableSizerElement.style.marginRight = marginRight;
     const widthNumber = Number.parseInt(width);
-    const totalSizerBorderWidth = 2;
+    const totalSizerBorderWidth = 2; // this is not set by the user
     movableSizerElement.style.width = `${widthNumber + totalSizerBorderWidth}px`;
   }
 

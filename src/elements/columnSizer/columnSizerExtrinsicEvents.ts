@@ -46,7 +46,7 @@ export class ColumnSizerExtrinsicEvents {
     const selectedColumnSizer = tableElementEventState.selectedColumnSizer as SelectedColumnSizerT;
     const {columnSizer, headerCell, sizerNumber} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(
       selectedColumnSizer.element.id, columnsDetails);
-    ColumnSizerExtrinsicEvents.setWidth(selectedColumnSizer, tableDimensions,headerCell,
+    ColumnSizerExtrinsicEvents.setWidth(selectedColumnSizer, tableDimensions, headerCell,
       columnsDetails[sizerNumber + 1]?.elements[0]);
     MovableColumnSizerElement.hide(columnSizer.movableElement);
   }
