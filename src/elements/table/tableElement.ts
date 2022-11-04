@@ -36,7 +36,6 @@ export class TableElement {
     etc.tableBodyElementRef?.replaceChildren();
     // header/data rows
     etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
-    setTimeout(() => StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, Browser.IS_SAFARI));
     // new row row and full table overlay
     TableElement.addAuxiliaryBodyElements(etc);
   }

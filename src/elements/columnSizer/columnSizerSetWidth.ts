@@ -1,5 +1,4 @@
 import {SizerMoveLimits, SelectedColumnSizerT} from '../../types/columnSizer';
-import {StaticTable} from '../../utils/staticTable/staticTable';
 import {TableDimensions} from '../../types/tableDimensions';
 
 export class ColumnSizerSetWidth {
@@ -65,7 +64,7 @@ export class ColumnSizerSetWidth {
   public static set(selectedColumnSizer: SelectedColumnSizerT, tableDimensions: TableDimensions,
       leftHeader: HTMLElement, rightHeader?: HTMLElement) {
     // REF-11
-    if (rightHeader && StaticTable.isStaticWidth(tableDimensions.width)) {
+    if (rightHeader && tableDimensions.width !== undefined) {
       // when the table width is static - control the width of two columns
       ColumnSizerSetWidth.setColumnsWidths(selectedColumnSizer, leftHeader, rightHeader);
     } else {

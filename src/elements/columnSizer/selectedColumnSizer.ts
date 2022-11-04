@@ -1,7 +1,6 @@
 import {ColumnSizerT, SelectedColumnSizerT} from '../../types/columnSizer';
 import {EditableTableComponent} from '../../editable-table-component';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
-import {StaticTable} from '../../utils/staticTable/staticTable';
 
 export class SelectedColumnSizer {
   // borders of the side cells tend to breach over the limits of the table by half their width, causing the offsets to
@@ -34,7 +33,7 @@ export class SelectedColumnSizer {
   }
 
   private static getRightLimit(etc: EditableTableComponent, isSecondLastSizer: boolean, rightHeader?: HTMLElement) {
-    if (StaticTable.isStaticWidth(etc.tableDimensions.width)) {
+    if (etc.tableDimensions.width !== undefined) {
       return SelectedColumnSizer.getRightLimitStaticWidthTable(isSecondLastSizer, rightHeader);
     }
     return SelectedColumnSizer.getRightLimitDynamicWidthTable(etc);

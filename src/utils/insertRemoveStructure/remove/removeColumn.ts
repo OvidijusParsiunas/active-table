@@ -22,7 +22,7 @@ export class RemoveColumn {
     const lastColumn: ElementDetails = LastColumn.getDetails(rowElement);
     RemoveColumn.removeElements(rowElement, columnIndex);
     etc.contents[rowIndex].splice(columnIndex, 1);
-    if (rowIndex === 0) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, Browser.IS_SAFARI);
+    if (rowIndex === 0) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, false, Browser.IS_SAFARI);
     setTimeout(() => {
       const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};
       UpdateCellsForColumns.rebindAndFireUpdates(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.REMOVED, lastColumn);
@@ -36,6 +36,7 @@ export class RemoveColumn {
     });
   }
 
+  // TO-DO - default to add new column column when there are no more columns
   public static remove(etc: EditableTableComponent, columnIndex: number) {
     const removedDetails = etc.columnsDetails.splice(columnIndex, 1)[0];
     RemoveColumn.removeCellFromAllRows(etc, columnIndex);

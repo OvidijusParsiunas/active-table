@@ -79,7 +79,7 @@ export class InsertNewCell {
     etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
     if (rowIndex === 0) {
       InsertNewCell.addColumnDetailsWithElement(etc.columnsDetails, columnIndex, newCellElement); // REF-13
-      if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, Browser.IS_SAFARI);
+      StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true, Browser.IS_SAFARI);
     }
   }
 }
