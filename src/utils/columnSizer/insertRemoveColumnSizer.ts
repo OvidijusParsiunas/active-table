@@ -4,12 +4,15 @@ import {MovableColumnSizerElement} from '../../elements/columnSizer/movableColum
 import {ColumnSizerFillerElement} from '../../elements/columnSizer/columnSizerFillerElement';
 import {ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement';
 import {EditableTableComponent} from '../../editable-table-component';
+import {TableDimensions} from '../../types/tableDimensions';
+import {StaticTable} from '../staticTable/staticTable';
 import {ColumnSizerT} from '../../types/columnSizer';
 import {ColumnSizer} from './columnSizer';
 
 export class InsertRemoveColumnSizer {
   private static updateIdsOfAllSubsequent(columnsDetails: ColumnsDetailsT, nextIndex: number) {
     columnsDetails.slice(nextIndex).forEach((columnDetails: ColumnDetailsT, index: number) => {
+      if (!columnDetails.columnSizer) return;
       const relativeIndex = nextIndex + index;
       ColumnSizerElement.setElementId(columnDetails.columnSizer.element, relativeIndex);
     });
@@ -48,15 +51,45 @@ export class InsertRemoveColumnSizer {
     InsertRemoveColumnSizer.applySizerStateToElements(columnSizer);
   }
 
-  // prettier-ignore
-  public static insert(etc: EditableTableComponent,
-      columnsDetails: ColumnsDetailsT, newColumnDetails: ColumnDetailsTPartial, columnIndex: number) {
-    InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex);
-    InsertRemoveColumnSizer.insertAtIndex(etc, newColumnDetails, columnIndex);
+  private static getNewSizerColumnIndex(columnsDetails: ColumnsDetailsT, columnIndex: number) {
+    const isLastColumn = columnsDetails.length - 1 === columnIndex;
+    // if last cell - set sizer on previous column, if middle - set it on current column
+    return isLastColumn ? columnIndex - 1 : columnIndex;
+  }
+
+  public static insert(etc: EditableTableComponent, columnsDetails: ColumnsDetailsT, columnIndex: number) {
+    if (StaticTable.isStaticWidth(etc.tableDimensions.width)) {
+      // column sizer is not displayed for the last column
+      if (columnIndex - 1 < 0) return;
+      columnIndex = InsertRemoveColumnSizer.getNewSizerColumnIndex(columnsDetails, columnIndex);
+    } else {
+      // only dynamic width tables have a sizer on the last column - hence only their styles need to be changed
+      InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex);
+    }
+    InsertRemoveColumnSizer.insertAtIndex(etc, etc.columnsDetails[columnIndex], columnIndex);
     InsertRemoveColumnSizer.updateIdsOfAllSubsequent(columnsDetails, columnIndex + 1);
   }
 
-  public static remove(columnsDetails: ColumnsDetailsT, columnIndex: number) {
+  // this is only used for when table width is static, otherwise it is removed directly with the column
+  private static removeSizer(newColumnDetails: ColumnDetailsTPartial) {
+    const cellDividerElement = newColumnDetails.elements[0].nextSibling as HTMLElement;
+    cellDividerElement.replaceChildren();
+    delete newColumnDetails.columnSizer;
+  }
+
+  private static removeIfLastColumn(columnsDetails: ColumnsDetailsT, columnIndex: number) {
+    const isLastColumn = columnsDetails.length === columnIndex;
+    if (isLastColumn) {
+      columnIndex -= 1;
+      InsertRemoveColumnSizer.removeSizer(columnsDetails[columnIndex]);
+    }
+    return columnIndex;
+  }
+
+  public static remove(columnsDetails: ColumnsDetailsT, columnIndex: number, tableDimensions: TableDimensions) {
+    if (StaticTable.isStaticWidth(tableDimensions.width)) {
+      columnIndex = InsertRemoveColumnSizer.removeIfLastColumn(columnsDetails, columnIndex);
+    }
     InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex);
     InsertRemoveColumnSizer.updateIdsOfAllSubsequent(columnsDetails, columnIndex);
   }

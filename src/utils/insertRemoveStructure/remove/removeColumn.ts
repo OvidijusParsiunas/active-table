@@ -1,11 +1,13 @@
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {InsertRemoveColumnSizer} from '../../columnSizer/insertRemoveColumnSizer';
+import {StaticTableWidthUtils} from '../../staticTable/staticTableWidthUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
 import {LastColumn} from '../shared/lastColumn';
+import {Browser} from '../../browser/browser';
 
 export class RemoveColumn {
   private static removeElements(rowElement: HTMLElement, columnIndex: number) {
@@ -20,6 +22,7 @@ export class RemoveColumn {
     const lastColumn: ElementDetails = LastColumn.getDetails(rowElement);
     RemoveColumn.removeElements(rowElement, columnIndex);
     etc.contents[rowIndex].splice(columnIndex, 1);
+    if (rowIndex === 0) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, Browser.IS_SAFARI);
     setTimeout(() => {
       const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};
       UpdateCellsForColumns.rebindAndFireUpdates(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.REMOVED, lastColumn);
@@ -38,7 +41,7 @@ export class RemoveColumn {
     RemoveColumn.removeCellFromAllRows(etc, columnIndex);
     setTimeout(() => {
       CategoryDropdown.remove(etc.tableElementRef as HTMLElement, removedDetails.categoryDropdown.element);
-      InsertRemoveColumnSizer.remove(etc.columnsDetails, columnIndex);
+      InsertRemoveColumnSizer.remove(etc.columnsDetails, columnIndex, etc.tableDimensions);
       etc.onTableUpdate(etc.contents);
     });
   }

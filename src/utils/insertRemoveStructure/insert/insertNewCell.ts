@@ -1,9 +1,9 @@
 import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
-import {StaticTableWidthUtils} from '../../staticTableWidthsUtils/staticTableWidthUtils';
 import {InsertRemoveColumnSizer} from '../../columnSizer/insertRemoveColumnSizer';
 import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
+import {StaticTableWidthUtils} from '../../staticTable/staticTableWidthUtils';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
@@ -31,7 +31,7 @@ export class InsertNewCell {
       const categoryDropdown = CategoryDropdown.createAndAppend(etc.tableElementRef as HTMLElement);
       const columnDetails = ColumnDetails.createPartial(cellElement, categoryDropdown);
       columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
-      InsertRemoveColumnSizer.insert(etc, columnsDetails, columnDetails, columnIndex);
+      InsertRemoveColumnSizer.insert(etc, columnsDetails, columnIndex);
     } else {
       // TO-DO - not sure if all cell elements are needed, if this is not required in the future do not this code
       const columnDetails = etc.columnsDetails[columnIndex];

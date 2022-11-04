@@ -38,14 +38,15 @@ export class StaticTableWidthUtils {
   public static changeWidthsBasedOnColumnInsertRemove(etc: EditableTableComponent, isSafari: boolean,
       newCellElement?: HTMLElement) {
     const {tableElementRef, tableDimensions, columnsDetails, contents} = etc;
-    if (tableDimensions.width && tableElementRef) {
+    if (!tableElementRef) return;
+    if (tableDimensions.width) {
       StaticTableWidthUtils.setWidth(tableElementRef, tableDimensions.width, contents[0]);
       columnsDetails.forEach((columnDetails) => {
         columnDetails.elements[0].style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
       });
       if (newCellElement) newCellElement.style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
       // REF-11
-    } else if (isSafari && tableElementRef) {
+    } else if (isSafari) {
       tableElementRef.style.width = `${tableElementRef.offsetWidth + StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
     }
   }

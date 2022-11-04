@@ -1,8 +1,8 @@
-import {StaticTableWidthUtils} from './utils/staticTableWidthsUtils/staticTableWidthUtils';
 import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
+import {StaticTableWidthUtils} from './utils/staticTable/staticTableWidthUtils';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableElementEventState} from './types/tableElementEventState';
 import {customElement, property, state} from 'lit/decorators.js';
@@ -35,6 +35,7 @@ export class EditableTableComponent extends LitElement {
   public static ELEMENT_TAG = 'EDITABLE-TABLE-COMPONENT';
 
   @property({type: Array})
+  // TO-DO must fill rows that don't have all columns
   contents: TableContents = [
     ['R', 'G', 'B', 'Color'],
     [255, 0, 0, 'Red'],

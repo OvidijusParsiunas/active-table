@@ -1,6 +1,6 @@
 import {SizerMoveLimits, SelectedColumnSizerT} from '../../types/columnSizer';
+import {StaticTable} from '../../utils/staticTable/staticTable';
 import {TableDimensions} from '../../types/tableDimensions';
-import {Browser} from '../../utils/browser/browser';
 
 export class ColumnSizerSetWidth {
   private static getWidthDelta(mouseMoveOffset: number, moveLimits: SizerMoveLimits) {
@@ -65,7 +65,7 @@ export class ColumnSizerSetWidth {
   public static set(selectedColumnSizer: SelectedColumnSizerT, tableDimensions: TableDimensions,
       leftHeader: HTMLElement, rightHeader?: HTMLElement) {
     // REF-11
-    if (rightHeader && (tableDimensions.width || Browser.IS_SAFARI)) {
+    if (rightHeader && StaticTable.isStaticWidth(tableDimensions.width)) {
       // when the table width is static - control the width of two columns
       ColumnSizerSetWidth.setColumnsWidths(selectedColumnSizer, leftHeader, rightHeader);
     } else {

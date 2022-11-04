@@ -1,4 +1,4 @@
-import {StaticTableWidthUtils} from '../../utils/staticTableWidthsUtils/staticTableWidthUtils';
+import {StaticTableWidthUtils} from '../../utils/staticTable/staticTableWidthUtils';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
