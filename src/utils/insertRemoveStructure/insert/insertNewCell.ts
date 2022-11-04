@@ -1,4 +1,5 @@
 import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
+import {ColumnDetailsElementsOnly, ColumnDetailsT, ColumnsDetailsT} from '../../../types/columnDetails';
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {InsertRemoveColumnSizer} from '../../columnSizer/insertRemoveColumnSizer';
@@ -9,7 +10,6 @@ import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
-import {ColumnDetailsT} from '../../../types/columnDetails';
 import {DataUtils} from '../shared/dataUtils';
 import {Browser} from '../../browser/browser';
 
@@ -27,17 +27,24 @@ export class InsertNewCell {
   private static updateColumnDetailsAndSizers(
       etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement, text: string) {
     const { columnsDetails, defaultCellValue } = etc;
+    const columnDetails = columnsDetails[columnIndex];
     if (rowIndex === 0) {
       const categoryDropdown = CategoryDropdown.createAndAppend(etc.tableElementRef as HTMLElement);
-      const columnDetails = ColumnDetails.createPartial(cellElement, categoryDropdown);
-      columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
-      InsertRemoveColumnSizer.insert(etc, columnsDetails, columnIndex);
+      ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsElementsOnly, categoryDropdown); // REF-13
+      InsertRemoveColumnSizer.insert(etc, columnsDetails, columnIndex); // REF-13
     } else {
       // TO-DO - not sure if all cell elements are needed, if this is not required in the future do not this code
-      const columnDetails = etc.columnsDetails[columnIndex];
       columnDetails.elements.splice(rowIndex, 0, cellElement);
       setTimeout(() => CellTypeTotalsUtils.incrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, text));
     }
+  }
+
+  // REF-13
+  // the reason for creating empty object with element only is because we need it for changeWidthsBasedOnColumnInsertRemove
+  // we can worry about adding the other properties in a timeout within the updateColumnDetailsAndSizers method
+  private static addColumnDetailsWithElement(columnsDetails: ColumnsDetailsT, index: number, newCellElement: HTMLElement) {
+    const columnDetails = ColumnDetails.createWithElements(newCellElement);
+    columnsDetails.splice(index, 0, columnDetails as ColumnDetailsT);
   }
 
   // prettier-ignore
@@ -70,8 +77,9 @@ export class InsertNewCell {
       etc, rowIndex, columnIndex, newCellElement, processedCellText));
     // cannot place in a timeout as etc.contents length is used to get last row index
     etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
-    if (rowIndex === 0 && isNewText) {
-      StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, Browser.IS_SAFARI, newCellElement);
+    if (rowIndex === 0) {
+      InsertNewCell.addColumnDetailsWithElement(etc.columnsDetails, columnIndex, newCellElement); // REF-13
+      if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, Browser.IS_SAFARI);
     }
   }
 }

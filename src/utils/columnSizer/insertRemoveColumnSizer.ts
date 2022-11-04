@@ -1,4 +1,4 @@
-import {ColumnsDetailsT, ColumnDetailsT, ColumnDetailsTPartial} from '../../types/columnDetails';
+import {ColumnsDetailsT, ColumnDetailsT, ColumnDetailsNoSizer} from '../../types/columnDetails';
 import {ColumnSizerOverlayElement} from '../../elements/columnSizer/columnSizerOverlayElement';
 import {MovableColumnSizerElement} from '../../elements/columnSizer/movableColumnSizerElement';
 import {ColumnSizerFillerElement} from '../../elements/columnSizer/columnSizerFillerElement';
@@ -28,7 +28,7 @@ export class InsertRemoveColumnSizer {
     ColumnSizerOverlayElement.setStaticProperties(overlayElement, styles.static.marginRight, styles.hover.width);
   }
 
-  private static insertAtIndex(etc: EditableTableComponent, newColumnDetails: ColumnDetailsTPartial, columnIndex: number) {
+  private static insertAtIndex(etc: EditableTableComponent, newColumnDetails: ColumnDetailsNoSizer, columnIndex: number) {
     // assuming this has already been added, otherwise pass it down through params
     const cellDividerElement = newColumnDetails.elements[0].nextSibling as HTMLElement;
     const columnSizer = ColumnSizer.create(etc, columnIndex);
@@ -57,6 +57,7 @@ export class InsertRemoveColumnSizer {
     return isLastColumn ? columnIndex - 1 : columnIndex;
   }
 
+  // REF-13
   public static insert(etc: EditableTableComponent, columnsDetails: ColumnsDetailsT, columnIndex: number) {
     if (StaticTable.isStaticWidth(etc.tableDimensions.width)) {
       // column sizer is not displayed for the last column
@@ -71,7 +72,7 @@ export class InsertRemoveColumnSizer {
   }
 
   // this is only used for when table width is static, otherwise it is removed directly with the column
-  private static removeSizer(newColumnDetails: ColumnDetailsTPartial) {
+  private static removeSizer(newColumnDetails: ColumnDetailsNoSizer) {
     const cellDividerElement = newColumnDetails.elements[0].nextSibling as HTMLElement;
     cellDividerElement.replaceChildren();
     delete newColumnDetails.columnSizer;

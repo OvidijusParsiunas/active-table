@@ -49,7 +49,10 @@ export interface ColumnDetailsT {
   categoryDropdown: CategoryDropdownT;
 }
 
-// used for when column details initialised before the column sizer
-export type ColumnDetailsTPartial = Optional<ColumnDetailsT, 'columnSizer'>;
+// REF-13
+export type ColumnDetailsElementsOnly = Pick<ColumnDetailsT, 'elements'>;
+
+// REF-13
+export type ColumnDetailsNoSizer = Optional<ColumnDetailsT, 'columnSizer'>;
 
 export type ColumnsDetailsT = ColumnDetailsT[];
