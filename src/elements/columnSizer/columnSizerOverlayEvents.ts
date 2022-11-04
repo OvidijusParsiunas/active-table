@@ -58,8 +58,9 @@ export class ColumnSizerOverlayEvents {
     }, ColumnSizerOverlayEvents.MOUSE_PASSTHROUGH_TIME_ML);
   }
 
-  public static overlayMouseDown(this: EditableTableComponent, sizerId: string) {
-    const {columnSizer, sizerNumber} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(sizerId, this.columnsDetails);
+  // we need to pass down the sizer element instead of the id as the id can change when columns are inserted/removed
+  public static overlayMouseDown(this: EditableTableComponent, sizer: HTMLElement) {
+    const {columnSizer, sizerNumber} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(sizer.id, this.columnsDetails);
     const {element: sizerElement, styles: sizerStyles} = columnSizer;
     MovableColumnSizerElement.display(this.tableBodyElementRef as HTMLElement, columnSizer, this.displayAddRowCell);
     ColumnSizerElement.unsetElementsToDefault(sizerElement, sizerStyles.default.width);

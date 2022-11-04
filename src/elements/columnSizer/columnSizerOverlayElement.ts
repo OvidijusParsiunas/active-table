@@ -16,7 +16,7 @@ export class ColumnSizerOverlayElement {
   public static applyEvents(etc: EditableTableComponent, columnSizer: ColumnSizerT) {
     columnSizer.overlayElement.onmouseenter = ColumnSizerOverlayEvents.overlayMouseEnter.bind(etc, columnSizer);
     columnSizer.overlayElement.onmouseleave = ColumnSizerOverlayEvents.overlayMouseLeave.bind(etc, columnSizer);
-    columnSizer.overlayElement.onmousedown = ColumnSizerOverlayEvents.overlayMouseDown.bind(etc, columnSizer.element.id);
+    columnSizer.overlayElement.onmousedown = ColumnSizerOverlayEvents.overlayMouseDown.bind(etc, columnSizer.element);
   }
 
   public static create() {
