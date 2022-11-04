@@ -6,7 +6,6 @@ import {ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement'
 import {EditableTableComponent} from '../../editable-table-component';
 import {TableDimensions} from '../../types/tableDimensions';
 import {ColumnSizerT} from '../../types/columnSizer';
-import {Browser} from '../browser/browser';
 import {ColumnSizer} from './columnSizer';
 
 export class InsertRemoveColumnSizer {
@@ -61,7 +60,6 @@ export class InsertRemoveColumnSizer {
   public static insert(etc: EditableTableComponent, columnsDetails: ColumnsDetailsT, columnIndex: number) {
     if (etc.tableDimensions.width !== undefined) {
       // column sizer is not displayed for the last column
-      if (columnIndex - 1 < 0) return;
       columnIndex = InsertRemoveColumnSizer.getNewSizerColumnIndex(columnsDetails, columnIndex);
     } else {
       // only dynamic width tables have a sizer on the last column - hence only their styles need to be changed
@@ -88,7 +86,7 @@ export class InsertRemoveColumnSizer {
   }
 
   public static remove(columnsDetails: ColumnsDetailsT, columnIndex: number, tableDimensions: TableDimensions) {
-    if (Browser.IS_SAFARI || tableDimensions.width) {
+    if (tableDimensions.width) {
       columnIndex = InsertRemoveColumnSizer.removeIfLastColumn(columnsDetails, columnIndex);
     }
     InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex);
