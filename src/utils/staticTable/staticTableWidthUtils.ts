@@ -56,8 +56,9 @@ export class StaticTableWidthUtils {
       const columnWidthDelta = isInsert ? StaticTableWidthUtils.NEW_COLUMN_WIDTH : -StaticTableWidthUtils.NEW_COLUMN_WIDTH;
       tableElementRef.style.width = `${Number.parseInt(tableElementRef.style.width) + columnWidthDelta}px`;
     }
-    // need the safari part to run in order to update table width and get the new offset
-    if (tableDimensions.width === undefined && StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensions)) {
+    // only executed when tableDimensions.width is undefined and the reason why this is after the above statements is
+    // because we need the safari part first to run in order to update table width and get the new offset
+    if (StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensions)) {
       StaticTableWidthUtils.resetAllColumnSizes(etc, tableDimensions.maxWidth as number);
       if (isSafari) tableElementRef.style.width = `${tableDimensions.maxWidth}px`;
     }

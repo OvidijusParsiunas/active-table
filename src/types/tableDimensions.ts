@@ -1,7 +1,7 @@
 export interface TableDimensions {
-  // when width and maxWidth are both added - width takes priority and columns are set according to that property
+  // width and maxWidth are mutually exclusive and if both are present width is the only one that is used
+  // WORK - percentage should also be available
   width?: number;
-  // WORK - can potentially remove maxWidth if width is present to simplify the code
   maxWidth?: number;
   minWidth?: number;
   // WORK - figure out if we are going to have an internal scroll, also need option for maximum rows, maximum columns
