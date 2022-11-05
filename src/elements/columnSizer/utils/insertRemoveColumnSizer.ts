@@ -1,11 +1,11 @@
-import {ColumnsDetailsT, ColumnDetailsT, ColumnDetailsNoSizer} from '../../types/columnDetails';
-import {ColumnSizerOverlayElement} from '../../elements/columnSizer/columnSizerOverlayElement';
-import {MovableColumnSizerElement} from '../../elements/columnSizer/movableColumnSizerElement';
-import {ColumnSizerFillerElement} from '../../elements/columnSizer/columnSizerFillerElement';
-import {ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement';
-import {EditableTableComponent} from '../../editable-table-component';
-import {TableDimensions} from '../../types/tableDimensions';
-import {ColumnSizerT} from '../../types/columnSizer';
+import {ColumnsDetailsT, ColumnDetailsT, ColumnDetailsNoSizer} from '../../../types/columnDetails';
+import {EditableTableComponent} from '../../../editable-table-component';
+import {ColumnSizerOverlayElement} from '../columnSizerOverlayElement';
+import {MovableColumnSizerElement} from '../movableColumnSizerElement';
+import {ColumnSizerFillerElement} from '../columnSizerFillerElement';
+import {TableDimensions} from '../../../types/tableDimensions';
+import {ColumnSizerElement} from '../columnSizerElement';
+import {ColumnSizerT} from '../../../types/columnSizer';
 import {ColumnSizer} from './columnSizer';
 
 export class InsertRemoveColumnSizer {

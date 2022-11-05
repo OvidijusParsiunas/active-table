@@ -1,12 +1,12 @@
 import {UpdateRowElement} from '../../utils/insertRemoveStructure/update/updateRowElement';
 import {ColumnSizerT, SelectedColumnSizerT} from '../../types/columnSizer';
+import {ColumnSizerGenericUtils} from './utils/columnSizerGenericUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {MovableColumnSizerElement} from './movableColumnSizerElement';
-import {ColumnSizerGenericUtils} from './columnSizerGenericUtils';
+import {ColumnSizerSetWidth} from './utils/columnSizerSetWidth';
 import {TableDimensions} from '../../types/tableDimensions';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {ColumnsDetailsT} from '../../types/columnDetails';
-import {ColumnSizerSetWidth} from './columnSizerSetWidth';
 import {ColumnSizerElement} from './columnSizerElement';
 
 export class ColumnSizerExtrinsicEvents {

@@ -1,7 +1,7 @@
-import {SizerMoveLimits, SelectedColumnSizerT} from '../../types/columnSizer';
-import {StaticTable} from '../../utils/staticTable/staticTable';
-import {TableDimensions} from '../../types/tableDimensions';
-import {Browser} from '../../utils/browser/browser';
+import {SizerMoveLimits, SelectedColumnSizerT} from '../../../types/columnSizer';
+import {StaticTable} from '../../../utils/staticTable/staticTable';
+import {TableDimensions} from '../../../types/tableDimensions';
+import {Browser} from '../../../utils/browser/browser';
 
 export class ColumnSizerSetWidth {
   private static getWidthDelta(mouseMoveOffset: number, moveLimits: SizerMoveLimits) {

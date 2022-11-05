@@ -1,13 +1,12 @@
-import {BorderWidths, ColumnSizerElement} from '../../elements/columnSizer/columnSizerElement';
-import {MovableColumnSizerElement} from '../../elements/columnSizer/movableColumnSizerElement';
-import {ColumnSizerOverlayElement} from '../../elements/columnSizer/columnSizerOverlayElement';
-import {EditableTableComponent} from '../../editable-table-component';
-import {ColumnsDetailsT} from '../../types/columnDetails';
-import {ColumnSizerT} from '../../types/columnSizer';
-import {Optional} from '../../types/optional';
-import {PX} from '../../types/pxDimension';
+import {EditableTableComponent} from '../../../editable-table-component';
+import {BorderWidths, ColumnSizerElement} from '../columnSizerElement';
+import {MovableColumnSizerElement} from '../movableColumnSizerElement';
+import {ColumnSizerOverlayElement} from '../columnSizerOverlayElement';
+import {ColumnsDetailsT} from '../../../types/columnDetails';
+import {ColumnSizerT} from '../../../types/columnSizer';
+import {Optional} from '../../../types/optional';
+import {PX} from '../../../types/pxDimension';
 
-// WORK - place this back into the elements section
 export class ColumnSizer {
   public static shouldWidthBeIncreased(widthPx: number) {
     return widthPx > 4;

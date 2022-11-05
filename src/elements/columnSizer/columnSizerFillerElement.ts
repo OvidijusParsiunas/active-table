@@ -1,5 +1,5 @@
-import {ColumnSizer} from '../../utils/columnSizer/columnSizer';
 import {ColumnSizerElement} from './columnSizerElement';
+import {ColumnSizer} from './utils/columnSizer';
 import {PX} from '../../types/pxDimension';
 
 // REF-12

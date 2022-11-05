@@ -1,5 +1,5 @@
-import {ColumnsDetailsT} from '../../types/columnDetails';
-import {RegexUtils} from '../../utils/regex/regexUtils';
+import {ColumnsDetailsT} from '../../../types/columnDetails';
+import {RegexUtils} from '../../../utils/regex/regexUtils';
 
 export class ColumnSizerGenericUtils {
   public static getSizerDetailsViaElementId(id: string, columnsDetails: ColumnsDetailsT) {

@@ -35,10 +35,10 @@ export class StaticTableWidthUtils {
       (tableWidth - StaticTableWidthUtils.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH) / firstRow.length;
   }
 
-  private static resetAllColumnSizes(etc: EditableTableComponent) {
-    const {tableElementRef, tableDimensions, columnsDetails, contents} = etc;
+  private static resetAllColumnSizes(etc: EditableTableComponent, newTableWidth: number) {
+    const {tableElementRef, columnsDetails, contents} = etc;
     if (!tableElementRef) return;
-    StaticTableWidthUtils.setNewColumnWidthProp(tableElementRef, tableDimensions.maxWidth as number, contents[0]);
+    StaticTableWidthUtils.setNewColumnWidthProp(tableElementRef, newTableWidth, contents[0]);
     columnsDetails.forEach((columnDetails) => {
       columnDetails.elements[0].style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
     });
@@ -50,15 +50,15 @@ export class StaticTableWidthUtils {
     const {tableElementRef, tableDimensions} = etc;
     if (!tableElementRef) return;
     if (tableDimensions.width !== undefined) {
-      StaticTableWidthUtils.resetAllColumnSizes(etc);
+      StaticTableWidthUtils.resetAllColumnSizes(etc, tableDimensions.width);
       // REF-11
     } else if (isSafari) {
       const columnWidthDelta = isInsert ? StaticTableWidthUtils.NEW_COLUMN_WIDTH : -StaticTableWidthUtils.NEW_COLUMN_WIDTH;
       tableElementRef.style.width = `${Number.parseInt(tableElementRef.style.width) + columnWidthDelta}px`;
     }
-    // activated when tableDimensions.width is undefined but need the safari part to run in order to get the table offset
-    if (StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensions)) {
-      StaticTableWidthUtils.resetAllColumnSizes(etc);
+    // need the safari part to run in order to update table width and get the new offset
+    if (tableDimensions.width === undefined && StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensions)) {
+      StaticTableWidthUtils.resetAllColumnSizes(etc, tableDimensions.maxWidth as number);
       if (isSafari) tableElementRef.style.width = `${tableDimensions.maxWidth}px`;
     }
   }
