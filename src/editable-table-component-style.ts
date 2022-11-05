@@ -25,6 +25,8 @@ export const ediTableStyle = css`
   th {
     cursor: pointer;
     user-select: none;
+    /* safari */
+    -webkit-user-select: none;
   }
 
   td {
@@ -91,6 +93,8 @@ export const ediTableStyle = css`
 
   .cell-divider > * {
     user-select: none;
+    /* safari */
+    -webkit-user-select: none;
     position: absolute;
     cursor: col-resize;
     justify-content: center;
@@ -154,7 +158,7 @@ export const ediTableStyle = css`
     position: relative;
     cursor: pointer;
     user-select: none;
-    /* for safari */
+    /* safari */
     -webkit-user-select: none;
   }
 

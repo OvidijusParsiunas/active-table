@@ -1,6 +1,7 @@
 import {ColumnSizerT, SelectedColumnSizerT} from '../../types/columnSizer';
 import {EditableTableComponent} from '../../editable-table-component';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
+import {StaticTable} from '../../utils/staticTable/staticTable';
 
 export class SelectedColumnSizer {
   // borders of the side cells tend to breach over the limits of the table by half their width, causing the offsets to
@@ -21,9 +22,13 @@ export class SelectedColumnSizer {
     const parentElement = etc.parentElement as HTMLElement;
     const parentWidth = parentElement.offsetWidth;
     // parent element may already have an offset which will affect the table offset
-    // bug where if the parent element is the <body> tag, then the offset will not display but that has been accepted
+    // bug where the parent element is the <body> tag, then the offset will not display but that has been accepted
     const tableOffsetInParent = etc.offsetLeft - parentElement.offsetLeft;
     return parentWidth - tableOffsetInParent - etc.offsetWidth;
+  }
+
+  private static getRightLimitForMaxWidth(maxWidth: number, currentWidth: number) {
+    return maxWidth - currentWidth;
   }
 
   private static getRightLimitStaticWidthTable(isSecondLastSizer: boolean, rightHeader?: HTMLElement) {
@@ -33,8 +38,10 @@ export class SelectedColumnSizer {
   }
 
   private static getRightLimit(etc: EditableTableComponent, isSecondLastSizer: boolean, rightHeader?: HTMLElement) {
-    if (etc.tableDimensions.width !== undefined) {
+    if (StaticTable.isStaticTableWidth(etc.tableElementRef as HTMLElement, etc.tableDimensions)) {
       return SelectedColumnSizer.getRightLimitStaticWidthTable(isSecondLastSizer, rightHeader);
+    } else if (etc.tableDimensions.maxWidth !== undefined) {
+      return SelectedColumnSizer.getRightLimitForMaxWidth(etc.tableDimensions.maxWidth, etc.offsetWidth);
     }
     return SelectedColumnSizer.getRightLimitDynamicWidthTable(etc);
   }
@@ -64,6 +71,8 @@ export class SelectedColumnSizer {
   }
 
   public static get(etc: EditableTableComponent, sizerNumber: number, columnSizer: ColumnSizerT): SelectedColumnSizerT {
+    // borders of the side cells tend to breach over the limits of the table by half their width, causing the offsets to
+    // be incorrect and thus set the limits beyond the table limits, isFirstSizer and isSecondLastSizer help prevent it
     const isFirstSizer = sizerNumber === 0;
     const isSecondLastSizer = etc.columnsDetails.length > sizerNumber + 2;
     const leftHeader = etc.columnsDetails[sizerNumber].elements[0];
