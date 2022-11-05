@@ -1,7 +1,6 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {GenericElementUtils} from '../elements/genericElementUtils';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
-import {TableDimensions} from '../../types/tableDimensions';
 import {TableRow} from '../../types/tableContents';
 
 // table width is considered static when the user sets its width or the width needs to be kept track of for Safari
@@ -11,12 +10,14 @@ export class StaticTableWidthUtils {
 
   // the reason why isSafari needs to be passed down via a parameter is because the static methods are used in
   // the component's render function hence Browser.IS_SAFARI has a chance of not being initialised yet
-  public static setInitialTableWidth(tableDimensions: TableDimensions, tableElement: HTMLElement, isSafari: boolean) {
+  public static setInitialTableWidth(etc: EditableTableComponent, isSafari: boolean) {
+    const {tableDimensions, tableElementRef, contents} = etc;
+    if (!tableElementRef) return;
     if (tableDimensions.width) {
-      tableElement.style.width = `${tableDimensions.width}px`;
+      tableElementRef.style.width = `${tableDimensions.width}px`;
       // REF-11
     } else if (isSafari) {
-      tableElement.style.width = '0px';
+      tableElementRef.style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH * contents[0].length}px`;
     }
   }
 

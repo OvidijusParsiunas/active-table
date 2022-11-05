@@ -7,10 +7,4 @@ export class ObjectUtils {
     });
     return object;
   }
-
-  public static assignViaIteration(sourceObject: GenericObject, targetObject: GenericObject) {
-    Object.keys(sourceObject).forEach((key: string) => {
-      targetObject[key] = sourceObject[key];
-    });
-  }
 }

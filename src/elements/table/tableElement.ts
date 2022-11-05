@@ -1,11 +1,11 @@
+import {StaticTableWidthUtils} from '../../utils/staticTable/staticTableWidthUtils';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {OverlayElements} from '../../types/overlayElements';
-import {ObjectUtils} from '../../utils/object/objectUtils';
 import {AddNewRowElement} from '../row/addNewRowElement';
-import {GenericObject} from '../../types/genericObject';
+import {Browser} from '../../utils/browser/browser';
 import {TableRow} from '../../types/tableContents';
 import {TableEvents} from './tableEvents';
 
@@ -31,11 +31,18 @@ export class TableElement {
     }
   }
 
+  private static udpateWidths(etc: EditableTableComponent) {
+    StaticTableWidthUtils.setInitialTableWidth(etc, Browser.IS_SAFARI);
+    // REF-14 has to be in a timeout method as custom table border style via etc.tableStyle will not be applied yet
+    setTimeout(() => StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true, false));
+  }
+
   public static populateBody(etc: EditableTableComponent) {
     // removes all the current children
     etc.tableBodyElementRef?.replaceChildren();
     // header/data rows
     etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
+    TableElement.udpateWidths(etc);
     // new row row and full table overlay
     TableElement.addAuxiliaryBodyElements(etc);
   }
@@ -46,9 +53,8 @@ export class TableElement {
 
   private static createTableElement(etc: EditableTableComponent) {
     const tableElement = document.createElement('table');
-    // Object.assign did not work as it needs to be in a timeout for firefox and we need it immediately to set
-    // TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH, hence assigning the values manually
-    ObjectUtils.assignViaIteration(etc.tableStyle as GenericObject, tableElement.style as unknown as GenericObject);
+    // REF-14 placing it in a timeout for firefox
+    setTimeout(() => Object.assign(tableElement.style, etc.tableStyle));
     tableElement.onmousedown = TableEvents.onMouseDown.bind(etc);
     tableElement.onmouseup = TableEvents.onMouseUp.bind(etc);
     return tableElement;

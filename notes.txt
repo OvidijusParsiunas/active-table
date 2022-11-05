@@ -111,6 +111,11 @@ all column widths if required. Then in a timeout - asynchronously add all the ot
 creation requires the details from that object. Then proceed to create the sizer and after creating it add it to the object,
 thus completing the creation of that object.
 
+REF-14
+Cannot overwrite the table element style (via tableStyle) on render in FireFox, hence the intitial setup for overwriting the style
+is done in timeouts. This has also caused the initial column width setup code to be moved to a timeout and not be executed on
+adding the individual columns as it depends on the TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH on being calculated correctly. However,
+all proceeding column lengths and table width for Safari are changed directly when a column has been added or removed.
 
 
 

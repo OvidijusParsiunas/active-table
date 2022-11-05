@@ -2,7 +2,6 @@ import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCel
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
-import {StaticTableWidthUtils} from './utils/staticTable/staticTableWidthUtils';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableElementEventState} from './types/tableElementEventState';
 import {customElement, property, state} from 'lit/decorators.js';
@@ -18,7 +17,6 @@ import {HoveredElements} from './types/hoveredElements';
 import {TableDimensions} from './types/tableDimensions';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
-import {Browser} from './utils/browser/browser';
 import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
 
@@ -125,11 +123,6 @@ export class EditableTableComponent extends LitElement {
   private refreshTableState() {
     this.tableElementEventState = {};
     this.columnsDetails = [];
-    StaticTableWidthUtils.setInitialTableWidth(
-      this.tableDimensions,
-      this.tableElementRef as HTMLElement,
-      Browser.IS_SAFARI
-    );
   }
 
   override connectedCallback() {
