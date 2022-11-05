@@ -64,8 +64,6 @@ export class SelectedColumnSizer {
   }
 
   public static get(etc: EditableTableComponent, sizerNumber: number, columnSizer: ColumnSizerT): SelectedColumnSizerT {
-    // WORK
-    // last column should not have the next sizer if it is
     const isFirstSizer = sizerNumber === 0;
     const isSecondLastSizer = etc.columnsDetails.length > sizerNumber + 2;
     const leftHeader = etc.columnsDetails[sizerNumber].elements[0];

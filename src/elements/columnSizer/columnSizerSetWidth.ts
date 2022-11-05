@@ -1,5 +1,6 @@
 import {SizerMoveLimits, SelectedColumnSizerT} from '../../types/columnSizer';
 import {TableDimensions} from '../../types/tableDimensions';
+import {Browser} from '../../utils/browser/browser';
 
 export class ColumnSizerSetWidth {
   private static getWidthDelta(mouseMoveOffset: number, moveLimits: SizerMoveLimits) {
@@ -11,15 +12,23 @@ export class ColumnSizerSetWidth {
     return mouseMoveOffset;
   }
 
+  // for the Safari bug described below - take note that the columnElement.offsetWidth and columnElement.style.width
+  // are different when there is a border on the table
   private static getNewColumnWidth(selectedColumnSizer: SelectedColumnSizerT, columnElement: HTMLElement) {
     const {moveLimits, mouseMoveOffset, initialOffset} = selectedColumnSizer;
-    const newWidthDelta = ColumnSizerSetWidth.getWidthDelta(mouseMoveOffset, moveLimits) - initialOffset;
-    return Math.max(0, columnElement.offsetWidth + newWidthDelta);
+    const delta = ColumnSizerSetWidth.getWidthDelta(mouseMoveOffset, moveLimits) - initialOffset;
+    return {width: Math.max(0, columnElement.offsetWidth + delta), delta};
   }
 
-  private static setColumnWidth(selectedColumnSizer: SelectedColumnSizerT, columnElement: HTMLElement) {
-    const newWidth = ColumnSizerSetWidth.getNewColumnWidth(selectedColumnSizer, columnElement);
-    columnElement.style.width = `${newWidth}px`;
+  // when the table has a border and the column along with the table width are expanded in Safari - it is
+  // noticeable that columns that were not involved in the expansion have their widths also changed.
+  // This is a bug that I was not able to fix, however I can revisit this in the future.
+  // prettier-ignore
+  private static setColumnWidth(tableElement: HTMLElement, selectedColumnSizer: SelectedColumnSizerT,
+      columnElement: HTMLElement) {
+    const {width, delta} = ColumnSizerSetWidth.getNewColumnWidth(selectedColumnSizer, columnElement);
+    columnElement.style.width = `${width}px`;
+    if (Browser.IS_SAFARI) tableElement.style.width = `${tableElement.offsetWidth + delta}px`; // REF-11
   }
 
   // when the user moves the sizer to the start/end of a column in an attempt to completely crush the column,
@@ -41,9 +50,9 @@ export class ColumnSizerSetWidth {
   // prettier-ignore
   private static setWidths(selectedColumnSizer: SelectedColumnSizerT, leftHeader: HTMLElement,
       rightHeader: HTMLElement, initialWidthsTotal: number) {
-    const newLeftWidth = ColumnSizerSetWidth.getNewColumnWidth(selectedColumnSizer, leftHeader);
-    const newRightWidth = Math.max(0, initialWidthsTotal - newLeftWidth);
-    leftHeader.style.width = `${newLeftWidth}px`;
+    const {width} = ColumnSizerSetWidth.getNewColumnWidth(selectedColumnSizer, leftHeader);
+    const newRightWidth = Math.max(0, initialWidthsTotal - width);
+    leftHeader.style.width = `${width}px`;
     rightHeader.style.width = `${newRightWidth}px`;
   }
 
@@ -61,14 +70,14 @@ export class ColumnSizerSetWidth {
 
   // left or right header in respect to the position of the sizer element
   // prettier-ignore
-  public static set(selectedColumnSizer: SelectedColumnSizerT, tableDimensions: TableDimensions,
-      leftHeader: HTMLElement, rightHeader?: HTMLElement) {
+  public static set(selectedColumnSizer: SelectedColumnSizerT, tableElement: HTMLElement,
+      tableDimensions: TableDimensions, leftHeader: HTMLElement, rightHeader?: HTMLElement) {
     // REF-11
     if (rightHeader && tableDimensions.width !== undefined) {
       // when the table width is static - control the width of two columns
       ColumnSizerSetWidth.setColumnsWidths(selectedColumnSizer, leftHeader, rightHeader);
     } else {
-      ColumnSizerSetWidth.setColumnWidth(selectedColumnSizer, leftHeader);
+      ColumnSizerSetWidth.setColumnWidth(tableElement, selectedColumnSizer, leftHeader);
     }
   }
 }
