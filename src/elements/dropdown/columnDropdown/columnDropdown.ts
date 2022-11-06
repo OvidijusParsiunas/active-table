@@ -2,6 +2,7 @@ import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {HeaderCellEvents} from '../../cell/headerCell/headerCellEvents';
+import {TableContents} from '../../../types/tableContents';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {ColumnDropdownItem} from './columnDropdownItem';
 import {CellEvents} from '../../cell/cellEvents';
@@ -14,13 +15,21 @@ export class ColumnDropdown {
     dropdownElement.style.left = '';
   }
 
+  // can be triggered after removing a column hence if a column does not exist we should not set a new value
+  private static processTextIfExists(contents: TableContents, columnIndex: number, cellElement?: HTMLElement) {
+    const headerRow = contents[0];
+    if (headerRow[columnIndex] !== undefined) {
+      // setCellToDefaultIfNeeded will not work without etc.contents containing trimmed text
+      headerRow[columnIndex] = (cellElement?.textContent as string).trim();
+    }
+  }
+
   // prettier-ignore
   public static processTextAndHide(etc: EditableTableComponent) {
     const {
       overlayElementsState: {columnDropdown, columnTypeDropdown, fullTableOverlay},
       focusedElements: { cell: {element: cellElement, columnIndex} }} = etc;
-    // setCellToDefaultIfNeeded will not work without etc.contents containing trimmed text
-    etc.contents[0][columnIndex as number] = (cellElement?.textContent as string).trim();
+    ColumnDropdown.processTextIfExists(etc.contents, columnIndex as number, cellElement);
     CellEvents.setCellToDefaultIfNeeded(etc, 0, columnIndex as number, cellElement as HTMLElement);
     HeaderCellEvents.fadeCell(cellElement as HTMLElement);
     GenericElementUtils.hideElements(

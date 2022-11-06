@@ -34,6 +34,7 @@ export class TableElement {
   private static udpateWidths(etc: EditableTableComponent) {
     StaticTableWidthUtils.setInitialTableWidth(etc, Browser.IS_SAFARI);
     // REF-14 has to be in a timeout method as custom table border style via etc.tableStyle will not be applied yet
+    // setting isSafari to false because its processing is done in the previous method
     setTimeout(() => StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true, false));
   }
 

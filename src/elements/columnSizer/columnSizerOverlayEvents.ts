@@ -43,7 +43,8 @@ export class ColumnSizerOverlayEvents {
 
   public static overlayMouseLeave(this: EditableTableComponent, columnSizer: ColumnSizerT) {
     columnSizer.isSizerHovered = false;
-    if (this.tableElementEventState.selectedColumnSizer) return;
+    // in safari - mouse leave is fired after mouse up, hence we have thie columnSizer.isMouseUpOnSizer check
+    if (this.tableElementEventState.selectedColumnSizer || columnSizer.isMouseUpOnSizer) return;
     const {element: sizerElement, styles: sizerStyles} = columnSizer;
     ColumnSizerElement.unsetElementsToDefault(sizerElement, sizerStyles.default.width);
     // cannot use columnSizer.isSizerHovered because it can be set to false before this method is called, hence using
