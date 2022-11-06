@@ -1,9 +1,9 @@
 import {EditableTableComponent} from '../../../editable-table-component';
 import {NumberOfIdenticalCells} from '../../numberOfIdenticalCells';
 import {CellEvents} from '../../../elements/cell/cellEvents';
+import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {VALIDABLE_CELL_TYPE} from '../../../enums/cellType';
 import {ValidateInput} from '../../cellType/validateInput';
-import {TableRow} from '../../../types/tableContents';
 
 export class DataUtils {
   public static createDataArray(length: number, defaultCellValue: string): string[] {
@@ -30,9 +30,9 @@ export class DataUtils {
   // note that NumberOfIdenticalCells.get uses the etc.contents top row, so it needs to be up-to-date
   // prettier-ignore
   private static shouldTextBeSetToDefault(text: string, defaultCellValue: string, rowIndex: number,
-      duplicateHeadersAllowed: boolean, headerContents: TableRow, userSetColumnType?: VALIDABLE_CELL_TYPE) {
+      duplicateHeadersAllowed: boolean, columnsDetails: ColumnsDetailsT, userSetColumnType?: VALIDABLE_CELL_TYPE) {
     return DataUtils.isTextEmpty(defaultCellValue, text)
-      || (rowIndex === 0 && (!duplicateHeadersAllowed && NumberOfIdenticalCells.get(text, headerContents) > 1))
+      || (rowIndex === 0 && (!duplicateHeadersAllowed && NumberOfIdenticalCells.get(text, columnsDetails) > 1))
       || (rowIndex > 0 && userSetColumnType && !DataUtils.isDataValid(userSetColumnType, text));
   }
 
@@ -40,7 +40,7 @@ export class DataUtils {
   public static processCellText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellText: string) {
     const trimmedText = typeof cellText === 'string' ? cellText.trim() : cellText;
     const shouldBeSetToDefault = DataUtils.shouldTextBeSetToDefault(
-      trimmedText, etc.defaultCellValue, rowIndex, etc.duplicateHeadersAllowed, etc.contents[0],
+      trimmedText, etc.defaultCellValue, rowIndex, etc.duplicateHeadersAllowed, etc.columnsDetails,
       etc.columnsDetails[columnIndex]?.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE);
     return shouldBeSetToDefault ? etc.defaultCellValue : trimmedText;
   }

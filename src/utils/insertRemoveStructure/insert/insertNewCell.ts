@@ -23,11 +23,13 @@ export class InsertNewCell {
     rowElement.insertBefore(newCellDividerElement, rowElement.children[childIndex + 1]);
   }
 
+  // please note that this is run twice in firefox due to the render function being triggered twice
   // prettier-ignore
   private static updateColumnDetailsAndSizers(
       etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement, text: string) {
     const { columnsDetails, defaultCellValue } = etc;
     const columnDetails = columnsDetails[columnIndex];
+    if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
     if (rowIndex === 0) {
       const categoryDropdown = CategoryDropdown.createAndAppend(etc.tableElementRef as HTMLElement);
       ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsElementsOnly, categoryDropdown); // REF-13

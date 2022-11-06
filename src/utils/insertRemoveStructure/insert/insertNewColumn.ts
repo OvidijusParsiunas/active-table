@@ -6,6 +6,7 @@ import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
 import {TableRow} from '../../../types/tableContents';
 import {LastColumn} from '../shared/lastColumn';
+import {MaximumColumns} from './maximumColumns';
 import {InsertNewCell} from './insertNewCell';
 
 export class InsertNewColumn {
@@ -29,9 +30,11 @@ export class InsertNewColumn {
 
   // columnData is in a row format to populate the column by iterating through each row
   public static insert(etc: EditableTableComponent, columnIndex: number, columnData?: TableRow) {
-    FocusedCellUtils.incrementColumnIndex(etc.focusedElements.cell, columnIndex);
-    InsertNewColumn.insertToAllRows(etc, columnIndex, columnData);
-    setTimeout(() => etc.onTableUpdate(etc.contents));
+    if (MaximumColumns.canAddMore(etc.tableElementRef as HTMLElement, etc.columnsDetails.length, etc.tableDimensions)) {
+      FocusedCellUtils.incrementColumnIndex(etc.focusedElements.cell, columnIndex);
+      InsertNewColumn.insertToAllRows(etc, columnIndex, columnData);
+      setTimeout(() => etc.onTableUpdate(etc.contents));
+    }
   }
 
   public static insertEvent(this: EditableTableComponent, columnIndex: number) {

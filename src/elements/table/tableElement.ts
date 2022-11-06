@@ -1,3 +1,4 @@
+import {MaximumColumns} from '../../utils/insertRemoveStructure/insert/maximumColumns';
 import {StaticTableWidthUtils} from '../../utils/staticTable/staticTableWidthUtils';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
@@ -31,19 +32,24 @@ export class TableElement {
     }
   }
 
-  private static udpateWidths(etc: EditableTableComponent) {
-    StaticTableWidthUtils.setInitialTableWidth(etc, Browser.IS_SAFARI);
-    // REF-14 has to be in a timeout method as custom table border style via etc.tableStyle will not be applied yet
-    // setting isSafari to false because its processing is done in the previous method
-    setTimeout(() => StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true, false));
+  private static processWidths(etc: EditableTableComponent) {
+    setTimeout(() => {
+      // in a timeout for optimization and it must come before the next method as it uses the etc.contents
+      MaximumColumns.cleanupContentsThatDidNotGetAdded(etc.contents, etc.columnsDetails);
+      // REF-14 has to be in a timeout method as custom table border style via etc.tableStyle will not be applied yet
+      // setting isSafari to false because its processing is done in the setInitialTableWidth method called earlier
+      StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true, false);
+    });
   }
 
   public static populateBody(etc: EditableTableComponent) {
     // removes all the current children
     etc.tableBodyElementRef?.replaceChildren();
+    // needs to be set before inserting the cells in order to check if each row can be added
+    StaticTableWidthUtils.setInitialTableWidth(etc, Browser.IS_SAFARI);
     // header/data rows
     etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
-    TableElement.udpateWidths(etc);
+    TableElement.processWidths(etc);
     // new row row and full table overlay
     TableElement.addAuxiliaryBodyElements(etc);
   }

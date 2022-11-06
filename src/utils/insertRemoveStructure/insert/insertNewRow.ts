@@ -5,6 +5,7 @@ import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ElementDetails} from '../../../types/elementDetails';
 import {RowElement} from '../../../elements/row/rowElement';
 import {UpdateRowElement} from '../update/updateRowElement';
+import {MaximumColumns} from './maximumColumns';
 import {InsertNewCell} from './insertNewCell';
 import {DataUtils} from '../shared/dataUtils';
 
@@ -17,11 +18,21 @@ export class InsertNewRow {
     etc.onTableUpdate(etc.contents);
   }
 
+  private static canStartRenderCellBeAdded(etc: EditableTableComponent, rowIndex: number, columnIndex: number) {
+    const {tableElementRef, columnsDetails, tableDimensions} = etc;
+    if (rowIndex === 0) {
+      return MaximumColumns.canAddMore(tableElementRef as HTMLElement, columnsDetails.length, tableDimensions);
+    }
+    return columnsDetails[columnIndex];
+  }
+
   // prettier-ignore
   private static addCells(etc: EditableTableComponent,
       newRowData: TableRow, newRowElement: HTMLElement, rowIndex: number, isNewText: boolean) {
     newRowData.forEach((cellText: TableCellText, columnIndex: number) => {
-      InsertNewCell.insertToRow(etc, newRowElement, rowIndex, columnIndex, cellText as string, isNewText);
+      if (isNewText || InsertNewRow.canStartRenderCellBeAdded(etc, rowIndex, columnIndex)) {
+        InsertNewCell.insertToRow(etc, newRowElement, rowIndex, columnIndex, cellText as string, isNewText);
+      }
     });
   }
 

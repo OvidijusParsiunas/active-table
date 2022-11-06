@@ -9,6 +9,15 @@ export class StaticTableWidthUtils {
   public static NEW_COLUMN_WIDTH = 100;
   private static TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH = UNSET_NUMBER_IDENTIFIER;
 
+  // because we do not set the table width in non safari browsers, need to temporarily set it at the start
+  // in order to help the MaximumColumns class to determine what columns fit in
+  private static tempMaximumWidth(tableElement: HTMLElement, maxWidth?: number) {
+    if (!tableElement.style.width && maxWidth !== undefined) {
+      tableElement.style.width = `${maxWidth}px`;
+      setTimeout(() => (tableElement.style.width = ''));
+    }
+  }
+
   // the reason why isSafari needs to be passed down via a parameter is because the static methods are used in
   // the component's render function hence Browser.IS_SAFARI has a chance of not being initialised yet
   public static setInitialTableWidth(etc: EditableTableComponent, isSafari: boolean) {
@@ -24,6 +33,7 @@ export class StaticTableWidthUtils {
         tableElementRef.style.width = `${tableDimensions.maxWidth}px`;
       }
     }
+    StaticTableWidthUtils.tempMaximumWidth(tableElementRef, tableDimensions.maxWidth);
   }
 
   private static setNewColumnWidthProp(tableElement: HTMLElement, tableWidth: number, firstRow: TableRow) {
@@ -35,10 +45,10 @@ export class StaticTableWidthUtils {
       (tableWidth - StaticTableWidthUtils.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH) / firstRow.length;
   }
 
-  private static resetAllColumnSizes(etc: EditableTableComponent, newTableWidth: number) {
+  private static resetAllColumnSizes(etc: EditableTableComponent, tableWidth: number) {
     const {tableElementRef, columnsDetails, contents} = etc;
     if (!tableElementRef) return;
-    StaticTableWidthUtils.setNewColumnWidthProp(tableElementRef, newTableWidth, contents[0]);
+    StaticTableWidthUtils.setNewColumnWidthProp(tableElementRef, tableWidth, contents[0]);
     columnsDetails.forEach((columnDetails) => {
       columnDetails.elements[0].style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
     });
@@ -56,9 +66,13 @@ export class StaticTableWidthUtils {
       const columnWidthDelta = isInsert ? StaticTableWidthUtils.NEW_COLUMN_WIDTH : -StaticTableWidthUtils.NEW_COLUMN_WIDTH;
       tableElementRef.style.width = `${Number.parseInt(tableElementRef.style.width) + columnWidthDelta}px`;
     }
-    // only executed when tableDimensions.width is undefined and the reason why this is after the above statements is
-    // because we need the safari part first to run in order to update table width and get the new offset
-    if (StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensions)) {
+    // isInsert check was initially not needed as this was not getting called when a column had been removed, however
+    // it has been identified that the table offsetWidth does not immediately update when the column widths are very
+    // narrow (even above the current threshold set on the COLUMN_LENGTH_LIMIT_THRESHOLD variable), hence added this
+    // here to preserve consistency
+    // the reason why this is called after the above statements is because we need the safari part to run first in order
+    // to update the table width and get its new offset
+    if (isInsert && StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensions)) {
       StaticTableWidthUtils.resetAllColumnSizes(etc, tableDimensions.maxWidth as number);
       if (isSafari) tableElementRef.style.width = `${tableDimensions.maxWidth}px`;
     }
