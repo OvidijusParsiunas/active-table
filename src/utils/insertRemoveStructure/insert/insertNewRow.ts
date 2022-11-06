@@ -48,11 +48,11 @@ export class InsertNewRow {
 
   // isNewText indicates whether rowData is already in the contents state or if it needs to be added
   public static insert(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
-    const neRowElement = InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
+    const newRowElement = InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
     setTimeout(() => {
-      if (rowIndex === 0) UpdateRowElement.updateHeaderHeight(neRowElement);
+      if (rowIndex === 0) UpdateRowElement.updateHeaderRowHeight(newRowElement);
       if (isNewText) InsertNewRow.fireCellUpdates(etc, rowIndex);
-    });
+    }, 1); // using 1 millisecond as we need column widths to be changed in processWidths timeout in TableElement
   }
 
   public static insertEvent(this: EditableTableComponent, rowIndex: number) {

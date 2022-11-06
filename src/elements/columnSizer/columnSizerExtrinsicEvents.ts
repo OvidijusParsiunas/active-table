@@ -34,7 +34,7 @@ export class ColumnSizerExtrinsicEvents {
     ColumnSizerElement.unsetTransitionTime(selectedColumnSizer.element);
     ColumnSizerSetWidth.set(selectedColumnSizer, tableElement, tableDimensions, leftHeader, rightHeader);
     // header cell size can increase or decrease as the width is changed
-    setTimeout(() => UpdateRowElement.updateHeaderHeight(leftHeader.parentElement as HTMLElement));
+    setTimeout(() => UpdateRowElement.updateHeaderRowHeight(leftHeader.parentElement as HTMLElement));
   }
 
   // prettier-ignore

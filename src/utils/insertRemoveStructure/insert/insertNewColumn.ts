@@ -4,6 +4,7 @@ import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
+import {UpdateRowElement} from '../update/updateRowElement';
 import {TableRow} from '../../../types/tableContents';
 import {LastColumn} from '../shared/lastColumn';
 import {MaximumColumns} from './maximumColumns';
@@ -33,7 +34,10 @@ export class InsertNewColumn {
     if (MaximumColumns.canAddMore(etc.tableElementRef as HTMLElement, etc.columnsDetails.length, etc.tableDimensions)) {
       FocusedCellUtils.incrementColumnIndex(etc.focusedElements.cell, columnIndex);
       InsertNewColumn.insertToAllRows(etc, columnIndex, columnData);
-      setTimeout(() => etc.onTableUpdate(etc.contents));
+      setTimeout(() => {
+        etc.onTableUpdate(etc.contents);
+        UpdateRowElement.updateHeaderRowHeight(etc.columnsDetails[columnIndex].elements[0].parentElement as HTMLElement);
+      });
     }
   }
 
