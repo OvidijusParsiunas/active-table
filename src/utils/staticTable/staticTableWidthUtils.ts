@@ -68,8 +68,7 @@ export class StaticTableWidthUtils {
     }
     // isInsert check was initially not needed as this was not getting called when a column had been removed, however
     // it has been identified that the table offsetWidth does not immediately update when the column widths are very
-    // narrow (even above the current threshold set on the COLUMN_LENGTH_LIMIT_THRESHOLD variable), hence added this
-    // here to preserve consistency
+    // narrow (even above the minimal column limit set by the MINIMAL_COLUMN_LENGTH variable), hence it was added
     // the reason why this is called after the above statements is because we need the safari part to run first in order
     // to update the table width and get its new offset
     if (isInsert && StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensions)) {
