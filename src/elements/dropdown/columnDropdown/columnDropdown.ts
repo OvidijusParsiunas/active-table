@@ -2,7 +2,6 @@ import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {HeaderCellEvents} from '../../cell/headerCell/headerCellEvents';
-import {TableContents} from '../../../types/tableContents';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {ColumnDropdownItem} from './columnDropdownItem';
 import {CellEvents} from '../../cell/cellEvents';
@@ -16,11 +15,12 @@ export class ColumnDropdown {
   }
 
   // can be triggered after removing a column hence if a column does not exist we should not set a new value
-  private static processTextIfExists(contents: TableContents, columnIndex: number, cellElement?: HTMLElement) {
-    const headerRow = contents[0];
+  private static processTextIfExists(etc: EditableTableComponent, columnIndex: number, cellElement?: HTMLElement) {
+    const headerRow = etc.contents[0];
     if (headerRow[columnIndex] !== undefined) {
       // setCellToDefaultIfNeeded will not work without etc.contents containing trimmed text
       headerRow[columnIndex] = (cellElement?.textContent as string).trim();
+      CellEvents.setCellToDefaultIfNeeded(etc, 0, columnIndex as number, cellElement as HTMLElement);
     }
   }
 
@@ -29,8 +29,7 @@ export class ColumnDropdown {
     const {
       overlayElementsState: {columnDropdown, columnTypeDropdown, fullTableOverlay},
       focusedElements: { cell: {element: cellElement, columnIndex} }} = etc;
-    ColumnDropdown.processTextIfExists(etc.contents, columnIndex as number, cellElement);
-    CellEvents.setCellToDefaultIfNeeded(etc, 0, columnIndex as number, cellElement as HTMLElement);
+    ColumnDropdown.processTextIfExists(etc, columnIndex as number, cellElement);
     HeaderCellEvents.fadeCell(cellElement as HTMLElement);
     GenericElementUtils.hideElements(
       columnDropdown as HTMLElement, fullTableOverlay as HTMLElement, columnTypeDropdown as HTMLElement);
