@@ -5,7 +5,7 @@ import {ColumnSizerOverlayElement} from '../columnSizerOverlayElement';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {ColumnSizerT} from '../../../types/columnSizer';
 import {Optional} from '../../../types/optional';
-import {PX} from '../../../types/pxDimension';
+import {PX} from '../../../types/dimensions';
 
 export class ColumnSizer {
   public static shouldWidthBeIncreased(widthPx: number) {

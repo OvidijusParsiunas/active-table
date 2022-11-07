@@ -4,7 +4,6 @@ import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ElementDetails} from '../../../types/elementDetails';
 import {RowElement} from '../../../elements/row/rowElement';
-import {UpdateRowElement} from '../update/updateRowElement';
 import {MaximumColumns} from './maximumColumns';
 import {InsertNewCell} from './insertNewCell';
 import {DataUtils} from '../shared/dataUtils';
@@ -19,9 +18,9 @@ export class InsertNewRow {
   }
 
   private static canStartRenderCellBeAdded(etc: EditableTableComponent, rowIndex: number, columnIndex: number) {
-    const {tableElementRef, columnsDetails, tableDimensions} = etc;
+    const {tableElementRef, columnsDetails, tableDimensionsInternal} = etc;
     if (rowIndex === 0) {
-      return MaximumColumns.canAddMore(tableElementRef as HTMLElement, columnsDetails.length, tableDimensions);
+      return MaximumColumns.canAddMore(tableElementRef as HTMLElement, columnsDetails.length, tableDimensionsInternal);
     }
     return columnsDetails[columnIndex];
   }

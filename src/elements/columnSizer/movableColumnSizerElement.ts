@@ -1,5 +1,5 @@
 import {ColumnSizerT, UserSetColumnSizerStyle} from '../../types/columnSizer';
-import {PX} from '../../types/pxDimension';
+import {PX} from '../../types/dimensions';
 
 // REF-12
 export class MovableColumnSizerElement {

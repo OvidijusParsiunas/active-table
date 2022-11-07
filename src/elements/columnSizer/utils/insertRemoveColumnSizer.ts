@@ -2,8 +2,8 @@ import {ColumnsDetailsT, ColumnDetailsT, ColumnDetailsNoSizer} from '../../../ty
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnSizerOverlayElement} from '../columnSizerOverlayElement';
 import {MovableColumnSizerElement} from '../movableColumnSizerElement';
+import {TableDimensionsInternal} from '../../../types/tableDimensions';
 import {ColumnSizerFillerElement} from '../columnSizerFillerElement';
-import {TableDimensions} from '../../../types/tableDimensions';
 import {ColumnSizerElement} from '../columnSizerElement';
 import {ColumnSizerT} from '../../../types/columnSizer';
 import {ColumnSizer} from './columnSizer';
@@ -58,7 +58,7 @@ export class InsertRemoveColumnSizer {
 
   // REF-13
   public static insert(etc: EditableTableComponent, columnsDetails: ColumnsDetailsT, columnIndex: number) {
-    if (etc.tableDimensions.width !== undefined) {
+    if (etc.tableDimensionsInternal.width !== undefined) {
       // column sizer is not displayed for the last column
       columnIndex = InsertRemoveColumnSizer.getNewSizerColumnIndex(columnsDetails, columnIndex);
     } else {
@@ -85,8 +85,8 @@ export class InsertRemoveColumnSizer {
     return columnIndex;
   }
 
-  public static remove(columnsDetails: ColumnsDetailsT, columnIndex: number, tableDimensions: TableDimensions) {
-    if (tableDimensions.width) {
+  public static remove(columnsDetails: ColumnsDetailsT, columnIndex: number, tableDimensions: TableDimensionsInternal) {
+    if (tableDimensions.width !== undefined) {
       columnIndex = InsertRemoveColumnSizer.removeIfLastColumn(columnsDetails, columnIndex);
     }
     InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex);

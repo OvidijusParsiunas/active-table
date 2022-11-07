@@ -1,5 +1,5 @@
 import {StatefulCSSS, CSSStyle} from './cssStyle';
-import {PX} from './pxDimension';
+import {PX} from './dimensions';
 
 export interface SizerMoveLimits {
   left: number;

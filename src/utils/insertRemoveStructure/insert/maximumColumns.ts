@@ -1,4 +1,4 @@
-import {TableDimensions} from '../../../types/tableDimensions';
+import {TableDimensionsInternal} from '../../../types/tableDimensions';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {TableContents} from '../../../types/tableContents';
 import {StaticTable} from '../../staticTable/staticTable';
@@ -9,7 +9,7 @@ export class MaximumColumns {
   private static readonly MINIMAL_COLUMN_LENGTH = 34;
 
   // This is primarily concerned on not making the columns too narrow when the table is at its width limit.
-  public static canAddMore(tableElement: HTMLElement, numberOfColumns: number, tableDimensions: TableDimensions) {
+  public static canAddMore(tableElement: HTMLElement, numberOfColumns: number, tableDimensions: TableDimensionsInternal) {
     // this feature only kicks in if the user has specified a width that the table must uphold
     if (!StaticTable.isStaticTableWidth(tableElement, tableDimensions) || numberOfColumns === 0) return true;
     // TO-DO if certain columns have a custom width

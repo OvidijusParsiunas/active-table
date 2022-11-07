@@ -1,7 +1,7 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerOverlayEvents} from './columnSizerOverlayEvents';
 import {ColumnSizerT} from '../../types/columnSizer';
-import {PX} from '../../types/pxDimension';
+import {PX} from '../../types/dimensions';
 
 // REF-12
 export class ColumnSizerOverlayElement {

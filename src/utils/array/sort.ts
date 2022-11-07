@@ -45,7 +45,7 @@ export class Sort {
   }
 
   private static extractNumberFromString(text: string) {
-    const numberStringArr = RegexUtils.extractFloatValues(text);
+    const numberStringArr = RegexUtils.extractFloatStrs(text);
     if (numberStringArr && numberStringArr.length > 0) {
       return Number(numberStringArr[0]);
     }
@@ -99,7 +99,7 @@ export class Sort {
   }
 
   private static createMDYDateFromDMYString(dmyDateString: string) {
-    const numberStringArr = RegexUtils.extractIntegerValues(dmyDateString);
+    const numberStringArr = RegexUtils.extractIntegerStrs(dmyDateString);
     if (numberStringArr && numberStringArr.length === 3) {
       // new Date(year, monthIndex, day)
       return new Date(Number(numberStringArr[2]), Number(numberStringArr[1]) - 1, Number(numberStringArr[0]));

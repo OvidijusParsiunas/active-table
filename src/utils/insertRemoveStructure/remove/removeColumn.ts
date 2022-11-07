@@ -42,7 +42,7 @@ export class RemoveColumn {
     RemoveColumn.removeCellFromAllRows(etc, columnIndex);
     setTimeout(() => {
       CategoryDropdown.remove(etc.tableElementRef as HTMLElement, removedDetails.categoryDropdown.element);
-      InsertRemoveColumnSizer.remove(etc.columnsDetails, columnIndex, etc.tableDimensions);
+      InsertRemoveColumnSizer.remove(etc.columnsDetails, columnIndex, etc.tableDimensionsInternal);
       etc.onTableUpdate(etc.contents);
     });
   }

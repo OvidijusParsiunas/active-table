@@ -1,10 +1,9 @@
-import {UpdateRowElement} from '../../utils/insertRemoveStructure/update/updateRowElement';
 import {ColumnSizerT, SelectedColumnSizerT} from '../../types/columnSizer';
 import {ColumnSizerGenericUtils} from './utils/columnSizerGenericUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {MovableColumnSizerElement} from './movableColumnSizerElement';
+import {TableDimensionsInternal} from '../../types/tableDimensions';
 import {ColumnSizerSetWidth} from './utils/columnSizerSetWidth';
-import {TableDimensions} from '../../types/tableDimensions';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {ColumnsDetailsT} from '../../types/columnDetails';
 import {ColumnSizerElement} from './columnSizerElement';
@@ -30,18 +29,18 @@ export class ColumnSizerExtrinsicEvents {
 
   // prettier-ignore
   private static setWidth(selectedColumnSizer: SelectedColumnSizerT, tableElement: HTMLElement,
-      tableDimensions: TableDimensions, leftHeader: HTMLElement, rightHeader?: HTMLElement) {
+      tableDimensions: TableDimensionsInternal, leftHeader: HTMLElement, rightHeader?: HTMLElement) {
     ColumnSizerElement.unsetTransitionTime(selectedColumnSizer.element);
     ColumnSizerSetWidth.set(selectedColumnSizer, tableElement, tableDimensions, leftHeader, rightHeader);
   }
 
   // prettier-ignore
   private static mouseUp(etc: EditableTableComponent) {
-    const {tableElementEventState, columnsDetails, tableDimensions, tableElementRef} = etc;
+    const {tableElementEventState, columnsDetails, tableDimensionsInternal, tableElementRef} = etc;
     const selectedColumnSizer = tableElementEventState.selectedColumnSizer as SelectedColumnSizerT;
     const {columnSizer, headerCell, sizerNumber} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(
       selectedColumnSizer.element.id, columnsDetails);
-    ColumnSizerExtrinsicEvents.setWidth(selectedColumnSizer, tableElementRef as HTMLElement, tableDimensions,
+    ColumnSizerExtrinsicEvents.setWidth(selectedColumnSizer, tableElementRef as HTMLElement, tableDimensionsInternal,
       headerCell, columnsDetails[sizerNumber + 1]?.elements[0]);
     MovableColumnSizerElement.hide(columnSizer.movableElement);
   }

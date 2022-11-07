@@ -18,7 +18,7 @@ export class ColumnDropdown {
   // prettier-ignore
   private static updateAddColumnItemsStyle(etc: EditableTableComponent) {
     const canAddMoreColumns = MaximumColumns.canAddMore(etc.tableElementRef as HTMLElement,
-      etc.columnsDetails.length, etc.tableDimensions);
+      etc.columnsDetails.length, etc.tableDimensionsInternal);
     ColumnDropdown.INSERT_COLUMN_ITEMS.forEach((item) => {
       if (!item) return;
       if (canAddMoreColumns) {

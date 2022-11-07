@@ -118,6 +118,11 @@ is done in timeouts. This has also caused the initial column width setup code to
 adding the individual columns as it depends on the TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH on being calculated correctly. However,
 all proceeding column lengths and table width for Safari are changed directly when a column has been added or removed.
 
+REF-15
+The reason why there are two types used to define the table dimensions is because we want one interface (TableDimensions) to be
+exposed to the client to direct them on what values and types can be passed down and another type (TableDimensionsInternal) to
+represent the values and their types after processing the client object in order to guide the development of this component.
+The interfaces are auto generated, hence cannot control what is exposed to the client.
 
 
 CAUTION-1

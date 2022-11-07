@@ -4,7 +4,6 @@ import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
-import {UpdateRowElement} from '../update/updateRowElement';
 import {TableRow} from '../../../types/tableContents';
 import {LastColumn} from '../shared/lastColumn';
 import {MaximumColumns} from './maximumColumns';
@@ -31,10 +30,11 @@ export class InsertNewColumn {
 
   // columnData is in a row format to populate the column by iterating through each row
   public static insert(etc: EditableTableComponent, columnIndex: number, columnData?: TableRow) {
-    if (MaximumColumns.canAddMore(etc.tableElementRef as HTMLElement, etc.columnsDetails.length, etc.tableDimensions)) {
-      FocusedCellUtils.incrementColumnIndex(etc.focusedElements.cell, columnIndex);
+    const {tableElementRef, columnsDetails, tableDimensionsInternal, focusedElements, contents} = etc;
+    if (MaximumColumns.canAddMore(tableElementRef as HTMLElement, columnsDetails.length, tableDimensionsInternal)) {
+      FocusedCellUtils.incrementColumnIndex(focusedElements.cell, columnIndex);
       InsertNewColumn.insertToAllRows(etc, columnIndex, columnData);
-      setTimeout(() => etc.onTableUpdate(etc.contents));
+      setTimeout(() => etc.onTableUpdate(contents));
     }
   }
 

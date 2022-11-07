@@ -27,7 +27,7 @@ export class DateCellInputElement {
   }
 
   private static convertTextToInputValue(textDate: string, dateType: string): string {
-    const integerArr = RegexUtils.extractIntegerValues(textDate);
+    const integerArr = RegexUtils.extractIntegerStrs(textDate);
     if (integerArr?.length === 3) {
       const dateTypeToProperties = DateCellElement.DATE_TYPE_TO_PROPERTIES[dateType];
       return [

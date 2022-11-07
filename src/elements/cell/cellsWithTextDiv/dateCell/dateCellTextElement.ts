@@ -4,7 +4,7 @@ import {DateCellElement} from './dateCellElement';
 
 export class DateCellTextElement {
   public static convertInputValueToText(inputDate: string, defaultCellValue: string, dateType: string) {
-    const integerArr = RegexUtils.extractIntegerValues(inputDate);
+    const integerArr = RegexUtils.extractIntegerStrs(inputDate);
     if (integerArr?.length === 3) {
       const dateTypeToProperties = DateCellElement.DATE_TYPE_TO_PROPERTIES[dateType];
       const dateArr = new Array<string>();

@@ -38,10 +38,10 @@ export class MoveLimits {
   }
 
   private static getRightLimit(etc: EditableTableComponent, isSecondLastSizer: boolean, rightHeader?: HTMLElement) {
-    if (StaticTable.isStaticTableWidth(etc.tableElementRef as HTMLElement, etc.tableDimensions)) {
+    if (StaticTable.isStaticTableWidth(etc.tableElementRef as HTMLElement, etc.tableDimensionsInternal)) {
       return MoveLimits.getRightLimitStaticWidthTable(isSecondLastSizer, rightHeader);
-    } else if (etc.tableDimensions.maxWidth !== undefined) {
-      return MoveLimits.getRightLimitForMaxWidth(etc.tableDimensions.maxWidth, etc.offsetWidth);
+    } else if (etc.tableDimensionsInternal.maxWidth !== undefined) {
+      return MoveLimits.getRightLimitForMaxWidth(etc.tableDimensionsInternal.maxWidth, etc.offsetWidth);
     }
     return MoveLimits.getRightLimitDynamicWidthTable(etc);
   }

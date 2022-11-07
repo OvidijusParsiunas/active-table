@@ -1,6 +1,6 @@
 import {ColumnSizerElement} from './columnSizerElement';
 import {ColumnSizer} from './utils/columnSizer';
-import {PX} from '../../types/pxDimension';
+import {PX} from '../../types/dimensions';
 
 // REF-12
 // this element is used to prevent a bug where upon hovering a column sizer that is on top of a cell border

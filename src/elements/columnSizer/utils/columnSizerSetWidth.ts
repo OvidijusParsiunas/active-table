@@ -1,6 +1,6 @@
 import {SizerMoveLimits, SelectedColumnSizerT} from '../../../types/columnSizer';
+import {TableDimensionsInternal} from '../../../types/tableDimensions';
 import {StaticTable} from '../../../utils/staticTable/staticTable';
-import {TableDimensions} from '../../../types/tableDimensions';
 import {Browser} from '../../../utils/browser/browser';
 
 export class ColumnSizerSetWidth {
@@ -72,7 +72,7 @@ export class ColumnSizerSetWidth {
   // left or right header in respect to the position of the sizer element
   // prettier-ignore
   public static set(selectedColumnSizer: SelectedColumnSizerT, tableElement: HTMLElement,
-      tableDimensions: TableDimensions, leftHeader: HTMLElement, rightHeader?: HTMLElement) {
+      tableDimensions: TableDimensionsInternal, leftHeader: HTMLElement, rightHeader?: HTMLElement) {
     // REF-11
     if (rightHeader && StaticTable.isStaticTableWidth(tableElement, tableDimensions)) {
       // when the table width is static - control the width of two columns

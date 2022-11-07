@@ -2,7 +2,7 @@ import {UpdateRowElement} from '../../utils/insertRemoveStructure/update/updateR
 import {ColumnSizerT, UserSetColumnSizerStyle} from '../../types/columnSizer';
 import {ColumnSizerFillerElement} from './columnSizerFillerElement';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
-import {PX} from '../../types/pxDimension';
+import {PX} from '../../types/dimensions';
 
 export interface BorderWidths {
   leftCellRight: number;

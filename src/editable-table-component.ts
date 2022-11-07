@@ -2,6 +2,8 @@ import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCel
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
+import {TableDimensionsInternal, TableDimensions} from './types/tableDimensions';
+import {StaticTableWidthUtils} from './utils/staticTable/staticTableWidthUtils';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableElementEventState} from './types/tableElementEventState';
 import {customElement, property, state} from 'lit/decorators.js';
@@ -9,13 +11,11 @@ import {ediTableStyle} from './editable-table-component-style';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {UserSetColumnSizerStyle} from './types/columnSizer';
-import {StaticTable} from './utils/staticTable/staticTable';
 import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {OverlayElements} from './types/overlayElements';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
-import {TableDimensions} from './types/tableDimensions';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
 import {CSSStyle} from './types/cssStyle';
@@ -94,6 +94,15 @@ export class EditableTableComponent extends LitElement {
   @state()
   userKeyEventsState: UserKeyEventsState = UserKeyEventsStateUtil.createNew();
 
+  // REF-15 - to be used by the client
+  // TO-DO height - keep in mind that by resizing columns - the height can change
+  @property({type: Object})
+  tableDimensions: TableDimensions = {};
+
+  // REF-15 - to be used internally
+  @state()
+  tableDimensionsInternal: TableDimensionsInternal = {};
+
   @property({type: Object})
   tableStyle: CSSStyle = {};
 
@@ -110,13 +119,11 @@ export class EditableTableComponent extends LitElement {
   @property({type: Boolean})
   displayAddRowCell = true;
 
-  // TO-DO height - keep in mind that by resizing columns - the height can change
-  @property({type: Object})
-  tableDimensions: TableDimensions = {};
-
   // this is triggered twice on startup in Firefox
   override render() {
     this.refreshTableState();
+    // needs to be in the render function as props are not updated in the connectedCallback function in Firefox
+    StaticTableWidthUtils.updateTableDimensions(this);
     TableElement.populateBody(this);
     this.onTableUpdate(this.contents);
   }
@@ -128,7 +135,6 @@ export class EditableTableComponent extends LitElement {
 
   override connectedCallback() {
     super.connectedCallback();
-    StaticTable.updateTableDimensionsProps(this.tableDimensions);
     const tableElement = TableElement.createBase(this);
     TableElement.addAuxiliaryElements(this, tableElement, this.overlayElementsState, this.areHeadersEditable);
     this.shadowRoot?.appendChild(tableElement);
