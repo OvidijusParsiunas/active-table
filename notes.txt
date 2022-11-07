@@ -65,6 +65,7 @@ to hold temporary state to indicate this. Primarily used to decide whether move 
 REF-8
 The reason why there are multiple category dropdowns is because each one contains multiple items dependant on the column it
 is on. Hence it is very inefficient to repopulate the dropdown when it is clicked on a different column cell.
+// WORK - I no longer think this is the case and we can probably have just one - do this when allowing custom items
 
 REF-9
 Relative positioning does not work on tbody in safari which causes absolute elements to use the screen

@@ -34,10 +34,7 @@ export class InsertNewColumn {
     if (MaximumColumns.canAddMore(etc.tableElementRef as HTMLElement, etc.columnsDetails.length, etc.tableDimensions)) {
       FocusedCellUtils.incrementColumnIndex(etc.focusedElements.cell, columnIndex);
       InsertNewColumn.insertToAllRows(etc, columnIndex, columnData);
-      setTimeout(() => {
-        etc.onTableUpdate(etc.contents);
-        UpdateRowElement.updateHeaderRowHeight(etc.columnsDetails[columnIndex].elements[0].parentElement as HTMLElement);
-      });
+      setTimeout(() => etc.onTableUpdate(etc.contents));
     }
   }
 

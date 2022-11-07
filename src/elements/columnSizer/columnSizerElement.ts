@@ -1,3 +1,4 @@
+import {UpdateRowElement} from '../../utils/insertRemoveStructure/update/updateRowElement';
 import {ColumnSizerT, UserSetColumnSizerStyle} from '../../types/columnSizer';
 import {ColumnSizerFillerElement} from './columnSizerFillerElement';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
@@ -82,6 +83,9 @@ export class ColumnSizerElement {
   }
 
   public static display(columnSizerElement: HTMLElement) {
+    // originally executed this when a new column was added/removed etc, but there were too many cases
+    // where the height of the column was augmented, hence setting it here for ease of maintenance
+    UpdateRowElement.updateHeaderRowHeight(columnSizerElement.parentElement?.parentElement as HTMLElement);
     columnSizerElement.style.display = 'flex';
   }
 

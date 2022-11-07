@@ -4,6 +4,7 @@ import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {TableRow} from '../../types/tableContents';
 import {StaticTable} from './staticTable';
 
+// TO-DO - once the add columns column and left side row index tabs are present - take them into consideration
 // table width is considered static when the user sets its width or the width needs to be kept track of for Safari
 export class StaticTableWidthUtils {
   public static NEW_COLUMN_WIDTH = 100;

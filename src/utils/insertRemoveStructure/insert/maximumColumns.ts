@@ -3,6 +3,7 @@ import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {TableContents} from '../../../types/tableContents';
 import {StaticTable} from '../../staticTable/staticTable';
 
+// TO-DO - the add columns column should disappear when more columns cannot be added and appear when they can
 export class MaximumColumns {
   // the actual minimal column length is usually not reached as dividing table width by its columns rarely produces it
   private static readonly MINIMAL_COLUMN_LENGTH = 34;
