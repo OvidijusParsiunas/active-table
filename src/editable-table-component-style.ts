@@ -154,7 +154,7 @@ export const ediTableStyle = css`
     padding-bottom: 1px;
     padding-right: 5px;
     padding-left: 5px;
-    color: grey;
+    color: #6d6d6d;
     position: relative;
     cursor: pointer;
     user-select: none;
@@ -172,6 +172,11 @@ export const ediTableStyle = css`
 
   .dropdown-hoverable-item:hover {
     background-color: #eaeaea;
+  }
+
+  .dropdown-disabled-item {
+    pointer-events: none;
+    color: #9e9e9e8a;
   }
 
   .category-delete-button-container {

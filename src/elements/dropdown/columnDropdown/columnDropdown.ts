@@ -1,3 +1,4 @@
+import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximumColumns';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -10,6 +11,24 @@ import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
 
 export class ColumnDropdown {
+  // the reason why this is stored in state is because there is only one column dropdown for the whole table and
+  // instead of having to traverse the dropdown element everytime, we can just store their references here
+  private static INSERT_COLUMN_ITEMS: [HTMLElement?, HTMLElement?] = [];
+
+  // prettier-ignore
+  private static updateAddColumnItemsStyle(etc: EditableTableComponent) {
+    const canAddMoreColumns = MaximumColumns.canAddMore(etc.tableElementRef as HTMLElement,
+      etc.columnsDetails.length, etc.tableDimensions);
+    ColumnDropdown.INSERT_COLUMN_ITEMS.forEach((item) => {
+      if (!item) return;
+      if (canAddMoreColumns) {
+        item.classList.remove(Dropdown.DISABLED_ITEM_CLASS);
+      } else {
+        item.classList.add(Dropdown.DISABLED_ITEM_CLASS);
+      }
+    });
+  }
+
   private static resetDropdownPosition(dropdownElement: HTMLElement) {
     dropdownElement.style.left = '';
   }
@@ -63,8 +82,8 @@ export class ColumnDropdown {
     etc.overlayElementsState.columnTypeDropdown = columnTypeDropdown;
     ColumnDropdownItem.addSortButton(dropdownElement, 'Ascending');
     ColumnDropdownItem.addSortButton(dropdownElement, 'Descending');
-    DropdownItem.addButtonItem(dropdownElement, 'Insert Right');
-    DropdownItem.addButtonItem(dropdownElement, 'Insert Left');
+    ColumnDropdown.INSERT_COLUMN_ITEMS[0] = DropdownItem.addButtonItem(dropdownElement, 'Insert Right');
+    ColumnDropdown.INSERT_COLUMN_ITEMS[1] = DropdownItem.addButtonItem(dropdownElement, 'Insert Left');
     DropdownItem.addButtonItem(dropdownElement, 'Delete');
     return dropdownElement;
   }
@@ -102,6 +121,7 @@ export class ColumnDropdown {
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItem.focusInputElement(inputElement as HTMLElement);
     ColumnDropdownItem.rebindButtonItems(etc, columnIndex, dropdownElement);
+    ColumnDropdown.updateAddColumnItemsStyle(etc);
     fullTableOverlay.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
   }
 }
