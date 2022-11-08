@@ -14,7 +14,8 @@ export const ediTableStyle = css`
     position: relative;
   }
 
-  .dynamic-table-width {
+  /* REF-16 */
+  .table-controlled-width {
     table-layout: fixed;
     /* fit-content does not work correctly in firefox when there are not enough columns to fit parent */
     width: min-content;
@@ -69,9 +70,6 @@ export const ediTableStyle = css`
     border-bottom-color: rgba(0, 0, 0, 0.12);
     vertical-align: top;
     text-align: left;
-    /* REF-11 */
-    /* safari */
-    word-wrap: anywhere;
   }
 
   .cell-text-div {

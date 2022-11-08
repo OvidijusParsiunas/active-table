@@ -11,7 +11,6 @@ import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {DataUtils} from '../shared/dataUtils';
-import {Browser} from '../../browser/browser';
 
 export class InsertNewCell {
   private static insertElementsToRow(rowElement: HTMLElement, newCellElement: HTMLElement, columnIndex: number) {
@@ -81,7 +80,7 @@ export class InsertNewCell {
     etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
     if (rowIndex === 0) {
       InsertNewCell.addColumnDetailsWithElement(etc.columnsDetails, columnIndex, newCellElement); // REF-13
-      if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true, Browser.IS_SAFARI); // REF-14
+      if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-14
     }
   }
 }

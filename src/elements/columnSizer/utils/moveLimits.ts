@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../../editable-table-component';
+import {TableDimensionsInternal} from '../../../types/tableDimensions';
 import {UNSET_NUMBER_IDENTIFIER} from '../../../consts/unsetNumber';
 import {StaticTable} from '../../../utils/staticTable/staticTable';
 import {SizerMoveLimits} from '../../../types/columnSizer';
@@ -11,10 +12,10 @@ export class MoveLimits {
   private static setSideLimitDelta(headerElement: HTMLElement) {
     MoveLimits.SIDE_LIMIT_DELTA = 0;
     if (headerElement.style.borderRightWidth) {
-      MoveLimits.SIDE_LIMIT_DELTA += Number.parseInt(headerElement.style.borderRightWidth) / 2;
+      MoveLimits.SIDE_LIMIT_DELTA += Math.ceil(Number.parseInt(headerElement.style.borderRightWidth) / 2);
     }
     if (headerElement.style.borderLeftWidth) {
-      MoveLimits.SIDE_LIMIT_DELTA -= Number.parseInt(headerElement.style.borderLeftWidth) / 2;
+      MoveLimits.SIDE_LIMIT_DELTA -= Math.floor(Number.parseInt(headerElement.style.borderLeftWidth) / 2);
     }
   }
 
@@ -22,28 +23,32 @@ export class MoveLimits {
     return window.innerWidth;
   }
 
-  private static getRightLimitForMaxWidth(maxWidth: number, currentWidth: number) {
-    return maxWidth - currentWidth;
+  // prettier-ignore
+  private static getRightLimitForMaxWidth(tableElement: HTMLElement,
+      tableDimensions: TableDimensionsInternal, rightHeader?: HTMLElement) {
+    if (!rightHeader) return 0;
+    if (StaticTable.isTableAtMaxWidth(tableElement, tableDimensions)) return rightHeader.offsetWidth;
+    return (tableDimensions.maxWidth as number) - tableElement.offsetWidth;
   }
 
-  private static getRightLimitStaticWidthTable(isSecondLastSizer: boolean, rightHeader?: HTMLElement) {
-    let rightLimit = rightHeader?.offsetWidth || 0;
+  private static getRightLimitStaticWidthTable(isSecondLastSizer: boolean, rightHeader: HTMLElement) {
+    let rightLimit = rightHeader.offsetWidth;
     if (!isSecondLastSizer) rightLimit += MoveLimits.SIDE_LIMIT_DELTA;
     return rightLimit;
   }
 
   private static getRightLimit(etc: EditableTableComponent, isSecondLastSizer: boolean, rightHeader?: HTMLElement) {
-    if (StaticTable.isStaticTableWidth(etc.tableElementRef as HTMLElement, etc.tableDimensionsInternal)) {
+    if (etc.tableDimensionsInternal.width !== undefined && rightHeader) {
       return MoveLimits.getRightLimitStaticWidthTable(isSecondLastSizer, rightHeader);
-    } else if (etc.tableDimensionsInternal.maxWidth !== undefined) {
-      return MoveLimits.getRightLimitForMaxWidth(etc.tableDimensionsInternal.maxWidth, etc.offsetWidth);
+    } else if (etc.tableDimensionsInternal.maxWidth !== undefined && etc.tableElementRef) {
+      return MoveLimits.getRightLimitForMaxWidth(etc.tableElementRef, etc.tableDimensionsInternal, rightHeader);
     }
     return MoveLimits.getRightLimitDynamicWidthTable();
   }
 
   private static getLeftLimit(leftHeader: HTMLElement, isFirstSizer: boolean) {
     let leftLimit = -leftHeader.offsetWidth;
-    if (!isFirstSizer) leftLimit += MoveLimits.SIDE_LIMIT_DELTA;
+    if (isFirstSizer) leftLimit += MoveLimits.SIDE_LIMIT_DELTA;
     return leftLimit;
   }
 

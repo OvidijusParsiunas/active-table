@@ -6,7 +6,6 @@ import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {OverlayElements} from '../../types/overlayElements';
 import {AddNewRowElement} from '../row/addNewRowElement';
-import {Browser} from '../../utils/browser/browser';
 import {TableRow} from '../../types/tableContents';
 import {TableEvents} from './tableEvents';
 
@@ -36,9 +35,8 @@ export class TableElement {
     setTimeout(() => {
       // in a timeout for optimization and it must come before the next method as it uses the etc.contents
       MaximumColumns.cleanupContentsThatDidNotGetAdded(etc.contents, etc.columnsDetails);
-      // REF-14 has to be in a timeout method as custom table border style via etc.tableStyle will not be applied yet
-      // setting isSafari to false because its processing is done in the setInitialTableWidth method called earlier
-      StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true, false);
+      // REF-14; has to be in a timeout method as custom table border style via etc.tableStyle will not be applied yet
+      StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true);
     });
   }
 
@@ -46,7 +44,7 @@ export class TableElement {
     // removes all the current children
     etc.tableBodyElementRef?.replaceChildren();
     // needs to be set before inserting the cells in order to check if each row can be added
-    StaticTableWidthUtils.setInitialTableWidth(etc, Browser.IS_SAFARI);
+    StaticTableWidthUtils.setInitialTableWidth(etc);
     // header/data rows
     etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
     TableElement.processWidths(etc);
@@ -60,6 +58,7 @@ export class TableElement {
 
   private static createTableElement(etc: EditableTableComponent) {
     const tableElement = document.createElement('table');
+    tableElement.classList.add('table-controlled-width');
     // REF-14 placing it in a timeout for firefox
     setTimeout(() => Object.assign(tableElement.style, etc.tableStyle));
     tableElement.onmousedown = TableEvents.onMouseDown.bind(etc);

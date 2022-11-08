@@ -3,20 +3,19 @@ import {GenericElementUtils} from '../elements/genericElementUtils';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {TableDimensions} from '../../types/tableDimensions';
 import {PropertiesOfType} from '../../types/utilityTypes';
-import {DynamicTable} from '../dynamicTable/dynamicTable';
 import {StringDimension} from '../../types/dimensions';
 import {TableRow} from '../../types/tableContents';
 import {RegexUtils} from '../regex/regexUtils';
 import {StaticTable} from './staticTable';
 
 // TO-DO - once the add columns column and left side row index tabs are present - take them into consideration
-// table width is considered static when the user sets its width or the width needs to be kept track of for Safari
+// table width is considered static when the user sets its width
 export class StaticTableWidthUtils {
   public static NEW_COLUMN_WIDTH = 100;
   private static TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH = UNSET_NUMBER_IDENTIFIER;
 
-  // because we do not set the table width in non safari browsers, need to temporarily set it at the start
-  // in order to help the MaximumColumns class to determine what columns fit in
+  // when the table width is not set, need to temporarily set it anyway at the start
+  // in order to help the MaximumColumns class to determine what columns fit
   private static tempMaximumWidth(tableElement: HTMLElement, maxWidth?: number) {
     if (!tableElement.style.width && maxWidth !== undefined) {
       tableElement.style.width = `${maxWidth}px`;
@@ -24,20 +23,11 @@ export class StaticTableWidthUtils {
     }
   }
 
-  // the reason why isSafari needs to be passed down via a parameter is because the static methods are used in
-  // the component's render function hence Browser.IS_SAFARI has a chance of not being initialised yet
-  public static setInitialTableWidth(etc: EditableTableComponent, isSafari: boolean) {
-    const {tableDimensionsInternal, tableElementRef, contents} = etc;
+  public static setInitialTableWidth(etc: EditableTableComponent) {
+    const {tableDimensionsInternal, tableElementRef} = etc;
     if (!tableElementRef) return;
     if (tableDimensionsInternal.width !== undefined) {
       tableElementRef.style.width = `${tableDimensionsInternal.width}px`;
-      // REF-11
-    } else if (isSafari) {
-      tableElementRef.style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH * contents[0].length}px`;
-      if (StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensionsInternal)) {
-        // because changeWidthsBasedOnColumnInsertRemove is called directly after this method, the columns will be reset
-        tableElementRef.style.width = `${tableDimensionsInternal.maxWidth}px`;
-      }
     }
     StaticTableWidthUtils.tempMaximumWidth(tableElementRef, tableDimensionsInternal.maxWidth);
   }
@@ -60,26 +50,16 @@ export class StaticTableWidthUtils {
     });
   }
 
-  // the reason why isSafari needs to be passed down via a parameter is because the static methods are used in
-  // the component's render function hence Browser.IS_SAFARI has a chance of not being initialised yet
-  public static changeWidthsBasedOnColumnInsertRemove(etc: EditableTableComponent, isInsert: boolean, isSafari: boolean) {
+  public static changeWidthsBasedOnColumnInsertRemove(etc: EditableTableComponent, isInsert: boolean) {
     const {tableElementRef, tableDimensionsInternal} = etc;
     if (!tableElementRef) return;
     if (tableDimensionsInternal.width !== undefined) {
       StaticTableWidthUtils.resetAllColumnSizes(etc, tableDimensionsInternal.width);
-      // REF-11
-    } else if (isSafari) {
-      const columnWidthDelta = isInsert ? StaticTableWidthUtils.NEW_COLUMN_WIDTH : -StaticTableWidthUtils.NEW_COLUMN_WIDTH;
-      tableElementRef.style.width = `${Number.parseInt(tableElementRef.style.width) + columnWidthDelta}px`;
-    }
-    // isInsert check was initially not needed as this was not getting called when a column had been removed, however
-    // it has been identified that the table offsetWidth does not immediately update when the column widths are very
-    // narrow (even above the minimal column limit set by the MINIMAL_COLUMN_WIDTH variable), hence it was added
-    // the reason why this is called after the above statements is because we need the safari part to run first in order
-    // to update the table width and get its new offset
-    if (isInsert && StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensionsInternal)) {
+      // isInsert check was initially not needed as this was not getting called when a column had been removed, however
+      // it has been identified that the table offsetWidth does not immediately update when the column widths are very
+      // narrow (even above the minimal column limit set by the MINIMAL_COLUMN_WIDTH variable), hence it was added
+    } else if (isInsert && StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensionsInternal)) {
       StaticTableWidthUtils.resetAllColumnSizes(etc, tableDimensionsInternal.maxWidth as number);
-      if (isSafari) tableElementRef.style.width = `${tableDimensionsInternal.maxWidth}px`;
     }
   }
 
@@ -95,13 +75,10 @@ export class StaticTableWidthUtils {
     // this will parse px, % and will also work if the user forgets to add px
     let extractedNumber = Number(RegexUtils.extractIntegerStrs(clientValue)[0]);
     if (clientValue.includes('%')) {
-      if (StaticTableWidthUtils.isParentWidthUndetermined(parentElement.style.width)) {
-        DynamicTable.setDynamicTableClass(tableElementRef);
-      } else {
-        if (extractedNumber > 100) extractedNumber = 100;
-        tableDimensionsInternal[key] = parentElement.offsetWidth * (extractedNumber / 100);
-        tableDimensionsInternal.isPercentage = true;
-      }
+      if (StaticTableWidthUtils.isParentWidthUndetermined(parentElement.style.width)) return;
+      if (extractedNumber > 100) extractedNumber = 100;
+      tableDimensionsInternal[key] = parentElement.offsetWidth * (extractedNumber / 100);
+      tableDimensionsInternal.isPercentage = true;
     } else {
       tableDimensionsInternal[key] = extractedNumber;
     }
@@ -114,8 +91,6 @@ export class StaticTableWidthUtils {
       StaticTableWidthUtils.setDimension(etc, 'width');
     } else if (tableDimensions.maxWidth !== undefined) {
       StaticTableWidthUtils.setDimension(etc, 'maxWidth');
-    } else {
-      DynamicTable.setDynamicTableClass(etc.tableElementRef as HTMLElement);
     }
     tableDimensionsInternal.preserveNarrowColumns ??= tableDimensions.preserveNarrowColumns || true;
   }

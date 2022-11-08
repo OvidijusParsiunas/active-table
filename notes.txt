@@ -78,10 +78,7 @@ element and instead go native, hence the current approach of parsing a string wi
 However if opted to stay with lit element - use the following approach: https://lit.dev/docs/api/templates/#svg
 
 REF-11
-Safari has a bug where column widths for cell elements that contain wrapped text (text that oveflows the width) is increased to what
-the width would be without the wrapping. This has been fixed by programmatically setting the table width based on the column widths.
-I have raised a stack overflow question to see if this can be fixed automatically via plain css without a manual workaround:
-https://stackoverflow.com/questions/73920147/table-element-width-using-column-widths-safari
+
 
 REF-12
 The original architecture of a column sizer (known as the resizer to the user) allowed it to change the column width as it was moving,
@@ -124,6 +121,18 @@ exposed to the client to direct them on what values and types can be passed down
 represent the values and their types after processing the client object in order to guide the development of this component.
 The interfaces are auto generated, hence cannot control what is exposed to the client.
 
+REF-16
+In Chrome/Firefox: it has been identified that when there is no width set on the table - the default html does not allow the table
+to expand beyond the parent limits (increase the parent width) and instead automatically reduces the column widths. This is
+problematic as the widths are no longer what they are set to by the component and the resize functionality no longer works as
+intended, hence the table-controlled-width class allows the table to expand the parent element and keep the intended column widths
+In Safari: This also serves as a fix for Safari table width bug and the table width no longer needs to be set for this browser.
+Reference to this commit to undo anything that has been changed.
+Snippet from a previous Ref:
+(Safari has a bug where column widths for cell elements that contain wrapped text (text that oveflows the width) is increased to what
+the width would be without the wrapping. This can be fixed by programmatically setting the table width based on the column widths.
+I have raised a stack overflow question to see if this can be fixed automatically via plain css without a manual workaround:
+https://stackoverflow.com/questions/73920147/table-element-width-using-column-widths-safari)
 
 CAUTION-1
 When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across
