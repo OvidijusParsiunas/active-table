@@ -18,13 +18,8 @@ export class MoveLimits {
     }
   }
 
-  private static getRightLimitDynamicWidthTable(etc: EditableTableComponent) {
-    const parentElement = etc.parentElement as HTMLElement;
-    const parentWidth = parentElement.offsetWidth;
-    // parent element may already have an offset which will affect the table offset
-    // bug where the parent element is the <body> tag, then the offset will not display but that has been accepted
-    const tableOffsetInParent = etc.offsetLeft - parentElement.offsetLeft;
-    return parentWidth - tableOffsetInParent - etc.offsetWidth;
+  private static getRightLimitDynamicWidthTable() {
+    return window.innerWidth;
   }
 
   private static getRightLimitForMaxWidth(maxWidth: number, currentWidth: number) {
@@ -43,7 +38,7 @@ export class MoveLimits {
     } else if (etc.tableDimensionsInternal.maxWidth !== undefined) {
       return MoveLimits.getRightLimitForMaxWidth(etc.tableDimensionsInternal.maxWidth, etc.offsetWidth);
     }
-    return MoveLimits.getRightLimitDynamicWidthTable(etc);
+    return MoveLimits.getRightLimitDynamicWidthTable();
   }
 
   private static getLeftLimit(leftHeader: HTMLElement, isFirstSizer: boolean) {

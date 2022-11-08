@@ -1,8 +1,9 @@
-import {TableDimensions, TableDimensionsInternal} from '../../types/tableDimensions';
 import {EditableTableComponent} from '../../editable-table-component';
 import {GenericElementUtils} from '../elements/genericElementUtils';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
+import {TableDimensions} from '../../types/tableDimensions';
 import {PropertiesOfType} from '../../types/utilityTypes';
+import {DynamicTable} from '../dynamicTable/dynamicTable';
 import {StringDimension} from '../../types/dimensions';
 import {TableRow} from '../../types/tableContents';
 import {RegexUtils} from '../regex/regexUtils';
@@ -82,30 +83,40 @@ export class StaticTableWidthUtils {
     }
   }
 
+  private static isParentWidthUndetermined(width: string) {
+    return width === 'fit-content' || width === 'min-content' || width === 'max-content';
+  }
+
   // prettier-ignore
-  private static setInternal(parentElement: HTMLElement, clientDimensions: TableDimensions,
-      internalDimensions: TableDimensionsInternal, key: keyof PropertiesOfType<TableDimensions, StringDimension>) {
-    const clientValue = clientDimensions[key] as string;
+  private static setDimension(etc: EditableTableComponent, key: keyof PropertiesOfType<TableDimensions, StringDimension>) {
+    const {tableDimensions, tableDimensionsInternal, tableElementRef, parentElement} = etc;
+    if (!tableElementRef || !parentElement) return;
+    const clientValue = tableDimensions[key] as string;
     // this will parse px, % and will also work if the user forgets to add px
     let extractedNumber = Number(RegexUtils.extractIntegerStrs(clientValue)[0]);
     if (clientValue.includes('%')) {
-      if (extractedNumber > 100) extractedNumber = 100;
-      internalDimensions[key] = parentElement.offsetWidth * (extractedNumber / 100);
-      internalDimensions.isPercentage = true;
+      if (StaticTableWidthUtils.isParentWidthUndetermined(parentElement.style.width)) {
+        DynamicTable.setDynamicTableClass(tableElementRef);
+      } else {
+        if (extractedNumber > 100) extractedNumber = 100;
+        tableDimensionsInternal[key] = parentElement.offsetWidth * (extractedNumber / 100);
+        tableDimensionsInternal.isPercentage = true;
+      }
     } else {
-      internalDimensions[key] = extractedNumber;
+      tableDimensionsInternal[key] = extractedNumber;
     }
   }
 
   public static setInternalTableDimensions(etc: EditableTableComponent) {
     const {tableDimensions, tableDimensionsInternal} = etc;
-    const parentElement = etc.parentElement as HTMLElement;
     // width and maxWidth are mutually exclusive and if both are present width is the only one that is used
     if (tableDimensions.width !== undefined) {
-      StaticTableWidthUtils.setInternal(parentElement, tableDimensions, tableDimensionsInternal, 'width');
+      StaticTableWidthUtils.setDimension(etc, 'width');
     } else if (tableDimensions.maxWidth !== undefined) {
-      StaticTableWidthUtils.setInternal(parentElement, tableDimensions, tableDimensionsInternal, 'maxWidth');
+      StaticTableWidthUtils.setDimension(etc, 'maxWidth');
+    } else {
+      DynamicTable.setDynamicTableClass(etc.tableElementRef as HTMLElement);
     }
-    tableDimensionsInternal.preserveNarrowColumns ??= tableDimensions.preserveNarrowColumns || false;
+    tableDimensionsInternal.preserveNarrowColumns ??= tableDimensions.preserveNarrowColumns || true;
   }
 }

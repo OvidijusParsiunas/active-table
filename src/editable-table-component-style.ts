@@ -14,6 +14,12 @@ export const ediTableStyle = css`
     position: relative;
   }
 
+  .dynamic-table-width {
+    table-layout: fixed;
+    /* fit-content does not work correctly in firefox when there are not enough columns to fit parent */
+    width: min-content;
+  }
+
   /* REF-1 */
   tbody > *:first-child > th {
     border-top: none !important;
