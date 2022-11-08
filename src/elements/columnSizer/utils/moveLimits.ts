@@ -28,7 +28,7 @@ export class MoveLimits {
       tableDimensions: TableDimensionsInternal, rightHeader?: HTMLElement) {
     if (!rightHeader) return 0;
     if (StaticTable.isTableAtMaxWidth(tableElement, tableDimensions)) return rightHeader.offsetWidth;
-    return (tableDimensions.maxWidth as number) - tableElement.offsetWidth;
+    return (tableDimensions.maxWidth as number) - tableElement.offsetWidth - tableElement.offsetLeft;
   }
 
   private static getRightLimitStaticWidthTable(isSecondLastSizer: boolean, rightHeader: HTMLElement) {
