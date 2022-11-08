@@ -31,6 +31,14 @@ export class TableElement {
     }
   }
 
+  private static addCells(etc: EditableTableComponent) {
+    const {tableElementRef, tableDimensionsInternal} = etc;
+    if (!tableElementRef) return;
+    StaticTableWidthUtils.setTempMaximumWidthIfNoWidth(true, tableElementRef, tableDimensionsInternal.maxWidth);
+    etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
+    StaticTableWidthUtils.setTempMaximumWidthIfNoWidth(false, tableElementRef, tableDimensionsInternal.maxWidth);
+  }
+
   private static processWidths(etc: EditableTableComponent) {
     setTimeout(() => {
       // in a timeout for optimization and it must come before the next method as it uses the etc.contents
@@ -45,8 +53,8 @@ export class TableElement {
     etc.tableBodyElementRef?.replaceChildren();
     // needs to be set before inserting the cells in order to check if each row can be added
     StaticTableWidthUtils.setInitialTableWidth(etc);
-    // header/data rows
-    etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
+    // header/data
+    TableElement.addCells(etc);
     TableElement.processWidths(etc);
     // new row row and full table overlay
     TableElement.addAuxiliaryBodyElements(etc);

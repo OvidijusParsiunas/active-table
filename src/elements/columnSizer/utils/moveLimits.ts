@@ -26,8 +26,12 @@ export class MoveLimits {
   // prettier-ignore
   private static getRightLimitForMaxWidth(tableElement: HTMLElement,
       tableDimensions: TableDimensionsInternal, rightHeader?: HTMLElement) {
-    if (!rightHeader) return 0;
-    if (StaticTable.isTableAtMaxWidth(tableElement, tableDimensions)) return rightHeader.offsetWidth;
+    if (StaticTable.isTableAtMaxWidth(tableElement, tableDimensions)) {
+      if (!rightHeader) {
+        return 0;
+      }
+      return rightHeader.offsetWidth;
+    }
     return (tableDimensions.maxWidth as number) - tableElement.offsetWidth - tableElement.offsetLeft;
   }
 

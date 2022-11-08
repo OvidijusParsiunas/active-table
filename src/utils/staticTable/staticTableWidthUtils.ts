@@ -16,20 +16,16 @@ export class StaticTableWidthUtils {
 
   // when the table width is not set, need to temporarily set it anyway at the start
   // in order to help the MaximumColumns class to determine what columns fit
-  private static tempMaximumWidth(tableElement: HTMLElement, maxWidth?: number) {
-    if (!tableElement.style.width && maxWidth !== undefined) {
-      tableElement.style.width = `${maxWidth}px`;
-      setTimeout(() => (tableElement.style.width = ''));
-    }
+  // originally used a timeout to unset but it did not work in firefox
+  public static setTempMaximumWidthIfNoWidth(isSetValue: boolean, tableElement: HTMLElement, maxWidth?: number) {
+    if (maxWidth !== undefined) tableElement.style.width = isSetValue ? `${maxWidth}px` : '';
   }
 
   public static setInitialTableWidth(etc: EditableTableComponent) {
     const {tableDimensionsInternal, tableElementRef} = etc;
-    if (!tableElementRef) return;
     if (tableDimensionsInternal.width !== undefined) {
-      tableElementRef.style.width = `${tableDimensionsInternal.width}px`;
+      (tableElementRef as HTMLElement).style.width = `${tableDimensionsInternal.width}px`;
     }
-    StaticTableWidthUtils.tempMaximumWidth(tableElementRef, tableDimensionsInternal.maxWidth);
   }
 
   private static setNewColumnWidthProp(tableElement: HTMLElement, tableWidth: number, firstRow: TableRow) {
