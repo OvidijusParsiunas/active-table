@@ -128,3 +128,6 @@ The interfaces are auto generated, hence cannot control what is exposed to the c
 CAUTION-1
 When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across
 the table as they will no longer be constant and will need some dynamicity
+
+CAUTION-2
+When resizing the table, take note of some async code that may have been called before the resize was triggered

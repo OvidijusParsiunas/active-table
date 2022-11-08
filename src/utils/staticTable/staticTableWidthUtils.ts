@@ -2,6 +2,8 @@ import {TableDimensions, TableDimensionsInternal} from '../../types/tableDimensi
 import {EditableTableComponent} from '../../editable-table-component';
 import {GenericElementUtils} from '../elements/genericElementUtils';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
+import {PropertiesOfType} from '../../types/utilityTypes';
+import {StringDimension} from '../../types/dimensions';
 import {TableRow} from '../../types/tableContents';
 import {RegexUtils} from '../regex/regexUtils';
 import {StaticTable} from './staticTable';
@@ -71,7 +73,7 @@ export class StaticTableWidthUtils {
     }
     // isInsert check was initially not needed as this was not getting called when a column had been removed, however
     // it has been identified that the table offsetWidth does not immediately update when the column widths are very
-    // narrow (even above the minimal column limit set by the MINIMAL_COLUMN_LENGTH variable), hence it was added
+    // narrow (even above the minimal column limit set by the MINIMAL_COLUMN_WIDTH variable), hence it was added
     // the reason why this is called after the above statements is because we need the safari part to run first in order
     // to update the table width and get its new offset
     if (isInsert && StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensionsInternal)) {
@@ -82,18 +84,20 @@ export class StaticTableWidthUtils {
 
   // prettier-ignore
   private static setInternal(parentElement: HTMLElement, clientDimensions: TableDimensions,
-      internalDimensions: TableDimensionsInternal, key: keyof TableDimensions) {
+      internalDimensions: TableDimensionsInternal, key: keyof PropertiesOfType<TableDimensions, StringDimension>) {
     const clientValue = clientDimensions[key] as string;
     // this will parse px, % and will also work if the user forgets to add px
-    const extractedNumber = Number(RegexUtils.extractIntegerStrs(clientValue)[0]);
+    let extractedNumber = Number(RegexUtils.extractIntegerStrs(clientValue)[0]);
     if (clientValue.includes('%')) {
+      if (extractedNumber > 100) extractedNumber = 100;
       internalDimensions[key] = parentElement.offsetWidth * (extractedNumber / 100);
+      internalDimensions.isPercentage = true;
     } else {
       internalDimensions[key] = extractedNumber;
     }
   }
 
-  public static updateTableDimensions(etc: EditableTableComponent) {
+  public static setInternalTableDimensions(etc: EditableTableComponent) {
     const {tableDimensions, tableDimensionsInternal} = etc;
     const parentElement = etc.parentElement as HTMLElement;
     // width and maxWidth are mutually exclusive and if both are present width is the only one that is used
@@ -102,5 +106,6 @@ export class StaticTableWidthUtils {
     } else if (tableDimensions.maxWidth !== undefined) {
       StaticTableWidthUtils.setInternal(parentElement, tableDimensions, tableDimensionsInternal, 'maxWidth');
     }
+    tableDimensionsInternal.preserveNarrowColumns ??= tableDimensions.preserveNarrowColumns || false;
   }
 }

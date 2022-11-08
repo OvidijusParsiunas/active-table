@@ -4,7 +4,7 @@ import {MovableColumnSizerElement} from '../movableColumnSizerElement';
 import {ColumnSizerOverlayElement} from '../columnSizerOverlayElement';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {ColumnSizerT} from '../../../types/columnSizer';
-import {Optional} from '../../../types/optional';
+import {Optional} from '../../../types/utilityTypes';
 import {PX} from '../../../types/dimensions';
 
 export class ColumnSizer {

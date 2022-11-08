@@ -30,11 +30,10 @@ export class InsertNewColumn {
 
   // columnData is in a row format to populate the column by iterating through each row
   public static insert(etc: EditableTableComponent, columnIndex: number, columnData?: TableRow) {
-    const {tableElementRef, columnsDetails, tableDimensionsInternal, focusedElements, contents} = etc;
-    if (MaximumColumns.canAddMore(tableElementRef as HTMLElement, columnsDetails.length, tableDimensionsInternal)) {
-      FocusedCellUtils.incrementColumnIndex(focusedElements.cell, columnIndex);
+    if (MaximumColumns.canAddMore(etc)) {
+      FocusedCellUtils.incrementColumnIndex(etc.focusedElements.cell, columnIndex);
       InsertNewColumn.insertToAllRows(etc, columnIndex, columnData);
-      setTimeout(() => etc.onTableUpdate(contents));
+      setTimeout(() => etc.onTableUpdate(etc.contents));
     }
   }
 

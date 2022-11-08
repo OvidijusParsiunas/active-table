@@ -18,11 +18,10 @@ export class InsertNewRow {
   }
 
   private static canStartRenderCellBeAdded(etc: EditableTableComponent, rowIndex: number, columnIndex: number) {
-    const {tableElementRef, columnsDetails, tableDimensionsInternal} = etc;
     if (rowIndex === 0) {
-      return MaximumColumns.canAddMore(tableElementRef as HTMLElement, columnsDetails.length, tableDimensionsInternal);
+      return MaximumColumns.canAddMore(etc);
     }
-    return columnsDetails[columnIndex];
+    return etc.columnsDetails[columnIndex];
   }
 
   // prettier-ignore

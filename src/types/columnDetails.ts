@@ -1,7 +1,7 @@
 import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../enums/columnType';
 import {CELL_TYPE} from '../enums/cellType';
 import {ColumnSizerT} from './columnSizer';
-import {Optional} from './optional';
+import {Optional} from './utilityTypes';
 
 export type CellTypeTotals = {
   [key in CELL_TYPE]: number;

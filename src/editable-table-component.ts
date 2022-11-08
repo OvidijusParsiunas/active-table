@@ -3,7 +3,6 @@ import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUti
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsInternal, TableDimensions} from './types/tableDimensions';
-import {StaticTableWidthUtils} from './utils/staticTable/staticTableWidthUtils';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableElementEventState} from './types/tableElementEventState';
 import {customElement, property, state} from 'lit/decorators.js';
@@ -13,11 +12,13 @@ import {UserKeyEventsState} from './types/userKeyEventsState';
 import {UserSetColumnSizerStyle} from './types/columnSizer';
 import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
+import {ParentResize} from './utils/render/parentResize';
 import {OverlayElements} from './types/overlayElements';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
+import {Render} from './utils/render/render';
 import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
 
@@ -101,7 +102,7 @@ export class EditableTableComponent extends LitElement {
 
   // REF-15 - to be used internally
   @state()
-  tableDimensionsInternal: TableDimensionsInternal = {};
+  tableDimensionsInternal: TableDimensionsInternal = {recordedParentWidth: 0};
 
   @property({type: Object})
   tableStyle: CSSStyle = {};
@@ -121,16 +122,9 @@ export class EditableTableComponent extends LitElement {
 
   // this is triggered twice on startup in Firefox
   override render() {
-    this.refreshTableState();
-    // needs to be in the render function as props are not updated in the connectedCallback function in Firefox
-    StaticTableWidthUtils.updateTableDimensions(this);
-    TableElement.populateBody(this);
+    Render.renderTable(this);
     this.onTableUpdate(this.contents);
-  }
-
-  private refreshTableState() {
-    this.tableElementEventState = {};
-    this.columnsDetails = [];
+    new ResizeObserver(ParentResize.resizeCallback.bind(this)).observe(this.parentElement as HTMLElement);
   }
 
   override connectedCallback() {
