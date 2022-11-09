@@ -2,8 +2,8 @@ import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCel
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
-import {TableDimensionsInternal, TableDimensions} from './types/tableDimensions';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
+import {TableDimensionsInternal} from './types/tableDimensionsInternal';
 import {TableElementEventState} from './types/tableElementEventState';
 import {customElement, property, state} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
@@ -13,6 +13,7 @@ import {UserSetColumnSizerStyle} from './types/columnSizer';
 import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {ParentResize} from './utils/render/parentResize';
+import {TableDimensions} from './types/tableDimensions';
 import {OverlayElements} from './types/overlayElements';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';

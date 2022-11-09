@@ -1,3 +1,4 @@
+import {TableDimensionsInternal} from '../../types/tableDimensionsInternal';
 import {EditableTableComponent} from '../../editable-table-component';
 import {GenericElementUtils} from '../elements/genericElementUtils';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
@@ -59,11 +60,16 @@ export class StaticTableWidthUtils {
     }
   }
 
+  private static setDefaultDimension(tableDimensionsInternal: TableDimensionsInternal, parentElement: HTMLElement) {
+    // 100%
+    tableDimensionsInternal.maxWidth = parentElement.offsetWidth;
+    tableDimensionsInternal.isPercentage = true;
+  }
+
   private static isParentWidthUndetermined(width: string) {
     return width === 'fit-content' || width === 'min-content' || width === 'max-content';
   }
 
-  // prettier-ignore
   private static setDimension(etc: EditableTableComponent, key: keyof PropertiesOfType<TableDimensions, StringDimension>) {
     const {tableDimensions, tableDimensionsInternal, tableElementRef, parentElement} = etc;
     if (!tableElementRef || !parentElement) return;
@@ -87,6 +93,8 @@ export class StaticTableWidthUtils {
       StaticTableWidthUtils.setDimension(etc, 'width');
     } else if (tableDimensions.maxWidth !== undefined) {
       StaticTableWidthUtils.setDimension(etc, 'maxWidth');
+    } else if (!tableDimensions.unlimitedSize) {
+      StaticTableWidthUtils.setDefaultDimension(tableDimensionsInternal, etc.parentElement as HTMLElement);
     }
     tableDimensionsInternal.preserveNarrowColumns ??= tableDimensions.preserveNarrowColumns || true;
   }

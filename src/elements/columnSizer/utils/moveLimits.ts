@@ -1,5 +1,5 @@
+import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {TableDimensionsInternal} from '../../../types/tableDimensions';
 import {UNSET_NUMBER_IDENTIFIER} from '../../../consts/unsetNumber';
 import {StaticTable} from '../../../utils/staticTable/staticTable';
 import {SizerMoveLimits} from '../../../types/columnSizer';

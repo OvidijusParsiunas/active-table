@@ -1,5 +1,5 @@
 import {SizerMoveLimits, SelectedColumnSizerT} from '../../../types/columnSizer';
-import {TableDimensionsInternal} from '../../../types/tableDimensions';
+import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
 import {StaticTable} from '../../../utils/staticTable/staticTable';
 
 export class ColumnSizerSetWidth {

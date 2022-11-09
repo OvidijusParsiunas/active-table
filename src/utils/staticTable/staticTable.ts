@@ -1,4 +1,4 @@
-import {TableDimensionsInternal} from '../../types/tableDimensions';
+import {TableDimensionsInternal} from '../../types/tableDimensionsInternal';
 
 export class StaticTable {
   // because we don't set the table width for maxWidth property, its width is made up of columns widths

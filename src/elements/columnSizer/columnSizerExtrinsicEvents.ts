@@ -1,8 +1,8 @@
+import {TableDimensionsInternal} from '../../types/tableDimensionsInternal';
 import {ColumnSizerT, SelectedColumnSizerT} from '../../types/columnSizer';
 import {ColumnSizerGenericUtils} from './utils/columnSizerGenericUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {MovableColumnSizerElement} from './movableColumnSizerElement';
-import {TableDimensionsInternal} from '../../types/tableDimensions';
 import {ColumnSizerSetWidth} from './utils/columnSizerSetWidth';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {ColumnsDetailsT} from '../../types/columnDetails';

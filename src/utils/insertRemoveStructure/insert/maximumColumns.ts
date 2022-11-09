@@ -1,5 +1,5 @@
+import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {TableDimensionsInternal} from '../../../types/tableDimensions';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {TableContents} from '../../../types/tableContents';
 import {StaticTable} from '../../staticTable/staticTable';

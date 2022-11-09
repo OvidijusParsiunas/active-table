@@ -1,8 +1,8 @@
 import {ColumnsDetailsT, ColumnDetailsT, ColumnDetailsNoSizer} from '../../../types/columnDetails';
+import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnSizerOverlayElement} from '../columnSizerOverlayElement';
 import {MovableColumnSizerElement} from '../movableColumnSizerElement';
-import {TableDimensionsInternal} from '../../../types/tableDimensions';
 import {ColumnSizerFillerElement} from '../columnSizerFillerElement';
 import {ColumnSizerElement} from '../columnSizerElement';
 import {ColumnSizerT} from '../../../types/columnSizer';
