@@ -86,6 +86,7 @@ export class StaticTableWidthUtils {
     }
   }
 
+  // CAUTION-3
   public static setInternalTableDimensions(etc: EditableTableComponent) {
     const {tableDimensions, tableDimensionsInternal} = etc;
     // width and maxWidth are mutually exclusive and if both are present width is the only one that is used

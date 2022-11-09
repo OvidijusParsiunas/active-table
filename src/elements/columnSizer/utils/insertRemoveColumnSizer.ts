@@ -50,17 +50,10 @@ export class InsertRemoveColumnSizer {
     InsertRemoveColumnSizer.applySizerStateToElements(columnSizer);
   }
 
-  private static getNewSizerColumnIndex(columnsDetails: ColumnsDetailsT, columnIndex: number) {
-    const isLastColumn = columnsDetails.length - 1 === columnIndex;
-    // if last cell - set sizer on previous column, if middle - set it on current column
-    return isLastColumn ? columnIndex - 1 : columnIndex;
-  }
-
   // REF-13
   public static insert(etc: EditableTableComponent, columnsDetails: ColumnsDetailsT, columnIndex: number) {
     if (etc.tableDimensionsInternal.width !== undefined) {
-      // column sizer is not displayed for the last column
-      columnIndex = InsertRemoveColumnSizer.getNewSizerColumnIndex(columnsDetails, columnIndex);
+      if (columnsDetails.length - 1 === columnIndex) return;
     } else {
       // only dynamic width tables have a sizer on the last column - hence only their styles need to be changed
       InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex);

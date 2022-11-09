@@ -140,3 +140,7 @@ the table as they will no longer be constant and will need some dynamicity
 
 CAUTION-2
 When resizing the table, take note of some async code that may have been called before the resize was triggered
+
+CAUTION-3
+Table dimensions have exclusive optional interfaces that are exposed to the client, however they may not respect them, hence the logic
+needs to be cautious when handling the passed in object

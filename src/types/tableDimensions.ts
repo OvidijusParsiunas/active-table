@@ -2,6 +2,7 @@ import {InterfacesUnion} from './utilityTypes';
 import {StringDimension} from './dimensions';
 
 // REF-15
+
 // DO NOT USE THIS INTERFACE INTERNALLY - this is to be used by the client
 interface AllDimensionProps {
   // width and maxWidth are mutually exclusive and if both are present width is the only one that will be used
@@ -45,6 +46,8 @@ interface UnlimitedSize {
 
 type Empty = {};
 
+// CAUTION-3
+// These exclusive type combinations may not be respected by the user, hence the handloing logic needs to be cautious
 export type TableDimensions = InterfacesUnion<AllDimensionProps, Width | MaxWidth | NarrowColumns | UnlimitedSize | Empty>;
 
 // Replacement for the following
