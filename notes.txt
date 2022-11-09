@@ -127,7 +127,7 @@ to expand beyond the parent limits (increase the parent width) and instead autom
 problematic as the widths are no longer what they are set to by the component and the resize functionality no longer works as
 intended, hence the table-controlled-width class allows the table to expand the parent element and keep the intended column widths
 In Safari: This also serves as a fix for Safari table width bug and the table width no longer needs to be set for this browser.
-Reference to this commit to undo anything that has been changed.
+Reference to this commit to undo anything that has been changed: 2fd86cd84f88d19e8a4a8a95c6b73e4fe181ad13
 Snippet from a previous Ref:
 (Safari has a bug where column widths for cell elements that contain wrapped text (text that oveflows the width) is increased to what
 the width would be without the wrapping. This can be fixed by programmatically setting the table width based on the column widths.

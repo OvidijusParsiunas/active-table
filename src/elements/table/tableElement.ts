@@ -34,9 +34,9 @@ export class TableElement {
   private static addCells(etc: EditableTableComponent) {
     const {tableElementRef, tableDimensionsInternal} = etc;
     if (!tableElementRef) return;
-    StaticTableWidthUtils.setTempMaximumWidthIfNoWidth(true, tableElementRef, tableDimensionsInternal.maxWidth);
+    StaticTableWidthUtils.setTempMaximumWidth(true, tableElementRef, tableDimensionsInternal.maxWidth);
     etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
-    StaticTableWidthUtils.setTempMaximumWidthIfNoWidth(false, tableElementRef, tableDimensionsInternal.maxWidth);
+    StaticTableWidthUtils.setTempMaximumWidth(false, tableElementRef, tableDimensionsInternal.maxWidth);
   }
 
   private static processWidths(etc: EditableTableComponent) {

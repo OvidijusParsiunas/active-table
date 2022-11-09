@@ -17,7 +17,7 @@ export class StaticTableWidthUtils {
   // when the table width is not set, need to temporarily set it anyway at the start
   // in order to help the MaximumColumns class to determine what columns fit
   // originally used a timeout to unset but it did not work in firefox
-  public static setTempMaximumWidthIfNoWidth(isSetValue: boolean, tableElement: HTMLElement, maxWidth?: number) {
+  public static setTempMaximumWidth(isSetValue: boolean, tableElement: HTMLElement, maxWidth?: number) {
     if (maxWidth !== undefined) tableElement.style.width = isSetValue ? `${maxWidth}px` : '';
   }
 
