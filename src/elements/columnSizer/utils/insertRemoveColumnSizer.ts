@@ -38,12 +38,12 @@ export class InsertRemoveColumnSizer {
     InsertRemoveColumnSizer.applySizerStateToElements(columnSizer);
   }
 
-  private static updatePrevious(columnsDetails: ColumnsDetailsT, columnIndex: number) {
+  private static updatePrevious(columnsDetails: ColumnsDetailsT, columnIndex: number, tableElement: HTMLElement) {
     const previousIndex = columnIndex - 1;
     if (previousIndex < 0) return;
     const {columnSizer} = columnsDetails[previousIndex];
     // no need for full creation as there is a need to retain the element and its bindings
-    const newColumnSizer = ColumnSizer.createObject(columnSizer.element, columnsDetails, previousIndex);
+    const newColumnSizer = ColumnSizer.createObject(columnSizer.element, columnsDetails, previousIndex, tableElement);
     // cannot simply overwright columnSizer object as it has already binded to elements
     // movableElement ref is not overwritten
     Object.assign(columnSizer, newColumnSizer);
@@ -56,7 +56,7 @@ export class InsertRemoveColumnSizer {
       if (columnsDetails.length - 1 === columnIndex) return;
     } else {
       // only dynamic width tables have a sizer on the last column - hence only their styles need to be changed
-      InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex);
+      InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex, etc.tableElementRef as HTMLElement);
     }
     InsertRemoveColumnSizer.insertAtIndex(etc, etc.columnsDetails[columnIndex], columnIndex);
     InsertRemoveColumnSizer.updateIdsOfAllSubsequent(columnsDetails, columnIndex + 1);
@@ -78,11 +78,12 @@ export class InsertRemoveColumnSizer {
     return columnIndex;
   }
 
-  public static remove(columnsDetails: ColumnsDetailsT, columnIndex: number, tableDimensions: TableDimensionsInternal) {
-    if (tableDimensions.width !== undefined) {
+  public static remove(etc: EditableTableComponent, columnIndex: number) {
+    const {tableDimensionsInternal, columnsDetails, tableElementRef} = etc;
+    if (tableDimensionsInternal.width !== undefined) {
       columnIndex = InsertRemoveColumnSizer.removeIfLastColumn(columnsDetails, columnIndex);
     }
-    InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex);
+    InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex, tableElementRef as HTMLElement);
     InsertRemoveColumnSizer.updateIdsOfAllSubsequent(columnsDetails, columnIndex);
   }
 }

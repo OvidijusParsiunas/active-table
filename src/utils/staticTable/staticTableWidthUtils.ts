@@ -22,8 +22,10 @@ export class StaticTableWidthUtils {
   private static togglePreserveNarrowColumns(isSetValue: boolean, tableElement: HTMLElement, preserve?: boolean) {
     if (!preserve) {
       // the reason why this is only executed when preserveNarrowColumns is false is because when the narrow columns
-      // overflow the table width - 'block' causes the border to remain at the set width and not cover the full table
-      // 'block' causes the table offset width to be the same as the currently set css width pixel value
+      // overflow the set table width - 'block' causes the border to remain at the set width and not cover the full table,
+      // another reason (for MaxWidth) is when the table width is not set - 'block' causes the columns widths to
+      // be an arbitrary value - and inherently the table offset to not respect their pixel widths
+      // 'block' causes the table offset width to be the same (when no overflow) as the set css width pixel value
       tableElement.style.display = isSetValue ? 'block' : '';
     }
   }
@@ -31,14 +33,11 @@ export class StaticTableWidthUtils {
   // when the client has not provided the 'width' value for the table, but a 'maxWidth' is present, need to
   // temporarily set the width at the start in order to help the MaximumColumns class to determine what columns fit
   // prettier-ignore
-  public static setTempMaxWidth(etc: EditableTableComponent, isSetValue: boolean) {
+  public static toggleWidthUsingMaxWidth(etc: EditableTableComponent, isSetValue: boolean) {
     const {tableElementRef, tableDimensionsInternal: { maxWidth, preserveNarrowColumns }} = etc;
-    // WORK - when at max width (no preserve) and removing the last column - upon hovering the new last column;
-    // the sizer is dashed
     if (tableElementRef && maxWidth !== undefined) {
       tableElementRef.style.width = isSetValue ? `${maxWidth}px` : ''; // '' defaults width back to min-content
       StaticTableWidthUtils.togglePreserveNarrowColumns(isSetValue, tableElementRef, preserveNarrowColumns); // REF-11
-      // WORK - on delete - temporary change the table width to allow resize
     }
   }
 

@@ -36,9 +36,9 @@ export class TableElement {
   }
 
   private static addCells(etc: EditableTableComponent) {
-    StaticTableWidthUtils.setTempMaxWidth(etc, true);
+    StaticTableWidthUtils.toggleWidthUsingMaxWidth(etc, true);
     etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
-    StaticTableWidthUtils.setTempMaxWidth(etc, false);
+    StaticTableWidthUtils.toggleWidthUsingMaxWidth(etc, false);
   }
 
   private static postProcessColumns(etc: EditableTableComponent) {

@@ -58,7 +58,7 @@ export class ColumnSizer {
 
   // prettier-ignore
   public static createObject(columnSizerElement: HTMLElement, columnsDetails: ColumnsDetailsT, sizerIndex: number,
-      overlayElement?: HTMLElement, movableColumnSizer?: HTMLElement, tableElement?: HTMLElement): ColumnSizerT {
+      tableElement: HTMLElement, overlayElement?: HTMLElement, movableColumnSizer?: HTMLElement): ColumnSizerT {
     const borderWidthsInfo = ColumnSizer.generateBorderWidthsInfo(columnsDetails, sizerIndex);
     const totalCellBorderWidth = ColumnSizer.getTotalCellBorderWidth(borderWidthsInfo);
     const isLastCell = columnsDetails.length - 1 === sizerIndex;
@@ -97,7 +97,7 @@ export class ColumnSizer {
     const movableColumnSizer = MovableColumnSizerElement.create(userSetColumnSizerStyle);
     const overlayElement = ColumnSizerOverlayElement.create();
     const columnSizer = ColumnSizer.createObject(columnSizerElement, columnsDetails, sizerIndex,
-      overlayElement, movableColumnSizer, tableElementRef as HTMLElement);
+      tableElementRef as HTMLElement, overlayElement, movableColumnSizer);
     ColumnSizerOverlayElement.applyEvents(etc, columnSizer);
     return columnSizer;
   }
