@@ -42,8 +42,8 @@ export class TableElement {
   }
 
   private static postProcessColumns(etc: EditableTableComponent) {
-    MaximumColumns.cleanupContentsThatDidNotGetAdded(etc.contents, etc.columnsDetails);
-    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true);
+    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
+    setTimeout(() => MaximumColumns.cleanupContentsThatDidNotGetAdded(etc.contents, etc.columnsDetails));
   }
 
   public static calculateTotalHorizontalSideBorderWidth(tableElement: HTMLElement) {

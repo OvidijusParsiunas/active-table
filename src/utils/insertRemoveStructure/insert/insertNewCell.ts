@@ -80,7 +80,7 @@ export class InsertNewCell {
     etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
     if (rowIndex === 0) {
       InsertNewCell.addColumnDetailsWithElement(etc.columnsDetails, columnIndex, newCellElement); // REF-13
-      if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // executed once on start
+      if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
     }
   }
 }

@@ -78,7 +78,16 @@ element and instead go native, hence the current approach of parsing a string wi
 However if opted to stay with lit element - use the following approach: https://lit.dev/docs/api/templates/#svg
 
 REF-11
-
+Because the table is re-rendered when the user changes the parent width - the column width setting process has been optimised.
+This has lead to a relatively complex code flow to only trigger the changeWidthsBasedOnColumnInsertRemove method once:
+When maxWidth is set and narrow columns are not preserved - we must set the display style to 'block' in order for the table offset
+to have the exact width as the temporarily set css width - otherwise the addition of initial columns will increase the table width
+by 100 (default width) for each column and stop the canAddMore check from returning false as column widths will be above minimum.
+(Executing changeWidthsBasedOnColumnInsertRemove after each column addition would prevent this but we do not want to execute
+it every time for optimization)
+(This is also why the display is set to 'block' when the client has set a specific width).
+Finally, this is why we have the isNewText check in the InsertNewCell class and instead calling changeWidthsBasedOnColumnInsertRemove
+once inside the TableElement class.
 
 REF-12
 The original architecture of a column sizer (known as the resizer to the user) allowed it to change the column width as it was moving,
