@@ -110,10 +110,9 @@ creation requires the details from that object. Then proceed to create the sizer
 thus completing the creation of that object.
 
 REF-14
-Cannot overwrite the table element style (via tableStyle) on render in FireFox, hence the intitial setup for overwriting the style
-is done in timeouts. This has also caused the initial column width setup code to be moved to a timeout and not be executed on
-adding the individual columns as it depends on the TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH on being calculated correctly. However,
-all proceeding column lengths and table width for Safari are changed directly when a column has been added or removed.
+When calling super.connectedCallback() in the 'override connectedCallback' method - Firefox was initially found to call
+the 'override render' twice - where the first render did not have the popylated properties that were passed by client.
+This has been prevented by calling super.connectedCallback() inside a timeout.
 
 REF-15
 The reason why there are two types used to define the table dimensions is because we want one interface (TableDimensions) to be
@@ -126,6 +125,7 @@ In Chrome/Firefox: it has been identified that when there is no width set on the
 to expand beyond the parent limits (increase the parent width) and instead automatically reduces the column widths. This is
 problematic as the widths are no longer what they are set to by the component and the resize functionality no longer works as
 intended, hence the table-controlled-width class allows the table to expand the parent element and keep the intended column widths
+This behaviour is still permitted when preserveNarrowColumns is set to true.
 In Safari: This also serves as a fix for Safari table width bug and the table width no longer needs to be set for this browser.
 Reference to this commit to undo anything that has been changed: 2fd86cd84f88d19e8a4a8a95c6b73e4fe181ad13
 Snippet from a previous Ref:
@@ -142,5 +142,5 @@ CAUTION-2
 When resizing the table, take note of some async code that may have been called before the resize was triggered
 
 CAUTION-3
-Table dimensions have exclusive optional interfaces that are exposed to the client, however they may not respect them, hence the logic
+Table dimensions have exclusive optional interfaces that are exposed to the client, however they may not be respected, hence the logic
 needs to be cautious when handling the passed in object

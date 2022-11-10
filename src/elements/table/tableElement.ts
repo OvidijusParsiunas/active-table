@@ -2,14 +2,18 @@ import {MaximumColumns} from '../../utils/insertRemoveStructure/insert/maximumCo
 import {StaticTableWidthUtils} from '../../utils/staticTable/staticTableWidthUtils';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
+import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
+import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {OverlayElements} from '../../types/overlayElements';
 import {AddNewRowElement} from '../row/addNewRowElement';
 import {TableRow} from '../../types/tableContents';
 import {TableEvents} from './tableEvents';
 
 export class TableElement {
+  public static TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH = UNSET_NUMBER_IDENTIFIER;
+
   // prettier-ignore
   public static addAuxiliaryElements(etc: EditableTableComponent,
       tableElement: HTMLElement, overlayElementsState: OverlayElements, areHeadersEditable: boolean) {
@@ -32,30 +36,32 @@ export class TableElement {
   }
 
   private static addCells(etc: EditableTableComponent) {
-    const {tableElementRef, tableDimensionsInternal} = etc;
-    if (!tableElementRef) return;
-    StaticTableWidthUtils.setTempMaximumWidth(true, tableElementRef, tableDimensionsInternal.maxWidth);
+    StaticTableWidthUtils.setTempMaxWidth(etc, true);
     etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
-    StaticTableWidthUtils.setTempMaximumWidth(false, tableElementRef, tableDimensionsInternal.maxWidth);
+    StaticTableWidthUtils.setTempMaxWidth(etc, false);
   }
 
-  private static processWidths(etc: EditableTableComponent) {
-    setTimeout(() => {
-      // in a timeout for optimization and it must come before the next method as it uses the etc.contents
-      MaximumColumns.cleanupContentsThatDidNotGetAdded(etc.contents, etc.columnsDetails);
-      // REF-14; has to be in a timeout method as custom table border style via etc.tableStyle will not be applied yet
-      StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true);
-    });
+  private static postProcessColumns(etc: EditableTableComponent) {
+    MaximumColumns.cleanupContentsThatDidNotGetAdded(etc.contents, etc.columnsDetails);
+    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true);
+  }
+
+  public static calculateTotalHorizontalSideBorderWidth(tableElement: HTMLElement) {
+    if (TableElement.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH === UNSET_NUMBER_IDENTIFIER) {
+      TableElement.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH =
+        GenericElementUtils.getElementTotalHorizontalSideBorderWidth(tableElement);
+    }
   }
 
   public static populateBody(etc: EditableTableComponent) {
     // removes all the current children
     etc.tableBodyElementRef?.replaceChildren();
-    // needs to be set before inserting the cells in order to check if each row can be added
-    StaticTableWidthUtils.setInitialTableWidth(etc);
+    TableElement.calculateTotalHorizontalSideBorderWidth(etc.tableElementRef as HTMLElement);
+    // needs to be set before inserting the cells to prevent adding columns when too small
+    StaticTableWidthUtils.setTableWidth(etc);
     // header/data
     TableElement.addCells(etc);
-    TableElement.processWidths(etc);
+    TableElement.postProcessColumns(etc);
     // new row row and full table overlay
     TableElement.addAuxiliaryBodyElements(etc);
   }
@@ -67,8 +73,7 @@ export class TableElement {
   private static createTableElement(etc: EditableTableComponent) {
     const tableElement = document.createElement('table');
     tableElement.classList.add('table-controlled-width');
-    // REF-14 placing it in a timeout for firefox
-    setTimeout(() => Object.assign(tableElement.style, etc.tableStyle));
+    Object.assign(tableElement.style, etc.tableStyle);
     tableElement.onmousedown = TableEvents.onMouseDown.bind(etc);
     tableElement.onmouseup = TableEvents.onMouseUp.bind(etc);
     return tableElement;

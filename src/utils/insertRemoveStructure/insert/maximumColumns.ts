@@ -1,5 +1,6 @@
 import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {TableElement} from '../../../elements/table/tableElement';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {TableContents} from '../../../types/tableContents';
 import {StaticTable} from '../../staticTable/staticTable';
@@ -20,19 +21,18 @@ export class MaximumColumns {
       tableElement: HTMLElement, numberOfColumns: number) {
     return tableDimensionsInternal.preserveNarrowColumns ||
       !StaticTable.isStaticTableWidth(tableElement, tableDimensionsInternal) ||
-      numberOfColumns === 0
+      numberOfColumns === 0;
   }
 
-  // This is primarily concerned on not making the columns too narrow when the table is at its width limit.
+  // This is primarily concerned on not making the columns too narrow when the table is at its width limit
   public static canAddMore(etc: EditableTableComponent) {
     const {tableElementRef, columnsDetails, tableDimensionsInternal} = etc;
     const tableElement = tableElementRef as HTMLElement;
     const numberOfColumns = columnsDetails.length;
     if (MaximumColumns.ignoreMinimalColumnWidthCheck(tableDimensionsInternal, tableElement, numberOfColumns)) return true;
     // TO-DO if certain columns have a custom width
-    // ((table width - (total of custom widths)) / (number of default columns + 1))
-    //  >= MaximumColumns.MINIMAL_COLUMN_WIDTH;
-    return tableElement.offsetWidth / (numberOfColumns + 1) >= MaximumColumns.MINIMAL_COLUMN_WIDTH;
+    const totalColumnsWidth = tableElement.offsetWidth - TableElement.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH;
+    return totalColumnsWidth / (numberOfColumns + 1) >= MaximumColumns.MINIMAL_COLUMN_WIDTH;
   }
 
   public static cleanupContentsThatDidNotGetAdded(contents: TableContents, columnsDetails: ColumnsDetailsT) {

@@ -19,6 +19,7 @@ import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
+import {Browser} from './utils/browser/browser';
 import {Render} from './utils/render/render';
 import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
@@ -121,14 +122,14 @@ export class EditableTableComponent extends LitElement {
   @property({type: Boolean})
   displayAddRowCell = true;
 
-  // this is triggered twice on startup in Firefox
   override render() {
     Render.renderTable(this);
     this.onTableUpdate(this.contents);
     new ResizeObserver(ParentResize.resizeCallback.bind(this)).observe(this.parentElement as HTMLElement);
   }
 
-  override connectedCallback() {
+  private onConnect() {
+    // REF-14
     super.connectedCallback();
     const tableElement = TableElement.createBase(this);
     TableElement.addAuxiliaryElements(this, tableElement, this.overlayElementsState, this.areHeadersEditable);
@@ -136,6 +137,15 @@ export class EditableTableComponent extends LitElement {
     WindowElement.setEvents(this);
     this.onTableUpdate(this.contents);
     DateCellElement.populateDefaultDateTypes();
+  }
+
+  override connectedCallback() {
+    // REF-14
+    if (Browser.IS_FIREFOX) {
+      setTimeout(() => this.onConnect());
+    } else {
+      this.onConnect();
+    }
   }
 }
 
