@@ -12,6 +12,7 @@ export class RemoveRow {
     removedRowData.forEach((cellText: TableCellText, columnIndex: number) => {
       const columnDetails = columnsDetails[columnIndex];
       columnDetails.elements.splice(rowIndex, 1);
+      // CAUTION-2
       CellTypeTotalsUtils.decrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, cellText as string);
     });
   }

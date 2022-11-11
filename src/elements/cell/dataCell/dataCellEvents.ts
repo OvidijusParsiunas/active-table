@@ -96,12 +96,6 @@ export class DataCellEvents {
     FocusedCellUtils.purge(etc.focusedElements.cell);
     setTimeout(() => {
       // CAUTION-2
-      // when editing text then double clicking browser to resize, as soon as the browser begins to resize
-      // it deletes column details and begins to regenerate them, however this still kicks in and attempts
-      // to set the column type. The condition below fixes this by not running it when column details
-      // do not exist or its type properties are not there. However if further bugs are noticed, rework
-      // this by utilising a rendering indicator
-      if (!etc.columnsDetails[columnIndex]?.cellTypeTotals) return;
       const newType = CellTypeTotalsUtils.parseType(textContainerElement.textContent as string, etc.defaultCellValue);
       CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(etc.columnsDetails[columnIndex], oldType, newType);
     });

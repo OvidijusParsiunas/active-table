@@ -34,6 +34,7 @@ export class InsertNewCell {
       ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsElementsOnly, categoryDropdown); // REF-13
       InsertRemoveColumnSizer.insert(etc, columnsDetails, columnIndex); // REF-13
     } else {
+      // CAUTION-2
       CellTypeTotalsUtils.incrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, text);
     }
   }

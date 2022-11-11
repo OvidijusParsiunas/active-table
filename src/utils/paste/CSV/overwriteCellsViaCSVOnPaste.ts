@@ -59,6 +59,7 @@ export class OverwriteCellsViaCSVOnPaste {
       DateCellInputElement.updateInputBasedOnTextDiv(columnDetails.userSetColumnType, cellElement);
     }
     setTimeout(() => {
+      // CAUTION-2
       const newType = CellTypeTotalsUtils.parseType(processedNewCellText, etc.defaultCellValue);
       CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(columnDetails, oldType, newType);
     });
