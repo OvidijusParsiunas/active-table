@@ -67,6 +67,12 @@ export class EditableTableComponent extends LitElement {
   })
   duplicateHeadersAllowed = true;
 
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  displayAddRowCell = true;
+
   // this contains all cell elements, if there is a need to access cell elements outside the context of columns
   // create an entirely new state object and access elements from there as we don't want to store all elements
   // multiple times, and use this instead for data exclusively on columns, such as width etc.
@@ -118,9 +124,6 @@ export class EditableTableComponent extends LitElement {
   // columnResizer for the client - columnSizer in code for efficiency
   @property({type: Object})
   columnResizerStyle: UserSetColumnSizerStyle = {};
-
-  @property({type: Boolean})
-  displayAddRowCell = true;
 
   override render() {
     Render.renderTable(this);

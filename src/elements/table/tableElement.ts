@@ -1,5 +1,5 @@
 import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
-import {MaximumColumns} from '../../utils/insertRemoveStructure/insert/maximumColumns';
+import {TableDimensionsUtils} from '../../utils/tableDimensions/tableDimensionsUtils';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
@@ -43,7 +43,7 @@ export class TableElement {
 
   private static postProcessColumns(etc: EditableTableComponent) {
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
-    setTimeout(() => MaximumColumns.cleanupContentsThatDidNotGetAdded(etc.contents, etc.columnsDetails));
+    setTimeout(() => TableDimensionsUtils.cleanupContentsThatDidNotGetAdded(etc.contents, etc.columnsDetails));
   }
 
   public static calculateTotalHorizontalSideBorderWidth(tableElement: HTMLElement) {

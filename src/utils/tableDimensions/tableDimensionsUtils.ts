@@ -3,6 +3,8 @@ import {MaxStructureDimensions} from '../../types/maxStructureDimensions';
 import {EditableTableComponent} from '../../editable-table-component';
 import {TableDimensions} from '../../types/tableDimensions';
 import {PropertiesOfType} from '../../types/utilityTypes';
+import {ColumnsDetailsT} from '../../types/columnDetails';
+import {TableContents} from '../../types/tableContents';
 import {StringDimension} from '../../types/dimensions';
 import {RegexUtils} from '../regex/regexUtils';
 
@@ -48,10 +50,11 @@ export class TableDimensionsUtils {
   private static setDimension(etc: EditableTableComponent, key: keyof PropertiesOfType<TableDimensions, StringDimension>) {
     const {tableDimensions, tableDimensionsInternal, tableElementRef, parentElement} = etc;
     if (!tableElementRef || !parentElement) return;
-    const clientValue = tableDimensions[key] as string;
-    // this will parse px, % and will also work if the user forgets to add px
-    let extractedNumber = Number(RegexUtils.extractIntegerStrs(clientValue)[0]);
-    if (clientValue.includes('%')) {
+    const clientValue = tableDimensions[key] as string | number;
+    const isClientValueStr = typeof clientValue === 'string';
+    // parse string or accept the passed in number as px
+    let extractedNumber = isClientValueStr ? Number(RegexUtils.extractIntegerStrs(clientValue)[0]) : clientValue;
+    if (isClientValueStr && clientValue.includes('%')) {
       // if true then holds an unlimited size via table-controlled-width class (dynamic table)
       if (TableDimensionsUtils.isParentWidthUndetermined(parentElement.style.width)) return;
       if (extractedNumber > 100) extractedNumber = 100;
@@ -81,5 +84,10 @@ export class TableDimensionsUtils {
     // else the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
     TableDimensionsUtils.setPreserveNarrowColumnsProp(tableDimensions, tableDimensionsInternal);
     TableDimensionsUtils.setMaxStructureDimensions(tableDimensions, tableDimensionsInternal);
+  }
+
+  public static cleanupContentsThatDidNotGetAdded(contents: TableContents, columnsDetails: ColumnsDetailsT) {
+    if (contents[0]?.length - columnsDetails.length > 0) contents.forEach((row) => row.splice(columnsDetails.length));
+    if (contents.length > columnsDetails[0]?.elements.length) contents.splice(columnsDetails[0].elements.length);
   }
 }

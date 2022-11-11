@@ -2,8 +2,6 @@ import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
 import {StaticTable} from '../../tableDimensions/staticTable/staticTable';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {TableElement} from '../../../elements/table/tableElement';
-import {ColumnsDetailsT} from '../../../types/columnDetails';
-import {TableContents} from '../../../types/tableContents';
 
 // TO-DO - the add columns column should disappear when more columns cannot be added and appear when they can
 export class MaximumColumns {
@@ -34,9 +32,5 @@ export class MaximumColumns {
     // TO-DO if certain columns have a custom width
     const totalColumnsWidth = tableElement.offsetWidth - TableElement.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH;
     return totalColumnsWidth / (numberOfColumns + 1) >= MaximumColumns.MINIMAL_COLUMN_WIDTH;
-  }
-
-  public static cleanupContentsThatDidNotGetAdded(contents: TableContents, columnsDetails: ColumnsDetailsT) {
-    if (contents[0].length - columnsDetails.length > 0) contents.forEach((row) => row.splice(columnsDetails.length));
   }
 }
