@@ -73,6 +73,12 @@ export class EditableTableComponent extends LitElement {
   })
   displayAddRowCell = true;
 
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  noHeader = false;
+
   // this contains all cell elements, if there is a need to access cell elements outside the context of columns
   // create an entirely new state object and access elements from there as we don't want to store all elements
   // multiple times, and use this instead for data exclusively on columns, such as width etc.
@@ -90,6 +96,9 @@ export class EditableTableComponent extends LitElement {
 
   @state()
   tableBodyElementRef: HTMLElement | null = null;
+
+  @state()
+  addRowCellElementRef: HTMLElement | null = null;
 
   @state()
   focusedElements: FocusedElements = FocusedElementsUtils.createEmpty();

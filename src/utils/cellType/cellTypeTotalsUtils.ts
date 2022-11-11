@@ -54,15 +54,6 @@ export class CellTypeTotalsUtils {
       columnDetails: ColumnDetailsT, changeFuncs: ((cellTypeTotals: CellTypeTotals) => void)[]) {
     const {cellTypeTotals, elements} = columnDetails;
     // CAUTION-2
-    // methods that end up calling this are usually in timeouts and this is can cause issues when they are triggered after
-    // or themselves trigger parent div resize; e.g. new row inserts a scrollbar, deletion removes a scrollbar or blurring
-    // a cell by double clicking on top of browser window to resize. In such instances the columnsDetails object is wiped
-    // and repopulated, however because this runs in a timeout - after the columnsDetails object is reset it still runs.
-    // Because columnsDetails objects are still being created, the cellTypeTotals property does not exist, hence code that
-    // would run after it would throw an error and we are using a simple truth if statement check.
-    // (Because the code after render reruns the full table setup the totals are calculated correctly)
-    // when editing text then double clicking browser to resize, as soon as the browser begins to resize
-    // If further bugs occur - use a 'rendering' flag instead
     if (!cellTypeTotals) return;
     changeFuncs.forEach((func) => func(cellTypeTotals));
     if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Auto) {

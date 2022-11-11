@@ -9,7 +9,7 @@ import {StringDimension} from '../../types/dimensions';
 import {RegexUtils} from '../regex/regexUtils';
 
 export class TableDimensionsUtils {
-  private static readonly MINIMAL_TABLE_WIDTH = 70;
+  public static readonly MINIMAL_TABLE_WIDTH = 70;
 
   // prettier-ignore
   private static setMaxStructureDimension(tableDimensions: TableDimensions,

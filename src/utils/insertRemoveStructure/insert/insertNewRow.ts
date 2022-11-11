@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../../editable-table-component';
+import {AddNewRowElement} from '../../../elements/row/addNewRowElement';
 import {TableCellText, TableRow} from '../../../types/tableContents';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
@@ -36,7 +37,7 @@ export class InsertNewRow {
   }
 
   private static insertNewRow(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
-    const newRowData = rowData || DataUtils.createDataArray(etc.contents[0].length, etc.defaultCellValue);
+    const newRowData = rowData || DataUtils.createDataArray(etc.contents[0]?.length || 1, etc.defaultCellValue);
     const newRowElement = RowElement.create();
     etc.tableBodyElementRef?.insertBefore(newRowElement, etc.tableBodyElementRef.children[rowIndex]);
     // don't need a timeout as addition of row with new text is not expensive
@@ -50,11 +51,14 @@ export class InsertNewRow {
     if (!MaximumRows.canAddMore(etc)) return;
     InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
     setTimeout(() => {
-      if (isNewText) InsertNewRow.fireCellUpdates(etc, rowIndex);
+      if (isNewText) {
+        AddNewRowElement.toggle(etc);
+        InsertNewRow.fireCellUpdates(etc, rowIndex);
+      }
     });
   }
 
-  public static insertEvent(this: EditableTableComponent, rowIndex: number) {
-    InsertNewRow.insert(this, rowIndex, true);
+  public static insertEvent(this: EditableTableComponent) {
+    InsertNewRow.insert(this, this.contents.length, true);
   }
 }

@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../../editable-table-component';
+import {AddNewRowElement} from '../../../elements/row/addNewRowElement';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {TableCellText, TableRow} from '../../../types/tableContents';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
@@ -23,7 +24,10 @@ export class RemoveRow {
     const lastRow = {element: lastRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(etc, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow);
     etc.onTableUpdate(etc.contents);
-    setTimeout(() => RemoveRow.updateColumnDetails(removedRowData, etc.defaultCellValue, etc.columnsDetails, rowIndex));
+    setTimeout(() => {
+      RemoveRow.updateColumnDetails(removedRowData, etc.defaultCellValue, etc.columnsDetails, rowIndex);
+      AddNewRowElement.toggle(etc);
+    });
   }
 
   private static removeRow(etc: EditableTableComponent, rowIndex: number) {

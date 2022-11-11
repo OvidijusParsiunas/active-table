@@ -29,10 +29,9 @@ export class TableElement {
 
   private static addAuxiliaryBodyElements(etc: EditableTableComponent) {
     // add new row element
-    if (etc.displayAddRowCell) {
-      const addNewRowElement = AddNewRowElement.create(etc);
-      etc.tableBodyElementRef?.appendChild(addNewRowElement);
-    }
+    const addNewRowElement = AddNewRowElement.create(etc);
+    etc.tableBodyElementRef?.appendChild(addNewRowElement);
+    AddNewRowElement.toggle(etc);
   }
 
   private static addCells(etc: EditableTableComponent) {
