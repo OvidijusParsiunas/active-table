@@ -1,10 +1,11 @@
+import {MaxStructureDimensions} from './maxStructureDimensions';
 import {InterfacesUnion} from './utilityTypes';
 import {StringDimension} from './dimensions';
 
 // REF-15
 
 // DO NOT USE THIS INTERFACE INTERNALLY - this is to be used by the client
-interface AllDimensionProps {
+type AllDimensionProps = {
   // width and maxWidth are mutually exclusive and if both are present width is the only one that will be used
   maxWidth: StringDimension;
   width: StringDimension;
@@ -24,27 +25,29 @@ interface AllDimensionProps {
   // to preserve their data and the table size has a chance of increasing beyond the set value)
   preserveNarrowColumns: boolean;
   unlimitedSize: boolean;
-}
+} & Required<MaxStructureDimensions>;
 
-interface Width {
+type AllowedByDefault = {} & MaxStructureDimensions;
+
+interface Width extends AllowedByDefault {
   width: StringDimension;
   preserveNarrowColumns?: boolean;
 }
 
-interface MaxWidth {
+interface MaxWidth extends AllowedByDefault {
   maxWidth: StringDimension;
   preserveNarrowColumns?: boolean;
 }
 
-interface NarrowColumns {
+interface NarrowColumns extends AllowedByDefault {
   preserveNarrowColumns: boolean; // true by default
 }
 
-interface UnlimitedSize {
+interface UnlimitedSize extends AllowedByDefault {
   unlimitedSize: boolean; // false by default
 }
 
-type Empty = {};
+type Empty = {} & AllowedByDefault;
 
 // CAUTION-3
 // These exclusive type combinations may not be respected by the user, hence the handloing logic needs to be cautious

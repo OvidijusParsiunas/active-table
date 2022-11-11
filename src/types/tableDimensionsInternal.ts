@@ -1,3 +1,4 @@
+import {MaxStructureDimensions} from './maxStructureDimensions';
 import {InterfacesUnion} from './utilityTypes';
 
 // REF-15
@@ -11,12 +12,12 @@ export type AllDimensionProps = {
   isPercentage: boolean;
   preserveNarrowColumns: boolean;
   recordedParentWidth: number;
-};
+} & Required<MaxStructureDimensions>;
 
-interface Parent {
+type Parent = {
   preserveNarrowColumns?: boolean;
   recordedParentWidth: number;
-}
+} & MaxStructureDimensions;
 
 interface Initial {
   recordedParentWidth: number;
@@ -32,4 +33,5 @@ interface MaxWidth extends Parent {
   isPercentage: boolean;
 }
 
+// WORK - can create an interface union that merges these properties together so no need for the first object
 export type TableDimensionsInternal = InterfacesUnion<AllDimensionProps, Width | MaxWidth | Initial>;

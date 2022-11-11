@@ -1,5 +1,4 @@
 import {ColumnsDetailsT, ColumnDetailsT, ColumnDetailsNoSizer} from '../../../types/columnDetails';
-import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnSizerOverlayElement} from '../columnSizerOverlayElement';
 import {MovableColumnSizerElement} from '../movableColumnSizerElement';

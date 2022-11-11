@@ -1,4 +1,4 @@
-import {StaticTableWidthUtils} from '../staticTable/staticTableWidthUtils';
+import {TableDimensionsUtils} from '../tableDimensions/tableDimensionsUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {TableElement} from '../../elements/table/tableElement';
 
@@ -12,7 +12,7 @@ export class Render {
     etc.tableDimensionsInternal.recordedParentWidth = (etc.parentElement as HTMLElement).offsetWidth;
     Render.refreshTableState(etc);
     // needs to be in render trigger as user props are not set in the connectedCallback function in Firefox
-    StaticTableWidthUtils.setInternalTableDimensions(etc);
+    TableDimensionsUtils.setInternalTableDimensions(etc);
     TableElement.populateBody(etc);
   }
 }

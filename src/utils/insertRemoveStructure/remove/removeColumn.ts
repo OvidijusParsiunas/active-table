@@ -1,6 +1,6 @@
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
-import {StaticTableWidthUtils} from '../../staticTable/staticTableWidthUtils';
+import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';

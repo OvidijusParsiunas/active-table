@@ -1,11 +1,6 @@
-import {TableDimensionsInternal} from '../../types/tableDimensionsInternal';
-import {EditableTableComponent} from '../../editable-table-component';
-import {TableElement} from '../../elements/table/tableElement';
-import {TableDimensions} from '../../types/tableDimensions';
-import {PropertiesOfType} from '../../types/utilityTypes';
-import {ColumnsDetailsT} from '../../types/columnDetails';
-import {StringDimension} from '../../types/dimensions';
-import {RegexUtils} from '../regex/regexUtils';
+import {EditableTableComponent} from '../../../editable-table-component';
+import {TableElement} from '../../../elements/table/tableElement';
+import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {StaticTable} from './staticTable';
 
 // TO-DO when not at maximum length - have a setting option to resize all columns to the limit as resizing to small and
@@ -15,7 +10,6 @@ import {StaticTable} from './staticTable';
 
 // table width is considered static when the user sets its width
 export class StaticTableWidthUtils {
-  private static readonly MINIMAL_TABLE_WIDTH = 70;
   public static NEW_COLUMN_WIDTH = 100;
 
   // REF-11
@@ -73,63 +67,5 @@ export class StaticTableWidthUtils {
     } else if (isInsert && StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensionsInternal)) {
       StaticTableWidthUtils.resetAllColumnSizes(columnsDetails, tableDimensionsInternal.maxWidth as number);
     }
-  }
-
-  // prettier-ignore
-  private static setPreserveNarrowColumnsProp(tableDimensions: TableDimensions,
-      tableDimensionsInternal: TableDimensionsInternal) {
-    tableDimensionsInternal.preserveNarrowColumns = tableDimensions.preserveNarrowColumns;
-    tableDimensionsInternal.preserveNarrowColumns ??= true; // if tableDimensions.preserveNarrowColumns was undefined
-  }
-
-  private static setDefaultDimension(tableDimensionsInternal: TableDimensionsInternal, parentElement: HTMLElement) {
-    // 100% width of the parent element
-    tableDimensionsInternal.maxWidth = parentElement.offsetWidth;
-    tableDimensionsInternal.isPercentage = true;
-  }
-
-  private static processDimension(width: number) {
-    return width < StaticTableWidthUtils.MINIMAL_TABLE_WIDTH ? StaticTableWidthUtils.MINIMAL_TABLE_WIDTH : width;
-  }
-
-  private static isParentWidthUndetermined(width: string) {
-    return width === 'fit-content' || width === 'min-content' || width === 'max-content';
-  }
-
-  private static setDimension(etc: EditableTableComponent, key: keyof PropertiesOfType<TableDimensions, StringDimension>) {
-    const {tableDimensions, tableDimensionsInternal, tableElementRef, parentElement} = etc;
-    if (!tableElementRef || !parentElement) return;
-    const clientValue = tableDimensions[key] as string;
-    // this will parse px, % and will also work if the user forgets to add px
-    let extractedNumber = Number(RegexUtils.extractIntegerStrs(clientValue)[0]);
-    if (clientValue.includes('%')) {
-      // if true then holds an unlimited size (dynamic table)
-      if (StaticTableWidthUtils.isParentWidthUndetermined(parentElement.style.width)) return;
-      if (extractedNumber > 100) extractedNumber = 100;
-      const width = parentElement.offsetWidth * (extractedNumber / 100);
-      tableDimensionsInternal[key] = StaticTableWidthUtils.processDimension(width);
-      tableDimensionsInternal.isPercentage = true;
-    } else {
-      tableDimensionsInternal[key] = StaticTableWidthUtils.processDimension(extractedNumber);
-    }
-  }
-
-  // CAUTION-3
-  public static setInternalTableDimensions(etc: EditableTableComponent) {
-    const {tableDimensions, tableDimensionsInternal} = etc;
-    const parentElement = etc.parentElement as HTMLElement;
-    // width and maxWidth are mutually exclusive and if both are present width is the only one that is used
-    if (tableDimensions.width !== undefined) {
-      StaticTableWidthUtils.setDimension(etc, 'width');
-    } else if (tableDimensions.maxWidth !== undefined) {
-      StaticTableWidthUtils.setDimension(etc, 'maxWidth');
-    } else if (
-      !tableDimensions.unlimitedSize &&
-      !StaticTableWidthUtils.isParentWidthUndetermined(parentElement.style.width)
-    ) {
-      StaticTableWidthUtils.setDefaultDimension(tableDimensionsInternal, parentElement);
-    }
-    // else the table holds an unlimited size (dynamic table)
-    StaticTableWidthUtils.setPreserveNarrowColumnsProp(tableDimensions, tableDimensionsInternal);
   }
 }

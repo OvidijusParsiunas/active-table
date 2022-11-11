@@ -7,6 +7,7 @@ import {RowElement} from '../../../elements/row/rowElement';
 import {MaximumColumns} from './maximumColumns';
 import {InsertNewCell} from './insertNewCell';
 import {DataUtils} from '../shared/dataUtils';
+import {MaximumRows} from './maximumRows';
 
 export class InsertNewRow {
   private static fireCellUpdates(etc: EditableTableComponent, rowIndex: number) {
@@ -46,6 +47,7 @@ export class InsertNewRow {
 
   // isNewText indicates whether rowData is already in the contents state or if it needs to be added
   public static insert(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
+    if (!MaximumRows.canAddMore(etc)) return;
     InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
     setTimeout(() => {
       if (isNewText) InsertNewRow.fireCellUpdates(etc, rowIndex);

@@ -3,8 +3,8 @@ import {ColumnDetailsElementsOnly, ColumnDetailsT, ColumnsDetailsT} from '../../
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
+import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
 import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
-import {StaticTableWidthUtils} from '../../staticTable/staticTableWidthUtils';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
@@ -25,7 +25,7 @@ export class InsertNewCell {
   // please note that this is run twice in firefox due to the render function being triggered twice
   // prettier-ignore
   private static updateColumnDetailsAndSizers(
-      etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement, text: string) {
+      etc: EditableTableComponent, rowIndex: number, columnIndex: number, text: string) {
     const { columnsDetails, defaultCellValue } = etc;
     const columnDetails = columnsDetails[columnIndex];
     if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
@@ -34,9 +34,7 @@ export class InsertNewCell {
       ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsElementsOnly, categoryDropdown); // REF-13
       InsertRemoveColumnSizer.insert(etc, columnsDetails, columnIndex); // REF-13
     } else {
-      // TO-DO - not sure if all cell elements are needed, if this is not required in the future do not this code
-      columnDetails.elements.splice(rowIndex, 0, cellElement);
-      setTimeout(() => CellTypeTotalsUtils.incrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, text));
+      CellTypeTotalsUtils.incrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, text);
     }
   }
 
@@ -62,8 +60,11 @@ export class InsertNewCell {
 
   private static create(etc: EditableTableComponent, processedCellText: string, rowIndex: number, columnIndex: number) {
     const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
-    const columnDetail = etc.columnsDetails[columnIndex];
-    if (columnDetail) InsertNewCell.convertCell(etc, columnDetail, rowIndex, columnIndex, newCellElement);
+    const columnDetails = etc.columnsDetails[columnIndex];
+    if (columnDetails) {
+      InsertNewCell.convertCell(etc, columnDetails, rowIndex, columnIndex, newCellElement);
+      columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
+    }
     return newCellElement;
   }
 
@@ -74,8 +75,7 @@ export class InsertNewCell {
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex);
-    setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(
-      etc, rowIndex, columnIndex, newCellElement, processedCellText));
+    setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, processedCellText));
     // cannot place in a timeout as etc.contents length is used to get last row index
     etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
     if (rowIndex === 0) {

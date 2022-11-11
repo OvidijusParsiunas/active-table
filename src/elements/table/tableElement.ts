@@ -1,5 +1,5 @@
+import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
 import {MaximumColumns} from '../../utils/insertRemoveStructure/insert/maximumColumns';
-import {StaticTableWidthUtils} from '../../utils/staticTable/staticTableWidthUtils';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
