@@ -14,7 +14,7 @@ export class InsertNewColumn {
   private static updateColumns(
       etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
     const rowDetails: ElementDetails = { element: rowElement, index: rowIndex };
-    const lastColumn: ElementDetails = LastColumn.getDetails(rowElement);
+    const lastColumn: ElementDetails = LastColumn.getDetails(etc.columnsDetails, rowIndex);
     UpdateCellsForColumns.rebindAndFireUpdates(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.ADD, lastColumn);
   }
 
@@ -37,7 +37,7 @@ export class InsertNewColumn {
     }
   }
 
-  public static insertEvent(this: EditableTableComponent, columnIndex: number) {
-    InsertNewColumn.insert(this, columnIndex);
+  public static insertEvent(this: EditableTableComponent) {
+    InsertNewColumn.insert(this, this.columnsDetails.length);
   }
 }

@@ -1,9 +1,9 @@
-import {TableDimensionsUtils} from '../../utils/tableDimensions/tableDimensionsUtils';
-import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
-import {MaximumRows} from '../../utils/insertRemoveStructure/insert/maximumRows';
-import {EditableTableComponent} from '../../editable-table-component';
-import {CellElement} from '../cell/cellElement';
-import {CSSStyle} from '../../types/cssStyle';
+import {TableDimensionsUtils} from '../../../utils/tableDimensions/tableDimensionsUtils';
+import {InsertNewRow} from '../../../utils/insertRemoveStructure/insert/insertNewRow';
+import {MaximumRows} from '../../../utils/insertRemoveStructure/insert/maximumRows';
+import {EditableTableComponent} from '../../../editable-table-component';
+import {CellElement} from '../../cell/cellElement';
+import {CSSStyle} from '../../../types/cssStyle';
 import {RowElement} from './rowElement';
 
 export class AddNewRowElement {

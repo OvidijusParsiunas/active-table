@@ -1,5 +1,5 @@
+import {AddNewRowElement} from '../../../elements/table/row/addNewRowElement';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {AddNewRowElement} from '../../../elements/row/addNewRowElement';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {TableCellText, TableRow} from '../../../types/tableContents';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
