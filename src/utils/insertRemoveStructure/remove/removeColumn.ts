@@ -21,6 +21,7 @@ export class RemoveColumn {
     const lastColumn: ElementDetails = LastColumn.getDetails(etc.columnsDetails, rowIndex);
     RemoveColumn.removeElements(rowElement, columnIndex);
     etc.contents[rowIndex].splice(columnIndex, 1);
+    etc.columnsDetails.splice(columnIndex, 1)[0]; // needs to be after getDetails but before the following line
     if (rowIndex === 0) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, false);
     setTimeout(() => {
       const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};
@@ -37,10 +38,10 @@ export class RemoveColumn {
 
   // TO-DO - default to add new column column when there are no more columns
   public static remove(etc: EditableTableComponent, columnIndex: number) {
+    const columnDetailsToBeRemoved = etc.columnsDetails[columnIndex];
     RemoveColumn.removeCellFromAllRows(etc, columnIndex);
-    const removedDetails = etc.columnsDetails.splice(columnIndex, 1)[0];
     setTimeout(() => {
-      CategoryDropdown.remove(etc.tableElementRef as HTMLElement, removedDetails.categoryDropdown.element);
+      CategoryDropdown.remove(etc.tableElementRef as HTMLElement, columnDetailsToBeRemoved.categoryDropdown.element);
       InsertRemoveColumnSizer.remove(etc, columnIndex);
       etc.onTableUpdate(etc.contents);
     });
