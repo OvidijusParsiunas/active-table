@@ -1,3 +1,4 @@
+import {AddNewColumnElement} from '../../../elements/table/column/addNewColumnElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
@@ -33,7 +34,10 @@ export class InsertNewColumn {
     if (MaximumColumns.canAddMore(etc)) {
       FocusedCellUtils.incrementColumnIndex(etc.focusedElements.cell, columnIndex);
       InsertNewColumn.insertToAllRows(etc, columnIndex, columnData);
-      setTimeout(() => etc.onTableUpdate(etc.contents));
+      setTimeout(() => {
+        AddNewColumnElement.toggle(etc, true);
+        etc.onTableUpdate(etc.contents);
+      });
     }
   }
 

@@ -1,6 +1,7 @@
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
+import {AddNewColumnElement} from '../../../elements/table/column/addNewColumnElement';
 import {ColumnGroupElement} from '../../../elements/table/column/columnGroupElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
@@ -22,8 +23,6 @@ export class RemoveColumn {
     const lastColumn: ElementDetails = LastColumn.getDetails(etc.columnsDetails, rowIndex);
     RemoveColumn.removeElements(rowElement, columnIndex);
     etc.contents[rowIndex].splice(columnIndex, 1);
-    etc.columnsDetails.splice(columnIndex, 1)[0]; // needs to be after getDetails but before the following line
-    if (rowIndex === 0) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, false);
     setTimeout(() => {
       const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};
       UpdateCellsForColumns.rebindAndFireUpdates(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.REMOVED, lastColumn);
@@ -35,16 +34,20 @@ export class RemoveColumn {
     rowElements.forEach((rowElement: Node, rowIndex: number) => {
       RemoveColumn.removeCell(etc, rowElement as HTMLElement, rowIndex, columnIndex);
     });
+    // needs to be after getDetails but before changeWidthsBasedOnColumnInsertRemove
+    const removedColumnDetails = etc.columnsDetails.splice(columnIndex, 1)[0];
+    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, false);
+    return removedColumnDetails;
   }
 
   // TO-DO - default to add new column column when there are no more columns
   public static remove(etc: EditableTableComponent, columnIndex: number) {
-    const columnDetailsToBeRemoved = etc.columnsDetails[columnIndex];
-    RemoveColumn.removeCellFromAllRows(etc, columnIndex);
+    const removedColumnDetails = RemoveColumn.removeCellFromAllRows(etc, columnIndex);
     ColumnGroupElement.update(etc);
     setTimeout(() => {
-      CategoryDropdown.remove(etc.tableElementRef as HTMLElement, columnDetailsToBeRemoved.categoryDropdown.element);
+      CategoryDropdown.remove(etc.tableElementRef as HTMLElement, removedColumnDetails.categoryDropdown.element);
       InsertRemoveColumnSizer.remove(etc, columnIndex);
+      AddNewColumnElement.toggle(etc, false);
       etc.onTableUpdate(etc.contents);
     });
   }

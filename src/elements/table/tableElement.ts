@@ -28,7 +28,7 @@ export class TableElement {
     tableElement.appendChild(columnDropdownElement);
     overlayElementsState.columnDropdown = columnDropdownElement;
   }
-
+  // add column cell element is technicaly an auxiliary element but it is populated differently inside each row
   private static addAuxiliaryBodyElements(etc: EditableTableComponent) {
     // add new row element
     const addNewRowElement = AddNewRowElement.create(etc);
@@ -47,7 +47,11 @@ export class TableElement {
     setTimeout(() => TableDimensionsUtils.cleanupContentsThatDidNotGetAdded(etc.contents, etc.columnsDetails));
   }
 
-  public static calculateAuxiliaryTableContentWidth(tableElement: HTMLElement, isAddColumnCellDisplayed: boolean) {
+  public static changeAuxiliaryTableContentWidth(delta: number) {
+    TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += delta;
+  }
+
+  private static setAuxiliaryTableContentWidth(tableElement: HTMLElement, isAddColumnCellDisplayed: boolean) {
     if (TableElement.AUXILIARY_TABLE_CONTENT_WIDTH === UNSET_NUMBER_IDENTIFIER) {
       TableElement.AUXILIARY_TABLE_CONTENT_WIDTH =
         GenericElementUtils.getElementTotalHorizontalSideBorderWidth(tableElement);
@@ -58,7 +62,7 @@ export class TableElement {
   public static populateBody(etc: EditableTableComponent) {
     // removes all the current children
     etc.tableBodyElementRef?.replaceChildren();
-    TableElement.calculateAuxiliaryTableContentWidth(etc.tableElementRef as HTMLElement, etc.displayAddColumnCell);
+    TableElement.setAuxiliaryTableContentWidth(etc.tableElementRef as HTMLElement, etc.displayAddColumnCell);
     // needs to be set before inserting the cells to prevent adding columns when too small
     StaticTableWidthUtils.setTableWidth(etc);
     // header/data
@@ -90,17 +94,3 @@ export class TableElement {
     return etc.tableElementRef;
   }
 }
-
-// strategy for adding a new column element
-
-// table must contain a child component to encapsulate header, data, add new row button
-// const innerContentsElement = document.createElement('div');
-// tableElement.appendChild(innerContentsElement);
-// .table class must have display: flex
-
-// the populate method must be updated as follows
-// etc.coreElementsParentRef?.children[0].replaceChildren(etc.headerElementRef, etc.dataElementRef, addRowElement);
-// const addColumnElement = document.createElement('div');
-// addColumnElement.style.width = '20px';
-// addColumnElement.textContent = '+';
-// etc.coreElementsParentRef?.appendChild(addColumnElement);

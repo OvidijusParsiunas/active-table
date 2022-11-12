@@ -4,8 +4,8 @@ import {EditableTableComponent} from '../../../editable-table-component';
 // REF-17
 export class ColumnGroupElement {
   public static update(etc: EditableTableComponent) {
-    const {columnsDetails, columnGroupRef, displayAddColumnCell} = etc;
-    if (!columnGroupRef || !displayAddColumnCell) return;
+    const {columnGroupRef, columnsDetails} = etc;
+    if (!columnGroupRef) return;
     // the first col needs to span all of the columns except the add new column
     const firstCols = columnGroupRef.children[0] as HTMLElement;
     // cannot simply overwrite span and need to instead replace the element

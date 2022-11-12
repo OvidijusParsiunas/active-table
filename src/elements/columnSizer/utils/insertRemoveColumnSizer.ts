@@ -49,10 +49,20 @@ export class InsertRemoveColumnSizer {
     InsertRemoveColumnSizer.applySizerStateToElements(columnSizer);
   }
 
+  private static getNewColumnIndexIfWidthSet(columnsDetails: ColumnsDetailsT, columnIndex: number) {
+    // if inserting at the end and the previous column has a sizer (happens when populating the table initially)
+    // do not insert a new sizer, if no sizer - insert a new sizer
+    if (columnsDetails.length - 1 === columnIndex) {
+      return columnsDetails[columnIndex - 1].columnSizer ? -1 : columnIndex - 1;
+    }
+    return columnIndex;
+  }
+
   // REF-13
   public static insert(etc: EditableTableComponent, columnsDetails: ColumnsDetailsT, columnIndex: number) {
     if (etc.tableDimensionsInternal.width !== undefined) {
-      if (columnsDetails.length - 1 === columnIndex) return;
+      columnIndex = InsertRemoveColumnSizer.getNewColumnIndexIfWidthSet(etc.columnsDetails, columnIndex);
+      if (columnIndex === -1) return;
     } else {
       // only dynamic width tables have a sizer on the last column - hence only their styles need to be changed
       InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex, etc.tableElementRef as HTMLElement);
@@ -68,6 +78,7 @@ export class InsertRemoveColumnSizer {
     delete newColumnDetails.columnSizer;
   }
 
+  // need to remove the sizer of the new last column as when width is set - last column does not have a sizer
   private static removeIfLastColumn(columnsDetails: ColumnsDetailsT, columnIndex: number) {
     const isLastColumn = columnsDetails.length === columnIndex;
     if (isLastColumn) {

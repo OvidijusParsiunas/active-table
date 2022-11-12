@@ -1,6 +1,9 @@
+import {StaticTableWidthUtils} from '../../../utils/tableDimensions/staticTable/staticTableWidthUtils';
+import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximumColumns';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {AddNewColumnEvents} from './addNewColumnEvents';
 import {CellElement} from '../../cell/cellElement';
+import {TableElement} from '../tableElement';
 
 export class AddNewColumnElement {
   public static readonly ADD_COLUMN_CELL_CLASS = 'add-column-cell';
@@ -8,6 +11,14 @@ export class AddNewColumnElement {
   private static readonly WIDTH_PX = `${AddNewColumnElement.WIDTH}px`;
   private static readonly HIDDEN = 'none';
   private static readonly VISIBLE = '';
+
+  public static isDisplayed(addColumnCellsElementsRef: HTMLElement[]) {
+    return addColumnCellsElementsRef[0].style.display === AddNewColumnElement.VISIBLE;
+  }
+
+  private static toggleDisplay(cell: HTMLElement, isDisplay: boolean) {
+    cell.style.display = isDisplay ? AddNewColumnElement.VISIBLE : AddNewColumnElement.HIDDEN;
+  }
 
   private static createCell(etc: EditableTableComponent, tag: 'th' | 'td') {
     const cell = document.createElement(tag);
@@ -34,5 +45,16 @@ export class AddNewColumnElement {
     const cell = rowIndex === 0 ? AddNewColumnElement.createHeaderCell(etc) : AddNewColumnElement.createDataCell(etc);
     etc.addColumnCellsElementsRef.splice(rowIndex, 0, cell);
     rowElement.appendChild(cell);
+  }
+
+  public static toggle(etc: EditableTableComponent, isInsert: boolean) {
+    const {addColumnCellsElementsRef} = etc;
+    if (!addColumnCellsElementsRef || addColumnCellsElementsRef.length === 0) return;
+    const canAddMore = MaximumColumns.canAddMore(etc);
+    // do not toggle if already in the intended state
+    if (canAddMore === AddNewColumnElement.isDisplayed(addColumnCellsElementsRef)) return;
+    addColumnCellsElementsRef.forEach((cell) => AddNewColumnElement.toggleDisplay(cell, canAddMore));
+    TableElement.changeAuxiliaryTableContentWidth(canAddMore ? AddNewColumnElement.WIDTH : -AddNewColumnElement.WIDTH);
+    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, isInsert);
   }
 }
