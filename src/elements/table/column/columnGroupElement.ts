@@ -4,13 +4,13 @@ import {EditableTableComponent} from '../../../editable-table-component';
 // REF-17
 export class ColumnGroupElement {
   public static update(etc: EditableTableComponent) {
-    const {columnsDetails, columnGroupRef} = etc;
-    if (!columnGroupRef) return;
+    const {columnsDetails, columnGroupRef, displayAddColumnCell} = etc;
+    if (!columnGroupRef || !displayAddColumnCell) return;
     // the first col needs to span all of the columns except the add new column
     const firstCols = columnGroupRef.children[0] as HTMLElement;
     // cannot simply overwrite span and need to instead replace the element
     const newFirstCols = document.createElement('col');
-    // number 2 is used to include the column divider columns
+    // number 2 is used to include the divider elements between the columns
     newFirstCols.span = columnsDetails.length * 2;
     columnGroupRef.replaceChild(newFirstCols, firstCols);
   }

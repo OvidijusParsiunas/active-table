@@ -1,8 +1,13 @@
+import {AddNewColumnElement} from '../../elements/table/column/addNewColumnElement';
 import {TableContents} from '../../types/tableContents';
 
 export class ExtractElements {
   public static textCellsArrFromRow(rowElement: HTMLElement) {
-    return Array.from(rowElement.children).filter((child) => child.tagName === 'TH' || child.tagName === 'TD');
+    return Array.from(rowElement.children).filter(
+      (child) =>
+        (child.tagName === 'TH' || child.tagName === 'TD') &&
+        !child.classList.contains(AddNewColumnElement.ADD_COLUMN_CELL_CLASS)
+    );
   }
 
   public static textRowsArrFromTBody(tableBodyElement: HTMLElement, contents: TableContents) {

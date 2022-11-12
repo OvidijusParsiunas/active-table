@@ -3,14 +3,17 @@ import {AddNewColumnEvents} from './addNewColumnEvents';
 import {CellElement} from '../../cell/cellElement';
 
 export class AddNewColumnElement {
-  private static readonly ADD_COLUMN_CELL_CLASS = 'add-column-cell';
+  public static readonly ADD_COLUMN_CELL_CLASS = 'add-column-cell';
   public static readonly WIDTH = 20;
   private static readonly WIDTH_PX = `${AddNewColumnElement.WIDTH}px`;
+  private static readonly HIDDEN = 'none';
+  private static readonly VISIBLE = '';
 
   private static createCell(etc: EditableTableComponent, tag: 'th' | 'td') {
     const cell = document.createElement(tag);
     cell.classList.add(CellElement.CELL_CLASS, AddNewColumnElement.ADD_COLUMN_CELL_CLASS);
     Object.assign(cell.style, etc.cellStyle);
+    cell.style.display = etc.displayAddColumnCell ? AddNewColumnElement.VISIBLE : AddNewColumnElement.HIDDEN;
     AddNewColumnEvents.setEvents(etc, cell);
     return cell;
   }
