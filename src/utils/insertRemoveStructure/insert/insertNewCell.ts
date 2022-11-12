@@ -4,6 +4,7 @@ import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/inser
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
+import {ColumnGroupElement} from '../../../elements/table/column/columnGroupElement';
 import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -79,8 +80,9 @@ export class InsertNewCell {
     setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, processedCellText));
     // cannot place in a timeout as etc.contents length is used to get last row index
     etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
-    if (rowIndex === 0) {
+    if (rowIndex === 0) { // for operations that can't be placed in a timeout
       InsertNewCell.addColumnDetailsWithElement(etc.columnsDetails, columnIndex, newCellElement); // REF-13
+      ColumnGroupElement.update(etc);
       if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
     }
   }

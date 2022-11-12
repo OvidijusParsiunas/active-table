@@ -1,6 +1,7 @@
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
+import {ColumnGroupElement} from '../../../elements/table/column/columnGroupElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
@@ -40,6 +41,7 @@ export class RemoveColumn {
   public static remove(etc: EditableTableComponent, columnIndex: number) {
     const columnDetailsToBeRemoved = etc.columnsDetails[columnIndex];
     RemoveColumn.removeCellFromAllRows(etc, columnIndex);
+    ColumnGroupElement.update(etc);
     setTimeout(() => {
       CategoryDropdown.remove(etc.tableElementRef as HTMLElement, columnDetailsToBeRemoved.categoryDropdown.element);
       InsertRemoveColumnSizer.remove(etc, columnIndex);

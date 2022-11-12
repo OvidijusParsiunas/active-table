@@ -143,6 +143,14 @@ the width would be without the wrapping. This can be fixed by programmatically s
 I have raised a stack overflow question to see if this can be fixed automatically via plain css without a manual workaround:
 https://stackoverflow.com/questions/73920147/table-element-width-using-column-widths-safari)
 
+REF-17
+The add column cell/button is made up of cells (number of rows in the table). The hover highlight functionality has been optimised
+to not traverse all of the cells and highlight them individually (as that would be computationally expensive if there are many rows)
+and instead utilise the column group functionality to control its highlight.
+Column group is EXCLUSIVELY used for this purpose and other custom column background color is set cell by cell as it only needs
+to be done once.
+
+
 CAUTION-1
 When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across
 the table as they will no longer be constant and will need some dynamicity

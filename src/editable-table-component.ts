@@ -77,6 +77,13 @@ export class EditableTableComponent extends LitElement {
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
+  displayAddColumnCell = true; // called cells to the client, but cells internally as it is made up of multiple cells
+
+  // TO-DO - there should still be a dropdown and only insert left/right and remove the column options
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
   noHeader = false;
 
   // this contains all cell elements, if there is a need to access cell elements outside the context of columns
@@ -99,6 +106,12 @@ export class EditableTableComponent extends LitElement {
 
   @state()
   addRowCellElementRef: HTMLElement | null = null;
+
+  @state()
+  addColumnCellsElementsRef: HTMLElement[] = [];
+
+  @state()
+  columnGroupRef: HTMLElement | null = null;
 
   @state()
   focusedElements: FocusedElements = FocusedElementsUtils.createEmpty();

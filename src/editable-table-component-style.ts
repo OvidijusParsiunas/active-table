@@ -141,6 +141,17 @@ export const ediTableStyle = css`
     cursor: pointer;
   }
 
+  .add-column-cell {
+    cursor: pointer;
+    user-select: none;
+    /* safari */
+    -webkit-user-select: none;
+  }
+
+  .hovered-add-column-cells {
+    background-color: #f7f7f7;
+  }
+
   .editable-table-component-dropdown {
     position: absolute;
     box-shadow: rgb(232 232 232) 0px 2px 5px 0px;

@@ -30,7 +30,7 @@ export class MaximumColumns {
     if (MaximumColumns.ignoreMinimalColumnWidthCheck(tableDimensionsInternal, tableElement, numberOfColumns)) return true;
     // This is primarily concerned on not making the columns too narrow when the table is at its width limit
     // TO-DO if certain columns have a custom width
-    const totalColumnsWidth = tableElement.offsetWidth - TableElement.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH;
+    const totalColumnsWidth = tableElement.offsetWidth - TableElement.AUXILIARY_TABLE_CONTENT_WIDTH;
     return totalColumnsWidth / (numberOfColumns + 1) >= MaximumColumns.MINIMAL_COLUMN_WIDTH;
   }
 }

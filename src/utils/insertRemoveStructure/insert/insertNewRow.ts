@@ -1,3 +1,4 @@
+import {AddNewColumnElement} from '../../../elements/table/column/addNewColumnElement';
 import {AddNewRowElement} from '../../../elements/table/row/addNewRowElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {TableCellText, TableRow} from '../../../types/tableContents';
@@ -34,6 +35,7 @@ export class InsertNewRow {
         InsertNewCell.insertToRow(etc, newRowElement, rowIndex, columnIndex, cellText as string, isNewText);
       }
     });
+    AddNewColumnElement.appendToRow(etc, newRowElement, rowIndex);
   }
 
   private static insertNewRow(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {

@@ -6,13 +6,15 @@ import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
+import {AddNewColumnElement} from './column/addNewColumnElement';
+import {ColumnGroupElement} from './column/columnGroupElement';
 import {OverlayElements} from '../../types/overlayElements';
-import {AddNewRowElement} from '../row/addNewRowElement';
+import {AddNewRowElement} from './row/addNewRowElement';
 import {TableRow} from '../../types/tableContents';
 import {TableEvents} from './tableEvents';
 
 export class TableElement {
-  public static TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH = UNSET_NUMBER_IDENTIFIER;
+  public static AUXILIARY_TABLE_CONTENT_WIDTH = UNSET_NUMBER_IDENTIFIER;
 
   // prettier-ignore
   public static addAuxiliaryElements(etc: EditableTableComponent,
@@ -45,17 +47,18 @@ export class TableElement {
     setTimeout(() => TableDimensionsUtils.cleanupContentsThatDidNotGetAdded(etc.contents, etc.columnsDetails));
   }
 
-  public static calculateTotalHorizontalSideBorderWidth(tableElement: HTMLElement) {
-    if (TableElement.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH === UNSET_NUMBER_IDENTIFIER) {
-      TableElement.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH =
+  public static calculateAuxiliaryTableContentWidth(tableElement: HTMLElement, isAddColumnCellDisplayed: boolean) {
+    if (TableElement.AUXILIARY_TABLE_CONTENT_WIDTH === UNSET_NUMBER_IDENTIFIER) {
+      TableElement.AUXILIARY_TABLE_CONTENT_WIDTH =
         GenericElementUtils.getElementTotalHorizontalSideBorderWidth(tableElement);
+      if (isAddColumnCellDisplayed) TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += AddNewColumnElement.WIDTH;
     }
   }
 
   public static populateBody(etc: EditableTableComponent) {
     // removes all the current children
     etc.tableBodyElementRef?.replaceChildren();
-    TableElement.calculateTotalHorizontalSideBorderWidth(etc.tableElementRef as HTMLElement);
+    TableElement.calculateAuxiliaryTableContentWidth(etc.tableElementRef as HTMLElement, etc.displayAddColumnCell);
     // needs to be set before inserting the cells to prevent adding columns when too small
     StaticTableWidthUtils.setTableWidth(etc);
     // header/data
@@ -80,6 +83,8 @@ export class TableElement {
 
   public static createBase(etc: EditableTableComponent) {
     etc.tableElementRef = TableElement.createTableElement(etc);
+    etc.columnGroupRef = ColumnGroupElement.create();
+    etc.tableElementRef.appendChild(etc.columnGroupRef);
     etc.tableBodyElementRef = TableElement.createTableBody();
     etc.tableElementRef.appendChild(etc.tableBodyElementRef);
     return etc.tableElementRef;

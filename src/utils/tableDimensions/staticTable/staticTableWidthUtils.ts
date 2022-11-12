@@ -45,7 +45,7 @@ export class StaticTableWidthUtils {
   }
 
   private static setNewColumnWidth(tableWidth: number, numberOfColumns: number) {
-    const totalColumnsWidth = tableWidth - TableElement.TOTAL_HORIZONTAL_SIDE_BORDER_WIDTH;
+    const totalColumnsWidth = tableWidth - TableElement.AUXILIARY_TABLE_CONTENT_WIDTH;
     StaticTableWidthUtils.NEW_COLUMN_WIDTH = totalColumnsWidth / numberOfColumns;
   }
 

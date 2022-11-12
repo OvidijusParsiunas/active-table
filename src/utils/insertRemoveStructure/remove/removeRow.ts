@@ -27,6 +27,7 @@ export class RemoveRow {
     setTimeout(() => {
       RemoveRow.updateColumnDetails(removedRowData, etc.defaultCellValue, etc.columnsDetails, rowIndex);
       AddNewRowElement.toggle(etc);
+      etc.addColumnCellsElementsRef.splice(rowIndex, 1);
     });
   }
 
