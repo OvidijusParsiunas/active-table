@@ -1,8 +1,8 @@
-import {AddNewColumnElement} from '../../../elements/table/column/addNewColumnElement';
-import {AddNewRowElement} from '../../../elements/table/row/addNewRowElement';
+import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
+import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
+import {RowElement} from '../../../elements/table/addNewElements/row/rowElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {TableCellText, TableRow} from '../../../types/tableContents';
-import {RowElement} from '../../../elements/table/row/rowElement';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ElementDetails} from '../../../types/elementDetails';

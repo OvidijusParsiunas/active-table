@@ -1,16 +1,24 @@
+import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
+import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
-import {AddNewColumnElement} from '../../../elements/table/column/addNewColumnElement';
-import {ColumnGroupElement} from '../../../elements/table/column/columnGroupElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
+import {TableContents} from '../../../types/tableContents';
 import {LastColumn} from '../shared/lastColumn';
 
 export class RemoveColumn {
+  private static cleanUpContent(contents: TableContents) {
+    // when is no data inside rows - remove them
+    if (contents.length > 0 && contents[0].length === 0) {
+      contents.splice(0);
+    }
+  }
+
   private static removeElements(rowElement: HTMLElement, columnIndex: number) {
     const elementColumnIndex = columnIndex * 2;
     // remove the text element
@@ -34,6 +42,7 @@ export class RemoveColumn {
     rowElements.forEach((rowElement: Node, rowIndex: number) => {
       RemoveColumn.removeCell(etc, rowElement as HTMLElement, rowIndex, columnIndex);
     });
+    RemoveColumn.cleanUpContent(etc.contents);
     // needs to be after getDetails but before changeWidthsBasedOnColumnInsertRemove
     const removedColumnDetails = etc.columnsDetails.splice(columnIndex, 1)[0];
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, false);
@@ -44,10 +53,10 @@ export class RemoveColumn {
   public static remove(etc: EditableTableComponent, columnIndex: number) {
     const removedColumnDetails = RemoveColumn.removeCellFromAllRows(etc, columnIndex);
     ColumnGroupElement.update(etc);
+    AddNewColumnElement.toggle(etc, false); // not in a timeout as it would cause a stutter
     setTimeout(() => {
       CategoryDropdown.remove(etc.tableElementRef as HTMLElement, removedColumnDetails.categoryDropdown.element);
       InsertRemoveColumnSizer.remove(etc, columnIndex);
-      AddNewColumnElement.toggle(etc, false);
       etc.onTableUpdate(etc.contents);
     });
   }

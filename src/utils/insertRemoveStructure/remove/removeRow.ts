@@ -1,4 +1,4 @@
-import {AddNewRowElement} from '../../../elements/table/row/addNewRowElement';
+import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {TableCellText, TableRow} from '../../../types/tableContents';

@@ -1,4 +1,4 @@
-import {AddNewColumnElement} from '../../elements/table/column/addNewColumnElement';
+import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
 import {TableContents} from '../../types/tableContents';
 
 export class ExtractElements {

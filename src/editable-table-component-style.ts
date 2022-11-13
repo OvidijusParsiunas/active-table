@@ -148,6 +148,11 @@ export const ediTableStyle = css`
     -webkit-user-select: none;
   }
 
+  .no-content-add-new-column {
+    text-align: center;
+    padding: 11px 6px 6px 6px !important;
+  }
+
   .hovered-add-column-cells {
     background-color: #f7f7f7;
   }

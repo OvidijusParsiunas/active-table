@@ -1,10 +1,10 @@
 import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
 import {ColumnDetailsElementsOnly, ColumnDetailsT, ColumnsDetailsT} from '../../../types/columnDetails';
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
+import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
-import {ColumnGroupElement} from '../../../elements/table/column/columnGroupElement';
 import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
