@@ -1,4 +1,5 @@
 import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
+import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElements';
 import {TableDimensionsUtils} from '../../utils/tableDimensions/tableDimensionsUtils';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
@@ -28,12 +29,13 @@ export class TableElement {
     tableElement.appendChild(columnDropdownElement);
     overlayElementsState.columnDropdown = columnDropdownElement;
   }
-  // add column cell element is technicaly an auxiliary element but it is populated differently inside each row
+
+  // add column cell element is technicaly an auxiliary element but it's cells are added on row insertion
   private static addAuxiliaryBodyElements(etc: EditableTableComponent) {
-    // add new row element
+    // add new row element - REF-18
     const addNewRowElement = AddNewRowElement.create(etc);
     etc.tableBodyElementRef?.appendChild(addNewRowElement);
-    AddNewRowElement.toggle(etc);
+    ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
   }
 
   private static addCells(etc: EditableTableComponent) {
@@ -87,8 +89,11 @@ export class TableElement {
 
   public static createBase(etc: EditableTableComponent) {
     etc.tableElementRef = TableElement.createTableElement(etc);
-    etc.columnGroupRef = ColumnGroupElement.create();
-    etc.tableElementRef.appendChild(etc.columnGroupRef);
+    if (etc.displayAddColumnCell) {
+      // needs to be appended before the body
+      etc.columnGroupRef = ColumnGroupElement.create();
+      etc.tableElementRef.appendChild(etc.columnGroupRef);
+    }
     etc.tableBodyElementRef = TableElement.createTableBody();
     etc.tableElementRef.appendChild(etc.tableBodyElementRef);
     return etc.tableElementRef;

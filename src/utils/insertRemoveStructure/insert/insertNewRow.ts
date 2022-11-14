@@ -1,3 +1,4 @@
+import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
 import {RowElement} from '../../../elements/table/addNewElements/row/rowElement';
@@ -35,7 +36,7 @@ export class InsertNewRow {
         InsertNewCell.insertToRow(etc, newRowElement, rowIndex, columnIndex, cellText as string, isNewText);
       }
     });
-    AddNewColumnElement.appendToRow(etc, newRowElement, rowIndex);
+    if (etc.displayAddColumnCell) AddNewColumnElement.createAndAppendToRow(etc, newRowElement, rowIndex);
   }
 
   private static insertNewRow(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
@@ -52,11 +53,9 @@ export class InsertNewRow {
   public static insert(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
     if (!MaximumRows.canAddMore(etc)) return;
     InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
+    if (isNewText) ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
     setTimeout(() => {
-      if (isNewText) {
-        AddNewRowElement.toggle(etc);
-        InsertNewRow.fireCellUpdates(etc, rowIndex);
-      }
+      if (isNewText) InsertNewRow.fireCellUpdates(etc, rowIndex);
     });
   }
 

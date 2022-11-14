@@ -150,6 +150,19 @@ and instead utilise the column group functionality to control its highlight.
 Column group is EXCLUSIVELY used for this purpose and other custom column background color is set cell by cell as it only needs
 to be done once.
 
+REF-18
+The add row button is always in the table body and is converted into a no content stub and reconverted after it is clicked on.
+The reasonings for this are explained here:
+When there are no cells in the table, we display a stub element that the user can use to add the first element of the table.
+The original idea was to have the column add cell act as the stub when it is set to be displayed or add new row cell to act when
+the column is not displayed etc. However this idea was dismissed due to the code complexity this required as we needed code to
+set and unset both of the cells' styles and have them work with the toggle logic for the max numbers. The second idea was to
+use a standalone cell button that would independently appear when the table had no contents and would hide when content was
+added again. This originally worked, but the logic behind displaying it and keeping the other cells hidden grew in complexity.
+I then realised that this cell had an onclick event that would add a new row (a new column after no cells cannot be added)
+which was pretty much just like the add new row button, so why really have another standalone cell if we can just reuse
+the add new row button exclusively. Hence this is why the add row button is always present within the table body and all we do
+is convert its style to a stub when there are no contents and set it back to normal or hide it when the contents are added.
 
 CAUTION-1
 When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across

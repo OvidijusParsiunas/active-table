@@ -1,3 +1,4 @@
+import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
@@ -18,6 +19,11 @@ export class RemoveRow {
     });
   }
 
+  // when the last row has been removed, there are no more columns
+  private static removeAllColumnsDetails(columnsDetails: ColumnsDetailsT) {
+    columnsDetails.splice(0, columnsDetails.length);
+  }
+
   // prettier-ignore
   private static update(etc: EditableTableComponent,
       rowIndex: number, lastRowElement: HTMLElement, lastRowIndex: number, removedRowData: TableRow) {
@@ -25,8 +31,11 @@ export class RemoveRow {
     UpdateCellsForRows.rebindAndFireUpdates(etc, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow);
     etc.onTableUpdate(etc.contents);
     setTimeout(() => {
-      RemoveRow.updateColumnDetails(removedRowData, etc.defaultCellValue, etc.columnsDetails, rowIndex);
-      AddNewRowElement.toggle(etc);
+      if (etc.contents.length === 0) {
+        RemoveRow.removeAllColumnsDetails(etc.columnsDetails);
+      } else {
+        RemoveRow.updateColumnDetails(removedRowData, etc.defaultCellValue, etc.columnsDetails, rowIndex);
+      }
       etc.addColumnCellsElementsRef.splice(rowIndex, 1);
     });
   }
@@ -41,6 +50,7 @@ export class RemoveRow {
     const lastRowIndex = etc.contents.length - 1;
     const lastRowElement = etc.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const removedRowData = RemoveRow.removeRow(etc, rowIndex);
+    ToggleAdditionElements.update(etc, false, AddNewRowElement.toggle);
     setTimeout(() => RemoveRow.update(etc, rowIndex, lastRowElement, lastRowIndex, removedRowData));
   }
 }

@@ -11,4 +11,8 @@ export class GenericElementUtils {
     const rightBorderWidth = Number.parseFloat(element.style.borderRightWidth) || 0;
     return leftBorderWidth + rightBorderWidth;
   }
+
+  public static doesElementExistInDom(element: HTMLElement) {
+    return !!element.parentElement;
+  }
 }

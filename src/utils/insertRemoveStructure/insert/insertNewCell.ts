@@ -82,7 +82,7 @@ export class InsertNewCell {
     etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
     if (rowIndex === 0) { // for operations that can't be placed in a timeout
       InsertNewCell.addColumnDetailsWithElement(etc.columnsDetails, columnIndex, newCellElement); // REF-13
-      ColumnGroupElement.update(etc);
+      if (etc.displayAddColumnCell) ColumnGroupElement.update(etc.columnsDetails, etc.columnGroupRef);
       if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
     }
   }

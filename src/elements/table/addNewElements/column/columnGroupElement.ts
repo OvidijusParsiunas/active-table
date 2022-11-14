@@ -1,10 +1,9 @@
-import {EditableTableComponent} from '../../../../editable-table-component';
+import {ColumnsDetailsT} from '../../../../types/columnDetails';
 
 // this is exclusively used to toggle the add column button's cells' background colors
 // REF-17
 export class ColumnGroupElement {
-  public static update(etc: EditableTableComponent) {
-    const {columnGroupRef, columnsDetails} = etc;
+  public static update(columnsDetails: ColumnsDetailsT, columnGroupRef: HTMLElement | null) {
     if (!columnGroupRef) return;
     // the first col needs to span all of the columns except the add new column
     const firstCols = columnGroupRef.children[0] as HTMLElement;
@@ -15,22 +14,14 @@ export class ColumnGroupElement {
     columnGroupRef.replaceChild(newFirstCols, firstCols);
   }
 
-  public static removeDataColumnsCol(columnGroupRef: HTMLElement) {
-    columnGroupRef.removeChild(columnGroupRef.children[0]);
-  }
-
-  public static insertDataColumnsCol(columnGroupRef: HTMLElement) {
-    const dataColumnsCol = document.createElement('col');
-    columnGroupRef.insertBefore(dataColumnsCol, columnGroupRef.children[0]);
-  }
-
   public static create() {
     const colGroup = document.createElement('colgroup');
     // the first col needs to span all of the columns except the add new column
-    ColumnGroupElement.insertDataColumnsCol(colGroup);
+    const dataColumnsCol = document.createElement('col');
     // the second col needs to span only the add new column
     const addColumnCol = document.createElement('col');
     addColumnCol.span = 1;
+    colGroup.appendChild(dataColumnsCol);
     colGroup.appendChild(addColumnCol);
     return colGroup;
   }

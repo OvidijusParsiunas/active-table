@@ -1,3 +1,4 @@
+import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
@@ -12,6 +13,11 @@ import {TableContents} from '../../../types/tableContents';
 import {LastColumn} from '../shared/lastColumn';
 
 export class RemoveColumn {
+  private static updateAdditionElements(etc: EditableTableComponent) {
+    if (etc.displayAddColumnCell) ColumnGroupElement.update(etc.columnsDetails, etc.columnGroupRef);
+    ToggleAdditionElements.update(etc, false, AddNewColumnElement.toggle);
+  }
+
   private static cleanUpContent(contents: TableContents) {
     // when is no data inside rows - remove them
     if (contents.length > 0 && contents[0].length === 0) {
@@ -49,11 +55,9 @@ export class RemoveColumn {
     return removedColumnDetails;
   }
 
-  // TO-DO - default to add new column column when there are no more columns
   public static remove(etc: EditableTableComponent, columnIndex: number) {
     const removedColumnDetails = RemoveColumn.removeCellFromAllRows(etc, columnIndex);
-    ColumnGroupElement.update(etc);
-    AddNewColumnElement.toggle(etc, false); // not in a timeout as it would cause a stutter
+    RemoveColumn.updateAdditionElements(etc);
     setTimeout(() => {
       CategoryDropdown.remove(etc.tableElementRef as HTMLElement, removedColumnDetails.categoryDropdown.element);
       InsertRemoveColumnSizer.remove(etc, columnIndex);

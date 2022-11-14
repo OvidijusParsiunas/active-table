@@ -1,3 +1,4 @@
+import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
@@ -34,13 +35,12 @@ export class InsertNewColumn {
     if (MaximumColumns.canAddMore(etc)) {
       FocusedCellUtils.incrementColumnIndex(etc.focusedElements.cell, columnIndex);
       InsertNewColumn.insertToAllRows(etc, columnIndex, columnData);
-      AddNewColumnElement.toggle(etc, true); // not in a timeout as it would cause a stutter
+      ToggleAdditionElements.update(etc, true, AddNewColumnElement.toggle);
       setTimeout(() => etc.onTableUpdate(etc.contents));
     }
   }
 
   public static insertEvent(this: EditableTableComponent) {
-    if (this.contents.length === 0) this.contents[0] = [];
     InsertNewColumn.insert(this, this.columnsDetails.length);
   }
 }

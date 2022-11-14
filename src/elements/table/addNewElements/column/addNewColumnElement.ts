@@ -1,7 +1,7 @@
 import {StaticTableWidthUtils} from '../../../../utils/tableDimensions/staticTable/staticTableWidthUtils';
 import {MaximumColumns} from '../../../../utils/insertRemoveStructure/insert/maximumColumns';
+import {GenericElementUtils} from '../../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
-import {ElementWhenNoContent} from '../shared/elementWhenNoContent';
 import {AddNewColumnEvents} from './addNewColumnEvents';
 import {CellElement} from '../../../cell/cellElement';
 import {TableElement} from '../../tableElement';
@@ -9,23 +9,32 @@ import {TableElement} from '../../tableElement';
 export class AddNewColumnElement {
   public static readonly ADD_COLUMN_CELL_CLASS = 'add-column-cell';
   public static readonly DEFAULT_WIDTH = 20;
-  public static readonly DEFAULT_WIDTH_PX = `${AddNewColumnElement.DEFAULT_WIDTH}px`;
-  private static readonly HIDDEN = 'none';
-  private static readonly VISIBLE = '';
+  private static readonly DEFAULT_WIDTH_PX = `${AddNewColumnElement.DEFAULT_WIDTH}px`;
 
-  public static isDisplayed(addColumnCellsElementsRef: HTMLElement[]) {
-    return addColumnCellsElementsRef[0].style.display === AddNewColumnElement.VISIBLE;
-  }
-
-  public static toggleDisplay(cell: HTMLElement, isDisplay: boolean) {
-    cell.style.display = isDisplay ? AddNewColumnElement.VISIBLE : AddNewColumnElement.HIDDEN;
+  // the toggling of the add new column element is not a simple display style change because the following selector:
+  // .row > .cell:last-of-type which is responsible for not adding a right-border for the rightmost cell can only
+  // detect the last .cell element, so when this button is displayed we want the selector to recognise it and
+  // not display a border on the right and not affect the css of the cell before it. When it is not displayed,
+  // we want the previous cell to be recognised by the selector. Unfortunately this is not possible as even
+  // renaming the class names on this button does not re-trigger selector to identify the previous cell as last.
+  // The only way to do this is to remove the cell element when not visible, which is what the code below is doing
+  // and re-adding the cell when it is visible. (The cell still remains in the addColumnCellsElementsRef object).
+  // prettier-ignore
+  private static setDisplay(cell: HTMLElement, isDisplay: boolean,
+      tableBodyElement: HTMLElement, rowIndex: number, columnGroupRef: HTMLElement) {
+    if (isDisplay) {
+      tableBodyElement.children[rowIndex].appendChild(cell);
+    } else {
+      cell.remove();
+      // remove does not trigger mouse leave event, hence need to trigger it manually
+      setTimeout(() => AddNewColumnEvents.toggleBackground(columnGroupRef, 'fade'))
+    }
   }
 
   private static createCell(etc: EditableTableComponent, tag: 'th' | 'td') {
     const cell = document.createElement(tag);
     cell.classList.add(CellElement.CELL_CLASS, AddNewColumnElement.ADD_COLUMN_CELL_CLASS);
     Object.assign(cell.style, etc.cellStyle);
-    cell.style.display = etc.displayAddColumnCell ? AddNewColumnElement.VISIBLE : AddNewColumnElement.HIDDEN;
     AddNewColumnEvents.setEvents(etc, cell);
     return cell;
   }
@@ -34,8 +43,6 @@ export class AddNewColumnElement {
     const headerCell = AddNewColumnElement.createCell(etc, 'th');
     headerCell.style.width = AddNewColumnElement.DEFAULT_WIDTH_PX;
     headerCell.textContent = '+';
-    // if this is used, then it will only be used when no content is present and we can set that style immediately
-    if (!etc.displayAddColumnCell) ElementWhenNoContent.setAddColumnCellStyle(headerCell);
     Object.assign(headerCell.style, etc.headerStyle);
     return headerCell;
   }
@@ -44,33 +51,25 @@ export class AddNewColumnElement {
     return AddNewColumnElement.createCell(etc, 'td');
   }
 
-  public static appendToRow(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number) {
+  public static createAndAppendToRow(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number) {
     const cell = rowIndex === 0 ? AddNewColumnElement.createHeaderCell(etc) : AddNewColumnElement.createDataCell(etc);
     etc.addColumnCellsElementsRef.splice(rowIndex, 0, cell);
     rowElement.appendChild(cell);
   }
 
-  public static toggle(etc: EditableTableComponent, isInsert: boolean) {
-    const {addColumnCellsElementsRef, columnsDetails, displayAddColumnCell} = etc;
-    // Will need this to work when no cells addColumnCellsElementsRef.length === 0
-    if (!addColumnCellsElementsRef || addColumnCellsElementsRef.length === 0) return;
-    if (
-      columnsDetails.length > 0 &&
-      ((displayAddColumnCell && !addColumnCellsElementsRef[0].classList.contains('no-content-add-new-column')) ||
-        (!displayAddColumnCell && addColumnCellsElementsRef[0].style.display === 'none'))
-    ) {
-      if (displayAddColumnCell) AddNewColumnElement.toggleContent(etc, isInsert);
-    } else {
-      ElementWhenNoContent.toggle(etc);
-    }
+  private static isDisplayed(addColumnCellsElementsRef: HTMLElement[]) {
+    return GenericElementUtils.doesElementExistInDom(addColumnCellsElementsRef[0]);
   }
 
-  public static toggleContent(etc: EditableTableComponent, isInsert: boolean) {
-    const {addColumnCellsElementsRef} = etc;
+  public static toggle(etc: EditableTableComponent, isInsert: boolean) {
+    const {addColumnCellsElementsRef, tableBodyElementRef, columnGroupRef, displayAddColumnCell} = etc;
+    if (!displayAddColumnCell || !tableBodyElementRef || !columnGroupRef) return;
     const canAddMore = MaximumColumns.canAddMore(etc);
     // do not toggle if already in the intended state
     if (canAddMore === AddNewColumnElement.isDisplayed(addColumnCellsElementsRef)) return;
-    addColumnCellsElementsRef.forEach((cell) => AddNewColumnElement.toggleDisplay(cell, canAddMore));
+    addColumnCellsElementsRef.forEach((cell, rowIndex) =>
+      AddNewColumnElement.setDisplay(cell, canAddMore, tableBodyElementRef, rowIndex, columnGroupRef)
+    );
     TableElement.changeAuxiliaryTableContentWidth(
       canAddMore ? AddNewColumnElement.DEFAULT_WIDTH : -AddNewColumnElement.DEFAULT_WIDTH
     );
