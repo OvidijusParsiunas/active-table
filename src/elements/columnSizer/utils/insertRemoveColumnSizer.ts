@@ -53,7 +53,7 @@ export class InsertRemoveColumnSizer {
     // if inserting at the end and the previous column has a sizer (happens when populating the table initially)
     // do not insert a new sizer, if no sizer - insert a new sizer
     if (columnsDetails.length - 1 === columnIndex) {
-      return columnsDetails[columnIndex - 1].columnSizer ? -1 : columnIndex - 1;
+      return columnsDetails[columnIndex - 1]?.columnSizer ? -1 : columnIndex - 1;
     }
     return columnIndex;
   }
