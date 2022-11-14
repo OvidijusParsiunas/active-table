@@ -10,7 +10,8 @@ export interface BorderWidths {
   leftCellLeft: number;
   // the reason why this is needed is the last cell cannot see if left cell has border right as it is overriden
   // hence we can find out if it is supposed to have cell right by looking at the cell before the left one
-  beforeLeftCellRight: number;
+  // (need to check if undefined to find out if it is the only cell in the row)
+  beforeLeftCellRight: number | undefined;
 }
 
 // REF-12

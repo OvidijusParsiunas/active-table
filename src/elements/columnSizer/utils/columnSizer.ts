@@ -14,7 +14,7 @@ export class ColumnSizer {
 
   // prettier-ignore
   private static getBackgroundImage(totalCellBorderWidth: number,
-      leftCellLeft: number, beforeLeftCellRight: number, isLastCell: boolean, tableElement?: HTMLElement) {
+      leftCellLeft: number, beforeLeftCellRight: number | undefined, isLastCell: boolean, tableElement?: HTMLElement) {
     // REF-1
     // for last column sizer
     // the strategy is to have a filled column sizer background image if the table has no border or even if it does
@@ -24,7 +24,7 @@ export class ColumnSizer {
     // filled background if no border and empty if present
     if (isLastCell && tableElement) {
       if (Number.parseInt(tableElement.style.borderRightWidth) > 0
-          && (leftCellLeft > 0 || beforeLeftCellRight > 0)) {
+          && (leftCellLeft > 0 || (beforeLeftCellRight === undefined || beforeLeftCellRight > 0))) {
         return ColumnSizerElement.EMPTY_BACKGROUND_IMAGE;
       }
     } else if (totalCellBorderWidth > 0) {
@@ -43,7 +43,9 @@ export class ColumnSizer {
   }
 
   private static generateBorderWidthsInfo(columnsDetails: ColumnsDetailsT, sizerIndex: number): BorderWidths {
-    const borderWidths: BorderWidths = {rightCellLeft: 0, leftCellLeft: 0, leftCellRight: 0, beforeLeftCellRight: 0};
+    // prettier-ignore
+    const borderWidths: BorderWidths = {
+      rightCellLeft: 0, leftCellLeft: 0, leftCellRight: 0, beforeLeftCellRight: undefined};
     const beforeLeftCell = columnsDetails[sizerIndex - 1]?.elements[0];
     if (beforeLeftCell) borderWidths.beforeLeftCellRight = Number.parseInt(beforeLeftCell.style.borderRightWidth) || 0;
     const leftCell = columnsDetails[sizerIndex]?.elements[0];
