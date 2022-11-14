@@ -81,7 +81,7 @@ export class InsertRemoveColumnSizer {
   // need to remove the sizer of the new last column as when width is set - last column does not have a sizer
   private static removeIfLastColumn(columnsDetails: ColumnsDetailsT, columnIndex: number) {
     const isLastColumn = columnsDetails.length === columnIndex;
-    if (isLastColumn) {
+    if (isLastColumn && columnsDetails[columnIndex]) {
       columnIndex -= 1;
       InsertRemoveColumnSizer.removeSizer(columnsDetails[columnIndex]);
     }
