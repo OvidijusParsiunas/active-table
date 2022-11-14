@@ -24,20 +24,19 @@ export class RemoveRow {
     columnsDetails.splice(0, columnsDetails.length);
   }
 
+  // CAUTION-2 - TO-DO recheck this after a button has been added to remove a row
   // prettier-ignore
   private static update(etc: EditableTableComponent,
       rowIndex: number, lastRowElement: HTMLElement, lastRowIndex: number, removedRowData: TableRow) {
     const lastRow = {element: lastRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(etc, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow);
     etc.onTableUpdate(etc.contents);
-    setTimeout(() => {
-      if (etc.contents.length === 0) {
-        RemoveRow.removeAllColumnsDetails(etc.columnsDetails);
-      } else {
-        RemoveRow.updateColumnDetails(removedRowData, etc.defaultCellValue, etc.columnsDetails, rowIndex);
-      }
-      etc.addColumnCellsElementsRef.splice(rowIndex, 1);
-    });
+    if (etc.contents.length === 0) {
+      RemoveRow.removeAllColumnsDetails(etc.columnsDetails);
+    } else {
+      RemoveRow.updateColumnDetails(removedRowData, etc.defaultCellValue, etc.columnsDetails, rowIndex);
+    }
+    etc.addColumnCellsElementsRef.splice(rowIndex, 1);
   }
 
   private static removeRow(etc: EditableTableComponent, rowIndex: number) {

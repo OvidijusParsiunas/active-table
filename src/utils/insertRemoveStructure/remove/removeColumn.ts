@@ -59,6 +59,7 @@ export class RemoveColumn {
     const removedColumnDetails = RemoveColumn.removeCellFromAllRows(etc, columnIndex);
     RemoveColumn.updateAdditionElements(etc);
     setTimeout(() => {
+      // CAUTION-2
       CategoryDropdown.remove(etc.tableElementRef as HTMLElement, removedColumnDetails.categoryDropdown.element);
       InsertRemoveColumnSizer.remove(etc, columnIndex);
       etc.onTableUpdate(etc.contents);
