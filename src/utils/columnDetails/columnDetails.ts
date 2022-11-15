@@ -4,9 +4,9 @@ import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 
 // REF-13
 export class ColumnDetails {
-  public static createWithElements(cellElement: HTMLElement): ColumnDetailsElementsOnly {
+  public static createWithElementsArr(): ColumnDetailsElementsOnly {
     return {
-      elements: [cellElement],
+      elements: [],
     };
   }
 

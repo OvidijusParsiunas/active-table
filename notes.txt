@@ -113,10 +113,10 @@ The movable sizer element is the element that follows the cursor whilst the actu
 
 REF-13
 The process of adding adding a new column details object (ColumnDetailsT):
-First creating the object with just the header element in order to allow the changeWidthsBasedOnColumnInsertRemove method to reset
-all column widths if required. Then in a timeout - asynchronously add all the other necessary details except the sizer as its
-creation requires the details from that object. Then proceed to create the sizer and after creating it add it to the object,
-thus completing the creation of that object.
+First creating the object with just the elements array in order to allow the changeWidthsBasedOnColumnInsertRemove method to
+reset all column widths if required. Then in a timeout - asynchronously add all the other necessary details except the sizer
+as its creation requires the details from that object. Later proceed to create the sizer and add it to the object, thus
+completing the creation of that object.
 
 REF-14
 When calling super.connectedCallback() in the 'override connectedCallback' method - Firefox was initially found to call

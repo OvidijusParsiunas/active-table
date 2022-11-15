@@ -43,10 +43,10 @@ export class InsertNewCell {
   }
 
   // REF-13
-  // the reason for creating empty object with element only is because we need it for changeWidthsBasedOnColumnInsertRemove
+  // the reason for creating object with elements only is because we need it for changeWidthsBasedOnColumnInsertRemove
   // we can worry about adding the other properties in a timeout within the updateColumnDetailsAndSizers method
-  private static addColumnDetailsWithElement(columnsDetails: ColumnsDetailsT, index: number, newCellElement: HTMLElement) {
-    const columnDetails = ColumnDetails.createWithElements(newCellElement);
+  private static insertColumnDetailsWithElementsArr(columnsDetails: ColumnsDetailsT, index: number) {
+    const columnDetails = ColumnDetails.createWithElementsArr();
     columnsDetails.splice(index, 0, columnDetails as ColumnDetailsT);
   }
 
@@ -63,12 +63,11 @@ export class InsertNewCell {
   }
 
   private static create(etc: EditableTableComponent, processedCellText: string, rowIndex: number, columnIndex: number) {
-    const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
+    if (rowIndex === 0) InsertNewCell.insertColumnDetailsWithElementsArr(etc.columnsDetails, columnIndex); // REF-13
     const columnDetails = etc.columnsDetails[columnIndex];
-    if (columnDetails) {
-      InsertNewCell.convertCell(etc, columnDetails, rowIndex, columnIndex, newCellElement);
-      columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
-    }
+    const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
+    InsertNewCell.convertCell(etc, columnDetails, rowIndex, columnIndex, newCellElement);
+    columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
     return newCellElement;
   }
 
@@ -79,13 +78,12 @@ export class InsertNewCell {
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, etc.displayIndexColumn);
-    setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, processedCellText));
     // cannot place in a timeout as etc.contents length is used to get last row index
     etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
-    if (rowIndex === 0) { // for operations that can't be placed in a timeout
-      InsertNewCell.addColumnDetailsWithElement(etc.columnsDetails, columnIndex, newCellElement); // REF-13
+    if (rowIndex === 0) {
       if (etc.displayAddColumnCell) ColumnGroupElement.update(etc.columnsDetails, etc.columnGroupRef);
       if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
     }
+    setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, processedCellText));
   }
 }
