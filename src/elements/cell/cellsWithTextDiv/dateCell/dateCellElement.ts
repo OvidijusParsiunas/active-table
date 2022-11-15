@@ -42,7 +42,7 @@ export class DateCellElement {
       rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
     const textElement = DateCellTextElement.setCellTextAsAnElement(cellElement);
     if (Browser.IS_INPUT_DATE_SUPPORTED) DateCellInputElement.addDateInputElement(cellElement, textElement, dateType);
-    DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex, dateType);
+    setTimeout(() => DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex, dateType));
   }
 
   // prettier-ignore
