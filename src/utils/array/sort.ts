@@ -1,5 +1,6 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {TableContents, TableRow} from '../../types/tableContents';
+import {CellElementIndex} from '../elements/cellElementIndex';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
 import {VALIDABLE_CELL_TYPE} from '../../enums/cellType';
@@ -13,7 +14,7 @@ export class Sort {
       const relativeRowIndex = rowIndex + 1;
       const rowChildren = rowElements[relativeRowIndex].children;
       row.forEach((cell, columnIndex) => {
-        const elementColumnIndex = columnIndex * 2;
+        const elementColumnIndex = CellElementIndex.getViaColumnIndex(columnIndex, etc.displayIndexColumn);
         // the reason why updateContents property is set to false is because we do not want to overwrite contents array
         // cells as their row references are still the same with the sortedDataContents, hence upon attempting to
         // overwrite the contents array cells, sortedDataContents cells are also overwritten. This is problematic because

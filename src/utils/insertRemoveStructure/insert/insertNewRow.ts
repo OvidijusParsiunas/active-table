@@ -2,6 +2,7 @@ import {ToggleAdditionElements} from '../../../elements/table/addNewElements/sha
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
 import {RowElement} from '../../../elements/table/addNewElements/row/rowElement';
+import {IndexColumn} from '../../../elements/table/indexColumn/indexColumn';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {TableCellText, TableRow} from '../../../types/tableContents';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
@@ -31,6 +32,7 @@ export class InsertNewRow {
   // prettier-ignore
   private static addCells(etc: EditableTableComponent,
       newRowData: TableRow, newRowElement: HTMLElement, rowIndex: number, isNewText: boolean) {
+    if (etc.displayIndexColumn) IndexColumn.createAndPrependToRow(etc, newRowElement, rowIndex);
     newRowData.forEach((cellText: TableCellText, columnIndex: number) => {
       if (isNewText || InsertNewRow.canStartRenderCellBeAdded(etc, rowIndex, columnIndex)) {
         InsertNewCell.insertToRow(etc, newRowElement, rowIndex, columnIndex, cellText as string, isNewText);
@@ -53,10 +55,13 @@ export class InsertNewRow {
   public static insert(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
     if (!MaximumRows.canAddMore(etc)) return;
     InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
-    if (isNewText) ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
-    setTimeout(() => {
-      if (isNewText) InsertNewRow.fireCellUpdates(etc, rowIndex);
-    });
+    if (isNewText) {
+      ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
+      if (etc.displayIndexColumn) {
+        IndexColumn.updateIndexes(etc.tableBodyElementRef as HTMLElement, etc.contents, rowIndex);
+      }
+      setTimeout(() => InsertNewRow.fireCellUpdates(etc, rowIndex));
+    }
   }
 
   public static insertEvent(this: EditableTableComponent) {

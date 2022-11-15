@@ -127,7 +127,7 @@ export const ediTableStyle = css`
     pointer-events: none;
   }
 
-  #add-new-row-row:hover {
+  .hoverable-cell:hover {
     background-color: #f7f7f7;
   }
 
@@ -141,6 +141,16 @@ export const ediTableStyle = css`
     cursor: pointer;
   }
 
+  .index-cell {
+    text-align: center;
+    padding: 11px 0px 0px !important;
+    /* TO-DO may be able to reuse the next class if cell is used to click and open a dropdown */
+    cursor: default;
+    user-select: none;
+    /* safari */
+    -webkit-user-select: none;
+  }
+
   .add-column-cell {
     cursor: pointer;
     user-select: none;
@@ -148,6 +158,7 @@ export const ediTableStyle = css`
     -webkit-user-select: none;
   }
 
+  /* not using the hoverable-cell class as this is used to set the background color of a full column group */
   .hovered-add-column-cells {
     background-color: #f7f7f7;
   }

@@ -86,6 +86,23 @@ export class EditableTableComponent extends LitElement {
   })
   noHeader = false;
 
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  displayIndexColumn = false;
+
+  // TO-DO allow the clien to update the table cells without re-renderdering the whole table
+  // @property({
+  //   type: Boolean,
+  //   converter: LITElementTypeConverters.convertToBoolean,
+  //   // hasChanged(newVal: string, oldVal: string) {
+  //   //   console.log(newVal);
+  //   //   return false;
+  //   // },
+  // })
+  // updateCell = true;
+
   // this contains all cell elements, if there is a need to access cell elements outside the context of columns
   // create an entirely new state object and access elements from there as we don't want to store all elements
   // multiple times, and use this instead for data exclusively on columns, such as width etc.
@@ -107,6 +124,7 @@ export class EditableTableComponent extends LitElement {
   @state()
   addRowCellElementRef: HTMLElement | null = null;
 
+  // the reason why keeping ref of all the add column cells and not column index cells is because this can be toggled
   @state()
   addColumnCellsElementsRef: HTMLElement[] = [];
 

@@ -11,6 +11,7 @@ import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {OverlayElements} from '../../types/overlayElements';
+import {IndexColumn} from './indexColumn/indexColumn';
 import {TableRow} from '../../types/tableContents';
 import {TableEvents} from './tableEvents';
 
@@ -53,18 +54,21 @@ export class TableElement {
     TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += delta;
   }
 
-  private static setAuxiliaryTableContentWidth(tableElement: HTMLElement, isAddColumnCellDisplayed: boolean) {
+  private static setAuxiliaryTableContentWidth(etc: EditableTableComponent) {
+    const {tableElementRef, displayAddColumnCell, displayIndexColumn} = etc;
     if (TableElement.AUXILIARY_TABLE_CONTENT_WIDTH === UNSET_NUMBER_IDENTIFIER) {
-      TableElement.AUXILIARY_TABLE_CONTENT_WIDTH =
-        GenericElementUtils.getElementTotalHorizontalSideBorderWidth(tableElement);
-      if (isAddColumnCellDisplayed) TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += AddNewColumnElement.DEFAULT_WIDTH;
+      TableElement.AUXILIARY_TABLE_CONTENT_WIDTH = GenericElementUtils.getElementTotalHorizontalSideBorderWidth(
+        tableElementRef as HTMLElement
+      );
+      if (displayAddColumnCell) TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += AddNewColumnElement.DEFAULT_WIDTH;
+      if (displayIndexColumn) TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += IndexColumn.DEFAULT_WIDTH;
     }
   }
 
   public static populateBody(etc: EditableTableComponent) {
     // removes all the current children
     etc.tableBodyElementRef?.replaceChildren();
-    TableElement.setAuxiliaryTableContentWidth(etc.tableElementRef as HTMLElement, etc.displayAddColumnCell);
+    TableElement.setAuxiliaryTableContentWidth(etc);
     // needs to be set before inserting the cells to prevent adding columns when too small
     StaticTableWidthUtils.setTableWidth(etc);
     // header/data

@@ -9,15 +9,17 @@ import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType'
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
+import {CellElementIndex} from '../../elements/cellElementIndex';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {DataUtils} from '../shared/dataUtils';
 
 export class InsertNewCell {
-  private static insertElementsToRow(rowElement: HTMLElement, newCellElement: HTMLElement, columnIndex: number) {
-    // the reason why columnIndex is multiplied by 2 is because there is a divider element after each cell
+  // prettier-ignore
+  private static insertElementsToRow(rowElement: HTMLElement, newCellElement: HTMLElement, columnIndex: number,
+      displayIndexColumn: boolean) {
     // if child is undefined, the element is added at the end
-    const childIndex = columnIndex * 2;
+    const childIndex = CellElementIndex.getViaColumnIndex(columnIndex, displayIndexColumn);
     rowElement.insertBefore(newCellElement, rowElement.children[childIndex]);
     const newCellDividerElement = CellDividerElement.create();
     rowElement.insertBefore(newCellDividerElement, rowElement.children[childIndex + 1]);
@@ -76,7 +78,7 @@ export class InsertNewCell {
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);
-    InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex);
+    InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, etc.displayIndexColumn);
     setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, processedCellText));
     // cannot place in a timeout as etc.contents length is used to get last row index
     etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);

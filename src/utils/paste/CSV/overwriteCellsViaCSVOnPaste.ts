@@ -9,6 +9,7 @@ import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {DataUtils} from '../../insertRemoveStructure/shared/dataUtils';
 import {TableRow, TableCellText} from '../../../types/tableContents';
 import {CaretPosition} from '../../focusedElements/caretPosition';
+import {CellElementIndex} from '../../elements/cellElementIndex';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
 import {CellEvents} from '../../../elements/cell/cellEvents';
 import {ArrayUtils} from '../../array/arrayUtils';
@@ -47,8 +48,8 @@ export class OverwriteCellsViaCSVOnPaste {
   // prettier-ignore
   private static overwriteCell(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, newCellText: string) {
-    // the reason why columnIndex is multiplied by 2 is because there is a divider element after each cell
-    const cellElement = rowElement.children[columnIndex * 2] as HTMLElement;
+    const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, etc.displayIndexColumn);
+    const cellElement = rowElement.children[elementIndex] as HTMLElement;
     const oldType = CellTypeTotalsUtils.parseType(cellElement.textContent as string, etc.defaultCellValue);
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });

@@ -1,5 +1,6 @@
 import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
+import {IndexColumn} from '../../../elements/table/indexColumn/indexColumn';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {TableCellText, TableRow} from '../../../types/tableContents';
@@ -50,6 +51,7 @@ export class RemoveRow {
     const lastRowElement = etc.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const removedRowData = RemoveRow.removeRow(etc, rowIndex);
     ToggleAdditionElements.update(etc, false, AddNewRowElement.toggle);
+    if (etc.displayIndexColumn) IndexColumn.updateIndexes(etc.tableBodyElementRef as HTMLElement, etc.contents, rowIndex);
     setTimeout(() => RemoveRow.update(etc, rowIndex, lastRowElement, lastRowIndex, removedRowData));
   }
 }

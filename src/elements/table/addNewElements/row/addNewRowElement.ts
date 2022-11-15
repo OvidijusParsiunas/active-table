@@ -44,7 +44,7 @@ export class AddNewRowElement {
 
   private static createRow(etc: EditableTableComponent) {
     const addNewRowRow = RowElement.create();
-    addNewRowRow.id = 'add-new-row-row';
+    addNewRowRow.classList.add(CellElement.HOVERABLE_CELL_CLASS);
     addNewRowRow.onclick = InsertNewRow.insertEvent.bind(etc);
     return addNewRowRow;
   }

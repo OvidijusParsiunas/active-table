@@ -6,6 +6,7 @@ import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/cate
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
+import {CellElementIndex} from '../../elements/cellElementIndex';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
@@ -25,8 +26,8 @@ export class RemoveColumn {
     }
   }
 
-  private static removeElements(rowElement: HTMLElement, columnIndex: number) {
-    const elementColumnIndex = columnIndex * 2;
+  private static removeElements(rowElement: HTMLElement, columnIndex: number, displayIndexColumn: boolean) {
+    const elementColumnIndex = CellElementIndex.getViaColumnIndex(columnIndex, displayIndexColumn);
     // remove the text element
     rowElement.removeChild(rowElement.children[elementColumnIndex]);
     // remove the divider element
@@ -35,7 +36,7 @@ export class RemoveColumn {
 
   private static removeCell(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
     const lastColumn: ElementDetails = LastColumn.getDetails(etc.columnsDetails, rowIndex);
-    RemoveColumn.removeElements(rowElement, columnIndex);
+    RemoveColumn.removeElements(rowElement, columnIndex, etc.displayIndexColumn);
     etc.contents[rowIndex].splice(columnIndex, 1);
     setTimeout(() => {
       const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};
