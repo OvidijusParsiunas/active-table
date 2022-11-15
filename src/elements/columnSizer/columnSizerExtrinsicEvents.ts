@@ -1,3 +1,4 @@
+import {UpdateRowElement} from '../../utils/insertRemoveStructure/update/updateRowElement';
 import {TableDimensionsInternal} from '../../types/tableDimensionsInternal';
 import {ColumnSizerT, SelectedColumnSizerT} from '../../types/columnSizer';
 import {ColumnSizerGenericUtils} from './utils/columnSizerGenericUtils';
@@ -43,6 +44,7 @@ export class ColumnSizerExtrinsicEvents {
     ColumnSizerExtrinsicEvents.setWidth(selectedColumnSizer, tableElementRef as HTMLElement, tableDimensionsInternal,
       headerCell, columnsDetails[sizerNumber + 1]?.elements[0]);
     MovableColumnSizerElement.hide(columnSizer.movableElement);
+    UpdateRowElement.updateHeaderRowHeight(columnSizer.element.parentElement?.parentElement as HTMLElement);
   }
 
   private static setSizerStyleToHoverNoAnimation(columnSizer: ColumnSizerT, anotherColor?: string) {
