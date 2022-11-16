@@ -1,20 +1,22 @@
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ExtractElements} from '../../../utils/elements/extractElements';
-import {ChangeIndexColumnWidth} from './changeIndexColumnWidth';
-import {TableContents} from '../../../types/tableContents';
+import {UpdateIndexColumnWidth} from './updateIndexColumnWidth';
 import {CellElement} from '../../cell/cellElement';
 
 export class IndexColumn {
   public static readonly INDEX_CELL_CLASS = 'index-cell';
-  public static readonly DEFAULT_WIDTH = ChangeIndexColumnWidth.WIDTH;
+  public static readonly DEFAULT_WIDTH = UpdateIndexColumnWidth.WIDTH;
   private static readonly DEFAULT_WIDTH_PX = `${IndexColumn.DEFAULT_WIDTH}px`;
 
-  public static updateIndexes(tableBodyElement: HTMLElement, contents: TableContents, startIndex: number) {
-    ExtractElements.textRowsArrFromTBody(tableBodyElement, contents, startIndex).forEach((row, rowIndex) => {
+  public static updateIndexes(etc: EditableTableComponent, startIndex: number) {
+    const {tableBodyElementRef, contents} = etc;
+    const textRowsArr = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, contents, startIndex);
+    textRowsArr.forEach((row, rowIndex) => {
       const indexCell = row.children[0] as HTMLElement;
       const relativeIndex = startIndex + rowIndex;
       indexCell.textContent = String(relativeIndex);
     });
+    UpdateIndexColumnWidth.update(etc, textRowsArr.length === 0 ? undefined : textRowsArr);
   }
 
   private static createCell(etc: EditableTableComponent, tag: 'th' | 'td') {
@@ -40,7 +42,5 @@ export class IndexColumn {
   public static createAndPrependToRow(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number) {
     const cell = rowIndex === 0 ? IndexColumn.createHeaderCell(etc) : IndexColumn.createDataCell(etc, rowIndex);
     rowElement.appendChild(cell);
-    // in a timeout because the row may not have been appended yet
-    setTimeout(() => ChangeIndexColumnWidth.change(etc, cell));
   }
 }

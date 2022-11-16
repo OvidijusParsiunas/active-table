@@ -57,9 +57,7 @@ export class InsertNewRow {
     InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
     if (isNewText) {
       ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
-      if (etc.displayIndexColumn) {
-        IndexColumn.updateIndexes(etc.tableBodyElementRef as HTMLElement, etc.contents, rowIndex);
-      }
+      if (etc.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex + 1);
       setTimeout(() => InsertNewRow.fireCellUpdates(etc, rowIndex));
     }
   }

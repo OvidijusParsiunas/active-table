@@ -6,6 +6,7 @@ import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRo
 import {AddNewColumnElement} from './addNewElements/column/addNewColumnElement';
 import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
+import {UpdateIndexColumnWidth} from './indexColumn/updateIndexColumnWidth';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
 import {EditableTableComponent} from '../../editable-table-component';
@@ -76,6 +77,7 @@ export class TableElement {
     TableElement.postProcessColumns(etc);
     // new row row and full table overlay
     TableElement.addAuxiliaryBodyElements(etc);
+    if (etc.displayIndexColumn) UpdateIndexColumnWidth.update(etc);
   }
 
   private static createTableBody() {
