@@ -12,11 +12,13 @@ export type AllDimensionProps = {
   isPercentage: boolean;
   preserveNarrowColumns: boolean;
   recordedParentWidth: number;
+  isColumnIndexCellTextWrapped: boolean; // REF-19
 } & Required<MaxStructureDimensions>;
 
 type Parent = {
   preserveNarrowColumns?: boolean;
   recordedParentWidth: number;
+  isColumnIndexCellTextWrapped?: boolean; // REF-19
 } & MaxStructureDimensions;
 
 interface Initial {

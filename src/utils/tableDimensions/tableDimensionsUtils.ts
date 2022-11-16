@@ -11,6 +11,19 @@ import {RegexUtils} from '../regex/regexUtils';
 export class TableDimensionsUtils {
   public static readonly MINIMAL_TABLE_WIDTH = 70;
 
+  // REF-19
+  // prettier-ignore
+  private static setIsColumnIndexCellTextWrapped(tableDimensions: TableDimensions,
+      tableDimensionsInternal: TableDimensionsInternal, displayIndexColumn: boolean) {
+    if (displayIndexColumn) { 
+      if (tableDimensions.wrapIndexCellText) {
+        tableDimensionsInternal.isColumnIndexCellTextWrapped = true;
+      } else if (tableDimensionsInternal.isColumnIndexCellTextWrapped === undefined) {
+        tableDimensionsInternal.isColumnIndexCellTextWrapped = false;
+      }
+    }
+  }
+
   // prettier-ignore
   private static setMaxStructureDimension(tableDimensions: TableDimensions,
       tableDimensionsInternal: TableDimensionsInternal, maxKey: keyof MaxStructureDimensions) {
@@ -68,7 +81,7 @@ export class TableDimensionsUtils {
 
   // CAUTION-3
   public static setInternalTableDimensions(etc: EditableTableComponent) {
-    const {tableDimensions, tableDimensionsInternal} = etc;
+    const {tableDimensions, tableDimensionsInternal, displayIndexColumn} = etc;
     const parentElement = etc.parentElement as HTMLElement;
     // width and maxWidth are mutually exclusive and if both are present width is the only one that is used
     if (tableDimensions.width !== undefined) {
@@ -84,10 +97,23 @@ export class TableDimensionsUtils {
     // else the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
     TableDimensionsUtils.setPreserveNarrowColumnsProp(tableDimensions, tableDimensionsInternal);
     TableDimensionsUtils.setMaxStructureDimensions(tableDimensions, tableDimensionsInternal);
+    TableDimensionsUtils.setIsColumnIndexCellTextWrapped(tableDimensions, tableDimensionsInternal, displayIndexColumn);
   }
 
   public static cleanupContentsThatDidNotGetAdded(contents: TableContents, columnsDetails: ColumnsDetailsT) {
     if (contents[0]?.length - columnsDetails.length > 0) contents.forEach((row) => row.splice(columnsDetails.length));
     if (contents.length > columnsDetails[0]?.elements.length) contents.splice(columnsDetails[0].elements.length);
+  }
+
+  public static hasSetTableWidthBeenBreached(etc: EditableTableComponent) {
+    const {width, maxWidth, preserveNarrowColumns} = etc.tableDimensionsInternal;
+    if (preserveNarrowColumns) {
+      const tableOffset = etc.offsetWidth;
+      const setWidth = width || maxWidth;
+      if (setWidth) {
+        return setWidth < tableOffset;
+      }
+    }
+    return false;
   }
 }

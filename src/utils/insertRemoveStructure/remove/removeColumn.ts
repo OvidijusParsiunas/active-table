@@ -15,7 +15,7 @@ import {LastColumn} from '../shared/lastColumn';
 
 export class RemoveColumn {
   private static updateAdditionElements(etc: EditableTableComponent) {
-    if (etc.displayAddColumnCell) ColumnGroupElement.update(etc.columnsDetails, etc.columnGroupRef);
+    if (etc.displayAddColumnCell) ColumnGroupElement.update(etc);
     ToggleAdditionElements.update(etc, false, AddNewColumnElement.toggle);
   }
 

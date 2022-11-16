@@ -164,6 +164,16 @@ which was pretty much just like the add new row button, so why really have anoth
 the add new row button exclusively. Hence this is why the add row button is always present within the table body and all we do
 is convert its style to a stub when there are no contents and set it back to normal or hide it when the contents are added.
 
+REF-19
+When the index column is too wide (and narrow columns are not preserved) - the table body will actually be increased over the size
+of the table as the initial columns that have been added when the index column had a default width can no longer be removed. To
+prevent this we reduce the index column back to its default width by allowing its numbers to wrap. Please note that unwrapping
+detection is not supported and once the index column is wrapped it will stay in this form for the rest of the session.
+If the table needs to be re-rendered due to resizing, we use the isColumnIndexCellTextWrapped state to check was it wrapped before
+and if it was we wrap the index column from the getgo.
+When preserveNarrowColumns is set to true and the table exceeds the set width, the column is set to wrap.
+The client also has the ability to set the column to wrap all the time by using the wrapIndexCellText flag.
+
 CAUTION-1
 When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across
 the table as they will no longer be constant and will need some dynamicity

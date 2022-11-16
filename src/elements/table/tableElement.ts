@@ -77,7 +77,10 @@ export class TableElement {
     TableElement.postProcessColumns(etc);
     // new row row and full table overlay
     TableElement.addAuxiliaryBodyElements(etc);
-    if (etc.displayIndexColumn) UpdateIndexColumnWidth.update(etc);
+    if (etc.displayIndexColumn) {
+      UpdateIndexColumnWidth.update(etc);
+      UpdateIndexColumnWidth.wrapTextWhenNarrowColumnsBreached(etc);
+    }
   }
 
   private static createTableBody() {

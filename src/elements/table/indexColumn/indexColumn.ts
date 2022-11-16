@@ -5,6 +5,8 @@ import {CellElement} from '../../cell/cellElement';
 
 export class IndexColumn {
   public static readonly INDEX_CELL_CLASS = 'index-cell';
+  // using overflow to detect a need for width update when display style 'block' property is not set
+  public static readonly INDEX_CELL_OVERFLOW_CLASS = 'index-cell-overflow';
   public static readonly DEFAULT_WIDTH = UpdateIndexColumnWidth.WIDTH;
   private static readonly DEFAULT_WIDTH_PX = `${IndexColumn.DEFAULT_WIDTH}px`;
 
@@ -22,6 +24,9 @@ export class IndexColumn {
   private static createCell(etc: EditableTableComponent, tag: 'th' | 'td') {
     const cell = document.createElement(tag);
     cell.classList.add(CellElement.CELL_CLASS, IndexColumn.INDEX_CELL_CLASS, CellElement.HOVERABLE_CELL_CLASS);
+    if (!etc.tableDimensionsInternal.isColumnIndexCellTextWrapped) {
+      cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
+    }
     Object.assign(cell.style, etc.cellStyle);
     return cell;
   }

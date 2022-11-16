@@ -2,6 +2,7 @@ import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categ
 import {ColumnDetailsElementsOnly, ColumnDetailsT, ColumnsDetailsT} from '../../../types/columnDetails';
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
+import {UpdateIndexColumnWidth} from '../../../elements/table/indexColumn/updateIndexColumnWidth';
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
@@ -28,7 +29,7 @@ export class InsertNewCell {
   // please note that this is run twice in firefox due to the render function being triggered twice
   // prettier-ignore
   private static updateColumnDetailsAndSizers(
-      etc: EditableTableComponent, rowIndex: number, columnIndex: number, text: string) {
+      etc: EditableTableComponent, rowIndex: number, columnIndex: number, text: string, isNewText: boolean) {
     const { columnsDetails, defaultCellValue } = etc;
     const columnDetails = columnsDetails[columnIndex];
     if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
@@ -36,6 +37,7 @@ export class InsertNewCell {
       const categoryDropdown = CategoryDropdown.createAndAppend(etc.tableElementRef as HTMLElement);
       ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsElementsOnly, categoryDropdown); // REF-13
       InsertRemoveColumnSizer.insert(etc, columnsDetails, columnIndex); // REF-13
+      if (isNewText) UpdateIndexColumnWidth.wrapTextWhenNarrowColumnsBreached(etc); // REF-19
     } else {
       // CAUTION-2
       CellTypeTotalsUtils.incrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, text);
@@ -81,9 +83,9 @@ export class InsertNewCell {
     // cannot place in a timeout as etc.contents length is used to get last row index
     etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
     if (rowIndex === 0) {
-      if (etc.displayAddColumnCell) ColumnGroupElement.update(etc.columnsDetails, etc.columnGroupRef);
+      if (etc.displayAddColumnCell) ColumnGroupElement.update(etc);
       if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
     }
-    setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, processedCellText));
+    setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, processedCellText, isNewText));
   }
 }

@@ -25,9 +25,18 @@ type AllDimensionProps = {
   // to preserve their data and the table size has a chance of increasing beyond the set value)
   preserveNarrowColumns: boolean;
   unlimitedSize: boolean;
+  // REF-19
+  // By default, index column width is updated by analyzing the number of digits present in the highest index number. If
+  // wrapIndexCellText is set to true, the default behaviour can be turned off to instead wrap the number within each cell.
+  // This would cause the cell's width to remain the same (30px).
+  // set to false by default
+  wrapIndexCellText: boolean;
 } & Required<MaxStructureDimensions>;
 
-type AllowedByDefault = {} & MaxStructureDimensions;
+type AllowedByDefault = {
+  // REF-19
+  wrapIndexCellText?: boolean; // false by default
+} & MaxStructureDimensions;
 
 interface Width extends AllowedByDefault {
   width: StringDimension;
