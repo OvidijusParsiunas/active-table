@@ -1,11 +1,12 @@
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ExtractElements} from '../../../utils/elements/extractElements';
+import {ChangeIndexColumnWidth} from './changeIndexColumnWidth';
 import {TableContents} from '../../../types/tableContents';
 import {CellElement} from '../../cell/cellElement';
 
 export class IndexColumn {
   public static readonly INDEX_CELL_CLASS = 'index-cell';
-  public static readonly DEFAULT_WIDTH = 30;
+  public static readonly DEFAULT_WIDTH = ChangeIndexColumnWidth.WIDTH;
   private static readonly DEFAULT_WIDTH_PX = `${IndexColumn.DEFAULT_WIDTH}px`;
 
   public static updateIndexes(tableBodyElement: HTMLElement, contents: TableContents, startIndex: number) {
@@ -39,5 +40,7 @@ export class IndexColumn {
   public static createAndPrependToRow(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number) {
     const cell = rowIndex === 0 ? IndexColumn.createHeaderCell(etc) : IndexColumn.createDataCell(etc, rowIndex);
     rowElement.appendChild(cell);
+    // in a timeout because the row may not have been appended yet
+    setTimeout(() => ChangeIndexColumnWidth.change(etc, cell));
   }
 }

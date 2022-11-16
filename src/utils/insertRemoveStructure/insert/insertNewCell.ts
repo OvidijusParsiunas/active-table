@@ -52,12 +52,12 @@ export class InsertNewCell {
 
   // prettier-ignore
   private static convertCell(etc: EditableTableComponent,
-      columnDetail: ColumnDetailsT, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
-    if (columnDetail.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+      columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
+    if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryCellElement.convertCellFromDataToCategory(etc, rowIndex, columnIndex, newCellElement, '');
       CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
-    } else if (DATE_COLUMN_TYPE[columnDetail.userSetColumnType]) {
-      DateCellElement.convertCellFromDataToDate(columnDetail.userSetColumnType,
+    } else if (DATE_COLUMN_TYPE[columnDetails.userSetColumnType]) {
+      DateCellElement.convertCellFromDataToDate(columnDetails.userSetColumnType,
         etc, rowIndex, columnIndex, newCellElement);
     }
   }

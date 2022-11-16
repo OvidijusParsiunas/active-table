@@ -143,7 +143,9 @@ export const ediTableStyle = css`
 
   .index-cell {
     text-align: center;
-    padding: 11px 0px 0px !important;
+    padding: 11px 4px 0px !important;
+    overflow: hidden;
+    overflow-wrap: normal;
     /* TO-DO may be able to reuse the next class if cell is used to click and open a dropdown */
     cursor: default;
     user-select: none;

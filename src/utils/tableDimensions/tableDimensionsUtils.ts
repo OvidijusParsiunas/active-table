@@ -29,8 +29,8 @@ export class TableDimensionsUtils {
   // prettier-ignore
   private static setPreserveNarrowColumnsProp(tableDimensions: TableDimensions,
       tableDimensionsInternal: TableDimensionsInternal) {
-    tableDimensionsInternal.preserveNarrowColumns = tableDimensions.preserveNarrowColumns;
-    tableDimensionsInternal.preserveNarrowColumns ??= true; // if tableDimensions.preserveNarrowColumns was undefined
+    tableDimensionsInternal.preserveNarrowColumns = tableDimensions.preserveNarrowColumns === undefined
+      ? true : tableDimensions.preserveNarrowColumns;
   }
 
   private static setDefaultDimension(tableDimensionsInternal: TableDimensionsInternal, parentElement: HTMLElement) {
