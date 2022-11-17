@@ -55,10 +55,11 @@ export class AddNewColumnElement {
     return GenericElementUtils.doesElementExistInDom(addColumnCellsElementsRef[0]);
   }
 
-  public static createAndAppendToRow(etc: EditableTableComponent, row: HTMLElement, rowIndex: number, isNewText: boolean) {
-    if (isNewText && !MaximumColumns.canAddMore(etc)) return;
+  public static createAndAppendToRow(etc: EditableTableComponent, row: HTMLElement, rowIndex: number) {
+    const {addColumnCellsElementsRef} = etc;
+    if (addColumnCellsElementsRef.length > 0 && !AddNewColumnElement.isDisplayed(addColumnCellsElementsRef)) return;
     const cell = rowIndex === 0 ? AddNewColumnElement.createHeaderCell(etc) : AddNewColumnElement.createDataCell(etc);
-    etc.addColumnCellsElementsRef.splice(rowIndex, 0, cell);
+    addColumnCellsElementsRef.splice(rowIndex, 0, cell);
     row.appendChild(cell);
   }
 
