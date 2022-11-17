@@ -165,6 +165,7 @@ export class EditableTableComponent extends LitElement {
   @property({type: Object})
   columnResizerStyle: UserSetColumnSizerStyle = {};
 
+  // CAUTION-4
   override render() {
     Render.renderTable(this);
     this.onTableUpdate(this.contents);
@@ -174,7 +175,7 @@ export class EditableTableComponent extends LitElement {
   private onConnect() {
     // REF-14
     super.connectedCallback();
-    const tableElement = TableElement.createBase(this);
+    const tableElement = TableElement.createInfrastructureElements(this);
     TableElement.addAuxiliaryElements(this, tableElement, this.overlayElementsState, this.areHeadersEditable);
     this.shadowRoot?.appendChild(tableElement);
     WindowElement.setEvents(this);

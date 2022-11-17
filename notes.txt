@@ -192,3 +192,7 @@ If further bugs occur - create and use a 'rendering' flag instead.
 CAUTION-3
 Table dimensions have exclusive optional interfaces that are exposed to the client, however they may not be respected, hence the logic
 needs to be cautious when handling the passed in object
+
+CAUTION-4
+Do not set state/property variables after render has occurred as it will trigger full component re-render
+Be careful when assigning element references and instead do them in the connectedCallback method

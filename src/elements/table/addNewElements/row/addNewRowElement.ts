@@ -52,9 +52,8 @@ export class AddNewRowElement {
   public static create(etc: EditableTableComponent) {
     const addNewRowRow = AddNewRowElement.createRow(etc);
     const addNewRowCell = AddNewRowElement.createCell(etc.cellStyle, etc.displayAddRowCell);
-    etc.addRowCellElementRef = addNewRowCell;
     addNewRowRow.appendChild(addNewRowCell);
-    return addNewRowRow;
+    return addNewRowCell;
   }
 
   public static toggle(etc: EditableTableComponent) {

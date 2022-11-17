@@ -33,10 +33,10 @@ export class TableElement {
   }
 
   // add column cell element is technicaly an auxiliary element but it's cells are added on row insertion
+  // CAUTION-4
   private static addAuxiliaryBodyElements(etc: EditableTableComponent) {
-    // add new row element - REF-18
-    const addNewRowElement = AddNewRowElement.create(etc);
-    etc.tableBodyElementRef?.appendChild(addNewRowElement);
+    // add new row element - REF-18 (the row element has already been created and cell added to it)
+    etc.tableBodyElementRef?.appendChild(etc.addRowCellElementRef?.parentElement as HTMLElement);
     ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
   }
 
@@ -96,7 +96,8 @@ export class TableElement {
     return tableElement;
   }
 
-  public static createBase(etc: EditableTableComponent) {
+  // CAUTION-4 - add row cell is created and ref assigned here - then it is added post render in addAuxiliaryBodyElements
+  public static createInfrastructureElements(etc: EditableTableComponent) {
     etc.tableElementRef = TableElement.createTableElement(etc);
     if (etc.displayAddColumnCell) {
       // needs to be appended before the body
@@ -104,6 +105,7 @@ export class TableElement {
       etc.tableElementRef.appendChild(etc.columnGroupRef);
     }
     etc.tableBodyElementRef = TableElement.createTableBody();
+    etc.addRowCellElementRef = AddNewRowElement.create(etc); // REF-18
     etc.tableElementRef.appendChild(etc.tableBodyElementRef);
     return etc.tableElementRef;
   }
