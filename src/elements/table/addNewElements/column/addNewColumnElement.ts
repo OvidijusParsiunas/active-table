@@ -51,14 +51,30 @@ export class AddNewColumnElement {
     return AddNewColumnElement.createCell(etc, 'td');
   }
 
-  public static createAndAppendToRow(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number) {
-    const cell = rowIndex === 0 ? AddNewColumnElement.createHeaderCell(etc) : AddNewColumnElement.createDataCell(etc);
-    etc.addColumnCellsElementsRef.splice(rowIndex, 0, cell);
-    rowElement.appendChild(cell);
-  }
-
   private static isDisplayed(addColumnCellsElementsRef: HTMLElement[]) {
     return GenericElementUtils.doesElementExistInDom(addColumnCellsElementsRef[0]);
+  }
+
+  public static createAndAppendToRow(etc: EditableTableComponent, row: HTMLElement, rowIndex: number, isNewText: boolean) {
+    if (isNewText && !MaximumColumns.canAddMore(etc)) return;
+    const cell = rowIndex === 0 ? AddNewColumnElement.createHeaderCell(etc) : AddNewColumnElement.createDataCell(etc);
+    etc.addColumnCellsElementsRef.splice(rowIndex, 0, cell);
+    row.appendChild(cell);
+  }
+
+  // prettier-ignore
+  private static toggleEachCell(canAddMore: boolean,
+      tableBodyElement: HTMLElement, addColumnCellsElementsRef: HTMLElement[], columnGroupElement: HTMLElement) {
+    addColumnCellsElementsRef.forEach((cell, rowIndex) =>
+    AddNewColumnElement.setDisplay(cell, canAddMore, tableBodyElement, rowIndex, columnGroupElement)
+  );
+  }
+
+  private static changeTableWidths(etc: EditableTableComponent, canAddMore: boolean, isInsert: boolean) {
+    TableElement.changeAuxiliaryTableContentWidth(
+      canAddMore ? AddNewColumnElement.DEFAULT_WIDTH : -AddNewColumnElement.DEFAULT_WIDTH
+    );
+    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, isInsert);
   }
 
   public static toggle(etc: EditableTableComponent, isInsert: boolean) {
@@ -67,12 +83,13 @@ export class AddNewColumnElement {
     const canAddMore = MaximumColumns.canAddMore(etc);
     // do not toggle if already in the intended state
     if (canAddMore === AddNewColumnElement.isDisplayed(addColumnCellsElementsRef)) return;
-    addColumnCellsElementsRef.forEach((cell, rowIndex) =>
-      AddNewColumnElement.setDisplay(cell, canAddMore, tableBodyElementRef, rowIndex, columnGroupRef)
-    );
-    TableElement.changeAuxiliaryTableContentWidth(
-      canAddMore ? AddNewColumnElement.DEFAULT_WIDTH : -AddNewColumnElement.DEFAULT_WIDTH
-    );
-    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, isInsert);
+    // for isTableAtMaxWidth to be triggered correctly for maxWidth, add cells before it and remove after it
+    if (canAddMore) {
+      AddNewColumnElement.toggleEachCell(canAddMore, tableBodyElementRef, addColumnCellsElementsRef, columnGroupRef);
+      AddNewColumnElement.changeTableWidths(etc, canAddMore, isInsert);
+    } else {
+      AddNewColumnElement.changeTableWidths(etc, canAddMore, isInsert);
+      AddNewColumnElement.toggleEachCell(canAddMore, tableBodyElementRef, addColumnCellsElementsRef, columnGroupRef);
+    }
   }
 }

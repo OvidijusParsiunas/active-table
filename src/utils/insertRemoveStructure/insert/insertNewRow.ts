@@ -38,7 +38,7 @@ export class InsertNewRow {
         InsertNewCell.insertToRow(etc, newRowElement, rowIndex, columnIndex, cellText as string, isNewText);
       }
     });
-    if (etc.displayAddColumnCell) AddNewColumnElement.createAndAppendToRow(etc, newRowElement, rowIndex);
+    if (etc.displayAddColumnCell) AddNewColumnElement.createAndAppendToRow(etc, newRowElement, rowIndex, isNewText);
   }
 
   private static insertNewRow(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
