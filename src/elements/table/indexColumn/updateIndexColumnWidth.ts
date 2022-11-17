@@ -20,29 +20,42 @@ export class UpdateIndexColumnWidth {
     return IndexColumn.DEFAULT_WIDTH;
   }
 
-  private static changeColumnWidth(etc: EditableTableComponent, newWidth: number, forceWrap = false) {
-    // when preserveNarrowColumns is set - offsetWidth & scrollWidth will be the same, hence using forceWrap flag - REF-19
-    if (forceWrap || etc.offsetWidth !== etc.scrollWidth) {
-      newWidth = UpdateIndexColumnWidth.wrapColumnTextAndGetDefaultWidth(etc);
-    }
+  private static changeTableWidths(etc: EditableTableComponent, newWidth: number) {
     const difference = newWidth - UpdateIndexColumnWidth.WIDTH;
     UpdateIndexColumnWidth.WIDTH = newWidth;
     TableElement.changeAuxiliaryTableContentWidth(difference);
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true);
   }
 
+  private static changeCellAndTableWidths(etc: EditableTableComponent, firstRow: HTMLElement, newWidth: number) {
+    const headerCell = firstRow.children[0] as HTMLElement;
+    UpdateIndexColumnWidth.changeTableWidths(etc, newWidth);
+    // needs to be done after changeTableWidths because isTableAtMaxWidth would not return true
+    headerCell.style.width = `${newWidth}px`;
+  }
+
+  private static forceWrap(etc: EditableTableComponent, firstRow: HTMLElement) {
+    const newWidth = UpdateIndexColumnWidth.wrapColumnTextAndGetDefaultWidth(etc);
+    UpdateIndexColumnWidth.changeCellAndTableWidths(etc, firstRow, newWidth);
+  }
+
+  private static shouldTextBeWrapped(etc: EditableTableComponent) {
+    return (
+      !etc.tableDimensionsInternal.isColumnIndexCellTextWrapped && TableDimensionsUtils.hasSetTableWidthBeenBreached(etc)
+    );
+  }
+
+  // this works because the 'block' display style is not set on the table
   // checking if the cells width is overflown and if so - increase its width (cannot decrease the width)
-  // prettier-ignore
-  private static updateColumnWidthWhenOverflow(etc: EditableTableComponent,
-      firstRow: HTMLElement, lastCell: HTMLElement, forceWrap = false) {
+  private static updateColumnWidthWhenOverflow(etc: EditableTableComponent, firstRow: HTMLElement, lastCell: HTMLElement) {
     // overflow width does not include the borderRightWidth - which the ChangeIndexColumnWidth.WIDTH does
     const overflowWidth = lastCell.scrollWidth + (Number.parseInt(lastCell.style.borderRightWidth) || 0);
-    if (forceWrap || UpdateIndexColumnWidth.WIDTH !== overflowWidth) {
+    if (UpdateIndexColumnWidth.WIDTH !== overflowWidth) {
       // Firefox does not include lastCell paddingRight (4px) when setting the new width
-      const newWidth = forceWrap ?  IndexColumn.DEFAULT_WIDTH : overflowWidth + (Browser.IS_FIREFOX ? 4 : 0);
-      const headerCell = firstRow.children[0] as HTMLElement;
-      headerCell.style.width = `${newWidth}px`;
-      UpdateIndexColumnWidth.changeColumnWidth(etc, newWidth, forceWrap);
+      const newWidth = overflowWidth + (Browser.IS_FIREFOX ? 4 : 0);
+      UpdateIndexColumnWidth.changeCellAndTableWidths(etc, firstRow, newWidth);
+      // if the above has set the width too high
+      if (UpdateIndexColumnWidth.shouldTextBeWrapped(etc)) UpdateIndexColumnWidth.forceWrap(etc, firstRow);
     }
   }
 
@@ -51,24 +64,30 @@ export class UpdateIndexColumnWidth {
   // (ChangeIndexColumnWidth.WIDTH) is different to the actual one and if so, we change it to actual
   private static checkAutoColumnWidthUpdate(etc: EditableTableComponent, lastCell: HTMLElement) {
     if (lastCell.offsetWidth !== UpdateIndexColumnWidth.WIDTH) {
-      UpdateIndexColumnWidth.changeColumnWidth(etc, lastCell.offsetWidth);
+      let newWidth = lastCell.offsetWidth;
+      if (etc.offsetWidth !== etc.scrollWidth) {
+        newWidth = UpdateIndexColumnWidth.wrapColumnTextAndGetDefaultWidth(etc);
+      }
+      UpdateIndexColumnWidth.changeTableWidths(etc, newWidth);
     }
   }
 
-  // prettier-ignore
   private static updatedBasedOnTableStyle(etc: EditableTableComponent, lastCell: HTMLElement, forceWrap = false) {
     const firstRow = (etc.tableBodyElementRef as HTMLElement).children[0] as HTMLElement;
-    if (forceWrap || etc.tableDimensionsInternal.maxWidth !== undefined ||
-        // when preserveNarrowColumns is true - 'block' display style is not set on table
-        (etc.tableDimensionsInternal.width !== undefined && etc.tableDimensionsInternal.preserveNarrowColumns)) {
-      UpdateIndexColumnWidth.updateColumnWidthWhenOverflow(etc, firstRow, lastCell, forceWrap);
+    if (forceWrap) {
+      UpdateIndexColumnWidth.forceWrap(etc, firstRow);
+      // when 'block' display style is not set on the table
+    } else if (etc.tableDimensionsInternal.preserveNarrowColumns || etc.tableDimensionsInternal.maxWidth !== undefined) {
+      UpdateIndexColumnWidth.updateColumnWidthWhenOverflow(etc, firstRow, lastCell);
     } else if (etc.tableDimensionsInternal.width !== undefined) {
       UpdateIndexColumnWidth.checkAutoColumnWidthUpdate(etc, lastCell);
     }
   }
 
+  // used when a new row is added
   // forceWrap - REF-19
   public static update(etc: EditableTableComponent, textRowsArr?: Element[], forceWrap = false) {
+    if (etc.tableDimensionsInternal.isColumnIndexCellTextWrapped) return;
     if (!textRowsArr) {
       const {tableBodyElementRef, contents} = etc;
       textRowsArr = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, contents);
@@ -77,14 +96,10 @@ export class UpdateIndexColumnWidth {
     if (lastCell) UpdateIndexColumnWidth.updatedBasedOnTableStyle(etc, lastCell, forceWrap);
   }
 
-  // CAUTION-2 - if the table rerenders - this appears to run before it
-  // prettier-ignore
+  // used when a new column is added to see if wrapping is needed
+  // CAUTION-2 - this runs before re-render but stay cautions
   public static wrapTextWhenNarrowColumnsBreached(etc: EditableTableComponent) {
-    const {displayIndexColumn, tableDimensionsInternal} = etc;
-    if (displayIndexColumn &&
-        TableDimensionsUtils.hasSetTableWidthBeenBreached(etc) && !tableDimensionsInternal.isColumnIndexCellTextWrapped) {
-      // this is called when preserveNarrowColumns is set to true - meaning that the display style 'block' is not set,
-      // hence the column index head cell's width will have to be set using the updateColumnWidthWhenOverflow method
+    if (etc.displayIndexColumn && UpdateIndexColumnWidth.shouldTextBeWrapped(etc)) {
       UpdateIndexColumnWidth.update(etc, undefined, true);
     }
   }

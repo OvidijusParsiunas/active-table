@@ -106,13 +106,11 @@ export class TableDimensionsUtils {
   }
 
   public static hasSetTableWidthBeenBreached(etc: EditableTableComponent) {
-    const {width, maxWidth, preserveNarrowColumns} = etc.tableDimensionsInternal;
-    if (preserveNarrowColumns) {
-      const tableOffset = etc.offsetWidth;
-      const setWidth = width || maxWidth;
-      if (setWidth) {
-        return setWidth < tableOffset;
-      }
+    const {width, maxWidth} = etc.tableDimensionsInternal;
+    const tableOffset = etc.offsetWidth;
+    const setWidth = width || maxWidth;
+    if (setWidth) {
+      return setWidth < tableOffset;
     }
     return false;
   }

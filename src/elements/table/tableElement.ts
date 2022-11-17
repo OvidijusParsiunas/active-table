@@ -79,7 +79,6 @@ export class TableElement {
     TableElement.addAuxiliaryBodyElements(etc);
     if (etc.displayIndexColumn) {
       UpdateIndexColumnWidth.update(etc);
-      UpdateIndexColumnWidth.wrapTextWhenNarrowColumnsBreached(etc);
     }
   }
 
