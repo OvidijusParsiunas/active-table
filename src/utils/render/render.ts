@@ -1,11 +1,16 @@
+import {UpdateIndexColumnWidth} from '../../elements/table/indexColumn/updateIndexColumnWidth';
 import {TableDimensionsUtils} from '../tableDimensions/tableDimensionsUtils';
+import {IndexColumn} from '../../elements/table/indexColumn/indexColumn';
 import {EditableTableComponent} from '../../editable-table-component';
+import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {TableElement} from '../../elements/table/tableElement';
 
 export class Render {
-  // overwriting properties causes the whole table to refresh and subsequently - an infinite render loop
+  // CAUTION-4 overwriting properties causes the whole table to refresh and subsequently - an infinite render loop
   private static refreshTableState(etc: EditableTableComponent) {
     etc.columnsDetails.splice(0);
+    TableElement.AUXILIARY_TABLE_CONTENT_WIDTH = UNSET_NUMBER_IDENTIFIER;
+    UpdateIndexColumnWidth.WIDTH = IndexColumn.DEFAULT_WIDTH;
   }
 
   public static renderTable(etc: EditableTableComponent) {
