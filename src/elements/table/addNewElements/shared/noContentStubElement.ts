@@ -2,8 +2,6 @@ import {TableDimensionsUtils} from '../../../../utils/tableDimensions/tableDimen
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {AddNewRowElement} from '../row/addNewRowElement';
 
-// WORK - not sure if the user should be able to remove the header row
-
 // REF-18
 export class NoContentStubElement {
   private static readonly NO_CONTENT_STUB_CLASS = 'no-content-stub';

@@ -9,11 +9,19 @@ export type PropertiesOfType<T, Value> = {
 // sets properties that are in K but not in T to optional never
 type AssignNever<T, K> = K & {[B in Exclude<keyof T, keyof K>]?: never};
 
-// This facilitates a type that accepts a variety of interfaces that accept different combinations of properties
-// Operates by accepting a union of such interfaces that contain varying combinations of the  CompleteInterface
-// and returns a union of interfaces that contain their originally missing properties set to optional never.
-// The reason why we have Interfaces extends object is because if we just used AssignNever, TypeScript would
-// attempt to combine all of the interfaces, hence this allows unions to be preserved
-export type InterfacesUnion<CompleteInterface, Interfaces> = Interfaces extends object
+// This type accepts a union of interfaces that contain varying combinations of the CompleteInterface and returns
+// a union of interfaces that contain their originally missing properties set to optional never. The reason why
+// we have Interfaces extends object is because if we just used AssignNever in InterfacesUnion, TypeScript would
+// attempt to intersect all of the passed interfaces, hence this preserves the unions
+export type BuildUniqueInterfaces<CompleteInterface, Interfaces> = Interfaces extends object
   ? AssignNever<CompleteInterface, Interfaces>
   : never;
+
+type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
+
+// This type accepts a union of interfaces/types and returns a union that can be used to assert a variable to have
+// EITHER ONE of those interfaces/types
+// It operates by accepting a union of interfaces/types, building up a single interface that contains all of their
+// properties and returning the same union of interfaces/types with each one containing additional properties that
+// other interfaces had and they didn't with those properties being set to optional never ([propertyName]?: never).
+export type InterfacesUnion<Interfaces> = BuildUniqueInterfaces<UnionToIntersection<Interfaces>, Interfaces>;

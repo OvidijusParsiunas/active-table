@@ -57,10 +57,11 @@ export class AddNewColumnElement {
 
   public static createAndAppendToRow(etc: EditableTableComponent, row: HTMLElement, rowIndex: number) {
     const {addColumnCellsElementsRef} = etc;
-    if (addColumnCellsElementsRef.length > 0 && !AddNewColumnElement.isDisplayed(addColumnCellsElementsRef)) return;
+    // if statement needs to be before the addition of the new cell to addColumnCellsElementsRef
+    const isDisplay = addColumnCellsElementsRef.length === 0 || AddNewColumnElement.isDisplayed(addColumnCellsElementsRef);
     const cell = rowIndex === 0 ? AddNewColumnElement.createHeaderCell(etc) : AddNewColumnElement.createDataCell(etc);
     addColumnCellsElementsRef.splice(rowIndex, 0, cell);
-    row.appendChild(cell);
+    if (isDisplay) row.appendChild(cell);
   }
 
   // prettier-ignore

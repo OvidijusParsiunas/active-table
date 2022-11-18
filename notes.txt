@@ -196,3 +196,11 @@ needs to be cautious when handling the passed in object
 CAUTION-4
 Do not set state/property variables after render has occurred as it will trigger full component re-render
 Be careful when assigning element references and instead do them in the connectedCallback method
+
+Accepted behaviour
+
+When a table column is squished - the increased height can create a scrollbar in the parent - this will trigger a re-render in the table
+and cause the column widths to be reset (or be even smaller if using maxWidth as the new re-render is using the new table width that may
+not breach the maxWdith threshold). Because we do not record column widths in-state, there is currently no way to track back what the
+original widths were and they will be forced to reset.
+TO-DO can potentially keep track of the column widths and reset the correctly in the future
