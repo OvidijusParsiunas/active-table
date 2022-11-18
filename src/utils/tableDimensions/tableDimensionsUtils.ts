@@ -110,7 +110,8 @@ export class TableDimensionsUtils {
     const tableOffset = etc.offsetWidth;
     const setWidth = width || maxWidth;
     if (setWidth) {
-      return setWidth < tableOffset;
+      // tableOffset is usually rounded, hence using Math.ceil on setWidth to correctly compare them
+      return Math.ceil(setWidth) < tableOffset;
     }
     return false;
   }

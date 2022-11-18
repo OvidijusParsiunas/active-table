@@ -11,6 +11,7 @@ export class Render {
     etc.columnsDetails.splice(0);
     TableElement.AUXILIARY_TABLE_CONTENT_WIDTH = UNSET_NUMBER_IDENTIFIER;
     UpdateIndexColumnWidth.WIDTH = IndexColumn.DEFAULT_WIDTH;
+    etc.addColumnCellsElementsRef.splice(0, etc.addColumnCellsElementsRef.length);
   }
 
   public static renderTable(etc: EditableTableComponent) {
