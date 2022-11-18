@@ -78,6 +78,8 @@ export class TableElement {
     // new row row and full table overlay
     TableElement.addAuxiliaryBodyElements(etc);
     if (etc.displayIndexColumn) UpdateIndexColumnWidth.update(etc);
+    // needs to be after UpdateIndexColumnWidth.update as the new index column width can impact the add new column display
+    ToggleAdditionElements.update(etc, true, AddNewColumnElement.toggle);
   }
 
   private static createTableBody() {

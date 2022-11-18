@@ -1,5 +1,7 @@
 import {StaticTableWidthUtils} from '../../../utils/tableDimensions/staticTable/staticTableWidthUtils';
 import {TableDimensionsUtils} from '../../../utils/tableDimensions/tableDimensionsUtils';
+import {ToggleAdditionElements} from '../addNewElements/shared/toggleAdditionElements';
+import {AddNewColumnElement} from '../addNewElements/column/addNewColumnElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ExtractElements} from '../../../utils/elements/extractElements';
 import {Browser} from '../../../utils/browser/browser';
@@ -17,6 +19,7 @@ export class UpdateIndexColumnWidth {
       indexCell.classList.remove(IndexColumn.INDEX_CELL_OVERFLOW_CLASS);
     });
     tableDimensionsInternal.isColumnIndexCellTextWrapped = true;
+    ToggleAdditionElements.update(etc, true, AddNewColumnElement.toggle);
     return IndexColumn.DEFAULT_WIDTH;
   }
 
