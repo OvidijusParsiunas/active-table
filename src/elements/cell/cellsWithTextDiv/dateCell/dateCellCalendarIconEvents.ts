@@ -24,7 +24,7 @@ export class DateCellCalendarIconEvents {
       // which purges the selected cell ref
       FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
       // this is in a timeout because mouseDownIcon is triggered before window mouse down event which calls
-      // delete his.overlayElementsState.datePickerCell, thus this setter needs to be called after
+      // delete this.overlayElementsState.datePickerCell, thus this setter needs to be called after
       this.overlayElementsState.datePickerCell = cellElement;
       // displaying the picker on mouse down in order to keep it consistent with mouse down display for category,
       // however if it feels more natural to do it on mouse up, can move it to that, but keep in mind that it

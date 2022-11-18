@@ -6,7 +6,6 @@ import {StaticTable} from './staticTable';
 // TO-DO when not at maximum length - have a setting option to resize all columns to the limit as resizing to small and
 // back does not preserve the original width. Alternatively go as far as checking that data has not been changed since
 // the resize and if not - automatically set to the original ratio
-// TO-DO once the add columns column and left side row index tabs are present - take them into consideration
 
 // table width is considered static when the user sets its width
 export class StaticTableWidthUtils {

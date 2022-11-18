@@ -42,7 +42,7 @@ export class ValidateInput {
 //   selection.addRange(range);
 // }
 
-// // TO-DO test this out on other browsers
+// recommended to test this in other browsers
 // private static getGetSelectionFunc(etc: EditableTableComponent): Selection | null {
 //   const shadowRoot = etc.shadowRoot as unknown as Document;
 //   // chrome

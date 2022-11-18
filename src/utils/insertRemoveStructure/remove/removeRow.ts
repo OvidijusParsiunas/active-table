@@ -7,6 +7,7 @@ import {TableCellText, TableRow} from '../../../types/tableContents';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
+import {HasRerendered} from '../../render/hasRerendered';
 
 export class RemoveRow {
   // prettier-ignore
@@ -25,10 +26,10 @@ export class RemoveRow {
     columnsDetails.splice(0, columnsDetails.length);
   }
 
-  // CAUTION-2 - TO-DO recheck this after a button has been added to remove a row
   // prettier-ignore
   private static update(etc: EditableTableComponent,
       rowIndex: number, lastRowElement: HTMLElement, lastRowIndex: number, removedRowData: TableRow) {
+    if (HasRerendered.check(etc.columnsDetails)) return; // CAUTION-2
     const lastRow = {element: lastRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(etc, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow);
     etc.onTableUpdate(etc.contents);

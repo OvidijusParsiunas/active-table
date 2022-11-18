@@ -3,7 +3,6 @@ import {StaticTable} from '../../tableDimensions/staticTable/staticTable';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {TableElement} from '../../../elements/table/tableElement';
 
-// TO-DO - the add columns column should disappear when more columns cannot be added and appear when they can
 export class MaximumColumns {
   // the motivation behind minimal column length came from the fact that when we have set a table width and all the columns
   // have become too narrow (24px), upon adding any subsequent columns - the set table width would be ignored and the table

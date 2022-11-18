@@ -10,7 +10,6 @@ import {DateCellEvents} from './dateCellEvents';
 export class DateCellElement {
   public static readonly DATE_TYPE_TO_PROPERTIES: DateTypeToProperties = {};
 
-  // TO-DO - the column type will also need to be added to column types
   public static addNewDateType(dateTypeName: string, dateProperties: DateProperties) {
     DateCellElement.DATE_TYPE_TO_PROPERTIES[dateTypeName] = dateProperties;
     DATE_COLUMN_TYPE[dateTypeName] = dateTypeName;

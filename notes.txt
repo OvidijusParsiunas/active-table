@@ -179,15 +179,12 @@ When considering the idea of allowing different columns to have different styles
 the table as they will no longer be constant and will need some dynamicity
 
 CAUTION-2
-When resizing the table, take note of some async code that may have been called before the resize was triggered:
-Methods that end up calling changeTypeAndSetColumnType are usually in timeouts and this can cause issues when they trigger or are
-triggered after parent div resize; e.g. new row inserts a scrollbar, deletion removes a scrollbar or blurring a cell after typing
-by double clicking on top of a browser window to resize. In such instances the columnsDetails object is cleared and repopulated,
-however because it runs in a timeout - after the columnsDetails object is reset it proceedes to run.
-By the time the method is triggered, the individual columnDetails properties have been identified to already be created, however
-their cellTypeTotals properties does not exist, hence a simple if statement check allows their further code to stop running.
+When resizing the table, take note of some async code that was waiting to be executed before the resize was triggered:
+It has been identified that when re-render occurs and columnsDetails object is cleared, by the time the async code is executed,
+the columnDetails objects will already have the elements property populated again, however they will not have any other
+properties (REF-13) which we can use to check if re-rendering has occured, and if it has - stop any further async processing
+from execution.
 If further bugs occur - create and use a 'rendering' flag instead.
-(Because the code after the render reruns the full table setup - the totals will be calculated correctly)
 
 CAUTION-3
 Table dimensions have exclusive optional interfaces that are exposed to the client, however they may not be respected, hence the logic
@@ -204,3 +201,5 @@ and cause the column widths to be reset (or be even smaller if using maxWidth as
 not breach the maxWdith threshold). Because we do not record column widths in-state, there is currently no way to track back what the
 original widths were and they will be forced to reset.
 TO-DO can potentially keep track of the column widths and reset the correctly in the future
+
+Language packages

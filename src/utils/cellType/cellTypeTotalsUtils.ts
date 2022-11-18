@@ -1,6 +1,7 @@
 import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
+import {HasRerendered} from '../render/hasRerendered';
 import {ValidateInput} from './validateInput';
 
 export class CellTypeTotalsUtils {
@@ -52,9 +53,8 @@ export class CellTypeTotalsUtils {
   // prettier-ignore
   private static changeTypeAndSetColumnType(
       columnDetails: ColumnDetailsT, changeFuncs: ((cellTypeTotals: CellTypeTotals) => void)[]) {
+    if (HasRerendered.check(columnDetails)) return; // CAUTION-2
     const {cellTypeTotals, elements} = columnDetails;
-    // CAUTION-2
-    if (!cellTypeTotals) return;
     changeFuncs.forEach((func) => func(cellTypeTotals));
     if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Auto) {
       columnDetails.activeColumnType = CellTypeTotalsUtils.getActiveColumnType(cellTypeTotals, elements.length - 1);
