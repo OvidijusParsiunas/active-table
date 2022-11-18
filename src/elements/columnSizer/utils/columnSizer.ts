@@ -69,15 +69,16 @@ export class ColumnSizer {
       borderWidthsInfo.leftCellLeft, borderWidthsInfo.beforeLeftCellRight, isLastCell, tableElement);
     // movableElement should be treated as always present in columnSizer, but InsertRemoveColumnSizer needs to create
     // a new object to overwrite its other properties
+    const shouldWidthBeIncreased = ColumnSizer.shouldWidthBeIncreased(totalCellBorderWidth);
     const columnSizerState: Optional<ColumnSizerT, 'movableElement' | 'overlayElement'> = {
       element: columnSizerElement,
       styles: {
         default: {
-          width: ColumnSizer.shouldWidthBeIncreased(totalCellBorderWidth) ? `${totalCellBorderWidth}px` : '0.1px',
+          width: shouldWidthBeIncreased ? `${totalCellBorderWidth + 2}px` : '1.5px',
           backgroundImage,
         },
         hover: {
-          width: ColumnSizer.shouldWidthBeIncreased(totalCellBorderWidth) ? `${totalCellBorderWidth * 1.5}px` : '7px',
+          width: shouldWidthBeIncreased ? `${(totalCellBorderWidth + 2) * 1.5}px` : '9px',
         },
         static: {
           marginRight,

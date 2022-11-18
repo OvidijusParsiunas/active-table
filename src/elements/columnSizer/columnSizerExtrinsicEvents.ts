@@ -66,7 +66,7 @@ export class ColumnSizerExtrinsicEvents {
     // reset properties after the animation so we have the right properties for mouse enter
     setTimeout(() => {
       ColumnSizerElement.setBackgroundImage(sizerElement, sizerStyles.default.backgroundImage);
-      ColumnSizerElement.setColors(sizerElement, SEMI_TRANSPARENT_COLOR);
+      ColumnSizerElement.setBackgroundColor(sizerElement, SEMI_TRANSPARENT_COLOR);
     }, ColumnSizerElement.TRANSITION_TIME_ML);
   }
 

@@ -36,7 +36,7 @@ export class ColumnSizerOverlayEvents {
       setTimeout(() => {
         if (columnSizer.isSizerHovered) return;
         ColumnSizerElement.unsetTransitionTime(columnSizer.element);
-        ColumnSizerElement.setColors(columnSizer.element, SEMI_TRANSPARENT_COLOR);
+        ColumnSizerElement.setBackgroundColor(columnSizer.element, SEMI_TRANSPARENT_COLOR);
       }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
     }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
   }

@@ -106,8 +106,6 @@ export const ediTableStyle = css`
   }
 
   .column-sizer {
-    border-left: 1px solid;
-    border-right: 1px solid;
     background-size: 20px 5px;
     position: absolute;
   }

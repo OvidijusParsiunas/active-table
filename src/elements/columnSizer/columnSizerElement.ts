@@ -43,6 +43,10 @@ export class ColumnSizerElement {
     columnSizerElement.style.backgroundImage = ColumnSizerElement.EMPTY_BACKGROUND_IMAGE;
   }
 
+  public static setBackgroundColor(columnSizerElement: HTMLElement, color: string) {
+    columnSizerElement.style.backgroundColor = color;
+  }
+
   public static setTransitionTime(columnSizerElement: HTMLElement) {
     columnSizerElement.style.transition = ColumnSizerElement.TRANSITION_TIME;
   }
@@ -53,7 +57,7 @@ export class ColumnSizerElement {
 
   // is not used to unset background image
   public static unsetElementsToDefault(columnSizerElement: HTMLElement, width: PX, setColors = true) {
-    if (setColors) ColumnSizerElement.setColors(columnSizerElement, SEMI_TRANSPARENT_COLOR);
+    if (setColors) ColumnSizerElement.setBackgroundColor(columnSizerElement, SEMI_TRANSPARENT_COLOR);
     ColumnSizerFillerElement.hide(columnSizerElement.children[0] as HTMLElement);
     columnSizerElement.style.width = width;
   }
@@ -110,16 +114,10 @@ export class ColumnSizerElement {
     }
   }
 
-  public static setColors(columnSizerElement: HTMLElement, color: string) {
-    columnSizerElement.style.backgroundColor = color;
-    columnSizerElement.style.borderLeftColor = color;
-    columnSizerElement.style.borderRightColor = color;
-  }
-
   public static setHoverStyle(columnSizerElement: HTMLElement, width: PX, setTransition: boolean, anotherColor?: string) {
     ColumnSizerFillerElement.display(columnSizerElement.children[0] as HTMLElement);
     if (setTransition) ColumnSizerElement.setTransitionTime(columnSizerElement);
-    ColumnSizerElement.setColors(columnSizerElement, anotherColor || ColumnSizerElement.HOVER_COLOR);
+    ColumnSizerElement.setBackgroundColor(columnSizerElement, anotherColor || ColumnSizerElement.HOVER_COLOR);
     columnSizerElement.style.width = width;
   }
 }

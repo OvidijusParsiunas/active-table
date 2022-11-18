@@ -10,9 +10,7 @@ export class MovableColumnSizerElement {
   // this is recalculated as it depends on the column index that the sizer is on
   public static setStaticProperties(movableSizerElement: HTMLElement, marginRight: string, width: PX) {
     movableSizerElement.style.marginRight = marginRight;
-    const widthNumber = Number.parseInt(width);
-    const totalSizerBorderWidth = 2; // this is not set by the user
-    movableSizerElement.style.width = `${widthNumber + totalSizerBorderWidth}px`;
+    movableSizerElement.style.width = width;
   }
 
   // the vertical line has no pointer events, hence it should not be expected to be passed in here
