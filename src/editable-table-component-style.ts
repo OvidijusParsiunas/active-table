@@ -142,8 +142,8 @@ export const ediTableStyle = css`
   .index-cell {
     text-align: center;
     padding: 11px 4px 0px !important;
-    /* TO-DO may be able to reuse the next class if cell is used to click and open a dropdown */
-    cursor: default;
+    /* TO-DO set this to default if the user does not have the ability to open the row dropdown */
+    cursor: pointer;
     user-select: none;
     /* safari */
     -webkit-user-select: none;

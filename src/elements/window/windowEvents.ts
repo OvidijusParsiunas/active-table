@@ -5,6 +5,7 @@ import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEve
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
+import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {CellDetails} from '../../types/focusedCell';
@@ -15,6 +16,9 @@ export class WindowEvents {
     const {rowIndex, columnIndex} = this.focusedElements.cell as CellDetails;
     if (this.columnsDetails[columnIndex]?.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryCellEvents.keyDownText(this, rowIndex, columnIndex, event);
+    }
+    if (Dropdown.isDisplayed(this.overlayElementsState.rowDropdown)) {
+      RowDropdown.onKeyDown(this, event);
     }
   }
 
@@ -31,8 +35,11 @@ export class WindowEvents {
     // handle the click event instead (full table overlay element for column dropdown)
     // and table element for the other closable elements  
     if ((event.target as HTMLElement).tagName === EditableTableComponent.ELEMENT_TAG) return;
-    const {overlayElementsState: { columnDropdown }, focusedElements } = this
+    const {overlayElementsState: {columnDropdown, rowDropdown}, focusedElements} = this
     // if the user clicks outside of the shadow dom and a dropdown is open, close it
+    if (Dropdown.isDisplayed(rowDropdown)) {
+      RowDropdown.hide(this);
+    }
     if (Dropdown.isDisplayed(columnDropdown)) {
       ColumnDropdown.processTextAndHide(this);
     // cell blur will not activate when the dropdown has been clicked and will not close if its scrollbar or padding are

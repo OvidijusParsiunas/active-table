@@ -1,5 +1,6 @@
 import {CategoryCellEvents} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellEvents';
 import {DateCellEvents} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellEvents';
+import {IndexColumnEvents} from '../../../elements/indexColumn/indexColumnEvents';
 import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
@@ -31,6 +32,7 @@ export class UpdateCellsForRows {
       }
       etc.onCellUpdate(cellElement.textContent as string, rowIndex, columnIndex, cellUpdateType);
     });
+    if (etc.displayIndexColumn) IndexColumnEvents.setEvents(etc, rowIndex, rowElement.children[0] as HTMLElement);
   }
 
   private static updateLastRow(etc: EditableTableComponent, cellUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {

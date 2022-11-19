@@ -11,6 +11,7 @@ import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
+import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {OverlayElements} from '../../types/overlayElements';
 import {IndexColumn} from '../indexColumn/indexColumn';
 import {TableRow} from '../../types/tableContents';
@@ -30,6 +31,10 @@ export class TableElement {
     const columnDropdownElement = ColumnDropdown.create(etc, areHeadersEditable);
     tableElement.appendChild(columnDropdownElement);
     overlayElementsState.columnDropdown = columnDropdownElement;
+    // row dropdown
+    const rowDropdownElement = RowDropdown.create(etc);
+    tableElement.appendChild(rowDropdownElement);
+    overlayElementsState.rowDropdown = rowDropdownElement;
   }
 
   // add column cell element is technicaly an auxiliary element but it's cells are added on row insertion

@@ -166,9 +166,7 @@ export class DropdownItem {
     if (element.classList.contains(DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM)) {
       const nestedDropdownElement = element.children[1] as HTMLElement;
       // when on item that has open nested dropdown
-      if (nestedDropdownElement.style.display === 'block') {
-        return (nestedDropdownElement.children[0] as HTMLElement).focus();
-      }
+      if (Dropdown.isDisplayed(nestedDropdownElement)) return (nestedDropdownElement.children[0] as HTMLElement).focus();
     }
     const nextElement = startElement ? element : (element.nextSibling as HTMLElement);
     if (!nextElement) {

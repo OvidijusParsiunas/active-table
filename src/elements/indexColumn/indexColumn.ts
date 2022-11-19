@@ -1,6 +1,7 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {ExtractElements} from '../../utils/elements/extractElements';
 import {UpdateIndexColumnWidth} from './updateIndexColumnWidth';
+import {IndexColumnEvents} from './indexColumnEvents';
 import {CellElement} from '../cell/cellElement';
 
 export class IndexColumn {
@@ -46,6 +47,7 @@ export class IndexColumn {
 
   public static createAndPrependToRow(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number) {
     const cell = rowIndex === 0 ? IndexColumn.createHeaderCell(etc) : IndexColumn.createDataCell(etc, rowIndex);
+    IndexColumnEvents.setEvents(etc, rowIndex, cell);
     rowElement.appendChild(cell);
   }
 }
