@@ -18,7 +18,7 @@ export class WindowEvents {
       CategoryCellEvents.keyDownText(this, rowIndex, columnIndex, event);
     }
     if (Dropdown.isDisplayed(this.overlayElementsState.rowDropdown)) {
-      RowDropdown.onKeyDown(this, event);
+      RowDropdown.windowOnKeyDown(this, event);
     }
   }
 

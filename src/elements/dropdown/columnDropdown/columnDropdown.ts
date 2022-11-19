@@ -1,5 +1,4 @@
 import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximumColumns';
-import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {HeaderCellEvents} from '../../cell/headerCell/headerCellEvents';
@@ -49,7 +48,7 @@ export class ColumnDropdown {
       focusedElements: { cell: {element: cellElement, columnIndex} }} = etc;
     ColumnDropdown.processTextIfExists(etc, columnIndex as number, cellElement);
     HeaderCellEvents.fadeCell(cellElement as HTMLElement);
-    GenericElementUtils.hideElements(
+    Dropdown.hide(
       columnDropdown as HTMLElement, fullTableOverlay as HTMLElement, columnTypeDropdown as HTMLElement);
     DropdownItem.resetNestedDropdownItemStyle(columnTypeDropdown as HTMLElement)
     ColumnDropdown.resetDropdownPosition(columnDropdown as HTMLElement);
@@ -100,7 +99,7 @@ export class ColumnDropdown {
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
     dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement);
     // needs to be displayed in order to evalute if in view port
-    dropdownElement.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
+    Dropdown.display(dropdownElement);
     const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement);
     if (!visibilityDetails.isFullyVisible) {
       if (visibilityDetails.blockingSides.has(SIDE.LEFT)) {
@@ -121,6 +120,6 @@ export class ColumnDropdown {
     if (inputElement) DropdownItem.focusInputElement(inputElement as HTMLElement);
     ColumnDropdownItem.rebindButtonItems(etc, columnIndex, dropdownElement);
     ColumnDropdown.updateAddColumnItemsStyle(etc);
-    fullTableOverlay.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
+    Dropdown.display(fullTableOverlay);
   }
 }

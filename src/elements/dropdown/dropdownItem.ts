@@ -1,4 +1,3 @@
-import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {ElementVisibility} from '../../utils/elements/elementVisibility';
 import {Dropdown} from './dropdown';
 
@@ -155,7 +154,7 @@ export class DropdownItem {
     // when at the end of nested dropdown item
     const dropdownParent = element.parentElement?.parentElement as HTMLElement;
     if (dropdownParent.classList.contains(DropdownItem.DROPDOWN_ITEM_CLASS)) {
-      GenericElementUtils.hideElements(element.parentElement as HTMLElement);
+      Dropdown.hide(element.parentElement as HTMLElement);
       return DropdownItem.focusNextItem(dropdownParent, dropdownElement);
     }
     // when on last item

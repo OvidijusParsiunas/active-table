@@ -1,5 +1,4 @@
 import {CellWithTextEvents} from '../../cell/cellsWithTextDiv/cellWithTextEvents';
-import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownScrollbar} from './categoryDropdownScrollbar';
@@ -15,10 +14,6 @@ import {Dropdown} from '../dropdown';
 // TO-DO allow dev to control whether additional elements are allowed to be added
 export class CategoryDropdown {
   private static readonly CATEGORY_DROPDOWN_CLASS = 'category-dropdown';
-
-  public static hide(dropdown: HTMLElement) {
-    GenericElementUtils.hideElements(dropdown);
-  }
 
   private static focusItemOnDropdownOpen(textElement: HTMLElement, dropdown: CategoryDropdownT, defaultCellValue: string) {
     // the updateCellText parameter is set to false for a case where the user clicks on a category cell which has
@@ -72,7 +67,7 @@ export class CategoryDropdown {
       dropdownEl.onclick = CategoryDropdown.click.bind(etc);
       CategoryDropdownItem.blurItem(categoryDropdown, 'hovered');
       CategoryDropdownItem.blurItem(categoryDropdown, 'matchingWithCellText');
-      dropdownEl.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
+      Dropdown.display(dropdownEl);
       CategoryDropdown.setPosition(dropdownEl, cellElement);
       dropdownEl.scrollLeft = 0;
       CategoryDropdownScrollbar.setProperties(categoryDropdown);

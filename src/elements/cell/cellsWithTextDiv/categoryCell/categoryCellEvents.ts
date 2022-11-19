@@ -7,6 +7,7 @@ import {DataCellEvents} from '../../dataCell/dataCellEvents';
 import {CategoryCellElement} from './categoryCellElement';
 import {CellWithTextEvents} from '../cellWithTextEvents';
 import {CellTextEvents} from '../text/cellTextEvents';
+import {Dropdown} from '../../../dropdown/dropdown';
 
 // the logic for cell and text divs is handled here
 export class CategoryCellEvents {
@@ -33,7 +34,7 @@ export class CategoryCellEvents {
 
   public static blurring(etc: EditableTableComponent, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const {element, categoryToItem} = etc.columnsDetails[columnIndex].categoryDropdown;
-    CategoryDropdown.hide(element);
+    Dropdown.hide(element);
     if (!categoryToItem[textElement.textContent as string]) {
       CategoryCellElement.finaliseEditedText(etc, textElement, columnIndex);
     }

@@ -1,4 +1,3 @@
-import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {RowDropdownItem} from './rowDropdownItem';
@@ -12,7 +11,7 @@ export class RowDropdown {
   // prettier-ignore
   public static hide(etc: EditableTableComponent) {
     const {overlayElementsState: {rowDropdown, fullTableOverlay}} = etc;
-    GenericElementUtils.hideElements(rowDropdown as HTMLElement, fullTableOverlay as HTMLElement);
+    Dropdown.hide(rowDropdown as HTMLElement, fullTableOverlay as HTMLElement);
     // in a timeout because upon pressing esc/enter key on dropdown, the window event is fired after which checks it
     setTimeout(() => delete etc.focusedElements.rowDropdown);
   }

@@ -5,7 +5,7 @@ export class Dropdown {
   public static readonly DROPDOWN_CLASS = 'editable-table-component-dropdown';
   public static readonly DISABLED_ITEM_CLASS = 'dropdown-disabled-item';
   // when there is a horizontal overflow (categories) - this automatically stretches all items to the dropdown width
-  public static readonly CSS_DISPLAY_VISIBLE = 'grid';
+  private static readonly CSS_DISPLAY_VISIBLE = 'grid';
   public static readonly DROPDOWN_WIDTH = 176;
   private static readonly DROPDOWN_PADDING_TOP_BOTTOM_PX = '4px';
 
@@ -19,12 +19,22 @@ export class Dropdown {
     // padding specified to allow use of element style before displaying it
     dropdownElement.style.paddingTop = Dropdown.DROPDOWN_PADDING_TOP_BOTTOM_PX;
     dropdownElement.style.paddingBottom = Dropdown.DROPDOWN_PADDING_TOP_BOTTOM_PX;
-    GenericElementUtils.hideElements(dropdownElement);
+    Dropdown.hide(dropdownElement);
     return dropdownElement;
   }
 
-  public static isDisplayed(columnDropdown?: HTMLElement) {
-    return columnDropdown?.style.display === Dropdown.CSS_DISPLAY_VISIBLE;
+  public static isDisplayed(element?: HTMLElement) {
+    return element?.style.display === Dropdown.CSS_DISPLAY_VISIBLE;
+  }
+
+  public static display(...elements: HTMLElement[]) {
+    elements.forEach((element) => {
+      element.style.display = Dropdown.CSS_DISPLAY_VISIBLE;
+    });
+  }
+
+  public static hide(...elements: HTMLElement[]) {
+    GenericElementUtils.hideElements(...elements);
   }
 
   public static isPartOfDropdownElement(element: HTMLElement) {
