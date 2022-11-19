@@ -32,7 +32,6 @@ export class UpdateCellsForRows {
       }
       etc.onCellUpdate(cellElement.textContent as string, rowIndex, columnIndex, cellUpdateType);
     });
-    if (etc.displayIndexColumn) IndexColumnEvents.setEvents(etc, rowIndex, rowElement.children[0] as HTMLElement);
   }
 
   private static updateLastRow(etc: EditableTableComponent, cellUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {
@@ -41,15 +40,17 @@ export class UpdateCellsForRows {
     }
   }
 
-  // prettier-ignore
   private static updateLowerBeforeLastRows(etc: EditableTableComponent, startRowIndex: number, lastRowIndex: number) {
     const tableBodyChildren = etc.tableBodyElementRef?.children;
     if (tableBodyChildren) {
       const lowerRows = Array.from(tableBodyChildren).slice(startRowIndex, lastRowIndex);
-      lowerRows.forEach((rowElement: Node, lowerRowIndex: number) => {
+      lowerRows.forEach((row: Node, lowerRowIndex: number) => {
         const relativeContentsRowIndex = lowerRowIndex + startRowIndex;
-        UpdateCellsForRows.updateRowCells(
-          etc, rowElement as HTMLElement, relativeContentsRowIndex, CELL_UPDATE_TYPE.UPDATE);
+        const rowElement = row as HTMLElement;
+        UpdateCellsForRows.updateRowCells(etc, rowElement, relativeContentsRowIndex, CELL_UPDATE_TYPE.UPDATE);
+        if (etc.displayIndexColumn) {
+          IndexColumnEvents.setEvents(etc, rowElement.children[0] as HTMLElement, relativeContentsRowIndex);
+        }
       });
     }
   }

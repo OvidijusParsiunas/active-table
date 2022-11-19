@@ -47,7 +47,7 @@ export class IndexColumn {
 
   public static createAndPrependToRow(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number) {
     const cell = rowIndex === 0 ? IndexColumn.createHeaderCell(etc) : IndexColumn.createDataCell(etc, rowIndex);
-    IndexColumnEvents.setEvents(etc, rowIndex, cell);
+    IndexColumnEvents.setEvents(etc, cell, rowIndex);
     rowElement.appendChild(cell);
   }
 }
