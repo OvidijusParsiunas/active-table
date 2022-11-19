@@ -37,6 +37,8 @@ export class EditableTableComponent extends LitElement {
   public static ELEMENT_TAG = 'EDITABLE-TABLE-COMPONENT';
 
   @property({type: Array})
+  // TO-DO cannot insert a header row when there is content already present - maybe don't need to?
+  // TO-DO cannot delete header row - maybe don't need to?
   // TO-DO must fill rows that don't have all columns
   contents: TableContents = [
     ['R', 'G', 'B', 'Color'],
@@ -90,7 +92,7 @@ export class EditableTableComponent extends LitElement {
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  displayIndexColumn = false;
+  displayIndexColumn = true;
 
   // TO-DO allow the clien to update the table cells without re-renderdering the whole table
   // @property({

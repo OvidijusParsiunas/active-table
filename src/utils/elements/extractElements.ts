@@ -1,5 +1,5 @@
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
-import {IndexColumn} from '../../elements/table/indexColumn/indexColumn';
+import {IndexColumn} from '../../elements/indexColumn/indexColumn';
 import {TableContents} from '../../types/tableContents';
 
 export class ExtractElements {

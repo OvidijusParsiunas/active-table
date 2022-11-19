@@ -14,19 +14,16 @@ export class CellElement {
   // this is not used by all cell elements as they use their own logic for hover events
   public static readonly HOVERABLE_CELL_CLASS = 'hoverable-cell';
 
+  // prettier-ignore
   // this is used for case where element could be the cell element or the text inside a category cell
   public static extractCellElement(element: HTMLElement) {
     // if category cell text or date cell text/input container
-    if (
-      element.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS) ||
-      element.classList.contains(DateCellInputElement.DATE_INPUT_CONTAINER_CLASS)
-    ) {
+    if (element.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS) ||
+        element.classList.contains(DateCellInputElement.DATE_INPUT_CONTAINER_CLASS)) {
       return element.parentElement as HTMLElement;
       // if date cell input
-    } else if (
-      element.classList.contains(DateCellInputElement.DATE_INPUT_CLASS) ||
-      element.classList.contains(DateCellCalendarIconElement.CALENDAR_ICON_CONTAINER_CLASS)
-    ) {
+    } else if (element.classList.contains(DateCellInputElement.DATE_INPUT_CLASS) ||
+        element.classList.contains(DateCellCalendarIconElement.CALENDAR_ICON_CONTAINER_CLASS)) {
       return (element.parentElement as HTMLElement).parentElement as HTMLElement;
     }
     // if cell

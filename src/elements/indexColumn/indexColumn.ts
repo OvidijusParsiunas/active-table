@@ -1,7 +1,7 @@
-import {EditableTableComponent} from '../../../editable-table-component';
-import {ExtractElements} from '../../../utils/elements/extractElements';
+import {EditableTableComponent} from '../../editable-table-component';
+import {ExtractElements} from '../../utils/elements/extractElements';
 import {UpdateIndexColumnWidth} from './updateIndexColumnWidth';
-import {CellElement} from '../../cell/cellElement';
+import {CellElement} from '../cell/cellElement';
 
 export class IndexColumn {
   public static readonly INDEX_CELL_CLASS = 'index-cell';

@@ -6,13 +6,13 @@ import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRo
 import {AddNewColumnElement} from './addNewElements/column/addNewColumnElement';
 import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
-import {UpdateIndexColumnWidth} from './indexColumn/updateIndexColumnWidth';
+import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {OverlayElements} from '../../types/overlayElements';
-import {IndexColumn} from './indexColumn/indexColumn';
+import {IndexColumn} from '../indexColumn/indexColumn';
 import {TableRow} from '../../types/tableContents';
 import {TableEvents} from './tableEvents';
 

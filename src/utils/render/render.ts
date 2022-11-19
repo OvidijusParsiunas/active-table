@@ -1,7 +1,7 @@
-import {UpdateIndexColumnWidth} from '../../elements/table/indexColumn/updateIndexColumnWidth';
+import {UpdateIndexColumnWidth} from '../../elements/indexColumn/updateIndexColumnWidth';
 import {TableDimensionsUtils} from '../tableDimensions/tableDimensionsUtils';
-import {IndexColumn} from '../../elements/table/indexColumn/indexColumn';
 import {EditableTableComponent} from '../../editable-table-component';
+import {IndexColumn} from '../../elements/indexColumn/indexColumn';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {TableElement} from '../../elements/table/tableElement';
 

@@ -2,8 +2,8 @@ import {ToggleAdditionElements} from '../../../elements/table/addNewElements/sha
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
 import {RowElement} from '../../../elements/table/addNewElements/row/rowElement';
-import {IndexColumn} from '../../../elements/table/indexColumn/indexColumn';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {IndexColumn} from '../../../elements/indexColumn/indexColumn';
 import {TableCellText, TableRow} from '../../../types/tableContents';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
