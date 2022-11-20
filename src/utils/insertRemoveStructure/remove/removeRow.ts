@@ -31,7 +31,7 @@ export class RemoveRow {
       rowIndex: number, lastRowElement: HTMLElement, lastRowIndex: number, removedRowData: TableRow) {
     if (HasRerendered.check(etc.columnsDetails)) return; // CAUTION-2
     const lastRow = {element: lastRowElement, index: lastRowIndex};
-    UpdateCellsForRows.rebindAndFireUpdates(etc, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow);
+    UpdateCellsForRows.rebindAndFireUpdates(etc, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow); // REF-20
     etc.onTableUpdate(etc.contents);
     if (etc.contents.length === 0) {
       RemoveRow.removeAllColumnsDetails(etc.columnsDetails);
@@ -53,6 +53,7 @@ export class RemoveRow {
     const removedRowData = RemoveRow.removeRow(etc, rowIndex);
     ToggleAdditionElements.update(etc, false, AddNewRowElement.toggle);
     if (etc.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex);
+    // explain this a little better
     setTimeout(() => RemoveRow.update(etc, rowIndex, lastRowElement, lastRowIndex, removedRowData));
   }
 }

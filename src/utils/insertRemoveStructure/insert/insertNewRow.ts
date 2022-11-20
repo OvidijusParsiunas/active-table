@@ -18,7 +18,7 @@ export class InsertNewRow {
     const lastRowIndex = etc.contents.length - 1;
     const lastDataRowElement = etc.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const lastRowDetails: ElementDetails = {element: lastDataRowElement, index: lastRowIndex};
-    UpdateCellsForRows.rebindAndFireUpdates(etc, rowIndex, CELL_UPDATE_TYPE.ADD, lastRowDetails);
+    UpdateCellsForRows.rebindAndFireUpdates(etc, rowIndex, CELL_UPDATE_TYPE.ADD, lastRowDetails); // REF-20
     etc.onTableUpdate(etc.contents);
   }
 

@@ -48,6 +48,7 @@ export class EditableTableComponent extends LitElement {
     [0, 254, 0, 'Green'],
   ];
 
+  // REF-20
   // check if types for this work
   @property({converter: LITElementTypeConverters.convertToFunction})
   onCellUpdate: (newText: string, cellRowIndex: number, cellColumnIndex: number, updateType: CELL_UPDATE_TYPE) => void =

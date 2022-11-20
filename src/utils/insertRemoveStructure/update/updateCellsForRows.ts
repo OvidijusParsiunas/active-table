@@ -25,9 +25,8 @@ export class UpdateCellsForRows {
   private static updateRowCells(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
     const dataCellElements = ExtractElements.textCellsArrFromRow(rowElement);
-    const resetEvents = cellUpdateType !== CELL_UPDATE_TYPE.REMOVED && rowIndex < etc.contents.length - 1;
     dataCellElements.forEach((cellElement: Node, columnIndex: number) => {
-      if (resetEvents) {
+      if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
         UpdateCellsForRows.resetCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
       }
       etc.onCellUpdate(cellElement.textContent as string, rowIndex, columnIndex, cellUpdateType);
@@ -55,6 +54,7 @@ export class UpdateCellsForRows {
     }
   }
 
+  // REF-20
   // the reason why last row details need to be passed here is because after removal of last row, the last element details
   // are no longer available as this class's methods are run in setTimeouts, hence those details need to be captured
   // before these methods are executed

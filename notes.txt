@@ -174,6 +174,25 @@ and if it was we wrap the index column from the getgo.
 When preserveNarrowColumns is set to true and the table exceeds the set width, the column is set to wrap.
 The client also has the ability to set the column to wrap all the time by using the wrapIndexCellText flag.
 
+REF-20
+onCellUpdate is specifically designed to help maintain a data object in the parent application and IS NOT meant to be used like
+an alert notification system to report what has been specifically removed or added. The reason for this is because the update
+messages that are sent don't actually describe the particular cells that have been removed/added are and instead describe what
+changes need to be made to the outside data object in order for it to be the same as the data object (contents) in this component.
+Example:
+When there are 5 rows and 5 columns, and row number 3 gets removed - the messages that are sent out do not say that row 3 cells
+were removed and instead they will say that row 3 cells were updated, row 4 was updated ad row 5 was the one that was removed.
+Reasons for implementing onCellUpdate this way:
+1. This allows the shadow component to be 100% clear on what happens inside it when a certain part of the table object is
+manipulated and how the changes should be made on the parent object to keep it the same as API consumers can take the wrong path
+of implementing their array splice functionality incorrectly which would leave their objects out of sync.
+2. In state management solutions such as Redux - reducers should be pure functions and not something that would maintain existing
+state. Hence incentivising users to implement array splicing and addition logic for state manipulation is something that we want
+to avoid.
+3. The simplicty, messages that are sent out denote exactly what cells need to be changed and not making the user solve the problem
+of what else needs to be changed when one has been deleted/inserted at a particular table index. Hence, they should do exactly what
+the messages tell them to and absolutely nothing else.
+
 CAUTION-1
 When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across
 the table as they will no longer be constant and will need some dynamicity
