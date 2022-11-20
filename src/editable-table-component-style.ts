@@ -204,7 +204,7 @@ export const ediTableStyle = css`
     text-align: center;
   }
 
-  .dropdown-hoverable-item:hover {
+  .dropdown-highlightable-item:hover {
     background-color: #eaeaea;
   }
 

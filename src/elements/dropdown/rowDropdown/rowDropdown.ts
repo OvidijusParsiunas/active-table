@@ -71,7 +71,6 @@ export class RowDropdown {
   }
 
   // WORK - ARROW UP AND DOWN for dropdowns and arrow right for nested dropdown
-  // prettier-ignore
   public static dropdownOnKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
     if (event.key === KEYBOARD_KEY.ENTER) {
       const itemElement = event.target as HTMLElement;

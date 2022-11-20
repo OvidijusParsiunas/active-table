@@ -6,7 +6,7 @@ export class DropdownItem {
   public static readonly DROPDOWN_INPUT_CLASS = 'dropdown-input';
   private static readonly DROPDOWN_INPUT_ITEM_CLASS = 'dropdown-input-item';
   private static readonly DROPDOWN_TITLE_ITEM_CLASS = 'dropdown-title-item';
-  private static readonly DROPDOWN_HOVERABLE_ITEM = 'dropdown-hoverable-item';
+  private static readonly DROPDOWN_HIGHLIGHTABLE_ITEM = 'dropdown-highlightable-item';
   private static readonly DROPDOWN_NESTED_DROPDOWN_ITEM = 'dropdown-nested-dropdown-item';
   // this is used to identify if a mouse event is currently on a dropdown item
   public static readonly DROPDOWN_ITEM_IDENTIFIER = 'dropdown-item-identifier';
@@ -54,7 +54,7 @@ export class DropdownItem {
 
   public static addButtonItem(dropdownElement: HTMLElement, text: string, ...classNames: string[]) {
     const buttonElement = DropdownItem.addPlaneButtonItem(dropdownElement, text);
-    buttonElement.classList.add(DropdownItem.DROPDOWN_HOVERABLE_ITEM);
+    buttonElement.classList.add(DropdownItem.DROPDOWN_HIGHLIGHTABLE_ITEM);
     if (classNames.length > 0) buttonElement.classList.add(...classNames);
     return buttonElement;
   }
