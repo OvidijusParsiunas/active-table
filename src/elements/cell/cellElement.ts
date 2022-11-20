@@ -11,8 +11,6 @@ import {CSSStyle} from '../../types/cssStyle';
 
 export class CellElement {
   public static readonly CELL_CLASS = 'cell';
-  // this is not used by all cell elements as they use their own logic for hover events
-  public static readonly HOVERABLE_CELL_CLASS = 'hoverable-cell';
 
   // prettier-ignore
   // this is used for case where element could be the cell element or the text inside a category cell

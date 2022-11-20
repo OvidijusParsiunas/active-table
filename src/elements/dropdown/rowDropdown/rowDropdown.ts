@@ -1,5 +1,7 @@
 import {MaximumRows} from '../../../utils/insertRemoveStructure/insert/maximumRows';
+import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CellHighlightUtil} from '../../../utils/color/cellHighlightUtil';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {RowDropdownItem} from './rowDropdownItem';
 import {DropdownItem} from '../dropdownItem';
@@ -11,10 +13,14 @@ export class RowDropdown {
 
   // prettier-ignore
   public static hide(etc: EditableTableComponent) {
-    const {overlayElementsState: {rowDropdown, fullTableOverlay}} = etc;
+    const {overlayElementsState: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element: cellElement}}} = etc;
     Dropdown.hide(rowDropdown as HTMLElement, fullTableOverlay as HTMLElement);
-    // in a timeout because upon pressing esc/enter key on dropdown, the window event is fired after which checks it
-    setTimeout(() => delete etc.focusedElements.rowDropdown);
+    CellHighlightUtil.fade(cellElement as HTMLElement);
+    setTimeout(() => {
+      // in a timeout because upon pressing esc/enter key on dropdown, the window event is fired after which checks it
+      delete etc.focusedElements.rowDropdown;
+      FocusedCellUtils.purge(etc.focusedElements.cell);
+    });
   }
 
   private static updateItemsStyle(etc: EditableTableComponent) {
@@ -29,15 +35,21 @@ export class RowDropdown {
     });
   }
 
+  // TO-DO will this work correctly when a scrollbar is introduced
+  private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement) {
+    dropdownElement.style.top = `${cellElement.offsetTop}px`;
+    dropdownElement.style.left = `${cellElement.offsetWidth}px`;
+  }
+
   public static display(this: EditableTableComponent, rowIndex: number, event: MouseEvent) {
     const dropdownElement = this.overlayElementsState.rowDropdown as HTMLElement;
     const fullTableOverlayElement = this.overlayElementsState.fullTableOverlay as HTMLElement;
     RowDropdownItem.rebindButtonItems(this, rowIndex, dropdownElement);
-    const cell = event.target as HTMLElement;
-    dropdownElement.style.top = `${cell.offsetTop}px`;
-    dropdownElement.style.left = `${cell.offsetWidth}px`;
     RowDropdown.updateItemsStyle(this);
+    const cellElement = event.target as HTMLElement;
+    RowDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
     Dropdown.display(dropdownElement, fullTableOverlayElement);
+    setTimeout(() => FocusedCellUtils.setIndexCell(this.focusedElements.cell, cellElement, rowIndex));
   }
 
   // the reason why we track window key events is because the table is not actually focused when it is displayed,
@@ -73,7 +85,6 @@ export class RowDropdown {
     }
   }
 
-  // WORK - when clicked - the item should not lose the focus
   public static create(etc: EditableTableComponent) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.onkeydown = RowDropdown.dropdownOnKeyDown.bind(etc, dropdownElement);

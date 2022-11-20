@@ -24,7 +24,7 @@ export class IndexColumn {
 
   private static createCell(etc: EditableTableComponent, tag: 'th' | 'td') {
     const cell = document.createElement(tag);
-    cell.classList.add(CellElement.CELL_CLASS, IndexColumn.INDEX_CELL_CLASS, CellElement.HOVERABLE_CELL_CLASS);
+    cell.classList.add(CellElement.CELL_CLASS, IndexColumn.INDEX_CELL_CLASS);
     if (!etc.tableDimensionsInternal.isColumnIndexCellTextWrapped) {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }

@@ -2,30 +2,21 @@ import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils'
 import {ColumnSizerCellEvents} from '../../columnSizer/columnSizerCellEvents';
 import {ColumnDropdown} from '../../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CellHighlightUtil} from '../../../utils/color/cellHighlightUtil';
 import {Dropdown} from '../../dropdown/dropdown';
 import {CellEvents} from '../cellEvents';
 
 export class HeaderCellEvents {
-  private static readonly HOVER_BACKGROUND_COLOR = '#f7f7f7';
-
-  public static fadeCell(cellElement: HTMLElement) {
-    cellElement.style.backgroundColor = '';
-  }
-
-  private static highlightCell(cellElement: HTMLElement) {
-    cellElement.style.backgroundColor = HeaderCellEvents.HOVER_BACKGROUND_COLOR;
-  }
-
-  private static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
+  public static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     if (!this.tableElementEventState.selectedColumnSizer) {
-      HeaderCellEvents.highlightCell(event.target as HTMLElement);
+      CellHighlightUtil.highlight(event.target as HTMLElement);
       ColumnSizerCellEvents.cellMouseEnter(this.columnsDetails, columnIndex);
     }
   }
 
   private static mouseLeaveCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     if (!Dropdown.isDisplayed(this.overlayElementsState.columnDropdown)) {
-      HeaderCellEvents.fadeCell(event.target as HTMLElement);
+      CellHighlightUtil.fade(event.target as HTMLElement);
     }
     if (!this.tableElementEventState.selectedColumnSizer) {
       ColumnSizerCellEvents.cellMouseLeave(this.columnsDetails, columnIndex);

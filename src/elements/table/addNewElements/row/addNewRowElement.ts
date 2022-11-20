@@ -1,6 +1,7 @@
 import {InsertNewRow} from '../../../../utils/insertRemoveStructure/insert/insertNewRow';
 import {MaximumRows} from '../../../../utils/insertRemoveStructure/insert/maximumRows';
 import {EditableTableComponent} from '../../../../editable-table-component';
+import {CellHighlightUtil} from '../../../../utils/color/cellHighlightUtil';
 import {NoContentStubElement} from '../shared/noContentStubElement';
 import {CellElement} from '../../../cell/cellElement';
 import {CSSStyle} from '../../../../types/cssStyle';
@@ -44,7 +45,7 @@ export class AddNewRowElement {
 
   private static createRow(etc: EditableTableComponent) {
     const addNewRowRow = RowElement.create();
-    addNewRowRow.classList.add(CellElement.HOVERABLE_CELL_CLASS);
+    addNewRowRow.classList.add(CellHighlightUtil.HIGHLIGHTABLE_CELL_CLASS);
     addNewRowRow.onclick = InsertNewRow.insertEvent.bind(etc);
     return addNewRowRow;
   }

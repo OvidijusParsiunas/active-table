@@ -125,7 +125,7 @@ export const ediTableStyle = css`
     pointer-events: none;
   }
 
-  .hoverable-cell:hover {
+  .highlightable-cell:hover {
     background-color: #f7f7f7;
   }
 
@@ -161,7 +161,7 @@ export const ediTableStyle = css`
     -webkit-user-select: none;
   }
 
-  /* not using the hoverable-cell class as this is used to set the background color of a full column group */
+  /* not using the highlightable-cell class as this is used to set the background color of a column group */
   .hovered-add-column-cells {
     background-color: #f7f7f7;
   }

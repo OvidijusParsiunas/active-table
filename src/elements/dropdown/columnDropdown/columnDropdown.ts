@@ -1,11 +1,12 @@
 import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximumColumns';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {HeaderCellEvents} from '../../cell/headerCell/headerCellEvents';
+import {CellHighlightUtil} from '../../../utils/color/cellHighlightUtil';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {ColumnDropdownItem} from './columnDropdownItem';
 import {CellEvents} from '../../cell/cellEvents';
 import {DropdownItem} from '../dropdownItem';
+import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
 
@@ -34,10 +35,10 @@ export class ColumnDropdown {
       overlayElementsState: {columnDropdown, columnTypeDropdown, fullTableOverlay},
       focusedElements: { cell: {element: cellElement, columnIndex} }} = etc;
     ColumnDropdown.processTextIfExists(etc, columnIndex as number, cellElement);
-    HeaderCellEvents.fadeCell(cellElement as HTMLElement);
+    CellHighlightUtil.fade(cellElement as HTMLElement);
     Dropdown.hide(
       columnDropdown as HTMLElement, fullTableOverlay as HTMLElement, columnTypeDropdown as HTMLElement);
-    DropdownItem.resetNestedDropdownItemStyle(columnTypeDropdown as HTMLElement)
+    DropdownItem.resetNestedDropdownItemStyle(columnTypeDropdown as HTMLElement);
     ColumnDropdown.resetDropdownPosition(columnDropdown as HTMLElement);
   }
 
@@ -85,7 +86,7 @@ export class ColumnDropdown {
     });
   }
 
-  public static getDropdownTopPosition(cellElement: HTMLElement): `${number}px` {
+  public static getDropdownTopPosition(cellElement: HTMLElement): PX {
     return `${cellElement.offsetTop + cellElement.offsetHeight}px`;
   }
 

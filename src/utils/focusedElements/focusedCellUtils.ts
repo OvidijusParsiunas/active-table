@@ -13,6 +13,13 @@ export class FocusedCellUtils {
     delete focusedCell.type;
   }
 
+  public static setIndexCell(focusedCell: FocusedCell, cell: HTMLElement, rowIndex: number) {
+    focusedCell.element = cell;
+    focusedCell.rowIndex = rowIndex;
+    delete focusedCell.columnIndex;
+    delete focusedCell.type;
+  }
+
   // prettier-ignore
   public static set(focusedCell: FocusedCell, cellElement: HTMLElement, rowIndex: number, columnIndex: number,
       defaultCellValue: string) {
