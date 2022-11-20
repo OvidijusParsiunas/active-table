@@ -58,6 +58,8 @@ export class UpdateCellsForRows {
   // the reason why last row details need to be passed here is because after removal of last row, the last element details
   // are no longer available as this class's methods are run in setTimeouts, hence those details need to be captured
   // before these methods are executed
+  // CAUTION-2 if the addition or removal of row causes the parent div to change width, this is indeed run after rerender,
+  // however the onCellUpdate messages are required and event rebinding here still appears to be valid
   // prettier-ignore
   public static rebindAndFireUpdates(
       etc: EditableTableComponent, startRowIndex: number, lastRowUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {

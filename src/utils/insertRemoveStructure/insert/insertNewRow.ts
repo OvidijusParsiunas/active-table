@@ -14,6 +14,9 @@ import {DataUtils} from '../shared/dataUtils';
 import {MaximumRows} from './maximumRows';
 
 export class InsertNewRow {
+  // CAUTION-2 if the addition or removal of row causes the parent div to change width, this is indeed run after rerender,
+  // however the notification messages are necessary and the rebinding does not seem to cause issues, nevertheless take
+  // note of this if editing any of the logic below
   private static fireCellUpdates(etc: EditableTableComponent, rowIndex: number) {
     const lastRowIndex = etc.contents.length - 1;
     const lastDataRowElement = etc.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;

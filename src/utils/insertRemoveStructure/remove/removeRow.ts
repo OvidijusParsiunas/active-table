@@ -29,10 +29,10 @@ export class RemoveRow {
   // prettier-ignore
   private static update(etc: EditableTableComponent,
       rowIndex: number, lastRowElement: HTMLElement, lastRowIndex: number, removedRowData: TableRow) {
-    if (HasRerendered.check(etc.columnsDetails)) return; // CAUTION-2
     const lastRow = {element: lastRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(etc, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow); // REF-20
     etc.onTableUpdate(etc.contents);
+    if (HasRerendered.check(etc.columnsDetails)) return; // CAUTION-2
     if (etc.contents.length === 0) {
       RemoveRow.removeAllColumnsDetails(etc.columnsDetails);
     } else {
@@ -53,7 +53,6 @@ export class RemoveRow {
     const removedRowData = RemoveRow.removeRow(etc, rowIndex);
     ToggleAdditionElements.update(etc, false, AddNewRowElement.toggle);
     if (etc.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex);
-    // explain this a little better
     setTimeout(() => RemoveRow.update(etc, rowIndex, lastRowElement, lastRowIndex, removedRowData));
   }
 }
