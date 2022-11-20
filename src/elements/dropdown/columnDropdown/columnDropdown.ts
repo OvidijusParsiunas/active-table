@@ -14,19 +14,6 @@ export class ColumnDropdown {
   // instead of having to traverse the dropdown element everytime, we can just store their references here
   private static INSERT_COLUMN_ITEMS: [HTMLElement?, HTMLElement?] = [];
 
-  // prettier-ignore
-  private static updateAddColumnItemsStyle(etc: EditableTableComponent) {
-    const canAddMoreColumns = MaximumColumns.canAddMore(etc);
-    ColumnDropdown.INSERT_COLUMN_ITEMS.forEach((item) => {
-      if (!item) return;
-      if (canAddMoreColumns) {
-        item.classList.remove(Dropdown.DISABLED_ITEM_CLASS);
-      } else {
-        item.classList.add(Dropdown.DISABLED_ITEM_CLASS);
-      }
-    });
-  }
-
   private static resetDropdownPosition(dropdownElement: HTMLElement) {
     dropdownElement.style.left = '';
   }
@@ -86,6 +73,18 @@ export class ColumnDropdown {
     return dropdownElement;
   }
 
+  private static updateInsertColumnItemsStyle(etc: EditableTableComponent) {
+    const canAddMoreColumns = MaximumColumns.canAddMore(etc);
+    ColumnDropdown.INSERT_COLUMN_ITEMS.forEach((item) => {
+      if (!item) return;
+      if (canAddMoreColumns) {
+        item.classList.remove(Dropdown.DISABLED_ITEM_CLASS);
+      } else {
+        item.classList.add(Dropdown.DISABLED_ITEM_CLASS);
+      }
+    });
+  }
+
   public static getDropdownTopPosition(cellElement: HTMLElement): `${number}px` {
     return `${cellElement.offsetTop + cellElement.offsetHeight}px`;
   }
@@ -119,7 +118,7 @@ export class ColumnDropdown {
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItem.focusInputElement(inputElement as HTMLElement);
     ColumnDropdownItem.rebindButtonItems(etc, columnIndex, dropdownElement);
-    ColumnDropdown.updateAddColumnItemsStyle(etc);
+    ColumnDropdown.updateInsertColumnItemsStyle(etc);
     Dropdown.display(fullTableOverlay);
   }
 }

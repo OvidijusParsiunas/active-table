@@ -1,3 +1,4 @@
+import {MaximumRows} from '../../../utils/insertRemoveStructure/insert/maximumRows';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {RowDropdownItem} from './rowDropdownItem';
@@ -5,8 +6,8 @@ import {DropdownItem} from '../dropdownItem';
 import {Dropdown} from '../dropdown';
 
 export class RowDropdown {
-  // disable elements
-  private static INSERT_ROW_ITEMS: [HTMLElement?, HTMLElement?, HTMLElement?] = [];
+  private static INSERT_ROW_ITEMS: [HTMLElement?, HTMLElement?] = [];
+  private static LAST_ITEM: HTMLElement;
 
   // prettier-ignore
   public static hide(etc: EditableTableComponent) {
@@ -16,6 +17,18 @@ export class RowDropdown {
     setTimeout(() => delete etc.focusedElements.rowDropdown);
   }
 
+  private static updateItemsStyle(etc: EditableTableComponent) {
+    const canAddMoreRows = MaximumRows.canAddMore(etc);
+    RowDropdown.INSERT_ROW_ITEMS.forEach((item) => {
+      if (!item) return;
+      if (canAddMoreRows) {
+        item.classList.remove(Dropdown.DISABLED_ITEM_CLASS);
+      } else {
+        item.classList.add(Dropdown.DISABLED_ITEM_CLASS);
+      }
+    });
+  }
+
   public static display(this: EditableTableComponent, rowIndex: number, event: MouseEvent) {
     const dropdownElement = this.overlayElementsState.rowDropdown as HTMLElement;
     const fullTableOverlayElement = this.overlayElementsState.fullTableOverlay as HTMLElement;
@@ -23,6 +36,7 @@ export class RowDropdown {
     const cell = event.target as HTMLElement;
     dropdownElement.style.top = `${cell.offsetTop}px`;
     dropdownElement.style.left = `${cell.offsetWidth}px`;
+    RowDropdown.updateItemsStyle(this);
     Dropdown.display(dropdownElement, fullTableOverlayElement);
   }
 
@@ -38,7 +52,7 @@ export class RowDropdown {
     } else if (event.key === KEYBOARD_KEY.TAB) {
       event.preventDefault();
       // the reason why the last item is used is because the next item that is going to be focused will be the first item
-      const lastItem = RowDropdown.INSERT_ROW_ITEMS[2] as HTMLElement;
+      const lastItem = RowDropdown.LAST_ITEM as HTMLElement;
       DropdownItem.focusNextItem(lastItem, rowDropdown);
       etc.focusedElements.rowDropdown = rowDropdown;
     }
@@ -60,13 +74,12 @@ export class RowDropdown {
   }
 
   // WORK - when clicked - the item should not lose the focus
-  // WORK - cannot delete the last row element
   public static create(etc: EditableTableComponent) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.onkeydown = RowDropdown.dropdownOnKeyDown.bind(etc, dropdownElement);
     RowDropdown.INSERT_ROW_ITEMS[0] = DropdownItem.addButtonItem(dropdownElement, 'Insert Above');
     RowDropdown.INSERT_ROW_ITEMS[1] = DropdownItem.addButtonItem(dropdownElement, 'Insert Below');
-    RowDropdown.INSERT_ROW_ITEMS[2] = DropdownItem.addButtonItem(dropdownElement, 'Delete');
+    RowDropdown.LAST_ITEM = DropdownItem.addButtonItem(dropdownElement, 'Delete');
     return dropdownElement;
   }
 }
