@@ -4,8 +4,10 @@ import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellHighlightUtil} from '../../../utils/color/cellHighlightUtil';
 import {ColumnDropdownItemEvents} from './columnDropdownItemEvents';
+import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
 import {ColumnDropdownEvents} from './columnDropdownEvents';
 import {ColumnDropdownItem} from './columnDropdownItem';
+import {ColumnTypeDropdown} from './columnTypeDropdown';
 import {DropdownItemFocus} from '../dropdownItemFocus';
 import {CellEvents} from '../../cell/cellEvents';
 import {DropdownItem} from '../dropdownItem';
@@ -41,8 +43,7 @@ export class ColumnDropdown {
     ColumnDropdown.processTextIfExists(etc, columnIndex as number, cellElement);
     CellHighlightUtil.fade(cellElement);
     Dropdown.hide(columnDropdown, fullTableOverlay, columnTypeDropdown);
-    DropdownItem.resetNestedDropdownItemStyle(columnTypeDropdown);
-    ColumnDropdownItem.unsetActiveUserChosenColumnType(columnDropdown);
+    ColumnTypeDropdownItem.reset(columnTypeDropdown);
     ColumnDropdown.resetDropdownPosition(columnDropdown);
     DropdownItemHighlightUtil.fadeCurrentlyHighlighted(etc.shadowRoot);
   }
@@ -54,8 +55,7 @@ export class ColumnDropdown {
     // WORK - potentially have this as nested dropdown item and the nested dropdown item itself would then have the
     // selected item
     DropdownItem.addTitle(dropdownElement, 'Property type');
-    const columnTypeDropdown = ColumnDropdownItem.addColumnTypeNestedDropdownItem(etc.shadowRoot, dropdownElement);
-    etc.overlayElementsState.columnTypeDropdown = columnTypeDropdown;
+    ColumnTypeDropdown.addToColumnDropdown(etc, dropdownElement);
     ColumnDropdownItem.addSortButton(etc.shadowRoot, dropdownElement, 'Ascending');
     ColumnDropdownItem.addSortButton(etc.shadowRoot, dropdownElement, 'Descending');
     ColumnDropdown.INSERT_COLUMN_ITEMS[0] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Right');
@@ -104,7 +104,7 @@ export class ColumnDropdown {
     const fullTableOverlay = etc.overlayElementsState.fullTableOverlay as HTMLElement;
     const dropdownElement = etc.overlayElementsState.columnDropdown as HTMLElement;
     const cellElement = event.target as HTMLElement;
-    ColumnDropdownItem.setUpContent(etc, dropdownElement, columnIndex, cellElement);
+    ColumnDropdownItem.setUp(etc, dropdownElement, columnIndex, cellElement);
     ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItemFocus.focusInputElement(inputElement as HTMLElement);

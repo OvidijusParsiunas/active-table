@@ -1,8 +1,7 @@
 import {InsertNewColumn} from '../../../utils/insertRemoveStructure/insert/insertNewColumn';
-import {ElementSiblingIterator} from '../../../utils/elements/elementSiblingIterator';
 import {RemoveColumn} from '../../../utils/insertRemoveStructure/remove/removeColumn';
+import {ElementSiblingIterator} from '../../../utils/elements/elementSiblingIterator';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {UserSetCellType} from '../../../utils/cellType/userSetCellType';
 import {ColumnDropdownItem} from './columnDropdownItem';
 import {CellEvents} from '../../cell/cellEvents';
 import {ColumnDropdown} from './columnDropdown';
@@ -29,16 +28,6 @@ export class ColumnDropdownItemEvents {
     siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
       etc, RemoveColumn.remove.bind(this, etc, columnIndex));
     // TO-DO - potential animation can be useful when a new column is inserted
-  }
-
-  // prettier-ignore
-  public static setColumnTypeDropdownItemEvents(etc: EditableTableComponent, nestedDropdownChildren: HTMLElement[],
-      columnIndex: number) {
-    nestedDropdownChildren.forEach((dropdownChildElement) => {
-      const dropdownItem = dropdownChildElement as HTMLElement;
-      dropdownItem.onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(etc,
-        UserSetCellType.setIfNew.bind(etc, dropdownItem.textContent as string, columnIndex));
-    });
   }
 
   // reason why using onInput for updating cells is because it works for paste
