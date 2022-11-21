@@ -7,7 +7,8 @@ export class DisplayedCellTypeName {
     [USER_SET_COLUMN_TYPE.Date_D_M_Y]: 'Date d-m-y',
     [USER_SET_COLUMN_TYPE.Date_M_D_Y]: 'Date m-d-y',
   };
-  public static readonly CELL_TYPE_ALIAS: GenericObject = ObjectUtils.createTwoWayObject(
+
+  private static readonly CELL_TYPE_ALIAS: GenericObject = ObjectUtils.createTwoWayObject(
     DisplayedCellTypeName.CELL_TYPE_ALIAS_ONE_WAY
   );
 

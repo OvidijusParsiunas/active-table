@@ -26,14 +26,13 @@ export class ColumnTypeDropdownItem {
     items.forEach((item) => {
       if (item.textContent === targetItemText) {
         // WORK - perhaps instead of highlighting - use a tick mark
-        // WORK - this does not work for things like dates
         item.classList.add(ColumnTypeDropdownItem.ACTIVE_ITEM_CLASS);
       }
     });
   }
 
   private static setActiveUserChosenColumnType(items: HTMLElement[], columnDetails: ColumnDetailsT) {
-    const userChosenColumnTypeString = USER_SET_COLUMN_TYPE[columnDetails.userSetColumnType];
+    const userChosenColumnTypeString = DisplayedCellTypeName.get(columnDetails.userSetColumnType);
     ColumnTypeDropdownItem.setActiveItem(items, userChosenColumnTypeString);
   }
 
