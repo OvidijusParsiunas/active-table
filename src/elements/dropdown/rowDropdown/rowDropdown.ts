@@ -1,3 +1,4 @@
+import {DropdownItemHighlightUtil} from '../../../utils/color/dropdownItemHighlightUtil';
 import {MaximumRows} from '../../../utils/insertRemoveStructure/insert/maximumRows';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -20,6 +21,7 @@ export class RowDropdown {
       // in a timeout because upon pressing esc/enter key on dropdown, the window event is fired after which checks it
       delete etc.focusedElements.rowDropdown;
       FocusedCellUtils.purge(etc.focusedElements.cell);
+      DropdownItemHighlightUtil.fadeCurrentlyHighlighted(etc.shadowRoot);
     });
   }
 
@@ -57,16 +59,19 @@ export class RowDropdown {
   // instead we need to focus it programmatically here. Once focused, the actual dropdown events can take over.
   // prettier-ignore
   public static windowOnKeyDown(etc: EditableTableComponent, event: KeyboardEvent) {
-    const {overlayElementsState: {rowDropdown, fullTableOverlay}} = etc;
+    const {overlayElementsState: {rowDropdown, fullTableOverlay}, shadowRoot} = etc;
     if (etc.focusedElements.rowDropdown || !rowDropdown || !fullTableOverlay) return;
     if (event.key === KEYBOARD_KEY.ENTER || event.key === KEYBOARD_KEY.ESCAPE) {
       RowDropdown.hide(etc);
     } else if (event.key === KEYBOARD_KEY.TAB) {
       event.preventDefault();
-      // the reason why the last item is used is because the next item that is going to be focused will be the first item
-      const lastItem = RowDropdown.LAST_ITEM as HTMLElement;
-      DropdownItem.focusNextItem(lastItem, rowDropdown);
       etc.focusedElements.rowDropdown = rowDropdown;
+      // the reason why the last item is used is because the next item that is going to be focused will be the first item
+      if (!shadowRoot?.activeElement) DropdownItem.focusNextItem(RowDropdown.LAST_ITEM as HTMLElement, rowDropdown);
+    } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
+      
+    } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
+      
     }
   }
 
@@ -87,9 +92,9 @@ export class RowDropdown {
   public static create(etc: EditableTableComponent) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.onkeydown = RowDropdown.dropdownOnKeyDown.bind(etc, dropdownElement);
-    RowDropdown.INSERT_ROW_ITEMS[0] = DropdownItem.addButtonItem(dropdownElement, 'Insert Above');
-    RowDropdown.INSERT_ROW_ITEMS[1] = DropdownItem.addButtonItem(dropdownElement, 'Insert Below');
-    RowDropdown.LAST_ITEM = DropdownItem.addButtonItem(dropdownElement, 'Delete');
+    RowDropdown.INSERT_ROW_ITEMS[0] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Above');
+    RowDropdown.INSERT_ROW_ITEMS[1] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Below');
+    RowDropdown.LAST_ITEM = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Delete');
     return dropdownElement;
   }
 }

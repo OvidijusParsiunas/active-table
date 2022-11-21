@@ -1,4 +1,5 @@
 import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximumColumns';
+import {DropdownItemHighlightUtil} from '../../../utils/color/dropdownItemHighlightUtil';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellHighlightUtil} from '../../../utils/color/cellHighlightUtil';
@@ -20,12 +21,12 @@ export class ColumnDropdown {
   }
 
   // can be triggered after removing a column hence if a column does not exist we should not set a new value
-  private static processTextIfExists(etc: EditableTableComponent, columnIndex: number, cellElement?: HTMLElement) {
+  private static processTextIfExists(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
     const headerRow = etc.contents[0];
     if (headerRow?.[columnIndex] !== undefined) {
       // setCellToDefaultIfNeeded will not work without etc.contents containing trimmed text
-      headerRow[columnIndex] = (cellElement?.textContent as string).trim();
-      CellEvents.setCellToDefaultIfNeeded(etc, 0, columnIndex as number, cellElement as HTMLElement);
+      headerRow[columnIndex] = (cellElement.textContent as string).trim();
+      CellEvents.setCellToDefaultIfNeeded(etc, 0, columnIndex as number, cellElement);
     }
   }
 
@@ -34,12 +35,14 @@ export class ColumnDropdown {
     const {
       overlayElementsState: {columnDropdown, columnTypeDropdown, fullTableOverlay},
       focusedElements: { cell: {element: cellElement, columnIndex} }} = etc;
+    if (!columnDropdown || !fullTableOverlay || !columnTypeDropdown || !cellElement) return;
     ColumnDropdown.processTextIfExists(etc, columnIndex as number, cellElement);
-    CellHighlightUtil.fade(cellElement as HTMLElement);
-    Dropdown.hide(
-      columnDropdown as HTMLElement, fullTableOverlay as HTMLElement, columnTypeDropdown as HTMLElement);
-    DropdownItem.resetNestedDropdownItemStyle(columnTypeDropdown as HTMLElement);
-    ColumnDropdown.resetDropdownPosition(columnDropdown as HTMLElement);
+    CellHighlightUtil.fade(cellElement);
+    Dropdown.hide(columnDropdown, fullTableOverlay, columnTypeDropdown);
+    DropdownItem.resetNestedDropdownItemStyle(columnTypeDropdown);
+    ColumnDropdownItem.unsetActiveUserChosenColumnType(columnDropdown);
+    ColumnDropdown.resetDropdownPosition(columnDropdown);
+    DropdownItemHighlightUtil.fadeCurrentlyHighlighted(etc.shadowRoot);
   }
 
   private static onKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
@@ -62,15 +65,17 @@ export class ColumnDropdown {
   public static create(etc: EditableTableComponent, areHeadersEditable: boolean) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.onkeydown = ColumnDropdown.onKeyDown.bind(etc, dropdownElement);
-    if (areHeadersEditable) DropdownItem.addInputItem(dropdownElement);
+    if (areHeadersEditable) DropdownItem.addInputItem(etc.shadowRoot, dropdownElement);
+    // WORK - potentially have this as nested dropdown item and the nested dropdown item itself would then have the
+    // selected item
     DropdownItem.addTitle(dropdownElement, 'Property type');
-    const columnTypeDropdown = ColumnDropdownItem.addColumnTypeNestedDropdownItem(dropdownElement);
+    const columnTypeDropdown = ColumnDropdownItem.addColumnTypeNestedDropdownItem(etc.shadowRoot, dropdownElement);
     etc.overlayElementsState.columnTypeDropdown = columnTypeDropdown;
-    ColumnDropdownItem.addSortButton(dropdownElement, 'Ascending');
-    ColumnDropdownItem.addSortButton(dropdownElement, 'Descending');
-    ColumnDropdown.INSERT_COLUMN_ITEMS[0] = DropdownItem.addButtonItem(dropdownElement, 'Insert Right');
-    ColumnDropdown.INSERT_COLUMN_ITEMS[1] = DropdownItem.addButtonItem(dropdownElement, 'Insert Left');
-    DropdownItem.addButtonItem(dropdownElement, 'Delete');
+    ColumnDropdownItem.addSortButton(etc.shadowRoot, dropdownElement, 'Ascending');
+    ColumnDropdownItem.addSortButton(etc.shadowRoot, dropdownElement, 'Descending');
+    ColumnDropdown.INSERT_COLUMN_ITEMS[0] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Right');
+    ColumnDropdown.INSERT_COLUMN_ITEMS[1] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Left');
+    DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Delete');
     return dropdownElement;
   }
 

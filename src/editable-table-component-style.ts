@@ -194,6 +194,8 @@ export const ediTableStyle = css`
     user-select: none;
     /* safari */
     -webkit-user-select: none;
+    /* retaining the outline for dropdown input to make it easier to recognise */
+    outline: none;
   }
 
   .dropdown-title-item {
@@ -206,6 +208,16 @@ export const ediTableStyle = css`
 
   .dropdown-highlightable-item:hover {
     background-color: #eaeaea;
+  }
+
+  .active-dropdown-item {
+    background-color: #4a69d4;
+    color: white;
+  }
+
+  .active-dropdown-item:focus {
+    background-color: #2148d5 !important;
+    color: white !important;
   }
 
   .dropdown-disabled-item {

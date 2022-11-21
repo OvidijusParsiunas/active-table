@@ -14,17 +14,18 @@ import {DropdownItem} from '../dropdownItem';
 export class ColumnDropdownItem {
   private static readonly SORT_ITEM_CLASS = 'dropdown-sort-item';
   private static readonly COLUMN_TYPE_ITEM_CLASS = 'dropdown-column-type-item';
+  private static readonly ACTIVE_ITEM_CLASS = 'active-dropdown-item';
 
   // prettier-ignore
-  public static addColumnTypeNestedDropdownItem(dropdownElement: HTMLElement) {
+  public static addColumnTypeNestedDropdownItem(sRoot: ShadowRoot | null, dropdownElement: HTMLElement) {
     const itemsText = Object.keys(USER_SET_COLUMN_TYPE).map((key) => DisplayedCellTypeName.get(key));
     return DropdownItem.addNestedDropdownItem(
-      dropdownElement, '', itemsText, ColumnDropdownItem.COLUMN_TYPE_ITEM_CLASS);
+      sRoot, dropdownElement, '', itemsText, ColumnDropdownItem.COLUMN_TYPE_ITEM_CLASS);
   }
 
   // this is used as an ancher to identify the location of below buttons
-  public static addSortButton(dropdownElement: HTMLElement, text: string) {
-    DropdownItem.addButtonItem(dropdownElement, text, ColumnDropdownItem.SORT_ITEM_CLASS);
+  public static addSortButton(sRoot: ShadowRoot | null, dropdownElement: HTMLElement, text: string) {
+    DropdownItem.addButtonItem(sRoot, dropdownElement, text, ColumnDropdownItem.SORT_ITEM_CLASS);
   }
 
   // reason why using onInput for updating cells is because it works for paste
@@ -69,9 +70,24 @@ export class ColumnDropdownItem {
     // TO-DO - potential animation can be useful when a new column is inserted
   }
 
+  public static unsetActiveUserChosenColumnType(dropdownElement: HTMLElement) {
+    const activeElements = dropdownElement.getElementsByClassName(ColumnDropdownItem.ACTIVE_ITEM_CLASS);
+    if (activeElements[0]) activeElements[0].classList.remove(ColumnDropdownItem.ACTIVE_ITEM_CLASS);
+  }
+
+  private static setActiveNestedDropdownItem(nestedDropdownChildren: HTMLElement[], targetItemText: string) {
+    nestedDropdownChildren.forEach((item) => {
+      if (item.textContent === targetItemText) {
+        // WORK - perhaps instead of highlighting - use a tick mark
+        // WORK - this does not work for things like dates
+        item.classList.add(ColumnDropdownItem.ACTIVE_ITEM_CLASS);
+      }
+    });
+  }
+
   private static setActiveUserChosenColumnType(nestedDropdownChildren: HTMLElement[], columnDetails: ColumnDetailsT) {
     const userChosenColumnTypeString = USER_SET_COLUMN_TYPE[columnDetails.userSetColumnType];
-    DropdownItem.setActiveNestedDropdownItem(nestedDropdownChildren, userChosenColumnTypeString);
+    ColumnDropdownItem.setActiveNestedDropdownItem(nestedDropdownChildren, userChosenColumnTypeString);
   }
 
   // prettier-ignore
@@ -81,13 +97,15 @@ export class ColumnDropdownItem {
       const dropdownItem = dropdownChildElement as HTMLElement;
       dropdownItem.onclick = ColumnDropdownItem.onClickMiddleware.bind(etc,
         UserSetCellType.setIfNew.bind(etc, dropdownItem.textContent as string, columnIndex));
-    })
+    });
   }
 
   private static setUpColumnTypeDropdown(etc: EditableTableComponent, dropdownElement: HTMLElement, columnIndex: number) {
     const nestedDropdownChilrenArr = Array.from(dropdownElement.children) as HTMLElement[];
     ColumnDropdownItem.rebindColumnTypeDropdownButtonItems(etc, nestedDropdownChilrenArr, columnIndex);
-    ColumnDropdownItem.setActiveUserChosenColumnType(nestedDropdownChilrenArr, etc.columnsDetails[columnIndex]);
+    setTimeout(() => {
+      ColumnDropdownItem.setActiveUserChosenColumnType(nestedDropdownChilrenArr, etc.columnsDetails[columnIndex]);
+    });
   }
 
   private static setUpColumnType(etc: EditableTableComponent, dropdownElement: HTMLElement, columnIndex: number) {
