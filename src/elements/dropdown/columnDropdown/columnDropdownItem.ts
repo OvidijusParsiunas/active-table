@@ -1,18 +1,12 @@
-import {InsertNewColumn} from '../../../utils/insertRemoveStructure/insert/insertNewColumn';
-import {RemoveColumn} from '../../../utils/insertRemoveStructure/remove/removeColumn';
-import {ElementSiblingIterator} from '../../../utils/elements/elementSiblingIterator';
 import {DisplayedCellTypeName} from '../../../utils/cellType/displayedCellTypeName';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {UserSetCellType} from '../../../utils/cellType/userSetCellType';
+import {ColumnDropdownItemEvents} from './columnDropdownItemEvents';
 import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {ColumnDetailsT} from '../../../types/columnDetails';
-import {CellEvents} from '../../cell/cellEvents';
-import {ColumnDropdown} from './columnDropdown';
-import {Sort} from '../../../utils/array/sort';
 import {DropdownItem} from '../dropdownItem';
 
 export class ColumnDropdownItem {
-  private static readonly SORT_ITEM_CLASS = 'dropdown-sort-item';
+  public static readonly SORT_ITEM_CLASS = 'dropdown-sort-item';
   private static readonly COLUMN_TYPE_ITEM_CLASS = 'dropdown-column-type-item';
   private static readonly ACTIVE_ITEM_CLASS = 'active-dropdown-item';
 
@@ -28,46 +22,11 @@ export class ColumnDropdownItem {
     DropdownItem.addButtonItem(sRoot, dropdownElement, text, ColumnDropdownItem.SORT_ITEM_CLASS);
   }
 
-  // reason why using onInput for updating cells is because it works for paste
-  // prettier-ignore
-  private static onInput(this: EditableTableComponent,
-      columnIndex: number, cellElement: HTMLElement, dropdownElement: HTMLElement, dropdownInutElement: HTMLInputElement) {
-    setTimeout(() => {
-      CellEvents.updateCell(this, dropdownInutElement.value, 0, columnIndex, { element: cellElement, processText: false });
-      // when header cell height changes - dropdown changes position accordingly
-      dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement);
-    });
-  }
-
   // prettier-ignore
   private static setUpInputElement(etc: EditableTableComponent,
       columnIndex: number, cellElement: HTMLElement, dropdownInutElement: HTMLInputElement, dropdownElement: HTMLElement) {
     dropdownInutElement.value = etc.contents[0][columnIndex] as string;
-    // overwrites the oninput event
-    dropdownInutElement.oninput = ColumnDropdownItem.onInput.bind(
-      etc, columnIndex, cellElement, dropdownElement, dropdownInutElement);
-  }
-
-  private static onClickMiddleware(this: EditableTableComponent, func: Function): void {
-    func();
-    ColumnDropdown.processTextAndHide(this);
-  }
-
-  // prettier-ignore
-  public static rebindButtonItems(etc: EditableTableComponent, columnIndex: number, dropdownElement: HTMLElement) {
-    const ascSortItem = dropdownElement.getElementsByClassName(ColumnDropdownItem.SORT_ITEM_CLASS)[0] as HTMLElement;
-    const siblingIterator = ElementSiblingIterator.create(ascSortItem);
-    siblingIterator.currentElement().onclick = ColumnDropdownItem.onClickMiddleware.bind(
-      etc, Sort.sortContentsColumn.bind(this, etc, columnIndex, true));
-    siblingIterator.next().onclick = ColumnDropdownItem.onClickMiddleware.bind(
-      etc, Sort.sortContentsColumn.bind(this, etc, columnIndex, false));
-    siblingIterator.next().onclick = ColumnDropdownItem.onClickMiddleware.bind(
-      etc, InsertNewColumn.insert.bind(this, etc, columnIndex + 1));
-    siblingIterator.next().onclick = ColumnDropdownItem.onClickMiddleware.bind(
-      etc, InsertNewColumn.insert.bind(this, etc, columnIndex));
-    siblingIterator.next().onclick = ColumnDropdownItem.onClickMiddleware.bind(
-      etc, RemoveColumn.remove.bind(this, etc, columnIndex));
-    // TO-DO - potential animation can be useful when a new column is inserted
+    ColumnDropdownItemEvents.setInputItemEvent(etc, columnIndex, cellElement, dropdownInutElement, dropdownElement);
   }
 
   public static unsetActiveUserChosenColumnType(dropdownElement: HTMLElement) {
@@ -90,19 +49,9 @@ export class ColumnDropdownItem {
     ColumnDropdownItem.setActiveNestedDropdownItem(nestedDropdownChildren, userChosenColumnTypeString);
   }
 
-  // prettier-ignore
-  private static rebindColumnTypeDropdownButtonItems(etc: EditableTableComponent, nestedDropdownChildren: HTMLElement[],
-      columnIndex: number) {
-    nestedDropdownChildren.forEach((dropdownChildElement) => {
-      const dropdownItem = dropdownChildElement as HTMLElement;
-      dropdownItem.onclick = ColumnDropdownItem.onClickMiddleware.bind(etc,
-        UserSetCellType.setIfNew.bind(etc, dropdownItem.textContent as string, columnIndex));
-    });
-  }
-
   private static setUpColumnTypeDropdown(etc: EditableTableComponent, dropdownElement: HTMLElement, columnIndex: number) {
     const nestedDropdownChilrenArr = Array.from(dropdownElement.children) as HTMLElement[];
-    ColumnDropdownItem.rebindColumnTypeDropdownButtonItems(etc, nestedDropdownChilrenArr, columnIndex);
+    ColumnDropdownItemEvents.setColumnTypeDropdownItemEvents(etc, nestedDropdownChilrenArr, columnIndex);
     setTimeout(() => {
       ColumnDropdownItem.setActiveUserChosenColumnType(nestedDropdownChilrenArr, etc.columnsDetails[columnIndex]);
     });

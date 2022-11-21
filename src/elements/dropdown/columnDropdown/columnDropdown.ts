@@ -3,8 +3,10 @@ import {DropdownItemHighlightUtil} from '../../../utils/color/dropdownItemHighli
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellHighlightUtil} from '../../../utils/color/cellHighlightUtil';
-import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
+import {ColumnDropdownItemEvents} from './columnDropdownItemEvents';
+import {ColumnDropdownEvents} from './columnDropdownEvents';
 import {ColumnDropdownItem} from './columnDropdownItem';
+import {DropdownItemFocus} from '../dropdownItemFocus';
 import {CellEvents} from '../../cell/cellEvents';
 import {DropdownItem} from '../dropdownItem';
 import {PX} from '../../../types/dimensions';
@@ -45,26 +47,9 @@ export class ColumnDropdown {
     DropdownItemHighlightUtil.fadeCurrentlyHighlighted(etc.shadowRoot);
   }
 
-  private static onKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
-    if (event.key === KEYBOARD_KEY.ENTER) {
-      const itemElement = event.target as HTMLElement;
-      if (DropdownItem.doesElementContainInputClass(itemElement)) {
-        ColumnDropdown.processTextAndHide(this);
-      } else {
-        itemElement.dispatchEvent(new Event('mouseenter'));
-        itemElement.dispatchEvent(new Event('click'));
-      }
-    } else if (event.key === KEYBOARD_KEY.ESCAPE) {
-      ColumnDropdown.processTextAndHide(this);
-    } else if (event.key === KEYBOARD_KEY.TAB) {
-      event.preventDefault();
-      DropdownItem.focusNextItem(event.target as HTMLElement, dropdownElement);
-    }
-  }
-
   public static create(etc: EditableTableComponent, areHeadersEditable: boolean) {
     const dropdownElement = Dropdown.createBase();
-    dropdownElement.onkeydown = ColumnDropdown.onKeyDown.bind(etc, dropdownElement);
+    ColumnDropdownEvents.set(etc, dropdownElement);
     if (areHeadersEditable) DropdownItem.addInputItem(etc.shadowRoot, dropdownElement);
     // WORK - potentially have this as nested dropdown item and the nested dropdown item itself would then have the
     // selected item
@@ -122,8 +107,8 @@ export class ColumnDropdown {
     ColumnDropdownItem.setUpContent(etc, dropdownElement, columnIndex, cellElement);
     ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
     const inputElement = DropdownItem.getInputElement(dropdownElement);
-    if (inputElement) DropdownItem.focusInputElement(inputElement as HTMLElement);
-    ColumnDropdownItem.rebindButtonItems(etc, columnIndex, dropdownElement);
+    if (inputElement) DropdownItemFocus.focusInputElement(inputElement as HTMLElement);
+    ColumnDropdownItemEvents.setItemEvents(etc, columnIndex, dropdownElement);
     ColumnDropdown.updateInsertColumnItemsStyle(etc);
     Dropdown.display(fullTableOverlay);
   }

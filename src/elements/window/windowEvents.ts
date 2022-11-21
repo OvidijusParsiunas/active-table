@@ -3,6 +3,7 @@ import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellIn
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
 import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
+import {RowDropdownEvents} from '../dropdown/rowDropdown/rowDropdownEvents';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
@@ -18,7 +19,7 @@ export class WindowEvents {
       CategoryCellEvents.keyDownText(this, rowIndex, columnIndex, event);
     }
     if (Dropdown.isDisplayed(this.overlayElementsState.rowDropdown)) {
-      RowDropdown.windowOnKeyDown(this, event);
+      RowDropdownEvents.windowOnKeyDown(this, event);
     }
   }
 

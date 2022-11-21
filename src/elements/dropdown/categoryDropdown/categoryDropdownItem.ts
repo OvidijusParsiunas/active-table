@@ -1,15 +1,13 @@
-import {CategoryDropdownHorizontalScrollFix} from './categoryDropdownHorizontalScrollFix';
 import {ActiveCategoryItems, CategoryDropdownT} from '../../../types/columnDetails';
-import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CategoryDropdownItemEvents} from './categoryDropdownItemEvents';
 import {CategoryDeleteButton} from './categoryDeleteButton';
 import {TableContents} from '../../../types/tableContents';
 import {CellDetails} from '../../../types/focusedCell';
 import {CellEvents} from '../../cell/cellEvents';
 import {Color} from '../../../utils/color/color';
 import {DropdownItem} from '../dropdownItem';
-import {SIDE} from '../../../types/side';
 
 interface CategoryToColor {
   [cellText: string]: string;
@@ -43,21 +41,6 @@ export class CategoryDropdownItem {
   }
 
   // prettier-ignore
-  private static scrollToItemIfNeeded(itemElement: HTMLElement,
-      isHorizontalScrollPresent: boolean, dropdownElement: HTMLElement, event: MouseEvent,) {
-    // not automatically scrolling when user hovers their mouse over a partial item as it is bad UX
-    if (event.isTrusted) return; 
-    const visibilityDetails = ElementVisibility.isVerticallyVisibleInsideParent(itemElement);
-    if (!visibilityDetails.isFullyVisible) {
-      itemElement.scrollIntoView({block: 'nearest'});
-      // REF-4
-      if (isHorizontalScrollPresent && visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
-        CategoryDropdownHorizontalScrollFix.scrollDownFurther(dropdownElement)
-      }
-    }
-  }
-
-  // prettier-ignore
   private static updateCellTextBgColor(itemElement: HTMLElement | undefined, textElement: HTMLElement,
       dropdown: CategoryDropdownT, defaultCellValue: string) {
     if (itemElement) {
@@ -74,20 +57,6 @@ export class CategoryDropdownItem {
       activeItems.matchingWithCellText = itemElement;
       itemElement.dispatchEvent(new MouseEvent('mouseenter'));
     }
-  }
-
-  // prettier-ignore
-  public static blurItem(dropdown: CategoryDropdownT, typeOfItem: keyof ActiveCategoryItems, event?: MouseEvent) {
-    const { activeItems, scrollbarPresence } = dropdown;
-    const itemElement = activeItems[typeOfItem] as HTMLElement;
-    if (itemElement !== undefined) {
-      if (typeOfItem === 'matchingWithCellText'
-          || (typeOfItem === 'hovered' && itemElement !== activeItems.matchingWithCellText)) {
-        itemElement.style.backgroundColor = '';
-        delete activeItems[typeOfItem];
-      }
-    }
-    if (event) CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, false);
   }
 
   private static hideHoveredItemHighlight(activeItems: ActiveCategoryItems) {
@@ -108,7 +77,7 @@ export class CategoryDropdownItem {
     if (!itemElement || activeItems.matchingWithCellText !== itemElement) {
       // this is used to preserve the ability for the user to still allow the use of arrow keys to traverse the dropdown
       CategoryDropdownItem.hideHoveredItemHighlight(activeItems);
-      CategoryDropdownItem.blurItem(dropdown, 'matchingWithCellText');
+      CategoryDropdownItemEvents.blurItem(dropdown, 'matchingWithCellText');
     }
     CategoryDropdownItem.updateItemColor(itemElement, activeItems);
     if (updateCellText) CategoryDropdownItem.updateCellTextBgColor(itemElement, textElement, dropdown, defaultCellValue);
@@ -145,30 +114,13 @@ export class CategoryDropdownItem {
     }
   }
 
-  private static highlightItem(color: string, dropdown: CategoryDropdownT, event: MouseEvent) {
-    const {scrollbarPresence, activeItems} = dropdown;
-    // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
-    if (activeItems.hovered) activeItems.hovered.style.backgroundColor = '';
-    const itemElement = event.target as HTMLElement;
-    itemElement.style.backgroundColor = color;
-    const dropdownElement = itemElement.parentElement as HTMLElement;
-    CategoryDropdownItem.scrollToItemIfNeeded(itemElement, scrollbarPresence.horizontal, dropdownElement, event);
-    if (itemElement === activeItems.matchingWithCellText) {
-      delete activeItems.hovered;
-    } else {
-      activeItems.hovered = itemElement;
-    }
-    CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, true);
-  }
-
   // prettier-ignore
   private static addItemElement(etc: EditableTableComponent,
       text: string, color: string, dropdown: CategoryDropdownT, atStart = false) {
     const itemElement = DropdownItem.addPlaneButtonItem(dropdown.element, text, atStart ? 0 : undefined);
     const deleteButtonElement = CategoryDeleteButton.create(etc, dropdown);
     itemElement.appendChild(deleteButtonElement);
-    itemElement.onmouseenter = CategoryDropdownItem.highlightItem.bind(this, color, dropdown);
-    itemElement.onmouseleave = CategoryDropdownItem.blurItem.bind(this, dropdown, 'hovered');
+    CategoryDropdownItemEvents.set(itemElement, color, dropdown);
     return itemElement;
   }
 
