@@ -1,6 +1,7 @@
 import {EditableTableComponent} from '../../../editable-table-component';
+import {DropdownItemNavigation} from '../dropdownItemNavigation';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
-import {DropdownItemFocus} from '../dropdownItemFocus';
+import {DropdownEvents} from '../dropdownEvents';
 import {RowDropdown} from './rowDropdown';
 
 export class RowDropdownEvents {
@@ -13,15 +14,16 @@ export class RowDropdownEvents {
     if (etc.focusedElements.rowDropdown || !rowDropdown || !fullTableOverlay) return;
     if (event.key === KEYBOARD_KEY.ENTER || event.key === KEYBOARD_KEY.ESCAPE) {
       RowDropdown.hide(etc);
-    } else if (event.key === KEYBOARD_KEY.TAB) {
-      event.preventDefault();
-      etc.focusedElements.rowDropdown = rowDropdown;
-      // the reason why the last item is used is because the next item that is going to be focused will be the first item
-      if (!shadowRoot?.activeElement) DropdownItemFocus.focusNextItem(RowDropdown.LAST_ITEM as HTMLElement, rowDropdown);
-    } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
-      
-    } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
-      
+    } else if (!shadowRoot?.activeElement) {
+      if (event.key === KEYBOARD_KEY.TAB || event.key === KEYBOARD_KEY.ARROW_DOWN) {
+        event.preventDefault();
+        etc.focusedElements.rowDropdown = rowDropdown;
+        DropdownItemNavigation.focusSiblingItem(rowDropdown.children[0] as HTMLElement, rowDropdown, true, true);
+      } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
+        etc.focusedElements.rowDropdown = rowDropdown;
+        DropdownItemNavigation.focusSiblingItem(
+          rowDropdown.children[rowDropdown.children.length - 1] as HTMLElement, rowDropdown, false, true);
+      }
     }
   }
 
@@ -32,10 +34,8 @@ export class RowDropdownEvents {
       itemElement.dispatchEvent(new Event('click'));
     } else if (event.key === KEYBOARD_KEY.ESCAPE) {
       RowDropdown.hide(this);
-    } else if (event.key === KEYBOARD_KEY.TAB) {
-      event.preventDefault();
-      DropdownItemFocus.focusNextItem(event.target as HTMLElement, dropdownElement);
     }
+    DropdownEvents.itemKeyNavigation(dropdownElement, event);
   }
 
   public static set(etc: EditableTableComponent, dropdownElement: HTMLElement) {

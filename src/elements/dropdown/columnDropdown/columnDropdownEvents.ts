@@ -1,6 +1,6 @@
 import {EditableTableComponent} from '../../../editable-table-component';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
-import {DropdownItemFocus} from '../dropdownItemFocus';
+import {DropdownEvents} from '../dropdownEvents';
 import {ColumnDropdown} from './columnDropdown';
 import {DropdownItem} from '../dropdownItem';
 
@@ -16,10 +16,8 @@ export class ColumnDropdownEvents {
       }
     } else if (event.key === KEYBOARD_KEY.ESCAPE) {
       ColumnDropdown.processTextAndHide(this);
-    } else if (event.key === KEYBOARD_KEY.TAB) {
-      event.preventDefault();
-      DropdownItemFocus.focusNextItem(event.target as HTMLElement, dropdownElement);
     }
+    DropdownEvents.itemKeyNavigation(dropdownElement, event);
   }
 
   public static set(etc: EditableTableComponent, dropdownElement: HTMLElement) {

@@ -10,18 +10,17 @@ import {Dropdown} from '../dropdown';
 
 export class RowDropdown {
   private static INSERT_ROW_ITEMS: [HTMLElement?, HTMLElement?] = [];
-  public static LAST_ITEM: HTMLElement;
 
   // prettier-ignore
   public static hide(etc: EditableTableComponent) {
     const {overlayElementsState: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element: cellElement}}} = etc;
     Dropdown.hide(rowDropdown as HTMLElement, fullTableOverlay as HTMLElement);
     CellHighlightUtil.fade(cellElement as HTMLElement);
+    DropdownItemHighlightUtil.fadeCurrentlyHighlighted(etc.shadowRoot);
     setTimeout(() => {
       // in a timeout because upon pressing esc/enter key on dropdown, the window event is fired after which checks it
       delete etc.focusedElements.rowDropdown;
       FocusedCellUtils.purge(etc.focusedElements.cell);
-      DropdownItemHighlightUtil.fadeCurrentlyHighlighted(etc.shadowRoot);
     });
   }
 
@@ -59,7 +58,7 @@ export class RowDropdown {
     RowDropdownEvents.set(etc, dropdownElement);
     RowDropdown.INSERT_ROW_ITEMS[0] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Above');
     RowDropdown.INSERT_ROW_ITEMS[1] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Below');
-    RowDropdown.LAST_ITEM = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Delete');
+    DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Delete');
     return dropdownElement;
   }
 }
