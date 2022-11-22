@@ -1,4 +1,5 @@
 import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
+import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
@@ -39,7 +40,6 @@ export class EditableTableComponent extends LitElement {
   @property({type: Array})
   // TO-DO cannot insert a header row when there is content already present - maybe don't need to?
   // TO-DO cannot delete header row - maybe don't need to?
-  // WORK - must fill rows that don't have all columns
   contents: TableContents = [
     ['R', 'G', 'B', 'Color'],
     [255, 0, 0, 'Red'],
@@ -185,6 +185,7 @@ export class EditableTableComponent extends LitElement {
     const tableElement = TableElement.createInfrastructureElements(this);
     TableElement.addAuxiliaryElements(this, tableElement, this.overlayElementsState, this.areHeadersEditable);
     this.shadowRoot?.appendChild(tableElement);
+    InitialContentsProcessing.preProcess(this.contents, this.defaultCellValue);
     WindowElement.setEvents(this);
     this.onTableUpdate(this.contents);
     DateCellElement.populateDefaultDateTypes();
