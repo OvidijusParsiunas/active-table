@@ -25,7 +25,7 @@ export class ColumnTypeDropdownItem {
   private static setActiveItem(items: HTMLElement[], targetItemText: string) {
     items.forEach((item) => {
       if (item.textContent === targetItemText) {
-        // WORK - perhaps instead of highlighting - use a tick mark
+        // TO-DO - perhaps instead of highlighting - use a tick mark
         item.classList.add(ColumnTypeDropdownItem.ACTIVE_ITEM_CLASS);
       }
     });

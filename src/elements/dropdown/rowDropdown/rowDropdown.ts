@@ -56,6 +56,7 @@ export class RowDropdown {
   public static create(etc: EditableTableComponent) {
     const dropdownElement = Dropdown.createBase();
     RowDropdownEvents.set(etc, dropdownElement);
+    // WORK - include Move Up/Move Down, but not part of default build
     RowDropdown.INSERT_ROW_ITEMS[0] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Above');
     RowDropdown.INSERT_ROW_ITEMS[1] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Below');
     DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Delete');

@@ -51,15 +51,19 @@ export class CategoryDropdown {
 
   // WORK - will need to populate upfront if user has set a column as category upfront
   // WORK - potentially allow custom column width px or %
-  public static createAndAppend(tableElement: HTMLElement) {
+  public static createAndAppend(containerElement: HTMLElement) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.style.maxHeight = '150px';
     dropdownElement.classList.add(CategoryDropdown.CATEGORY_DROPDOWN_CLASS);
-    tableElement.appendChild(dropdownElement);
+    containerElement.appendChild(dropdownElement);
     return dropdownElement;
   }
 
   public static remove(tableElement: HTMLElement, dropdown: HTMLElement) {
     tableElement.removeChild(dropdown);
+  }
+
+  public static createContainerElement() {
+    return document.createElement('div');
   }
 }

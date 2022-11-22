@@ -39,7 +39,7 @@ export class EditableTableComponent extends LitElement {
   @property({type: Array})
   // TO-DO cannot insert a header row when there is content already present - maybe don't need to?
   // TO-DO cannot delete header row - maybe don't need to?
-  // TO-DO must fill rows that don't have all columns
+  // WORK - must fill rows that don't have all columns
   contents: TableContents = [
     ['R', 'G', 'B', 'Color'],
     [255, 0, 0, 'Red'],
@@ -83,11 +83,12 @@ export class EditableTableComponent extends LitElement {
   displayAddColumnCell = true; // called cells to the client, but cells internally as it is made up of multiple cells
 
   // TO-DO - there should still be a dropdown and only insert left/right and remove the column options
+  // column index should start count at the header row
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  noHeader = false;
+  headerPresent = true;
 
   @property({
     type: Boolean,
@@ -154,6 +155,9 @@ export class EditableTableComponent extends LitElement {
   // REF-15 - to be used internally
   @state()
   tableDimensionsInternal: TableDimensionsInternal = {recordedParentWidth: 0};
+
+  @state()
+  categoryDropdownContainer: HTMLElement | null = null;
 
   @property({type: Object})
   tableStyle: CSSStyle = {};

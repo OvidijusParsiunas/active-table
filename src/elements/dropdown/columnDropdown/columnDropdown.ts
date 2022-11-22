@@ -58,6 +58,7 @@ export class ColumnDropdown {
     ColumnTypeDropdown.addToColumnDropdown(etc, dropdownElement);
     ColumnDropdownItem.addSortButton(etc.shadowRoot, dropdownElement, 'Ascending');
     ColumnDropdownItem.addSortButton(etc.shadowRoot, dropdownElement, 'Descending');
+    // WORK - Include Move Left/Move Right but not as part of default build
     ColumnDropdown.INSERT_COLUMN_ITEMS[0] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Right');
     ColumnDropdown.INSERT_COLUMN_ITEMS[1] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Left');
     DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Delete');

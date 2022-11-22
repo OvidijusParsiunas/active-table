@@ -22,6 +22,6 @@ export class RowDropdownItemEvents {
       etc, InsertNewRow.insert.bind(this, etc, rowIndex + 1, true, undefined));
     siblingIterator.next().onclick = RowDropdownItemEvents.onClickMiddleware.bind(
       etc, RemoveRow.remove.bind(this, etc, rowIndex));
-    // TO-DO - potential animation can be useful when a new column is inserted
+    // TO-DO - potential animation can be useful when a row column is inserted
   }
 }

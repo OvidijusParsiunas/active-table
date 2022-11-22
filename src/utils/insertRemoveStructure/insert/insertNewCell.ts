@@ -34,7 +34,7 @@ export class InsertNewCell {
     const columnDetails = columnsDetails[columnIndex];
     if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
     if (rowIndex === 0) {
-      const categoryDropdown = CategoryDropdown.createAndAppend(etc.tableElementRef as HTMLElement);
+      const categoryDropdown = CategoryDropdown.createAndAppend(etc.categoryDropdownContainer as HTMLElement);
       ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsElementsOnly, categoryDropdown); // REF-13
       InsertRemoveColumnSizer.insert(etc, columnsDetails, columnIndex); // REF-13
       if (isNewText) UpdateIndexColumnWidth.wrapTextWhenNarrowColumnsBreached(etc); // REF-19
@@ -77,6 +77,7 @@ export class InsertNewCell {
   // prettier-ignore
   public static insertToRow(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
+    console.log('inserting');
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, etc.displayIndexColumn);

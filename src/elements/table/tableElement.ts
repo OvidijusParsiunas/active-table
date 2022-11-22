@@ -4,6 +4,7 @@ import {TableDimensionsUtils} from '../../utils/tableDimensions/tableDimensionsU
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {AddNewColumnElement} from './addNewElements/column/addNewColumnElement';
+import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
@@ -111,6 +112,8 @@ export class TableElement {
     etc.tableBodyElementRef = TableElement.createTableBody();
     etc.addRowCellElementRef = AddNewRowElement.create(etc); // REF-18
     etc.tableElementRef.appendChild(etc.tableBodyElementRef);
+    etc.categoryDropdownContainer = CategoryDropdown.createContainerElement();
+    etc.tableElementRef.appendChild(etc.categoryDropdownContainer);
     return etc.tableElementRef;
   }
 }
