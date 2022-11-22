@@ -1,8 +1,8 @@
 import {OverwriteCellsViaCSVOnPaste} from '../../../utils/paste/CSV/overwriteCellsViaCSVOnPaste';
 import {FirefoxCaretDisplayFix} from '../../../utils/browser/firefox/firefoxCaretDisplayFix';
-import {CategoryDropdownItem} from '../../dropdown/categoryDropdown/categoryDropdownItem';
 import {UserKeyEventsStateUtil} from '../../../utils/userEventsState/userEventsStateUtil';
 import {DateCellInputElement} from '../cellsWithTextDiv/dateCell/dateCellInputElement';
+import {CategoryDropdown} from '../../dropdown/categoryDropdown/categoryDropdown';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {CellTypeTotalsUtils} from '../../../utils/cellType/cellTypeTotalsUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
@@ -56,8 +56,8 @@ export class DataCellEvents {
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
         DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
       } else if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-        CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textContainerElement, columnDetails.categoryDropdown,
-          this.defaultCellValue, true);
+        CategoryDropdown.updateCategoryDropdown(textContainerElement.parentElement as HTMLElement,
+          columnDetails.categoryDropdown, this.defaultCellValue, true);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
     }
@@ -66,7 +66,7 @@ export class DataCellEvents {
   private static updatePastedCellIfCategory(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
     const {userSetColumnType, categoryDropdown: dropdown} = etc.columnsDetails[columnIndex];
     if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-      CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(cellElement, dropdown, etc.defaultCellValue, true);
+      CategoryDropdown.updateCategoryDropdown(cellElement, dropdown, etc.defaultCellValue, true);
     }
   }
 

@@ -1,7 +1,7 @@
 import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
 import {DateCellInputElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {DATE_COLUMN_TYPE, TEXT_DIV_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
-import {CategoryDropdownItem} from '../../../elements/dropdown/categoryDropdown/categoryDropdownItem';
+import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -83,7 +83,7 @@ export class OverwriteCellsViaCSVOnPaste {
       const textElement = cellElement.children[0] as HTMLElement;
       CaretPosition.setToEndOfText(etc, textElement);
       if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-        CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, dropdown, etc.defaultCellValue, true);
+        CategoryDropdown.updateCategoryDropdown(cellElement, dropdown, etc.defaultCellValue, true);
       }
     } else {
       CaretPosition.setToEndOfText(etc, cellElement);

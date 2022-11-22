@@ -1,3 +1,4 @@
+import {TableElement} from '../../elements/table/tableElement';
 import {SIDE} from '../../types/side';
 
 interface FullyVisible {
@@ -13,6 +14,7 @@ type VisibilityDetails = FullyVisible | PartiallyVisible;
 
 export class ElementVisibility {
   public static getDetailsInWindow(element: HTMLElement): VisibilityDetails {
+    const {topWidth: topBorderWidth, leftWidth: leftBorderWidth} = TableElement.BORDER_DIMENSIONS;
     let top = element.offsetTop;
     let left = element.offsetLeft;
     const width = element.offsetWidth;
@@ -27,13 +29,13 @@ export class ElementVisibility {
     if (top < window.pageYOffset) {
       blockingSides.add(SIDE.TOP);
     }
-    if (top + height > window.pageYOffset + window.innerHeight) {
+    if (top + height + topBorderWidth > window.pageYOffset + window.innerHeight) {
       blockingSides.add(SIDE.BOTTOM);
     }
     if (left < window.pageXOffset) {
       blockingSides.add(SIDE.LEFT);
     }
-    if (left + width > window.pageXOffset + window.innerWidth) {
+    if (left + width + leftBorderWidth > window.pageXOffset + window.innerWidth) {
       blockingSides.add(SIDE.RIGHT);
     }
     if (blockingSides.size > 0) return {isFullyVisible: false, blockingSides};
