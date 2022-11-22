@@ -42,7 +42,7 @@ export class RemoveRow {
   }
 
   private static removeRow(etc: EditableTableComponent, rowIndex: number) {
-    etc.tableBodyElementRef?.removeChild(etc.tableBodyElementRef.children[rowIndex]);
+    etc.tableBodyElementRef?.children[rowIndex].remove();
     const removedContentRow = etc.contents.splice(rowIndex, 1);
     return removedContentRow[0];
   }

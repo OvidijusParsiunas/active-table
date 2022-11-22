@@ -30,7 +30,7 @@ export class FirefoxCaretDisplayFix {
   private static removeBRPadding(etc: EditableTableComponent, textContainerElement: HTMLElement) {
     const firstElement = textContainerElement.childNodes[0] as HTMLElement;
     if (firstElement.tagName === FirefoxCaretDisplayFix.BR_TAG_NAME) {
-      textContainerElement.removeChild(firstElement);
+      firstElement.remove();
       CaretPosition.setToEndOfText(etc, textContainerElement);
     }
   }

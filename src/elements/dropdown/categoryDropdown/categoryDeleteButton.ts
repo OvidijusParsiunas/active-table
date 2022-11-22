@@ -15,7 +15,7 @@ export class CategoryDeleteButton {
     const containerElement = buttonElement.parentElement as HTMLElement;
     const itemElement = containerElement.parentElement as HTMLElement;
     delete categoryDropdown.categoryToItem[itemElement.children[0].textContent as string];
-    categoryDropdown.element.removeChild(itemElement);
+    itemElement.remove();
     if (Object.keys(categoryDropdown.categoryToItem).length === 0) {
       CellWithTextEvents.programmaticBlur(this);
     } else {

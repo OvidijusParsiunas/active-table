@@ -77,7 +77,6 @@ export class InsertNewCell {
   // prettier-ignore
   public static insertToRow(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
-    console.log('inserting');
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, etc.displayIndexColumn);
