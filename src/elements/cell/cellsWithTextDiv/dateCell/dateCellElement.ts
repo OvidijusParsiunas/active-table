@@ -10,13 +10,13 @@ import {DateCellEvents} from './dateCellEvents';
 export class DateCellElement {
   public static readonly DATE_TYPE_TO_PROPERTIES: DateTypeToProperties = {};
 
-  public static addNewDateType(dateTypeName: string, dateProperties: DateProperties) {
+  private static addNewDateType(dateTypeName: string, dateProperties: DateProperties) {
     DateCellElement.DATE_TYPE_TO_PROPERTIES[dateTypeName] = dateProperties;
     DATE_COLUMN_TYPE[dateTypeName] = dateTypeName;
     TEXT_DIV_COLUMN_TYPE[dateTypeName] = dateTypeName;
   }
 
-  // added through addNewDateType method instead of direct in order perform other important operations
+  // added through addNewDateType method instead of direct in order to populate other objects with same name from one place
   public static populateDefaultDateTypes() {
     DateCellElement.addNewDateType(ACTIVE_COLUMN_TYPE.Date_D_M_Y, {
       separator: '-',
