@@ -25,4 +25,4 @@ export interface ColumnSettings {
 }
 
 // exposed to the client
-export type ColumnsSettings = Array<ColumnsSettings>;
+export type ColumnsSettings = Array<ColumnSettings>;

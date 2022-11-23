@@ -3,6 +3,7 @@ import {InitialContentsProcessing} from './utils/contents/initialContentsProcess
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
+import {ColumnSettingsUtil} from './utils/columnSettings/columnSettingsUtil';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableDimensionsInternal} from './types/tableDimensionsInternal';
 import {TableElementEventState} from './types/tableElementEventState';
@@ -197,6 +198,7 @@ export class EditableTableComponent extends LitElement {
     WindowElement.setEvents(this);
     this.onTableUpdate(this.contents);
     DateCellElement.populateDefaultDateTypes();
+    this.columnsSettingsInternal = ColumnSettingsUtil.createInternalMap(this.columnsSettings);
   }
 
   override connectedCallback() {

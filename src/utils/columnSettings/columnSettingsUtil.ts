@@ -1,9 +1,10 @@
+import {ColumnSettingsInternal, ColumnsSettingsMap} from '../../types/columnsSettingsInternal';
 import {StaticTableWidthUtils} from '../tableDimensions/staticTable/staticTableWidthUtils';
-import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {StringDimensionUtil} from '../tableDimensions/stringDimensionUtil';
 import {EditableTableComponent} from '../../editable-table-component';
 import {TableElement} from '../../elements/table/tableElement';
 import {ColumnDetails} from '../columnDetails/columnDetails';
+import {ColumnsSettings} from '../../types/columnsSettings';
 import {ColumnDetailsT} from '../../types/columnDetails';
 import {RegexUtils} from '../regex/regexUtils';
 
@@ -45,5 +46,12 @@ export class ColumnSettingsUtil {
     if (oldSettings !== newSettings) {
       ColumnSettingsUtil.changeWidth(etc, columnDetails, oldSettings, newSettings, cellElement)
     }
+  }
+
+  public static createInternalMap(clientSettings: ColumnsSettings) {
+    return clientSettings.reduce<ColumnsSettingsMap>((previousValue, currentvalue) => {
+      previousValue[currentvalue.columnName] = currentvalue as ColumnSettingsInternal;
+      return previousValue;
+    }, {});
   }
 }
