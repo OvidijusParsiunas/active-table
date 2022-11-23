@@ -1,12 +1,11 @@
+import {PossibleStringDimensions, StringDimensionUtil} from './stringDimensionUtil';
 import {TableDimensionsInternal} from '../../types/tableDimensionsInternal';
 import {MaxStructureDimensions} from '../../types/maxStructureDimensions';
 import {EditableTableComponent} from '../../editable-table-component';
+import {GenericElementUtils} from '../elements/genericElementUtils';
 import {TableDimensions} from '../../types/tableDimensions';
-import {PropertiesOfType} from '../../types/utilityTypes';
 import {ColumnsDetailsT} from '../../types/columnDetails';
 import {TableContents} from '../../types/tableContents';
-import {StringDimension} from '../../types/dimensions';
-import {RegexUtils} from '../regex/regexUtils';
 
 export class TableDimensionsUtils {
   public static readonly MINIMAL_TABLE_WIDTH = 70;
@@ -52,30 +51,15 @@ export class TableDimensionsUtils {
     tableDimensionsInternal.isPercentage = true;
   }
 
-  private static processDimension(width: number) {
-    return width < TableDimensionsUtils.MINIMAL_TABLE_WIDTH ? TableDimensionsUtils.MINIMAL_TABLE_WIDTH : width;
-  }
-
-  private static isParentWidthUndetermined(width: string) {
-    return width === 'fit-content' || width === 'min-content' || width === 'max-content';
-  }
-
-  private static setDimension(etc: EditableTableComponent, key: keyof PropertiesOfType<TableDimensions, StringDimension>) {
+  // prettier-ignore
+  private static setDimension(etc: EditableTableComponent, key: keyof PossibleStringDimensions<TableDimensions>) {
     const {tableDimensions, tableDimensionsInternal, tableElementRef, parentElement} = etc;
     if (!tableElementRef || !parentElement) return;
-    const clientValue = tableDimensions[key] as string | number;
-    const isClientValueStr = typeof clientValue === 'string';
-    // parse string or accept the passed in number as px
-    let extractedNumber = isClientValueStr ? Number(RegexUtils.extractIntegerStrs(clientValue)[0]) : clientValue;
-    if (isClientValueStr && clientValue.includes('%')) {
-      // if true then holds an unlimited size via table-controlled-width class (dynamic table)
-      if (TableDimensionsUtils.isParentWidthUndetermined(parentElement.style.width)) return;
-      if (extractedNumber > 100) extractedNumber = 100;
-      const width = parentElement.offsetWidth * (extractedNumber / 100);
-      tableDimensionsInternal[key] = TableDimensionsUtils.processDimension(width);
-      tableDimensionsInternal.isPercentage = true;
-    } else {
-      tableDimensionsInternal[key] = TableDimensionsUtils.processDimension(extractedNumber);
+    const numberDimension = StringDimensionUtil.generateNumberDimensionFromClientString(key,
+      parentElement, tableDimensions, TableDimensionsUtils.MINIMAL_TABLE_WIDTH);
+    if (numberDimension !== undefined) {
+      tableDimensionsInternal[key] = numberDimension.result;
+      tableDimensionsInternal.isPercentage = numberDimension.isPercentage;
     }
   }
 
@@ -90,7 +74,7 @@ export class TableDimensionsUtils {
       TableDimensionsUtils.setDimension(etc, 'maxWidth');
     } else if (
       !tableDimensions.unlimitedSize &&
-      !TableDimensionsUtils.isParentWidthUndetermined(parentElement.style.width)
+      !GenericElementUtils.isParentWidthUndetermined(parentElement.style.width)
     ) {
       TableDimensionsUtils.setDefaultDimension(tableDimensionsInternal, parentElement);
     }

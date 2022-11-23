@@ -1,5 +1,6 @@
 import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximumColumns';
 import {DropdownItemHighlightUtil} from '../../../utils/color/dropdownItemHighlightUtil';
+import {ColumnSettingsUtil} from '../../../utils/columnSettings/columnSettingsUtil';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -25,21 +26,22 @@ export class ColumnDropdown {
     dropdownElement.style.left = '';
   }
 
-  private static processTextIfExists(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
-    if (GenericElementUtils.doesElementExistInDom(cellElement)) {
-      const headerRow = etc.contents[0];
-      headerRow[columnIndex] = (cellElement.textContent as string).trim();
-      CellEvents.setCellToDefaultIfNeeded(etc, 0, columnIndex as number, cellElement);
-    }
+  private static processText(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
+    etc.contents[0][columnIndex] = (cellElement.textContent as string).trim();
+    CellEvents.setCellToDefaultIfNeeded(etc, 0, columnIndex as number, cellElement);
   }
 
   // prettier-ignore
   public static processTextAndHide(etc: EditableTableComponent) {
     const {
       overlayElementsState: {columnDropdown, columnTypeDropdown, fullTableOverlay},
-      focusedElements: { cell: {element: cellElement, columnIndex} }} = etc;
+      focusedElements: { cell: {element: cellElement, columnIndex} }, columnsDetails } = etc;
     if (!columnDropdown || !fullTableOverlay || !columnTypeDropdown || !cellElement) return;
-    ColumnDropdown.processTextIfExists(etc, columnIndex as number, cellElement);
+    if (GenericElementUtils.doesElementExistInDom(cellElement)) {
+      ColumnDropdown.processText(etc, columnIndex as number, cellElement);
+      // TO-DO when user pastes text via the select mode - this should be called
+      ColumnSettingsUtil.changeColumnSettingsIfNameDifferent(etc, cellElement, columnsDetails[columnIndex as number]);
+    }
     CellHighlightUtil.fade(cellElement);
     Dropdown.hide(columnDropdown, fullTableOverlay, columnTypeDropdown);
     ColumnTypeDropdownItem.reset(columnTypeDropdown);

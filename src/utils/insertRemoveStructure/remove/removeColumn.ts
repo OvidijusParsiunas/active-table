@@ -5,10 +5,12 @@ import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
+import {TableElement} from '../../../elements/table/tableElement';
 import {CellElementIndex} from '../../elements/cellElementIndex';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
+import {ColumnDetailsT} from '../../../types/columnDetails';
 import {TableContents} from '../../../types/tableContents';
 import {LastColumn} from '../shared/lastColumn';
 
@@ -16,6 +18,13 @@ export class RemoveColumn {
   private static updateAdditionElements(etc: EditableTableComponent) {
     if (etc.displayAddColumnCell) ColumnGroupElement.update(etc);
     ToggleAdditionElements.update(etc, false, AddNewColumnElement.toggle);
+  }
+
+  private static updateTableDimensions(etc: EditableTableComponent, columnDetails: ColumnDetailsT) {
+    if (columnDetails.settings?.width !== undefined) {
+      TableElement.changeAuxiliaryTableContentWidth(-columnDetails.settings.width);
+    }
+    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, false);
   }
 
   private static cleanUpContent(contents: TableContents) {
@@ -51,7 +60,7 @@ export class RemoveColumn {
     RemoveColumn.cleanUpContent(etc.contents);
     // needs to be after getDetails but before changeWidthsBasedOnColumnInsertRemove
     const removedColumnDetails = etc.columnsDetails.splice(columnIndex, 1)[0];
-    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, false);
+    RemoveColumn.updateTableDimensions(etc, removedColumnDetails);
     return removedColumnDetails;
   }
 

@@ -2,6 +2,8 @@ import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellC
 import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
+import {ColumnSettingsUtil} from '../../utils/columnSettings/columnSettingsUtil';
+import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {HeaderCellEvents} from './headerCell/headerCellEvents';
@@ -76,16 +78,27 @@ export class CellElement {
     FirefoxCaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo);
   }
 
-  private static createCellDOMElement(etc: EditableTableComponent, cellText: string, isHeader: boolean) {
+  private static setColumnWidth(tableElement: HTMLElement, cellElement: HTMLElement, settings?: ColumnSettingsInternal) {
+    if (settings?.width !== undefined) {
+      ColumnSettingsUtil.setWidthOnNewHeaderCell(tableElement, cellElement, settings);
+    } else {
+      cellElement.style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
+    }
+  }
+
+  private static createCellDOMElement(etc: EditableTableComponent, cellText: string, colIndex: number, isHeader: boolean) {
     const cellElement = CellElement.create(etc.cellStyle, etc.headerStyle, isHeader);
     CellElement.processAndSetTextOnCell(etc, cellElement, cellText, false);
     CellElement.prepContentEditable(cellElement, isHeader);
-    if (isHeader) cellElement.style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`; // overwritten if static table
+    if (isHeader) {
+      // overwritten if static table
+      CellElement.setColumnWidth(etc.tableElementRef as HTMLElement, cellElement, etc.columnsDetails[colIndex].settings);
+    }
     return cellElement;
   }
 
   public static createCellElement(etc: EditableTableComponent, cellText: string, rowIndex: number, columnIndex: number) {
-    const cellElement = CellElement.createCellDOMElement(etc, cellText, rowIndex === 0);
+    const cellElement = CellElement.createCellDOMElement(etc, cellText, columnIndex, rowIndex === 0);
     CellElement.setCellEvents(etc, cellElement, rowIndex, columnIndex);
     return cellElement;
   }

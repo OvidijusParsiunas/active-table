@@ -1,4 +1,5 @@
 import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../enums/columnType';
+import {ColumnSettingsInternal} from './columnsSettingsInternal';
 import {CELL_TYPE} from '../enums/cellType';
 import {ColumnSizerT} from './columnSizer';
 import {Optional} from './utilityTypes';
@@ -47,10 +48,11 @@ export interface ColumnDetailsT {
   userSetColumnType: USER_SET_COLUMN_TYPE;
   cellTypeTotals: CellTypeTotals;
   categoryDropdown: CategoryDropdownT;
+  settings?: ColumnSettingsInternal;
 }
 
 // REF-13
-export type ColumnDetailsElementsOnly = Pick<ColumnDetailsT, 'elements'>;
+export type ColumnDetailsInitial = Pick<ColumnDetailsT, 'elements' | 'settings'>;
 
 // REF-13
 export type ColumnDetailsNoSizer = Optional<ColumnDetailsT, 'columnSizer'>;

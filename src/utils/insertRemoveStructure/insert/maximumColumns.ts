@@ -2,6 +2,7 @@ import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
 import {StaticTable} from '../../tableDimensions/staticTable/staticTable';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {TableElement} from '../../../elements/table/tableElement';
+import {ColumnDetails} from '../../columnDetails/columnDetails';
 
 export class MaximumColumns {
   // the motivation behind minimal column length came from the fact that when we have set a table width and all the columns
@@ -11,7 +12,6 @@ export class MaximumColumns {
   // the actual minimal column length is usually not reached as dividing table width by its columns rarely produces it
   // originally this was set to 28, however the extra padding on the left column causes the table width to overflow
   // the set limit hence it is set to 34 instead
-  private static readonly MINIMAL_COLUMN_WIDTH = 34;
 
   // prettier-ignore
   private static ignoreMinimalColumnWidthCheck(tableDimensionsInternal: TableDimensionsInternal,
@@ -30,6 +30,6 @@ export class MaximumColumns {
     // This is primarily concerned on not making the columns too narrow when the table is at its width limit
     // TO-DO if certain columns have a custom width
     const totalColumnsWidth = tableElement.offsetWidth - TableElement.AUXILIARY_TABLE_CONTENT_WIDTH;
-    return totalColumnsWidth / (numberOfColumns + 1) >= MaximumColumns.MINIMAL_COLUMN_WIDTH;
+    return totalColumnsWidth / (numberOfColumns + 1) >= ColumnDetails.MINIMAL_COLUMN_WIDTH;
   }
 }

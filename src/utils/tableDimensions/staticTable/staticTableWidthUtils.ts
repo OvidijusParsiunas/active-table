@@ -49,8 +49,9 @@ export class StaticTableWidthUtils {
   }
 
   private static resetAllColumnSizes(columnsDetails: ColumnsDetailsT, tableWidth: number) {
-    StaticTableWidthUtils.setNewColumnWidth(tableWidth, columnsDetails.length);
-    columnsDetails.forEach((columnDetails) => {
+    const columnsToBeChanged = columnsDetails.filter((column) => column.settings?.width === undefined);
+    StaticTableWidthUtils.setNewColumnWidth(tableWidth, columnsToBeChanged.length);
+    columnsToBeChanged.forEach((columnDetails) => {
       columnDetails.elements[0].style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
     });
   }

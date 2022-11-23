@@ -1,11 +1,11 @@
 import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
-import {ColumnDetailsElementsOnly, ColumnDetailsT, ColumnsDetailsT} from '../../../types/columnDetails';
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
 import {UpdateIndexColumnWidth} from '../../../elements/indexColumn/updateIndexColumnWidth';
+import {ColumnDetailsInitial, ColumnDetailsT} from '../../../types/columnDetails';
 import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -35,7 +35,7 @@ export class InsertNewCell {
     if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
     if (rowIndex === 0) {
       const categoryDropdown = CategoryDropdown.createAndAppend(etc.categoryDropdownContainer as HTMLElement);
-      ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsElementsOnly, categoryDropdown); // REF-13
+      ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsInitial, categoryDropdown); // REF-13
       InsertRemoveColumnSizer.insert(etc, columnsDetails, columnIndex); // REF-13
       if (isNewText) UpdateIndexColumnWidth.wrapTextWhenNarrowColumnsBreached(etc); // REF-19
     } else {
@@ -45,10 +45,12 @@ export class InsertNewCell {
   }
 
   // REF-13
-  // the reason for creating object with elements only is because we need it for changeWidthsBasedOnColumnInsertRemove
-  // we can worry about adding the other properties in a timeout within the updateColumnDetailsAndSizers method
-  private static insertColumnDetailsWithElementsArr(columnsDetails: ColumnsDetailsT, index: number) {
-    const columnDetails = ColumnDetails.createWithElementsArr();
+  // the reason for creating object with elements and settings only is because changeWidthsBasedOnColumnInsertRemove
+  // needs them to reset all column widths if required. We can worry about adding the other properties in a timeout
+  // within the updateColumnDetailsAndSizers method
+  private static insertColumnDetailsWithElementsArr(etc: EditableTableComponent, cellText: string, index: number) {
+    const {columnsDetails, columnsSettingsInternal} = etc;
+    const columnDetails = ColumnDetails.createWithElementsArr(columnsSettingsInternal[cellText]);
     columnsDetails.splice(index, 0, columnDetails as ColumnDetailsT);
   }
 
@@ -65,7 +67,7 @@ export class InsertNewCell {
   }
 
   private static create(etc: EditableTableComponent, processedCellText: string, rowIndex: number, columnIndex: number) {
-    if (rowIndex === 0) InsertNewCell.insertColumnDetailsWithElementsArr(etc.columnsDetails, columnIndex); // REF-13
+    if (rowIndex === 0) InsertNewCell.insertColumnDetailsWithElementsArr(etc, processedCellText, columnIndex); // REF-13
     const columnDetails = etc.columnsDetails[columnIndex];
     const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
     InsertNewCell.convertCell(etc, columnDetails, rowIndex, columnIndex, newCellElement);

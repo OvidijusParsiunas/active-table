@@ -10,4 +10,8 @@ export class GenericElementUtils {
   public static doesElementExistInDom(element: HTMLElement) {
     return !!element.parentElement;
   }
+
+  public static isParentWidthUndetermined(width: string) {
+    return width === 'fit-content' || width === 'min-content' || width === 'max-content';
+  }
 }
