@@ -199,9 +199,9 @@ the table as they will no longer be constant and will need some dynamicity
 CAUTION-2
 When resizing the table, take note of some async code that was waiting to be executed before the resize was triggered:
 It has been identified that when re-render occurs and columnsDetails object is cleared, by the time the async code is executed,
-the columnDetails objects will already have the elements property populated again, however they will not have any other
-properties (REF-13) which we can use to check if re-rendering has occured, and if it has - stop any further async processing
-from execution.
+the columnDetails objects will have properties populated inside the ColumnDetailsInitial type (REF-13), however they will not
+have any other properties which we can use to check if re-rendering has occured, and if it has - stop any async processing
+that has been initiated before the re-render.
 If further bugs occur - create and use a 'rendering' flag instead.
 
 CAUTION-3

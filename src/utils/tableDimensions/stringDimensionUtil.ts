@@ -21,6 +21,7 @@ export class StringDimensionUtil {
     let extractedNumber = isSourceValueStr ? Number(RegexUtils.extractIntegerStrs(sourcevalue)[0]) : sourcevalue;
     if (isSourceValueStr && sourcevalue.includes('%')) {
       // if true then holds an unlimited size
+      // when this is used for column, the table element should return false
       if (GenericElementUtils.isParentWidthUndetermined(parentElement.style.width)) return;
       if (extractedNumber > 100) extractedNumber = 100;
       const width = parentElement.offsetWidth * (extractedNumber / 100);

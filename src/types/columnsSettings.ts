@@ -6,6 +6,8 @@ import {CSSStyle} from './cssStyle';
 // exposed to the client
 export interface ColumnSettings {
   columnName: string;
+  // if percentage - will use the table width
+  // if the accummulated custom column widths are higher than the width in tableDimensions, they will breach that width
   width?: StringDimension;
   canWidthBeChanged?: boolean;
   defaultValue?: TableCellText;
