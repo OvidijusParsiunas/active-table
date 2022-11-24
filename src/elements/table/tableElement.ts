@@ -24,6 +24,18 @@ export class TableElement {
   public static AUXILIARY_TABLE_CONTENT_WIDTH = UNSET_NUMBER_IDENTIFIER;
   public static BORDER_DIMENSIONS: TableBorderDimensions = TableBorderDimensionsUtil.generateDefault();
 
+  public static changeAuxiliaryTableContentWidth(delta: number) {
+    TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += delta;
+  }
+
+  public static setAuxiliaryTableContentWidth(etc: EditableTableComponent) {
+    const {displayAddColumnCell, displayIndexColumn} = etc;
+    TableElement.AUXILIARY_TABLE_CONTENT_WIDTH =
+      TableElement.BORDER_DIMENSIONS.leftWidth + TableElement.BORDER_DIMENSIONS.rightWidth;
+    if (displayAddColumnCell) TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += AddNewColumnElement.DEFAULT_WIDTH;
+    if (displayIndexColumn) TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += IndexColumn.DEFAULT_WIDTH;
+  }
+
   // prettier-ignore
   public static addAuxiliaryElements(etc: EditableTableComponent,
       tableElement: HTMLElement, overlayElementsState: OverlayElements, areHeadersEditable: boolean) {
@@ -61,10 +73,6 @@ export class TableElement {
     setTimeout(() => InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, etc.columnsDetails.length - 1));
   }
 
-  public static changeAuxiliaryTableContentWidth(delta: number) {
-    TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += delta;
-  }
-
   public static populateBody(etc: EditableTableComponent) {
     // removes all the current children
     etc.tableBodyElementRef?.replaceChildren();
@@ -78,21 +86,6 @@ export class TableElement {
     if (etc.displayIndexColumn) UpdateIndexColumnWidth.update(etc);
     // needs to be after UpdateIndexColumnWidth.update as the new index column width can impact the add new column display
     ToggleAdditionElements.update(etc, true, AddNewColumnElement.toggle);
-  }
-
-  private static setAuxiliaryTableContentWidth(etc: EditableTableComponent) {
-    const {displayAddColumnCell, displayIndexColumn} = etc;
-    if (TableElement.AUXILIARY_TABLE_CONTENT_WIDTH === UNSET_NUMBER_IDENTIFIER) {
-      TableElement.AUXILIARY_TABLE_CONTENT_WIDTH =
-        TableElement.BORDER_DIMENSIONS.leftWidth + TableElement.BORDER_DIMENSIONS.rightWidth;
-      if (displayAddColumnCell) TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += AddNewColumnElement.DEFAULT_WIDTH;
-      if (displayIndexColumn) TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += IndexColumn.DEFAULT_WIDTH;
-    }
-  }
-
-  private static setSate(etc: EditableTableComponent) {
-    TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtil.generateUsingElement(etc.tableElementRef as HTMLElement);
-    TableElement.setAuxiliaryTableContentWidth(etc);
   }
 
   private static createTableBody() {
@@ -121,7 +114,7 @@ export class TableElement {
     etc.tableElementRef.appendChild(etc.tableBodyElementRef);
     etc.categoryDropdownContainer = CategoryDropdown.createContainerElement();
     etc.tableElementRef.appendChild(etc.categoryDropdownContainer);
-    TableElement.setSate(etc);
+    TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtil.generateUsingElement(etc.tableElementRef as HTMLElement);
     return etc.tableElementRef;
   }
 }
