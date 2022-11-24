@@ -41,7 +41,7 @@ export class InsertRemoveColumnSizer {
     const previousIndex = columnIndex - 1;
     if (previousIndex < 0) return;
     const {columnSizer} = columnsDetails[previousIndex];
-    if (columnsDetails[previousIndex].settings?.width !== undefined) return;
+    if (columnsDetails[previousIndex].settings?.width !== undefined || !columnSizer) return;
     // no need for full creation as there is a need to retain the element and its bindings
     const newColumnSizer = ColumnSizer.createObject(columnSizer.element, columnsDetails, previousIndex, tableElement);
     // cannot simply overwrite columnSizer object as it has already binded to elements

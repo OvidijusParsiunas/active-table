@@ -66,6 +66,6 @@ export class ColumnSizerOverlayEvents {
     MovableColumnSizerElement.display(this.tableBodyElementRef as HTMLElement, columnSizer, this.displayAddRowCell);
     ColumnSizerElement.unsetElementsToDefault(sizerElement, sizerStyles.default.width);
     ColumnSizerElement.setBackgroundImage(sizerElement, sizerStyles.default.backgroundImage);
-    this.tableElementEventState.selectedColumnSizer = SelectedColumnSizer.get(this, sizerNumber, columnSizer);
+    this.tableElementEventState.selectedColumnSizer = SelectedColumnSizer.get(this, sizerNumber);
   }
 }

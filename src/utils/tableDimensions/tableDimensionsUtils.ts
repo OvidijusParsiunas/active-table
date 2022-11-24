@@ -58,7 +58,7 @@ export class TableDimensionsUtils {
     const numberDimension = StringDimensionUtil.generateNumberDimensionFromClientString(key,
       parentElement, tableDimensions, TableDimensionsUtils.MINIMAL_TABLE_WIDTH);
     if (numberDimension !== undefined) {
-      tableDimensionsInternal[key] = numberDimension.result;
+      tableDimensionsInternal[key] = numberDimension.width;
       tableDimensionsInternal.isPercentage = numberDimension.isPercentage;
     }
   }

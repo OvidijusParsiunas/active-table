@@ -9,6 +9,7 @@ export interface ColumnSettings {
   // if percentage - will use the table width
   // if the accummulated custom column widths are higher than the width in tableDimensions, they will breach that width
   width?: StringDimension;
+  minWidth?: StringDimension;
   canWidthBeChanged?: boolean;
   defaultValue?: TableCellText;
   type?: boolean;

@@ -1,6 +1,8 @@
+import {ColumnSettingsWidthUtil} from '../../columnSettings/columnSettingsWidthUtil';
+import {ColumnSettingsInternal} from '../../../types/columnsSettingsInternal';
+import {ColumnDetailsT, ColumnsDetailsT} from '../../../types/columnDetails';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {TableElement} from '../../../elements/table/tableElement';
-import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {StaticTable} from './staticTable';
 
 // TO-DO when not at maximum length - have a setting option to resize all columns to the limit as resizing to small and
@@ -48,24 +50,60 @@ export class StaticTableWidthUtils {
     StaticTableWidthUtils.NEW_COLUMN_WIDTH = totalColumnsWidth / numberOfColumns;
   }
 
-  private static resetAllColumnSizes(columnsDetails: ColumnsDetailsT, tableWidth: number) {
-    const columnsToBeChanged = columnsDetails.filter((column) => column.settings?.width === undefined);
-    StaticTableWidthUtils.setNewColumnWidth(tableWidth, columnsToBeChanged.length);
-    columnsToBeChanged.forEach((columnDetails) => {
+  private static resetMinWidthColumns(minWidthColumns: ColumnDetailsT[], tableElement: HTMLElement) {
+    minWidthColumns.forEach((columnDetails) => {
+      const {settings, elements} = columnDetails;
+      const {width} = ColumnSettingsWidthUtil.getSettingsWidthNumber(tableElement, settings as ColumnSettingsInternal);
+      const headerCell = elements[0];
+      if (headerCell.offsetWidth !== width) {
+        headerCell.style.width = `${width}px`;
+      }
+    });
+  }
+
+  private static resetDynamicWidthColumns(dynamicWidthColumns: ColumnDetailsT[]) {
+    dynamicWidthColumns.forEach((columnDetails) => {
       columnDetails.elements[0].style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
     });
+  }
+
+  private static getChangeableColumns(columnsDetails: ColumnsDetailsT): {
+    dynamicWidthColumns: ColumnDetailsT[];
+    minWidthColumns: ColumnDetailsT[];
+  } {
+    const dynamicWidthColumns: ColumnDetailsT[] = [];
+    const minWidthColumns: ColumnDetailsT[] = [];
+    for (let i = 0; i < columnsDetails.length; i += 1) {
+      const columnDetails = columnsDetails[i];
+      if (columnDetails.settings?.width === undefined) {
+        if (columnDetails.settings?.minWidth !== undefined) {
+          minWidthColumns.push(columnDetails);
+        } else {
+          dynamicWidthColumns.push(columnDetails);
+        }
+      }
+    }
+    return {dynamicWidthColumns, minWidthColumns};
+  }
+
+  private static resetColumnSizes(tableElementRef: HTMLElement, columnsDetails: ColumnsDetailsT, tableWidth: number) {
+    const {dynamicWidthColumns, minWidthColumns} = StaticTableWidthUtils.getChangeableColumns(columnsDetails);
+    StaticTableWidthUtils.setNewColumnWidth(tableWidth, dynamicWidthColumns.length);
+    StaticTableWidthUtils.resetDynamicWidthColumns(dynamicWidthColumns);
+    StaticTableWidthUtils.resetMinWidthColumns(minWidthColumns, tableElementRef);
   }
 
   public static changeWidthsBasedOnColumnInsertRemove(etc: EditableTableComponent, isInsert: boolean) {
     const {tableElementRef, tableDimensionsInternal, columnsDetails} = etc;
     if (!tableElementRef) return;
-    if (tableDimensionsInternal.width !== undefined) {
-      StaticTableWidthUtils.resetAllColumnSizes(columnsDetails, tableDimensionsInternal.width);
+    const {width, maxWidth} = tableDimensionsInternal;
+    if (width !== undefined) {
+      StaticTableWidthUtils.resetColumnSizes(tableElementRef, columnsDetails, width);
       // isInsert check was initially not needed as this was not getting called when a column had been removed, however
       // it has been identified that the table offsetWidth does not immediately update when the column widths are very
       // narrow (even above the minimal column limit set by the MINIMAL_COLUMN_WIDTH variable), hence it was added
     } else if (isInsert && StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensionsInternal)) {
-      StaticTableWidthUtils.resetAllColumnSizes(columnsDetails, tableDimensionsInternal.maxWidth as number);
+      StaticTableWidthUtils.resetColumnSizes(tableElementRef, columnsDetails, maxWidth as number);
     }
   }
 }

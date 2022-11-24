@@ -4,7 +4,8 @@ import {StringDimension} from '../../types/dimensions';
 import {RegexUtils} from '../regex/regexUtils';
 
 export type PossibleStringDimensions<T> = PropertiesOfType<T, StringDimension>;
-type Result = {result: number; isPercentage: boolean} | undefined;
+export type SuccessResult = {width: number; isPercentage: boolean};
+type Result = SuccessResult | undefined;
 
 export class StringDimensionUtil {
   private static processDimension(extractedWidth: number, minimalWidth: number) {
@@ -21,12 +22,12 @@ export class StringDimensionUtil {
     let extractedNumber = isSourceValueStr ? Number(RegexUtils.extractIntegerStrs(sourcevalue)[0]) : sourcevalue;
     if (isSourceValueStr && sourcevalue.includes('%')) {
       // if true then holds an unlimited size
-      // when this is used for column, the table element should return false
+      // when this is used for column, this conition should be false
       if (GenericElementUtils.isParentWidthUndetermined(parentElement.style.width)) return;
       if (extractedNumber > 100) extractedNumber = 100;
       const width = parentElement.offsetWidth * (extractedNumber / 100);
-      return { result: StringDimensionUtil.processDimension(width, minimalWidth), isPercentage: true };
+      return { width: StringDimensionUtil.processDimension(width, minimalWidth), isPercentage: true };
     }
-    return { result: StringDimensionUtil.processDimension(extractedNumber, minimalWidth), isPercentage: false };
+    return { width: StringDimensionUtil.processDimension(extractedNumber, minimalWidth), isPercentage: false };
   }
 }

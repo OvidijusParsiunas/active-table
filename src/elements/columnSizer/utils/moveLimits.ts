@@ -1,5 +1,7 @@
+import {ColumnSettingsWidthUtil} from '../../../utils/columnSettings/columnSettingsWidthUtil';
 import {StaticTable} from '../../../utils/tableDimensions/staticTable/staticTable';
 import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
+import {ColumnSettingsInternal} from '../../../types/columnsSettingsInternal';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {UNSET_NUMBER_IDENTIFIER} from '../../../consts/unsetNumber';
 import {SizerMoveLimits} from '../../../types/columnSizer';
@@ -47,22 +49,32 @@ export class MoveLimits {
     return MoveLimits.getRightLimitDynamicWidthTable();
   }
 
-  private static getLeftLimit(leftHeader: HTMLElement, isFirstSizer: boolean) {
-    let leftLimit = -leftHeader.offsetWidth;
+  // prettier-ignore
+  private static getLeftLimit(leftHeader: HTMLElement,
+      isFirstSizer: boolean, tableElement: HTMLElement, leftHeaderSettings?: ColumnSettingsInternal) {
+    let leftLimit = 0;
+    if (leftHeaderSettings?.minWidth !== undefined) {
+      const { width } = ColumnSettingsWidthUtil.getSettingsWidthNumber(tableElement, leftHeaderSettings);
+      leftLimit = -(leftHeader.offsetWidth - width);
+    } else {
+      leftLimit = -leftHeader.offsetWidth;
+    }
     if (isFirstSizer) leftLimit += MoveLimits.SIDE_LIMIT_DELTA;
     return leftLimit;
   }
 
   // prettier-ignore
-  public static generate(etc: EditableTableComponent, isFirstSizer: boolean, isSecondLastSizer: boolean,
-      leftHeader: HTMLElement, rightHeader: HTMLElement | undefined, columnSizerOffset: number): SizerMoveLimits {
+  public static generate(etc: EditableTableComponent, isFirstSizer: boolean,
+      isSecondLastSizer: boolean, leftHeader: HTMLElement, rightHeader: HTMLElement | undefined,
+      columnSizerOffset: number, leftHeaderSettings?: ColumnSettingsInternal): SizerMoveLimits {
     if (MoveLimits.SIDE_LIMIT_DELTA === UNSET_NUMBER_IDENTIFIER) {
-      // (CAUTION-1)
+      // (CAUTION-1) - when styles are different take this into consideration
       // only needs to be set once
       MoveLimits.setSideLimitDelta(leftHeader);
     }
     return {
-      left: MoveLimits.getLeftLimit(leftHeader, isFirstSizer) + columnSizerOffset,
+      left: MoveLimits.getLeftLimit(
+        leftHeader, isFirstSizer, etc.tableElementRef as HTMLElement, leftHeaderSettings) + columnSizerOffset,
       right: MoveLimits.getRightLimit(etc, isSecondLastSizer, rightHeader) + columnSizerOffset,
     };
   }
