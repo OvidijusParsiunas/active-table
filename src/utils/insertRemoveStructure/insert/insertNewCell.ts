@@ -37,7 +37,10 @@ export class InsertNewCell {
       const categoryDropdown = CategoryDropdown.createAndAppend(etc.categoryDropdownContainer as HTMLElement);
       ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsInitial, categoryDropdown); // REF-13
       InsertRemoveColumnSizer.insert(etc, columnsDetails, columnIndex); // REF-13
-      if (isNewText) UpdateIndexColumnWidth.wrapTextWhenNarrowColumnsBreached(etc); // REF-19
+      if (isNewText) {
+        InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
+        UpdateIndexColumnWidth.wrapTextWhenNarrowColumnsBreached(etc); // REF-19
+      }
     } else {
       // CAUTION-2
       CellTypeTotalsUtils.incrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, text);

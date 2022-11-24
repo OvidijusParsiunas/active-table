@@ -1,6 +1,7 @@
 import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
 import {InitialContentsProcessing} from '../../utils/contents/initialContentsProcessing';
 import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElements';
+import {InsertRemoveColumnSizer} from '../columnSizer/utils/insertRemoveColumnSizer';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {AddNewColumnElement} from './addNewElements/column/addNewColumnElement';
@@ -57,6 +58,7 @@ export class TableElement {
   private static postProcessColumns(etc: EditableTableComponent) {
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
     InitialContentsProcessing.postProcess(etc.contents, etc.columnsDetails);
+    setTimeout(() => InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, etc.columnsDetails.length - 1));
   }
 
   public static changeAuxiliaryTableContentWidth(delta: number) {

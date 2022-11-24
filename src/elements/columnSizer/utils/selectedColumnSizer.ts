@@ -1,11 +1,12 @@
 import {ColumnSizerT, SelectedColumnSizerT} from '../../../types/columnSizer';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {ColumnSizerGenericUtils} from './columnSizerGenericUtils';
 import {MoveLimits} from './moveLimits';
 
 export class SelectedColumnSizer {
   // prettier-ignore
   private static generateObject(etc: EditableTableComponent, columnSizer: ColumnSizerT, isFirstSizer: boolean,
-      isSecondLastSizer: boolean, leftHeader: HTMLElement, rightHeader: HTMLElement): SelectedColumnSizerT {
+      isSecondLastSizer: boolean, leftHeader: HTMLElement, rightHeader?: HTMLElement): SelectedColumnSizerT {
     // sizer is centered within the cell divider and starts with an offset, hence mouseMoveOffset is set
     // with that offset in order to limit the vertical line at the correct cell offset position
     const columnSizerOffset = columnSizer.movableElement.offsetLeft;
@@ -24,7 +25,7 @@ export class SelectedColumnSizer {
     const isFirstSizer = sizerNumber === 0;
     const isSecondLastSizer = etc.columnsDetails.length > sizerNumber + 2;
     const leftHeader = etc.columnsDetails[sizerNumber].elements[0];
-    const rightHeader = etc.columnsDetails[sizerNumber + 1]?.elements[0];
+    const rightHeader = ColumnSizerGenericUtils.findNextResizableColumnHeader(etc.columnsDetails, sizerNumber);
 
     return SelectedColumnSizer.generateObject(etc, columnSizer, isFirstSizer, isSecondLastSizer, leftHeader, rightHeader);
   }

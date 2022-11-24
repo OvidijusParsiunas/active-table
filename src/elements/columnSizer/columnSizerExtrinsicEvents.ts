@@ -42,7 +42,7 @@ export class ColumnSizerExtrinsicEvents {
     const {columnSizer, headerCell, sizerNumber} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(
       selectedColumnSizer.element.id, columnsDetails);
     ColumnSizerExtrinsicEvents.setWidth(selectedColumnSizer, tableElementRef as HTMLElement, tableDimensionsInternal,
-      headerCell, columnsDetails[sizerNumber + 1]?.elements[0]);
+      headerCell, ColumnSizerGenericUtils.findNextResizableColumnHeader(columnsDetails, sizerNumber));
     MovableColumnSizerElement.hide(columnSizer.movableElement);
     UpdateRowElement.updateHeaderRowHeight(columnSizer.element.parentElement?.parentElement as HTMLElement);
   }
@@ -54,7 +54,6 @@ export class ColumnSizerExtrinsicEvents {
   }
 
   private static mouseUpNotOnSizer(columnSizer: ColumnSizerT) {
-    // ColumnSizerElement.hide(selectedColumnSizer as HTMLElement);
     const {element: sizerElement, styles: sizerStyles, movableElement} = columnSizer;
     ColumnSizerExtrinsicEvents.setSizerStyleToHoverNoAnimation(columnSizer, movableElement.style.backgroundColor);
     // this kicks off the animation with the hover properties from above

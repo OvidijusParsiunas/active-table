@@ -98,4 +98,34 @@ export class InsertRemoveColumnSizer {
     InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex, tableElementRef as HTMLElement);
     InsertRemoveColumnSizer.updateIdsOfAllSubsequent(columnsDetails, columnIndex);
   }
+
+  // this is used to cleanup sizers for columns that have or had width settings because when the table width is set,
+  // columns that have settings do not have a sizer, additionally the last column that does not have settings also
+  // does not have a sizer
+  public static cleanUpCustomColumnSizers(etc: EditableTableComponent, changedColumnIndex: number) {
+    const {tableDimensionsInternal, columnsDetails} = etc;
+    if (tableDimensionsInternal.width === undefined) return;
+    let isLastNoWidthColumnFound = false;
+    for (let i = columnsDetails.length - 1; i >= 0; i -= 1) {
+      // traversing backwards
+      const columnDetails = columnsDetails[i];
+      if (columnDetails.settings?.width === undefined) {
+        if (isLastNoWidthColumnFound === false) {
+          isLastNoWidthColumnFound = true;
+          // last column index should not have a sizer
+          if (columnDetails.columnSizer) InsertRemoveColumnSizer.removeSizer(columnDetails);
+          // exit only if the first column without settings is before the changed/removed/created column index
+          if (i < changedColumnIndex) break;
+        } else {
+          // if column does not have settings and it is not last, it should have a sizer
+          if (!columnDetails.columnSizer && columnsDetails.length - 1 !== i) {
+            InsertRemoveColumnSizer.insertAtIndex(etc, columnDetails, i);
+          }
+          // if the last no width column has already been identified and we are beyond the changed index, can exit
+          if (isLastNoWidthColumnFound === true && i < changedColumnIndex) break;
+        }
+        // if the column has a width or it is the last column, it should not havea sizer
+      } else if (columnDetails.columnSizer) InsertRemoveColumnSizer.removeSizer(columnDetails);
+    }
+  }
 }

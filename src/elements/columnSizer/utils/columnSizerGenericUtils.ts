@@ -7,4 +7,11 @@ export class ColumnSizerGenericUtils {
     const columnDetails = columnsDetails[sizerNumber];
     return {columnSizer: columnDetails.columnSizer, headerCell: columnDetails.elements[0], sizerNumber};
   }
+
+  public static findNextResizableColumnHeader(columnsDetails: ColumnsDetailsT, sizerNumber: number) {
+    const columnDetails = columnsDetails.slice(sizerNumber + 1).find((columnDetails) => {
+      return Boolean(!columnDetails.settings?.width);
+    });
+    return columnDetails?.elements[0];
+  }
 }

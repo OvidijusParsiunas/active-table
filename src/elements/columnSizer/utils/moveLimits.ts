@@ -55,7 +55,7 @@ export class MoveLimits {
 
   // prettier-ignore
   public static generate(etc: EditableTableComponent, isFirstSizer: boolean, isSecondLastSizer: boolean,
-      leftHeader: HTMLElement, rightHeader: HTMLElement, columnSizerOffset: number): SizerMoveLimits {
+      leftHeader: HTMLElement, rightHeader: HTMLElement | undefined, columnSizerOffset: number): SizerMoveLimits {
     if (MoveLimits.SIDE_LIMIT_DELTA === UNSET_NUMBER_IDENTIFIER) {
       // (CAUTION-1)
       // only needs to be set once

@@ -1,3 +1,4 @@
+import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnSettingsInternal, ColumnsSettingsMap} from '../../types/columnsSettingsInternal';
 import {StaticTableWidthUtils} from '../tableDimensions/staticTable/staticTableWidthUtils';
 import {StringDimensionUtil} from '../tableDimensions/stringDimensionUtil';
@@ -6,7 +7,6 @@ import {TableElement} from '../../elements/table/tableElement';
 import {ColumnDetails} from '../columnDetails/columnDetails';
 import {ColumnsSettings} from '../../types/columnsSettings';
 import {ColumnDetailsT} from '../../types/columnDetails';
-import {RegexUtils} from '../regex/regexUtils';
 
 export class ColumnSettingsUtil {
   // prettier-ignore
@@ -26,7 +26,7 @@ export class ColumnSettingsUtil {
       oldSettings: ColumnSettingsInternal | undefined, newSettings: ColumnSettingsInternal, cellElement: HTMLElement) {
     let hasWidthChanged = false;
     if (oldSettings?.width !== undefined) {
-      TableElement.changeAuxiliaryTableContentWidth(-Number(RegexUtils.extractIntegerStrs(oldSettings.width)[0]));
+      ColumnSettingsUtil.setWidthOnNewHeaderCell(etc.tableElementRef as HTMLElement, cellElement, oldSettings);
       hasWidthChanged = true;
     }
     if (newSettings?.width !== undefined) {
@@ -39,12 +39,14 @@ export class ColumnSettingsUtil {
 
   // prettier-ignore
   public static changeColumnSettingsIfNameDifferent(etc: EditableTableComponent,
-      cellElement: HTMLElement, columnDetails: ColumnDetailsT) {
-    const {columnsSettingsInternal} = etc;
+      cellElement: HTMLElement, columnIndex: number) {
+    const {columnsSettingsInternal, columnsDetails} = etc;
+    const columnDetails = columnsDetails[columnIndex];
     const oldSettings = columnDetails.settings;
     const newSettings = columnsSettingsInternal[cellElement.textContent as string];
     if (oldSettings !== newSettings) {
-      ColumnSettingsUtil.changeWidth(etc, columnDetails, oldSettings, newSettings, cellElement)
+      ColumnSettingsUtil.changeWidth(etc, columnDetails, oldSettings, newSettings, cellElement);
+      InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
     }
   }
 

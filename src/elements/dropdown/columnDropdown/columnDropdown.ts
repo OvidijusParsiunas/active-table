@@ -35,12 +35,12 @@ export class ColumnDropdown {
   public static processTextAndHide(etc: EditableTableComponent) {
     const {
       overlayElementsState: {columnDropdown, columnTypeDropdown, fullTableOverlay},
-      focusedElements: { cell: {element: cellElement, columnIndex} }, columnsDetails } = etc;
+      focusedElements: { cell: {element: cellElement, columnIndex} } } = etc;
     if (!columnDropdown || !fullTableOverlay || !columnTypeDropdown || !cellElement) return;
     if (GenericElementUtils.doesElementExistInDom(cellElement)) {
       ColumnDropdown.processText(etc, columnIndex as number, cellElement);
       // TO-DO when user pastes text via the select mode - this should be called
-      ColumnSettingsUtil.changeColumnSettingsIfNameDifferent(etc, cellElement, columnsDetails[columnIndex as number]);
+      ColumnSettingsUtil.changeColumnSettingsIfNameDifferent(etc, cellElement, columnIndex as number);
     }
     CellHighlightUtil.fade(cellElement);
     Dropdown.hide(columnDropdown, fullTableOverlay, columnTypeDropdown);

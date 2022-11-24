@@ -3,11 +3,13 @@ import {AddNewColumnElement} from '../../../elements/table/addNewElements/column
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
+import {StringDimensionUtil} from '../../tableDimensions/stringDimensionUtil';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {TableElement} from '../../../elements/table/tableElement';
 import {CellElementIndex} from '../../elements/cellElementIndex';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
+import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
 import {ColumnDetailsT} from '../../../types/columnDetails';
@@ -20,9 +22,12 @@ export class RemoveColumn {
     ToggleAdditionElements.update(etc, false, AddNewColumnElement.toggle);
   }
 
+  // prettier-ignore
   private static updateTableDimensions(etc: EditableTableComponent, columnDetails: ColumnDetailsT) {
     if (columnDetails.settings?.width !== undefined) {
-      TableElement.changeAuxiliaryTableContentWidth(-columnDetails.settings.width);
+      const numberDimension = StringDimensionUtil.generateNumberDimensionFromClientString(
+        'width', etc.tableElementRef as HTMLElement, columnDetails.settings, ColumnDetails.MINIMAL_COLUMN_WIDTH);
+      if (numberDimension !== undefined) TableElement.changeAuxiliaryTableContentWidth(-numberDimension.result);
     }
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, false);
   }
@@ -71,6 +76,7 @@ export class RemoveColumn {
       // CAUTION-2
       removedColumnDetails.categoryDropdown.element.remove();
       InsertRemoveColumnSizer.remove(etc, columnIndex);
+      InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
       etc.onTableUpdate(etc.contents);
     });
   }
