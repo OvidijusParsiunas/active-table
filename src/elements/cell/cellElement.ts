@@ -80,7 +80,7 @@ export class CellElement {
 
   private static setColumnWidth(tableElement: HTMLElement, cellElement: HTMLElement, settings?: ColumnSettingsInternal) {
     if (settings?.width !== undefined) {
-      ColumnSettingsUtil.setWidthOnNewHeaderCell(tableElement, cellElement, settings);
+      ColumnSettingsUtil.setWidthOnHeaderCell(tableElement, cellElement, settings, true);
     } else {
       cellElement.style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
     }

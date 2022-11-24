@@ -10,14 +10,19 @@ import {ColumnDetailsT} from '../../types/columnDetails';
 
 export class ColumnSettingsUtil {
   // prettier-ignore
-  public static setWidthOnNewHeaderCell(tableElement: HTMLElement,
-      cellElement: HTMLElement, settings: ColumnSettingsInternal) {
-    if (settings.width == undefined) return;
-    const numberDimension = StringDimensionUtil.generateNumberDimensionFromClientString(
+  public static getSettingsWidthNumber(tableElement: HTMLElement, settings: ColumnSettingsInternal) {
+    return StringDimensionUtil.generateNumberDimensionFromClientString(
       'width', tableElement, settings, ColumnDetails.MINIMAL_COLUMN_WIDTH);
+  }
+
+  // prettier-ignore
+  public static setWidthOnHeaderCell(tableElement: HTMLElement,
+      cellElement: HTMLElement, settings: ColumnSettingsInternal, isNewSetting: boolean) {
+    const numberDimension = ColumnSettingsUtil.getSettingsWidthNumber(tableElement, settings);
     if (numberDimension !== undefined) {
-      cellElement.style.width = `${numberDimension.result}px`;
-      TableElement.changeAuxiliaryTableContentWidth(numberDimension.result); 
+      const { result } = numberDimension;
+      cellElement.style.width = `${result}px`;
+      TableElement.changeAuxiliaryTableContentWidth(isNewSetting ? result : -result); 
     }
   }
 
@@ -26,11 +31,11 @@ export class ColumnSettingsUtil {
       oldSettings: ColumnSettingsInternal | undefined, newSettings: ColumnSettingsInternal, cellElement: HTMLElement) {
     let hasWidthChanged = false;
     if (oldSettings?.width !== undefined) {
-      ColumnSettingsUtil.setWidthOnNewHeaderCell(etc.tableElementRef as HTMLElement, cellElement, oldSettings);
+      ColumnSettingsUtil.setWidthOnHeaderCell(etc.tableElementRef as HTMLElement, cellElement, oldSettings, false);
       hasWidthChanged = true;
     }
     if (newSettings?.width !== undefined) {
-      ColumnSettingsUtil.setWidthOnNewHeaderCell(etc.tableElementRef as HTMLElement, cellElement, newSettings);
+      ColumnSettingsUtil.setWidthOnHeaderCell(etc.tableElementRef as HTMLElement, cellElement, newSettings, true);
       hasWidthChanged = true;
     }
     columnDetails.settings = newSettings;

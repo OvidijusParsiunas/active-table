@@ -44,7 +44,7 @@ export class InsertRemoveColumnSizer {
     if (columnsDetails[previousIndex].settings?.width !== undefined) return;
     // no need for full creation as there is a need to retain the element and its bindings
     const newColumnSizer = ColumnSizer.createObject(columnSizer.element, columnsDetails, previousIndex, tableElement);
-    // cannot simply overwright columnSizer object as it has already binded to elements
+    // cannot simply overwrite columnSizer object as it has already binded to elements
     // movableElement ref is not overwritten
     Object.assign(columnSizer, newColumnSizer);
     InsertRemoveColumnSizer.applySizerStateToElements(columnSizer);
