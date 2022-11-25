@@ -5,6 +5,7 @@ import {EditableTableComponent} from '../../../editable-table-component';
 import {CellHighlightUtil} from '../../../utils/color/cellHighlightUtil';
 import {RowDropdownItemEvents} from './rowDropdownItemEvents';
 import {RowDropdownEvents} from './rowDropdownEvents';
+import {TableElement} from '../../table/tableElement';
 import {DropdownItem} from '../dropdownItem';
 import {Dropdown} from '../dropdown';
 
@@ -15,7 +16,7 @@ export class RowDropdown {
   public static hide(etc: EditableTableComponent) {
     const {overlayElementsState: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element: cellElement}}} = etc;
     Dropdown.hide(rowDropdown as HTMLElement, fullTableOverlay as HTMLElement);
-    CellHighlightUtil.fade(cellElement as HTMLElement);
+    CellHighlightUtil.fade(cellElement as HTMLElement, TableElement.AUXILIARY_CONTENT_EVENT_COLORS.default);
     DropdownItemHighlightUtil.fadeCurrentlyHighlighted(etc.shadowRoot);
     setTimeout(() => {
       // in a timeout because upon pressing esc/enter key on dropdown, the window event is fired after which checks it

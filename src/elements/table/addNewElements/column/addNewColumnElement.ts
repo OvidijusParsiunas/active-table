@@ -27,7 +27,7 @@ export class AddNewColumnElement {
     } else {
       cell.remove();
       // remove does not trigger mouse leave event, hence need to trigger it manually
-      setTimeout(() => AddNewColumnEvents.toggleBackground(columnGroupRef, 'fade'))
+      setTimeout(() => AddNewColumnEvents.toggleBackground(columnGroupRef, false))
     }
   }
 

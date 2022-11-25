@@ -13,9 +13,11 @@ import {TableBorderDimensions} from '../../types/tableBorderDimensions';
 import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {TableBorderDimensionsUtil} from './tableBorderDimensionsUtil';
+import {CellHighlightUtil} from '../../utils/color/cellHighlightUtil';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {OverlayElements} from '../../types/overlayElements';
+import {CellEventColors} from '../../types/cellEventColors';
 import {IndexColumn} from '../indexColumn/indexColumn';
 import {TableRow} from '../../types/tableContents';
 import {TableEvents} from './tableEvents';
@@ -23,6 +25,7 @@ import {TableEvents} from './tableEvents';
 export class TableElement {
   public static AUXILIARY_TABLE_CONTENT_WIDTH = UNSET_NUMBER_IDENTIFIER;
   public static BORDER_DIMENSIONS: TableBorderDimensions = TableBorderDimensionsUtil.generateDefault();
+  public static AUXILIARY_CONTENT_EVENT_COLORS: CellEventColors = {default: '', hover: ''};
 
   public static changeAuxiliaryTableContentWidth(delta: number) {
     TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += delta;
@@ -34,6 +37,13 @@ export class TableElement {
       TableElement.BORDER_DIMENSIONS.leftWidth + TableElement.BORDER_DIMENSIONS.rightWidth;
     if (displayAddColumnCell) TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += AddNewColumnElement.DEFAULT_WIDTH;
     if (displayIndexColumn) TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += IndexColumn.DEFAULT_WIDTH;
+  }
+
+  public static setAuxiliaryContentEventColors(etc: EditableTableComponent) {
+    TableElement.AUXILIARY_CONTENT_EVENT_COLORS = {
+      default: etc.cellStyle.backgroundColor || '',
+      hover: etc.cellStyle.backgroundColor || CellHighlightUtil.DEFAULT_HIGHLIGHT_COLOR,
+    };
   }
 
   // prettier-ignore
@@ -115,6 +125,7 @@ export class TableElement {
     etc.categoryDropdownContainer = CategoryDropdown.createContainerElement();
     etc.tableElementRef.appendChild(etc.categoryDropdownContainer);
     TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtil.generateUsingElement(etc.tableElementRef as HTMLElement);
+    TableElement.setAuxiliaryContentEventColors(etc);
     return etc.tableElementRef;
   }
 }

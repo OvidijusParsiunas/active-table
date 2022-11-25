@@ -9,14 +9,14 @@ import {CellEvents} from '../cellEvents';
 export class HeaderCellEvents {
   public static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     if (!this.tableElementEventState.selectedColumnSizer) {
-      CellHighlightUtil.highlight(event.target as HTMLElement);
+      CellHighlightUtil.highlight(event.target as HTMLElement, this.columnsDetails[columnIndex].headerEventColors.default);
       ColumnSizerCellEvents.cellMouseEnter(this.columnsDetails, columnIndex);
     }
   }
 
   private static mouseLeaveCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     if (!Dropdown.isDisplayed(this.overlayElementsState.columnDropdown)) {
-      CellHighlightUtil.fade(event.target as HTMLElement);
+      CellHighlightUtil.fade(event.target as HTMLElement, this.columnsDetails[columnIndex].headerEventColors.hover);
     }
     if (!this.tableElementEventState.selectedColumnSizer) {
       ColumnSizerCellEvents.cellMouseLeave(this.columnsDetails, columnIndex);

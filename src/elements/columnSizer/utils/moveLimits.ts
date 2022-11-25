@@ -53,6 +53,7 @@ export class MoveLimits {
   private static getLeftLimit(leftHeader: HTMLElement,
       isFirstSizer: boolean, tableElement: HTMLElement, leftHeaderSettings?: ColumnSettingsInternal) {
     let leftLimit = 0;
+    // REF-21 - works for left, but not perfectly for right
     if (leftHeaderSettings?.minWidth !== undefined) {
       const { width } = ColumnSettingsWidthUtil.getSettingsWidthNumber(tableElement, leftHeaderSettings);
       leftLimit = -(leftHeader.offsetWidth - width);

@@ -1,5 +1,6 @@
 import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../enums/columnType';
 import {ColumnSettingsInternal} from './columnsSettings';
+import {CellEventColors} from './cellEventColors';
 import {CELL_TYPE} from '../enums/cellType';
 import {ColumnSizerT} from './columnSizer';
 import {Optional} from './utilityTypes';
@@ -49,6 +50,7 @@ export interface ColumnDetailsT {
   cellTypeTotals: CellTypeTotals;
   categoryDropdown: CategoryDropdownT;
   settings?: ColumnSettingsInternal;
+  headerEventColors: CellEventColors;
 }
 
 // REF-13

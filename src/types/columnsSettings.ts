@@ -6,7 +6,6 @@ import {CSSStyle} from './cssStyle';
 
 interface Parent {
   columnName: string;
-  canWidthBeChanged?: boolean;
   defaultValue?: TableCellText;
   type?: boolean;
   style?: CSSStyle;

@@ -125,10 +125,6 @@ export const ediTableStyle = css`
     pointer-events: none;
   }
 
-  .highlightable-cell:hover {
-    background-color: #f7f7f7;
-  }
-
   #add-new-row-cell {
     padding-top: 8px;
     min-height: 28px;
@@ -159,11 +155,6 @@ export const ediTableStyle = css`
     user-select: none;
     /* safari */
     -webkit-user-select: none;
-  }
-
-  /* not using the highlightable-cell class as this is used to set the background color of a column group */
-  .hovered-add-column-cells {
-    background-color: #f7f7f7;
   }
 
   .no-content-stub {

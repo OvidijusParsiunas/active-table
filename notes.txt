@@ -192,6 +192,13 @@ to avoid.
 of what else needs to be changed when one has been deleted/inserted at a particular table index. Hence, they should do exactly what
 the messages tell them to and absolutely nothing else.
 
+REF-21
+When manually increasing the width of a column and the next columns have widths higher than their minWidth setting, those column
+widths will not be reduced because it has been concluded that the calculation to identify the limit of how much the current cell
+can be expanded to the right and the effort that will be required to resize those proceeding columns is not worth the value that
+will ultimately be provided. However, if users are requesting this functionality, implement its logic as needed.
+ 
+
 CAUTION-1
 When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across
 the table as they will no longer be constant and will need some dynamicity

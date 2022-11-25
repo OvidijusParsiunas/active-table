@@ -1,16 +1,17 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {CellHighlightUtil} from '../../utils/color/cellHighlightUtil';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
+import {TableElement} from '../table/tableElement';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class IndexColumnEvents {
   private static mouseEnterCell(this: EditableTableComponent, event: MouseEvent) {
-    CellHighlightUtil.highlight(event.target as HTMLElement);
+    CellHighlightUtil.highlight(event.target as HTMLElement, TableElement.AUXILIARY_CONTENT_EVENT_COLORS.hover);
   }
 
   private static mouseLeaveCell(this: EditableTableComponent, event: MouseEvent) {
     if (!Dropdown.isDisplayed(this.overlayElementsState.rowDropdown)) {
-      CellHighlightUtil.fade(event.target as HTMLElement);
+      CellHighlightUtil.fade(event.target as HTMLElement, TableElement.AUXILIARY_CONTENT_EVENT_COLORS.default);
     }
   }
 

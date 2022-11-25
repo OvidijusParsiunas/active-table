@@ -35,7 +35,7 @@ export class InsertNewCell {
     if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
     if (rowIndex === 0) {
       const categoryDropdown = CategoryDropdown.createAndAppend(etc.categoryDropdownContainer as HTMLElement);
-      ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsInitial, categoryDropdown); // REF-13
+      ColumnDetails.updateWithNoSizer(etc, columnDetails as ColumnDetailsInitial, categoryDropdown); // REF-13
       InsertRemoveColumnSizer.insert(etc, columnsDetails, columnIndex); // REF-13
       if (isNewText) {
         InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);

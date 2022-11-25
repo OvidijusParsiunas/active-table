@@ -34,19 +34,19 @@ export class ColumnDropdown {
   // prettier-ignore
   public static processTextAndHide(etc: EditableTableComponent) {
     const {
-      overlayElementsState: {columnDropdown, columnTypeDropdown, fullTableOverlay},
-      focusedElements: { cell: {element: cellElement, columnIndex} } } = etc;
+      overlayElementsState: {columnDropdown, columnTypeDropdown, fullTableOverlay}, columnsDetails,
+      focusedElements: { cell: {element: cellElement, columnIndex} }, shadowRoot } = etc;
     if (!columnDropdown || !fullTableOverlay || !columnTypeDropdown || !cellElement) return;
     if (GenericElementUtils.doesElementExistInDom(cellElement)) {
       ColumnDropdown.processText(etc, columnIndex as number, cellElement);
       // TO-DO when user pastes text via the select mode - this should be called
       ColumnSettingsUtil.changeColumnSettingsIfNameDifferent(etc, cellElement, columnIndex as number);
     }
-    CellHighlightUtil.fade(cellElement);
+    CellHighlightUtil.fade(cellElement, columnsDetails[columnIndex as number].headerEventColors.default);
     Dropdown.hide(columnDropdown, fullTableOverlay, columnTypeDropdown);
     ColumnTypeDropdownItem.reset(columnTypeDropdown);
     ColumnDropdown.resetDropdownPosition(columnDropdown);
-    DropdownItemHighlightUtil.fadeCurrentlyHighlighted(etc.shadowRoot);
+    DropdownItemHighlightUtil.fadeCurrentlyHighlighted(shadowRoot);
   }
 
   public static create(etc: EditableTableComponent, areHeadersEditable: boolean) {
