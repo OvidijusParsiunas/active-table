@@ -1,3 +1,4 @@
+import {ColumnSettings, ColumnsSettings, ColumnsSettingsMap} from './types/columnsSettings';
 import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
@@ -7,7 +8,6 @@ import {ColumnSettingsUtil} from './utils/columnSettings/columnSettingsUtil';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableDimensionsInternal} from './types/tableDimensionsInternal';
 import {TableElementEventState} from './types/tableElementEventState';
-import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
 import {customElement, property, state} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
 import {WindowElement} from './elements/window/windowElement';
@@ -20,7 +20,6 @@ import {TableDimensions} from './types/tableDimensions';
 import {OverlayElements} from './types/overlayElements';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
-import {ColumnSettings} from './types/columnsSettings';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {TableContents} from './types/tableContents';
 import {Browser} from './utils/browser/browser';
@@ -111,7 +110,7 @@ export class EditableTableComponent extends LitElement {
   // updateCell = true;
 
   @property({type: Array<ColumnSettings>})
-  columnsSettings = [];
+  columnsSettings: ColumnsSettings = [];
 
   @state()
   columnsSettingsInternal: ColumnsSettingsMap = {};

@@ -1,5 +1,5 @@
 import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../enums/columnType';
-import {ColumnSettingsInternal} from './columnsSettingsInternal';
+import {ColumnSettingsInternal} from './columnsSettings';
 import {CELL_TYPE} from '../enums/cellType';
 import {ColumnSizerT} from './columnSizer';
 import {Optional} from './utilityTypes';

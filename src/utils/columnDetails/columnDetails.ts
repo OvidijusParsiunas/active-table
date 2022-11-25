@@ -1,6 +1,6 @@
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
-import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
+import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 
 // REF-13

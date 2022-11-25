@@ -3,9 +3,9 @@ import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/sta
 import {ColumnSettingsWidthUtil} from '../../utils/columnSettings/columnSettingsWidthUtil';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
-import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {EditableTableComponent} from '../../editable-table-component';
+import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {HeaderCellEvents} from './headerCell/headerCellEvents';
 import {DataCellEvents} from './dataCell/dataCellEvents';
 import {Browser} from '../../utils/browser/browser';

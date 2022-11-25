@@ -1,8 +1,8 @@
 import {ColumnSettingsWidthUtil} from '../../../utils/columnSettings/columnSettingsWidthUtil';
 import {StaticTable} from '../../../utils/tableDimensions/staticTable/staticTable';
 import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
-import {ColumnSettingsInternal} from '../../../types/columnsSettingsInternal';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {ColumnSettingsInternal} from '../../../types/columnsSettings';
 import {UNSET_NUMBER_IDENTIFIER} from '../../../consts/unsetNumber';
 import {SizerMoveLimits} from '../../../types/columnSizer';
 

@@ -1,8 +1,7 @@
+import {ColumnSettingsInternal, ColumnsSettings, ColumnsSettingsMap} from '../../types/columnsSettings';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
-import {ColumnSettingsInternal, ColumnsSettingsMap} from '../../types/columnsSettingsInternal';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsWidthUtil} from './columnSettingsWidthUtil';
-import {ColumnsSettings} from '../../types/columnsSettings';
 
 export class ColumnSettingsUtil {
   // prettier-ignore

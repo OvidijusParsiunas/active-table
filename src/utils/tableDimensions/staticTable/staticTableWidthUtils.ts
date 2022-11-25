@@ -1,7 +1,7 @@
 import {ColumnSettingsWidthUtil} from '../../columnSettings/columnSettingsWidthUtil';
-import {ColumnSettingsInternal} from '../../../types/columnsSettingsInternal';
 import {ColumnDetailsT, ColumnsDetailsT} from '../../../types/columnDetails';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {ColumnSettingsInternal} from '../../../types/columnsSettings';
 import {TableElement} from '../../../elements/table/tableElement';
 import {StaticTable} from './staticTable';
 
