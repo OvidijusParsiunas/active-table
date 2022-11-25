@@ -197,7 +197,10 @@ When manually increasing the width of a column and the next columns have widths 
 widths will not be reduced because it has been concluded that the calculation to identify the limit of how much the current cell
 can be expanded to the right and the effort that will be required to resize those proceeding columns is not worth the value that
 will ultimately be provided. However, if users are requesting this functionality, implement its logic as needed.
- 
+
+REF-22
+In order for column group column hover color to work - the background color must be controlled by the col element and not the cell
+elements themselves.
 
 CAUTION-1
 When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across

@@ -1,8 +1,8 @@
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
+import {AuxiliaryTableContent} from '../auxiliaryTableContent/auxiliaryTableContent';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
-import {TableElement} from '../../elements/table/tableElement';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellEventColors} from '../../types/cellEventColors';
 
@@ -20,10 +20,7 @@ export class ColumnDetails {
   private static createHeaderEventColors(etc: EditableTableComponent, colDetails: ColumnDetailsInitial): CellEventColors {
     return {
       default: colDetails.elements[0].style.backgroundColor,
-      hover:
-        etc.headerStyle.backgroundColor ||
-        etc.cellStyle.backgroundColor ||
-        TableElement.AUXILIARY_CONTENT_EVENT_COLORS.hover,
+      hover: etc.headerStyle.backgroundColor || etc.cellStyle.backgroundColor || AuxiliaryTableContent.EVENT_COLORS.hover,
     };
   }
 

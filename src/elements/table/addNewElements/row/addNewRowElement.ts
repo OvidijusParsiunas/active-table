@@ -2,7 +2,6 @@ import {MaximumRows} from '../../../../utils/insertRemoveStructure/insert/maximu
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {NoContentStubElement} from '../shared/noContentStubElement';
 import {CellElement} from '../../../cell/cellElement';
-import {CSSStyle} from '../../../../types/cssStyle';
 import {AddNewRowEvents} from './addNewRowEvents';
 import {RowElement} from './rowElement';
 
@@ -26,8 +25,9 @@ export class AddNewRowElement {
     addNewRowCell.style.width = '';
   }
 
-  private static createCell(cellStyle: CSSStyle, displayAddRowCell: boolean) {
-    const addNewRowCell = CellElement.create(cellStyle, {});
+  private static createCell(etc: EditableTableComponent) {
+    const {cellStyle, displayAddRowCell, auxiliaryTableContentProps} = etc;
+    const addNewRowCell = CellElement.create(cellStyle, auxiliaryTableContentProps.style, false);
     addNewRowCell.id = 'add-new-row-cell';
     if (!displayAddRowCell) {
       // if this is not displayed when there is content, always use the stub style - REF-18
@@ -39,18 +39,13 @@ export class AddNewRowElement {
     AddNewRowElement.setDisplay(addNewRowCell, displayAddRowCell);
     // set to high number to always merge cells in this row
     addNewRowCell.colSpan = AddNewRowElement.DEFAULT_COL_SPAN;
+    AddNewRowEvents.setEvents(etc, addNewRowCell);
     return addNewRowCell;
   }
 
-  private static createRow(etc: EditableTableComponent) {
-    const addNewRowRow = RowElement.create();
-    AddNewRowEvents.setEvents(etc, addNewRowRow);
-    return addNewRowRow;
-  }
-
   public static create(etc: EditableTableComponent) {
-    const addNewRowRow = AddNewRowElement.createRow(etc);
-    const addNewRowCell = AddNewRowElement.createCell(etc.cellStyle, etc.displayAddRowCell);
+    const addNewRowRow = RowElement.create();
+    const addNewRowCell = AddNewRowElement.createCell(etc);
     addNewRowRow.appendChild(addNewRowCell);
     return addNewRowCell;
   }

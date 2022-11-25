@@ -1,4 +1,5 @@
 import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
+import {AuxiliaryTableContent} from '../../utils/auxiliaryTableContent/auxiliaryTableContent';
 import {InitialContentsProcessing} from '../../utils/contents/initialContentsProcessing';
 import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElements';
 import {InsertRemoveColumnSizer} from '../columnSizer/utils/insertRemoveColumnSizer';
@@ -13,41 +14,32 @@ import {TableBorderDimensions} from '../../types/tableBorderDimensions';
 import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {TableBorderDimensionsUtil} from './tableBorderDimensionsUtil';
-import {CellHighlightUtil} from '../../utils/color/cellHighlightUtil';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {OverlayElements} from '../../types/overlayElements';
-import {CellEventColors} from '../../types/cellEventColors';
 import {IndexColumn} from '../indexColumn/indexColumn';
 import {TableRow} from '../../types/tableContents';
 import {TableEvents} from './tableEvents';
 
 export class TableElement {
-  public static AUXILIARY_TABLE_CONTENT_WIDTH = UNSET_NUMBER_IDENTIFIER;
+  // this includes index column, add column and columns with a set width
+  public static STATIC_CONTENT_WIDTH_TOTAL = UNSET_NUMBER_IDENTIFIER;
   public static BORDER_DIMENSIONS: TableBorderDimensions = TableBorderDimensionsUtil.generateDefault();
-  public static AUXILIARY_CONTENT_EVENT_COLORS: CellEventColors = {default: '', hover: ''};
 
-  public static changeAuxiliaryTableContentWidth(delta: number) {
-    TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += delta;
+  public static changeStaticTableContentWidth(delta: number) {
+    TableElement.STATIC_CONTENT_WIDTH_TOTAL += delta;
   }
 
-  public static setAuxiliaryTableContentWidth(etc: EditableTableComponent) {
+  public static setStaticTableContentWidth(etc: EditableTableComponent) {
     const {displayAddColumnCell, displayIndexColumn} = etc;
-    TableElement.AUXILIARY_TABLE_CONTENT_WIDTH =
+    TableElement.STATIC_CONTENT_WIDTH_TOTAL =
       TableElement.BORDER_DIMENSIONS.leftWidth + TableElement.BORDER_DIMENSIONS.rightWidth;
-    if (displayAddColumnCell) TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += AddNewColumnElement.DEFAULT_WIDTH;
-    if (displayIndexColumn) TableElement.AUXILIARY_TABLE_CONTENT_WIDTH += IndexColumn.DEFAULT_WIDTH;
-  }
-
-  public static setAuxiliaryContentEventColors(etc: EditableTableComponent) {
-    TableElement.AUXILIARY_CONTENT_EVENT_COLORS = {
-      default: etc.cellStyle.backgroundColor || '',
-      hover: etc.cellStyle.backgroundColor || CellHighlightUtil.DEFAULT_HIGHLIGHT_COLOR,
-    };
+    if (displayAddColumnCell) TableElement.STATIC_CONTENT_WIDTH_TOTAL += AddNewColumnElement.DEFAULT_WIDTH;
+    if (displayIndexColumn) TableElement.STATIC_CONTENT_WIDTH_TOTAL += IndexColumn.DEFAULT_WIDTH;
   }
 
   // prettier-ignore
-  public static addAuxiliaryElements(etc: EditableTableComponent,
+  public static addOverlayElements(etc: EditableTableComponent,
       tableElement: HTMLElement, overlayElementsState: OverlayElements, areHeadersEditable: boolean) {
     // full table overlay for column dropdown
     const fullTableOverlay = FullTableOverlayElement.create(etc);
@@ -61,14 +53,6 @@ export class TableElement {
     const rowDropdownElement = RowDropdown.create(etc);
     tableElement.appendChild(rowDropdownElement);
     overlayElementsState.rowDropdown = rowDropdownElement;
-  }
-
-  // add column cell element is technicaly an auxiliary element but it's cells are added on row insertion
-  // CAUTION-4
-  private static addAuxiliaryBodyElements(etc: EditableTableComponent) {
-    // add new row element - REF-18 (the row element has already been created and cell added to it)
-    etc.tableBodyElementRef?.appendChild(etc.addRowCellElementRef?.parentElement as HTMLElement);
-    ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
   }
 
   private static addCells(etc: EditableTableComponent) {
@@ -91,8 +75,8 @@ export class TableElement {
     // header/data
     TableElement.addCells(etc);
     TableElement.postProcessColumns(etc);
-    // new row row and full table overlay
-    TableElement.addAuxiliaryBodyElements(etc);
+    // new row row
+    AuxiliaryTableContent.addAuxiliaryBodyElements(etc);
     if (etc.displayIndexColumn) UpdateIndexColumnWidth.update(etc);
     // needs to be after UpdateIndexColumnWidth.update as the new index column width can impact the add new column display
     ToggleAdditionElements.update(etc, true, AddNewColumnElement.toggle);
@@ -113,6 +97,7 @@ export class TableElement {
 
   // CAUTION-4 - add row cell is created and ref assigned here - then it is added post render in addAuxiliaryBodyElements
   public static createInfrastructureElements(etc: EditableTableComponent) {
+    AuxiliaryTableContent.setAuxiliaryContentEventColors(etc); // needs to be before the creation of column group element
     etc.tableElementRef = TableElement.createTableElement(etc);
     if (etc.displayAddColumnCell) {
       // needs to be appended before the body
@@ -125,7 +110,6 @@ export class TableElement {
     etc.categoryDropdownContainer = CategoryDropdown.createContainerElement();
     etc.tableElementRef.appendChild(etc.categoryDropdownContainer);
     TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtil.generateUsingElement(etc.tableElementRef as HTMLElement);
-    TableElement.setAuxiliaryContentEventColors(etc);
     return etc.tableElementRef;
   }
 }

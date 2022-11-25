@@ -34,7 +34,7 @@ export class AddNewColumnElement {
   private static createCell(etc: EditableTableComponent, tag: 'th' | 'td') {
     const cell = document.createElement(tag);
     cell.classList.add(CellElement.CELL_CLASS, AddNewColumnElement.ADD_COLUMN_CELL_CLASS);
-    Object.assign(cell.style, etc.cellStyle);
+    Object.assign(cell.style, etc.cellStyle, {backgroundColor: ''}); // REF-22
     AddNewColumnEvents.setEvents(etc, cell);
     return cell;
   }
@@ -73,7 +73,7 @@ export class AddNewColumnElement {
   }
 
   private static changeTableWidths(etc: EditableTableComponent, canAddMore: boolean, isInsert: boolean) {
-    TableElement.changeAuxiliaryTableContentWidth(
+    TableElement.changeStaticTableContentWidth(
       canAddMore ? AddNewColumnElement.DEFAULT_WIDTH : -AddNewColumnElement.DEFAULT_WIDTH
     );
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, isInsert);

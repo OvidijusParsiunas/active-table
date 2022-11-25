@@ -1,3 +1,4 @@
+import {AuxiliaryTableContent} from '../../../../utils/auxiliaryTableContent/auxiliaryTableContent';
 import {CellElementIndex} from '../../../../utils/elements/cellElementIndex';
 import {EditableTableComponent} from '../../../../editable-table-component';
 
@@ -22,6 +23,7 @@ export class ColumnGroupElement {
     // the second col needs to span only the add new column
     const addColumnCol = document.createElement('col');
     addColumnCol.span = 1;
+    addColumnCol.style.backgroundColor = AuxiliaryTableContent.EVENT_COLORS.default; // REF-22
     colGroup.appendChild(dataColumnsCol);
     colGroup.appendChild(addColumnCol);
     return colGroup;

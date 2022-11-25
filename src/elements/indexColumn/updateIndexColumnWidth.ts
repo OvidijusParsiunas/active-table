@@ -26,7 +26,7 @@ export class UpdateIndexColumnWidth {
   private static changeTableWidths(etc: EditableTableComponent, newWidth: number) {
     const difference = newWidth - UpdateIndexColumnWidth.WIDTH;
     UpdateIndexColumnWidth.WIDTH = newWidth;
-    TableElement.changeAuxiliaryTableContentWidth(difference);
+    TableElement.changeStaticTableContentWidth(difference);
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true);
   }
 

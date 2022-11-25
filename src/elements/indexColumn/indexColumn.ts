@@ -22,25 +22,24 @@ export class IndexColumn {
     UpdateIndexColumnWidth.update(etc, textRowsArr.length === 0 ? undefined : textRowsArr);
   }
 
-  private static createCell(etc: EditableTableComponent, tag: 'th' | 'td') {
-    const cell = document.createElement(tag);
+  private static createCell(etc: EditableTableComponent, isHeader: boolean) {
+    const cell = document.createElement(isHeader ? 'th' : 'td');
     cell.classList.add(CellElement.CELL_CLASS, IndexColumn.INDEX_CELL_CLASS);
     if (!etc.tableDimensionsInternal.isColumnIndexCellTextWrapped) {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }
-    Object.assign(cell.style, etc.cellStyle);
+    Object.assign(cell.style, etc.cellStyle, isHeader ? etc.headerStyle : {}, etc.auxiliaryTableContentProps.style);
     return cell;
   }
 
   private static createHeaderCell(etc: EditableTableComponent) {
-    const headerCell = IndexColumn.createCell(etc, 'th');
+    const headerCell = IndexColumn.createCell(etc, true);
     headerCell.style.width = IndexColumn.DEFAULT_WIDTH_PX;
-    Object.assign(headerCell.style, etc.headerStyle);
     return headerCell;
   }
 
   private static createDataCell(etc: EditableTableComponent, rowIndex: number) {
-    const dataCell = IndexColumn.createCell(etc, 'td');
+    const dataCell = IndexColumn.createCell(etc, false);
     dataCell.textContent = String(rowIndex);
     return dataCell;
   }

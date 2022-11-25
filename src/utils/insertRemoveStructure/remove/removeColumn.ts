@@ -26,7 +26,7 @@ export class RemoveColumn {
     if (columnDetails.settings && ColumnSettingsWidthUtil.isWidthDefined(columnDetails.settings)) {
       const { width } = ColumnSettingsWidthUtil.getSettingsWidthNumber(
         etc.tableElementRef as HTMLElement, columnDetails.settings);
-      TableElement.changeAuxiliaryTableContentWidth(-width);
+      TableElement.changeStaticTableContentWidth(-width);
     }
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, false);
   }

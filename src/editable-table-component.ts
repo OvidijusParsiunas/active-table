@@ -1,9 +1,11 @@
 import {ColumnSettings, ColumnsSettings, ColumnsSettingsMap} from './types/columnsSettings';
 import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
+import {AuxiliaryTableContent} from './utils/auxiliaryTableContent/auxiliaryTableContent';
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
+import {AuxiliaryTableContentProps} from './types/auxiliaryTableContentProps';
 import {ColumnSettingsUtil} from './utils/columnSettings/columnSettingsUtil';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableDimensionsInternal} from './types/tableDimensionsInternal';
@@ -72,12 +74,14 @@ export class EditableTableComponent extends LitElement {
   })
   duplicateHeadersAllowed = true;
 
+  // WORK - move this to auxiliaryTableContentProps
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
   displayAddRowCell = true;
 
+  // WORK - move this to auxiliaryTableContentProps
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
@@ -92,6 +96,7 @@ export class EditableTableComponent extends LitElement {
   })
   headerPresent = true;
 
+  // WORK - move this to auxiliaryTableContentProps
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
@@ -176,6 +181,10 @@ export class EditableTableComponent extends LitElement {
   @property({type: Object})
   cellStyle: CSSStyle = {};
 
+  // auxiliary content is comprised of index column, add new column column and add new row row
+  @property({type: Object})
+  auxiliaryTableContentProps: AuxiliaryTableContentProps = AuxiliaryTableContent.createClientProps();
+
   // columnResizer for the client - columnSizer in code for efficiency
   @property({type: Object})
   columnResizerStyle: UserSetColumnSizerStyle = {};
@@ -191,7 +200,7 @@ export class EditableTableComponent extends LitElement {
     // REF-14
     super.connectedCallback();
     const tableElement = TableElement.createInfrastructureElements(this);
-    TableElement.addAuxiliaryElements(this, tableElement, this.overlayElementsState, this.areHeadersEditable);
+    TableElement.addOverlayElements(this, tableElement, this.overlayElementsState, this.areHeadersEditable);
     this.shadowRoot?.appendChild(tableElement);
     InitialContentsProcessing.preProcess(this.contents, this.defaultCellValue);
     WindowElement.setEvents(this);

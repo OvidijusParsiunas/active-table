@@ -16,7 +16,7 @@ export class Render {
   public static renderTable(etc: EditableTableComponent) {
     etc.tableDimensionsInternal.recordedParentWidth = (etc.parentElement as HTMLElement).offsetWidth;
     Render.refreshTableState(etc);
-    TableElement.setAuxiliaryTableContentWidth(etc);
+    TableElement.setStaticTableContentWidth(etc);
     // needs to be in render trigger as user props are not set in the connectedCallback function in Firefox
     TableDimensionsUtils.setInternalTableDimensions(etc);
     TableElement.populateBody(etc);

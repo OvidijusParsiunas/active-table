@@ -40,12 +40,12 @@ export class CellElement {
     }
   }
 
-  public static create(cellStyle: CSSStyle, headerStyle: CSSStyle, isHeader = false) {
+  public static create(cellStyle: CSSStyle, customStyle: CSSStyle, isHeader: boolean) {
     const cellElement = document.createElement(isHeader ? 'th' : 'td');
     cellElement.classList.add(CellElement.CELL_CLASS);
     // role for assistive technologies
     cellElement.setAttribute('role', 'textbox');
-    Object.assign(cellElement.style, cellStyle, isHeader ? headerStyle : {});
+    Object.assign(cellElement.style, cellStyle, customStyle);
     return cellElement;
   }
 
@@ -87,12 +87,14 @@ export class CellElement {
   }
 
   private static createCellDOMElement(etc: EditableTableComponent, cellText: string, colIndex: number, isHeader: boolean) {
-    const cellElement = CellElement.create(etc.cellStyle, etc.headerStyle, isHeader);
+    const {cellStyle, headerStyle, columnsDetails, tableElementRef} = etc;
+    const {settings} = columnsDetails[colIndex];
+    const cellElement = CellElement.create(cellStyle, headerStyle, isHeader);
     CellElement.processAndSetTextOnCell(etc, cellElement, cellText, false);
     CellElement.prepContentEditable(cellElement, isHeader);
     if (isHeader) {
       // overwritten if static table
-      CellElement.setColumnWidth(etc.tableElementRef as HTMLElement, cellElement, etc.columnsDetails[colIndex].settings);
+      CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
     }
     return cellElement;
   }
