@@ -3,6 +3,7 @@ import {ColumnDetailsT, ColumnsDetailsT} from '../../../types/columnDetails';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnSettingsInternal} from '../../../types/columnsSettings';
 import {TableElement} from '../../../elements/table/tableElement';
+import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {StaticTable} from './staticTable';
 
 // TO-DO when not at maximum length - have a setting option to resize all columns to the limit as resizing to small and
@@ -11,8 +12,6 @@ import {StaticTable} from './staticTable';
 
 // table width is considered static when the user sets its width
 export class StaticTableWidthUtils {
-  public static NEW_COLUMN_WIDTH = 100;
-
   // REF-11
   private static togglePreserveNarrowColumns(isSetValue: boolean, tableElement: HTMLElement, preserve?: boolean) {
     if (!preserve) {
@@ -46,8 +45,8 @@ export class StaticTableWidthUtils {
   }
 
   private static setNewColumnWidth(tableWidth: number, numberOfColumns: number) {
-    const totalColumnsWidth = tableWidth - TableElement.AUXILIARY_TABLE_CONTENT_WIDTH;
-    StaticTableWidthUtils.NEW_COLUMN_WIDTH = totalColumnsWidth / numberOfColumns;
+    const totalColumnsWidth = tableWidth - TableElement.STATIC_WIDTH_CONTENT_TOTAL;
+    ColumnDetails.NEW_COLUMN_WIDTH = totalColumnsWidth / numberOfColumns;
   }
 
   private static resetMinWidthColumns(minWidthColumns: ColumnDetailsT[], tableElement: HTMLElement) {
@@ -63,7 +62,7 @@ export class StaticTableWidthUtils {
 
   private static resetDynamicWidthColumns(dynamicWidthColumns: ColumnDetailsT[]) {
     dynamicWidthColumns.forEach((columnDetails) => {
-      columnDetails.elements[0].style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
+      columnDetails.elements[0].style.width = `${ColumnDetails.NEW_COLUMN_WIDTH}px`;
     });
   }
 

@@ -27,7 +27,7 @@ export class ColumnSettingsWidthUtil {
       cellElement: HTMLElement, settings: ColumnSettingsInternal, isNewSetting: boolean) {
     const {width} = ColumnSettingsWidthUtil.getSettingsWidthNumber(tableElement, settings);
     cellElement.style.width = `${width}px`;
-    TableElement.changeStaticTableContentWidth(isNewSetting ? width : -width); 
+    TableElement.changeStaticWidthTotal(isNewSetting ? width : -width); 
   }
 
   // prettier-ignore

@@ -9,6 +9,7 @@ import {CellEventColors} from '../../types/cellEventColors';
 // REF-13
 export class ColumnDetails {
   public static readonly MINIMAL_COLUMN_WIDTH = 34;
+  public static NEW_COLUMN_WIDTH = 100;
 
   public static createWithElementsArr(settings?: ColumnSettingsInternal): ColumnDetailsInitial {
     return {

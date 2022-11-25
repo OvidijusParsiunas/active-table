@@ -73,7 +73,7 @@ export class AddNewColumnElement {
   }
 
   private static changeTableWidths(etc: EditableTableComponent, canAddMore: boolean, isInsert: boolean) {
-    TableElement.changeStaticTableContentWidth(
+    TableElement.changeStaticWidthTotal(
       canAddMore ? AddNewColumnElement.DEFAULT_WIDTH : -AddNewColumnElement.DEFAULT_WIDTH
     );
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, isInsert);

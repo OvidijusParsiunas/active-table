@@ -22,20 +22,20 @@ import {TableRow} from '../../types/tableContents';
 import {TableEvents} from './tableEvents';
 
 export class TableElement {
-  // this includes index column, add column and columns with a set width
-  public static STATIC_CONTENT_WIDTH_TOTAL = UNSET_NUMBER_IDENTIFIER;
+  // this includes index column, add column and columns with a width in their settings
+  public static STATIC_WIDTH_CONTENT_TOTAL = UNSET_NUMBER_IDENTIFIER;
   public static BORDER_DIMENSIONS: TableBorderDimensions = TableBorderDimensionsUtil.generateDefault();
 
-  public static changeStaticTableContentWidth(delta: number) {
-    TableElement.STATIC_CONTENT_WIDTH_TOTAL += delta;
+  public static changeStaticWidthTotal(delta: number) {
+    TableElement.STATIC_WIDTH_CONTENT_TOTAL += delta;
   }
 
-  public static setStaticTableContentWidth(etc: EditableTableComponent) {
+  public static setStaticWidthContentTotal(etc: EditableTableComponent) {
     const {displayAddColumnCell, displayIndexColumn} = etc;
-    TableElement.STATIC_CONTENT_WIDTH_TOTAL =
+    TableElement.STATIC_WIDTH_CONTENT_TOTAL =
       TableElement.BORDER_DIMENSIONS.leftWidth + TableElement.BORDER_DIMENSIONS.rightWidth;
-    if (displayAddColumnCell) TableElement.STATIC_CONTENT_WIDTH_TOTAL += AddNewColumnElement.DEFAULT_WIDTH;
-    if (displayIndexColumn) TableElement.STATIC_CONTENT_WIDTH_TOTAL += IndexColumn.DEFAULT_WIDTH;
+    if (displayAddColumnCell) TableElement.STATIC_WIDTH_CONTENT_TOTAL += AddNewColumnElement.DEFAULT_WIDTH;
+    if (displayIndexColumn) TableElement.STATIC_WIDTH_CONTENT_TOTAL += IndexColumn.DEFAULT_WIDTH;
   }
 
   // prettier-ignore

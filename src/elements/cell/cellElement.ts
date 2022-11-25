@@ -1,9 +1,9 @@
 import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellCalendarIconElement';
-import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
 import {ColumnSettingsWidthUtil} from '../../utils/columnSettings/columnSettingsWidthUtil';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
+import {ColumnDetails} from '../../utils/columnDetails/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {HeaderCellEvents} from './headerCell/headerCellEvents';
@@ -82,7 +82,7 @@ export class CellElement {
     if (settings && ColumnSettingsWidthUtil.isWidthDefined(settings)) {
       ColumnSettingsWidthUtil.updateColumnAndAuxWidth(tableElement, cellElement, settings, true);
     } else {
-      cellElement.style.width = `${StaticTableWidthUtils.NEW_COLUMN_WIDTH}px`;
+      cellElement.style.width = `${ColumnDetails.NEW_COLUMN_WIDTH}px`;
     }
   }
 
