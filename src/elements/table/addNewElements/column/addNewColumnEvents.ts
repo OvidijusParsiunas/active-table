@@ -17,7 +17,7 @@ export class AddNewColumnEvents {
   // REF-17
   public static toggleColor(columnGroup: HTMLElement, isHighlight: boolean, addColumnCellsElementsRef: HTMLElement[]) {
     const addColumnCol = columnGroup.children[columnGroup.children.length - 1] as HTMLElement;
-    const {data, header} = AuxiliaryTableContent.EVENT_COLORS;
+    const {data, header} = AuxiliaryTableContent.CELL_COLORS;
     addColumnCol.style.backgroundColor = isHighlight ? data.hoverColor.backgroundColor : data.defaultColor.backgroundColor;
     const headerCell = addColumnCellsElementsRef[0];
     if (headerCell) AddNewColumnEvents.setHeaderStyle(headerCell, header, isHighlight);

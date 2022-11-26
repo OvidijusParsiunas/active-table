@@ -11,7 +11,7 @@ import {CellHighlightUtil} from '../color/cellHighlightUtil';
 export class AuxiliaryTableContent {
   // the reason why cell and header colors are separate is because header can inherit the user set header style
   // hence it is easy to control what the header style should be in this variable
-  public static EVENT_COLORS: AuxiliaryContentCellsColors = {
+  public static CELL_COLORS: AuxiliaryContentCellsColors = {
     data: {
       defaultColor: {backgroundColor: '', color: ''},
       hoverColor: {backgroundColor: '', color: ''},
@@ -23,7 +23,7 @@ export class AuxiliaryTableContent {
   };
 
   private static getInheritedDefaultColor(clientHeader: HoverableElementStyleClient, key: keyof CellStateColorProperties) {
-    return clientHeader.defaultStyle?.[key] || AuxiliaryTableContent.EVENT_COLORS.data.defaultColor?.[key];
+    return clientHeader.defaultStyle?.[key] || AuxiliaryTableContent.CELL_COLORS.data.defaultColor?.[key];
   }
 
   private static getInheritedHoverColor(clientHeader: HoverableElementStyleClient, key: keyof CellStateColorProperties) {
@@ -31,7 +31,7 @@ export class AuxiliaryTableContent {
   }
 
   private static overwriteHeaderWithInheritedColors(clientHeader: HoverableElementStyleClient) {
-    AuxiliaryTableContent.EVENT_COLORS.header = {
+    AuxiliaryTableContent.CELL_COLORS.header = {
       defaultColor: {
         backgroundColor: AuxiliaryTableContent.getInheritedDefaultColor(clientHeader, 'backgroundColor'),
         color: AuxiliaryTableContent.getInheritedDefaultColor(clientHeader, 'color'),
@@ -67,8 +67,8 @@ export class AuxiliaryTableContent {
           etc, 'color', CellHighlightUtil.DEFAULT_HOVER_PROPERTIES.color),
       },
     };
-    AuxiliaryTableContent.EVENT_COLORS.data = cellColors;
-    AuxiliaryTableContent.EVENT_COLORS.header = cellColors;
+    AuxiliaryTableContent.CELL_COLORS.data = cellColors;
+    AuxiliaryTableContent.CELL_COLORS.header = cellColors;
     const { auxiliaryTableContentProps: { inheritHeaderStyle }, header } = etc;
     if (inheritHeaderStyle === undefined || inheritHeaderStyle === true) {
       AuxiliaryTableContent.overwriteHeaderWithInheritedColors(header)
@@ -77,7 +77,7 @@ export class AuxiliaryTableContent {
 
   // prettier-ignore
   public static getCellColors(param: number | HTMLElement) {
-    const {data, header} = AuxiliaryTableContent.EVENT_COLORS;
+    const {data, header} = AuxiliaryTableContent.CELL_COLORS;
     const isHeaderCell = typeof param === 'number'
       ? param === 0 : GenericElementUtils.isFirstChildInParent(param);
     return isHeaderCell ? header : data;

@@ -40,7 +40,7 @@ export class AddNewColumnElement {
     const headerCell = AddNewColumnElement.createCell(etc, 'th');
     headerCell.style.width = AddNewColumnElement.DEFAULT_WIDTH_PX;
     headerCell.textContent = '+';
-    Object.assign(headerCell.style, etc.header, AuxiliaryTableContent.EVENT_COLORS.header.defaultColor);
+    Object.assign(headerCell.style, etc.header, AuxiliaryTableContent.CELL_COLORS.header.defaultColor);
     return headerCell;
   }
 
