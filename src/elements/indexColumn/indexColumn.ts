@@ -1,3 +1,4 @@
+import {AuxiliaryTableContent} from '../../utils/auxiliaryTableContent/auxiliaryTableContent';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ExtractElements} from '../../utils/elements/extractElements';
 import {UpdateIndexColumnWidth} from './updateIndexColumnWidth';
@@ -28,7 +29,8 @@ export class IndexColumn {
     if (!etc.tableDimensionsInternal.isColumnIndexCellTextWrapped) {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }
-    Object.assign(cell.style, etc.cellStyle, etc.auxiliaryTableContentProps.defaultStyle);
+    Object.assign(cell.style, etc.cellStyle, etc.auxiliaryTableContentProps.style?.defaultStyle || {});
+    if (isHeader) Object.assign(cell.style, AuxiliaryTableContent.EVENT_COLORS.header.defaultColor);
     return cell;
   }
 

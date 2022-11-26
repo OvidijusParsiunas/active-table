@@ -5,11 +5,11 @@ import {CellHighlightUtil} from '../../../../utils/color/cellHighlightUtil';
 
 export class AddNewRowEvents {
   private static mouseEnterCell(this: EditableTableComponent, event: MouseEvent) {
-    CellHighlightUtil.highlight(event.target as HTMLElement, AuxiliaryTableContent.EVENT_COLORS.hoverColor);
+    CellHighlightUtil.highlight(event.target as HTMLElement, AuxiliaryTableContent.EVENT_COLORS.data.hoverColor);
   }
 
   private static mouseLeaveCell(this: EditableTableComponent, event: MouseEvent) {
-    CellHighlightUtil.fade(event.target as HTMLElement, AuxiliaryTableContent.EVENT_COLORS.defaultColor);
+    CellHighlightUtil.fade(event.target as HTMLElement, AuxiliaryTableContent.EVENT_COLORS.data.defaultColor);
   }
 
   public static setEvents(etc: EditableTableComponent, addNewRowCellElement: HTMLElement) {

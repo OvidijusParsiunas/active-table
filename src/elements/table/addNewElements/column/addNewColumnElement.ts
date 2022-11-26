@@ -1,4 +1,5 @@
 import {StaticTableWidthUtils} from '../../../../utils/tableDimensions/staticTable/staticTableWidthUtils';
+import {AuxiliaryTableContent} from '../../../../utils/auxiliaryTableContent/auxiliaryTableContent';
 import {MaximumColumns} from '../../../../utils/insertRemoveStructure/insert/maximumColumns';
 import {GenericElementUtils} from '../../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
@@ -39,7 +40,7 @@ export class AddNewColumnElement {
     const headerCell = AddNewColumnElement.createCell(etc, 'th');
     headerCell.style.width = AddNewColumnElement.DEFAULT_WIDTH_PX;
     headerCell.textContent = '+';
-    Object.assign(headerCell.style, etc.header);
+    Object.assign(headerCell.style, etc.header, AuxiliaryTableContent.EVENT_COLORS.header.defaultColor);
     return headerCell;
   }
 

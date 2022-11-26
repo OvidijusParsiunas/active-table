@@ -4,6 +4,7 @@ import {InitialContentsProcessing} from './utils/contents/initialContentsProcess
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
+import {AuxiliaryTableContentProps} from './types/auxiliaryTableContentProps';
 import {ColumnSettingsUtil} from './utils/columnSettings/columnSettingsUtil';
 import {HoverableElementStyleClient} from './types/hoverableElementStyle';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
@@ -183,7 +184,7 @@ export class EditableTableComponent extends LitElement {
   // auxiliary content is comprised of index column, add new column column and add new row row
   // Do not use AuxiliaryTableContent.EVENT_COLORS for default value as the '' values will prevent logical OR operators
   @property({type: Object})
-  auxiliaryTableContentProps: HoverableElementStyleClient = {};
+  auxiliaryTableContentProps: AuxiliaryTableContentProps = {};
 
   // columnResizer for the client - columnSizer in code for efficiency
   @property({type: Object})
