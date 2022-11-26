@@ -13,30 +13,30 @@ export class AuxiliaryTableContent {
   // hence it is easy to control what the header style should be in this variable
   public static CELL_COLORS: AuxiliaryContentCellsColors = {
     data: {
-      defaultColor: {backgroundColor: '', color: ''},
-      hoverColor: {backgroundColor: '', color: ''},
+      default: {backgroundColor: '', color: ''},
+      hover: {backgroundColor: '', color: ''},
     },
     header: {
-      defaultColor: {backgroundColor: '', color: ''},
-      hoverColor: {backgroundColor: '', color: ''},
+      default: {backgroundColor: '', color: ''},
+      hover: {backgroundColor: '', color: ''},
     },
   };
 
   private static getInheritedDefaultColor(clientHeader: HoverableElementStyleClient, key: keyof CellStateColorProperties) {
-    return clientHeader.defaultStyle?.[key] || AuxiliaryTableContent.CELL_COLORS.data.defaultColor?.[key];
+    return clientHeader.defaultStyle?.[key] || AuxiliaryTableContent.CELL_COLORS.data.default?.[key];
   }
 
   private static getInheritedHoverColor(clientHeader: HoverableElementStyleClient, key: keyof CellStateColorProperties) {
-    return clientHeader.hoverColor?.[key] || AuxiliaryTableContent.getInheritedDefaultColor(clientHeader, key);
+    return clientHeader.hoverColors?.[key] || AuxiliaryTableContent.getInheritedDefaultColor(clientHeader, key);
   }
 
   private static overwriteHeaderWithInheritedColors(clientHeader: HoverableElementStyleClient) {
     AuxiliaryTableContent.CELL_COLORS.header = {
-      defaultColor: {
+      default: {
         backgroundColor: AuxiliaryTableContent.getInheritedDefaultColor(clientHeader, 'backgroundColor'),
         color: AuxiliaryTableContent.getInheritedDefaultColor(clientHeader, 'color'),
       },
-      hoverColor: {
+      hover: {
         backgroundColor: AuxiliaryTableContent.getInheritedHoverColor(clientHeader, 'backgroundColor'),
         color: AuxiliaryTableContent.getInheritedHoverColor(clientHeader, 'color'),
       },
@@ -46,7 +46,7 @@ export class AuxiliaryTableContent {
   // prettier-ignore
   private static getHoverColorValue(etc: EditableTableComponent,
       colorKey: keyof CellStateColorProperties, defaultValue: string): string {
-    return etc.auxiliaryTableContentProps.style?.hoverColor?.[colorKey] || etc.cellStyle[colorKey] || defaultValue;
+    return etc.auxiliaryTableContentProps.style?.hoverColors?.[colorKey] || etc.cellStyle[colorKey] || defaultValue;
   }
 
   private static getDefaultColorValue(etc: EditableTableComponent, colorKey: keyof CellStateColorProperties) {
@@ -56,11 +56,11 @@ export class AuxiliaryTableContent {
   // prettier-ignore
   public static setEventColors(etc: EditableTableComponent) {
     const cellColors = {
-      defaultColor: {
+      default: {
         backgroundColor: AuxiliaryTableContent.getDefaultColorValue(etc, 'backgroundColor'),
         color: AuxiliaryTableContent.getDefaultColorValue(etc, 'color'),
       },
-      hoverColor: {
+      hover: {
         backgroundColor: AuxiliaryTableContent.getHoverColorValue(
           etc, 'backgroundColor', CellHighlightUtil.DEFAULT_HOVER_PROPERTIES.backgroundColor),
         color: AuxiliaryTableContent.getHoverColorValue(

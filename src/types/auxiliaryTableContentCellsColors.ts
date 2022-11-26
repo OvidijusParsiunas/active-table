@@ -1,11 +1,6 @@
-import {CellStateColorProperties} from './cellStateColors';
-
-export interface AuxiliaryContentCellColors {
-  defaultColor: Required<CellStateColorProperties>;
-  hoverColor: Required<CellStateColorProperties>;
-}
+import {CellStateColorsR} from './cellStateColors';
 
 export interface AuxiliaryContentCellsColors {
-  data: AuxiliaryContentCellColors;
-  header: AuxiliaryContentCellColors;
+  data: CellStateColorsR;
+  header: CellStateColorsR;
 }

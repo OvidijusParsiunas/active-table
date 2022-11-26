@@ -21,7 +21,7 @@ export class ColumnDetails {
   // prettier-ignore
   private static getHeaderHoverColor(etc: EditableTableComponent,
       key: keyof CellStateColorProperties, defaultValue: string, settings?: ColumnSettingsInternal) {
-    return settings?.header?.hoverColor?.[key] || etc.header.hoverColor?.[key] ||
+    return settings?.header?.hoverColors?.[key] || etc.header.hoverColors?.[key] ||
       ColumnDetails.getHeaderDefaultColor(etc, key, defaultValue, settings);
   }
 

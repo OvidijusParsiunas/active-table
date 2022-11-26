@@ -1,24 +1,24 @@
 import {AuxiliaryTableContent} from '../../../../utils/auxiliaryTableContent/auxiliaryTableContent';
 import {InsertNewColumn} from '../../../../utils/insertRemoveStructure/insert/insertNewColumn';
-import {AuxiliaryContentCellColors} from '../../../../types/auxiliaryTableContentCellsColors';
 import {EditableTableComponent} from '../../../../editable-table-component';
+import {CellStateColorsR} from '../../../../types/cellStateColors';
 
 export class AddNewColumnEvents {
   // REF-17
-  private static setHeaderStyle(headerCell: HTMLElement, colors: AuxiliaryContentCellColors, isHighlight: boolean) {
-    const {hoverColor, defaultColor} = colors;
+  private static setHeaderStyle(headerCell: HTMLElement, headerColors: CellStateColorsR, isHighlight: boolean) {
+    const {default: defaultColors, hover: hoverColors} = headerColors;
     // set here and not on addColumnCol because toggling 'color' on that element does not change cell 'color' style
     // additionally because auxiliary elements header cells can inherit the user set header style, we must set it
     // manually anyway
-    headerCell.style.color = isHighlight ? hoverColor.color : defaultColor.color;
-    headerCell.style.backgroundColor = isHighlight ? hoverColor.backgroundColor : defaultColor.backgroundColor;
+    headerCell.style.color = isHighlight ? hoverColors.color : defaultColors.color;
+    headerCell.style.backgroundColor = isHighlight ? hoverColors.backgroundColor : defaultColors.backgroundColor;
   }
 
   // REF-17
   public static toggleColor(columnGroup: HTMLElement, isHighlight: boolean, addColumnCellsElementsRef: HTMLElement[]) {
     const addColumnCol = columnGroup.children[columnGroup.children.length - 1] as HTMLElement;
     const {data, header} = AuxiliaryTableContent.CELL_COLORS;
-    addColumnCol.style.backgroundColor = isHighlight ? data.hoverColor.backgroundColor : data.defaultColor.backgroundColor;
+    addColumnCol.style.backgroundColor = isHighlight ? data.hover.backgroundColor : data.default.backgroundColor;
     const headerCell = addColumnCellsElementsRef[0];
     if (headerCell) AddNewColumnEvents.setHeaderStyle(headerCell, header, isHighlight);
   }

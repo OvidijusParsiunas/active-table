@@ -30,7 +30,7 @@ export class IndexColumn {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }
     Object.assign(cell.style, etc.cellStyle, etc.auxiliaryTableContentProps.style?.defaultStyle || {});
-    if (isHeader) Object.assign(cell.style, AuxiliaryTableContent.CELL_COLORS.header.defaultColor);
+    if (isHeader) Object.assign(cell.style, AuxiliaryTableContent.CELL_COLORS.header.default);
     return cell;
   }
 
