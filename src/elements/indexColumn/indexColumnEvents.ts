@@ -1,4 +1,4 @@
-import {AuxiliaryTableContent} from '../../utils/auxiliaryTableContent/auxiliaryTableContent';
+import {AuxiliaryTableContentColors} from '../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CellHighlightUtil} from '../../utils/color/cellHighlightUtil';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
@@ -6,14 +6,14 @@ import {Dropdown} from '../dropdown/dropdown';
 
 export class IndexColumnEvents {
   private static mouseEnterCell(this: EditableTableComponent, rowIndex: number, event: MouseEvent) {
-    const eventColors = AuxiliaryTableContent.getCellColors(rowIndex);
-    CellHighlightUtil.highlight(event.target as HTMLElement, eventColors.hover);
+    const cellColors = AuxiliaryTableContentColors.getColorsBasedOnParam(rowIndex);
+    CellHighlightUtil.highlight(event.target as HTMLElement, cellColors.hover);
   }
 
   private static mouseLeaveCell(this: EditableTableComponent, rowIndex: number, event: MouseEvent) {
     if (!Dropdown.isDisplayed(this.overlayElementsState.rowDropdown)) {
-      const eventColors = AuxiliaryTableContent.getCellColors(rowIndex);
-      CellHighlightUtil.fade(event.target as HTMLElement, eventColors.hover);
+      const cellColors = AuxiliaryTableContentColors.getColorsBasedOnParam(rowIndex);
+      CellHighlightUtil.fade(event.target as HTMLElement, cellColors.hover);
     }
   }
 

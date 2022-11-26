@@ -1,4 +1,4 @@
-import {AuxiliaryTableContent} from '../../../../utils/auxiliaryTableContent/auxiliaryTableContent';
+import {AuxiliaryTableContentColors} from '../../../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {InsertNewColumn} from '../../../../utils/insertRemoveStructure/insert/insertNewColumn';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {CellStateColorsR} from '../../../../types/cellStateColors';
@@ -17,7 +17,7 @@ export class AddNewColumnEvents {
   // REF-17
   public static toggleColor(columnGroup: HTMLElement, isHighlight: boolean, addColumnCellsElementsRef: HTMLElement[]) {
     const addColumnCol = columnGroup.children[columnGroup.children.length - 1] as HTMLElement;
-    const {data, header} = AuxiliaryTableContent.CELL_COLORS;
+    const {data, header} = AuxiliaryTableContentColors.CELL_COLORS;
     addColumnCol.style.backgroundColor = isHighlight ? data.hover.backgroundColor : data.default.backgroundColor;
     const headerCell = addColumnCellsElementsRef[0];
     if (headerCell) AddNewColumnEvents.setHeaderStyle(headerCell, header, isHighlight);

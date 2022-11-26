@@ -1,5 +1,6 @@
+import {AuxiliaryTableContentElements} from '../../utils/auxiliaryTableContent/auxiliaryTableContentElements';
+import {AuxiliaryTableContentColors} from '../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
-import {AuxiliaryTableContent} from '../../utils/auxiliaryTableContent/auxiliaryTableContent';
 import {InitialContentsProcessing} from '../../utils/contents/initialContentsProcessing';
 import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElements';
 import {InsertRemoveColumnSizer} from '../columnSizer/utils/insertRemoveColumnSizer';
@@ -76,7 +77,7 @@ export class TableElement {
     TableElement.addCells(etc);
     TableElement.postProcessColumns(etc);
     // new row row
-    AuxiliaryTableContent.addAuxiliaryBodyElements(etc);
+    AuxiliaryTableContentElements.addAuxiliaryBodyElements(etc);
     if (etc.displayIndexColumn) UpdateIndexColumnWidth.update(etc);
     // needs to be after UpdateIndexColumnWidth.update as the new index column width can impact the add new column display
     ToggleAdditionElements.update(etc, true, AddNewColumnElement.toggle);
@@ -97,7 +98,7 @@ export class TableElement {
 
   // CAUTION-4 - add row cell is created and ref assigned here - then it is added post render in addAuxiliaryBodyElements
   public static createInfrastructureElements(etc: EditableTableComponent) {
-    AuxiliaryTableContent.setEventColors(etc); // needs to be before the creation of column group element
+    AuxiliaryTableContentColors.setEventColors(etc); // needs to be before the creation of column group element
     etc.tableElementRef = TableElement.createTableElement(etc);
     if (etc.displayAddColumnCell) {
       // needs to be appended before the body

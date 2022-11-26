@@ -4,12 +4,12 @@ import {InitialContentsProcessing} from './utils/contents/initialContentsProcess
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
-import {AuxiliaryTableContentProps} from './types/auxiliaryTableContentProps';
 import {ColumnSettingsUtil} from './utils/columnSettings/columnSettingsUtil';
 import {HoverableElementStyleClient} from './types/hoverableElementStyle';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableDimensionsInternal} from './types/tableDimensionsInternal';
 import {TableElementEventState} from './types/tableElementEventState';
+import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {customElement, property, state} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
 import {WindowElement} from './elements/window/windowElement';
@@ -74,14 +74,12 @@ export class EditableTableComponent extends LitElement {
   })
   duplicateHeadersAllowed = true;
 
-  // WORK - move this to auxiliaryTableContentProps
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
   displayAddRowCell = true;
 
-  // WORK - move this to auxiliaryTableContentProps
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
@@ -96,7 +94,6 @@ export class EditableTableComponent extends LitElement {
   })
   headerPresent = true;
 
-  // WORK - move this to auxiliaryTableContentProps
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
@@ -182,9 +179,9 @@ export class EditableTableComponent extends LitElement {
   cellStyle: CSSStyle = {};
 
   // auxiliary content is comprised of index column, add new column column and add new row row
-  // Do not use AuxiliaryTableContent.EVENT_COLORS for default value as the '' values will prevent logical OR operators
+  // Not using AuxiliaryTableContentColors.CELL_COLORS for default value as the '' values will stop logical OR operators
   @property({type: Object})
-  auxiliaryTableContentProps: AuxiliaryTableContentProps = {};
+  auxiliaryTableContent: AuxiliaryTableContent = {};
 
   // columnResizer for the client - columnSizer in code for efficiency
   @property({type: Object})

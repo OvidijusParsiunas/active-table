@@ -1,4 +1,4 @@
-import {AuxiliaryTableContent} from '../../../utils/auxiliaryTableContent/auxiliaryTableContent';
+import {AuxiliaryTableContentColors} from '../../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {DropdownItemHighlightUtil} from '../../../utils/color/dropdownItemHighlightUtil';
 import {MaximumRows} from '../../../utils/insertRemoveStructure/insert/maximumRows';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
@@ -16,7 +16,7 @@ export class RowDropdown {
   public static hide(etc: EditableTableComponent) {
     const {overlayElementsState: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element: cellElement}}} = etc;
     Dropdown.hide(rowDropdown as HTMLElement, fullTableOverlay as HTMLElement);
-    const cellColors = AuxiliaryTableContent.getCellColors(cellElement as HTMLElement);
+    const cellColors = AuxiliaryTableContentColors.getColorsBasedOnParam(cellElement as HTMLElement);
     CellHighlightUtil.fade(cellElement as HTMLElement, cellColors.default);
     DropdownItemHighlightUtil.fadeCurrentlyHighlighted(etc.shadowRoot);
     setTimeout(() => {
