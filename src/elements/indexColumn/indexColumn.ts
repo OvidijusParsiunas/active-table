@@ -28,7 +28,7 @@ export class IndexColumn {
     if (!etc.tableDimensionsInternal.isColumnIndexCellTextWrapped) {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }
-    Object.assign(cell.style, etc.cellStyle, isHeader ? etc.headerStyle : {}, etc.auxiliaryTableContentProps.style);
+    Object.assign(cell.style, etc.cellStyle, etc.auxiliaryTableContentProps.defaultStyle);
     return cell;
   }
 

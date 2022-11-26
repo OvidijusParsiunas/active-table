@@ -1,32 +1,58 @@
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
-import {AuxiliaryTableContent} from '../auxiliaryTableContent/auxiliaryTableContent';
 import {EditableTableComponent} from '../../editable-table-component';
+import {CellStateColorProperties} from '../../types/cellStateColors';
 import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
+import {CellHighlightUtil} from '../color/cellHighlightUtil';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
-import {CellEventColors} from '../../types/cellEventColors';
 
 // REF-13
 export class ColumnDetails {
   public static readonly MINIMAL_COLUMN_WIDTH = 34;
   public static NEW_COLUMN_WIDTH = 100;
 
-  public static createWithElementsArr(settings?: ColumnSettingsInternal): ColumnDetailsInitial {
-    return {
-      elements: [],
-      settings,
-    };
+  // prettier-ignore
+  private static getHeaderDefaultColor(etc: EditableTableComponent,
+      key: keyof CellStateColorProperties, defaultValue: string, settings?: ColumnSettingsInternal) {
+    return settings?.header?.defaultStyle?.[key] || settings?.cellStyle?.[key] ||
+      etc.header.defaultStyle?.[key] || etc.cellStyle[key] || defaultValue;
   }
 
-  private static createHeaderEventColors(etc: EditableTableComponent, colDetails: ColumnDetailsInitial): CellEventColors {
+  // prettier-ignore
+  private static getHeaderHoverColor(etc: EditableTableComponent,
+      key: keyof CellStateColorProperties, defaultValue: string, settings?: ColumnSettingsInternal) {
+    return settings?.header?.hoverColor?.[key] || etc.header.hoverColor?.[key] ||
+      ColumnDetails.getHeaderDefaultColor(etc, key, defaultValue, settings);
+  }
+
+  // prettier-ignore
+  public static createHeaderStateColors(etc: EditableTableComponent, settings?: ColumnSettingsInternal) {
     return {
-      default: colDetails.elements[0].style.backgroundColor,
-      hover: etc.headerStyle.backgroundColor || etc.cellStyle.backgroundColor || AuxiliaryTableContent.EVENT_COLORS.hover,
+      hover: {
+        color: ColumnDetails.getHeaderHoverColor(
+          etc, 'color', CellHighlightUtil.DEFAULT_HOVER_PROPERTIES['color'], settings),
+        backgroundColor: ColumnDetails.getHeaderHoverColor(
+          etc, 'backgroundColor', CellHighlightUtil.DEFAULT_HOVER_PROPERTIES['backgroundColor'], settings),
+      },
+      default: {
+        color: ColumnDetails.getHeaderDefaultColor(etc, 'color', '', settings),
+        backgroundColor: ColumnDetails.getHeaderDefaultColor(etc, 'backgroundColor', '', settings),
+      }
     };
   }
 
   // prettier-ignore
-  public static updateWithNoSizer(etc: EditableTableComponent, columnDetails: ColumnDetailsInitial,
+  public static createInitial(etc: EditableTableComponent,
+      settings?: ColumnSettingsInternal): ColumnDetailsInitial {
+    return {
+      elements: [],
+      settings,
+      headerStateColors: ColumnDetails.createHeaderStateColors(etc, settings),
+    };
+  }
+
+  // prettier-ignore
+  public static updateWithNoSizer(columnDetails: ColumnDetailsInitial,
       categoryDropdown: HTMLElement): ColumnDetailsNoSizer {
     const newObject: Omit<ColumnDetailsNoSizer, keyof ColumnDetailsInitial> = {
       activeColumnType: CellTypeTotalsUtils.DEFAULT_COLUMN_TYPE,
@@ -41,7 +67,6 @@ export class ColumnDetails {
           vertical: false,
         },
       },
-      headerEventColors: ColumnDetails.createHeaderEventColors(etc, columnDetails)
     };
     Object.assign(columnDetails, newObject);
     return columnDetails as ColumnDetailsNoSizer;

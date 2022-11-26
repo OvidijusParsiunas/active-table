@@ -16,7 +16,7 @@ export class RowDropdown {
   public static hide(etc: EditableTableComponent) {
     const {overlayElementsState: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element: cellElement}}} = etc;
     Dropdown.hide(rowDropdown as HTMLElement, fullTableOverlay as HTMLElement);
-    CellHighlightUtil.fade(cellElement as HTMLElement, AuxiliaryTableContent.EVENT_COLORS.default);
+    CellHighlightUtil.fade(cellElement as HTMLElement, AuxiliaryTableContent.EVENT_COLORS.defaultColor);
     DropdownItemHighlightUtil.fadeCurrentlyHighlighted(etc.shadowRoot);
     setTimeout(() => {
       // in a timeout because upon pressing esc/enter key on dropdown, the window event is fired after which checks it

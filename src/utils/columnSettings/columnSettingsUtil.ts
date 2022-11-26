@@ -2,6 +2,7 @@ import {ColumnSettingsInternal, ColumnsSettings, ColumnsSettingsMap} from '../..
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsWidthUtil} from './columnSettingsWidthUtil';
+import {ColumnSettingsStyleUtil} from './columnSettingsStyleUtil';
 
 export class ColumnSettingsUtil {
   // prettier-ignore
@@ -14,6 +15,7 @@ export class ColumnSettingsUtil {
     if (oldSettings !== newSettings) {
       ColumnSettingsWidthUtil.changeWidth(etc, columnDetails, oldSettings, newSettings, cellElement);
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
+      ColumnSettingsStyleUtil.changeStyle(etc, columnDetails, oldSettings, newSettings);
     }
   }
 

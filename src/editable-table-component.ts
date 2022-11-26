@@ -1,12 +1,11 @@
 import {ColumnSettings, ColumnsSettings, ColumnsSettingsMap} from './types/columnsSettings';
 import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
-import {AuxiliaryTableContent} from './utils/auxiliaryTableContent/auxiliaryTableContent';
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
-import {AuxiliaryTableContentProps} from './types/auxiliaryTableContentProps';
 import {ColumnSettingsUtil} from './utils/columnSettings/columnSettingsUtil';
+import {HoverableElementStyleClient} from './types/hoverableElementStyle';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableDimensionsInternal} from './types/tableDimensionsInternal';
 import {TableElementEventState} from './types/tableElementEventState';
@@ -176,14 +175,15 @@ export class EditableTableComponent extends LitElement {
   tableStyle: CSSStyle = {};
 
   @property({type: Object})
-  headerStyle: CSSStyle = {};
+  header: HoverableElementStyleClient = {};
 
   @property({type: Object})
   cellStyle: CSSStyle = {};
 
   // auxiliary content is comprised of index column, add new column column and add new row row
+  // Do not use AuxiliaryTableContent.EVENT_COLORS for default value as the '' values will prevent logical OR operators
   @property({type: Object})
-  auxiliaryTableContentProps: AuxiliaryTableContentProps = AuxiliaryTableContent.createClientProps();
+  auxiliaryTableContentProps: HoverableElementStyleClient = {};
 
   // columnResizer for the client - columnSizer in code for efficiency
   @property({type: Object})

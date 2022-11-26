@@ -112,10 +112,11 @@ The movable sizer element is the element that follows the cursor whilst the actu
 
 REF-13
 The process of adding adding a new column details object (ColumnDetailsT):
-First creating the object with just the elements array and settings in order to allow the changeWidthsBasedOnColumnInsertRemove method
-to reset all column widths if required. Then in a timeout - asynchronously add all the other necessary details except the sizer
-as its creation requires the details from that object. Later proceed to create the sizer and add it to the object, thus
-completing the creation of that object.
+First creating the initial object with just the elements array, settings (to allow the changeWidthsBasedOnColumnInsertRemove method
+to reset all column widths if required) and the styles because when the user clicks on the add new column button, the mouse will
+immediately be on the new column header, hence the hover event needs to be set. Then in a timeout - asynchronously add all the other
+necessary details except the sizer as its creation requires the column details property values. Later proceed to create the sizer
+and add it to the object, thus completing the creation of the column details object.
 
 REF-14
 When calling super.connectedCallback() in the 'override connectedCallback' method - Firefox was initially found to call
@@ -143,11 +144,12 @@ I have raised a stack overflow question to see if this can be fixed automaticall
 https://stackoverflow.com/questions/73920147/table-element-width-using-column-widths-safari)
 
 REF-17
-The add column cell/button is made up of cells (number of rows in the table). The hover highlight functionality has been optimised
+The add column cell/button is made up of cells (one for each row in the table). The hover highlight functionality has been optimised
 to not traverse all of the cells and highlight them individually (as that would be computationally expensive if there are many rows)
-and instead utilise the column group functionality to control its highlight.
-Column group is EXCLUSIVELY used for this purpose and other custom column background color is set cell by cell as it only needs
-to be done once.
+and instead utilise the column group element to control its highlight.
+In order for column group column background color toggle to work - the style must only be set on the col element and not on the cell
+elements. An exception is done for the 'color' property where it must be set on the header cell because the group does not toggle it.
+Column group is EXCLUSIVELY used for this purpose.
 
 REF-18
 The add row button is always in the table body and is converted into a no content stub and reconverted after it is clicked on.
@@ -198,9 +200,6 @@ widths will not be reduced because it has been concluded that the calculation to
 can be expanded to the right and the effort that will be required to resize those proceeding columns is not worth the value that
 will ultimately be provided. However, if users are requesting this functionality, implement its logic as needed.
 
-REF-22
-In order for column group column hover color to work - the background color must be controlled by the col element and not the cell
-elements themselves.
 
 CAUTION-1
 When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across
@@ -208,10 +207,10 @@ the table as they will no longer be constant and will need some dynamicity
 
 CAUTION-2
 When resizing the table, take note of some async code that was waiting to be executed before the resize was triggered:
-It has been identified that when re-render occurs and columnsDetails object is cleared, by the time the async code is executed,
-the columnDetails objects will have properties populated inside the ColumnDetailsInitial type (REF-13), however they will not
-have any other properties which we can use to check if re-rendering has occured, and if it has - stop any async processing
-that has been initiated before the re-render.
+It has been identified that when re-render occurs and columnsDetails object is cleared, by the time the async code is executed
+the columnDetails objects will have some properties populated inside the ColumnDetailsInitial type (REF-13), however they will
+not have all properties which we can use to check if re-rendering has occured, and if it has - stop any async processing that
+has been initiated before the re-render.
 If further bugs occur - create and use a 'rendering' flag instead.
 
 CAUTION-3

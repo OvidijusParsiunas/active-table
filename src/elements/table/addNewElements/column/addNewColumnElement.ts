@@ -19,22 +19,18 @@ export class AddNewColumnElement {
   // renaming the class names on this button does not re-trigger selector to identify the previous cell as last.
   // The only way to do this is to remove the cell element when not visible, which is what the code below is doing
   // and re-adding the cell when it is visible. (The cell still remains in the addColumnCellsElementsRef object).
-  // prettier-ignore
-  private static setDisplay(cell: HTMLElement, isDisplay: boolean,
-      tableBodyElement: HTMLElement, rowIndex: number, columnGroupRef: HTMLElement) {
+  private static setDisplay(cell: HTMLElement, isDisplay: boolean, tableBodyElement: HTMLElement, rowIndex: number) {
     if (isDisplay) {
       tableBodyElement.children[rowIndex].appendChild(cell);
     } else {
       cell.remove();
-      // remove does not trigger mouse leave event, hence need to trigger it manually
-      setTimeout(() => AddNewColumnEvents.toggleBackground(columnGroupRef, false))
     }
   }
 
   private static createCell(etc: EditableTableComponent, tag: 'th' | 'td') {
     const cell = document.createElement(tag);
     cell.classList.add(CellElement.CELL_CLASS, AddNewColumnElement.ADD_COLUMN_CELL_CLASS);
-    Object.assign(cell.style, etc.cellStyle, {backgroundColor: ''}); // REF-22
+    Object.assign(cell.style, etc.cellStyle, {backgroundColor: ''}); // backgroundColor controlled by column group - REF-17
     AddNewColumnEvents.setEvents(etc, cell);
     return cell;
   }
@@ -43,7 +39,7 @@ export class AddNewColumnElement {
     const headerCell = AddNewColumnElement.createCell(etc, 'th');
     headerCell.style.width = AddNewColumnElement.DEFAULT_WIDTH_PX;
     headerCell.textContent = '+';
-    Object.assign(headerCell.style, etc.headerStyle);
+    Object.assign(headerCell.style, etc.header);
     return headerCell;
   }
 
@@ -67,9 +63,13 @@ export class AddNewColumnElement {
   // prettier-ignore
   private static toggleEachCell(canAddMore: boolean,
       tableBodyElement: HTMLElement, addColumnCellsElementsRef: HTMLElement[], columnGroupElement: HTMLElement) {
-    addColumnCellsElementsRef.forEach((cell, rowIndex) =>
-    AddNewColumnElement.setDisplay(cell, canAddMore, tableBodyElement, rowIndex, columnGroupElement)
-  );
+    addColumnCellsElementsRef.forEach((cell, rowIndex) => {
+      AddNewColumnElement.setDisplay(cell, canAddMore, tableBodyElement, rowIndex);
+    });
+    if (!canAddMore) {
+      // remove does not trigger mouse leave event, hence need to trigger it manually
+      setTimeout(() => AddNewColumnEvents.toggleColor(columnGroupElement, false, addColumnCellsElementsRef))
+    }
   }
 
   private static changeTableWidths(etc: EditableTableComponent, canAddMore: boolean, isInsert: boolean) {

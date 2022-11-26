@@ -1,5 +1,6 @@
 import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellCalendarIconElement';
 import {ColumnSettingsWidthUtil} from '../../utils/columnSettings/columnSettingsWidthUtil';
+import {ColumnSettingsStyleUtil} from '../../utils/columnSettings/columnSettingsStyleUtil';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
@@ -40,12 +41,16 @@ export class CellElement {
     }
   }
 
-  public static create(cellStyle: CSSStyle, customStyle: CSSStyle, isHeader: boolean) {
+  public static setDefaultCellStyle(cellElement: HTMLElement, cellStyle: CSSStyle, customStyle?: CSSStyle) {
+    Object.assign(cellElement.style, cellStyle, customStyle);
+  }
+
+  public static create(cellStyle: CSSStyle, isHeader: boolean, customStyle?: CSSStyle) {
     const cellElement = document.createElement(isHeader ? 'th' : 'td');
     cellElement.classList.add(CellElement.CELL_CLASS);
     // role for assistive technologies
     cellElement.setAttribute('role', 'textbox');
-    Object.assign(cellElement.style, cellStyle, customStyle);
+    CellElement.setDefaultCellStyle(cellElement, cellStyle, customStyle);
     return cellElement;
   }
 
@@ -87,15 +92,14 @@ export class CellElement {
   }
 
   private static createCellDOMElement(etc: EditableTableComponent, cellText: string, colIndex: number, isHeader: boolean) {
-    const {cellStyle, headerStyle, columnsDetails, tableElementRef} = etc;
+    const {cellStyle, header, columnsDetails, tableElementRef} = etc;
     const {settings} = columnsDetails[colIndex];
-    const cellElement = CellElement.create(cellStyle, headerStyle, isHeader);
+    const cellElement = CellElement.create(cellStyle, isHeader, isHeader ? header.defaultStyle || {} : {});
+    if (settings) ColumnSettingsStyleUtil.setSettingsStyleOnCell(settings, cellElement, isHeader);
     CellElement.processAndSetTextOnCell(etc, cellElement, cellText, false);
     CellElement.prepContentEditable(cellElement, isHeader);
-    if (isHeader) {
-      // overwritten if static table
-      CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
-    }
+    // overwritten again if static table
+    if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
     return cellElement;
   }
 

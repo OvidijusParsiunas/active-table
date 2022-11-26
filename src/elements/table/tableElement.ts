@@ -97,7 +97,7 @@ export class TableElement {
 
   // CAUTION-4 - add row cell is created and ref assigned here - then it is added post render in addAuxiliaryBodyElements
   public static createInfrastructureElements(etc: EditableTableComponent) {
-    AuxiliaryTableContent.setAuxiliaryContentEventColors(etc); // needs to be before the creation of column group element
+    AuxiliaryTableContent.setEventColors(etc); // needs to be before the creation of column group element
     etc.tableElementRef = TableElement.createTableElement(etc);
     if (etc.displayAddColumnCell) {
       // needs to be appended before the body

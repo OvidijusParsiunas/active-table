@@ -27,7 +27,7 @@ export class AddNewRowElement {
 
   private static createCell(etc: EditableTableComponent) {
     const {cellStyle, displayAddRowCell, auxiliaryTableContentProps} = etc;
-    const addNewRowCell = CellElement.create(cellStyle, auxiliaryTableContentProps.style, false);
+    const addNewRowCell = CellElement.create(cellStyle, false, auxiliaryTableContentProps.defaultStyle);
     addNewRowCell.id = 'add-new-row-cell';
     if (!displayAddRowCell) {
       // if this is not displayed when there is content, always use the stub style - REF-18

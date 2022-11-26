@@ -6,12 +6,12 @@ import {Dropdown} from '../dropdown/dropdown';
 
 export class IndexColumnEvents {
   private static mouseEnterCell(this: EditableTableComponent, event: MouseEvent) {
-    CellHighlightUtil.highlight(event.target as HTMLElement, AuxiliaryTableContent.EVENT_COLORS.hover);
+    CellHighlightUtil.highlight(event.target as HTMLElement, AuxiliaryTableContent.EVENT_COLORS.hoverColor);
   }
 
   private static mouseLeaveCell(this: EditableTableComponent, event: MouseEvent) {
     if (!Dropdown.isDisplayed(this.overlayElementsState.rowDropdown)) {
-      CellHighlightUtil.fade(event.target as HTMLElement, AuxiliaryTableContent.EVENT_COLORS.default);
+      CellHighlightUtil.fade(event.target as HTMLElement, AuxiliaryTableContent.EVENT_COLORS.defaultColor);
     }
   }
 

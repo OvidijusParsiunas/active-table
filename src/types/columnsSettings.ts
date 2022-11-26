@@ -1,3 +1,4 @@
+import {HoverableElementStyleClient} from './hoverableElementStyle';
 import {USER_SET_COLUMN_TYPE} from '../enums/columnType';
 import {InterfacesUnion} from './utilityTypes';
 import {TableCellText} from './tableContents';
@@ -7,8 +8,9 @@ import {CSSStyle} from './cssStyle';
 interface Parent {
   columnName: string;
   defaultValue?: TableCellText;
+  cellStyle?: CSSStyle;
+  header?: HoverableElementStyleClient;
   type?: boolean;
-  style?: CSSStyle;
   availableTypes?: USER_SET_COLUMN_TYPE[];
   // customTypes?: unknown;
   validation?: unknown;

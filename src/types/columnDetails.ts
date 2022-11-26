@@ -1,6 +1,6 @@
 import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../enums/columnType';
 import {ColumnSettingsInternal} from './columnsSettings';
-import {CellEventColors} from './cellEventColors';
+import {CellStateColors} from './cellStateColors';
 import {CELL_TYPE} from '../enums/cellType';
 import {ColumnSizerT} from './columnSizer';
 import {Optional} from './utilityTypes';
@@ -50,11 +50,11 @@ export interface ColumnDetailsT {
   cellTypeTotals: CellTypeTotals;
   categoryDropdown: CategoryDropdownT;
   settings?: ColumnSettingsInternal;
-  headerEventColors: CellEventColors;
+  headerStateColors: CellStateColors;
 }
 
 // REF-13
-export type ColumnDetailsInitial = Pick<ColumnDetailsT, 'elements' | 'settings'>;
+export type ColumnDetailsInitial = Pick<ColumnDetailsT, 'elements' | 'settings' | 'headerStateColors'>;
 
 // REF-13
 export type ColumnDetailsNoSizer = Optional<ColumnDetailsT, 'columnSizer'>;
