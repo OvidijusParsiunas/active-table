@@ -1,3 +1,5 @@
+import {GenericObject} from '../../types/genericObject';
+
 export class GenericElementUtils {
   public static hideElements(...elements: HTMLElement[]) {
     elements.forEach((element: HTMLElement) => (element.style.display = 'none'));
@@ -17,5 +19,9 @@ export class GenericElementUtils {
 
   public static isFirstChildInParent(element: HTMLElement) {
     return element.parentElement?.firstChild === element;
+  }
+
+  public static setStyle(element: HTMLElement, style: string, value: string) {
+    (element.style as unknown as GenericObject)[style] = value;
   }
 }

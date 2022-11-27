@@ -48,6 +48,7 @@ export class ColumnDetails {
       elements: [],
       settings,
       headerStateColors: ColumnDetails.createHeaderStateColors(etc, settings),
+      bordersOverwrittenBySiblings: {},
     };
   }
 

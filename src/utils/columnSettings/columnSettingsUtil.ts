@@ -1,5 +1,6 @@
 import {ColumnSettingsInternal, ColumnsSettings, ColumnsSettingsMap} from '../../types/columnsSettings';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
+import {ColumnSettingsBorderUtils} from './columnSettingsStyleBorderUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsWidthUtil} from './columnSettingsWidthUtil';
 import {ColumnSettingsStyleUtil} from './columnSettingsStyleUtil';
@@ -16,6 +17,7 @@ export class ColumnSettingsUtil {
       ColumnSettingsWidthUtil.changeWidth(etc, columnDetails, oldSettings, newSettings, cellElement);
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
       ColumnSettingsStyleUtil.changeStyle(etc, columnDetails, oldSettings, newSettings);
+      ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
     }
   }
 

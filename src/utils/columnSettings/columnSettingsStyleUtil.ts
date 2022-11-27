@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../editable-table-component';
+import {GenericElementUtils} from '../elements/genericElementUtils';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {ColumnDetails} from '../columnDetails/columnDetails';
 import {CellElement} from '../../elements/cell/cellElement';
@@ -18,7 +19,7 @@ export class ColumnSettingsStyleUtil {
     });
   }
 
-  private static setDefaultStyles(columnElements: HTMLElement[], cellStyle: CSSStyle, headerStyle?: CSSStyle) {
+  public static setDefaultStyles(columnElements: HTMLElement[], cellStyle: CSSStyle, headerStyle?: CSSStyle) {
     CellElement.setDefaultCellStyle(columnElements[0], cellStyle, headerStyle);
     columnElements.slice(1).forEach((element) => {
       CellElement.setDefaultCellStyle(element, cellStyle);
@@ -35,7 +36,7 @@ export class ColumnSettingsStyleUtil {
 
   private static unsetHeaderSettingStyle(headerElement: HTMLElement, style: CSSStyle) {
     Object.keys(style).forEach((styleName) => {
-      (headerElement.style as unknown as GenericObject)[styleName] = '';
+      GenericElementUtils.setStyle(headerElement, styleName, '');
     });
   }
 

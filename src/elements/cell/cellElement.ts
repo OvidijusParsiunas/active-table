@@ -1,4 +1,5 @@
 import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellCalendarIconElement';
+import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsStyleBorderUtils';
 import {ColumnSettingsWidthUtil} from '../../utils/columnSettings/columnSettingsWidthUtil';
 import {ColumnSettingsStyleUtil} from '../../utils/columnSettings/columnSettingsStyleUtil';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
@@ -50,6 +51,9 @@ export class CellElement {
     cellElement.classList.add(CellElement.CELL_CLASS);
     // role for assistive technologies
     cellElement.setAttribute('role', 'textbox');
+    // should probably remove border width from headerStyle if cellStyle contains it as it will affect the sizer position
+    // but the table looks off when the header and data cells have different border styles so it is not expected that
+    // users will desire headerstyle it, hence not implementending headerStyle preprocessing functionality
     CellElement.setDefaultCellStyle(cellElement, cellStyle, customStyle);
     return cellElement;
   }
@@ -93,9 +97,11 @@ export class CellElement {
 
   private static createCellDOMElement(etc: EditableTableComponent, cellText: string, colIndex: number, isHeader: boolean) {
     const {cellStyle, header, columnsDetails, tableElementRef} = etc;
-    const {settings} = columnsDetails[colIndex];
+    const columnDetails = columnsDetails[colIndex];
     const cellElement = CellElement.create(cellStyle, isHeader, isHeader ? header.defaultStyle || {} : {});
+    const {settings} = columnDetails;
     if (settings) ColumnSettingsStyleUtil.setSettingsStyleOnCell(settings, cellElement, isHeader);
+    ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, cellElement);
     CellElement.processAndSetTextOnCell(etc, cellElement, cellText, false);
     CellElement.prepContentEditable(cellElement, isHeader);
     // overwritten again if static table

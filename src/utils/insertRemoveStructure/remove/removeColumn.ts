@@ -3,6 +3,7 @@ import {AddNewColumnElement} from '../../../elements/table/addNewElements/column
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
+import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsStyleBorderUtils';
 import {ColumnSettingsWidthUtil} from '../../columnSettings/columnSettingsWidthUtil';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
@@ -71,6 +72,7 @@ export class RemoveColumn {
   public static remove(etc: EditableTableComponent, columnIndex: number) {
     const removedColumnDetails = RemoveColumn.removeCellFromAllRows(etc, columnIndex);
     RemoveColumn.updateAdditionElements(etc);
+    ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
     setTimeout(() => {
       // CAUTION-2
       removedColumnDetails.categoryDropdown.element.remove();

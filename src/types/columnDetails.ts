@@ -5,6 +5,11 @@ import {CELL_TYPE} from '../enums/cellType';
 import {ColumnSizerT} from './columnSizer';
 import {Optional} from './utilityTypes';
 
+export interface BordersOverwrittenBySiblings {
+  left?: boolean;
+  right?: boolean;
+}
+
 export type CellTypeTotals = {
   [key in CELL_TYPE]: number;
 };
@@ -51,10 +56,14 @@ export interface ColumnDetailsT {
   categoryDropdown: CategoryDropdownT;
   settings?: ColumnSettingsInternal;
   headerStateColors: CellStateColors;
+  bordersOverwrittenBySiblings: BordersOverwrittenBySiblings;
 }
 
 // REF-13
-export type ColumnDetailsInitial = Pick<ColumnDetailsT, 'elements' | 'settings' | 'headerStateColors'>;
+export type ColumnDetailsInitial = Pick<
+  ColumnDetailsT,
+  'elements' | 'settings' | 'headerStateColors' | 'bordersOverwrittenBySiblings'
+>;
 
 // REF-13
 export type ColumnDetailsNoSizer = Optional<ColumnDetailsT, 'columnSizer'>;
