@@ -82,13 +82,14 @@ export class InsertNewCell {
   // prettier-ignore
   public static insertToRow(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
+    const {auxiliaryTableContentInternal: {displayIndexColumn, displayAddColumnCell}, contents} = etc;
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);
-    InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, etc.displayIndexColumn);
+    InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, displayIndexColumn);
     // cannot place in a timeout as etc.contents length is used to get last row index
-    etc.contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
+    contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
     if (rowIndex === 0) {
-      if (etc.displayAddColumnCell) ColumnGroupElement.update(etc);
+      if (displayAddColumnCell) ColumnGroupElement.update(etc);
       if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
     }
     setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, processedCellText, isNewText));

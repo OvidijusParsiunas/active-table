@@ -25,9 +25,10 @@ export class AddNewRowElement {
     addNewRowCell.style.width = '';
   }
 
+  // prettier-ignore
   private static createCell(etc: EditableTableComponent) {
-    const {cellStyle, displayAddRowCell, auxiliaryTableContent} = etc;
-    const addNewRowCell = CellElement.create(cellStyle, false, auxiliaryTableContent.style?.defaultStyle);
+    const {cellStyle, auxiliaryTableContentInternal: {displayAddRowCell, style}} = etc;
+    const addNewRowCell = CellElement.create(cellStyle, false, style?.defaultStyle);
     addNewRowCell.id = 'add-new-row-cell';
     if (!displayAddRowCell) {
       // if this is not displayed when there is content, always use the stub style - REF-18
@@ -50,8 +51,9 @@ export class AddNewRowElement {
     return addNewRowCell;
   }
 
+  // prettier-ignore
   public static toggle(etc: EditableTableComponent) {
-    const {tableBodyElementRef, addRowCellElementRef, displayAddRowCell} = etc;
+    const {tableBodyElementRef, addRowCellElementRef, auxiliaryTableContentInternal: {displayAddRowCell}} = etc;
     if (!displayAddRowCell || !addRowCellElementRef || !tableBodyElementRef) return;
     AddNewRowElement.setDisplay(addRowCellElementRef, MaximumRows.canAddMore(etc));
   }

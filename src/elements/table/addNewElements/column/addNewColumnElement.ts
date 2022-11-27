@@ -80,8 +80,10 @@ export class AddNewColumnElement {
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, isInsert);
   }
 
+  // prettier-ignore
   public static toggle(etc: EditableTableComponent, isInsert: boolean) {
-    const {addColumnCellsElementsRef, tableBodyElementRef, columnGroupRef, displayAddColumnCell} = etc;
+    const {addColumnCellsElementsRef, tableBodyElementRef, columnGroupRef,
+      auxiliaryTableContentInternal: {displayAddColumnCell}} = etc;
     if (!displayAddColumnCell || !tableBodyElementRef || !columnGroupRef) return;
     const canAddMore = MaximumColumns.canAddMore(etc);
     // do not toggle if already in the intended state

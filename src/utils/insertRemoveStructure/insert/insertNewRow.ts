@@ -35,13 +35,14 @@ export class InsertNewRow {
   // prettier-ignore
   private static addCells(etc: EditableTableComponent,
       newRowData: TableRow, newRowElement: HTMLElement, rowIndex: number, isNewText: boolean) {
-    if (etc.displayIndexColumn) IndexColumn.createAndPrependToRow(etc, newRowElement, rowIndex);
+    const {auxiliaryTableContentInternal: {displayIndexColumn, displayAddColumnCell}} = etc;
+    if (displayIndexColumn) IndexColumn.createAndPrependToRow(etc, newRowElement, rowIndex);
     newRowData.forEach((cellText: TableCellText, columnIndex: number) => {
       if (isNewText || InsertNewRow.canStartRenderCellBeAdded(etc, rowIndex, columnIndex)) {
         InsertNewCell.insertToRow(etc, newRowElement, rowIndex, columnIndex, cellText as string, isNewText);
       }
     });
-    if (etc.displayAddColumnCell) AddNewColumnElement.createAndAppendToRow(etc, newRowElement, rowIndex);
+    if (displayAddColumnCell) AddNewColumnElement.createAndAppendToRow(etc, newRowElement, rowIndex);
   }
 
   private static insertNewRow(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
@@ -60,7 +61,7 @@ export class InsertNewRow {
     InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
     if (isNewText) {
       ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
-      if (etc.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex + 1);
+      if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex + 1);
       setTimeout(() => InsertNewRow.fireCellUpdates(etc, rowIndex));
     }
   }

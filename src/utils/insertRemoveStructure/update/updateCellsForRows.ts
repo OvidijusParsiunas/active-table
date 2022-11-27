@@ -47,7 +47,7 @@ export class UpdateCellsForRows {
         const relativeContentsRowIndex = lowerRowIndex + startRowIndex;
         const rowElement = row as HTMLElement;
         UpdateCellsForRows.updateRowCells(etc, rowElement, relativeContentsRowIndex, CELL_UPDATE_TYPE.UPDATE);
-        if (etc.displayIndexColumn) {
+        if (etc.auxiliaryTableContentInternal.displayIndexColumn) {
           IndexColumnEvents.setEvents(etc, rowElement.children[0] as HTMLElement, relativeContentsRowIndex);
         }
       });

@@ -26,13 +26,15 @@ export class NoContentStubElement {
       .forEach((rowElement) => rowElement.remove());
   }
 
+  // prettier-ignore
   public static display(etc: EditableTableComponent) {
-    const {addColumnCellsElementsRef, addRowCellElementRef} = etc;
+    const {tableBodyElementRef, addColumnCellsElementsRef, addRowCellElementRef,
+      auxiliaryTableContentInternal: {displayAddColumnCell, displayAddRowCell}} = etc;
     if (!addRowCellElementRef) return;
-    const tableBodyElement = etc.tableBodyElementRef as HTMLElement;
-    if (etc.displayAddColumnCell) addColumnCellsElementsRef.splice(0, addColumnCellsElementsRef.length);
+    const tableBodyElement = tableBodyElementRef as HTMLElement;
+    if (displayAddColumnCell) addColumnCellsElementsRef.splice(0, addColumnCellsElementsRef.length);
     NoContentStubElement.removeRows(tableBodyElement);
-    if (etc.displayAddRowCell) {
+    if (displayAddRowCell) {
       NoContentStubElement.convertToStub(addRowCellElementRef);
       addRowCellElementRef.addEventListener('click', NoContentStubElement.convertFromStub);
     } else {

@@ -48,12 +48,13 @@ export class OverwriteCellsViaCSVOnPaste {
   // prettier-ignore
   private static overwriteCell(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, newCellText: string) {
-    const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, etc.displayIndexColumn);
+    const {auxiliaryTableContentInternal: {displayIndexColumn}, defaultCellValue, columnsDetails} = etc;
+    const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, displayIndexColumn);
     const cellElement = rowElement.children[elementIndex] as HTMLElement;
-    const oldType = CellTypeTotalsUtils.parseType(cellElement.textContent as string, etc.defaultCellValue);
+    const oldType = CellTypeTotalsUtils.parseType(cellElement.textContent as string, defaultCellValue);
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
-    const columnDetails = etc.columnsDetails[columnIndex];
+    const columnDetails = columnsDetails[columnIndex];
     if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryCellElement.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (DATE_COLUMN_TYPE[columnDetails.userSetColumnType] && Browser.IS_INPUT_DATE_SUPPORTED) {

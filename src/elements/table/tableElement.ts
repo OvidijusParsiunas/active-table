@@ -31,8 +31,9 @@ export class TableElement {
     TableElement.STATIC_WIDTH_CONTENT_TOTAL += delta;
   }
 
+  // prettier-ignore
   public static setStaticWidthContentTotal(etc: EditableTableComponent) {
-    const {displayAddColumnCell, displayIndexColumn} = etc;
+    const {auxiliaryTableContentInternal: {displayAddColumnCell, displayIndexColumn}} = etc;
     TableElement.STATIC_WIDTH_CONTENT_TOTAL =
       TableElement.BORDER_DIMENSIONS.leftWidth + TableElement.BORDER_DIMENSIONS.rightWidth;
     if (displayAddColumnCell) TableElement.STATIC_WIDTH_CONTENT_TOTAL += AddNewColumnElement.DEFAULT_WIDTH;
@@ -78,7 +79,7 @@ export class TableElement {
     TableElement.postProcessColumns(etc);
     // new row row
     AuxiliaryTableContentElements.addAuxiliaryBodyElements(etc);
-    if (etc.displayIndexColumn) UpdateIndexColumnWidth.update(etc);
+    if (etc.auxiliaryTableContentInternal.displayIndexColumn) UpdateIndexColumnWidth.update(etc);
     // needs to be after UpdateIndexColumnWidth.update as the new index column width can impact the add new column display
     ToggleAdditionElements.update(etc, true, AddNewColumnElement.toggle);
   }
@@ -100,7 +101,7 @@ export class TableElement {
   public static createInfrastructureElements(etc: EditableTableComponent) {
     AuxiliaryTableContentColors.setEventColors(etc); // needs to be before the creation of column group element
     etc.tableElementRef = TableElement.createTableElement(etc);
-    if (etc.displayAddColumnCell) {
+    if (etc.auxiliaryTableContentInternal.displayAddColumnCell) {
       // needs to be appended before the body
       etc.columnGroupRef = ColumnGroupElement.create();
       etc.tableElementRef.appendChild(etc.columnGroupRef);

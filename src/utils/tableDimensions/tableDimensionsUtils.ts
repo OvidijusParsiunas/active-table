@@ -64,8 +64,9 @@ export class TableDimensionsUtils {
   }
 
   // CAUTION-3
+  // prettier-ignore
   public static setInternalTableDimensions(etc: EditableTableComponent) {
-    const {tableDimensions, tableDimensionsInternal, displayIndexColumn} = etc;
+    const {tableDimensions, tableDimensionsInternal, auxiliaryTableContentInternal: {displayIndexColumn}} = etc;
     const parentElement = etc.parentElement as HTMLElement;
     // width and maxWidth are mutually exclusive and if both are present width is the only one that is used
     if (tableDimensions.width !== undefined) {

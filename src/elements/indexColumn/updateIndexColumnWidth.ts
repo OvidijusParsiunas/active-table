@@ -102,7 +102,7 @@ export class UpdateIndexColumnWidth {
   // used when a new column is added to see if wrapping is needed
   // CAUTION-2 - this runs before re-render but stay cautions
   public static wrapTextWhenNarrowColumnsBreached(etc: EditableTableComponent) {
-    if (etc.displayIndexColumn && UpdateIndexColumnWidth.shouldTextBeWrapped(etc)) {
+    if (etc.auxiliaryTableContentInternal.displayIndexColumn && UpdateIndexColumnWidth.shouldTextBeWrapped(etc)) {
       UpdateIndexColumnWidth.update(etc, undefined, true);
     }
   }

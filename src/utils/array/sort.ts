@@ -9,12 +9,13 @@ import {RegexUtils} from '../regex/regexUtils';
 export class Sort {
   // prettier-ignore
   private static update(etc: EditableTableComponent, sortedDataContents: TableContents,) {
-    const rowElements = (etc.tableBodyElementRef as HTMLElement).children;
+    const {tableBodyElementRef, auxiliaryTableContentInternal: {displayIndexColumn}, contents, onTableUpdate} = etc;
+    const rowElements = (tableBodyElementRef as HTMLElement).children;
     sortedDataContents.forEach((row, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
       const rowChildren = rowElements[relativeRowIndex].children;
       row.forEach((cell, columnIndex) => {
-        const elementColumnIndex = CellElementIndex.getViaColumnIndex(columnIndex, etc.displayIndexColumn);
+        const elementColumnIndex = CellElementIndex.getViaColumnIndex(columnIndex, displayIndexColumn);
         // the reason why updateContents property is set to false is because we do not want to overwrite contents array
         // cells as their row references are still the same with the sortedDataContents, hence upon attempting to
         // overwrite the contents array cells, sortedDataContents cells are also overwritten. This is problematic because
@@ -25,8 +26,8 @@ export class Sort {
             updateTableEvent: false, updateContents: false });
       });
     });
-    etc.contents.splice(1, sortedDataContents.length, ...sortedDataContents);
-    etc.onTableUpdate(etc.contents);
+    contents.splice(1, sortedDataContents.length, ...sortedDataContents);
+    onTableUpdate(contents);
   }
 
   private static sortStringsColumnAscending(contents: TableContents, columnIndex: number) {

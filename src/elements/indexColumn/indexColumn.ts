@@ -29,7 +29,7 @@ export class IndexColumn {
     if (!etc.tableDimensionsInternal.isColumnIndexCellTextWrapped) {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }
-    Object.assign(cell.style, etc.cellStyle, etc.auxiliaryTableContent.style?.defaultStyle || {});
+    Object.assign(cell.style, etc.cellStyle, etc.auxiliaryTableContentInternal.style?.defaultStyle || {});
     if (isHeader) Object.assign(cell.style, AuxiliaryTableContentColors.CELL_COLORS.header.default);
     return cell;
   }

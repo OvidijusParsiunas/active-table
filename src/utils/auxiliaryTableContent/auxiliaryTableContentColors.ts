@@ -46,11 +46,11 @@ export class AuxiliaryTableContentColors {
   // prettier-ignore
   private static getHoverColorValue(etc: EditableTableComponent,
       colorKey: keyof CellStateColorProperties, defaultValue: string): string {
-    return etc.auxiliaryTableContent.style?.hoverColors?.[colorKey] || etc.cellStyle[colorKey] || defaultValue;
+    return etc.auxiliaryTableContentInternal.style?.hoverColors?.[colorKey] || etc.cellStyle[colorKey] || defaultValue;
   }
 
   private static getDefaultColorValue(etc: EditableTableComponent, colorKey: keyof CellStateColorProperties) {
-    return etc.auxiliaryTableContent.style?.defaultStyle?.[colorKey] || etc.cellStyle[colorKey] || '';
+    return etc.auxiliaryTableContentInternal.style?.defaultStyle?.[colorKey] || etc.cellStyle[colorKey] || '';
   }
 
   // prettier-ignore
@@ -69,7 +69,7 @@ export class AuxiliaryTableContentColors {
     };
     AuxiliaryTableContentColors.CELL_COLORS.data = cellColors;
     AuxiliaryTableContentColors.CELL_COLORS.header = cellColors;
-    const { auxiliaryTableContent: { inheritHeaderStyle }, header } = etc;
+    const {auxiliaryTableContentInternal: {inheritHeaderStyle}, header} = etc;
     if (inheritHeaderStyle === undefined || inheritHeaderStyle === true) {
       AuxiliaryTableContentColors.overwriteHeaderWithInheritedColors(header)
     }

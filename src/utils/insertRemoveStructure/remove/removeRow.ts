@@ -52,7 +52,7 @@ export class RemoveRow {
     const lastRowElement = etc.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const removedRowData = RemoveRow.removeRow(etc, rowIndex);
     ToggleAdditionElements.update(etc, false, AddNewRowElement.toggle);
-    if (etc.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex);
+    if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex);
     setTimeout(() => RemoveRow.update(etc, rowIndex, lastRowElement, lastRowIndex, removedRowData));
   }
 }

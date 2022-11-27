@@ -16,8 +16,8 @@ STRATEGY:
 REF-1
 cellStyle will only override the borders of inner table structure and not the outside of the table
 These have been overriden in the css using !import
-The reason for this is because the use of custom border left or border right styles would leave one of the side borders uncovered and the use of both would
-result in thick middle borders
+The reason for this is because the use of custom border left or border right styles would leave one of the side borders uncovered
+and the use of both would result in thick middle borders
 For the table borders to be set, use tableStyle
 
 REF-2
@@ -201,6 +201,10 @@ widths will not be reduced because it has been concluded that the calculation to
 can be expanded to the right and the effort that will be required to resize those proceeding columns is not worth the value that
 will ultimately be provided. However, if users are requesting this functionality, implement its logic as needed.
 
+REF-22
+Using auxiliaryTableContentInternal object because the client may choose not to include some properties inside the auxiliaryTableContent
+object such as any of the AuxiliaryTableContentDisplayProps. Hence, this object is used to contain the defaults and use them internally
+without having to add optional chaining every its used. 
 
 CAUTION-1
 When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across

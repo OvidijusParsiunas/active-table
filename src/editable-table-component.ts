@@ -1,6 +1,8 @@
+import {AuxiliaryTableContentInternalUtils} from './utils/auxiliaryTableContent/auxiliaryTableContentInternalUtils';
 import {ColumnSettings, ColumnsSettings, ColumnsSettingsMap} from './types/columnsSettings';
 import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
+import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
 import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
@@ -74,18 +76,6 @@ export class EditableTableComponent extends LitElement {
   })
   duplicateHeadersAllowed = true;
 
-  @property({
-    type: Boolean,
-    converter: LITElementTypeConverters.convertToBoolean,
-  })
-  displayAddRowCell = true;
-
-  @property({
-    type: Boolean,
-    converter: LITElementTypeConverters.convertToBoolean,
-  })
-  displayAddColumnCell = true; // called cells to the client, but cells internally as it is made up of multiple cells
-
   // TO-DO - there should still be a dropdown and only insert left/right and remove the column options
   // column index should start count at the header row
   @property({
@@ -93,12 +83,6 @@ export class EditableTableComponent extends LitElement {
     converter: LITElementTypeConverters.convertToBoolean,
   })
   headerPresent = true;
-
-  @property({
-    type: Boolean,
-    converter: LITElementTypeConverters.convertToBoolean,
-  })
-  displayIndexColumn = true;
 
   // TO-DO allow the clien to update the table cells without re-renderdering the whole table
   // @property({
@@ -178,10 +162,15 @@ export class EditableTableComponent extends LitElement {
   @property({type: Object})
   cellStyle: CSSStyle = {};
 
+  // REF-22 - to be used by the client
   // auxiliary content is comprised of index column, add new column column and add new row row
   // Not using AuxiliaryTableContentColors.CELL_COLORS for default value as the '' values will stop logical OR operators
   @property({type: Object})
   auxiliaryTableContent: AuxiliaryTableContent = {};
+
+  // REF-22 - to be used internally
+  @state()
+  auxiliaryTableContentInternal: AuxiliaryTableContentInternal = AuxiliaryTableContentInternalUtils.getDefault();
 
   // columnResizer for the client - columnSizer in code for efficiency
   @property({type: Object})
@@ -197,6 +186,7 @@ export class EditableTableComponent extends LitElement {
   private onConnect() {
     // REF-14
     super.connectedCallback();
+    AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
     const tableElement = TableElement.createInfrastructureElements(this);
     TableElement.addOverlayElements(this, tableElement, this.overlayElementsState, this.areHeadersEditable);
     this.shadowRoot?.appendChild(tableElement);
