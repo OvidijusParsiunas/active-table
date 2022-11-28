@@ -1,5 +1,6 @@
 import {AuxiliaryTableContentColors} from '../../../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {StaticTableWidthUtils} from '../../../../utils/tableDimensions/staticTable/staticTableWidthUtils';
+import {ColumnSettingsBorderUtils} from '../../../../utils/columnSettings/columnSettingsBorderUtils';
 import {MaximumColumns} from '../../../../utils/insertRemoveStructure/insert/maximumColumns';
 import {GenericElementUtils} from '../../../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
@@ -53,11 +54,14 @@ export class AddNewColumnElement {
   }
 
   public static createAndAppendToRow(etc: EditableTableComponent, row: HTMLElement, rowIndex: number) {
-    const {addColumnCellsElementsRef} = etc;
+    const {addColumnCellsElementsRef, columnsDetails} = etc;
     // if statement needs to be before the addition of the new cell to addColumnCellsElementsRef
     const isDisplay = addColumnCellsElementsRef.length === 0 || AddNewColumnElement.isDisplayed(addColumnCellsElementsRef);
     const cell = rowIndex === 0 ? AddNewColumnElement.createHeaderCell(etc) : AddNewColumnElement.createDataCell(etc);
     addColumnCellsElementsRef.splice(rowIndex, 0, cell);
+    // REF-23
+    const columnDetails = columnsDetails[columnsDetails.length - 1];
+    ColumnSettingsBorderUtils.unsetSubjectBorder(addColumnCellsElementsRef, columnDetails.elements, 'left', rowIndex);
     if (isDisplay) row.appendChild(cell);
   }
 

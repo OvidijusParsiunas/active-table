@@ -1,5 +1,5 @@
 import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellCalendarIconElement';
-import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsStyleBorderUtils';
+import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsBorderUtils';
 import {ColumnSettingsWidthUtil} from '../../utils/columnSettings/columnSettingsWidthUtil';
 import {ColumnSettingsStyleUtil} from '../../utils/columnSettings/columnSettingsStyleUtil';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
@@ -101,7 +101,7 @@ export class CellElement {
     const cellElement = CellElement.create(cellStyle, isHeader, isHeader ? header.defaultStyle || {} : {});
     const {settings} = columnDetails;
     if (settings) ColumnSettingsStyleUtil.setSettingsStyleOnCell(settings, cellElement, isHeader);
-    ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, cellElement);
+    ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, cellElement); // REF-23
     CellElement.processAndSetTextOnCell(etc, cellElement, cellText, false);
     CellElement.prepContentEditable(cellElement, isHeader);
     // overwritten again if static table

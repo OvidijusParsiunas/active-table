@@ -54,7 +54,7 @@ export class ColumnSettingsStyleUtil {
   private static updateColumnStyle(etc: EditableTableComponent,
       columnDetails: ColumnDetailsT, settings: ColumnSettingsInternal, isSetNew: boolean) {
     const {cellStyle, header} = etc;
-    ColumnSettingsStyleUtil.resetStyleToDefault(columnDetails.elements, settings, cellStyle, header);
+    ColumnSettingsStyleUtil.resetStyleToDefault(columnDetails.elements, settings, cellStyle, header.defaultStyle);
     if (isSetNew) ColumnSettingsStyleUtil.setSettingStyle(columnDetails.elements, settings);
     columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(etc, isSetNew ? settings : {});
   }

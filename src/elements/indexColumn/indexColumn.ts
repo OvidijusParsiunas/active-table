@@ -1,4 +1,5 @@
 import {AuxiliaryTableContentColors} from '../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
+import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsBorderUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ExtractElements} from '../../utils/elements/extractElements';
 import {UpdateIndexColumnWidth} from './updateIndexColumnWidth';
@@ -48,6 +49,10 @@ export class IndexColumn {
 
   public static createAndPrependToRow(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number) {
     const cell = rowIndex === 0 ? IndexColumn.createHeaderCell(etc) : IndexColumn.createDataCell(etc, rowIndex);
+    if (etc.columnsDetails[0]) {
+      ColumnSettingsBorderUtils.unsetSubjectBorder([cell], etc.columnsDetails[0].elements, 'right', 0); // REF-23
+    }
+    // WORK - can potentially be asynchronous
     IndexColumnEvents.setEvents(etc, cell, rowIndex);
     rowElement.appendChild(cell);
   }

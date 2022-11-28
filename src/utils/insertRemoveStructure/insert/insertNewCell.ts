@@ -4,7 +4,7 @@ import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
-import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsStyleBorderUtils';
+import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
 import {UpdateIndexColumnWidth} from '../../../elements/indexColumn/updateIndexColumnWidth';
 import {ColumnDetailsInitial, ColumnDetailsT} from '../../../types/columnDetails';
 import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';

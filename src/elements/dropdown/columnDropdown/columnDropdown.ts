@@ -42,7 +42,7 @@ export class ColumnDropdown {
       // TO-DO when user pastes text via the select mode - this should be called
       ColumnSettingsUtil.changeColumnSettingsIfNameDifferent(etc, cellElement, columnIndex as number);
     }
-    CellHighlightUtil.fade(cellElement, columnsDetails[columnIndex as number].headerStateColors.default);
+    CellHighlightUtil.fade(cellElement, columnsDetails[columnIndex as number]?.headerStateColors.default);
     Dropdown.hide(columnDropdown, fullTableOverlay, columnTypeDropdown);
     ColumnTypeDropdownItem.reset(columnTypeDropdown);
     ColumnDropdown.resetDropdownPosition(columnDropdown);

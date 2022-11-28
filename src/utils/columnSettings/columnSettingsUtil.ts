@@ -1,6 +1,6 @@
 import {ColumnSettingsInternal, ColumnsSettings, ColumnsSettingsMap} from '../../types/columnsSettings';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
-import {ColumnSettingsBorderUtils} from './columnSettingsStyleBorderUtils';
+import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsWidthUtil} from './columnSettingsWidthUtil';
 import {ColumnSettingsStyleUtil} from './columnSettingsStyleUtil';
