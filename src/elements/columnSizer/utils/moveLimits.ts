@@ -5,6 +5,7 @@ import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnSettingsInternal} from '../../../types/columnsSettings';
 import {UNSET_NUMBER_IDENTIFIER} from '../../../consts/unsetNumber';
 import {SizerMoveLimits} from '../../../types/columnSizer';
+import {TableElement} from '../../table/tableElement';
 
 export class MoveLimits {
   // borders of the side cells tend to breach over the limits of the table by half their width, causing the offsets to
@@ -34,15 +35,20 @@ export class MoveLimits {
     return (tableDimensions.maxWidth as number) - tableElement.offsetWidth;
   }
 
-  private static getRightLimitStaticWidthTable(isSecondLastSizer: boolean, rightHeader: HTMLElement) {
-    let rightLimit = rightHeader.offsetWidth;
+  private static getRightLimitStaticWidthTable(isSecondLastSizer: boolean, widthLimit: number, rightHeader?: HTMLElement) {
+    // table with set width does not normally have a sizer on the last column, however when the sizer is selected for
+    // column with minWidth setting and all the following columns are not dynamic (with setting width), rightHeader
+    // will be undefined and this is the only way to get the right limit. (Please take note that when there are no
+    // dynamic columns (all with setting width), table width may actually be lower than the limit, hence using table
+    // width is not suggicient and this is the best way)
+    let rightLimit = rightHeader?.offsetWidth || widthLimit - TableElement.STATIC_WIDTH_CONTENT_TOTAL;
     if (!isSecondLastSizer) rightLimit += MoveLimits.SIDE_LIMIT_DELTA;
     return rightLimit;
   }
 
   private static getRightLimit(etc: EditableTableComponent, isSecondLastSizer: boolean, rightHeader?: HTMLElement) {
-    if (etc.tableDimensionsInternal.width !== undefined && rightHeader) {
-      return MoveLimits.getRightLimitStaticWidthTable(isSecondLastSizer, rightHeader);
+    if (etc.tableDimensionsInternal.width !== undefined) {
+      return MoveLimits.getRightLimitStaticWidthTable(isSecondLastSizer, etc.tableDimensionsInternal.width, rightHeader);
     } else if (etc.tableDimensionsInternal.maxWidth !== undefined && etc.tableElementRef) {
       return MoveLimits.getRightLimitForMaxWidth(etc.tableElementRef, etc.tableDimensionsInternal, rightHeader);
     }
