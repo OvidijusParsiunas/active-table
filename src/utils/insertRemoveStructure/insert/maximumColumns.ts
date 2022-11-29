@@ -13,6 +13,14 @@ export class MaximumColumns {
   // originally this was set to 28, however the extra padding on the left column causes the table width to overflow
   // the set limit hence it is set to 34 instead
 
+  // REF-24
+  // this is a small effort to toggle off the add new column button when columns with set widths breach the table
+  // please note that this will not allow any more columns to be added even if preserveNarrowColumns is true
+  private static isStaticContentBreachingSetTableWidth(tableDimensions: TableDimensionsInternal) {
+    const width = tableDimensions.width || tableDimensions.maxWidth;
+    return width !== undefined && TableElement.STATIC_WIDTH_CONTENT_TOTAL > width;
+  }
+
   // prettier-ignore
   private static ignoreMinimalColumnWidthCheck(tableDimensionsInternal: TableDimensionsInternal,
       tableElement: HTMLElement, numberOfColumns: number) {
@@ -21,10 +29,12 @@ export class MaximumColumns {
       numberOfColumns === 0;
   }
 
+  // prettier-ignore
   public static canAddMore(etc: EditableTableComponent) {
     const {tableElementRef, columnsDetails, tableDimensionsInternal} = etc;
     const numberOfColumns = columnsDetails.length;
-    if (tableDimensionsInternal.maxColumns === numberOfColumns) return false;
+    if (tableDimensionsInternal.maxColumns === numberOfColumns
+      || MaximumColumns.isStaticContentBreachingSetTableWidth(tableDimensionsInternal)) return false;
     const tableElement = tableElementRef as HTMLElement;
     if (MaximumColumns.ignoreMinimalColumnWidthCheck(tableDimensionsInternal, tableElement, numberOfColumns)) return true;
     const totalColumnsWidth = tableElement.offsetWidth - TableElement.STATIC_WIDTH_CONTENT_TOTAL;

@@ -6,7 +6,7 @@ import {TableElement} from '../../elements/table/tableElement';
 import {ColumnDetails} from '../columnDetails/columnDetails';
 import {ColumnDetailsT} from '../../types/columnDetails';
 
-// REF-24 - when table width is set and changing all columns to use a setting which does not add up to total width
+// REF-24
 export class ColumnSettingsWidthUtil {
   public static isWidthDefined(settings?: ColumnSettingsInternal) {
     return settings?.width !== undefined || settings?.minWidth !== undefined;

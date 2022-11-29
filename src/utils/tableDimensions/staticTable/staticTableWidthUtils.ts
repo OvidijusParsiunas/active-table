@@ -86,9 +86,7 @@ export class StaticTableWidthUtils {
   }
 
   private static setNewColumnWidth(tableWidth: number, numberOfDynamicColumns: number) {
-    if (numberOfDynamicColumns === 0) {
-      ColumnDetails.NEW_COLUMN_WIDTH = ColumnDetails.MINIMAL_COLUMN_WIDTH;
-    } else {
+    if (numberOfDynamicColumns > 0) {
       const totalColumnsWidth = tableWidth - TableElement.STATIC_WIDTH_CONTENT_TOTAL;
       ColumnDetails.NEW_COLUMN_WIDTH = totalColumnsWidth / numberOfDynamicColumns;
     }
