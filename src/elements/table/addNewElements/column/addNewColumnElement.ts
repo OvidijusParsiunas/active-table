@@ -8,6 +8,7 @@ import {AddNewColumnEvents} from './addNewColumnEvents';
 import {CellElement} from '../../../cell/cellElement';
 import {TableElement} from '../../tableElement';
 
+// REF-24
 export class AddNewColumnElement {
   public static readonly ADD_COLUMN_CELL_CLASS = 'add-column-cell';
   public static readonly DEFAULT_WIDTH = 20;
@@ -84,6 +85,7 @@ export class AddNewColumnElement {
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, isInsert);
   }
 
+  // REF-24
   // prettier-ignore
   public static toggle(etc: EditableTableComponent, isInsert: boolean) {
     const {addColumnCellsElementsRef, tableBodyElementRef, columnGroupRef,

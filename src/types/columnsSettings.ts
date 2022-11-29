@@ -26,12 +26,14 @@ interface Parent {
 
 // TO-DO - can probably make width part of the cellStyle
 interface Width extends Parent {
+  // REF-24
   // if percentage - will use the table width
   // if the accummulated custom column widths are higher than the width in tableDimensions, they will breach that width
   width: StringDimension;
 }
 
 interface MinWidth extends Parent {
+  // REF-24
   // if percentage - will use the table width
   // if the accummulated custom column widths are higher than the width in tableDimensions, they will breach that width
   minWidth: StringDimension;

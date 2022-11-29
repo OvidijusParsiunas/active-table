@@ -205,7 +205,21 @@ will ultimately be provided. However, if users are requesting this functionality
 REF-22
 Using auxiliaryTableContentInternal object because the client may choose not to include some properties inside the auxiliaryTableContent
 object such as any of the AuxiliaryTableContentDisplayProps. Hence, this object is used to contain the defaults and use them internally
-without having to add optional chaining every its used. 
+without having to add optional chaining every its used.
+
+REF-23
+If a cell with a border style that was set in the cellStyle property is beside a column that have a border set by the columnsSettings
+property (cellStyle), their borders will be displayed side by side which does not look appealing. Hence, we unset (0px) the border of
+the cell without the columnsSettings style to make the one with the custom settings border dominant.
+We also do this for auxiliary element borders.
+
+REF-24
+When the table width/maxWidth is set and there are columns with set widths that exceed the table width, those widths can cause the table
+to exceed the set width and the add new column button will also not disappear. The reason for this is because it is relatively complex
+to identify when the table width will be exceeded and what to accordingly resize, prevent the addition of or change of to keep the width
+within the set bound. This can be researched in the future, but for now API clients that do have this configuration should be careful
+what column widths are set and to preferably disallow duplicate headers.
+
 
 CAUTION-1
 When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across

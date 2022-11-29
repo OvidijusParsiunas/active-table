@@ -62,21 +62,20 @@ export class StaticTableWidthUtils {
   // prettier-ignore
   private static changeTableWidthForNonDynamicColumns(columnsDetails: ColumnsDetailsT,
       filteredColumns: FilteredColumns, tableElement: HTMLElement, setTableWidth: number) {
-    if (columnsDetails.length === 0) {
+    if (columnsDetails.length === 0 || filteredColumns.dynamicWidthColumns.length > 0) {
       // this would be triggered if there were only width setting columns and they got removed
       if (tableElement.offsetWidth !== setTableWidth) tableElement.style.width = `${setTableWidth}px`;
-    } else if (filteredColumns.dynamicWidthColumns.length === 0) {
       // when no dynamic data
-      if (filteredColumns.minWidthColumns.length > 0) {
-        // fills the table element with the last minWidth column
-        const lastMinWidthColumn = filteredColumns.minWidthColumns[filteredColumns.minWidthColumns.length - 1];
-        const headerCell = lastMinWidthColumn.elements[0];
-        headerCell.style.width = `${Number.parseInt(headerCell.style.width)
-          + setTableWidth - TableElement.STATIC_WIDTH_CONTENT_TOTAL}px`;
-      } else {
-        // if no minWidth columns, set the table width with columns
-        tableElement.style.width = `${TableElement.STATIC_WIDTH_CONTENT_TOTAL}px`;
-      }
+    } else if (filteredColumns.minWidthColumns.length > 0) {
+      // fills the table element with the last minWidth column
+      const lastMinWidthColumn = filteredColumns.minWidthColumns[filteredColumns.minWidthColumns.length - 1];
+      const headerCell = lastMinWidthColumn.elements[0];
+      headerCell.style.width = `${Number.parseInt(headerCell.style.width)
+        + setTableWidth - TableElement.STATIC_WIDTH_CONTENT_TOTAL}px`;
+    } else {
+      // if no minWidth columns, set table width to columns total
+      // please note that the width will no longer be the same as etc.tableDimensionsInternal.width
+      tableElement.style.width = `${TableElement.STATIC_WIDTH_CONTENT_TOTAL}px`;
     }
   }
 
