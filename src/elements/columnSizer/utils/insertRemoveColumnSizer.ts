@@ -99,33 +99,36 @@ export class InsertRemoveColumnSizer {
     InsertRemoveColumnSizer.updateIdsOfAllSubsequent(columnsDetails, columnIndex);
   }
 
-  // this is used to cleanup sizers for columns that have or had width settings because when the table width is set,
-  // columns that have settings do not have a sizer, additionally the last column that does not have settings also
-  // does not have a sizer
+  // This is used to cleanup sizers for columns that have or had width settings because when the table width is set,
+  // columns that have settings width do not have a sizer, additionally the last column that does not have any setting
+  // width does not have a sizer. Columns with a setting for minWidth do have sizers.
   public static cleanUpCustomColumnSizers(etc: EditableTableComponent, changedColumnIndex: number) {
     const {tableDimensionsInternal, columnsDetails} = etc;
     if (tableDimensionsInternal.width === undefined) return;
-    let isLastNoWidthColumnFound = false;
+    let isLastDynamicColumnFound = false;
+    // traversing backwards
     for (let i = columnsDetails.length - 1; i >= 0; i -= 1) {
-      // traversing backwards
       const columnDetails = columnsDetails[i];
-      if (columnDetails.settings?.width === undefined) {
-        if (isLastNoWidthColumnFound === false) {
-          isLastNoWidthColumnFound = true;
+      // if the column has a width or it is the last column, it should not have a sizer
+      if (columnDetails.settings?.width !== undefined) {
+        if (columnDetails.columnSizer) InsertRemoveColumnSizer.removeSizer(columnDetails);
+        // dynamic column traversal (columns without a set width in settings)
+      } else if (columnDetails.settings?.minWidth === undefined) {
+        if (isLastDynamicColumnFound === false) {
+          isLastDynamicColumnFound = true;
           // last column index should not have a sizer
           if (columnDetails.columnSizer) InsertRemoveColumnSizer.removeSizer(columnDetails);
-          // exit only if the first column without settings is before the changed/removed/created column index
+          // exit only if the first column without settings is before changedColumnIndex
           if (i < changedColumnIndex) break;
         } else {
           // if column does not have settings and it is not last, it should have a sizer
           if (!columnDetails.columnSizer && columnsDetails.length - 1 !== i) {
             InsertRemoveColumnSizer.insertAtIndex(etc, columnDetails, i);
           }
-          // if the last no width column has already been identified and we are beyond the changed index, can exit
-          if (isLastNoWidthColumnFound === true && i < changedColumnIndex) break;
+          // if the last dynamic column has already been identified and we are beyond the changed index, can exit
+          if (isLastDynamicColumnFound === true && i < changedColumnIndex) break;
         }
-        // if the column has a width or it is the last column, it should not havea sizer
-      } else if (columnDetails.columnSizer) InsertRemoveColumnSizer.removeSizer(columnDetails);
+      }
     }
   }
 }

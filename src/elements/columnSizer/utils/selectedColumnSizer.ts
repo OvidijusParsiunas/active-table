@@ -15,7 +15,7 @@ export class SelectedColumnSizer {
     return {
       element: columnSizer.element,
       moveLimits: MoveLimits.generate(
-        etc, isFirstSizer, isSecondLastSizer, leftHeader, rightHeader, columnSizerOffset, settings),
+        etc, isFirstSizer, isSecondLastSizer, columnSizerOffset, rightHeader, leftHeader, settings),
       // this is to reflect the initial sizer offset to center itself in the cell divider
       initialOffset: columnSizerOffset,
       mouseMoveOffset: columnSizerOffset,

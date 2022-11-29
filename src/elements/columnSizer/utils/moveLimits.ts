@@ -1,11 +1,11 @@
 import {ColumnSettingsWidthUtil} from '../../../utils/columnSettings/columnSettingsWidthUtil';
 import {StaticTable} from '../../../utils/tableDimensions/staticTable/staticTable';
+import {ColumnDetailsUtils} from '../../../utils/columnDetails/columnDetailsUtils';
 import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnSettingsInternal} from '../../../types/columnsSettings';
 import {UNSET_NUMBER_IDENTIFIER} from '../../../consts/unsetNumber';
 import {SizerMoveLimits} from '../../../types/columnSizer';
-import {TableElement} from '../../table/tableElement';
 
 export class MoveLimits {
   // borders of the side cells tend to breach over the limits of the table by half their width, causing the offsets to
@@ -35,20 +35,24 @@ export class MoveLimits {
     return (tableDimensions.maxWidth as number) - tableElement.offsetWidth;
   }
 
-  private static getRightLimitStaticWidthTable(isSecondLastSizer: boolean, widthLimit: number, rightHeader?: HTMLElement) {
-    // table with set width does not normally have a sizer on the last column, however when the sizer is selected for
-    // column with minWidth setting and all the following columns are not dynamic (with setting width), rightHeader
-    // will be undefined and this is the only way to get the right limit. (Please take note that when there are no
-    // dynamic columns (all with setting width), table width may actually be lower than the limit, hence using table
-    // width is not suggicient and this is the best way)
-    let rightLimit = rightHeader?.offsetWidth || widthLimit - TableElement.STATIC_WIDTH_CONTENT_TOTAL;
-    if (!isSecondLastSizer) rightLimit += MoveLimits.SIDE_LIMIT_DELTA;
-    return rightLimit;
+  // prettier-ignore
+  private static getRightLimitStaticWidthTable(etc: EditableTableComponent, isSecondLastSizer: boolean,
+      rightHeader?: HTMLElement) {
+    if (rightHeader) {
+      let rightLimit = rightHeader.offsetWidth;
+      if (!isSecondLastSizer) rightLimit += MoveLimits.SIDE_LIMIT_DELTA;
+      return rightLimit;
+    }
+    // table with set width does not normally have a sizer on the last column and this class would not be called, however
+    // when the sizer is selected for column with minWidth setting and all the following columns are not dynamic (with
+    // width/minWidth settings), rightHeader will be undefined and this is the only way to get the right limit.
+    const {tableElementRef, tableDimensionsInternal: {width}} = etc;
+    return (width as number) - (tableElementRef as HTMLElement).offsetWidth;
   }
 
   private static getRightLimit(etc: EditableTableComponent, isSecondLastSizer: boolean, rightHeader?: HTMLElement) {
     if (etc.tableDimensionsInternal.width !== undefined) {
-      return MoveLimits.getRightLimitStaticWidthTable(isSecondLastSizer, etc.tableDimensionsInternal.width, rightHeader);
+      return MoveLimits.getRightLimitStaticWidthTable(etc, isSecondLastSizer, rightHeader);
     } else if (etc.tableDimensionsInternal.maxWidth !== undefined && etc.tableElementRef) {
       return MoveLimits.getRightLimitForMaxWidth(etc.tableElementRef, etc.tableDimensionsInternal, rightHeader);
     }
@@ -56,12 +60,16 @@ export class MoveLimits {
   }
 
   // prettier-ignore
-  private static getLeftLimit(leftHeader: HTMLElement,
-      isFirstSizer: boolean, tableElement: HTMLElement, leftHeaderSettings?: ColumnSettingsInternal) {
+  private static getLeftLimit(etc: EditableTableComponent,
+      isFirstSizer: boolean, leftHeader: HTMLElement, leftHeaderSettings?: ColumnSettingsInternal) {
+    const {tableElementRef, columnsDetails} = etc;
     let leftLimit = 0;
-    // REF-21 - works for left, but not perfectly for right
     if (leftHeaderSettings?.minWidth !== undefined) {
-      const { width } = ColumnSettingsWidthUtil.getSettingsWidthNumber(tableElement, leftHeaderSettings);
+      // if table width is set and there are no more dynamic columns, do not allow current column size to be reduced
+      if (etc.tableDimensionsInternal.width !== undefined
+        && ColumnDetailsUtils.getFilteredColumns(columnsDetails).dynamicWidthColumns.length === 0) return 0;
+      // REF-21 - works for left, but not perfectly for right
+      const {width} = ColumnSettingsWidthUtil.getSettingsWidthNumber(tableElementRef as HTMLElement, leftHeaderSettings);
       leftLimit = -(leftHeader.offsetWidth - width);
     } else {
       leftLimit = -leftHeader.offsetWidth;
@@ -72,16 +80,15 @@ export class MoveLimits {
 
   // prettier-ignore
   public static generate(etc: EditableTableComponent, isFirstSizer: boolean,
-      isSecondLastSizer: boolean, leftHeader: HTMLElement, rightHeader: HTMLElement | undefined,
-      columnSizerOffset: number, leftHeaderSettings?: ColumnSettingsInternal): SizerMoveLimits {
+      isSecondLastSizer: boolean, columnSizerOffset: number, rightHeader: HTMLElement | undefined,
+      leftHeader: HTMLElement, leftHeaderSettings?: ColumnSettingsInternal): SizerMoveLimits {
     if (MoveLimits.SIDE_LIMIT_DELTA === UNSET_NUMBER_IDENTIFIER) {
       // (CAUTION-1) - when styles are different take this into consideration
       // only needs to be set once
       MoveLimits.setSideLimitDelta(leftHeader);
     }
     return {
-      left: MoveLimits.getLeftLimit(
-        leftHeader, isFirstSizer, etc.tableElementRef as HTMLElement, leftHeaderSettings) + columnSizerOffset,
+      left: MoveLimits.getLeftLimit(etc, isFirstSizer, leftHeader, leftHeaderSettings) + columnSizerOffset,
       right: MoveLimits.getRightLimit(etc, isSecondLastSizer, rightHeader) + columnSizerOffset,
     };
   }
