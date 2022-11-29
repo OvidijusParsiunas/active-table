@@ -1,6 +1,6 @@
 import {OverwriteCellsViaCSVOnPaste} from '../../../utils/paste/CSV/overwriteCellsViaCSVOnPaste';
 import {FirefoxCaretDisplayFix} from '../../../utils/browser/firefox/firefoxCaretDisplayFix';
-import {UserKeyEventsStateUtil} from '../../../utils/userEventsState/userEventsStateUtil';
+import {UserKeyEventsStateUtils} from '../../../utils/userEventsState/userEventsStateUtils';
 import {DateCellInputElement} from '../cellsWithTextDiv/dateCell/dateCellInputElement';
 import {CategoryDropdown} from '../../dropdown/categoryDropdown/categoryDropdown';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
@@ -25,7 +25,7 @@ export class DataCellEvents {
   public static keyDownCell(this: EditableTableComponent, event: KeyboardEvent) {
     // REF-7
     if (event.key === KEYBOARD_KEY.TAB) {
-      UserKeyEventsStateUtil.temporarilyIndicateEvent(this.userKeyEventsState, KEYBOARD_KEY.TAB);
+      UserKeyEventsStateUtils.temporarilyIndicateEvent(this.userKeyEventsState, KEYBOARD_KEY.TAB);
     }
   }
 
@@ -71,7 +71,7 @@ export class DataCellEvents {
   }
 
   private static pasteCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: ClipboardEvent) {
-    UserKeyEventsStateUtil.temporarilyIndicateEvent(this.userKeyEventsState, KEYBOARD_EVENT.PASTE);
+    UserKeyEventsStateUtils.temporarilyIndicateEvent(this.userKeyEventsState, KEYBOARD_EVENT.PASTE);
     PasteUtils.sanitizePastedTextContent(event);
     const clipboardText = PasteUtils.extractClipboardText(event);
     if (OverwriteCellsViaCSVOnPaste.isCSVData(clipboardText)) {

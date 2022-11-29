@@ -12,9 +12,9 @@ import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
 import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {TableBorderDimensions} from '../../types/tableBorderDimensions';
+import {TableBorderDimensionsUtils} from './tableBorderDimensionsUtils';
 import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
 import {EditableTableComponent} from '../../editable-table-component';
-import {TableBorderDimensionsUtil} from './tableBorderDimensionsUtil';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {OverlayElements} from '../../types/overlayElements';
@@ -25,7 +25,7 @@ import {TableEvents} from './tableEvents';
 export class TableElement {
   // this includes index column, add column and columns with a width in their settings
   public static STATIC_WIDTH_CONTENT_TOTAL = UNSET_NUMBER_IDENTIFIER;
-  public static BORDER_DIMENSIONS: TableBorderDimensions = TableBorderDimensionsUtil.generateDefault();
+  public static BORDER_DIMENSIONS: TableBorderDimensions = TableBorderDimensionsUtils.generateDefault();
 
   public static changeStaticWidthTotal(delta: number) {
     TableElement.STATIC_WIDTH_CONTENT_TOTAL += delta;
@@ -111,7 +111,7 @@ export class TableElement {
     etc.tableElementRef.appendChild(etc.tableBodyElementRef);
     etc.categoryDropdownContainer = CategoryDropdown.createContainerElement();
     etc.tableElementRef.appendChild(etc.categoryDropdownContainer);
-    TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtil.generateUsingElement(etc.tableElementRef as HTMLElement);
+    TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtils.generateUsingElement(etc.tableElementRef as HTMLElement);
     return etc.tableElementRef;
   }
 }

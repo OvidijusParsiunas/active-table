@@ -3,7 +3,7 @@ import {KEYBOARD_EVENT} from '../../consts/keyboardEvents';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {MOUSE_EVENT} from '../../consts/mouseEvents';
 
-export class UserKeyEventsStateUtil {
+export class UserKeyEventsStateUtils {
   private static readonly KEY_PRESS_STATE_TIMEOUT_ML = 5;
 
   public static createNew(): UserKeyEventsState {
@@ -13,6 +13,6 @@ export class UserKeyEventsStateUtil {
 
   public static temporarilyIndicateEvent(userKeyEventsState: UserKeyEventsState, key: keyof UserKeyEventsState) {
     userKeyEventsState[key] = true;
-    setTimeout(() => (userKeyEventsState[key] = false), UserKeyEventsStateUtil.KEY_PRESS_STATE_TIMEOUT_ML);
+    setTimeout(() => (userKeyEventsState[key] = false), UserKeyEventsStateUtils.KEY_PRESS_STATE_TIMEOUT_ML);
   }
 }

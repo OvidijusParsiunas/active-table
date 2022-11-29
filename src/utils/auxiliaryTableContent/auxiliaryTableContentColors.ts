@@ -5,7 +5,7 @@ import {CellStateColorProperties, CellStateColorsR} from '../../types/cellStateC
 import {HoverableElementStyleClient} from '../../types/hoverableElementStyle';
 import {EditableTableComponent} from '../../editable-table-component';
 import {GenericElementUtils} from '../elements/genericElementUtils';
-import {CellHighlightUtil} from '../color/cellHighlightUtil';
+import {CellHighlightUtils} from '../color/cellHighlightUtils';
 
 // auxiliary content is comprised of index column, add new column column and add new row row
 export class AuxiliaryTableContentColors {
@@ -62,9 +62,9 @@ export class AuxiliaryTableContentColors {
       },
       hover: {
         backgroundColor: AuxiliaryTableContentColors.getHoverColorValue(
-          etc, 'backgroundColor', CellHighlightUtil.DEFAULT_HOVER_PROPERTIES.backgroundColor),
+          etc, 'backgroundColor', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES.backgroundColor),
         color: AuxiliaryTableContentColors.getHoverColorValue(
-          etc, 'color', CellHighlightUtil.DEFAULT_HOVER_PROPERTIES.color),
+          etc, 'color', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES.color),
       },
     };
     AuxiliaryTableContentColors.CELL_COLORS.data = cellColors;

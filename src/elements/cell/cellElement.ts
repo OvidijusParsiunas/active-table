@@ -1,7 +1,7 @@
 import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellCalendarIconElement';
 import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsBorderUtils';
-import {ColumnSettingsWidthUtil} from '../../utils/columnSettings/columnSettingsWidthUtil';
-import {ColumnSettingsStyleUtil} from '../../utils/columnSettings/columnSettingsStyleUtil';
+import {ColumnSettingsStyleUtils} from '../../utils/columnSettings/columnSettingsStyleUtils';
+import {ColumnSettingsWidthUtils} from '../../utils/columnSettings/columnSettingsWidthUtils';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
@@ -88,8 +88,8 @@ export class CellElement {
   }
 
   private static setColumnWidth(tableElement: HTMLElement, cellElement: HTMLElement, settings?: ColumnSettingsInternal) {
-    if (settings && ColumnSettingsWidthUtil.isWidthDefined(settings)) {
-      ColumnSettingsWidthUtil.updateColumnAndAuxWidth(tableElement, cellElement, settings, true);
+    if (settings && ColumnSettingsWidthUtils.isWidthDefined(settings)) {
+      ColumnSettingsWidthUtils.updateColumnWidth(tableElement, cellElement, settings, true);
     } else {
       cellElement.style.width = `${ColumnDetails.NEW_COLUMN_WIDTH}px`;
     }
@@ -100,7 +100,7 @@ export class CellElement {
     const columnDetails = columnsDetails[colIndex];
     const cellElement = CellElement.create(cellStyle, isHeader, isHeader ? header.defaultStyle || {} : {});
     const {settings} = columnDetails;
-    if (settings) ColumnSettingsStyleUtil.setSettingsStyleOnCell(settings, cellElement, isHeader);
+    if (settings) ColumnSettingsStyleUtils.setSettingsStyleOnCell(settings, cellElement, isHeader);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, cellElement); // REF-23
     CellElement.processAndSetTextOnCell(etc, cellElement, cellText, false);
     CellElement.prepContentEditable(cellElement, isHeader);

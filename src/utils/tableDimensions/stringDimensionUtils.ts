@@ -7,7 +7,7 @@ export type PossibleStringDimensions<T> = PropertiesOfType<T, StringDimension>;
 export type SuccessResult = {width: number; isPercentage: boolean};
 type Result = SuccessResult | undefined;
 
-export class StringDimensionUtil {
+export class StringDimensionUtils {
   private static processDimension(extractedWidth: number, minimalWidth: number) {
     return extractedWidth < minimalWidth ? minimalWidth : extractedWidth;
   }
@@ -26,8 +26,8 @@ export class StringDimensionUtil {
       if (GenericElementUtils.isParentWidthUndetermined(parentElement.style.width)) return;
       if (extractedNumber > 100) extractedNumber = 100;
       const width = parentElement.offsetWidth * (extractedNumber / 100);
-      return { width: StringDimensionUtil.processDimension(width, minimalWidth), isPercentage: true };
+      return { width: StringDimensionUtils.processDimension(width, minimalWidth), isPercentage: true };
     }
-    return { width: StringDimensionUtil.processDimension(extractedNumber, minimalWidth), isPercentage: false };
+    return { width: StringDimensionUtils.processDimension(extractedNumber, minimalWidth), isPercentage: false };
   }
 }

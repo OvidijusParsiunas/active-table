@@ -4,7 +4,7 @@ import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/inser
 import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
 import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
-import {ColumnSettingsWidthUtil} from '../../columnSettings/columnSettingsWidthUtil';
+import {ColumnSettingsWidthUtils} from '../../columnSettings/columnSettingsWidthUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {TableElement} from '../../../elements/table/tableElement';
@@ -24,8 +24,8 @@ export class RemoveColumn {
 
   // prettier-ignore
   private static updateTableDimensions(etc: EditableTableComponent, columnDetails: ColumnDetailsT) {
-    if (columnDetails.settings && ColumnSettingsWidthUtil.isWidthDefined(columnDetails.settings)) {
-      const { width } = ColumnSettingsWidthUtil.getSettingsWidthNumber(
+    if (columnDetails.settings && ColumnSettingsWidthUtils.isWidthDefined(columnDetails.settings)) {
+      const { width } = ColumnSettingsWidthUtils.getSettingsWidthNumber(
         etc.tableElementRef as HTMLElement, columnDetails.settings);
       TableElement.changeStaticWidthTotal(-width);
     }

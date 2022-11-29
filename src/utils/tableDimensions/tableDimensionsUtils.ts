@@ -1,4 +1,4 @@
-import {PossibleStringDimensions, StringDimensionUtil} from './stringDimensionUtil';
+import {PossibleStringDimensions, StringDimensionUtils} from './stringDimensionUtils';
 import {TableDimensionsInternal} from '../../types/tableDimensionsInternal';
 import {MaxStructureDimensions} from '../../types/maxStructureDimensions';
 import {EditableTableComponent} from '../../editable-table-component';
@@ -55,7 +55,7 @@ export class TableDimensionsUtils {
   private static setDimension(etc: EditableTableComponent, key: keyof PossibleStringDimensions<TableDimensions>) {
     const {tableDimensions, tableDimensionsInternal, tableElementRef, parentElement} = etc;
     if (!tableElementRef || !parentElement) return;
-    const numberDimension = StringDimensionUtil.generateNumberDimensionFromClientString(key,
+    const numberDimension = StringDimensionUtils.generateNumberDimensionFromClientString(key,
       parentElement, tableDimensions, TableDimensionsUtils.MINIMAL_TABLE_WIDTH);
     if (numberDimension !== undefined) {
       tableDimensionsInternal[key] = numberDimension.width;

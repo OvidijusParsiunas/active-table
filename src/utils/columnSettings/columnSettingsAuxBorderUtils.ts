@@ -1,7 +1,7 @@
 import {BordersOverwrittenBySiblings, ColumnDetailsT} from '../../types/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
-import {ColumnSettingsStyleUtil} from './columnSettingsStyleUtil';
+import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
 import {ExtractElements} from '../elements/extractElements';
 import {CSSStyle} from '../../types/cssStyle';
 
@@ -18,7 +18,7 @@ export class ColumnSettingsAuxBorderUtils {
       // if data column does not have a border, set the aux border (if we had unset it)
       if (!ColumnSettingsBorderUtils.isBorderDisplayed(columnHeaderElement, siblingBorderStyle)) {
         if (auxHeaderElement.style[subjectBorderStyle] === ColumnSettingsBorderUtils.UNSET_PX) {
-          ColumnSettingsStyleUtil.setDefaultStyles(auxElements, cellStyle, header);          
+          ColumnSettingsStyleUtils.setDefaultStyles(auxElements, cellStyle, header);          
         }
       // if data column does have a border - unset the aux border if it has one
       } else {

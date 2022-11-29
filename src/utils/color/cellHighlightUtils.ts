@@ -1,6 +1,6 @@
 import {CellStateColorProperties} from '../../types/cellStateColors';
 
-export class CellHighlightUtil {
+export class CellHighlightUtils {
   public static readonly DEFAULT_HOVER_PROPERTIES: Required<CellStateColorProperties> = {
     backgroundColor: '#f7f7f7',
     color: '',

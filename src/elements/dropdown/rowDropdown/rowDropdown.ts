@@ -1,9 +1,9 @@
 import {AuxiliaryTableContentColors} from '../../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
-import {DropdownItemHighlightUtil} from '../../../utils/color/dropdownItemHighlightUtil';
+import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
 import {MaximumRows} from '../../../utils/insertRemoveStructure/insert/maximumRows';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
+import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {CellHighlightUtil} from '../../../utils/color/cellHighlightUtil';
 import {RowDropdownItemEvents} from './rowDropdownItemEvents';
 import {RowDropdownEvents} from './rowDropdownEvents';
 import {DropdownItem} from '../dropdownItem';
@@ -17,8 +17,8 @@ export class RowDropdown {
     const {overlayElementsState: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element: cellElement}}} = etc;
     Dropdown.hide(rowDropdown as HTMLElement, fullTableOverlay as HTMLElement);
     const cellColors = AuxiliaryTableContentColors.getColorsBasedOnParam(cellElement as HTMLElement);
-    CellHighlightUtil.fade(cellElement as HTMLElement, cellColors.default);
-    DropdownItemHighlightUtil.fadeCurrentlyHighlighted(etc.shadowRoot);
+    CellHighlightUtils.fade(cellElement as HTMLElement, cellColors.default);
+    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(etc.shadowRoot);
     setTimeout(() => {
       // in a timeout because upon pressing esc/enter key on dropdown, the window event is fired after which checks it
       delete etc.focusedElements.rowDropdown;

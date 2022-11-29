@@ -1,4 +1,4 @@
-import {ColumnSettingsWidthUtil} from '../../../utils/columnSettings/columnSettingsWidthUtil';
+import {ColumnSettingsWidthUtils} from '../../../utils/columnSettings/columnSettingsWidthUtils';
 import {StaticTable} from '../../../utils/tableDimensions/staticTable/staticTable';
 import {ColumnDetailsUtils} from '../../../utils/columnDetails/columnDetailsUtils';
 import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
@@ -69,7 +69,7 @@ export class MoveLimits {
       if (etc.tableDimensionsInternal.width !== undefined
         && ColumnDetailsUtils.getFilteredColumns(columnsDetails).dynamicWidthColumns.length === 0) return 0;
       // REF-21 - works for left, but not perfectly for right
-      const {width} = ColumnSettingsWidthUtil.getSettingsWidthNumber(tableElementRef as HTMLElement, leftHeaderSettings);
+      const {width} = ColumnSettingsWidthUtils.getSettingsWidthNumber(tableElementRef as HTMLElement, leftHeaderSettings);
       leftLimit = -(leftHeader.offsetWidth - width);
     } else {
       leftLimit = -leftHeader.offsetWidth;

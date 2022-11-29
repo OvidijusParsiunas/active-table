@@ -1,4 +1,4 @@
-import {ColumnSettingsWidthUtil} from '../../columnSettings/columnSettingsWidthUtil';
+import {ColumnSettingsWidthUtils} from '../../columnSettings/columnSettingsWidthUtils';
 import {ColumnDetailsT, ColumnsDetailsT} from '../../../types/columnDetails';
 import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -40,7 +40,7 @@ export class StaticTableWidthUtils {
   private static resetMinWidthColumns(minWidthColumns: ColumnDetailsT[], tableElement: HTMLElement) {
     minWidthColumns.forEach((columnDetails) => {
       const {settings, elements} = columnDetails;
-      const {width} = ColumnSettingsWidthUtil.getSettingsWidthNumber(tableElement, settings as ColumnSettingsInternal);
+      const {width} = ColumnSettingsWidthUtils.getSettingsWidthNumber(tableElement, settings as ColumnSettingsInternal);
       const headerCell = elements[0];
       if (headerCell.offsetWidth !== width) {
         headerCell.style.width = `${width}px`;

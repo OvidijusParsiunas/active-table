@@ -1,7 +1,7 @@
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {TableBorderDimensions} from '../../types/tableBorderDimensions';
 
-export class TableBorderDimensionsUtil {
+export class TableBorderDimensionsUtils {
   public static generateDefault(): TableBorderDimensions {
     return {
       leftWidth: 0,

@@ -1,6 +1,6 @@
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
 
-export class DropdownItemHighlightUtil {
+export class DropdownItemHighlightUtils {
   private static readonly HOVER_BACKGROUND_COLOR = '#eaeaea';
 
   // Accepted behaviour - fadeFocused is triggered twice when moving to a different item
@@ -13,10 +13,10 @@ export class DropdownItemHighlightUtil {
   }
 
   public static highlightNew(this: ShadowRoot | null, itemElement: HTMLElement) {
-    DropdownItemHighlightUtil.fadeCurrentlyHighlighted(this);
+    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(this);
     itemElement.focus();
     if (!itemElement.classList.contains(DropdownItem.DROPDOWN_INPUT_CLASS)) {
-      itemElement.style.backgroundColor = DropdownItemHighlightUtil.HOVER_BACKGROUND_COLOR;
+      itemElement.style.backgroundColor = DropdownItemHighlightUtils.HOVER_BACKGROUND_COLOR;
     }
   }
 }

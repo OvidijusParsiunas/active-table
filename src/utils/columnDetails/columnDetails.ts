@@ -3,7 +3,7 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {CellStateColorProperties} from '../../types/cellStateColors';
 import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
-import {CellHighlightUtil} from '../color/cellHighlightUtil';
+import {CellHighlightUtils} from '../color/cellHighlightUtils';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 
 // REF-13
@@ -30,9 +30,9 @@ export class ColumnDetails {
     return {
       hover: {
         color: ColumnDetails.getHeaderHoverColor(
-          etc, 'color', CellHighlightUtil.DEFAULT_HOVER_PROPERTIES['color'], settings),
+          etc, 'color', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES['color'], settings),
         backgroundColor: ColumnDetails.getHeaderHoverColor(
-          etc, 'backgroundColor', CellHighlightUtil.DEFAULT_HOVER_PROPERTIES['backgroundColor'], settings),
+          etc, 'backgroundColor', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES['backgroundColor'], settings),
       },
       default: {
         color: ColumnDetails.getHeaderDefaultColor(etc, 'color', '', settings),

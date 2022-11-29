@@ -2,11 +2,11 @@ import {AuxiliaryTableContentInternalUtils} from './utils/auxiliaryTableContent/
 import {ColumnSettings, ColumnsSettings, ColumnsSettingsMap} from './types/columnsSettings';
 import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
+import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
-import {UserKeyEventsStateUtil} from './utils/userEventsState/userEventsStateUtil';
 import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
-import {ColumnSettingsUtil} from './utils/columnSettings/columnSettingsUtil';
+import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {HoverableElementStyleClient} from './types/hoverableElementStyle';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableDimensionsInternal} from './types/tableDimensionsInternal';
@@ -139,7 +139,7 @@ export class EditableTableComponent extends LitElement {
   overlayElementsState: OverlayElements = OverlayElementsState.createNew();
 
   @state()
-  userKeyEventsState: UserKeyEventsState = UserKeyEventsStateUtil.createNew();
+  userKeyEventsState: UserKeyEventsState = UserKeyEventsStateUtils.createNew();
 
   // REF-15 - to be used by the client
   // TO-DO height - keep in mind that by resizing columns - the height can change
@@ -194,7 +194,7 @@ export class EditableTableComponent extends LitElement {
     WindowElement.setEvents(this);
     this.onTableUpdate(this.contents);
     DateCellElement.populateDefaultDateTypes();
-    this.columnsSettingsInternal = ColumnSettingsUtil.createInternalMap(this.columnsSettings);
+    this.columnsSettingsInternal = ColumnSettingsUtils.createInternalMap(this.columnsSettings);
   }
 
   override connectedCallback() {

@@ -1,5 +1,5 @@
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
-import {UserKeyEventsStateUtil} from '../../utils/userEventsState/userEventsStateUtil';
+import {UserKeyEventsStateUtils} from '../../utils/userEventsState/userEventsStateUtils';
 import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {EditableTableComponent} from '../../editable-table-component';
@@ -34,7 +34,7 @@ export class TableEvents {
 
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
-    UserKeyEventsStateUtil.temporarilyIndicateEvent(this.userKeyEventsState, MOUSE_EVENT.DOWN);
+    UserKeyEventsStateUtils.temporarilyIndicateEvent(this.userKeyEventsState, MOUSE_EVENT.DOWN);
     TableEvents.closeCategoryDropdown(this, targetElement);
     TableEvents.closeDatePicker(this.overlayElementsState, event.target as HTMLElement);
   }

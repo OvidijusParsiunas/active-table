@@ -2,7 +2,7 @@ import {BordersOverwrittenBySiblings, ColumnDetailsT} from '../../types/columnDe
 import {ColumnSettingsAuxBorderUtils} from './columnSettingsAuxBorderUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {GenericElementUtils} from '../elements/genericElementUtils';
-import {ColumnSettingsStyleUtil} from './columnSettingsStyleUtil';
+import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
 import {CSSStyle} from '../../types/cssStyle';
 
 type OverwritableBorderStyle = 'borderLeftWidth' | 'borderRightWidth';
@@ -94,7 +94,7 @@ export class ColumnSettingsBorderUtils {
   private static resetIfBorderOverwritten(subjectColumn: ColumnDetailsT, subjectBorder: keyof BordersOverwrittenBySiblings,
       cellStyle: CSSStyle, headerStyle?: CSSStyle) {
     if (subjectColumn?.bordersOverwrittenBySiblings[subjectBorder]) {
-      ColumnSettingsStyleUtil.setDefaultStyles(subjectColumn.elements, cellStyle, headerStyle);
+      ColumnSettingsStyleUtils.setDefaultStyles(subjectColumn.elements, cellStyle, headerStyle);
       subjectColumn.bordersOverwrittenBySiblings[subjectBorder] = false;
     }
   }

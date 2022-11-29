@@ -1,10 +1,10 @@
 import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximumColumns';
-import {DropdownItemHighlightUtil} from '../../../utils/color/dropdownItemHighlightUtil';
-import {ColumnSettingsUtil} from '../../../utils/columnSettings/columnSettingsUtil';
+import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
+import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {CellHighlightUtil} from '../../../utils/color/cellHighlightUtil';
+import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {ColumnDropdownItemEvents} from './columnDropdownItemEvents';
 import {DropdownItemNavigation} from '../dropdownItemNavigation';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
@@ -40,13 +40,13 @@ export class ColumnDropdown {
     if (GenericElementUtils.doesElementExistInDom(cellElement)) {
       ColumnDropdown.processText(etc, columnIndex as number, cellElement);
       // TO-DO when user pastes text via the select mode - this should be called
-      ColumnSettingsUtil.changeColumnSettingsIfNameDifferent(etc, cellElement, columnIndex as number);
+      ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(etc, cellElement, columnIndex as number);
     }
-    CellHighlightUtil.fade(cellElement, columnsDetails[columnIndex as number]?.headerStateColors.default);
+    CellHighlightUtils.fade(cellElement, columnsDetails[columnIndex as number]?.headerStateColors.default);
     Dropdown.hide(columnDropdown, fullTableOverlay, columnTypeDropdown);
     ColumnTypeDropdownItem.reset(columnTypeDropdown);
     ColumnDropdown.resetDropdownPosition(columnDropdown);
-    DropdownItemHighlightUtil.fadeCurrentlyHighlighted(shadowRoot);
+    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(shadowRoot);
   }
 
   public static create(etc: EditableTableComponent, areHeadersEditable: boolean) {
