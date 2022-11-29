@@ -217,8 +217,10 @@ REF-24
 When the table width/maxWidth is set and there are columns with set widths that exceed the table width, those widths can cause the table
 to exceed the set width and the add new column button will also not disappear. The reason for this is because it is relatively complex
 to identify when the table width will be exceeded and what to accordingly resize, prevent the addition of or change of to keep the width
-within the set bound. This can be researched in the future, but for now API clients that do have this configuration should be careful
-what column widths are set and to preferably disallow duplicate headers.
+within the set bound. This can be worked on in the future, but for now API users that do have this configuration should be careful what
+column widths are set and to preferably disallow duplicate headers.
+What makes the add column more difficult to control is that the preserveNarrowColumns allows the add column button to be present when
+the table width is exceeded, hence can't simply check if table width is beyond what is set by the user.
 
 
 CAUTION-1
