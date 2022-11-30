@@ -1,10 +1,7 @@
-import {ToggleAdditionElements} from '../../elements/table/addNewElements/shared/toggleAdditionElements';
-import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
 import {AuxiliaryContentCellsColors} from '../../types/auxiliaryTableContentCellsColors';
 import {CellStateColorProperties, CellStateColorsR} from '../../types/cellStateColors';
 import {HoverableElementStyleClient} from '../../types/hoverableElementStyle';
 import {EditableTableComponent} from '../../editable-table-component';
-import {GenericElementUtils} from '../elements/genericElementUtils';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
 
 // auxiliary content is comprised of index column, add new column column and add new row row
@@ -75,21 +72,8 @@ export class AuxiliaryTableContentColors {
     }
   }
 
-  public static getColorsBasedOnParam(rowIndex: number): CellStateColorsR;
-  public static getColorsBasedOnParam(cellElement: HTMLElement): CellStateColorsR;
-  // prettier-ignore
-  public static getColorsBasedOnParam(param: number | HTMLElement): CellStateColorsR {
+  public static getColorsBasedOnParam(rowIndex: number): CellStateColorsR {
     const {data, header} = AuxiliaryTableContentColors.CELL_COLORS;
-    const isHeaderCell = typeof param === 'number'
-      ? param === 0 : GenericElementUtils.isFirstChildInParent(param);
-    return isHeaderCell ? header : data;
-  }
-
-  // index and add column cells are added on row insertion
-  // CAUTION-4
-  public static addAuxiliaryBodyElements(etc: EditableTableComponent) {
-    // add new row element - REF-18 (the row element has already been created and cell added to it)
-    etc.tableBodyElementRef?.appendChild(etc.addRowCellElementRef?.parentElement as HTMLElement);
-    ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
+    return rowIndex === 0 ? header : data;
   }
 }

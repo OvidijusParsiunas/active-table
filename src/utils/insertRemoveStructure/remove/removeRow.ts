@@ -10,12 +10,9 @@ import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {HasRerendered} from '../../render/hasRerendered';
 
 export class RemoveRow {
-  // prettier-ignore
-  private static updateColumnDetails(
-      removedRowData: TableRow, defaultCellValue: string, columnsDetails: ColumnsDetailsT, rowIndex: number) {
+  private static updateColumnDetails(removedRowData: TableRow, defaultCellValue: string, columnsDetails: ColumnsDetailsT) {
     removedRowData.forEach((cellText: TableCellText, columnIndex: number) => {
       const columnDetails = columnsDetails[columnIndex];
-      columnDetails.elements.splice(rowIndex, 1);
       // CAUTION-2
       CellTypeTotalsUtils.decrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, cellText as string);
     });
@@ -36,7 +33,7 @@ export class RemoveRow {
     if (etc.contents.length === 0) {
       RemoveRow.removeAllColumnsDetails(etc.columnsDetails);
     } else {
-      RemoveRow.updateColumnDetails(removedRowData, etc.defaultCellValue, etc.columnsDetails, rowIndex);
+      RemoveRow.updateColumnDetails(removedRowData, etc.defaultCellValue, etc.columnsDetails);
     }
     etc.addColumnCellsElementsRef.splice(rowIndex, 1);
   }
@@ -44,6 +41,10 @@ export class RemoveRow {
   private static removeRow(etc: EditableTableComponent, rowIndex: number) {
     etc.tableBodyElementRef?.children[rowIndex].remove();
     const removedContentRow = etc.contents.splice(rowIndex, 1);
+    // needs to be done synchronously as add new row toggle needs elements count when calling MaximumRows.canAddMore
+    removedContentRow[0].forEach((_, columnIndex: number) => {
+      etc.columnsDetails[columnIndex].elements.splice(rowIndex, 1);
+    });
     return removedContentRow[0];
   }
 

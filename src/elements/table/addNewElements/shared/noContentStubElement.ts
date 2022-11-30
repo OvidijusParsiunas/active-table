@@ -38,7 +38,7 @@ export class NoContentStubElement {
       NoContentStubElement.convertToStub(addRowCellElementRef);
       addRowCellElementRef.addEventListener('click', NoContentStubElement.convertFromStub);
     } else {
-      AddNewRowElement.setDisplay(addRowCellElementRef, false);
+      AddNewRowElement.setDisplay(addRowCellElementRef, true);
     }
   }
 }

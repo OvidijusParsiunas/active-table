@@ -222,6 +222,9 @@ disable the use of duplicate headers.
 Currently the add column button disappears when the table size is exceeded, but this comes at a cost of not allowing any further columns
 to be added (incl. render) even when preserveNarrowColumns is true.
 
+REF-25
+Given that the add new row button is not always visible and there is no css selector that can identify the last visible row, we manually
+mark the last visible row with an id. This is done to not display bottom border if last row cells contain one in their style settings.
 
 CAUTION-1
 When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across

@@ -13,7 +13,7 @@ export class IndexColumnEvents {
   private static mouseLeaveCell(this: EditableTableComponent, rowIndex: number, event: MouseEvent) {
     if (!Dropdown.isDisplayed(this.overlayElementsState.rowDropdown)) {
       const cellColors = AuxiliaryTableContentColors.getColorsBasedOnParam(rowIndex);
-      CellHighlightUtils.fade(event.target as HTMLElement, cellColors.hover);
+      CellHighlightUtils.fade(event.target as HTMLElement, cellColors.default);
     }
   }
 

@@ -14,10 +14,10 @@ export class RowDropdown {
 
   // prettier-ignore
   public static hide(etc: EditableTableComponent) {
-    const {overlayElementsState: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element: cellElement}}} = etc;
+    const {overlayElementsState: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element, rowIndex}}} = etc;
     Dropdown.hide(rowDropdown as HTMLElement, fullTableOverlay as HTMLElement);
-    const cellColors = AuxiliaryTableContentColors.getColorsBasedOnParam(cellElement as HTMLElement);
-    CellHighlightUtils.fade(cellElement as HTMLElement, cellColors.default);
+    const cellColors = AuxiliaryTableContentColors.getColorsBasedOnParam(rowIndex as number);
+    CellHighlightUtils.fade(element as HTMLElement, cellColors.default);
     DropdownItemHighlightUtils.fadeCurrentlyHighlighted(etc.shadowRoot);
     setTimeout(() => {
       // in a timeout because upon pressing esc/enter key on dropdown, the window event is fired after which checks it

@@ -50,7 +50,8 @@ export const ediTableStyle = css`
     border-right: none !important;
   }
 
-  tbody > tr:last-of-type > .cell {
+  /* REF-25 */
+  #last-visible-row > .cell {
     border-bottom: none !important;
   }
 

@@ -10,7 +10,7 @@ export class AddNewRowElement {
   private static readonly HIDDEN = 'none';
   private static readonly VISIBLE = '';
 
-  private static isDisplayed(addNewRowCell: HTMLElement) {
+  public static isDisplayed(addNewRowCell: HTMLElement) {
     return addNewRowCell.style.display === AddNewRowElement.VISIBLE;
   }
 
@@ -54,7 +54,8 @@ export class AddNewRowElement {
   // prettier-ignore
   public static toggle(etc: EditableTableComponent) {
     const {tableBodyElementRef, addRowCellElementRef, auxiliaryTableContentInternal: {displayAddRowCell}} = etc;
-    if (!displayAddRowCell || !addRowCellElementRef || !tableBodyElementRef) return;
-    AddNewRowElement.setDisplay(addRowCellElementRef, MaximumRows.canAddMore(etc));
+    if (!addRowCellElementRef?.parentElement || !tableBodyElementRef) return;
+    if (displayAddRowCell) AddNewRowElement.setDisplay(addRowCellElementRef, MaximumRows.canAddMore(etc));
+    RowElement.toggleLastRowClass(etc.shadowRoot as ShadowRoot, addRowCellElementRef.parentElement)
   }
 }
