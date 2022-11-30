@@ -3,23 +3,25 @@ import {StaticTable} from '../../../utils/tableDimensions/staticTable/staticTabl
 import {ColumnDetailsUtils} from '../../../utils/columnDetails/columnDetailsUtils';
 import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {ExtractElements} from '../../../utils/elements/extractElements';
 import {ColumnSettingsInternal} from '../../../types/columnsSettings';
-import {UNSET_NUMBER_IDENTIFIER} from '../../../consts/unsetNumber';
 import {SizerMoveLimits} from '../../../types/columnSizer';
 
 export class MoveLimits {
-  // borders of the side cells tend to breach over the limits of the table by half their width, causing the offsets to
-  // give incorrect data and set the limit beyond the table limits, this is used to prevent it
-  private static SIDE_LIMIT_DELTA = UNSET_NUMBER_IDENTIFIER;
-
-  private static setSideLimitDelta(headerElement: HTMLElement) {
-    MoveLimits.SIDE_LIMIT_DELTA = 0;
-    if (headerElement.style.borderRightWidth) {
-      MoveLimits.SIDE_LIMIT_DELTA += Math.ceil(Number.parseInt(headerElement.style.borderRightWidth) / 2);
-    }
-    if (headerElement.style.borderLeftWidth) {
-      MoveLimits.SIDE_LIMIT_DELTA -= Math.floor(Number.parseInt(headerElement.style.borderLeftWidth) / 2);
-    }
+  // Borders of the side cells tend to breach over the limits of the table (when no side auxiliary elements),
+  // causing the offsets to give incorrect data and set the limits beyond the table. The breach magnitude is
+  // influenced by the sizer start position when cells have borders - which is the very center position of
+  // the total of those two borders width.
+  // prettier-ignore
+  private static getSideLimitDelta(leftElement: HTMLElement) {
+    // left element will always be the actual element as even when minWidth is set in its settings, we return
+    // the left element of the sizer, however when minWidth/width are set on the right header(s), rightHeader
+    // will actually be first dynamic header in the ones following the sizer. Hence the only reliably way
+    // of obtaining the actual right header is by extracting it manually by traversing the DOM.
+    const rightElement = ExtractElements.getRightColumnSiblingCell(leftElement) as HTMLElement;
+    const sideLimitDelta = (Number.parseInt(leftElement.style.borderRightWidth) || 0)
+      - (Number.parseInt(rightElement.style.borderLeftWidth) || 0);
+    return sideLimitDelta / 2;
   }
 
   private static getRightLimitDynamicWidthTable() {
@@ -36,11 +38,11 @@ export class MoveLimits {
   }
 
   // prettier-ignore
-  private static getRightLimitStaticWidthTable(etc: EditableTableComponent, isSecondLastSizer: boolean,
-      rightHeader?: HTMLElement) {
+  private static getRightLimitStaticWidthTable(etc: EditableTableComponent, rightHeader?: HTMLElement,
+      sideLimitDelta?: number) {
     if (rightHeader) {
       let rightLimit = rightHeader.offsetWidth;
-      if (!isSecondLastSizer) rightLimit += MoveLimits.SIDE_LIMIT_DELTA;
+      if (sideLimitDelta !== undefined) rightLimit += sideLimitDelta;
       return rightLimit;
     }
     // table with set width does not normally have a sizer on the last column and this class would not be called, however
@@ -50,9 +52,9 @@ export class MoveLimits {
     return (width as number) - (tableElementRef as HTMLElement).offsetWidth;
   }
 
-  private static getRightLimit(etc: EditableTableComponent, isSecondLastSizer: boolean, rightHeader?: HTMLElement) {
+  private static getRightLimit(etc: EditableTableComponent, rightHeader?: HTMLElement, sideLimitDelta?: number) {
     if (etc.tableDimensionsInternal.width !== undefined) {
-      return MoveLimits.getRightLimitStaticWidthTable(etc, isSecondLastSizer, rightHeader);
+      return MoveLimits.getRightLimitStaticWidthTable(etc, rightHeader, sideLimitDelta);
     } else if (etc.tableDimensionsInternal.maxWidth !== undefined && etc.tableElementRef) {
       return MoveLimits.getRightLimitForMaxWidth(etc.tableElementRef, etc.tableDimensionsInternal, rightHeader);
     }
@@ -61,7 +63,7 @@ export class MoveLimits {
 
   // prettier-ignore
   private static getLeftLimit(etc: EditableTableComponent,
-      isFirstSizer: boolean, leftHeader: HTMLElement, leftHeaderSettings?: ColumnSettingsInternal) {
+      leftHeader: HTMLElement, sideLimitDelta?: number, leftHeaderSettings?: ColumnSettingsInternal) {
     const {tableElementRef, columnsDetails} = etc;
     let leftLimit = 0;
     if (leftHeaderSettings?.minWidth !== undefined) {
@@ -74,22 +76,20 @@ export class MoveLimits {
     } else {
       leftLimit = -leftHeader.offsetWidth;
     }
-    if (isFirstSizer) leftLimit += MoveLimits.SIDE_LIMIT_DELTA;
+    if (sideLimitDelta !== undefined) leftLimit += sideLimitDelta;
     return leftLimit;
   }
 
   // prettier-ignore
   public static generate(etc: EditableTableComponent, isFirstSizer: boolean,
-      isSecondLastSizer: boolean, columnSizerOffset: number, rightHeader: HTMLElement | undefined,
+      isLastSizer: boolean, columnSizerOffset: number, rightHeader: HTMLElement | undefined,
       leftHeader: HTMLElement, leftHeaderSettings?: ColumnSettingsInternal): SizerMoveLimits {
-    if (MoveLimits.SIDE_LIMIT_DELTA === UNSET_NUMBER_IDENTIFIER) {
-      // (CAUTION-1) - when styles are different take this into consideration
-      // only needs to be set once
-      MoveLimits.setSideLimitDelta(leftHeader);
-    }
+    const sideLimitDelta = isFirstSizer || isLastSizer ? MoveLimits.getSideLimitDelta(leftHeader) : 0;
     return {
-      left: MoveLimits.getLeftLimit(etc, isFirstSizer, leftHeader, leftHeaderSettings) + columnSizerOffset,
-      right: MoveLimits.getRightLimit(etc, isSecondLastSizer, rightHeader) + columnSizerOffset,
+      left: MoveLimits.getLeftLimit(etc, leftHeader,
+        isFirstSizer ? sideLimitDelta : undefined, leftHeaderSettings) + columnSizerOffset,
+      right: MoveLimits.getRightLimit(etc, rightHeader,
+        isLastSizer ? sideLimitDelta : undefined) + columnSizerOffset,
     };
   }
 }

@@ -16,4 +16,8 @@ export class ExtractElements {
     // not returning aux rows that contain other utils such as add new row
     return Array.from(tableBodyElement.children).slice(startIndex, contents.length);
   }
+
+  public static getRightColumnSiblingCell(cellElement: HTMLElement) {
+    return cellElement.nextSibling?.nextSibling;
+  }
 }

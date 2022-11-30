@@ -226,10 +226,6 @@ REF-25
 Given that the add new row button is not always visible and there is no css selector that can identify the last visible row, we manually
 mark the last visible row with an id. This is done to not display bottom border if last row cells contain one in their style settings.
 
-CAUTION-1
-When considering the idea of allowing different columns to have different styles, take note of some of the assumed constants across
-the table as they will no longer be constant and will need some dynamicity
-
 CAUTION-2
 When resizing the table, take note of some async code that was waiting to be executed before the resize was triggered:
 It has been identified that when re-render occurs and columnsDetails object is cleared, by the time the async code is executed
