@@ -7,7 +7,7 @@ import {MoveLimits} from './moveLimits';
 export class SelectedColumnSizer {
   // prettier-ignore
   private static generateObj(etc: EditableTableComponent, leftColumnDetails: ColumnDetailsT, isFirstSizer: boolean,
-      isSecondLastSizer: boolean, leftHeader: HTMLElement, rightHeader?: HTMLElement): SelectedColumnSizerT {
+      isLastSizer: boolean, leftHeader: HTMLElement, rightHeader?: HTMLElement): SelectedColumnSizerT {
     const {columnSizer, settings} = leftColumnDetails;
     // sizer is centered within the cell divider and starts with an offset, hence mouseMoveOffset is set
     // with that offset in order to limit the vertical line at the correct cell offset position
@@ -15,7 +15,7 @@ export class SelectedColumnSizer {
     return {
       element: columnSizer.element,
       moveLimits: MoveLimits.generate(
-        etc, isFirstSizer, isSecondLastSizer, columnSizerOffset, rightHeader, leftHeader, settings),
+        etc, isFirstSizer, isLastSizer, columnSizerOffset, rightHeader, leftHeader, settings),
       // this is to reflect the initial sizer offset to center itself in the cell divider
       initialOffset: columnSizerOffset,
       mouseMoveOffset: columnSizerOffset,
@@ -25,11 +25,11 @@ export class SelectedColumnSizer {
   public static get(etc: EditableTableComponent, sizerNumber: number): SelectedColumnSizerT {
     const columnDetails = etc.columnsDetails[sizerNumber];
     // borders of the side cells tend to breach over the limits of the table by half their width, causing the offsets to
-    // be incorrect and thus set the limits beyond the table limits, isFirstSizer and isSecondLastSizer help prevent it
+    // be incorrect and thus set the limits beyond the table limits, isFirstSizer and isLastSizer help prevent it
     const isFirstSizer = sizerNumber === 0;
-    const isSecondLastSizer = etc.columnsDetails.length > sizerNumber + 2;
+    const isLastSizer = etc.columnsDetails.length - 2 === sizerNumber; // only used when table width is set
     const leftHeader = etc.columnsDetails[sizerNumber].elements[0];
     const rightHeader = ColumnSizerGenericUtils.findNextResizableColumnHeader(etc.columnsDetails, sizerNumber);
-    return SelectedColumnSizer.generateObj(etc, columnDetails, isFirstSizer, isSecondLastSizer, leftHeader, rightHeader);
+    return SelectedColumnSizer.generateObj(etc, columnDetails, isFirstSizer, isLastSizer, leftHeader, rightHeader);
   }
 }

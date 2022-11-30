@@ -19,8 +19,8 @@ export class MoveLimits {
     // will actually be first dynamic header in the ones following the sizer. Hence the only reliably way
     // of obtaining the actual right header is by extracting it manually by traversing the DOM.
     const rightElement = ExtractElements.getRightColumnSiblingCell(leftElement) as HTMLElement;
-    const sideLimitDelta = (Number.parseInt(leftElement.style.borderRightWidth) || 0)
-      - (Number.parseInt(rightElement.style.borderLeftWidth) || 0);
+    const sideLimitDelta = (Number.parseFloat(leftElement.style.borderRightWidth) || 0)
+      - (Number.parseFloat(rightElement.style.borderLeftWidth) || 0);
     return sideLimitDelta / 2;
   }
 
@@ -32,7 +32,7 @@ export class MoveLimits {
   private static getRightLimitForMaxWidth(tableElement: HTMLElement,
       tableDimensions: TableDimensionsInternal, rightHeader?: HTMLElement) {
     if (StaticTable.isTableAtMaxWidth(tableElement, tableDimensions)) {
-      return rightHeader ? rightHeader.offsetWidth : 0;
+      return rightHeader ? Number.parseFloat(rightHeader.style.width) : 0;
     }
     return (tableDimensions.maxWidth as number) - tableElement.offsetWidth;
   }
@@ -41,7 +41,7 @@ export class MoveLimits {
   private static getRightLimitStaticWidthTable(etc: EditableTableComponent, rightHeader?: HTMLElement,
       sideLimitDelta?: number) {
     if (rightHeader) {
-      let rightLimit = rightHeader.offsetWidth;
+      let rightLimit = Number.parseFloat(rightHeader.style.width);
       if (sideLimitDelta !== undefined) rightLimit += sideLimitDelta;
       return rightLimit;
     }

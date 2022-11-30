@@ -2,6 +2,9 @@ import {StaticTable} from '../../../utils/tableDimensions/staticTable/staticTabl
 import {SizerMoveLimits, SelectedColumnSizerT} from '../../../types/columnSizer';
 import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
 
+// Try not use offsetWidth for cells as it rounds the width number up, whereas some columns can have widths with
+// decimal places, thus this would cause a column width to be changed when no movement was made or cause the new
+// width to not be correct. Thus, use Number.parseFloat instead to get the fully correct column width.
 export class ColumnSizerSetWidth {
   private static getWidthDelta(mouseMoveOffset: number, moveLimits: SizerMoveLimits) {
     if (mouseMoveOffset < moveLimits.left) {
@@ -15,7 +18,7 @@ export class ColumnSizerSetWidth {
   private static getNewColumnWidth(selectedColumnSizer: SelectedColumnSizerT, columnElement: HTMLElement) {
     const {moveLimits, mouseMoveOffset, initialOffset} = selectedColumnSizer;
     const delta = ColumnSizerSetWidth.getWidthDelta(mouseMoveOffset, moveLimits) - initialOffset;
-    return Math.max(0, columnElement.offsetWidth + delta);
+    return Math.max(0, Number.parseFloat(columnElement.style.width) + delta);
   }
 
   private static setColumnWidth(selectedColumnSizer: SelectedColumnSizerT, columnElement: HTMLElement) {
@@ -51,9 +54,11 @@ export class ColumnSizerSetWidth {
   // prettier-ignore
   private static setColumnsWidths(selectedColumnSizer: SelectedColumnSizerT, leftHeader: HTMLElement,
       rightHeader: HTMLElement) {
-    const initialWidthsTotal = leftHeader.offsetWidth + rightHeader.offsetWidth;
+    const leftWidth = Number.parseFloat(leftHeader.style.width);
+    const rightWidth = Number.parseFloat(rightHeader.style.width);
+    const initialWidthsTotal = leftWidth + rightWidth;
     ColumnSizerSetWidth.setWidths(selectedColumnSizer, leftHeader, rightHeader, initialWidthsTotal);
-    if (rightHeader.offsetWidth > leftHeader.offsetWidth) {
+    if (rightWidth > leftWidth) {
       ColumnSizerSetWidth.correctWidths(selectedColumnSizer, leftHeader, rightHeader, initialWidthsTotal);
     } else {
       ColumnSizerSetWidth.correctWidths(selectedColumnSizer, rightHeader, leftHeader, initialWidthsTotal);
