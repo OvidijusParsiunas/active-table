@@ -1,5 +1,5 @@
-export type TableCellText = number | string;
+export type CellText = number | string;
 
-export type TableRow = TableCellText[];
+export type TableRow = CellText[];
 
 export type TableContents = TableRow[];

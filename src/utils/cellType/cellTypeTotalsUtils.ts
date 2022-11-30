@@ -2,6 +2,7 @@ import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {HasRerendered} from '../render/hasRerendered';
+import {EMPTY_STRING} from '../../consts/text';
 import {ValidateInput} from './validateInput';
 
 export class CellTypeTotalsUtils {
@@ -29,8 +30,8 @@ export class CellTypeTotalsUtils {
     return null;
   }
 
-  public static parseType(cellValue: string, defaultCellValue: string): CELL_TYPE {
-    if (cellValue === defaultCellValue) {
+  public static parseType(cellValue: string): CELL_TYPE {
+    if (cellValue === EMPTY_STRING) {
       return CELL_TYPE.Default;
     }
     const parsedCellType = CellTypeTotalsUtils.parseValidable(cellValue);
@@ -61,13 +62,13 @@ export class CellTypeTotalsUtils {
     }
   }
 
-  public static incrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, defaultValue: string, text: string) {
-    const type = CellTypeTotalsUtils.parseType(text, defaultValue);
+  public static incrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, text: string) {
+    const type = CellTypeTotalsUtils.parseType(text);
     CellTypeTotalsUtils.changeTypeAndSetColumnType(columnDetails, [CellTypeTotalsUtils.incrementType.bind(this, type)]);
   }
 
-  public static decrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, defaultValue: string, text: string) {
-    const type = CellTypeTotalsUtils.parseType(text, defaultValue);
+  public static decrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, text: string) {
+    const type = CellTypeTotalsUtils.parseType(text);
     CellTypeTotalsUtils.changeTypeAndSetColumnType(columnDetails, [CellTypeTotalsUtils.decrementType.bind(this, type)]);
   }
 

@@ -1,13 +1,13 @@
 import {HoverableElementStyleClient} from './hoverableElementStyle';
+import {InterfacesUnion, SetRequired} from './utilityTypes';
 import {USER_SET_COLUMN_TYPE} from '../enums/columnType';
-import {InterfacesUnion} from './utilityTypes';
-import {TableCellText} from './tableContents';
 import {StringDimension} from './dimensions';
+import {CellText} from './tableContents';
 import {CSSStyle} from './cssStyle';
 
 interface Parent {
   columnName: string;
-  defaultValue?: TableCellText;
+  defaultText?: CellText;
   cellStyle?: CSSStyle;
   header?: HoverableElementStyleClient;
   type?: boolean;
@@ -52,9 +52,12 @@ export type ColumnsSettings = Array<ColumnSettings>;
 
 // should be used internally
 // if the user proceeds to set width and minWidth properties - minWidth will take precedence
-export type ColumnSettingsInternal = InterfacesUnion<
-  Omit<Width, 'columnName'> | Omit<MinWidth, 'columnName'> | Omit<Parent, 'columnName'>
->;
+export type ColumnSettingsInternal = InterfacesUnion<BuildInternalSettingsInterfacesUnion<Width | MinWidth | Parent>>;
+
+// Interfaces extends Parent allows the Interfaces type to be a union of types - allowing this to return a union of types
+export type BuildInternalSettingsInterfacesUnion<Interfaces> = Interfaces extends Parent
+  ? Omit<SetRequired<Interfaces, 'defaultText'>, 'columnName'>
+  : never;
 
 // should be used internally
 // the benefits of this over the client provided array is that settings can be accessed immediately when

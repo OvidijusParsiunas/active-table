@@ -1,10 +1,11 @@
-import {ColumnSettingsInternal, ColumnsSettings, ColumnsSettingsMap} from '../../types/columnsSettings';
+import {ColumnSettings, ColumnSettingsInternal, ColumnsSettings, ColumnsSettingsMap} from '../../types/columnsSettings';
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
 import {ColumnSettingsWidthUtils} from './columnSettingsWidthUtils';
+import {EMPTY_STRING} from '../../consts/text';
 
 export class ColumnSettingsUtils {
   // prettier-ignore
@@ -15,7 +16,7 @@ export class ColumnSettingsUtils {
     const oldSettings = columnDetails.settings;
     const newSettings = columnsSettingsInternal[cellElement.textContent as string];
     if (oldSettings !== newSettings) {
-      ColumnSettingsWidthUtils.changeWidth(etc, columnDetails, oldSettings, newSettings, cellElement);
+      ColumnSettingsWidthUtils.changeWidth(etc, columnDetails, cellElement, oldSettings, newSettings);
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
       ColumnSettingsStyleUtils.changeStyle(etc, columnDetails, oldSettings, newSettings);
       ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
@@ -23,10 +24,22 @@ export class ColumnSettingsUtils {
     }
   }
 
-  public static createInternalMap(clientSettings: ColumnsSettings) {
-    return clientSettings.reduce<ColumnsSettingsMap>((previousValue, currentvalue) => {
-      previousValue[currentvalue.columnName] = currentvalue as ColumnSettingsInternal;
-      return previousValue;
+  public static createDefaultInternal(defaultTableText: string) {
+    return {defaultText: defaultTableText || EMPTY_STRING};
+  }
+
+  private static createInternal(clientSettings: ColumnSettings, defaultTableText: string): ColumnSettingsInternal {
+    const internalSettings = clientSettings as ColumnSettingsInternal;
+    if (internalSettings.defaultText === undefined) {
+      internalSettings.defaultText = defaultTableText || EMPTY_STRING;
+    }
+    return internalSettings;
+  }
+
+  public static createInternalMap(clientSettings: ColumnsSettings, defaultTableText: string) {
+    return clientSettings.reduce<ColumnsSettingsMap>((settingsMap, clientSettings) => {
+      settingsMap[clientSettings.columnName] = ColumnSettingsUtils.createInternal(clientSettings, defaultTableText);
+      return settingsMap;
     }, {});
   }
 }

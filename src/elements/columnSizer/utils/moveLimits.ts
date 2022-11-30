@@ -63,10 +63,10 @@ export class MoveLimits {
 
   // prettier-ignore
   private static getLeftLimit(etc: EditableTableComponent,
-      leftHeader: HTMLElement, sideLimitDelta?: number, leftHeaderSettings?: ColumnSettingsInternal) {
+      leftHeader: HTMLElement, leftHeaderSettings: ColumnSettingsInternal, sideLimitDelta?: number) {
     const {tableElementRef, columnsDetails} = etc;
     let leftLimit = 0;
-    if (leftHeaderSettings?.minWidth !== undefined) {
+    if (leftHeaderSettings.minWidth !== undefined) {
       // if table width is set and there are no more dynamic columns, do not allow current column size to be reduced
       if (etc.tableDimensionsInternal.width !== undefined
         && ColumnDetailsUtils.getFilteredColumns(columnsDetails).dynamicWidthColumns.length === 0) return 0;
@@ -83,11 +83,11 @@ export class MoveLimits {
   // prettier-ignore
   public static generate(etc: EditableTableComponent, isFirstSizer: boolean,
       isLastSizer: boolean, columnSizerOffset: number, rightHeader: HTMLElement | undefined,
-      leftHeader: HTMLElement, leftHeaderSettings?: ColumnSettingsInternal): SizerMoveLimits {
+      leftHeader: HTMLElement, leftHeaderSettings: ColumnSettingsInternal): SizerMoveLimits {
     const sideLimitDelta = isFirstSizer || isLastSizer ? MoveLimits.getSideLimitDelta(leftHeader) : 0;
     return {
-      left: MoveLimits.getLeftLimit(etc, leftHeader,
-        isFirstSizer ? sideLimitDelta : undefined, leftHeaderSettings) + columnSizerOffset,
+      left: MoveLimits.getLeftLimit(etc, leftHeader, leftHeaderSettings,
+        isFirstSizer ? sideLimitDelta : undefined) + columnSizerOffset,
       right: MoveLimits.getRightLimit(etc, rightHeader,
         isLastSizer ? sideLimitDelta : undefined) + columnSizerOffset,
     };

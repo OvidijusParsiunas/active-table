@@ -3,18 +3,18 @@ import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNe
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {IndexColumn} from '../../../elements/indexColumn/indexColumn';
-import {TableCellText, TableRow} from '../../../types/tableContents';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
+import {CellText, TableRow} from '../../../types/tableContents';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {HasRerendered} from '../../render/hasRerendered';
 
 export class RemoveRow {
-  private static updateColumnDetails(removedRowData: TableRow, defaultCellValue: string, columnsDetails: ColumnsDetailsT) {
-    removedRowData.forEach((cellText: TableCellText, columnIndex: number) => {
+  private static updateColumnDetails(removedRowData: TableRow, columnsDetails: ColumnsDetailsT) {
+    removedRowData.forEach((cellText: CellText, columnIndex: number) => {
       const columnDetails = columnsDetails[columnIndex];
       // CAUTION-2
-      CellTypeTotalsUtils.decrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, cellText as string);
+      CellTypeTotalsUtils.decrementCellTypeAndSetNewColumnType(columnDetails, cellText as string);
     });
   }
 
@@ -33,7 +33,7 @@ export class RemoveRow {
     if (etc.contents.length === 0) {
       RemoveRow.removeAllColumnsDetails(etc.columnsDetails);
     } else {
-      RemoveRow.updateColumnDetails(removedRowData, etc.defaultCellValue, etc.columnsDetails);
+      RemoveRow.updateColumnDetails(removedRowData, etc.columnsDetails);
     }
     etc.addColumnCellsElementsRef.splice(rowIndex, 1);
   }

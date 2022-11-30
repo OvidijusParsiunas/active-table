@@ -31,11 +31,11 @@ export class InsertNewCell {
   // prettier-ignore
   private static updateColumnDetailsAndSizers(
       etc: EditableTableComponent, rowIndex: number, columnIndex: number, text: string, isNewText: boolean) {
-    const { columnsDetails, defaultCellValue } = etc;
+    const {columnsDetails, categoryDropdownContainer} = etc;
     const columnDetails = columnsDetails[columnIndex];
     if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
     if (rowIndex === 0) {
-      const categoryDropdown = CategoryDropdown.createAndAppend(etc.categoryDropdownContainer as HTMLElement);
+      const categoryDropdown = CategoryDropdown.createAndAppend(categoryDropdownContainer as HTMLElement);
       ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsInitial, categoryDropdown); // REF-13
       InsertRemoveColumnSizer.insert(etc, columnsDetails, columnIndex); // REF-13
       if (isNewText) {
@@ -44,18 +44,19 @@ export class InsertNewCell {
       }
     } else {
       // CAUTION-2
-      CellTypeTotalsUtils.incrementCellTypeAndSetNewColumnType(columnDetails, defaultCellValue, text);
+      CellTypeTotalsUtils.incrementCellTypeAndSetNewColumnType(columnDetails, text);
     }
   }
 
-  // REF-13
-  // the reason for creating object with elements and settings only is because changeWidthsBasedOnColumnInsertRemove
-  // needs them to reset all column widths if required. We can worry about adding the other properties in a timeout
-  // within the updateColumnDetailsAndSizers method
-  private static insertColumnDetailsWithElementsArr(etc: EditableTableComponent, cellText: string, index: number) {
-    const {columnsDetails, columnsSettingsInternal} = etc;
-    const columnDetails = ColumnDetails.createInitial(etc, columnsSettingsInternal[cellText]);
-    columnsDetails.splice(index, 0, columnDetails as ColumnDetailsT);
+  // prettier-ignore
+  private static insert(etc: EditableTableComponent, rowElement: HTMLElement, newCellElement: HTMLElement,
+      processedCellText: string, isNewText: boolean, rowIndex: number, columnIndex: number) {
+    const {auxiliaryTableContentInternal: {displayIndexColumn}, contents, columnsDetails} = etc;
+    const columnDetails = columnsDetails[columnIndex];
+    columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
+    InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, displayIndexColumn);
+    // cannot place in a timeout as etc.contents length is used to get last row index
+    contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
   }
 
   // prettier-ignore
@@ -71,26 +72,32 @@ export class InsertNewCell {
   }
 
   private static create(etc: EditableTableComponent, processedCellText: string, rowIndex: number, columnIndex: number) {
-    if (rowIndex === 0) InsertNewCell.insertColumnDetailsWithElementsArr(etc, processedCellText, columnIndex); // REF-13
     const columnDetails = etc.columnsDetails[columnIndex];
     const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
     InsertNewCell.convertCell(etc, columnDetails, rowIndex, columnIndex, newCellElement);
-    columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
     return newCellElement;
+  }
+
+  // REF-13
+  // the reason for creating object with elements and settings only is because changeWidthsBasedOnColumnInsertRemove
+  // needs them to reset all column widths if required. We can worry about adding the other properties in a timeout
+  // within the updateColumnDetailsAndSizers method
+  private static insertInitialColumnDetails(etc: EditableTableComponent, cellText: string, index: number) {
+    const {columnsDetails, columnsSettingsInternal} = etc;
+    const columnDetails = ColumnDetails.createInitial(etc, columnsSettingsInternal[cellText]);
+    columnsDetails.splice(index, 0, columnDetails as ColumnDetailsT);
   }
 
   // isNewText indicates whether rowData is already in the contents state or if it needs to be added
   // prettier-ignore
   public static insertToRow(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
-    const {auxiliaryTableContentInternal: {displayIndexColumn, displayAddColumnCell}, contents} = etc;
+    if (rowIndex === 0) InsertNewCell.insertInitialColumnDetails(etc, cellText, columnIndex); // REF-13
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);
-    InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, displayIndexColumn);
-    // cannot place in a timeout as etc.contents length is used to get last row index
-    contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
+    InsertNewCell.insert(etc, rowElement, newCellElement, processedCellText, isNewText, rowIndex, columnIndex);
     if (rowIndex === 0) {
-      if (displayAddColumnCell) ColumnGroupElement.update(etc);
+      if (etc.auxiliaryTableContentInternal.displayAddColumnCell) ColumnGroupElement.update(etc);
       if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
       ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
     }

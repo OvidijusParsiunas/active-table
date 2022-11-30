@@ -1,9 +1,10 @@
 import {RegexUtils} from '../../../../utils/regex/regexUtils';
+import {CellText} from '../../../../types/tableContents';
 import {CellTextElement} from '../text/cellTextElement';
 import {DateCellElement} from './dateCellElement';
 
 export class DateCellTextElement {
-  public static convertInputValueToText(inputDate: string, defaultCellValue: string, dateType: string) {
+  public static convertInputValueToText(inputDate: string, defaultText: CellText, dateType: string) {
     const integerArr = RegexUtils.extractIntegerStrs(inputDate);
     if (integerArr?.length === 3) {
       const dateTypeToProperties = DateCellElement.DATE_TYPE_TO_PROPERTIES[dateType];
@@ -14,7 +15,7 @@ export class DateCellTextElement {
       dateArr[dateTypeToProperties.structureIndexes.year] = integerArr[0];
       return dateArr.join(dateTypeToProperties.separator);
     }
-    return defaultCellValue;
+    return defaultText as string;
   }
 
   public static setCellTextAsAnElement(cellElement: HTMLElement) {

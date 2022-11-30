@@ -56,7 +56,7 @@ export class ColumnSettingsStyleUtils {
     const {cellStyle, header} = etc;
     ColumnSettingsStyleUtils.resetStyleToDefault(columnDetails.elements, settings, cellStyle, header.defaultStyle);
     if (isSetNew) ColumnSettingsStyleUtils.setSettingStyle(columnDetails.elements, settings);
-    columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(etc, isSetNew ? settings : {});
+    columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(etc, isSetNew ? settings : undefined);
   }
 
   // prettier-ignore

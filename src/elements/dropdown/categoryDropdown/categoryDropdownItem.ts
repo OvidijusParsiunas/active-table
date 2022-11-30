@@ -2,9 +2,10 @@ import {ActiveCategoryItems, CategoryDropdownT} from '../../../types/columnDetai
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownItemEvents} from './categoryDropdownItemEvents';
+import {CellText, TableContents} from '../../../types/tableContents';
 import {CategoryDeleteButton} from './categoryDeleteButton';
-import {TableContents} from '../../../types/tableContents';
 import {CellDetails} from '../../../types/focusedCell';
+import {EMPTY_STRING} from '../../../consts/text';
 import {CellEvents} from '../../cell/cellEvents';
 import {Color} from '../../../utils/color/color';
 import {DropdownItem} from '../dropdownItem';
@@ -42,10 +43,10 @@ export class CategoryDropdownItem {
 
   // prettier-ignore
   private static updateCellTextBgColor(itemElement: HTMLElement | undefined, textElement: HTMLElement,
-      dropdown: CategoryDropdownT, defaultCellValue: string) {
+      dropdown: CategoryDropdownT, defaultText: CellText) {
     if (itemElement) {
       textElement.style.backgroundColor = dropdown.categoryToItem[textElement.textContent as string].color;
-    } else if (textElement.textContent === '' || textElement.textContent === defaultCellValue) {
+    } else if (textElement.textContent === EMPTY_STRING || textElement.textContent === defaultText) {
       textElement.style.backgroundColor = '';
     } else {
       textElement.style.backgroundColor = Color.getLatestPasteleColor();
@@ -70,7 +71,7 @@ export class CategoryDropdownItem {
 
   // prettier-ignore
   public static attemptHighlightMatchingCellCategoryItem(textElement: HTMLElement, dropdown: CategoryDropdownT,
-      defaultCellValue: string, updateCellText: boolean, matchingCellElement?: HTMLElement) {
+      defaultText: CellText, updateCellText: boolean, matchingCellElement?: HTMLElement) {
     const {activeItems, categoryToItem} = dropdown;
     const targetText = textElement.textContent as string;
     const itemElement = matchingCellElement || categoryToItem[targetText]?.element;
@@ -80,16 +81,16 @@ export class CategoryDropdownItem {
       CategoryDropdownItemEvents.blurItem(dropdown, 'matchingWithCellText');
     }
     CategoryDropdownItem.updateItemColor(itemElement, activeItems);
-    if (updateCellText) CategoryDropdownItem.updateCellTextBgColor(itemElement, textElement, dropdown, defaultCellValue);
+    if (updateCellText) CategoryDropdownItem.updateCellTextBgColor(itemElement, textElement, dropdown, defaultText);
   }
 
   // prettier-ignore
   private static setItemOnCell(etc: EditableTableComponent, item: HTMLElement) {
     const {element, rowIndex, columnIndex} = etc.focusedElements.cell as CellDetails;
+    const {categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
     const textElement = element.children[0] as HTMLElement;
     CategoryDropdownItem.updateCellElementIfNotUpdated(etc, item, rowIndex, columnIndex, textElement);
-    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, 
-      etc.columnsDetails[columnIndex].categoryDropdown, etc.defaultCellValue, true, item);
+    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categoryDropdown, defaultText, true, item);
     CaretPosition.setToEndOfText(etc, textElement);
   }
 
@@ -141,20 +142,21 @@ export class CategoryDropdownItem {
     });
   }
 
-  private static aggregateCategoryToColor(contents: TableContents, columnIndex: number, defaultCellValue: string) {
+  private static aggregateCategoryToColor(contents: TableContents, columnIndex: number, defaultText: CellText) {
     const categoryToColor: CategoryToColor = {};
     contents.slice(1).forEach((row) => {
       const cellText = row[columnIndex] as string;
       categoryToColor[cellText] = Color.getLatestPasteleColorAndSetNew();
     });
-    delete categoryToColor[defaultCellValue];
+    delete categoryToColor[defaultText];
     return categoryToColor;
   }
 
+  // prettier-ignore
   public static populateItems(etc: EditableTableComponent, columnIndex: number) {
-    const {contents, defaultCellValue, columnsDetails} = etc;
-    const categoryToColor = CategoryDropdownItem.aggregateCategoryToColor(contents, columnIndex, defaultCellValue);
-    const {categoryDropdown} = columnsDetails[columnIndex];
+    const {contents, columnsDetails} = etc;
+    const {categoryDropdown, settings: {defaultText}} = columnsDetails[columnIndex];
+    const categoryToColor = CategoryDropdownItem.aggregateCategoryToColor(contents, columnIndex, defaultText);
     CategoryDropdownItem.addCategoryItems(etc, categoryToColor, categoryDropdown);
   }
 }

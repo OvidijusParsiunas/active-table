@@ -15,11 +15,12 @@
     </style>
   </head>
   <body>
-    <editable-table-component
-      id="etc-element"
-      defaultCellValue="-"
-      duplicateHeadersAllowed="false"
-    ></editable-table-component>
+    <div style="width: 100%; height: 40px"></div>
+    <!-- <div style="width: 20px; height: 20px; float: left"></div> -->
+    <!-- when the table reaches the parent limit it does a jump down because of the above :/ -->
+    <div>
+      <editable-table-component id="etc-element" defaultText="-"></editable-table-component>
+    </div>
     <script>
       const myValue = [
         [1, 2, 3, 4],
@@ -32,10 +33,64 @@
       setTimeout(() => {
         if (element) {
           // element.setAttribute('contents', `[[${myValue[0]}],[${myValue[1]}]]`);
-          // element.setAttribute('cellStyle', JSON.stringify({borderRight: '1px solid black'}));
-          // element.setAttribute('tableStyle', JSON.stringify({border: '10px solid black'}));
-          // element.setAttribute('headerStyle', JSON.stringify({backgroundColor: 'red'}));
-          element.setAttribute('onCellUpdate', aa);
+          element.setAttribute('cellStyle', JSON.stringify({borderRight: '4px solid grey', borderLeft: '8px solid red'}));
+          element.setAttribute('tableStyle', JSON.stringify({border: '20px solid black'}));
+          // element.setAttribute(
+          //   'header',
+          //   JSON.stringify({defaultStyle: {backgroundColor: 'lightgrey', borderRight: '1px solid yellow'}})
+          // );
+          element.setAttribute('tableDimensions', JSON.stringify({width: '1000px'}));
+          element.setAttribute('auxiliaryTableContent', JSON.stringify({displayAddColumnCell: false}));
+          // element.setAttribute('tableDimensions', JSON.stringify({maxRows: 7}));
+          // element.setAttribute('tableDimensions', JSON.stringify({maxColumns: 5}));
+          // element.setAttribute('tableDimensions', JSON.stringify({unlimitedSize: false}));
+          // element.setAttribute('tableDimensions', JSON.stringify({width: 300, maxColumns: 7}));
+          element.setAttribute(
+            'columnsSettings',
+            JSON.stringify([
+              {columnName: 'A', width: '50px'},
+              {
+                columnName: 'G',
+                minWidth: '500px',
+                cellStyle: {
+                  borderLeft: '1px solid red',
+                  borderRight: '1px solid red',
+                  borderBottom: '1px solid red',
+                  backgroundColor: 'orange',
+                },
+                header: {
+                  defaultStyle: {
+                    border: '1px solid green',
+                  },
+                },
+                defaultText: 'ab',
+              },
+              {
+                columnName: 'C',
+                width: '1000px',
+                cellStyle: {
+                  borderLeft: '1px solid red',
+                  borderRight: '1px solid red',
+                  borderBottom: '1px solid red',
+                  backgroundColor: 'orange',
+                },
+                // header: {
+                //   defaultStyle: {
+                //     border: '1px solid green',
+                //   },
+                // },
+              },
+              // {
+              //   columnName: 'B',
+              //   width: '400px',
+              //   cellStyle: {backgroundColor: 'red'},
+              //   header: {hoverColors: {backgroundColor: 'yellow'}},
+              // },
+            ])
+          );
+          // element.setAttribute('onCellUpdate', aa);
+          // element.setAttribute('displayAddRowCell', false);
+          // element.setAttribute('displayAddColumnCell', false);
         }
       }, 5);
     </script>

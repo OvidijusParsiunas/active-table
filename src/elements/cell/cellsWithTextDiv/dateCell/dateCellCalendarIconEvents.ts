@@ -22,7 +22,7 @@ export class DateCellCalendarIconEvents {
     setTimeout(() => {
       // this is in a timeout as upon selecting text, then clicking on the icon causes the text blur to activate
       // which purges the selected cell ref
-      FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
+      FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex);
       // this is in a timeout because mouseDownIcon is triggered before window mouse down event which calls
       // delete this.overlayElementsState.datePickerCell, thus this setter needs to be called after
       this.overlayElementsState.datePickerCell = cellElement;

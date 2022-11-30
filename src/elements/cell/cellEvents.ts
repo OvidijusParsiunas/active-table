@@ -1,6 +1,7 @@
 import {DataUtils} from '../../utils/insertRemoveStructure/shared/dataUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
+import {EMPTY_STRING} from '../../consts/text';
 import {CellElement} from './cellElement';
 
 // operates in an opt in or out basis for various operations
@@ -14,8 +15,6 @@ interface UpdateCellOptions {
 }
 
 export class CellEvents {
-  public static readonly EMPTY_STRING = '';
-
   private static executeUpdateOpration(operation: keyof UpdateCellOptions, options?: UpdateCellOptions) {
     return options?.[operation] === undefined || options[operation] === true;
   }
@@ -51,8 +50,9 @@ export class CellEvents {
   // prettier-ignore
   public static removeTextIfDefault(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
-    if (etc.defaultCellValue !== CellEvents.EMPTY_STRING && etc.defaultCellValue === textContainerElement.textContent) {
-      CellEvents.updateCell(etc, CellEvents.EMPTY_STRING, rowIndex, columnIndex,
+    const {defaultText} = etc.columnsDetails[columnIndex].settings;
+    if (defaultText !== EMPTY_STRING && defaultText === textContainerElement.textContent) {
+      CellEvents.updateCell(etc, EMPTY_STRING, rowIndex, columnIndex,
         { element: textContainerElement, processText: false });
     }
   }

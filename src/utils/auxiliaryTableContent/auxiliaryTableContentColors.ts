@@ -42,8 +42,8 @@ export class AuxiliaryTableContentColors {
 
   // prettier-ignore
   private static getHoverColorValue(etc: EditableTableComponent,
-      colorKey: keyof CellStateColorProperties, defaultValue: string): string {
-    return etc.auxiliaryTableContentInternal.style?.hoverColors?.[colorKey] || etc.cellStyle[colorKey] || defaultValue;
+      colorKey: keyof CellStateColorProperties, defaultColor: string): string {
+    return etc.auxiliaryTableContentInternal.style?.hoverColors?.[colorKey] || etc.cellStyle[colorKey] || defaultColor;
   }
 
   private static getDefaultColorValue(etc: EditableTableComponent, colorKey: keyof CellStateColorProperties) {

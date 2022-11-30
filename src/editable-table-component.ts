@@ -108,7 +108,7 @@ export class EditableTableComponent extends LitElement {
   columnsDetails: ColumnsDetailsT = [];
 
   @property({type: String})
-  defaultCellValue = '';
+  defaultText = '';
 
   @state()
   tableElementRef: HTMLElement | null = null;
@@ -190,11 +190,11 @@ export class EditableTableComponent extends LitElement {
     const tableElement = TableElement.createInfrastructureElements(this);
     TableElement.addOverlayElements(this, tableElement, this.overlayElementsState, this.areHeadersEditable);
     this.shadowRoot?.appendChild(tableElement);
-    InitialContentsProcessing.preProcess(this.contents, this.defaultCellValue);
+    InitialContentsProcessing.preProcess(this.contents);
     WindowElement.setEvents(this);
     this.onTableUpdate(this.contents);
     DateCellElement.populateDefaultDateTypes();
-    this.columnsSettingsInternal = ColumnSettingsUtils.createInternalMap(this.columnsSettings);
+    this.columnsSettingsInternal = ColumnSettingsUtils.createInternalMap(this.columnsSettings, this.defaultText);
   }
 
   override connectedCallback() {

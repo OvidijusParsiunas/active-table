@@ -4,21 +4,22 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {TableElement} from '../../elements/table/tableElement';
 import {ColumnDetails} from '../columnDetails/columnDetails';
+import {ColumnSettingsUtils} from './columnSettingsUtils';
 import {ColumnDetailsT} from '../../types/columnDetails';
 
 // REF-24
 export class ColumnSettingsWidthUtils {
-  public static isWidthDefined(settings?: ColumnSettingsInternal) {
-    return settings?.width !== undefined || settings?.minWidth !== undefined;
+  public static isWidthDefined(settings: ColumnSettingsInternal) {
+    return settings.width !== undefined || settings.minWidth !== undefined;
   }
 
   // prettier-ignore
   public static getSettingsWidthNumber(tableElement: HTMLElement, settings: ColumnSettingsInternal): SuccessResult {
     const result = settings.minWidth !== undefined ?
-    StringDimensionUtils.generateNumberDimensionFromClientString(
-      'minWidth', tableElement, settings, ColumnDetails.MINIMAL_COLUMN_WIDTH):
-    StringDimensionUtils.generateNumberDimensionFromClientString(
-      'width', tableElement, settings, ColumnDetails.MINIMAL_COLUMN_WIDTH);
+        StringDimensionUtils.generateNumberDimensionFromClientString(
+          'minWidth', tableElement, settings, ColumnDetails.MINIMAL_COLUMN_WIDTH)
+      : StringDimensionUtils.generateNumberDimensionFromClientString(
+          'width', tableElement, settings, ColumnDetails.MINIMAL_COLUMN_WIDTH);
     // Should always return a successful result for column as parent width should technically be determinible
     return result as SuccessResult;
   }
@@ -32,18 +33,18 @@ export class ColumnSettingsWidthUtils {
   }
 
   // prettier-ignore
-  public static changeWidth(etc: EditableTableComponent, columnDetails: ColumnDetailsT,
-      oldSettings: ColumnSettingsInternal | undefined, newSettings: ColumnSettingsInternal, cellElement: HTMLElement) {
+  public static changeWidth(etc: EditableTableComponent, columnDetails: ColumnDetailsT, cellElement: HTMLElement,
+      oldSettings?: ColumnSettingsInternal, newSettings?: ColumnSettingsInternal) {
     let hasWidthChanged = false;
     if (oldSettings && ColumnSettingsWidthUtils.isWidthDefined(oldSettings)) {
       ColumnSettingsWidthUtils.updateColumnWidth(etc.tableElementRef as HTMLElement, cellElement, oldSettings, false);
       hasWidthChanged = true;
     }
-    if (ColumnSettingsWidthUtils.isWidthDefined(newSettings)) {
+    if (newSettings && ColumnSettingsWidthUtils.isWidthDefined(newSettings)) {
       ColumnSettingsWidthUtils.updateColumnWidth(etc.tableElementRef as HTMLElement, cellElement, newSettings, true);
       hasWidthChanged = true;
     }
-    columnDetails.settings = newSettings;
+    columnDetails.settings = newSettings || ColumnSettingsUtils.createDefaultObj(etc.defaultText);
     if (hasWidthChanged) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true);
   }
 }

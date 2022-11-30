@@ -6,6 +6,7 @@ import {CategoryDropdownEvents} from './categoryDropdownEvents';
 import {CategoryDropdownT} from '../../../types/columnDetails';
 import {CategoryDropdownItem} from './categoryDropdownItem';
 import {TableElement} from '../../table/tableElement';
+import {CellText} from '../../../types/tableContents';
 import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
@@ -59,23 +60,24 @@ export class CategoryDropdown {
 
   // prettier-ignore
   public static updateCategoryDropdown(cellElement: HTMLElement, dropdown: CategoryDropdownT,
-      defaultCellValue: string, updateCellText: boolean, matchingCellElement?: HTMLElement) {
+      defaultText: CellText, updateCellText: boolean, matchingCellElement?: HTMLElement) {
     CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(cellElement.children[0] as HTMLElement,
-      dropdown, defaultCellValue, updateCellText, matchingCellElement)
+      dropdown, defaultText, updateCellText, matchingCellElement)
     if (updateCellText) {
       CategoryDropdown.setPosition(dropdown.element, cellElement);
     }
   }
 
-  private static focusItemOnDropdownOpen(textElement: HTMLElement, dropdown: CategoryDropdownT, defaultCellValue: string) {
+  private static focusItemOnDropdownOpen(textElement: HTMLElement, dropdown: CategoryDropdownT, defaultText: CellText) {
     // the updateCellText parameter is set to false for a case where the user clicks on a category cell which has
     // its text with a background color but one for a category that has been deleted, hence we do not want to
     // highlight it with a new background color
-    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, dropdown, defaultCellValue, false);
+    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, dropdown, defaultText, false);
   }
 
+  // prettier-ignore
   public static display(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
-    const {categoryDropdown} = etc.columnsDetails[columnIndex];
+    const {categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
     const {element: dropdownEl, categoryToItem} = categoryDropdown;
     if (Object.keys(categoryToItem).length > 0) {
       CategoryDropdownEvents.set(etc, dropdownEl);
@@ -86,12 +88,11 @@ export class CategoryDropdown {
       CategoryDropdownScrollbar.setProperties(categoryDropdown);
       CategoryDropdown.setPosition(dropdownEl, cellElement);
       const textElement = cellElement.children[0] as HTMLElement;
-      CategoryDropdown.focusItemOnDropdownOpen(textElement, categoryDropdown, etc.defaultCellValue);
+      CategoryDropdown.focusItemOnDropdownOpen(textElement, categoryDropdown, defaultText);
     }
   }
 
   // WORK - will need to populate upfront if user has set a column as category upfront
-  // WORK - potentially allow custom column width px or %
   public static createAndAppend(containerElement: HTMLElement) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.style.maxHeight = '150px';

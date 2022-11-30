@@ -1,19 +1,20 @@
 import {EditableTableComponent} from '../../../editable-table-component';
 import {NumberOfIdenticalCells} from '../../numberOfIdenticalCells';
-import {CellEvents} from '../../../elements/cell/cellEvents';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {VALIDABLE_CELL_TYPE} from '../../../enums/cellType';
 import {ValidateInput} from '../../cellType/validateInput';
+import {CellText} from '../../../types/tableContents';
+import {EMPTY_STRING} from '../../../consts/text';
 
 export class DataUtils {
-  public static createDataArray(length: number, defaultCellValue: string): string[] {
-    return new Array(length).fill(defaultCellValue);
+  public static createEmptyStringDataArray(length: number): string[] {
+    return new Array(length).fill(EMPTY_STRING);
   }
 
-  private static isTextEmpty(defaultValue: string, cellText: string) {
-    if (defaultValue !== CellEvents.EMPTY_STRING) {
+  private static isTextEmpty(defaultText: CellText, cellText: string) {
+    if (defaultText !== EMPTY_STRING) {
       const processedCellText = typeof cellText === 'string' ? cellText.trim() : cellText;
-      return processedCellText === CellEvents.EMPTY_STRING;
+      return processedCellText === EMPTY_STRING;
     }
     return false;
   }
@@ -29,9 +30,9 @@ export class DataUtils {
   // currently etc.columnsDetails is set after the data is inserted which does not allow it to be validated
   // note that NumberOfIdenticalCells.get uses the etc.contents top row, so it needs to be up-to-date
   // prettier-ignore
-  private static shouldTextBeSetToDefault(text: string, defaultCellValue: string, rowIndex: number,
+  private static shouldTextBeSetToDefault(text: string, defaultText: CellText, rowIndex: number,
       duplicateHeadersAllowed: boolean, columnsDetails: ColumnsDetailsT, userSetColumnType?: VALIDABLE_CELL_TYPE) {
-    return DataUtils.isTextEmpty(defaultCellValue, text)
+    return DataUtils.isTextEmpty(defaultText, text)
       || (rowIndex === 0 && (!duplicateHeadersAllowed && NumberOfIdenticalCells.get(text, columnsDetails) > 1))
       || (rowIndex > 0 && userSetColumnType && !DataUtils.isDataValid(userSetColumnType, text));
   }
@@ -39,9 +40,10 @@ export class DataUtils {
   // prettier-ignore
   public static processCellText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellText: string) {
     const trimmedText = typeof cellText === 'string' ? cellText.trim() : cellText;
+    const defaultText = etc.columnsDetails[columnIndex].settings.defaultText as string;
     const shouldBeSetToDefault = DataUtils.shouldTextBeSetToDefault(
-      trimmedText, etc.defaultCellValue, rowIndex, etc.duplicateHeadersAllowed, etc.columnsDetails,
+      trimmedText, defaultText, rowIndex, etc.duplicateHeadersAllowed, etc.columnsDetails,
       etc.columnsDetails[columnIndex]?.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE);
-    return shouldBeSetToDefault ? etc.defaultCellValue : trimmedText;
+    return shouldBeSetToDefault ? defaultText : trimmedText;
   }
 }

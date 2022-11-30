@@ -20,13 +20,11 @@ export class FocusedCellUtils {
     delete focusedCell.type;
   }
 
-  // prettier-ignore
-  public static set(focusedCell: FocusedCell, cellElement: HTMLElement, rowIndex: number, columnIndex: number,
-      defaultCellValue: string) {
+  public static set(focusedCell: FocusedCell, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     focusedCell.element = cellElement;
     focusedCell.rowIndex = rowIndex;
     focusedCell.columnIndex = columnIndex;
-    focusedCell.type = CellTypeTotalsUtils.parseType(focusedCell.element.textContent as string, defaultCellValue);
+    focusedCell.type = CellTypeTotalsUtils.parseType(focusedCell.element.textContent as string);
   }
 
   public static incrementColumnIndex(focusedCell: FocusedCell, newColumnIndex: number) {

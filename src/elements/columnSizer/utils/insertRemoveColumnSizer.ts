@@ -41,7 +41,7 @@ export class InsertRemoveColumnSizer {
     const previousIndex = columnIndex - 1;
     if (previousIndex < 0) return;
     const {columnSizer} = columnsDetails[previousIndex];
-    if (columnsDetails[previousIndex].settings?.width !== undefined || !columnSizer) return;
+    if (columnsDetails[previousIndex].settings.width !== undefined || !columnSizer) return;
     // no need for full creation as there is a need to retain the element and its bindings
     const newColumnSizer = ColumnSizer.createObject(columnSizer.element, columnsDetails, previousIndex, tableElement);
     // cannot simply overwrite columnSizer object as it has already binded to elements
@@ -61,10 +61,10 @@ export class InsertRemoveColumnSizer {
 
   // REF-13
   public static insert(etc: EditableTableComponent, columnsDetails: ColumnsDetailsT, columnIndex: number) {
-    if (columnsDetails[columnIndex].settings?.width !== undefined) return;
+    if (columnsDetails[columnIndex].settings.width !== undefined) return;
     if (etc.tableDimensionsInternal.width !== undefined) {
       columnIndex = InsertRemoveColumnSizer.getNewColumnIndexIfWidthSet(etc.columnsDetails, columnIndex);
-      if (columnIndex === -1 || columnsDetails[columnIndex].settings?.width !== undefined) return;
+      if (columnIndex === -1 || columnsDetails[columnIndex].settings.width !== undefined) return;
     } else {
       // only dynamic width tables have a sizer on the last column - hence only their styles need to be changed
       InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex, etc.tableElementRef as HTMLElement);
@@ -110,10 +110,10 @@ export class InsertRemoveColumnSizer {
     for (let i = columnsDetails.length - 1; i >= 0; i -= 1) {
       const columnDetails = columnsDetails[i];
       // if the column has a width or it is the last column, it should not have a sizer
-      if (columnDetails.settings?.width !== undefined) {
+      if (columnDetails.settings.width !== undefined) {
         if (columnDetails.columnSizer) InsertRemoveColumnSizer.removeSizer(columnDetails);
         // dynamic column traversal (columns without a set width in settings)
-      } else if (columnDetails.settings?.minWidth === undefined) {
+      } else if (columnDetails.settings.minWidth === undefined) {
         if (isLastDynamicColumnFound === false) {
           isLastDynamicColumnFound = true;
           // last column index should not have a sizer

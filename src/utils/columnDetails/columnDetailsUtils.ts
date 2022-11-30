@@ -8,9 +8,9 @@ export class ColumnDetailsUtils {
     const setWidthColumns: ColumnsDetailsT = [];
     for (let i = 0; i < columnsDetails.length; i += 1) {
       const columnDetails = columnsDetails[i];
-      if (columnDetails.settings?.width !== undefined) {
+      if (columnDetails.settings.width !== undefined) {
         setWidthColumns.push(columnDetails);
-      } else if (columnDetails.settings?.minWidth !== undefined) {
+      } else if (columnDetails.settings.minWidth !== undefined) {
         minWidthColumns.push(columnDetails);
       } else {
         dynamicWidthColumns.push(columnDetails);

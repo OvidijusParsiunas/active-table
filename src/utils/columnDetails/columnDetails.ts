@@ -1,4 +1,5 @@
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
+import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CellStateColorProperties} from '../../types/cellStateColors';
 import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
@@ -46,7 +47,7 @@ export class ColumnDetails {
       settings?: ColumnSettingsInternal): ColumnDetailsInitial {
     return {
       elements: [],
-      settings,
+      settings: settings || ColumnSettingsUtils.createDefaultInternal(etc.defaultText),
       headerStateColors: ColumnDetails.createHeaderStateColors(etc, settings),
       bordersOverwrittenBySiblings: {},
     };

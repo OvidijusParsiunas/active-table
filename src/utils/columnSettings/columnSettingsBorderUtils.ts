@@ -56,7 +56,7 @@ export class ColumnSettingsBorderUtils {
   }
 
   private static isSettingsStyleSet(columnDetails: ColumnDetailsT) {
-    return columnDetails.settings?.cellStyle || columnDetails.settings?.header?.defaultStyle;
+    return columnDetails.settings.cellStyle || columnDetails.settings.header?.defaultStyle;
   }
 
   // if current column and sibling have custom setting styles, this does not overwrite anything and the user can

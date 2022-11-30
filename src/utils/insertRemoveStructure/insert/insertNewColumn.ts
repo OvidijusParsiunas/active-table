@@ -7,6 +7,7 @@ import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
 import {TableRow} from '../../../types/tableContents';
+import {EMPTY_STRING} from '../../../consts/text';
 import {LastColumn} from '../shared/lastColumn';
 import {MaximumColumns} from './maximumColumns';
 import {InsertNewCell} from './insertNewCell';
@@ -23,7 +24,7 @@ export class InsertNewColumn {
   private static insertToAllRows(etc: EditableTableComponent, columnIndex: number, columnData?: TableRow) {
     const rowElements = ExtractElements.textRowsArrFromTBody(etc.tableBodyElementRef as HTMLElement, etc.contents);
     rowElements.forEach((rowElement: Node, rowIndex: number) => {
-      const cellText = columnData ? columnData[rowIndex] : etc.defaultCellValue;
+      const cellText = columnData ? columnData[rowIndex] : EMPTY_STRING;
       InsertNewCell.insertToRow(etc, rowElement as HTMLElement, rowIndex, columnIndex, cellText as string, true);
       // TO-DO - potentially display all the time
       setTimeout(() => InsertNewColumn.updateColumns(etc, rowElement as HTMLElement, rowIndex, columnIndex));

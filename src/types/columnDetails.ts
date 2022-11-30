@@ -54,7 +54,7 @@ export interface ColumnDetailsT {
   userSetColumnType: USER_SET_COLUMN_TYPE;
   cellTypeTotals: CellTypeTotals;
   categoryDropdown: CategoryDropdownT;
-  settings?: ColumnSettingsInternal;
+  settings: ColumnSettingsInternal;
   headerStateColors: CellStateColors;
   bordersOverwrittenBySiblings: BordersOverwrittenBySiblings;
 }

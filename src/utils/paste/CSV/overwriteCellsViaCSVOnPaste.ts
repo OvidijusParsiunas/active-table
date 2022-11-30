@@ -7,9 +7,9 @@ import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {DataUtils} from '../../insertRemoveStructure/shared/dataUtils';
-import {TableRow, TableCellText} from '../../../types/tableContents';
 import {CaretPosition} from '../../focusedElements/caretPosition';
 import {CellElementIndex} from '../../elements/cellElementIndex';
+import {TableRow, CellText} from '../../../types/tableContents';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
 import {CellEvents} from '../../../elements/cell/cellEvents';
 import {ArrayUtils} from '../../array/arrayUtils';
@@ -17,11 +17,9 @@ import {CSVRow, CSV} from '../../../types/CSV';
 import {Browser} from '../../browser/browser';
 
 export class OverwriteCellsViaCSVOnPaste {
-  // if the data array does not fill the full structure, fill cells with the default value
-  // prettier-ignore
-  private static createDataArrayWithDefaultCells(
-      arrayLength: number, defaultValue: string, data: CSVRow, dataStartIndex: number) {
-    const newRowData = DataUtils.createDataArray(arrayLength, defaultValue);
+  // if the data does not fill the 2D array, fill cells with empty strings
+  private static createRowDataArrayWithEmptyCells(arrayLength: number, data: CSVRow, dataStartIndex: number) {
+    const newRowData = DataUtils.createEmptyStringDataArray(arrayLength);
     newRowData.splice(dataStartIndex, data.length, ...data);
     return newRowData;
   }
@@ -29,8 +27,8 @@ export class OverwriteCellsViaCSVOnPaste {
   // prettier-ignore
   private static createNewRows(etc: EditableTableComponent, dataForNewRows: CSV, startColumnIndex: number) {
     dataForNewRows.forEach((rowData: CSVRow) => {
-      const newRowData = OverwriteCellsViaCSVOnPaste.createDataArrayWithDefaultCells(
-        etc.contents[0].length, etc.defaultCellValue, rowData, startColumnIndex);
+      const newRowData = OverwriteCellsViaCSVOnPaste.createRowDataArrayWithEmptyCells(
+        etc.contents[0].length, rowData, startColumnIndex);
       InsertNewRow.insert(etc, etc.contents.length, true, newRowData);
     });
   }
@@ -39,8 +37,8 @@ export class OverwriteCellsViaCSVOnPaste {
   private static createNewColumns(etc: EditableTableComponent, dataForNewColumnsByRow: CSV, startRowIndex: number) {
     const dataForNewColumnsByColumn = ArrayUtils.transpose(dataForNewColumnsByRow);
     dataForNewColumnsByColumn.forEach((columnData: CSVRow) => {
-      const newColumnData = OverwriteCellsViaCSVOnPaste.createDataArrayWithDefaultCells(
-        etc.contents.length, etc.defaultCellValue, columnData, startRowIndex);
+      const newColumnData = OverwriteCellsViaCSVOnPaste.createRowDataArrayWithEmptyCells(
+        etc.contents.length, columnData, startRowIndex);
       InsertNewColumn.insert(etc, etc.contents[0].length, newColumnData);
     });
   }
@@ -48,10 +46,10 @@ export class OverwriteCellsViaCSVOnPaste {
   // prettier-ignore
   private static overwriteCell(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, newCellText: string) {
-    const {auxiliaryTableContentInternal: {displayIndexColumn}, defaultCellValue, columnsDetails} = etc;
+    const {auxiliaryTableContentInternal: {displayIndexColumn}, columnsDetails} = etc;
     const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, displayIndexColumn);
     const cellElement = rowElement.children[elementIndex] as HTMLElement;
-    const oldType = CellTypeTotalsUtils.parseType(cellElement.textContent as string, defaultCellValue);
+    const oldType = CellTypeTotalsUtils.parseType(cellElement.textContent as string);
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
     const columnDetails = columnsDetails[columnIndex];
@@ -62,7 +60,7 @@ export class OverwriteCellsViaCSVOnPaste {
     }
     setTimeout(() => {
       // CAUTION-2
-      const newType = CellTypeTotalsUtils.parseType(processedNewCellText, etc.defaultCellValue);
+      const newType = CellTypeTotalsUtils.parseType(processedNewCellText);
       CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(columnDetails, oldType, newType);
     });
   }
@@ -70,7 +68,7 @@ export class OverwriteCellsViaCSVOnPaste {
   // prettier-ignore
   private static overwriteRowData(etc: EditableTableComponent,
       row: TableRow, rowIndex: number, columnIndex: number, rowElement: HTMLElement) {
-    row.forEach((cellText: TableCellText, CSVColumnIndex: number) => {
+    row.forEach((cellText: CellText, CSVColumnIndex: number) => {
       const relativeColumnIndex = columnIndex + CSVColumnIndex;
       OverwriteCellsViaCSVOnPaste.overwriteCell(etc, rowElement, rowIndex, relativeColumnIndex, cellText as string);
     });
@@ -79,12 +77,12 @@ export class OverwriteCellsViaCSVOnPaste {
   // prettier-ignore
   private static setCaretToEndAndHighlightIfCategory(etc: EditableTableComponent, cellElement: HTMLElement,
       columnIndex: number) {
-    const {userSetColumnType, categoryDropdown: dropdown} = etc.columnsDetails[columnIndex];
+    const {userSetColumnType, categoryDropdown: dropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
     if (TEXT_DIV_COLUMN_TYPE[userSetColumnType]) {
       const textElement = cellElement.children[0] as HTMLElement;
       CaretPosition.setToEndOfText(etc, textElement);
       if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-        CategoryDropdown.updateCategoryDropdown(cellElement, dropdown, etc.defaultCellValue, true);
+        CategoryDropdown.updateCategoryDropdown(cellElement, dropdown, defaultText, true);
       }
     } else {
       CaretPosition.setToEndOfText(etc, cellElement);
@@ -95,7 +93,7 @@ export class OverwriteCellsViaCSVOnPaste {
   private static processFocusedCell(etc: EditableTableComponent, columnIndex: number) {
     const cellElement = etc.focusedElements.cell.element as HTMLElement;
     const text = cellElement.textContent as string;
-    etc.focusedElements.cell.type = CellTypeTotalsUtils.parseType(text, etc.defaultCellValue);
+    etc.focusedElements.cell.type = CellTypeTotalsUtils.parseType(text);
     OverwriteCellsViaCSVOnPaste.setCaretToEndAndHighlightIfCategory(etc, cellElement, columnIndex);
   }
 

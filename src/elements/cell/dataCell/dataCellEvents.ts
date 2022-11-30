@@ -57,16 +57,17 @@ export class DataCellEvents {
         DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
       } else if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
         CategoryDropdown.updateCategoryDropdown(textContainerElement.parentElement as HTMLElement,
-          columnDetails.categoryDropdown, this.defaultCellValue, true);
+          columnDetails.categoryDropdown, columnDetails.settings.defaultText, true);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
     }
   }
 
+  // prettier-ignore
   private static updatePastedCellIfCategory(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
-    const {userSetColumnType, categoryDropdown: dropdown} = etc.columnsDetails[columnIndex];
+    const {userSetColumnType, categoryDropdown: dropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
     if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-      CategoryDropdown.updateCategoryDropdown(cellElement, dropdown, etc.defaultCellValue, true);
+      CategoryDropdown.updateCategoryDropdown(cellElement, dropdown, defaultText, true);
     }
   }
 
@@ -96,7 +97,7 @@ export class DataCellEvents {
     FocusedCellUtils.purge(etc.focusedElements.cell);
     setTimeout(() => {
       // CAUTION-2
-      const newType = CellTypeTotalsUtils.parseType(textContainerElement.textContent as string, etc.defaultCellValue);
+      const newType = CellTypeTotalsUtils.parseType(textContainerElement.textContent as string);
       CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(etc.columnsDetails[columnIndex], oldType, newType);
     });
   }
@@ -120,7 +121,7 @@ export class DataCellEvents {
     DataCellEvents.prepareText(this, rowIndex, columnIndex, cellElement);
     // REF-7
     if (this.userKeyEventsState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
-    FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex, this.defaultCellValue);
+    FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex);
   }
 
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {

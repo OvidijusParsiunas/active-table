@@ -4,8 +4,8 @@ import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNe
 import {RowElement} from '../../../elements/table/addNewElements/row/rowElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {IndexColumn} from '../../../elements/indexColumn/indexColumn';
-import {TableCellText, TableRow} from '../../../types/tableContents';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
+import {CellText, TableRow} from '../../../types/tableContents';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ElementDetails} from '../../../types/elementDetails';
 import {MaximumColumns} from './maximumColumns';
@@ -37,7 +37,7 @@ export class InsertNewRow {
       newRowData: TableRow, newRowElement: HTMLElement, rowIndex: number, isNewText: boolean) {
     const {auxiliaryTableContentInternal: {displayIndexColumn, displayAddColumnCell}} = etc;
     if (displayIndexColumn) IndexColumn.createAndPrependToRow(etc, newRowElement, rowIndex);
-    newRowData.forEach((cellText: TableCellText, columnIndex: number) => {
+    newRowData.forEach((cellText: CellText, columnIndex: number) => {
       if (isNewText || InsertNewRow.canStartRenderCellBeAdded(etc, rowIndex, columnIndex)) {
         InsertNewCell.insertToRow(etc, newRowElement, rowIndex, columnIndex, cellText as string, isNewText);
       }
@@ -46,7 +46,7 @@ export class InsertNewRow {
   }
 
   private static insertNewRow(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
-    const newRowData = rowData || DataUtils.createDataArray(etc.contents[0]?.length || 1, etc.defaultCellValue);
+    const newRowData = rowData || DataUtils.createEmptyStringDataArray(etc.contents[0]?.length || 1);
     const newRowElement = RowElement.create();
     etc.tableBodyElementRef?.insertBefore(newRowElement, etc.tableBodyElementRef.children[rowIndex]);
     // don't need a timeout as addition of row with new text is not expensive

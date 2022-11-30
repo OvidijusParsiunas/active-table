@@ -3,6 +3,7 @@ import {EditableTableComponent} from '../../../../editable-table-component';
 import {CellWithTextElement} from '../cellWithTextElement';
 import {CellTextElement} from '../text/cellTextElement';
 import {CategoryCellEvents} from './categoryCellEvents';
+import {EMPTY_STRING} from '../../../../consts/text';
 
 // the logic for cell and text divs is handled here
 export class CategoryCellElement {
@@ -38,9 +39,9 @@ export class CategoryCellElement {
   // prettier-ignore
   public static finaliseEditedText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number,
       processMatching = false) {
-    const {categoryDropdown} = etc.columnsDetails[columnIndex];
+    const {categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
     const color = categoryDropdown.categoryToItem[textElement.textContent as string]?.color;
-    if (textElement.textContent === '' || textElement.textContent === etc.defaultCellValue) {
+    if (textElement.textContent === EMPTY_STRING || textElement.textContent === defaultText) {
       textElement.style.backgroundColor = '';
     } else if (processMatching && color) {
       textElement.style.backgroundColor = color;

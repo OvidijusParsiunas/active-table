@@ -1,5 +1,5 @@
 import {ColumnsDetailsT} from '../types/columnDetails';
-import {TableCellText} from '../types/tableContents';
+import {CellText} from '../types/tableContents';
 
 export class NumberOfIdenticalCells {
   // columnsDetails instead of row from contents because during startup - contents is already be populated and
@@ -9,7 +9,7 @@ export class NumberOfIdenticalCells {
   // prettier-ignore
   public static get(targetText: string, columnsDetails: ColumnsDetailsT) {
     return columnsDetails.map((columnDetails) => {
-      return columnDetails.elements[0].textContent as TableCellText;
-    }).filter((cellText: TableCellText) => cellText === targetText).length;
+      return columnDetails.elements[0].textContent as CellText;
+    }).filter((cellText: CellText) => cellText === targetText).length;
   }
 }
