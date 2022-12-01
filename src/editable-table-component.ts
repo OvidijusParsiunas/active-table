@@ -192,7 +192,6 @@ export class EditableTableComponent extends LitElement {
     this.shadowRoot?.appendChild(tableElement);
     InitialContentsProcessing.preProcess(this.contents);
     WindowElement.setEvents(this);
-    this.onTableUpdate(this.contents);
     DateCellElement.populateDefaultDateTypes();
     this.columnsSettingsInternal = ColumnSettingsUtils.createInternalMap(this.columnsSettings, this.defaultText);
   }

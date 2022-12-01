@@ -32,9 +32,7 @@ export class ColumnSettingsUtils {
 
   private static createInternal(clientSettings: ColumnSettings, defaultTableText: CellText): ColumnSettingsInternal {
     const internalSettings = clientSettings as ColumnSettingsInternal;
-    if (internalSettings.defaultText === undefined) {
-      internalSettings.defaultText = defaultTableText || EMPTY_STRING;
-    }
+    internalSettings.defaultText ??= defaultTableText || EMPTY_STRING;
     return internalSettings;
   }
 

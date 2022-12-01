@@ -9,7 +9,6 @@ import {ColumnsDetailsT} from '../../types/columnDetails';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {CellTypeTotalsUtils} from './cellTypeTotalsUtils';
 import {VALIDABLE_CELL_TYPE} from '../../enums/cellType';
-import {ValidateInput} from './validateInput';
 
 export class UserSetCellType {
   // prettier-ignore
@@ -17,18 +16,15 @@ export class UserSetCellType {
       rowIndex: number, columnIndex: number) {
     const relativeRowIndex = rowIndex + 1;
     const cellElement = columnsDetails[columnIndex].elements[relativeRowIndex];
-    CellEvents.setCellToDefaultIfNeeded(etc, relativeRowIndex, columnIndex, cellElement, false);
+    return CellEvents.setCellToDefaultIfNeeded(etc, relativeRowIndex, columnIndex, cellElement, false);
   }
 
-  private static purgeInvalidCells(etc: EditableTableComponent, columnIndex: number, newType: VALIDABLE_CELL_TYPE) {
+  private static purgeInvalidCells(etc: EditableTableComponent, columnIndex: number) {
     const {contents, columnsDetails} = etc;
     let updateTableEvent = false;
-    contents.slice(1).forEach((row, rowIndex) => {
-      const cellText = row[columnIndex] as string;
-      if (!ValidateInput.validate(cellText, newType)) {
-        UserSetCellType.purgeInvalidCell(etc, columnsDetails, rowIndex, columnIndex);
-        updateTableEvent = true;
-      }
+    contents.slice(1).forEach((_, rowIndex) => {
+      const isUpdated = UserSetCellType.purgeInvalidCell(etc, columnsDetails, rowIndex, columnIndex);
+      if (isUpdated && !updateTableEvent) updateTableEvent = true;
     });
     if (updateTableEvent) etc.onTableUpdate(contents);
   }
@@ -36,7 +32,7 @@ export class UserSetCellType {
   // prettier-ignore
   private static purgeInvalidCellsIfValidable(etc: EditableTableComponent,
       newTypeEnum: VALIDABLE_CELL_TYPE, columnIndex: number) {
-    if (VALIDABLE_CELL_TYPE[newTypeEnum]) UserSetCellType.purgeInvalidCells(etc, columnIndex, newTypeEnum);
+    if (VALIDABLE_CELL_TYPE[newTypeEnum]) UserSetCellType.purgeInvalidCells(etc, columnIndex);
   }
 
   private static set(etc: EditableTableComponent, newTypeEnum: USER_SET_COLUMN_TYPE, columnIndex: number) {
