@@ -1,3 +1,4 @@
+import {EditableTableComponent} from '../../editable-table-component';
 import {DropdownItemEvents} from './dropdownItemEvents';
 import {Dropdown} from './dropdown';
 
@@ -24,7 +25,7 @@ export class DropdownItem {
   }
 
   // no need to sanitize paste as input element already does it
-  public static addInputItem(sRoot: ShadowRoot | null, dropdownElement: HTMLElement) {
+  public static addInputItem(etc: EditableTableComponent, dropdownElement: HTMLElement) {
     const itemElement = DropdownItem.createItem(dropdownElement);
     itemElement.classList.add(DropdownItem.DROPDOWN_INPUT_ITEM_CLASS);
     const inputElement = DropdownItem.createDropdownItemBaseElement('input');
@@ -33,7 +34,7 @@ export class DropdownItem {
     inputElement.spellcheck = false;
     itemElement.appendChild(inputElement);
     dropdownElement.appendChild(itemElement);
-    DropdownItemEvents.addItemEvents(sRoot, inputElement);
+    DropdownItemEvents.addItemEvents(etc.tableElementEventState, inputElement);
   }
 
   public static addPlaneButtonItem(dropdownElement: HTMLElement, text: string, index?: number) {
@@ -49,9 +50,9 @@ export class DropdownItem {
     return itemElement;
   }
 
-  public static addButtonItem(sRoot: ShadowRoot | null, dropdown: HTMLElement, text: string, ...classNames: string[]) {
+  public static addButtonItem(etc: EditableTableComponent, dropdown: HTMLElement, text: string, ...classNames: string[]) {
     const buttonElement = DropdownItem.addPlaneButtonItem(dropdown, text);
-    DropdownItemEvents.addItemEvents(sRoot, buttonElement);
+    DropdownItemEvents.addItemEvents(etc.tableElementEventState, buttonElement);
     if (classNames.length > 0) buttonElement.classList.add(...classNames);
     return buttonElement;
   }
@@ -63,10 +64,10 @@ export class DropdownItem {
     dropdownElement.appendChild(titleElement);
   }
 
-  private static createNestedDropdown(sRoot: ShadowRoot | null, itemText: string[]) {
+  private static createNestedDropdown(etc: EditableTableComponent, itemText: string[]) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.style.top = `-${Number.parseInt(dropdownElement.style.paddingTop) + 22}px`;
-    itemText.forEach((text) => DropdownItem.addButtonItem(sRoot, dropdownElement, text));
+    itemText.forEach((text) => DropdownItem.addButtonItem(etc, dropdownElement, text));
     return dropdownElement;
   }
 
@@ -79,11 +80,11 @@ export class DropdownItem {
   }
 
   // prettier-ignore
-  public static addNestedDropdownItem(sRoot: ShadowRoot | null, dropdownElement: HTMLElement, text: string,
+  public static addNestedDropdownItem(etc: EditableTableComponent, dropdownElement: HTMLElement, text: string,
       itemsText: string[], className?: string) {
     const buttonElement = DropdownItem.addButtonItem(
-      sRoot, dropdownElement, text, DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM, className || '');
-    const nestedDropdown = DropdownItem.createNestedDropdown(sRoot, itemsText);
+      etc, dropdownElement, text, DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM, className || '');
+    const nestedDropdown = DropdownItem.createNestedDropdown(etc, itemsText);
     buttonElement.appendChild(nestedDropdown);
     DropdownItemEvents.addNestedItemEvents(buttonElement);
     return nestedDropdown;

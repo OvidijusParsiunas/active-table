@@ -20,7 +20,7 @@ export class ColumnTypeDropdown {
   // prettier-ignore
   public static addToColumnDropdown(etc: EditableTableComponent, dropdownElement: HTMLElement) {
     const columnTypeDropdown = ColumnTypeDropdownItem.addItems(
-      etc.shadowRoot, dropdownElement, ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS);
+      etc, dropdownElement, ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS);
     etc.overlayElementsState.columnTypeDropdown = columnTypeDropdown;
   }
 }

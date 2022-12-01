@@ -7,8 +7,8 @@ export class ColumnDropdownItem {
   public static readonly SORT_ITEM_CLASS = 'dropdown-sort-item';
 
   // this is used as an ancher to identify the location of below buttons
-  public static addSortButton(sRoot: ShadowRoot | null, dropdownElement: HTMLElement, text: string) {
-    DropdownItem.addButtonItem(sRoot, dropdownElement, text, ColumnDropdownItem.SORT_ITEM_CLASS);
+  public static addSortButton(etc: EditableTableComponent, dropdownElement: HTMLElement, text: string) {
+    DropdownItem.addButtonItem(etc, dropdownElement, text, ColumnDropdownItem.SORT_ITEM_CLASS);
   }
 
   // prettier-ignore

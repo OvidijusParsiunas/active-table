@@ -7,7 +7,7 @@ export class Dropdown {
   // when there is a horizontal overflow (categories) - this automatically stretches all items to the dropdown width
   private static readonly CSS_DISPLAY_VISIBLE = 'grid';
   public static readonly DROPDOWN_WIDTH = 176;
-  private static readonly DROPDOWN_PADDING_TOP_BOTTOM_PX = '4px';
+  public static readonly DROPDOWN_PADDING_TOP_BOTTOM_PX = '4px';
 
   public static createBase() {
     const dropdownElement = document.createElement('div');

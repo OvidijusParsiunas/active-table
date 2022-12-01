@@ -1,12 +1,16 @@
 import {DropdownItemHighlightUtils} from '../../utils/color/dropdownItemHighlightUtils';
+import {TableElementEventState} from '../../types/tableElementEventState';
 import {ElementVisibility} from '../../utils/elements/elementVisibility';
 
 export class DropdownItemEvents {
-  public static addItemEvents(sRoot: ShadowRoot | null, element: HTMLElement) {
-    element.addEventListener('mouseenter', DropdownItemHighlightUtils.highlightNew.bind(sRoot, element));
+  // prettier-ignore
+  public static addItemEvents(tableElementEventState: TableElementEventState, element: HTMLElement) {
+    element.addEventListener('mouseenter',
+      DropdownItemHighlightUtils.highlightNew.bind(this, tableElementEventState, element));
     // the reason why we need mouse leave on the item as well as on mouse enter is because the mouse can leave the dropdown
     // without entering another item
-    element.addEventListener('mouseleave', DropdownItemHighlightUtils.fadeCurrentlyHighlighted.bind(this, sRoot));
+    element.addEventListener('mouseleave',
+      DropdownItemHighlightUtils.fadeCurrentlyHighlighted.bind(this, tableElementEventState));
   }
 
   private static resetDropdownPosition(nestedDropdownElement: HTMLElement) {

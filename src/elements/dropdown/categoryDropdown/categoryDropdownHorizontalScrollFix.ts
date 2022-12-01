@@ -1,10 +1,10 @@
 import {ScrollbarUtils} from '../../../utils/scrollbar/scrollbarUtils';
 import {CategoryDropdownT} from '../../../types/columnDetails';
+import {Dropdown} from '../dropdown';
 
 // REF-4
 export class CategoryDropdownHorizontalScrollFix {
-  private static readonly NEW_BOTTOM_PADDING_IF_PRESENT = '12px';
-  private static readonly DEFAULT_BOTTOM_PADDING_IF_PRESENT = '1px';
+  private static readonly NEW_BOTTOM_PADDING_IF_PRESENT = '8px';
   private static readonly SCROLL_FURTHER_BOTTOM_PX = 14;
 
   public static setPropertiesIfHorizontalScrollPresent(dropdown: CategoryDropdownT) {
@@ -15,7 +15,7 @@ export class CategoryDropdownHorizontalScrollFix {
       element.style.paddingBottom = CategoryDropdownHorizontalScrollFix.NEW_BOTTOM_PADDING_IF_PRESENT;
     } else {
       scrollbarPresence.horizontal = false;
-      element.style.paddingBottom = CategoryDropdownHorizontalScrollFix.DEFAULT_BOTTOM_PADDING_IF_PRESENT;
+      element.style.paddingBottom = Dropdown.DROPDOWN_PADDING_TOP_BOTTOM_PX;
     }
   }
 

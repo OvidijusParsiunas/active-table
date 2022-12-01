@@ -36,7 +36,7 @@ export class ColumnDropdown {
   public static processTextAndHide(etc: EditableTableComponent) {
     const {
       overlayElementsState: {columnDropdown, columnTypeDropdown, fullTableOverlay}, columnsDetails,
-      focusedElements: { cell: {element: cellElement, columnIndex} }, shadowRoot } = etc;
+      focusedElements: { cell: {element: cellElement, columnIndex} }, tableElementEventState } = etc;
     if (!columnDropdown || !fullTableOverlay || !columnTypeDropdown || !cellElement) return;
     if (GenericElementUtils.doesElementExistInDom(cellElement)) {
       ColumnDropdown.processText(etc, columnIndex as number, cellElement);
@@ -47,23 +47,23 @@ export class ColumnDropdown {
     Dropdown.hide(columnDropdown, fullTableOverlay, columnTypeDropdown);
     ColumnTypeDropdownItem.reset(columnTypeDropdown);
     ColumnDropdown.resetDropdownPosition(columnDropdown);
-    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(shadowRoot);
+    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(tableElementEventState);
   }
 
   public static create(etc: EditableTableComponent, areHeadersEditable: boolean) {
     const dropdownElement = Dropdown.createBase();
     ColumnDropdownEvents.set(etc, dropdownElement);
-    if (areHeadersEditable) DropdownItem.addInputItem(etc.shadowRoot, dropdownElement);
+    if (areHeadersEditable) DropdownItem.addInputItem(etc, dropdownElement);
     // WORK - potentially have this as nested dropdown item and the nested dropdown item itself would then have the
     // selected item
     DropdownItem.addTitle(dropdownElement, 'Property type');
     ColumnTypeDropdown.addToColumnDropdown(etc, dropdownElement);
-    ColumnDropdownItem.addSortButton(etc.shadowRoot, dropdownElement, 'Ascending');
-    ColumnDropdownItem.addSortButton(etc.shadowRoot, dropdownElement, 'Descending');
+    ColumnDropdownItem.addSortButton(etc, dropdownElement, 'Ascending');
+    ColumnDropdownItem.addSortButton(etc, dropdownElement, 'Descending');
     // WORK - Include Move Left/Move Right but not as part of default build
-    ColumnDropdown.INSERT_COLUMN_ITEMS[0] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Right');
-    ColumnDropdown.INSERT_COLUMN_ITEMS[1] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Left');
-    DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Delete');
+    ColumnDropdown.INSERT_COLUMN_ITEMS[0] = DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Right');
+    ColumnDropdown.INSERT_COLUMN_ITEMS[1] = DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Left');
+    DropdownItem.addButtonItem(etc, dropdownElement, 'Delete');
     return dropdownElement;
   }
 

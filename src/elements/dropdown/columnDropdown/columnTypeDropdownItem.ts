@@ -45,8 +45,8 @@ export class ColumnTypeDropdownItem {
     });
   }
 
-  public static addItems(sRoot: ShadowRoot | null, dropdownElement: HTMLElement, parentButtonClassName: string) {
+  public static addItems(etc: EditableTableComponent, dropdownElement: HTMLElement, parentButtonClassName: string) {
     const itemsText = Object.keys(USER_SET_COLUMN_TYPE).map((key) => DisplayedCellTypeName.get(key));
-    return DropdownItem.addNestedDropdownItem(sRoot, dropdownElement, '', itemsText, parentButtonClassName);
+    return DropdownItem.addNestedDropdownItem(etc, dropdownElement, '', itemsText, parentButtonClassName);
   }
 }

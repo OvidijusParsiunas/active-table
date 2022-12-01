@@ -18,7 +18,7 @@ export class RowDropdown {
     Dropdown.hide(rowDropdown as HTMLElement, fullTableOverlay as HTMLElement);
     const cellColors = AuxiliaryTableContentColors.getColorsBasedOnParam(rowIndex as number);
     CellHighlightUtils.fade(element as HTMLElement, cellColors.default);
-    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(etc.shadowRoot);
+    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(etc.tableElementEventState);
     setTimeout(() => {
       // in a timeout because upon pressing esc/enter key on dropdown, the window event is fired after which checks it
       delete etc.focusedElements.rowDropdown;
@@ -59,9 +59,9 @@ export class RowDropdown {
     const dropdownElement = Dropdown.createBase();
     RowDropdownEvents.set(etc, dropdownElement);
     // WORK - include Move Up/Move Down, but not part of default build
-    RowDropdown.INSERT_ROW_ITEMS[0] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Above');
-    RowDropdown.INSERT_ROW_ITEMS[1] = DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Insert Below');
-    DropdownItem.addButtonItem(etc.shadowRoot, dropdownElement, 'Delete');
+    RowDropdown.INSERT_ROW_ITEMS[0] = DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Above');
+    RowDropdown.INSERT_ROW_ITEMS[1] = DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Below');
+    DropdownItem.addButtonItem(etc, dropdownElement, 'Delete');
     return dropdownElement;
   }
 }
