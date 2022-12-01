@@ -61,7 +61,7 @@ export class ColumnSettingsStyleUtils {
 
   // prettier-ignore
   public static changeStyle(etc: EditableTableComponent, columnDetails: ColumnDetailsT,
-      oldSettings: ColumnSettingsInternal | undefined, newSettings: ColumnSettingsInternal) {
+      oldSettings: ColumnSettingsInternal | undefined, newSettings?: ColumnSettingsInternal) {
     if (newSettings && (newSettings.cellStyle || newSettings.header)) {
       ColumnSettingsStyleUtils.updateColumnStyle(etc, columnDetails, newSettings, true);
     } else if (oldSettings && (oldSettings.cellStyle || oldSettings.header)) {
