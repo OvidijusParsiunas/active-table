@@ -14,6 +14,7 @@ import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {CellElementIndex} from '../../elements/cellElementIndex';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
+import {CellText} from '../../../types/tableContents';
 import {DataUtils} from '../shared/dataUtils';
 
 export class InsertNewCell {
@@ -30,7 +31,7 @@ export class InsertNewCell {
   // please note that this is run twice in firefox due to the render function being triggered twice
   // prettier-ignore
   private static updateColumnDetailsAndSizers(
-      etc: EditableTableComponent, rowIndex: number, columnIndex: number, text: string, isNewText: boolean) {
+      etc: EditableTableComponent, rowIndex: number, columnIndex: number, text: CellText, isNewText: boolean) {
     const {columnsDetails, categoryDropdownContainer} = etc;
     const columnDetails = columnsDetails[columnIndex];
     if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
@@ -50,7 +51,7 @@ export class InsertNewCell {
 
   // prettier-ignore
   private static insert(etc: EditableTableComponent, rowElement: HTMLElement, newCellElement: HTMLElement,
-      processedCellText: string, isNewText: boolean, rowIndex: number, columnIndex: number) {
+      processedCellText: CellText, isNewText: boolean, rowIndex: number, columnIndex: number) {
     const {auxiliaryTableContentInternal: {displayIndexColumn}, contents, columnsDetails} = etc;
     const columnDetails = columnsDetails[columnIndex];
     columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
@@ -71,7 +72,7 @@ export class InsertNewCell {
     }
   }
 
-  private static create(etc: EditableTableComponent, processedCellText: string, rowIndex: number, columnIndex: number) {
+  private static create(etc: EditableTableComponent, processedCellText: CellText, rowIndex: number, columnIndex: number) {
     const columnDetails = etc.columnsDetails[columnIndex];
     const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
     InsertNewCell.convertCell(etc, columnDetails, rowIndex, columnIndex, newCellElement);
@@ -82,7 +83,7 @@ export class InsertNewCell {
   // the reason for creating object with elements and settings only is because changeWidthsBasedOnColumnInsertRemove
   // needs them to reset all column widths if required. We can worry about adding the other properties in a timeout
   // within the updateColumnDetailsAndSizers method
-  private static insertInitialColumnDetails(etc: EditableTableComponent, cellText: string, index: number) {
+  private static insertInitialColumnDetails(etc: EditableTableComponent, cellText: CellText, index: number) {
     const {columnsDetails, columnsSettingsInternal} = etc;
     const columnDetails = ColumnDetails.createInitial(etc, columnsSettingsInternal[cellText]);
     columnsDetails.splice(index, 0, columnDetails as ColumnDetailsT);
@@ -91,7 +92,7 @@ export class InsertNewCell {
   // isNewText indicates whether rowData is already in the contents state or if it needs to be added
   // prettier-ignore
   public static insertToRow(etc: EditableTableComponent,
-      rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: string, isNewText: boolean) {
+      rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: CellText, isNewText: boolean) {
     if (rowIndex === 0) InsertNewCell.insertInitialColumnDetails(etc, cellText, columnIndex); // REF-13
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);

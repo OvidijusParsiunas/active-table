@@ -3,6 +3,7 @@ import {EditableTableComponent} from '../../editable-table-component';
 export class CaretPosition {
   private static setSelectionToEndOfText(textContainerElement: HTMLElement, selection: Selection) {
     const range = document.createRange();
+    // using textContent so it would grab the text node
     range.setStart(textContainerElement.childNodes[0], textContainerElement.textContent?.length || 0);
     range.collapse(true);
     selection.removeAllRanges();

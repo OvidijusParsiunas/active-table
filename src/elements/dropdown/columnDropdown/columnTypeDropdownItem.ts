@@ -3,6 +3,7 @@ import {ColumnTypeDropdownItemEvents} from './columnTypeDropdownItemEvents';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {ColumnDetailsT} from '../../../types/columnDetails';
+import {CellElement} from '../../cell/cellElement';
 import {DropdownItem} from '../dropdownItem';
 
 export class ColumnTypeDropdownItem {
@@ -24,7 +25,7 @@ export class ColumnTypeDropdownItem {
 
   private static setActiveItem(items: HTMLElement[], targetItemText: string) {
     items.forEach((item) => {
-      if (item.textContent === targetItemText) {
+      if (CellElement.getText(item) == targetItemText) {
         // TO-DO - perhaps instead of highlighting - use a tick mark
         item.classList.add(ColumnTypeDropdownItem.ACTIVE_ITEM_CLASS);
       }

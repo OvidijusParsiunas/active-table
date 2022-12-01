@@ -1,3 +1,4 @@
+import {CellElement} from '../elements/cell/cellElement';
 import {ColumnsDetailsT} from '../types/columnDetails';
 import {CellText} from '../types/tableContents';
 
@@ -7,9 +8,9 @@ export class NumberOfIdenticalCells {
   // to default, however the end headers that are not duplicate may not be displayed due to max columns,
   // hence using columnsDetails to mark duplicates as headers are added instead
   // prettier-ignore
-  public static get(targetText: string, columnsDetails: ColumnsDetailsT) {
+  public static get(targetText: CellText, columnsDetails: ColumnsDetailsT) {
     return columnsDetails.map((columnDetails) => {
-      return columnDetails.elements[0].textContent as CellText;
+      return CellElement.getText(columnDetails.elements[0]);
     }).filter((cellText: CellText) => cellText === targetText).length;
   }
 }

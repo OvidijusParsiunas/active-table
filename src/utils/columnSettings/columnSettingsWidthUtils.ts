@@ -44,7 +44,7 @@ export class ColumnSettingsWidthUtils {
       ColumnSettingsWidthUtils.updateColumnWidth(etc.tableElementRef as HTMLElement, cellElement, newSettings, true);
       hasWidthChanged = true;
     }
-    columnDetails.settings = newSettings || ColumnSettingsUtils.createDefaultObj(etc.defaultText);
+    columnDetails.settings = newSettings || ColumnSettingsUtils.createDefaultInternal(etc.defaultText);
     if (hasWidthChanged) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true);
   }
 }

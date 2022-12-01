@@ -13,7 +13,7 @@ export class ColumnTypeDropdownItemEvents {
     items.forEach((dropdownChildElement) => {
       const dropdownItem = dropdownChildElement as HTMLElement;
       dropdownItem.onclick = ColumnTypeDropdownItemEvents.onClickMiddleware.bind(etc,
-        UserSetCellType.setIfNew.bind(etc, dropdownItem.textContent as string, columnIndex));
+        UserSetCellType.setIfNew.bind(etc, dropdownItem.innerText, columnIndex));
     });
   }
 }

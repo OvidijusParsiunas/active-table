@@ -2,6 +2,7 @@ import {CellWithTextEvents} from '../../cell/cellsWithTextDiv/cellWithTextEvents
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownScrollbar} from './categoryDropdownScrollbar';
 import {CategoryDropdownT} from '../../../types/columnDetails';
+import {CellElement} from '../../cell/cellElement';
 import {DropdownItem} from '../dropdownItem';
 
 export class CategoryDeleteButton {
@@ -14,7 +15,7 @@ export class CategoryDeleteButton {
     const buttonElement = event.target as HTMLElement;
     const containerElement = buttonElement.parentElement as HTMLElement;
     const itemElement = containerElement.parentElement as HTMLElement;
-    delete categoryDropdown.categoryToItem[itemElement.children[0].textContent as string];
+    delete categoryDropdown.categoryToItem[CellElement.getText(itemElement.children[0] as HTMLElement)];
     itemElement.remove();
     if (Object.keys(categoryDropdown.categoryToItem).length === 0) {
       CellWithTextEvents.programmaticBlur(this);
@@ -26,7 +27,7 @@ export class CategoryDeleteButton {
   private static createIcon() {
     const iconElement = document.createElement('div');
     iconElement.classList.add(CategoryDeleteButton.CATEGORY_DELETE_BUTTON_ICON_CLASS);
-    iconElement.textContent = CategoryDeleteButton.DELETE_ICON_TEXT;
+    iconElement.innerText = CategoryDeleteButton.DELETE_ICON_TEXT;
     return iconElement;
   }
 

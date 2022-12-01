@@ -39,7 +39,7 @@ export class DropdownItem {
   public static addPlaneButtonItem(dropdownElement: HTMLElement, text: string, index?: number) {
     const itemElement = DropdownItem.createItem(dropdownElement);
     const textElement = DropdownItem.createDropdownItemBaseElement('div');
-    textElement.textContent = text;
+    textElement.innerText = text;
     itemElement.append(textElement);
     if (index !== undefined && dropdownElement.children[index]) {
       dropdownElement.insertBefore(itemElement, dropdownElement.children[index]);
@@ -59,7 +59,7 @@ export class DropdownItem {
   public static addTitle(dropdownElement: HTMLElement, text: string) {
     const titleElement = DropdownItem.createDropdownItemBaseElement('div');
     titleElement.classList.add(DropdownItem.DROPDOWN_ITEM_CLASS, DropdownItem.DROPDOWN_TITLE_ITEM_CLASS);
-    titleElement.textContent = text;
+    titleElement.innerText = text;
     dropdownElement.appendChild(titleElement);
   }
 

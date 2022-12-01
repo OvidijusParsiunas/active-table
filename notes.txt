@@ -55,8 +55,8 @@ much of a better user experience as possible. It is true that in those instances
 category cells are used, but at least it will only be problematic in those specific cells.
 
 REF-6
-Knowing that data cell elements contain a text node and category cells a text element with a text node inside,
-the .textContent grabs the text when used on the cell or the text element for all cases
+Knowing that data cell elements contain a text node and category cells contain a text element with a text node inside,
+the .innerText grabs the text when used on the cell or the text element for all cases (CAUTION-1 when not to trim it)
 
 REF-7
 Because there is no way in firefox to distinguish if element focus was fired by tab key, the cellKeyEventState is used
@@ -225,6 +225,14 @@ to be added (incl. render) even when preserveNarrowColumns is true.
 REF-25
 Given that the add new row button is not always visible and there is no css selector that can identify the last visible row, we manually
 mark the last visible row with an id. This is done to not display bottom border if last row cells contain one in their style settings.
+
+CAUTION-1
+The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
+does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()
+removes them, hence using this to set text on another cell will set it without the important <br> elements which will make it difficult
+to programmatically set the pointer position on that cell
+The reason why trim() is used is because the new line characters make it difficult to compare cell text to an actual string or use it
+for other programmatic needs.
 
 CAUTION-2
 When resizing the table, take note of some async code that was waiting to be executed before the resize was triggered:

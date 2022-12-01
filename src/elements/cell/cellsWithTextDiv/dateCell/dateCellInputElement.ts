@@ -1,6 +1,7 @@
 import {DateCellCalendarIconElement} from './dateCellCalendarIconElement';
 import {RegexUtils} from '../../../../utils/regex/regexUtils';
 import {DateCellElement} from './dateCellElement';
+import {CellElement} from '../../cellElement';
 
 export class DateCellInputElement {
   public static readonly ELEMENT_TYPE = 'date';
@@ -12,7 +13,7 @@ export class DateCellInputElement {
   }
 
   public static updateInputBasedOnTextDiv(dateType: string, cellElement: HTMLElement) {
-    const dateValue = DateCellInputElement.convertTextToInputValue(cellElement.textContent as string, dateType);
+    const dateValue = DateCellInputElement.convertTextToInputValue(CellElement.getText(cellElement), dateType);
     DateCellInputElement.extractInputElementFromCell(cellElement).value = dateValue;
   }
 
@@ -60,7 +61,7 @@ export class DateCellInputElement {
 
   public static addDateInputElement(cellElement: HTMLElement, textElement: HTMLElement, dateType: string) {
     const inputContainer = DateCellInputElement.createInputElementContainer();
-    const inputElement = DateCellInputElement.createInputElement(textElement.textContent as string, dateType);
+    const inputElement = DateCellInputElement.createInputElement(CellElement.getText(textElement), dateType);
     inputContainer.appendChild(inputElement);
     const svgImage = DateCellCalendarIconElement.get();
     inputContainer.appendChild(svgImage);

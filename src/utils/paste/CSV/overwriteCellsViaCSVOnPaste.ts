@@ -10,6 +10,7 @@ import {DataUtils} from '../../insertRemoveStructure/shared/dataUtils';
 import {CaretPosition} from '../../focusedElements/caretPosition';
 import {CellElementIndex} from '../../elements/cellElementIndex';
 import {TableRow, CellText} from '../../../types/tableContents';
+import {CellElement} from '../../../elements/cell/cellElement';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
 import {CellEvents} from '../../../elements/cell/cellEvents';
 import {ArrayUtils} from '../../array/arrayUtils';
@@ -49,7 +50,7 @@ export class OverwriteCellsViaCSVOnPaste {
     const {auxiliaryTableContentInternal: {displayIndexColumn}, columnsDetails} = etc;
     const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, displayIndexColumn);
     const cellElement = rowElement.children[elementIndex] as HTMLElement;
-    const oldType = CellTypeTotalsUtils.parseType(cellElement.textContent as string);
+    const oldType = CellTypeTotalsUtils.parseType(CellElement.getText(cellElement));
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
     const columnDetails = columnsDetails[columnIndex];
@@ -92,7 +93,7 @@ export class OverwriteCellsViaCSVOnPaste {
   // prettier-ignore
   private static processFocusedCell(etc: EditableTableComponent, columnIndex: number) {
     const cellElement = etc.focusedElements.cell.element as HTMLElement;
-    const text = cellElement.textContent as string;
+    const text = CellElement.getText(cellElement);
     etc.focusedElements.cell.type = CellTypeTotalsUtils.parseType(text);
     OverwriteCellsViaCSVOnPaste.setCaretToEndAndHighlightIfCategory(etc, cellElement, columnIndex);
   }

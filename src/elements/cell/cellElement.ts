@@ -11,6 +11,7 @@ import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {HeaderCellEvents} from './headerCell/headerCellEvents';
 import {DataCellEvents} from './dataCell/dataCellEvents';
 import {Browser} from '../../utils/browser/browser';
+import {CellText} from '../../types/tableContents';
 import {CSSStyle} from '../../types/cssStyle';
 
 export class CellElement {
@@ -67,22 +68,32 @@ export class CellElement {
     }
   }
 
+  // The reason why .trim() is used is because innerText/textContent property does not just return the cell text, but
+  // additionally the new line characters (\n) which represent <br> elements within the cell that make it difficult
+  // to compare cell text to other strings or use them for other programmatic purposes.
+  // CAUTION-1 - The returned string should not be used to set text on other cells as .trim() removes \n chars for
+  // <br> tags which are used to set the pointer position.
+  public static getText(element: HTMLElement) {
+    return element.innerText.trim();
+  }
+
   // this is used for case where element could be cell element that contains a text div element,
   // hence we need to set the text into the correct container
-  private static setText(element: HTMLElement, text: string) {
+  // CAUTION-1 - be careful that the text does not come from above method
+  private static setText(element: HTMLElement, text: CellText) {
     // if category or date cell
     if (element.children[0]?.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS)) {
-      element.children[0].textContent = text;
+      (element.children[0] as HTMLElement).innerText = text as string;
     } else {
-      element.textContent = text;
+      element.innerText = text as string;
     }
   }
 
   // set text is optional as some functions may only need to augment the cell
   // prettier-ignore
-  public static processAndSetTextOnCell(etc: EditableTableComponent, textContainerElement: HTMLElement, text: string,
+  public static processAndSetTextOnCell(etc: EditableTableComponent, textContainerElement: HTMLElement, text: CellText,
       isUndo: boolean, setText = true) {
-    if (setText) CellElement.setText(textContainerElement, text);
+    if (setText) CellElement.setText(textContainerElement, text as string);
     // called in all browsers for consistency
     FirefoxCaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo);
   }
@@ -95,21 +106,21 @@ export class CellElement {
     }
   }
 
-  private static createCellDOMElement(etc: EditableTableComponent, cellText: string, colIndex: number, isHeader: boolean) {
+  private static createCellDOMElement(etc: EditableTableComponent, text: CellText, colIndex: number, isHeader: boolean) {
     const {cellStyle, header, columnsDetails, tableElementRef} = etc;
     const columnDetails = columnsDetails[colIndex];
     const cellElement = CellElement.create(cellStyle, isHeader, isHeader ? header.defaultStyle || {} : {});
     const {settings} = columnDetails;
     if (settings) ColumnSettingsStyleUtils.setSettingsStyleOnCell(settings, cellElement, isHeader);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, cellElement); // REF-23
-    CellElement.processAndSetTextOnCell(etc, cellElement, cellText, false);
+    CellElement.processAndSetTextOnCell(etc, cellElement, text, false);
     CellElement.prepContentEditable(cellElement, isHeader);
     // overwritten again if static table
     if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
     return cellElement;
   }
 
-  public static createCellElement(etc: EditableTableComponent, cellText: string, rowIndex: number, columnIndex: number) {
+  public static createCellElement(etc: EditableTableComponent, cellText: CellText, rowIndex: number, columnIndex: number) {
     const cellElement = CellElement.createCellDOMElement(etc, cellText, columnIndex, rowIndex === 0);
     CellElement.setCellEvents(etc, cellElement, rowIndex, columnIndex);
     return cellElement;

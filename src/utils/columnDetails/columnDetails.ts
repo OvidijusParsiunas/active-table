@@ -14,16 +14,16 @@ export class ColumnDetails {
 
   // prettier-ignore
   private static getHeaderDefaultColor(etc: EditableTableComponent,
-      key: keyof CellStateColorProperties, defaultValue: string, settings?: ColumnSettingsInternal) {
+      key: keyof CellStateColorProperties, defaultColor: string, settings?: ColumnSettingsInternal) {
     return settings?.header?.defaultStyle?.[key] || settings?.cellStyle?.[key] ||
-      etc.header.defaultStyle?.[key] || etc.cellStyle[key] || defaultValue;
+      etc.header.defaultStyle?.[key] || etc.cellStyle[key] || defaultColor;
   }
 
   // prettier-ignore
   private static getHeaderHoverColor(etc: EditableTableComponent,
-      key: keyof CellStateColorProperties, defaultValue: string, settings?: ColumnSettingsInternal) {
+      key: keyof CellStateColorProperties, defaultColor: string, settings?: ColumnSettingsInternal) {
     return settings?.header?.hoverColors?.[key] || etc.header.hoverColors?.[key] ||
-      ColumnDetails.getHeaderDefaultColor(etc, key, defaultValue, settings);
+      ColumnDetails.getHeaderDefaultColor(etc, key, defaultColor, settings);
   }
 
   // prettier-ignore

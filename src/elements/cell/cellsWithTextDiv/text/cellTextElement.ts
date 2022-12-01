@@ -9,7 +9,7 @@ export class CellTextElement {
   public static readonly CELL_TEXT_DIV_CLASS = 'cell-text-div';
 
   private static set(cellElement: HTMLElement, textElement: HTMLElement) {
-    cellElement.textContent = '';
+    cellElement.innerText = '';
     cellElement.contentEditable = 'false';
     // not really part of the bug, but in the same area
     if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeTabIndex(cellElement);
@@ -18,14 +18,14 @@ export class CellTextElement {
 
   private static createTextElement(text: string) {
     const textElement = document.createElement('div');
-    textElement.textContent = text;
+    textElement.innerText = text;
     textElement.classList.add(CellTextElement.CELL_TEXT_DIV_CLASS);
     CellElement.prepContentEditable(textElement, false);
     return textElement;
   }
 
   public static setCellTextAsAnElement(cellElement: HTMLElement) {
-    const textElement = CellTextElement.createTextElement(cellElement.textContent as string);
+    const textElement = CellTextElement.createTextElement(cellElement.innerText); // CAUTION-1
     CellTextElement.set(cellElement, textElement);
     return textElement;
   }

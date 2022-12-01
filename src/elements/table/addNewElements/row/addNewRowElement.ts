@@ -21,7 +21,7 @@ export class AddNewRowElement {
   }
 
   public static setDefaultStyle(addNewRowCell: HTMLElement) {
-    addNewRowCell.textContent = '+ New';
+    addNewRowCell.innerText = '+ New';
     addNewRowCell.style.width = '';
   }
 

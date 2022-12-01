@@ -6,7 +6,7 @@ export class DataCellElement {
   // prettier-ignore
   private static convertCellFromCategoryToData(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, cell: HTMLElement) {
-    cell.textContent = cell.children[0].textContent;
+    cell.innerText = (cell.children[0] as HTMLElement).innerText; // CAUTION-1
     CellElement.prepContentEditable(cell, false);
     DataCellEvents.setEvents(etc, cell, rowIndex, columnIndex);
   }

@@ -16,8 +16,8 @@ export class CellWithTextElement {
       // and this if statement also called every time, however no efficiency issues have been seen on
       // the browser so far
       if (shouldResetContents) {
-        const text = (cellElement.children[0] as HTMLElement).textContent as string;
-        cellElement.textContent = text;
+        const text = (cellElement.children[0] as HTMLElement).innerText as string; // CAUTION-1
+        cellElement.innerText = text;
       }
       const relativeRowIndex = dataRowIndex + 1;
       convertCell(etc, relativeRowIndex, columnIndex, cellElement);

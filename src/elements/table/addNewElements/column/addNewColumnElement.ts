@@ -40,7 +40,7 @@ export class AddNewColumnElement {
   private static createHeaderCell(etc: EditableTableComponent) {
     const headerCell = AddNewColumnElement.createCell(etc, 'th');
     headerCell.style.width = AddNewColumnElement.DEFAULT_WIDTH_PX;
-    headerCell.textContent = '+';
+    headerCell.innerText = '+';
     Object.assign(headerCell.style, etc.header, AuxiliaryTableContentColors.CELL_COLORS.header.default);
     return headerCell;
   }

@@ -32,7 +32,7 @@ export class DataCellEvents {
   // prettier-ignore
   private static setTextColorBasedOnValidity(textContainerElement: HTMLElement, userSetColumnType: VALIDABLE_CELL_TYPE) {
     textContainerElement.style.color =
-      ValidateInput.validate(textContainerElement.textContent as string, userSetColumnType)
+      ValidateInput.validate(CellElement.getText(textContainerElement), userSetColumnType)
         ? DataCellEvents.DEFAULT_TEXT_COLOR : DataCellEvents.INVALID_TEXT_COLOR;
   }
 
@@ -46,7 +46,7 @@ export class DataCellEvents {
     // which is not processed here as its textContent property value is empty and the date value needs to be processed
     const textContainerElement = inputEvent.target as HTMLElement;
     if (DateCellInputElement.isInputElement(textContainerElement)) return;
-    const text = textContainerElement.textContent as string;
+    const text = CellElement.getText(textContainerElement);
     // sanitizePastedTextContent causes inputType to no longer be insertFromPaste, hence using this instead
     if (!this.userKeyEventsState[KEYBOARD_EVENT.PASTE]) {
       const isUndo = inputEvent.inputType === UNDO_INPUT_TYPE;
@@ -81,7 +81,7 @@ export class DataCellEvents {
       const cellElement = event.target as HTMLElement;
       setTimeout(() => {
         DataCellEvents.updatePastedCellIfCategory(this, cellElement, columnIndex);
-        CellEvents.updateCell(this, cellElement.textContent as string, rowIndex, columnIndex, {processText: false});
+        CellEvents.updateCell(this, CellElement.getText(cellElement), rowIndex, columnIndex, {processText: false});
       });
     }
   }
@@ -97,7 +97,7 @@ export class DataCellEvents {
     FocusedCellUtils.purge(etc.focusedElements.cell);
     setTimeout(() => {
       // CAUTION-2
-      const newType = CellTypeTotalsUtils.parseType(textContainerElement.textContent as string);
+      const newType = CellTypeTotalsUtils.parseType(CellElement.getText(textContainerElement));
       CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(etc.columnsDetails[columnIndex], oldType, newType);
     });
   }

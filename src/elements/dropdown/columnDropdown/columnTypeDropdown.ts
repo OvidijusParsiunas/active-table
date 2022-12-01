@@ -6,14 +6,14 @@ export class ColumnTypeDropdown {
   // this item activates the column type dropdown from the column dropdown
   private static readonly COLUMN_TYPE_ITEM_CLASS = 'dropdown-column-type-item';
 
-  public static getColumnTypeItemText(dropdownElement: HTMLElement) {
+  public static getColumnTypeItemText(dropdownElement: HTMLElement): HTMLElement {
     const columnTypeItems = dropdownElement.getElementsByClassName(ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS)[0];
-    return columnTypeItems.children[0];
+    return columnTypeItems.children[0] as HTMLElement;
   }
 
   public static setUp(etc: EditableTableComponent, dropdownElement: HTMLElement, columnIndex: number) {
     const textElement = ColumnTypeDropdown.getColumnTypeItemText(dropdownElement);
-    textElement.textContent = DisplayedCellTypeName.get(etc.columnsDetails[columnIndex].activeColumnType);
+    textElement.innerText = DisplayedCellTypeName.get(etc.columnsDetails[columnIndex].activeColumnType);
     ColumnTypeDropdownItem.setUp(etc, textElement.nextSibling as HTMLElement, columnIndex);
   }
 

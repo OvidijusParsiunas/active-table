@@ -2,6 +2,7 @@ import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {HasRerendered} from '../render/hasRerendered';
+import {CellText} from '../../types/tableContents';
 import {EMPTY_STRING} from '../../consts/text';
 import {ValidateInput} from './validateInput';
 
@@ -22,23 +23,24 @@ export class CellTypeTotalsUtils {
     };
   }
 
-  private static parseValidable(cellValue: string) {
+  private static parseValidable(cellText: CellText) {
     const validableCellTypeKeys = Object.keys(VALIDABLE_CELL_TYPE) as (keyof typeof VALIDABLE_CELL_TYPE)[];
     for (let i = 0; i < validableCellTypeKeys.length; i += 1) {
-      if (ValidateInput.VALIDATORS[validableCellTypeKeys[i]](cellValue)) return validableCellTypeKeys[i];
+      // cellText can be number but regex .test() expects a string input in typescript
+      if (ValidateInput.VALIDATORS[validableCellTypeKeys[i]](cellText as string)) return validableCellTypeKeys[i];
     }
     return null;
   }
 
-  public static parseType(cellValue: string): CELL_TYPE {
-    if (cellValue === EMPTY_STRING) {
+  public static parseType(cellText: CellText): CELL_TYPE {
+    if (cellText === EMPTY_STRING) {
       return CELL_TYPE.Default;
     }
-    const parsedCellType = CellTypeTotalsUtils.parseValidable(cellValue);
+    const parsedCellType = CellTypeTotalsUtils.parseValidable(cellText);
     if (!parsedCellType) return CELL_TYPE.Text;
     // REF-3
     if (parsedCellType === VALIDABLE_CELL_TYPE.Date_D_M_Y) {
-      if (ValidateInput.validate(cellValue, ACTIVE_COLUMN_TYPE.Date_M_D_Y)) return CELL_TYPE.AllDateFormats;
+      if (ValidateInput.validate(cellText, ACTIVE_COLUMN_TYPE.Date_M_D_Y)) return CELL_TYPE.AllDateFormats;
     }
     return parsedCellType;
   }
@@ -62,13 +64,13 @@ export class CellTypeTotalsUtils {
     }
   }
 
-  public static incrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, text: string) {
-    const type = CellTypeTotalsUtils.parseType(text);
+  public static incrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, cellText: CellText) {
+    const type = CellTypeTotalsUtils.parseType(cellText);
     CellTypeTotalsUtils.changeTypeAndSetColumnType(columnDetails, [CellTypeTotalsUtils.incrementType.bind(this, type)]);
   }
 
-  public static decrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, text: string) {
-    const type = CellTypeTotalsUtils.parseType(text);
+  public static decrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, cellText: CellText) {
+    const type = CellTypeTotalsUtils.parseType(cellText);
     CellTypeTotalsUtils.changeTypeAndSetColumnType(columnDetails, [CellTypeTotalsUtils.decrementType.bind(this, type)]);
   }
 

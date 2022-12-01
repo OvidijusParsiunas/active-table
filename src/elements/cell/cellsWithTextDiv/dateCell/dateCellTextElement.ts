@@ -15,7 +15,7 @@ export class DateCellTextElement {
       dateArr[dateTypeToProperties.structureIndexes.year] = integerArr[0];
       return dateArr.join(dateTypeToProperties.separator);
     }
-    return defaultText as string;
+    return defaultText;
   }
 
   public static setCellTextAsAnElement(cellElement: HTMLElement) {

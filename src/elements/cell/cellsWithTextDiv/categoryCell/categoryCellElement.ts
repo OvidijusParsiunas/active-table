@@ -4,6 +4,7 @@ import {CellWithTextElement} from '../cellWithTextElement';
 import {CellTextElement} from '../text/cellTextElement';
 import {CategoryCellEvents} from './categoryCellEvents';
 import {EMPTY_STRING} from '../../../../consts/text';
+import {CellElement} from '../../cellElement';
 
 // the logic for cell and text divs is handled here
 export class CategoryCellElement {
@@ -25,9 +26,9 @@ export class CategoryCellElement {
   // prettier-ignore
   private static convertExistingCellFromDataToCategory(etc: EditableTableComponent, rowIndex: number, columnIndex: number,
       cellElement: HTMLElement) {
-    const { categoryDropdown: {categoryToItem}} = etc.columnsDetails[columnIndex];
+    const {categoryDropdown: {categoryToItem}} = etc.columnsDetails[columnIndex];
     CategoryCellElement.convertCellFromDataToCategory(etc, rowIndex, columnIndex,
-      cellElement, categoryToItem[cellElement.textContent as string]?.color || '');
+      cellElement, categoryToItem[CellElement.getText(cellElement)]?.color || '');
   }
 
   // prettier-ignore
@@ -40,8 +41,8 @@ export class CategoryCellElement {
   public static finaliseEditedText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number,
       processMatching = false) {
     const {categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
-    const color = categoryDropdown.categoryToItem[textElement.textContent as string]?.color;
-    if (textElement.textContent === EMPTY_STRING || textElement.textContent === defaultText) {
+    const color = categoryDropdown.categoryToItem[CellElement.getText(textElement)]?.color;
+    if (CellElement.getText(textElement) === EMPTY_STRING || CellElement.getText(textElement) === defaultText) {
       textElement.style.backgroundColor = '';
     } else if (processMatching && color) {
       textElement.style.backgroundColor = color;

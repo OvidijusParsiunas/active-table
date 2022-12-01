@@ -15,7 +15,7 @@ export class NoContentStubElement {
 
   public static convertToStub(addNewRowCell: HTMLElement) {
     addNewRowCell.classList.add(NoContentStubElement.NO_CONTENT_STUB_CLASS);
-    addNewRowCell.textContent = '+';
+    addNewRowCell.innerText = '+';
     addNewRowCell.style.width = `${TableDimensionsUtils.MINIMAL_TABLE_WIDTH}px`;
   }
 

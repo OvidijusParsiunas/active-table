@@ -11,7 +11,7 @@ export class DataUtils {
     return new Array(length).fill(EMPTY_STRING);
   }
 
-  private static isTextEmpty(defaultText: CellText, cellText: string) {
+  private static isTextEmpty(defaultText: CellText, cellText: CellText) {
     if (defaultText !== EMPTY_STRING) {
       const processedCellText = typeof cellText === 'string' ? cellText.trim() : cellText;
       return processedCellText === EMPTY_STRING;
@@ -19,7 +19,7 @@ export class DataUtils {
     return false;
   }
 
-  private static isDataValid(userSetColumnType: VALIDABLE_CELL_TYPE, text: string) {
+  private static isDataValid(userSetColumnType: VALIDABLE_CELL_TYPE, text: CellText) {
     if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
       return ValidateInput.validate(text, userSetColumnType);
     }
@@ -30,7 +30,7 @@ export class DataUtils {
   // currently etc.columnsDetails is set after the data is inserted which does not allow it to be validated
   // note that NumberOfIdenticalCells.get uses the etc.contents top row, so it needs to be up-to-date
   // prettier-ignore
-  private static shouldTextBeSetToDefault(text: string, defaultText: CellText, rowIndex: number,
+  private static shouldTextBeSetToDefault(text: CellText, defaultText: CellText, rowIndex: number,
       duplicateHeadersAllowed: boolean, columnsDetails: ColumnsDetailsT, userSetColumnType?: VALIDABLE_CELL_TYPE) {
     return DataUtils.isTextEmpty(defaultText, text)
       || (rowIndex === 0 && (!duplicateHeadersAllowed && NumberOfIdenticalCells.get(text, columnsDetails) > 1))
@@ -38,7 +38,7 @@ export class DataUtils {
   }
 
   // prettier-ignore
-  public static processCellText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellText: string) {
+  public static processCellText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellText: CellText) {
     const trimmedText = typeof cellText === 'string' ? cellText.trim() : cellText;
     const defaultText = etc.columnsDetails[columnIndex].settings.defaultText as string;
     const shouldBeSetToDefault = DataUtils.shouldTextBeSetToDefault(

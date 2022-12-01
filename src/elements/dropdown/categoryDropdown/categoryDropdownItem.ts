@@ -5,21 +5,22 @@ import {CategoryDropdownItemEvents} from './categoryDropdownItemEvents';
 import {CellText, TableContents} from '../../../types/tableContents';
 import {CategoryDeleteButton} from './categoryDeleteButton';
 import {CellDetails} from '../../../types/focusedCell';
+import {CellElement} from '../../cell/cellElement';
 import {EMPTY_STRING} from '../../../consts/text';
 import {CellEvents} from '../../cell/cellEvents';
 import {Color} from '../../../utils/color/color';
 import {DropdownItem} from '../dropdownItem';
 
 interface CategoryToColor {
-  [cellText: string]: string;
+  [cellText: CellText]: string;
 }
 
 export class CategoryDropdownItem {
   // prettier-ignore
   private static updateCellElementIfNotUpdated(etc: EditableTableComponent,
       activeItem: HTMLElement, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
-    const newText = (activeItem.children[0] as HTMLElement).textContent as string;
-    if ((etc.contents[rowIndex][columnIndex] as string) !== newText) {
+    const newText = CellElement.getText(activeItem.children[0] as HTMLElement);
+    if ((etc.contents[rowIndex][columnIndex]) !== newText) {
       CellEvents.updateCell(etc, newText, rowIndex, columnIndex, {processText: false, element: textElement});
     }
   }
@@ -34,7 +35,7 @@ export class CategoryDropdownItem {
   // prettier-ignore
   public static addNewCategory(etc: EditableTableComponent, textElement: HTMLElement, dropdown: CategoryDropdownT,
       color?: string) {
-    const newCategory = textElement.textContent as string;
+    const newCategory = CellElement.getText(textElement);
     const newColor = color || Color.getLatestPasteleColorAndSetNew();
     textElement.style.backgroundColor = newColor;
     CategoryDropdownItem.addCategoryItem(etc, newCategory, newColor, dropdown);
@@ -45,8 +46,8 @@ export class CategoryDropdownItem {
   private static updateCellTextBgColor(itemElement: HTMLElement | undefined, textElement: HTMLElement,
       dropdown: CategoryDropdownT, defaultText: CellText) {
     if (itemElement) {
-      textElement.style.backgroundColor = dropdown.categoryToItem[textElement.textContent as string].color;
-    } else if (textElement.textContent === EMPTY_STRING || textElement.textContent === defaultText) {
+      textElement.style.backgroundColor = dropdown.categoryToItem[CellElement.getText(textElement)].color;
+    } else if (CellElement.getText(textElement) === EMPTY_STRING || CellElement.getText(textElement) === defaultText) {
       textElement.style.backgroundColor = '';
     } else {
       textElement.style.backgroundColor = Color.getLatestPasteleColor();
@@ -73,7 +74,7 @@ export class CategoryDropdownItem {
   public static attemptHighlightMatchingCellCategoryItem(textElement: HTMLElement, dropdown: CategoryDropdownT,
       defaultText: CellText, updateCellText: boolean, matchingCellElement?: HTMLElement) {
     const {activeItems, categoryToItem} = dropdown;
-    const targetText = textElement.textContent as string;
+    const targetText = CellElement.getText(textElement);
     const itemElement = matchingCellElement || categoryToItem[targetText]?.element;
     if (!itemElement || activeItems.matchingWithCellText !== itemElement) {
       // this is used to preserve the ability for the user to still allow the use of arrow keys to traverse the dropdown
@@ -145,7 +146,7 @@ export class CategoryDropdownItem {
   private static aggregateCategoryToColor(contents: TableContents, columnIndex: number, defaultText: CellText) {
     const categoryToColor: CategoryToColor = {};
     contents.slice(1).forEach((row) => {
-      const cellText = row[columnIndex] as string;
+      const cellText = row[columnIndex];
       categoryToColor[cellText] = Color.getLatestPasteleColorAndSetNew();
     });
     delete categoryToColor[defaultText];

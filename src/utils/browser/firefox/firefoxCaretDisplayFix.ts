@@ -1,5 +1,7 @@
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CaretPosition} from '../../focusedElements/caretPosition';
+import {CellElement} from '../../../elements/cell/cellElement';
+import {EMPTY_STRING} from '../../../consts/text';
 
 // REF-2
 // textContainerElement can be data cell element or text element from a category cell
@@ -36,7 +38,7 @@ export class FirefoxCaretDisplayFix {
   }
 
   private static addBRPaddingToEmptyCell(textContainerElement: HTMLElement, text: string) {
-    if (text === '' && textContainerElement.childNodes.length === 0) {
+    if (text === EMPTY_STRING && textContainerElement.childNodes.length === 0) {
       textContainerElement.appendChild(document.createElement(FirefoxCaretDisplayFix.BR_TAG_NAME));
     }
   }
@@ -46,8 +48,8 @@ export class FirefoxCaretDisplayFix {
   // natively firefox adds a 'br' element to replace the text when the user deletes it when clicking backspace for each
   // letter however it does not for the cases outlined previously, hence this is needed
   public static toggleCellTextBRPadding(etc: EditableTableComponent, textContainerElement: HTMLElement, isUndo: boolean) {
-    const text = textContainerElement.textContent as string;
-    if (isUndo && text !== '') {
+    const text = CellElement.getText(textContainerElement);
+    if (isUndo && text !== EMPTY_STRING) {
       // if the user deletes all text then clicks undo, the <br> element would cause the text to be on a new line
       FirefoxCaretDisplayFix.removeBRPadding(etc, textContainerElement);
     } else {

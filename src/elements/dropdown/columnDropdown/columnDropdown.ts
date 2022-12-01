@@ -1,16 +1,17 @@
-import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximumColumns';
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
+import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximumColumns';
 import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
+import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnDropdownItemEvents} from './columnDropdownItemEvents';
 import {DropdownItemNavigation} from '../dropdownItemNavigation';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
 import {ColumnDropdownEvents} from './columnDropdownEvents';
 import {ColumnDropdownItem} from './columnDropdownItem';
 import {ColumnTypeDropdown} from './columnTypeDropdown';
+import {CellElement} from '../../cell/cellElement';
 import {CellEvents} from '../../cell/cellEvents';
 import {DropdownItem} from '../dropdownItem';
 import {PX} from '../../../types/dimensions';
@@ -27,7 +28,7 @@ export class ColumnDropdown {
   }
 
   private static processText(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
-    etc.contents[0][columnIndex] = (cellElement.textContent as string).trim();
+    etc.contents[0][columnIndex] = CellElement.getText(cellElement);
     CellEvents.setCellToDefaultIfNeeded(etc, 0, columnIndex as number, cellElement);
   }
 

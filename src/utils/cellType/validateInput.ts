@@ -1,5 +1,6 @@
 import {ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
 import {VALIDABLE_CELL_TYPE} from '../../enums/cellType';
+import {CellText} from '../../types/tableContents';
 
 type VALIDATORS = {[key in VALIDABLE_CELL_TYPE]: (input: string) => boolean};
 
@@ -26,8 +27,9 @@ export class ValidateInput {
     [ACTIVE_COLUMN_TYPE.Date_M_D_Y]: (input: string) => ValidateInput.REGEX[ACTIVE_COLUMN_TYPE.Date_M_D_Y].test(input),
   };
 
-  public static validate(cellText: string, userSetColumnType: VALIDABLE_CELL_TYPE) {
-    return ValidateInput.VALIDATORS[userSetColumnType](cellText);
+  public static validate(cellText: CellText, userSetColumnType: VALIDABLE_CELL_TYPE) {
+    // cellText can be number but regex .test() expects a string input in typescript
+    return ValidateInput.VALIDATORS[userSetColumnType](cellText as string);
   }
 }
 
@@ -61,10 +63,10 @@ export class ValidateInput {
 // // prettier-ignore
 // public static preventInsertionIfInvalid(etc: EditableTableComponent, cellElement: HTMLElement,
 //     rowIndex: number, columnIndex: number) {
-//   if (!ValidateInput.VALIDATORS[USER_SET_COLUMN_TYPE.Number]?.(cellElement.textContent as string)) {
+//   if (!ValidateInput.VALIDATORS[USER_SET_COLUMN_TYPE.Number]?.(CellElement.getText(cellElement)) {
 //     const selection = ValidateInput.getGetSelectionFunc(etc);
 //     const anchor = selection?.anchorOffset;
-//     cellElement.textContent = etc.contents[rowIndex][columnIndex] as string;
+//     cellElement.innerText = etc.contents[rowIndex][columnIndex];
 //     if (selection !== undefined && selection !== null && anchor !== undefined) {
 //       ValidateInput.resetRange(cellElement, selection, anchor);
 //     }

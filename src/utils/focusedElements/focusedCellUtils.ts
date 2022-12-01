@@ -1,4 +1,5 @@
 import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
+import {CellElement} from '../../elements/cell/cellElement';
 import {FocusedCell} from '../../types/focusedCell';
 
 export class FocusedCellUtils {
@@ -24,7 +25,7 @@ export class FocusedCellUtils {
     focusedCell.element = cellElement;
     focusedCell.rowIndex = rowIndex;
     focusedCell.columnIndex = columnIndex;
-    focusedCell.type = CellTypeTotalsUtils.parseType(focusedCell.element.textContent as string);
+    focusedCell.type = CellTypeTotalsUtils.parseType(CellElement.getText(focusedCell.element));
   }
 
   public static incrementColumnIndex(focusedCell: FocusedCell, newColumnIndex: number) {

@@ -19,7 +19,7 @@ export class IndexColumn {
     textRowsArr.forEach((row, rowIndex) => {
       const indexCell = row.children[0] as HTMLElement;
       const relativeIndex = startIndex + rowIndex;
-      indexCell.textContent = String(relativeIndex);
+      indexCell.innerText = String(relativeIndex);
     });
     UpdateIndexColumnWidth.update(etc, textRowsArr.length === 0 ? undefined : textRowsArr);
   }
@@ -43,7 +43,7 @@ export class IndexColumn {
 
   private static createDataCell(etc: EditableTableComponent, rowIndex: number) {
     const dataCell = IndexColumn.createCell(etc, false);
-    dataCell.textContent = String(rowIndex);
+    dataCell.innerText = String(rowIndex);
     return dataCell;
   }
 

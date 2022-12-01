@@ -16,6 +16,7 @@ import {customElement, property, state} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
+import {CellText, TableContents} from './types/tableContents';
 import {UserSetColumnSizerStyle} from './types/columnSizer';
 import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
@@ -25,7 +26,6 @@ import {OverlayElements} from './types/overlayElements';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
-import {TableContents} from './types/tableContents';
 import {Browser} from './utils/browser/browser';
 import {Render} from './utils/render/render';
 import {CSSStyle} from './types/cssStyle';
@@ -57,7 +57,7 @@ export class EditableTableComponent extends LitElement {
   // REF-20
   // check if types for this work
   @property({converter: LITElementTypeConverters.convertToFunction})
-  onCellUpdate: (newText: string, cellRowIndex: number, cellColumnIndex: number, updateType: CELL_UPDATE_TYPE) => void =
+  onCellUpdate: (newText: CellText, cellRowIndex: number, cellColumnIndex: number, updateType: CELL_UPDATE_TYPE) => void =
     () => {};
 
   @property({converter: LITElementTypeConverters.convertToFunction})
