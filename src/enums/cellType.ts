@@ -2,8 +2,8 @@ import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from './columnType';
 
 // these are not accessable to the user
 enum AUXILIARY {
-  // this is used for a cell that has the defaultText
-  Default = 'Default',
+  // this is used for a cell that has no text
+  Empty = 'Empty',
   // this is used to calculate the amount of dates that apply for both d/m/y and m/d/y formats
   AllDateFormats = 'AllDateFormats',
 }

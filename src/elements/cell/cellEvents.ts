@@ -51,6 +51,7 @@ export class CellEvents {
     return false;
   }
 
+  // TO-DO allow the user to disable this feature and allow default elements to be categories
   // prettier-ignore
   public static removeTextIfDefault(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {

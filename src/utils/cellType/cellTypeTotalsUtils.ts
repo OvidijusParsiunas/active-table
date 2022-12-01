@@ -17,7 +17,7 @@ export class CellTypeTotalsUtils {
       [CELL_TYPE.Date_D_M_Y]: 0,
       [CELL_TYPE.Date_M_D_Y]: 0,
       [CELL_TYPE.AllDateFormats]: 0,
-      [CELL_TYPE.Default]: 0,
+      [CELL_TYPE.Empty]: 0,
       // this type will never be incremented, but is here as a stub for its cell type
       [CELL_TYPE.Category]: 0,
     };
@@ -33,9 +33,7 @@ export class CellTypeTotalsUtils {
   }
 
   public static parseType(cellText: CellText): CELL_TYPE {
-    if (cellText === EMPTY_STRING) {
-      return CELL_TYPE.Default;
-    }
+    if (cellText === EMPTY_STRING) return CELL_TYPE.Empty;
     const parsedCellType = CellTypeTotalsUtils.parseValidable(cellText);
     if (!parsedCellType) return CELL_TYPE.Text;
     // REF-3
@@ -100,14 +98,14 @@ export class CellTypeTotalsUtils {
     const cellTypes = Object.keys(cellTypeTotals) as unknown as CELL_TYPE[];
     // the logic does not take defaults into consideration as a column type, so if we have default as '-' and
     // the column contains the following data ['-','-',2,4], the column type is number
-    const numberOfRowsWithDefaultText = cellTypeTotals[CELL_TYPE.Default];
+    const numberOfRowsWithDefaultText = cellTypeTotals[CELL_TYPE.Empty];
     const numberOfRichRows = numberOfDataRows - numberOfRowsWithDefaultText;
     // if the column has nothing but defaults, the column type is set to whatever the default should be
     if (numberOfRichRows === 0) return CellTypeTotalsUtils.DEFAULT_COLUMN_TYPE;
     const dateType = CellTypeTotalsUtils.getDateTypeIfAllDates(cellTypeTotals, numberOfRichRows);
     if (dateType) return dateType;
     for (let i = 0; i < cellTypes.length; i += 1) {
-      if (cellTypes[i] !== CELL_TYPE.Default) {
+      if (cellTypes[i] !== CELL_TYPE.Empty) {
         if (cellTypeTotals[cellTypes[i]] === numberOfRichRows) {
           return cellTypes[i] as ACTIVE_COLUMN_TYPE;
         }

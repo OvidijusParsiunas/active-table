@@ -1,6 +1,7 @@
 import {ColumnSettings, ColumnSettingsInternal, ColumnsSettings, ColumnsSettingsMap} from '../../types/columnsSettings';
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
+import {ColumnSettingsDefaultTextUtils} from './columnSettingsDefaultTextUtils';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
@@ -14,7 +15,9 @@ export class ColumnSettingsUtils {
   private static change(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number,
       oldSettings?: ColumnSettingsInternal, newSettings?: ColumnSettingsInternal) {
     const columnDetails = etc.columnsDetails[columnIndex];
+    ColumnSettingsDefaultTextUtils.unsetDefaultText(etc, columnDetails, columnIndex);
     columnDetails.settings = newSettings || ColumnSettingsUtils.createDefaultInternal(etc.defaultText);
+    ColumnSettingsDefaultTextUtils.setDefaultText(etc, columnDetails, columnIndex);
     ColumnSettingsWidthUtils.changeWidth(etc, cellElement, oldSettings, newSettings);
     InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
     ColumnSettingsStyleUtils.changeStyle(etc, columnDetails, oldSettings, newSettings);
