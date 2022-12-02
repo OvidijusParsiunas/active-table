@@ -143,21 +143,27 @@ export class CategoryDropdownItem {
     });
   }
 
-  private static aggregateCategoryToColor(contents: TableContents, columnIndex: number, defaultText: CellText) {
+  // prettier-ignore
+  private static postProcessCategoryToColor(isDefaultTextRemovable: boolean,
+      categoryToColor: CategoryToColor, defaultText: CellText) {
+    if (isDefaultTextRemovable) delete categoryToColor[defaultText];
+  }
+
+  private static aggregateCategoryToColor(contents: TableContents, columnIndex: number) {
     const categoryToColor: CategoryToColor = {};
     contents.slice(1).forEach((row) => {
       const cellText = row[columnIndex];
       categoryToColor[cellText] = Color.getLatestPasteleColorAndSetNew();
     });
-    delete categoryToColor[defaultText];
     return categoryToColor;
   }
 
   // prettier-ignore
   public static populateItems(etc: EditableTableComponent, columnIndex: number) {
     const {contents, columnsDetails} = etc;
-    const {categoryDropdown, settings: {defaultText}} = columnsDetails[columnIndex];
-    const categoryToColor = CategoryDropdownItem.aggregateCategoryToColor(contents, columnIndex, defaultText);
+    const {categoryDropdown, settings: {defaultText, isDefaultTextRemovable}} = columnsDetails[columnIndex];
+    const categoryToColor = CategoryDropdownItem.aggregateCategoryToColor(contents, columnIndex);
+    CategoryDropdownItem.postProcessCategoryToColor(isDefaultTextRemovable, categoryToColor, defaultText);
     CategoryDropdownItem.addCategoryItems(etc, categoryToColor, categoryDropdown);
   }
 }

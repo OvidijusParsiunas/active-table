@@ -19,7 +19,7 @@
     <!-- <div style="width: 20px; height: 20px; float: left"></div> -->
     <!-- when the table reaches the parent limit it does a jump down because of the above :/ -->
     <div>
-      <editable-table-component id="etc-element" defaultText="-"></editable-table-component>
+      <editable-table-component id="etc-element" defaultText=""></editable-table-component>
     </div>
     <script>
       const myValue = [
@@ -29,6 +29,9 @@
       const element = document.getElementById('etc-element');
       const aa = (content, row, column, type) => {
         console.log(content, row, column, type);
+      };
+      const tableUpdate = (content) => {
+        console.log(content);
       };
       setTimeout(() => {
         if (element) {
@@ -63,6 +66,7 @@
                     border: '1px solid green',
                   },
                 },
+                isDefaultTextRemovable: true,
                 defaultText: 'ab',
               },
               {
@@ -89,6 +93,7 @@
             ])
           );
           // element.setAttribute('onCellUpdate', aa);
+          element.setAttribute('onTableUpdate', tableUpdate);
           // element.setAttribute('displayAddRowCell', false);
           // element.setAttribute('displayAddColumnCell', false);
         }

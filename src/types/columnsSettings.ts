@@ -8,6 +8,7 @@ import {CSSStyle} from './cssStyle';
 interface Parent {
   columnName: string;
   defaultText?: CellText;
+  isDefaultTextRemovable?: boolean; // true by default
   cellStyle?: CSSStyle;
   header?: HoverableElementStyleClient;
   type?: boolean;
@@ -56,7 +57,7 @@ export type ColumnSettingsInternal = InterfacesUnion<BuildInternalSettingsInterf
 
 // Interfaces extends Parent allows the Interfaces type to be a union of types - allowing this to return a union of types
 export type BuildInternalSettingsInterfacesUnion<Interfaces> = Interfaces extends Parent
-  ? Omit<SetRequired<Interfaces, 'defaultText'>, 'columnName'>
+  ? Omit<SetRequired<Interfaces, 'defaultText' | 'isDefaultTextRemovable'>, 'columnName'>
   : never;
 
 // should be used internally

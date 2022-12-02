@@ -40,9 +40,10 @@ export class CategoryCellElement {
   // prettier-ignore
   public static finaliseEditedText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number,
       processMatching = false) {
-    const {categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
+    const {categoryDropdown, settings: {defaultText, isDefaultTextRemovable}} = etc.columnsDetails[columnIndex];
     const color = categoryDropdown.categoryToItem[CellElement.getText(textElement)]?.color;
-    if (CellElement.getText(textElement) === EMPTY_STRING || CellElement.getText(textElement) === defaultText) {
+    if (CellElement.getText(textElement) === EMPTY_STRING
+        || (isDefaultTextRemovable && CellElement.getText(textElement) === defaultText)) {
       textElement.style.backgroundColor = '';
     } else if (processMatching && color) {
       textElement.style.backgroundColor = color;

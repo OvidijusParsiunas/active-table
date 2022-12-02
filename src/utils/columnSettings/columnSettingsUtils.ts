@@ -35,13 +35,14 @@ export class ColumnSettingsUtils {
     if (oldSettings !== newSettings) ColumnSettingsUtils.change(etc, cellElement, columnIndex, oldSettings, newSettings);
   }
 
-  public static createDefaultInternal(defaultTableText: CellText) {
-    return {defaultText: defaultTableText || EMPTY_STRING};
+  public static createDefaultInternal(defaultTableText: CellText): ColumnSettingsInternal {
+    return {defaultText: defaultTableText || EMPTY_STRING, isDefaultTextRemovable: true};
   }
 
   private static createInternal(clientSettings: ColumnSettings, defaultTableText: CellText): ColumnSettingsInternal {
     const internalSettings = clientSettings as ColumnSettingsInternal;
     internalSettings.defaultText ??= defaultTableText || EMPTY_STRING;
+    internalSettings.isDefaultTextRemovable ??= true;
     return internalSettings;
   }
 
