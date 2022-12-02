@@ -21,6 +21,6 @@ export class ColumnTypeDropdown {
   public static addToColumnDropdown(etc: EditableTableComponent, dropdownElement: HTMLElement) {
     const columnTypeDropdown = ColumnTypeDropdownItem.addItems(
       etc, dropdownElement, ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS);
-    etc.overlayElementsState.columnTypeDropdown = columnTypeDropdown;
+    etc.activeOverlayElements.columnTypeDropdown = columnTypeDropdown;
   }
 }

@@ -18,7 +18,7 @@ export class WindowEvents {
     if (this.columnsDetails[columnIndex]?.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryCellEvents.keyDownText(this, rowIndex, columnIndex, event);
     }
-    if (Dropdown.isDisplayed(this.overlayElementsState.rowDropdown)) {
+    if (Dropdown.isDisplayed(this.activeOverlayElements.rowDropdown)) {
       RowDropdownEvents.windowOnKeyDown(this, event);
     }
   }
@@ -36,7 +36,7 @@ export class WindowEvents {
     // handle the click event instead (full table overlay element for column dropdown)
     // and table element for the other closable elements  
     if ((event.target as HTMLElement).tagName === EditableTableComponent.ELEMENT_TAG) return;
-    const {overlayElementsState: {columnDropdown, rowDropdown}, focusedElements} = this
+    const {activeOverlayElements: {columnDropdown, rowDropdown}, focusedElements} = this
     // if the user clicks outside of the shadow dom and a dropdown is open, close it
     if (Dropdown.isDisplayed(rowDropdown)) {
       RowDropdown.hide(this);
@@ -47,17 +47,17 @@ export class WindowEvents {
     // clicked, hence once that happens, we close the dropdown programmatically as follows
     } else if (focusedElements.categoryDropdown) {
       CellWithTextEvents.programmaticBlur(this);
-    } else if (this.overlayElementsState.datePickerCell) {
-      DateCellInputElement.toggle(this.overlayElementsState.datePickerCell, false);
-      delete this.overlayElementsState.datePickerCell;
+    } else if (this.activeOverlayElements.datePickerCell) {
+      DateCellInputElement.toggle(this.activeOverlayElements.datePickerCell, false);
+      delete this.activeOverlayElements.datePickerCell;
     }
   }
 
   public static onMouseUp(this: EditableTableComponent) {
-    if (this.tableElementEventState.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseUp(this);
+    if (this.activeOverlayElements.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseUp(this);
   }
 
   public static onMouseMove(this: EditableTableComponent, event: MouseEvent) {
-    if (this.tableElementEventState.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseMove(this, event.movementX);
+    if (this.activeOverlayElements.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseMove(this, event.movementX);
   }
 }

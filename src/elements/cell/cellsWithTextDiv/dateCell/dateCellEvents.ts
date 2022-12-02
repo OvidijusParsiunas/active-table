@@ -13,7 +13,7 @@ export class DateCellEvents {
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
       const cellElement = event.target as HTMLElement;
       // if the date picker is opened, do not hide container
-      if (this.overlayElementsState.datePickerCell === cellElement) return;
+      if (this.activeOverlayElements.datePickerCell === cellElement) return;
       DateCellInputElement.toggle(cellElement, false);
     }
   }

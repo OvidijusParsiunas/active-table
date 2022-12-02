@@ -10,7 +10,7 @@ export class RowDropdownEvents {
   // instead we need to focus it programmatically here. Once focused, the actual dropdown events can take over.
   // prettier-ignore
   public static windowOnKeyDown(etc: EditableTableComponent, event: KeyboardEvent) {
-    const {overlayElementsState: {rowDropdown, fullTableOverlay}, shadowRoot} = etc;
+    const {activeOverlayElements: {rowDropdown, fullTableOverlay}, shadowRoot} = etc;
     if (etc.focusedElements.rowDropdown || !rowDropdown || !fullTableOverlay) return;
     if (event.key === KEYBOARD_KEY.ENTER || event.key === KEYBOARD_KEY.ESCAPE) {
       RowDropdown.hide(etc);

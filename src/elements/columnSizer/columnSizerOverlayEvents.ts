@@ -12,7 +12,7 @@ export class ColumnSizerOverlayEvents {
   public static overlayMouseEnter(this: EditableTableComponent, columnSizer: ColumnSizerT) {
     columnSizer.isSizerHovered = true;
     // mouse up on sizer triggers this event, but we do not want to execute it here as the animation will not be correct
-    if (columnSizer.isMouseUpOnSizer || this.tableElementEventState.selectedColumnSizer) return;
+    if (columnSizer.isMouseUpOnSizer || this.activeOverlayElements.selectedColumnSizer) return;
     const {width} = columnSizer.styles.hover;
     ColumnSizerElement.display(columnSizer.element);
     ColumnSizerElement.setTransitionTime(columnSizer.element);
@@ -44,7 +44,7 @@ export class ColumnSizerOverlayEvents {
   public static overlayMouseLeave(this: EditableTableComponent, columnSizer: ColumnSizerT) {
     columnSizer.isSizerHovered = false;
     // in safari - mouse leave is fired after mouse up, hence we have thie columnSizer.isMouseUpOnSizer check
-    if (this.tableElementEventState.selectedColumnSizer || columnSizer.isMouseUpOnSizer) return;
+    if (this.activeOverlayElements.selectedColumnSizer || columnSizer.isMouseUpOnSizer) return;
     const {element: sizerElement, styles: sizerStyles} = columnSizer;
     ColumnSizerElement.unsetElementsToDefault(sizerElement, sizerStyles.default.width);
     // cannot use columnSizer.isSizerHovered because it can be set to false before this method is called, hence using
@@ -52,7 +52,7 @@ export class ColumnSizerOverlayEvents {
     const isHovered = ColumnSizerElement.isHovered(sizerElement);
     // only reset if the user is definitely not hovering over it
     setTimeout(() => {
-      if (!this.tableElementEventState.selectedColumnSizer && !columnSizer.isSizerHovered) {
+      if (!this.activeOverlayElements.selectedColumnSizer && !columnSizer.isSizerHovered) {
         ColumnSizerOverlayEvents.unsetColorDuringTransition(columnSizer);
         ColumnSizerElement.hideWhenCellNotHovered(columnSizer, isHovered);
       }
@@ -68,6 +68,6 @@ export class ColumnSizerOverlayEvents {
     MovableColumnSizerElement.display(tableBodyElementRef as HTMLElement, columnSizer, displayAddRowCell);
     ColumnSizerElement.unsetElementsToDefault(sizerElement, sizerStyles.default.width);
     ColumnSizerElement.setBackgroundImage(sizerElement, sizerStyles.default.backgroundImage);
-    this.tableElementEventState.selectedColumnSizer = SelectedColumnSizer.get(this, sizerNumber);
+    this.activeOverlayElements.selectedColumnSizer = SelectedColumnSizer.get(this, sizerNumber);
   }
 }

@@ -14,11 +14,11 @@ export class RowDropdown {
 
   // prettier-ignore
   public static hide(etc: EditableTableComponent) {
-    const {overlayElementsState: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element, rowIndex}}} = etc;
+    const {activeOverlayElements: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element, rowIndex}}} = etc;
     Dropdown.hide(rowDropdown as HTMLElement, fullTableOverlay as HTMLElement);
     const cellColors = AuxiliaryTableContentColors.getColorsBasedOnParam(rowIndex as number);
     CellHighlightUtils.fade(element as HTMLElement, cellColors.default);
-    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(etc.tableElementEventState);
+    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(etc.activeOverlayElements);
     setTimeout(() => {
       // in a timeout because upon pressing esc/enter key on dropdown, the window event is fired after which checks it
       delete etc.focusedElements.rowDropdown;
@@ -45,8 +45,8 @@ export class RowDropdown {
   }
 
   public static display(this: EditableTableComponent, rowIndex: number, event: MouseEvent) {
-    const dropdownElement = this.overlayElementsState.rowDropdown as HTMLElement;
-    const fullTableOverlayElement = this.overlayElementsState.fullTableOverlay as HTMLElement;
+    const dropdownElement = this.activeOverlayElements.rowDropdown as HTMLElement;
+    const fullTableOverlayElement = this.activeOverlayElements.fullTableOverlay as HTMLElement;
     RowDropdownItemEvents.set(this, rowIndex, dropdownElement);
     RowDropdown.updateItemsStyle(this);
     const cellElement = event.target as HTMLElement;

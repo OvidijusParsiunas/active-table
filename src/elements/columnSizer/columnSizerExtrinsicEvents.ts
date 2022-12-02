@@ -17,7 +17,7 @@ export class ColumnSizerExtrinsicEvents {
 
   // prettier-ignore
   public static windowMouseMove(etc: EditableTableComponent, newXMovement: number) {
-    const {tableElementEventState: {selectedColumnSizer}, columnsDetails} = etc;
+    const {activeOverlayElements: {selectedColumnSizer}, columnsDetails} = etc;
     if (selectedColumnSizer) {
       const {moveLimits, element} = selectedColumnSizer;
       selectedColumnSizer.mouseMoveOffset += newXMovement;
@@ -37,8 +37,8 @@ export class ColumnSizerExtrinsicEvents {
 
   // prettier-ignore
   private static mouseUp(etc: EditableTableComponent) {
-    const {tableElementEventState, columnsDetails, tableDimensionsInternal, tableElementRef} = etc;
-    const selectedColumnSizer = tableElementEventState.selectedColumnSizer as SelectedColumnSizerT;
+    const {activeOverlayElements, columnsDetails, tableDimensionsInternal, tableElementRef} = etc;
+    const selectedColumnSizer = activeOverlayElements.selectedColumnSizer as SelectedColumnSizerT;
     const {columnSizer, headerCell, sizerNumber} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(
       selectedColumnSizer.element.id, columnsDetails);
     ColumnSizerExtrinsicEvents.setWidth(selectedColumnSizer, tableElementRef as HTMLElement, tableDimensionsInternal,
@@ -73,10 +73,10 @@ export class ColumnSizerExtrinsicEvents {
   // prettier-ignore
   public static windowMouseUp(etc: EditableTableComponent) {
     const {columnSizer} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(
-      (etc.tableElementEventState.selectedColumnSizer as SelectedColumnSizerT).element.id, etc.columnsDetails);
+      (etc.activeOverlayElements.selectedColumnSizer as SelectedColumnSizerT).element.id, etc.columnsDetails);
     ColumnSizerExtrinsicEvents.mouseUp(etc);
     ColumnSizerExtrinsicEvents.mouseUpNotOnSizer(columnSizer);
-    delete etc.tableElementEventState.selectedColumnSizer;
+    delete etc.activeOverlayElements.selectedColumnSizer;
   }
 
   private static mouseUpOnSizer(columnSizer: ColumnSizerT) {
@@ -91,7 +91,7 @@ export class ColumnSizerExtrinsicEvents {
   // this method is used to get what exact element was clicked on as window events just returns the component as the target
   // prettier-ignore
   public static tableMouseUp(etc: EditableTableComponent, target: HTMLElement) {
-    const selectedColumnSizer = etc.tableElementEventState.selectedColumnSizer as SelectedColumnSizerT;
+    const selectedColumnSizer = etc.activeOverlayElements.selectedColumnSizer as SelectedColumnSizerT;
     const {columnSizer} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(
       selectedColumnSizer.element.id, etc.columnsDetails);
     ColumnSizerExtrinsicEvents.mouseUp(etc);
@@ -101,6 +101,6 @@ export class ColumnSizerExtrinsicEvents {
     } else {
       ColumnSizerExtrinsicEvents.mouseUpNotOnSizer(columnSizer);
     }
-    delete etc.tableElementEventState.selectedColumnSizer;
+    delete etc.activeOverlayElements.selectedColumnSizer;
   }
 }

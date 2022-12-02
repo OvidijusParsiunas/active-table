@@ -8,17 +8,17 @@ import {CellEvents} from '../cellEvents';
 
 export class HeaderCellEvents {
   public static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
-    if (!this.tableElementEventState.selectedColumnSizer) {
+    if (!this.activeOverlayElements.selectedColumnSizer) {
       CellHighlightUtils.highlight(event.target as HTMLElement, this.columnsDetails[columnIndex].headerStateColors?.hover);
       ColumnSizerCellEvents.cellMouseEnter(this.columnsDetails, columnIndex);
     }
   }
 
   private static mouseLeaveCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
-    if (!Dropdown.isDisplayed(this.overlayElementsState.columnDropdown)) {
+    if (!Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
       CellHighlightUtils.fade(event.target as HTMLElement, this.columnsDetails[columnIndex].headerStateColors?.default);
     }
-    if (!this.tableElementEventState.selectedColumnSizer) {
+    if (!this.activeOverlayElements.selectedColumnSizer) {
       ColumnSizerCellEvents.cellMouseLeave(this.columnsDetails, columnIndex);
     }
   }

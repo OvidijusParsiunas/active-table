@@ -1,17 +1,17 @@
 import {AuxiliaryTableContentInternalUtils} from './utils/auxiliaryTableContent/auxiliaryTableContentInternalUtils';
+import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
 import {ColumnSettings, ColumnsSettings, ColumnsSettingsMap} from './types/columnsSettings';
 import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
-import {OverlayElementsState} from './utils/overlayElements/overlayElementsState';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {HoverableElementStyleClient} from './types/hoverableElementStyle';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableDimensionsInternal} from './types/tableDimensionsInternal';
-import {TableElementEventState} from './types/tableElementEventState';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
+import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {customElement, property, state} from 'lit/decorators.js';
 import {ediTableStyle} from './editable-table-component-style';
 import {WindowElement} from './elements/window/windowElement';
@@ -22,7 +22,6 @@ import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {ParentResize} from './utils/render/parentResize';
 import {TableDimensions} from './types/tableDimensions';
-import {OverlayElements} from './types/overlayElements';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
@@ -114,9 +113,6 @@ export class EditableTableComponent extends LitElement {
   tableElementRef: HTMLElement | null = null;
 
   @state()
-  tableElementEventState: TableElementEventState = {};
-
-  @state()
   tableBodyElementRef: HTMLElement | null = null;
 
   @state()
@@ -136,7 +132,7 @@ export class EditableTableComponent extends LitElement {
   hoveredElements: HoveredElements = {};
 
   @state()
-  overlayElementsState: OverlayElements = OverlayElementsState.createNew();
+  activeOverlayElements: ActiveOverlayElements = ActiveOverlayElementsUtils.createNew();
 
   @state()
   userKeyEventsState: UserKeyEventsState = UserKeyEventsStateUtils.createNew();
@@ -188,7 +184,7 @@ export class EditableTableComponent extends LitElement {
     super.connectedCallback();
     AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
     const tableElement = TableElement.createInfrastructureElements(this);
-    TableElement.addOverlayElements(this, tableElement, this.overlayElementsState, this.areHeadersEditable);
+    TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements, this.areHeadersEditable);
     this.shadowRoot?.appendChild(tableElement);
     InitialContentsProcessing.preProcess(this.contents);
     WindowElement.setEvents(this);

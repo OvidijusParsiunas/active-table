@@ -2,22 +2,22 @@ import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellIn
 import {UserKeyEventsStateUtils} from '../../utils/userEventsState/userEventsStateUtils';
 import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
+import {ActiveOverlayElements} from '../../types/activeOverlayElements';
 import {EditableTableComponent} from '../../editable-table-component';
-import {OverlayElements} from '../../types/overlayElements';
 import {MOUSE_EVENT} from '../../consts/mouseEvents';
 import {CellElement} from '../cell/cellElement';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class TableEvents {
   // not using hoveredElements state as the targetElement will be the element clicked, hence need to use
-  // overlayElementsState.datePickerCell to get the cell of the date picker input
+  // activeOverlayElements.datePickerCell to get the cell of the date picker input
   // prettier-ignore
-  private static closeDatePicker(overlayElementsState: OverlayElements, targetElement: HTMLElement) {
-    if (overlayElementsState.datePickerCell) {
-      if (overlayElementsState.datePickerCell !== CellElement.extractCellElement(targetElement)) {
-        DateCellInputElement.toggle(overlayElementsState.datePickerCell, false);
+  private static closeDatePicker(activeOverlayElements: ActiveOverlayElements, targetElement: HTMLElement) {
+    if (activeOverlayElements.datePickerCell) {
+      if (activeOverlayElements.datePickerCell !== CellElement.extractCellElement(targetElement)) {
+        DateCellInputElement.toggle(activeOverlayElements.datePickerCell, false);
       }
-      delete overlayElementsState.datePickerCell;
+      delete activeOverlayElements.datePickerCell;
     }
   }
   // text blur will not activate when the dropdown has been clicked and will not close if its scrollbar, padding
@@ -36,11 +36,11 @@ export class TableEvents {
     const targetElement = event.target as HTMLElement;
     UserKeyEventsStateUtils.temporarilyIndicateEvent(this.userKeyEventsState, MOUSE_EVENT.DOWN);
     TableEvents.closeCategoryDropdown(this, targetElement);
-    TableEvents.closeDatePicker(this.overlayElementsState, event.target as HTMLElement);
+    TableEvents.closeDatePicker(this.activeOverlayElements, event.target as HTMLElement);
   }
 
   public static onMouseUp(this: EditableTableComponent, event: MouseEvent) {
-    if (this.tableElementEventState.selectedColumnSizer) {
+    if (this.activeOverlayElements.selectedColumnSizer) {
       ColumnSizerExtrinsicEvents.tableMouseUp(this, event.target as HTMLElement);
     }
   }

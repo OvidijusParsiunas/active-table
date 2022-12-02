@@ -34,9 +34,8 @@ export class ColumnDropdown {
 
   // prettier-ignore
   public static processTextAndHide(etc: EditableTableComponent) {
-    const {
-      overlayElementsState: {columnDropdown, columnTypeDropdown, fullTableOverlay}, columnsDetails,
-      focusedElements: { cell: {element: cellElement, columnIndex} }, tableElementEventState } = etc;
+    const {activeOverlayElements, columnsDetails, focusedElements: {cell: {element: cellElement, columnIndex}}} = etc;
+    const {columnDropdown, columnTypeDropdown, fullTableOverlay} = activeOverlayElements;
     if (!columnDropdown || !fullTableOverlay || !columnTypeDropdown || !cellElement) return;
     if (GenericElementUtils.doesElementExistInDom(cellElement)) {
       ColumnDropdown.processText(etc, columnIndex as number, cellElement);
@@ -47,7 +46,7 @@ export class ColumnDropdown {
     Dropdown.hide(columnDropdown, fullTableOverlay, columnTypeDropdown);
     ColumnTypeDropdownItem.reset(columnTypeDropdown);
     ColumnDropdown.resetDropdownPosition(columnDropdown);
-    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(tableElementEventState);
+    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(activeOverlayElements);
   }
 
   public static create(etc: EditableTableComponent, areHeadersEditable: boolean) {
@@ -104,8 +103,8 @@ export class ColumnDropdown {
   }
 
   public static displayRelevantDropdownElements(etc: EditableTableComponent, columnIndex: number, event: MouseEvent) {
-    const fullTableOverlay = etc.overlayElementsState.fullTableOverlay as HTMLElement;
-    const dropdownElement = etc.overlayElementsState.columnDropdown as HTMLElement;
+    const fullTableOverlay = etc.activeOverlayElements.fullTableOverlay as HTMLElement;
+    const dropdownElement = etc.activeOverlayElements.columnDropdown as HTMLElement;
     const cellElement = event.target as HTMLElement;
     ColumnDropdownItem.setUp(etc, dropdownElement, columnIndex, cellElement);
     ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);

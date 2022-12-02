@@ -34,7 +34,7 @@ export class DropdownItem {
     inputElement.spellcheck = false;
     itemElement.appendChild(inputElement);
     dropdownElement.appendChild(itemElement);
-    DropdownItemEvents.addItemEvents(etc.tableElementEventState, inputElement);
+    DropdownItemEvents.addItemEvents(etc.activeOverlayElements, inputElement);
   }
 
   public static addPlaneButtonItem(dropdownElement: HTMLElement, text: string, index?: number) {
@@ -52,7 +52,7 @@ export class DropdownItem {
 
   public static addButtonItem(etc: EditableTableComponent, dropdown: HTMLElement, text: string, ...classNames: string[]) {
     const buttonElement = DropdownItem.addPlaneButtonItem(dropdown, text);
-    DropdownItemEvents.addItemEvents(etc.tableElementEventState, buttonElement);
+    DropdownItemEvents.addItemEvents(etc.activeOverlayElements, buttonElement);
     if (classNames.length > 0) buttonElement.classList.add(...classNames);
     return buttonElement;
   }
