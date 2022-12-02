@@ -64,10 +64,14 @@ export class DropdownItem {
     dropdownElement.appendChild(titleElement);
   }
 
-  private static createNestedDropdown(etc: EditableTableComponent, itemText: string[]) {
+  public static addItems(etc: EditableTableComponent, dropdownElement: HTMLElement, itemText: string[]): HTMLElement[] {
+    return itemText.map((text) => DropdownItem.addButtonItem(etc, dropdownElement, text));
+  }
+
+  public static createNestedDropdown(etc: EditableTableComponent, itemText: string[]) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.style.top = `-${Number.parseInt(dropdownElement.style.paddingTop) + 22}px`;
-    itemText.forEach((text) => DropdownItem.addButtonItem(etc, dropdownElement, text));
+    DropdownItem.addItems(etc, dropdownElement, itemText);
     return dropdownElement;
   }
 
@@ -79,15 +83,8 @@ export class DropdownItem {
     });
   }
 
-  // prettier-ignore
-  public static addNestedDropdownItem(etc: EditableTableComponent, dropdownElement: HTMLElement, text: string,
-      itemsText: string[], className?: string) {
-    const buttonElement = DropdownItem.addButtonItem(
-      etc, dropdownElement, text, DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM, className || '');
-    const nestedDropdown = DropdownItem.createNestedDropdown(etc, itemsText);
-    buttonElement.appendChild(nestedDropdown);
-    DropdownItemEvents.addNestedItemEvents(buttonElement);
-    return nestedDropdown;
+  public static removeItems(nestedDropdown: HTMLElement) {
+    Array.from(nestedDropdown.children).forEach((item) => item.remove());
   }
 
   public static doesElementContainItemClass(element: HTMLElement) {

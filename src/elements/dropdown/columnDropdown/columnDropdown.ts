@@ -56,7 +56,7 @@ export class ColumnDropdown {
     // WORK - potentially have this as nested dropdown item and the nested dropdown item itself would then have the
     // selected item
     DropdownItem.addTitle(dropdownElement, 'Property type');
-    ColumnTypeDropdown.addToColumnDropdown(etc, dropdownElement);
+    ColumnTypeDropdown.createColumnDropdown(etc, dropdownElement);
     ColumnDropdownItem.addSortButton(etc, dropdownElement, 'Ascending');
     ColumnDropdownItem.addSortButton(etc, dropdownElement, 'Descending');
     // WORK - Include Move Left/Move Right but not as part of default build

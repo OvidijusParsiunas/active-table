@@ -46,6 +46,7 @@ export interface CategoryDropdownT {
 export interface ColumnDetailsT {
   elements: HTMLElement[];
   columnSizer: ColumnSizerT;
+  types: string[];
   // difference between column type and cell type is - is that column type governs the type for all cells within that
   // column whereas cell type is the actual type used on a cell
   // column type that has been inferred automatically or set by user

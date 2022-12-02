@@ -1,5 +1,6 @@
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
 import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
+import {DisplayedCellTypeName} from '../cellType/displayedCellTypeName';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CellStateColorProperties} from '../../types/cellStateColors';
 import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
@@ -57,6 +58,7 @@ export class ColumnDetails {
   public static updateWithNoSizer(columnDetails: ColumnDetailsInitial,
       categoryDropdown: HTMLElement): ColumnDetailsNoSizer {
     const newObject: Omit<ColumnDetailsNoSizer, keyof ColumnDetailsInitial> = {
+      types: Object.keys(USER_SET_COLUMN_TYPE).map((key) => DisplayedCellTypeName.get(key)),
       activeColumnType: CellTypeTotalsUtils.DEFAULT_COLUMN_TYPE,
       userSetColumnType: USER_SET_COLUMN_TYPE.Auto,
       cellTypeTotals: CellTypeTotalsUtils.createObj(),
