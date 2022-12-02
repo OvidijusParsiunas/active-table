@@ -13,13 +13,15 @@ import {CellDetails} from '../../types/focusedCell';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class WindowEvents {
+  // prettier-ignore
   public static onKeyDown(this: EditableTableComponent, event: KeyboardEvent) {
     const {rowIndex, columnIndex} = this.focusedElements.cell as CellDetails;
-    if (this.columnsDetails[columnIndex]?.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-      CategoryCellEvents.keyDownText(this, rowIndex, columnIndex, event);
-    }
     if (Dropdown.isDisplayed(this.activeOverlayElements.rowDropdown)) {
       RowDropdownEvents.windowOnKeyDown(this, event);
+    }
+    if (this.columnsDetails[columnIndex]?.userSetColumnType === USER_SET_COLUMN_TYPE.Category
+        && !Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
+      CategoryCellEvents.keyDownText(this, rowIndex, columnIndex, event);
     }
   }
 
