@@ -100,7 +100,7 @@ export class CellTypeTotalsUtils {
   public static getActiveColumnType(cellTypeTotals: CellTypeTotals, numberOfDataRows: number): ACTIVE_COLUMN_TYPE {
     const cellTypes = Object.keys(cellTypeTotals) as unknown as CELL_TYPE[];
     // the logic does not take defaults into consideration as a column type, so if we have default as '-' and
-    // the column contains the following data ['-','-',2,4], the column type is number
+    // the column contains the following data '-','-',2,4 the column type is number
     const numberOfRowsWithDefaultText = cellTypeTotals[CELL_TYPE.Empty];
     const numberOfRichRows = numberOfDataRows - numberOfRowsWithDefaultText;
     // if the column has nothing but defaults, the column type is set to whatever the default should be

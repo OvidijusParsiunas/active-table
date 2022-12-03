@@ -11,12 +11,17 @@ import {CellText} from '../../types/tableContents';
 import {EMPTY_STRING} from '../../consts/text';
 
 export class ColumnSettingsUtils {
+  public static DEFAULT_INTERNAL_COLUMN_SETTINGS: ColumnSettingsInternal = {
+    defaultText: EMPTY_STRING,
+    isDefaultTextRemovable: true,
+  };
+
   // prettier-ignore
   private static change(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number,
       oldSettings?: ColumnSettingsInternal, newSettings?: ColumnSettingsInternal) {
     const columnDetails = etc.columnsDetails[columnIndex];
     ColumnSettingsDefaultTextUtils.unsetDefaultText(etc, columnDetails, columnIndex);
-    columnDetails.settings = newSettings || ColumnSettingsUtils.createDefaultInternal(etc.defaultText);
+    columnDetails.settings = newSettings || ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS;
     ColumnSettingsDefaultTextUtils.setDefaultText(etc, columnDetails, columnIndex);
     ColumnSettingsWidthUtils.changeWidth(etc, cellElement, oldSettings, newSettings);
     InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
@@ -31,12 +36,9 @@ export class ColumnSettingsUtils {
     const {columnsSettingsInternal, columnsDetails} = etc;
     const columnDetails = columnsDetails[columnIndex];
     const oldSettings = columnDetails.settings;
-    const newSettings = columnsSettingsInternal[CellElement.getText(cellElement)];
+    const newSettings = columnsSettingsInternal[CellElement.getText(cellElement)]
+      || ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS;
     if (oldSettings !== newSettings) ColumnSettingsUtils.change(etc, cellElement, columnIndex, oldSettings, newSettings);
-  }
-
-  public static createDefaultInternal(defaultTableText: CellText): ColumnSettingsInternal {
-    return {defaultText: defaultTableText || EMPTY_STRING, isDefaultTextRemovable: true};
   }
 
   private static createInternal(clientSettings: ColumnSettings, defaultTableText: CellText): ColumnSettingsInternal {
@@ -46,10 +48,19 @@ export class ColumnSettingsUtils {
     return internalSettings;
   }
 
-  public static createInternalMap(clientSettings: ColumnsSettings, defaultTableText: CellText) {
+  private static prepareDefaultInternalColumnSettings(defaultTableText: CellText) {
+    if (defaultTableText) ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS.defaultText = defaultTableText;
+  }
+
+  private static createInternalMap(clientSettings: ColumnsSettings, defaultTableText: CellText) {
     return clientSettings.reduce<ColumnsSettingsMap>((settingsMap, clientSettings) => {
       settingsMap[clientSettings.columnName] = ColumnSettingsUtils.createInternal(clientSettings, defaultTableText);
       return settingsMap;
     }, {});
+  }
+
+  public static setUpInternalSettings(etc: EditableTableComponent) {
+    ColumnSettingsUtils.prepareDefaultInternalColumnSettings(etc.defaultText);
+    etc.columnsSettingsInternal = ColumnSettingsUtils.createInternalMap(etc.columnsSettings, etc.defaultText);
   }
 }

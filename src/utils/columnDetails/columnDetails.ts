@@ -48,7 +48,7 @@ export class ColumnDetails {
       settings?: ColumnSettingsInternal): ColumnDetailsInitial {
     return {
       elements: [],
-      settings: settings || ColumnSettingsUtils.createDefaultInternal(etc.defaultText),
+      settings: settings || ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS,
       headerStateColors: ColumnDetails.createHeaderStateColors(etc, settings),
       bordersOverwrittenBySiblings: {},
     };
