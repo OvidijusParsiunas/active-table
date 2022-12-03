@@ -4,11 +4,13 @@ import {CellElementIndex} from '../elements/cellElementIndex';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
 import {VALIDABLE_CELL_TYPE} from '../../enums/cellType';
+import {SortingFuncs} from '../../types/columnTypes';
 import {RegexUtils} from '../regex/regexUtils';
 
 export class Sort {
+  // cannot safely identify if nothing has been changed, hence need to send out an update for all cells
   // prettier-ignore
-  private static update(etc: EditableTableComponent, sortedDataContents: TableContents,) {
+  private static update(etc: EditableTableComponent, sortedDataContents: TableContents) {
     const {tableBodyElementRef, auxiliaryTableContentInternal: {displayIndexColumn}, contents, onTableUpdate} = etc;
     const rowElements = (tableBodyElementRef as HTMLElement).children;
     sortedDataContents.forEach((row, rowIndex) => {
@@ -151,6 +153,18 @@ export class Sort {
     }
   }
 
+  private static sortType(sortingFuncs: SortingFuncs, dataContents: TableContents, columnIndex: number, isAsc: boolean) {
+    if (isAsc) {
+      dataContents.sort((a: TableRow, b: TableRow) =>
+        sortingFuncs.ascending(String(a[columnIndex]), String(b[columnIndex]))
+      );
+    } else {
+      dataContents.sort((a: TableRow, b: TableRow) =>
+        sortingFuncs.descending(String(a[columnIndex]), String(b[columnIndex]))
+      );
+    }
+  }
+
   private static sortValidableCell: {
     [key in VALIDABLE_CELL_TYPE]: (dataContents: TableContents, columnIndex: number, isAsc: boolean) => void;
   } = {
@@ -167,8 +181,11 @@ export class Sort {
   public static sortContentsColumn(etc: EditableTableComponent, columnIndex: number, isAsc: boolean) {
     const dataContents = etc.contents.slice(1);
     const columnType = etc.columnsDetails[columnIndex].activeColumnType as keyof typeof VALIDABLE_CELL_TYPE;
+    const {sorting} = etc.columnsDetails[columnIndex].activeType;
     if (VALIDABLE_CELL_TYPE[columnType]) {
       Sort.sortValidableCell[columnType](dataContents, columnIndex, isAsc);
+    } else if (sorting) {
+      Sort.sortType(sorting, dataContents, columnIndex, isAsc);
     } else {
       Sort.sortStrings(dataContents, columnIndex, isAsc);
     }

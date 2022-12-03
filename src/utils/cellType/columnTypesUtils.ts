@@ -8,8 +8,8 @@ export class ColumnTypesUtils {
         name: 'Number2',
         validation: (cellText: CellText) => !isNaN(cellText as unknown as number),
         sorting: {
-          ascending: (cellText1: CellText, cellText2: CellText) => (cellText1 as number) - (cellText2 as number),
-          descending: (cellText1: CellText, cellText2: CellText) => (cellText2 as number) - (cellText1 as number),
+          ascending: (cellText1: string, cellText2: string) => Number(cellText1) - Number(cellText2),
+          descending: (cellText1: string, cellText2: string) => Number(cellText2) - Number(cellText1),
         },
       },
     ];
