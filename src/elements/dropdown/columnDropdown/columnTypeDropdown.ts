@@ -17,8 +17,11 @@ export class ColumnTypeDropdown {
     const {activeColumnType, types} = etc.columnsDetails[columnIndex];
     const textElement = ColumnTypeDropdown.getColumnTypeItemText(dropdownElement);
     textElement.innerText = DisplayedCellTypeName.get(activeColumnType);
-    const {columnTypeDropdown} = etc.activeOverlayElements;
-    setTimeout(() => ColumnTypeDropdownItem.setUp(etc, columnTypeDropdown as HTMLElement, columnIndex, types));
+    setTimeout(() => {
+      const {columnTypeDropdown} = etc.activeOverlayElements;
+      const itemNames = types.map((type) => type.name);
+      ColumnTypeDropdownItem.setUp(etc, columnTypeDropdown as HTMLElement, columnIndex, itemNames);
+    });
   }
 
   // prettier-ignore

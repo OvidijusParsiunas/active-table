@@ -2,6 +2,7 @@ import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {HasRerendered} from '../render/hasRerendered';
+import {ColumnTypes} from '../../types/columnTypes';
 import {CellText} from '../../types/tableContents';
 import {EMPTY_STRING} from '../../consts/text';
 import {ValidateInput} from './validateInput';
@@ -32,8 +33,10 @@ export class CellTypeTotalsUtils {
     return null;
   }
 
-  public static parseType(cellText: CellText): CELL_TYPE {
+  public static parseType(cellText: CellText, types: ColumnTypes): CELL_TYPE {
     if (cellText === EMPTY_STRING) return CELL_TYPE.Empty;
+    const valid = types.find((type) => type.validation?.(cellText));
+    if (valid) return valid.name as CELL_TYPE;
     const parsedCellType = CellTypeTotalsUtils.parseValidable(cellText);
     if (!parsedCellType) return CELL_TYPE.Text;
     // REF-3
@@ -63,12 +66,12 @@ export class CellTypeTotalsUtils {
   }
 
   public static incrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, cellText: CellText) {
-    const type = CellTypeTotalsUtils.parseType(cellText);
+    const type = CellTypeTotalsUtils.parseType(cellText, columnDetails.types);
     CellTypeTotalsUtils.changeTypeAndSetColumnType(columnDetails, [CellTypeTotalsUtils.incrementType.bind(this, type)]);
   }
 
   public static decrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, cellText: CellText) {
-    const type = CellTypeTotalsUtils.parseType(cellText);
+    const type = CellTypeTotalsUtils.parseType(cellText, columnDetails.types);
     CellTypeTotalsUtils.changeTypeAndSetColumnType(columnDetails, [CellTypeTotalsUtils.decrementType.bind(this, type)]);
   }
 

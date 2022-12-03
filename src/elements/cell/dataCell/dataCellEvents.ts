@@ -55,6 +55,10 @@ export class DataCellEvents {
       const userSetColumnType = columnDetails.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
         DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
+      } else if (columnDetails.activeType.validation) {
+        textContainerElement.style.color =
+          columnDetails.activeType.validation(CellElement.getText(textContainerElement))
+            ? DataCellEvents.DEFAULT_TEXT_COLOR : DataCellEvents.INVALID_TEXT_COLOR;
       } else if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
         CategoryDropdown.updateCategoryDropdown(textContainerElement.parentElement as HTMLElement,
           columnDetails.categoryDropdown, columnDetails.settings.defaultText, true);
@@ -96,9 +100,9 @@ export class DataCellEvents {
     const oldType = etc.focusedElements.cell.type as CELL_TYPE;
     FocusedCellUtils.purge(etc.focusedElements.cell);
     setTimeout(() => {
-      // CAUTION-2
-      const newType = CellTypeTotalsUtils.parseType(CellElement.getText(textContainerElement));
-      CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(etc.columnsDetails[columnIndex], oldType, newType);
+      const columnDetails = etc.columnsDetails[columnIndex];
+      const newType = CellTypeTotalsUtils.parseType(CellElement.getText(textContainerElement), columnDetails.types);
+      CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(columnDetails, oldType, newType); // CAUTION-2
     });
   }
 
@@ -119,9 +123,10 @@ export class DataCellEvents {
   private static focusCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const cellElement = event.target as HTMLElement;
     DataCellEvents.prepareText(this, rowIndex, columnIndex, cellElement);
+    const {userKeyEventsState, focusedElements, columnsDetails} = this;
     // REF-7
-    if (this.userKeyEventsState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
-    FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex);
+    if (userKeyEventsState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
+    FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, columnIndex, columnsDetails[columnIndex].types);
   }
 
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {

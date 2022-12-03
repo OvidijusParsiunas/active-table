@@ -2,21 +2,9 @@ import {HoverableElementStyleClient} from './hoverableElementStyle';
 import {InterfacesUnion, SetRequired} from './utilityTypes';
 import {USER_SET_COLUMN_TYPE} from '../enums/columnType';
 import {StringDimension} from './dimensions';
+import {ColumnTypes} from './columnTypes';
 import {CellText} from './tableContents';
 import {CSSStyle} from './cssStyle';
-
-interface ColumnType {
-  name: string;
-  validation?: () => void;
-  removeOnFailedValidation?: boolean;
-  failedValidationStyle?: () => void;
-  customValidationStyleColors?: () => void;
-  sorting?: () => void;
-  calendar?: {};
-  category?: {};
-  // restrict what options a category can have
-  defaultText?: CellText;
-}
 
 interface Parent {
   columnName: string;
@@ -24,7 +12,7 @@ interface Parent {
   isDefaultTextRemovable?: boolean; // true by default
   cellStyle?: CSSStyle;
   header?: HoverableElementStyleClient;
-  columnTypes?: ColumnType[];
+  columnTypes?: ColumnTypes;
   type?: boolean;
   availableTypes?: USER_SET_COLUMN_TYPE[];
   // customTypes?: unknown;

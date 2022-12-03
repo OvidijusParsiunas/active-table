@@ -33,6 +33,7 @@ export class UserSetCellType {
   private static purgeInvalidCellsIfValidable(etc: EditableTableComponent,
       newTypeEnum: VALIDABLE_CELL_TYPE, columnIndex: number) {
     if (VALIDABLE_CELL_TYPE[newTypeEnum]) UserSetCellType.purgeInvalidCells(etc, columnIndex);
+    if (etc.columnsDetails[columnIndex].activeType.validation) UserSetCellType.purgeInvalidCells(etc, columnIndex);
   }
 
   private static set(etc: EditableTableComponent, newTypeEnum: USER_SET_COLUMN_TYPE, columnIndex: number) {
@@ -41,13 +42,14 @@ export class UserSetCellType {
     columnDetails.activeColumnType =
       newTypeEnum === USER_SET_COLUMN_TYPE.Auto
         ? CellTypeTotalsUtils.getActiveColumnType(cellTypeTotals, elements.length - 1)
-        : ACTIVE_COLUMN_TYPE[newTypeEnum as keyof typeof ACTIVE_COLUMN_TYPE];
+        : ACTIVE_COLUMN_TYPE[newTypeEnum as keyof typeof ACTIVE_COLUMN_TYPE] || newTypeEnum;
     columnDetails.userSetColumnType = newTypeEnum;
   }
 
   public static setIfNew(this: EditableTableComponent, newType: string, columnIndex: number) {
     const codeTypeName = DisplayedCellTypeName.get(newType); // from displayed name to code
-    const newTypeEnumStr = USER_SET_COLUMN_TYPE[codeTypeName as keyof typeof USER_SET_COLUMN_TYPE];
+    // WORK - TYPE - change the naming convention
+    const newTypeEnumStr = USER_SET_COLUMN_TYPE[codeTypeName as keyof typeof USER_SET_COLUMN_TYPE] || codeTypeName;
     const previousTypeEnum = this.columnsDetails[columnIndex].userSetColumnType;
     if (newTypeEnumStr !== previousTypeEnum) {
       UserSetCellType.set(this, newTypeEnumStr, columnIndex);

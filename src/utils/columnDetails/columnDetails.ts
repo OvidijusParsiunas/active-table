@@ -1,11 +1,11 @@
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
 import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
-import {DisplayedCellTypeName} from '../cellType/displayedCellTypeName';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CellStateColorProperties} from '../../types/cellStateColors';
 import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
+import {ColumnTypesUtils} from '../cellType/columnTypesUtils';
 import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 
 // REF-13
@@ -57,8 +57,12 @@ export class ColumnDetails {
   // prettier-ignore
   public static updateWithNoSizer(columnDetails: ColumnDetailsInitial,
       categoryDropdown: HTMLElement): ColumnDetailsNoSizer {
+    const types = ColumnTypesUtils.getDefault();
+    // if (columnDetails.settings.columnTypes) types.push(...columnDetails.settings.columnTypes.map((type) => type.name));
+    // types.push(...Object.keys(USER_SET_COLUMN_TYPE).map((key) => DisplayedCellTypeName.get(key)));
     const newObject: Omit<ColumnDetailsNoSizer, keyof ColumnDetailsInitial> = {
-      types: Object.keys(USER_SET_COLUMN_TYPE).map((key) => DisplayedCellTypeName.get(key)),
+      types,
+      activeType: types[0],
       activeColumnType: CellTypeTotalsUtils.DEFAULT_COLUMN_TYPE,
       userSetColumnType: USER_SET_COLUMN_TYPE.Auto,
       cellTypeTotals: CellTypeTotalsUtils.createObj(),

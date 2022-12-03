@@ -16,16 +16,17 @@ export class DateCellCalendarIconEvents {
   private static readonly PICKER_DISPLAY_DELAY_ML = Browser.IS_FIREFOX ? 190 : 0;
 
   private static mouseDownIcon(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
+    const {focusedElements, columnsDetails, activeOverlayElements} = this;
     const svgImage = event.target as HTMLElement;
     const inputElement = svgImage.previousSibling as HTMLInputDateElement;
     const cellElement = CellElement.extractCellElement(inputElement);
     setTimeout(() => {
       // this is in a timeout as upon selecting text, then clicking on the icon causes the text blur to activate
       // which purges the selected cell ref
-      FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex);
+      FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, columnIndex, columnsDetails[columnIndex].types);
       // this is in a timeout because mouseDownIcon is triggered before window mouse down event which calls
-      // delete this.activeOverlayElements.datePickerCell, thus this setter needs to be called after
-      this.activeOverlayElements.datePickerCell = cellElement;
+      // delete activeOverlayElements.datePickerCell, thus this setter needs to be called after
+      activeOverlayElements.datePickerCell = cellElement;
       // displaying the picker on mouse down in order to keep it consistent with mouse down display for category,
       // however if it feels more natural to do it on mouse up, can move it to that, but keep in mind that it
       // does not feel right for firefox as there is an additional timeout - hence may need to keep it here

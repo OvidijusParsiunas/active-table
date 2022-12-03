@@ -1,6 +1,7 @@
 import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {CellElement} from '../../elements/cell/cellElement';
 import {FocusedCell} from '../../types/focusedCell';
+import {ColumnTypes} from '../../types/columnTypes';
 
 export class FocusedCellUtils {
   public static createEmpty(): FocusedCell {
@@ -21,11 +22,13 @@ export class FocusedCellUtils {
     delete focusedCell.type;
   }
 
-  public static set(focusedCell: FocusedCell, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+  // prettier-ignore
+  public static set(focusedCell: FocusedCell, cellElement: HTMLElement, rowIndex: number, columnIndex: number,
+      types: ColumnTypes) {
     focusedCell.element = cellElement;
     focusedCell.rowIndex = rowIndex;
     focusedCell.columnIndex = columnIndex;
-    focusedCell.type = CellTypeTotalsUtils.parseType(CellElement.getText(focusedCell.element));
+    focusedCell.type = CellTypeTotalsUtils.parseType(CellElement.getText(focusedCell.element), types);
   }
 
   public static incrementColumnIndex(focusedCell: FocusedCell, newColumnIndex: number) {

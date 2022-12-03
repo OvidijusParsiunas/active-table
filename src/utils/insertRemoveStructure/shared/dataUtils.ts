@@ -30,11 +30,14 @@ export class DataUtils {
   // currently etc.columnsDetails is set after the data is inserted which does not allow it to be validated
   // note that NumberOfIdenticalCells.get uses the etc.contents top row, so it needs to be up-to-date
   // prettier-ignore
-  private static shouldTextBeSetToDefault(text: CellText, defaultText: CellText, rowIndex: number,
-      duplicateHeadersAllowed: boolean, columnsDetails: ColumnsDetailsT, userSetColumnType?: VALIDABLE_CELL_TYPE) {
+  private static shouldTextBeSetToDefault(text: CellText, defaultText: CellText, rowIndex: number, columnIndex: number,
+      duplicateHeadersAllowed: boolean, columnsDetails: ColumnsDetailsT) {
+    const {userSetColumnType, activeType} = columnsDetails[columnIndex];
     return DataUtils.isTextEmpty(defaultText, text)
       || (rowIndex === 0 && (!duplicateHeadersAllowed && NumberOfIdenticalCells.get(text, columnsDetails) > 1))
-      || (rowIndex > 0 && userSetColumnType && !DataUtils.isDataValid(userSetColumnType, text));
+      || (rowIndex > 0 && userSetColumnType
+          && !DataUtils.isDataValid(userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE, text))
+      || (rowIndex > 0 && !(activeType?.validation === undefined || activeType.validation(text)));
   }
 
   // prettier-ignore
@@ -42,8 +45,7 @@ export class DataUtils {
     const trimmedText = typeof cellText === 'string' ? cellText.trim() : cellText;
     const defaultText = etc.columnsDetails[columnIndex].settings.defaultText as string;
     const shouldBeSetToDefault = DataUtils.shouldTextBeSetToDefault(
-      trimmedText, defaultText, rowIndex, etc.duplicateHeadersAllowed, etc.columnsDetails,
-      etc.columnsDetails[columnIndex]?.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE);
+      trimmedText, defaultText, rowIndex, columnIndex, etc.duplicateHeadersAllowed, etc.columnsDetails);
     return shouldBeSetToDefault ? defaultText : trimmedText;
   }
 }

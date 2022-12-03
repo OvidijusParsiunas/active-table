@@ -50,10 +50,10 @@ export class OverwriteCellsViaCSVOnPaste {
     const {auxiliaryTableContentInternal: {displayIndexColumn}, columnsDetails} = etc;
     const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, displayIndexColumn);
     const cellElement = rowElement.children[elementIndex] as HTMLElement;
-    const oldType = CellTypeTotalsUtils.parseType(CellElement.getText(cellElement));
+    const columnDetails = columnsDetails[columnIndex];
+    const oldType = CellTypeTotalsUtils.parseType(CellElement.getText(cellElement), columnDetails.types);
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
-    const columnDetails = columnsDetails[columnIndex];
     if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryCellElement.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (DATE_COLUMN_TYPE[columnDetails.userSetColumnType] && Browser.IS_INPUT_DATE_SUPPORTED) {
@@ -61,7 +61,7 @@ export class OverwriteCellsViaCSVOnPaste {
     }
     setTimeout(() => {
       // CAUTION-2
-      const newType = CellTypeTotalsUtils.parseType(processedNewCellText);
+      const newType = CellTypeTotalsUtils.parseType(processedNewCellText, columnDetails.types);
       CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(columnDetails, oldType, newType);
     });
   }
@@ -94,7 +94,7 @@ export class OverwriteCellsViaCSVOnPaste {
   private static processFocusedCell(etc: EditableTableComponent, columnIndex: number) {
     const cellElement = etc.focusedElements.cell.element as HTMLElement;
     const text = CellElement.getText(cellElement);
-    etc.focusedElements.cell.type = CellTypeTotalsUtils.parseType(text);
+    etc.focusedElements.cell.type = CellTypeTotalsUtils.parseType(text, etc.columnsDetails[columnIndex].types);
     OverwriteCellsViaCSVOnPaste.setCaretToEndAndHighlightIfCategory(etc, cellElement, columnIndex);
   }
 
