@@ -1,3 +1,4 @@
+import {DateProperties} from './dateTypeToProperties';
 import {CellText} from './tableContents';
 
 export interface SortingFuncs {
@@ -16,8 +17,9 @@ export interface ColumnType {
   removeOnFailedValidation?: boolean;
   failedValidationStyle?: () => void;
   customValidationStyleColors?: () => void;
-  sorting?: SortingFuncs; // By defaiult, the elements will be sorted in ascending, ASCII character order
-  calendar?: {};
+  sorting?: SortingFuncs; // By default the elements will be sorted in ascending ASCII character order
+  calendar?: DateProperties;
+  // date and category cannot exist together
   category?: {};
   // restrict what options a category can have
   defaultText?: CellText;

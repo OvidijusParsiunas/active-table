@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../../../editable-table-component';
+import {DateProperties} from '../../../../types/dateTypeToProperties';
 import {KEYBOARD_KEY} from '../../../../consts/keyboardKeys';
 import {DataCellEvents} from '../../dataCell/dataCellEvents';
 import {DateCellInputElement} from './dateCellInputElement';
@@ -12,10 +13,10 @@ export class DateCellTextEvents {
     if (event.key === KEYBOARD_KEY.TAB) CellTextEvents.tabOutOfCell(this, rowIndex, columnIndex, event);
   }
 
-  private static inputText(dateType: string, event: Event) {
+  private static inputText(dateType: string, dateProperties: DateProperties, event: Event) {
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
       const cellElement = CellElement.extractCellElement(event.target as HTMLElement);
-      DateCellInputElement.updateInputBasedOnTextDiv(dateType, cellElement);
+      DateCellInputElement.updateInputBasedOnTextDiv(dateType, cellElement, dateProperties);
     }
   }
 
@@ -29,7 +30,8 @@ export class DateCellTextEvents {
       dateType: string) {
     textElement.onfocus = CellWithTextEvents.focusText.bind(etc, rowIndex, columnIndex, null);
     textElement.onblur = DateCellTextEvents.blurText.bind(etc, rowIndex, columnIndex);
-    textElement.oninput = DateCellTextEvents.inputText.bind(this, dateType);
+    textElement.oninput = DateCellTextEvents.inputText.bind(this, dateType,
+      etc.columnsDetails[columnIndex].activeType.calendar as DateProperties);
     textElement.onkeydown = DateCellTextEvents.keyDownOnText.bind(etc, rowIndex, columnIndex);
   }
 }

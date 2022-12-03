@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../../../editable-table-component';
+import {DateProperties} from '../../../../types/dateTypeToProperties';
 import {DateCellInputElement} from './dateCellInputElement';
 import {MOUSE_EVENT} from '../../../../consts/mouseEvents';
 import {DateCellTextElement} from './dateCellTextElement';
@@ -24,9 +25,10 @@ export class DateCellInputEvents {
   // prettier-ignore
   private static inputInput(this: EditableTableComponent, rowIndex: number, columnIndex: number, dateType: string,
       event: Event) {
-    const {elements, settings: {defaultText}} = this.columnsDetails[columnIndex];
+    const {elements, settings: {defaultText}, activeType: {calendar}} = this.columnsDetails[columnIndex];
     const inputDate = (event.target as HTMLInputElement).value;
-    const convertedDateFromInput = DateCellTextElement.convertInputValueToText(inputDate, defaultText, dateType);
+    const convertedDateFromInput = DateCellTextElement.convertInputValueToText(
+      inputDate, defaultText, dateType, calendar as DateProperties);
     const cellElement = elements[rowIndex];
     CellEvents.updateCell(this, convertedDateFromInput, rowIndex, columnIndex, {element: cellElement});
   }

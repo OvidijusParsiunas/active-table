@@ -7,6 +7,7 @@ import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
 import {DataUtils} from '../../insertRemoveStructure/shared/dataUtils';
+import {DateProperties} from '../../../types/dateTypeToProperties';
 import {CaretPosition} from '../../focusedElements/caretPosition';
 import {CellElementIndex} from '../../elements/cellElementIndex';
 import {TableRow, CellText} from '../../../types/tableContents';
@@ -57,7 +58,8 @@ export class OverwriteCellsViaCSVOnPaste {
     if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryCellElement.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (DATE_COLUMN_TYPE[columnDetails.userSetColumnType] && Browser.IS_INPUT_DATE_SUPPORTED) {
-      DateCellInputElement.updateInputBasedOnTextDiv(columnDetails.userSetColumnType, cellElement);
+      DateCellInputElement.updateInputBasedOnTextDiv(columnDetails.userSetColumnType, cellElement,
+        columnDetails.activeType.calendar as DateProperties);
     }
     setTimeout(() => {
       // CAUTION-2

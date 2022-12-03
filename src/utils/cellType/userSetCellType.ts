@@ -9,6 +9,7 @@ import {ColumnsDetailsT} from '../../types/columnDetails';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {CellTypeTotalsUtils} from './cellTypeTotalsUtils';
 import {VALIDABLE_CELL_TYPE} from '../../enums/cellType';
+import {ColumnType} from '../../types/columnTypes';
 
 export class UserSetCellType {
   // prettier-ignore
@@ -44,6 +45,7 @@ export class UserSetCellType {
         ? CellTypeTotalsUtils.getActiveColumnType(cellTypeTotals, elements.length - 1)
         : ACTIVE_COLUMN_TYPE[newTypeEnum as keyof typeof ACTIVE_COLUMN_TYPE] || newTypeEnum;
     columnDetails.userSetColumnType = newTypeEnum;
+    columnDetails.activeType = columnDetails.types.find((type) => type.name === newTypeEnum) as ColumnType;
   }
 
   public static setIfNew(this: EditableTableComponent, newType: string, columnIndex: number) {
@@ -60,7 +62,7 @@ export class UserSetCellType {
         CategoryDropdownItem.populateItems(this, columnIndex);
         // items need to be populated before we know what color each cell text needs to be turned into
         CategoryCellElement.convertColumnTypeToCategory(this, columnIndex, previousTypeEnum);
-      } else if (DATE_COLUMN_TYPE[newTypeEnumStr]) {
+      } else if (DATE_COLUMN_TYPE[newTypeEnumStr] || this.columnsDetails[columnIndex].activeType.calendar) {
         DateCellElement.convertColumnTypeToDate(this, columnIndex, previousTypeEnum, newTypeEnumStr);
       }
     }

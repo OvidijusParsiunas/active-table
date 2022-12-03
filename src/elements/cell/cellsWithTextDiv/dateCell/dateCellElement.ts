@@ -40,7 +40,8 @@ export class DateCellElement {
   public static convertCellFromDataToDate(dateType: string, etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
     const textElement = DateCellTextElement.setCellTextAsAnElement(cellElement);
-    if (Browser.IS_INPUT_DATE_SUPPORTED) DateCellInputElement.addDateInputElement(cellElement, textElement, dateType);
+    if (Browser.IS_INPUT_DATE_SUPPORTED) DateCellInputElement.addDateInputElement(
+      cellElement, textElement, dateType, etc.columnsDetails[columnIndex].activeType.calendar as DateProperties);
     setTimeout(() => DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex, dateType));
   }
 

@@ -189,7 +189,7 @@ export class EditableTableComponent extends LitElement {
     InitialContentsProcessing.preProcess(this.contents);
     WindowElement.setEvents(this);
     DateCellElement.populateDefaultDateTypes();
-    this.columnsSettingsInternal = ColumnSettingsUtils.createInternalMap(this.columnsSettings, this.defaultText);
+    ColumnSettingsUtils.setUpInternalSettings(this);
   }
 
   override connectedCallback() {
