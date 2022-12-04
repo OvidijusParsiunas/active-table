@@ -27,13 +27,13 @@ alternatively can refactor cells to be inputs
 https://pablo.berganza.dev/blog/shadow-dom-firefox-contenteditable/
 
 REF-3
-editable table component supports 2 date formats - d/m/y and m/d/y
-to automatically infer which one to use we need to keep track of number of dates that apply to both we use the AllDateFormats
-property. This prevents us from having to increment and decrement both d/m/y and m/d/y format properties which would would
-heavily complicate the changeTypeAndSetColumnType method logic (as there are other formats such as number which applies
-both to text and number, hence it would probably also have to be incremented/decrement for both for consistency).
+editable table component automatically supports 2 date formats - d/m/y and m/d/y
+To infer which one to use we need to keep track of number of dates that apply to both we use the AllDateFormats property.
+This prevents us from having to increment and decrement both d/m/y and m/d/y format properties which would would heavily
+complicate the changeTypeAndSetColumnType method logic (as there are other formats such as number which applies both to
+text and number, hence it would probably also have to be incremented/decrement both for consistency).
 The validation logic first checks the d/m/y and immediately returns it if it is valid, the parseType method additionally
-checks if the cell value applies to m/d/y as well and if it does, it sets the format as 
+checks if the cell value applies to m/d/y as well and if it does, it sets the format as that one. 
 Currently the primary date format is d/m/y so if all cells apply to both formats, that is the format that will be used
 
 REF-4

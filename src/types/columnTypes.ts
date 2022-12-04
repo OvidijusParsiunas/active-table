@@ -1,4 +1,4 @@
-import {DateProperties} from './dateTypeToProperties';
+import {CalendarProperties} from './calendarProperties';
 import {CellText} from './tableContents';
 
 export interface SortingFuncs {
@@ -13,12 +13,14 @@ export interface SortingFuncs {
 
 export interface ColumnType {
   name: string;
+  // WORK - cell text should be string to allow the client to anticipate consistency
   validation?: (cellText: CellText) => boolean;
   removeOnFailedValidation?: boolean;
   failedValidationStyle?: () => void;
   customValidationStyleColors?: () => void;
+  // WORK - not required for date
   sorting?: SortingFuncs; // By default the elements will be sorted in ascending ASCII character order
-  calendar?: DateProperties;
+  calendar?: CalendarProperties;
   // date and category cannot exist together
   category?: {};
   // restrict what options a category can have

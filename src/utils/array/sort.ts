@@ -1,10 +1,11 @@
 import {EditableTableComponent} from '../../editable-table-component';
+import {CalendarProperties} from '../../types/calendarProperties';
 import {TableContents, TableRow} from '../../types/tableContents';
+import {ColumnType, SortingFuncs} from '../../types/columnTypes';
 import {CellElementIndex} from '../elements/cellElementIndex';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
 import {VALIDABLE_CELL_TYPE} from '../../enums/cellType';
-import {SortingFuncs} from '../../types/columnTypes';
 import {RegexUtils} from '../regex/regexUtils';
 
 export class Sort {
@@ -153,16 +154,65 @@ export class Sort {
     }
   }
 
-  private static sortType(sortingFuncs: SortingFuncs, dataContents: TableContents, columnIndex: number, isAsc: boolean) {
+  // prettier-ignore
+  private static parseComparedText<T>(cellText1: string, cellText2: string,
+      isAsc: boolean, parse: (cellText: string) => T | undefined) {
+    // the number result follows JavaScript's sort standard to move incorrect text to the bottom
+    const parsedCellText1 = parse(cellText1);
+    if (parsedCellText1 === undefined) return isAsc ? 1 : -1;
+    const parsedCellText2 = parse(cellText2);
+    if (parsedCellText2 === undefined) return isAsc ? -1 : 1;
+    return [parsedCellText1, parsedCellText2];
+  }
+
+  private static validateType(validation: ColumnType['validation'], cellText: string) {
+    return validation === undefined || validation(cellText) ? cellText : undefined;
+  }
+
+  // prettier-ignore
+  private static validateAndSort(cellText1: string, cellText2: string, sortFunc: SortingFuncs[keyof SortingFuncs],
+      validation: ColumnType['validation'], isAsc: boolean) {
+    const parseResult = Sort.parseComparedText(cellText1, cellText2, isAsc, Sort.validateType.bind(this, validation));
+    if (typeof parseResult === 'number') return parseResult;
+    return sortFunc(parseResult[0], parseResult[1]);
+  }
+
+  private static sortViaTypeSortFuncs(type: ColumnType, dataContents: TableContents, columnIndex: number, isAsc: boolean) {
+    const {sorting, validation} = type;
+    if (!sorting) return;
     if (isAsc) {
       dataContents.sort((a: TableRow, b: TableRow) =>
-        sortingFuncs.ascending(String(a[columnIndex]), String(b[columnIndex]))
+        Sort.validateAndSort(a[columnIndex] as string, b[columnIndex] as string, sorting.ascending, validation, isAsc)
       );
     } else {
       dataContents.sort((a: TableRow, b: TableRow) =>
-        sortingFuncs.descending(String(a[columnIndex]), String(b[columnIndex]))
+        Sort.validateAndSort(b[columnIndex] as string, a[columnIndex] as string, sorting.descending, validation, isAsc)
       );
     }
+  }
+
+  private static compareDates(ymd1: [number], ymd2: [number]) {
+    return (new Date(...ymd1) as unknown as number) - (new Date(...ymd2) as unknown as number);
+  }
+
+  private static parseYMDFormat(validation: ColumnType['validation'], calendar: CalendarProperties, cellText: string) {
+    const isValid = Sort.validateType(validation, cellText);
+    return isValid ? (calendar.dateTranslation?.toYMD(cellText) as unknown as [number]) : undefined;
+  }
+
+  // prettier-ignore
+  private static sortDates(type: ColumnType, dataContents: TableContents, columnIndex: number, isAsc: boolean) {
+    const {calendar, validation} = type;
+    if (!calendar) return;
+    dataContents.sort((a: TableRow, b: TableRow) => {
+      // isAsc param is always true because the order at which we pass in text is always the same as the asc sort
+      const parseResult = Sort.parseComparedText(a[columnIndex] as string, b[columnIndex] as string, true,
+        Sort.parseYMDFormat.bind(this, validation, calendar)); 
+      if (typeof parseResult === 'number') return parseResult;
+      return isAsc
+        ? Sort.compareDates(parseResult[0], parseResult[1])
+        : Sort.compareDates(parseResult[1], parseResult[0]);
+    });
   }
 
   private static sortValidableCell: {
@@ -180,49 +230,16 @@ export class Sort {
 
   public static sortContentsColumn(etc: EditableTableComponent, columnIndex: number, isAsc: boolean) {
     const dataContents = etc.contents.slice(1);
-    const columnType = etc.columnsDetails[columnIndex].activeColumnType as keyof typeof VALIDABLE_CELL_TYPE;
-    const {sorting} = etc.columnsDetails[columnIndex].activeType;
-    if (VALIDABLE_CELL_TYPE[columnType]) {
-      Sort.sortValidableCell[columnType](dataContents, columnIndex, isAsc);
-    } else if (sorting) {
-      Sort.sortType(sorting, dataContents, columnIndex, isAsc);
+    const {activeColumnType, activeType} = etc.columnsDetails[columnIndex];
+    if (VALIDABLE_CELL_TYPE[activeColumnType as keyof typeof VALIDABLE_CELL_TYPE]) {
+      Sort.sortValidableCell[activeColumnType as keyof typeof VALIDABLE_CELL_TYPE](dataContents, columnIndex, isAsc);
+    } else if (activeType.calendar) {
+      Sort.sortDates(activeType, dataContents, columnIndex, isAsc);
+    } else if (activeType.sorting) {
+      Sort.sortViaTypeSortFuncs(activeType, dataContents, columnIndex, isAsc);
     } else {
       Sort.sortStrings(dataContents, columnIndex, isAsc);
     }
     Sort.update(etc, dataContents);
   }
 }
-
-// Alternative way to sort any types
-
-// private static sortAnyAscending(contents: TableContents, columnIndex: number) {
-//   contents.sort((a: TableRow, b: TableRow) => {
-//     if ((a[columnIndex] as number) < (b[columnIndex] as number)) {
-//       return -1;
-//     }
-//     if ((a[columnIndex] as number) > (b[columnIndex] as number)) {
-//       return 1;
-//     }
-//     return 0;
-//   });
-// }
-
-// private static sortAnyDescending(contents: TableContents, columnIndex: number) {
-//   contents.sort((a: TableRow, b: TableRow) => {
-//     if ((a[columnIndex] as number) > (b[columnIndex] as number)) {
-//       return -1;
-//     }
-//     if ((a[columnIndex] as number) < (b[columnIndex] as number)) {
-//       return 1;
-//     }
-//     return 0;
-//   });
-// }
-
-// private static sortAny(dataContents: TableContents, columnIndex: number, isAsc: boolean) {
-//   if (isAsc) {
-//     Sort.sortAnyAscending(dataContents, columnIndex);
-//   } else {
-//     Sort.sortAnyDescending(dataContents, columnIndex);
-//   }
-// }

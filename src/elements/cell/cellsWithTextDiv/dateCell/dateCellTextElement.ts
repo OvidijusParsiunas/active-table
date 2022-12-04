@@ -1,4 +1,4 @@
-import {DateProperties} from '../../../../types/dateTypeToProperties';
+import {CalendarProperties, YMDFormat} from '../../../../types/calendarProperties';
 import {RegexUtils} from '../../../../utils/regex/regexUtils';
 import {CellText} from '../../../../types/tableContents';
 import {CellTextElement} from '../text/cellTextElement';
@@ -7,10 +7,15 @@ import {DateCellElement} from './dateCellElement';
 export class DateCellTextElement {
   // prettier-ignore
   public static convertInputValueToText(inputDate: string, defaultText: CellText, dateType: string,
-      dateProperties: DateProperties) {
+      dateProperties: CalendarProperties) {
+    if (dateProperties) {
+      const integerArr = RegexUtils.extractIntegerStrs(inputDate);
+      return dateProperties.dateTranslation?.fromYMD(integerArr as YMDFormat) as string
+    }
+    // below should not be required
     const integerArr = RegexUtils.extractIntegerStrs(inputDate);
     if (integerArr?.length === 3) {
-      const dateTypeToProperties = dateProperties || DateCellElement.DATE_TYPE_TO_PROPERTIES[dateType];
+      const dateTypeToProperties = DateCellElement.DATE_TYPE_TO_PROPERTIES[dateType];
       const dateArr = new Array<string>();
       // changing the YYYY-MM-DD format to target type
       dateArr[dateTypeToProperties.structureIndexes.day] = integerArr[2];

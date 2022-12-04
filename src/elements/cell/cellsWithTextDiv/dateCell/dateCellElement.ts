@@ -1,5 +1,5 @@
 import {ACTIVE_COLUMN_TYPE, DATE_COLUMN_TYPE, TEXT_DIV_COLUMN_TYPE} from '../../../../enums/columnType';
-import {DateProperties, DateTypeToProperties} from '../../../../types/dateTypeToProperties';
+import {CalendarProperties, DateTypeToProperties} from '../../../../types/calendarProperties';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {DateCellInputElement} from './dateCellInputElement';
 import {CellWithTextElement} from '../cellWithTextElement';
@@ -10,7 +10,7 @@ import {DateCellEvents} from './dateCellEvents';
 export class DateCellElement {
   public static readonly DATE_TYPE_TO_PROPERTIES: DateTypeToProperties = {};
 
-  private static addNewDateType(dateTypeName: string, dateProperties: DateProperties) {
+  private static addNewDateType(dateTypeName: string, dateProperties: CalendarProperties) {
     DateCellElement.DATE_TYPE_TO_PROPERTIES[dateTypeName] = dateProperties;
     DATE_COLUMN_TYPE[dateTypeName] = dateTypeName;
     TEXT_DIV_COLUMN_TYPE[dateTypeName] = dateTypeName;
@@ -41,7 +41,7 @@ export class DateCellElement {
       rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
     const textElement = DateCellTextElement.setCellTextAsAnElement(cellElement);
     if (Browser.IS_INPUT_DATE_SUPPORTED) DateCellInputElement.addDateInputElement(
-      cellElement, textElement, dateType, etc.columnsDetails[columnIndex].activeType.calendar as DateProperties);
+      cellElement, textElement, dateType, etc.columnsDetails[columnIndex].activeType);
     setTimeout(() => DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex, dateType));
   }
 

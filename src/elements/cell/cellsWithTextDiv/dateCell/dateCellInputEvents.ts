@@ -1,5 +1,5 @@
 import {EditableTableComponent} from '../../../../editable-table-component';
-import {DateProperties} from '../../../../types/dateTypeToProperties';
+import {CalendarProperties} from '../../../../types/calendarProperties';
 import {DateCellInputElement} from './dateCellInputElement';
 import {MOUSE_EVENT} from '../../../../consts/mouseEvents';
 import {DateCellTextElement} from './dateCellTextElement';
@@ -28,7 +28,7 @@ export class DateCellInputEvents {
     const {elements, settings: {defaultText}, activeType: {calendar}} = this.columnsDetails[columnIndex];
     const inputDate = (event.target as HTMLInputElement).value;
     const convertedDateFromInput = DateCellTextElement.convertInputValueToText(
-      inputDate, defaultText, dateType, calendar as DateProperties);
+      inputDate, defaultText, dateType, calendar as CalendarProperties);
     const cellElement = elements[rowIndex];
     CellEvents.updateCell(this, convertedDateFromInput, rowIndex, columnIndex, {element: cellElement});
   }
