@@ -102,8 +102,8 @@ export class CellElement {
   public static processAndSetTextOnCell(etc: EditableTableComponent, textContainerElement: HTMLElement, text: CellText,
       isUndo: boolean, setText = true) {
     if (setText) CellElement.setText(textContainerElement, text as string);
-    // called in all browsers for consistency
-    FirefoxCaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo);
+    // whilst it is primarily used for firefox - we use it consistently for all browsers
+    FirefoxCaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo)
   }
 
   private static setColumnWidth(tableElement: HTMLElement, cellElement: HTMLElement, settings?: ColumnSettingsInternal) {
@@ -121,10 +121,11 @@ export class CellElement {
     const {settings} = columnDetails;
     if (settings) ColumnSettingsStyleUtils.setSettingsStyleOnCell(settings, cellElement, isHeader);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, cellElement); // REF-23
-    CellElement.processAndSetTextOnCell(etc, cellElement, text, false);
     CellElement.prepContentEditable(cellElement, isHeader);
     // overwritten again if static table
     if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
+    // in a timeout as toggleCellTextBRPadding needs to wait for text elements to be populated if cell is data or category
+    setTimeout(() => CellElement.processAndSetTextOnCell(etc, cellElement, text, false));
     return cellElement;
   }
 
