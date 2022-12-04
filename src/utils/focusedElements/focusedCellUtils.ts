@@ -1,7 +1,7 @@
 import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {CellElement} from '../../elements/cell/cellElement';
 import {FocusedCell} from '../../types/focusedCell';
-import {ColumnTypes} from '../../types/columnTypes';
+import {ColumnTypes} from '../../types/columnType';
 
 export class FocusedCellUtils {
   public static createEmpty(): FocusedCell {

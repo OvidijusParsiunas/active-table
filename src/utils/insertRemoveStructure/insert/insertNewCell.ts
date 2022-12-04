@@ -63,8 +63,8 @@ export class InsertNewCell {
   // prettier-ignore
   private static convertCell(etc: EditableTableComponent,
       columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
-    if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-      CategoryCellElement.convertCellFromDataToCategory(etc, rowIndex, columnIndex, newCellElement, '');
+    if (columnDetails.activeType?.categories || columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+      CategoryCellElement.convertCellFromDataToCategory(etc, rowIndex, columnIndex, newCellElement);
       CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (DATE_COLUMN_TYPE[columnDetails.userSetColumnType] || columnDetails.activeType?.calendar) {
       DateCellElement.convertCellFromDataToDate(columnDetails.userSetColumnType,

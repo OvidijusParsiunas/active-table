@@ -54,7 +54,7 @@ export class OverwriteCellsViaCSVOnPaste {
     const oldType = CellTypeTotalsUtils.parseType(CellElement.getText(cellElement), columnDetails.types);
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
-    if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+    if (columnDetails.activeType.categories || columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryCellElement.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (Browser.IS_INPUT_DATE_SUPPORTED && (
         DATE_COLUMN_TYPE[columnDetails.userSetColumnType] || columnDetails.activeType.calendar)) {
@@ -80,12 +80,12 @@ export class OverwriteCellsViaCSVOnPaste {
   // prettier-ignore
   private static setCaretToEndAndHighlightIfCategory(etc: EditableTableComponent, cellElement: HTMLElement,
       columnIndex: number) {
-    const {userSetColumnType, categoryDropdown: dropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
+    const {userSetColumnType, activeType, categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
     if (TEXT_DIV_COLUMN_TYPE[userSetColumnType]) {
       const textElement = cellElement.children[0] as HTMLElement;
       CaretPosition.setToEndOfText(etc, textElement);
-      if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-        CategoryDropdown.updateCategoryDropdown(cellElement, dropdown, defaultText, true);
+      if (activeType.categories || userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+        CategoryDropdown.updateCategoryDropdown(cellElement, categoryDropdown, defaultText, true);
       }
     } else {
       CaretPosition.setToEndOfText(etc, cellElement);

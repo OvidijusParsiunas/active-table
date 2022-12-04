@@ -100,10 +100,15 @@ export class CellElement {
   // set text is optional as some functions may only need to augment the cell
   // prettier-ignore
   public static processAndSetTextOnCell(etc: EditableTableComponent, textContainerElement: HTMLElement, text: CellText,
-      isUndo: boolean, setText = true) {
+      isCellBeingBuilt: boolean, isUndo: boolean, setText = true) {
     if (setText) CellElement.setText(textContainerElement, text as string);
     // whilst it is primarily used for firefox - we use it consistently for all browsers
-    FirefoxCaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo)
+    if (isCellBeingBuilt) {
+      // in a timeout as text elements may not be populated upfront (data or category)
+      setTimeout(() => FirefoxCaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo));
+    } else {
+      FirefoxCaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo);
+    }
   }
 
   private static setColumnWidth(tableElement: HTMLElement, cellElement: HTMLElement, settings?: ColumnSettingsInternal) {
@@ -124,8 +129,7 @@ export class CellElement {
     CellElement.prepContentEditable(cellElement, isHeader);
     // overwritten again if static table
     if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
-    // in a timeout as toggleCellTextBRPadding needs to wait for text elements to be populated if cell is data or category
-    setTimeout(() => CellElement.processAndSetTextOnCell(etc, cellElement, text, false));
+    CellElement.processAndSetTextOnCell(etc, cellElement, text, true, false);
     return cellElement;
   }
 

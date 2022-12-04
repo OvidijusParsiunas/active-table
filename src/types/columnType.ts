@@ -22,7 +22,7 @@ export interface ColumnType {
   sorting?: SortingFuncs; // By default the elements will be sorted in ascending ASCII character order
   calendar?: CalendarProperties;
   // date and category cannot exist together
-  category?: {};
+  categories?: string[] | boolean;
   // restrict what options a category can have
   defaultText?: CellText;
 }

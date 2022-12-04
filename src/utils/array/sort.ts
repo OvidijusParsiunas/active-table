@@ -1,7 +1,7 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {CalendarProperties} from '../../types/calendarProperties';
 import {TableContents, TableRow} from '../../types/tableContents';
-import {ColumnType, SortingFuncs} from '../../types/columnTypes';
+import {ColumnType, SortingFuncs} from '../../types/columnType';
 import {CellElementIndex} from '../elements/cellElementIndex';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {ACTIVE_COLUMN_TYPE} from '../../enums/columnType';

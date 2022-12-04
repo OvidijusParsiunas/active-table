@@ -29,7 +29,7 @@ export class CellEvents {
       cellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText); 
     }
     if (CellEvents.executeUpdateOpration('updateContents', options)) etc.contents[rowIndex][columnIndex] = cellText; 
-    if (options?.element) CellElement.processAndSetTextOnCell(etc, options.element, cellText, false); // CAUTION-1
+    if (options?.element) CellElement.processAndSetTextOnCell(etc, options.element, cellText, false, false); // CAUTION-1
     if (CellEvents.executeUpdateOpration('updateTableEvent', options)) etc.onTableUpdate(etc.contents);
     // not in timeout as functionality that calls updateCell calls etc.onTableUpdate after - should remain that way
     etc.onCellUpdate(cellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);

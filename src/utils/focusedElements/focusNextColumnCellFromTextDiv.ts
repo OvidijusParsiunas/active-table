@@ -5,9 +5,9 @@ import {ColumnDetailsT} from '../../types/columnDetails';
 
 export class FocusNextColumnCellFromTextDiv {
   private static focusDifferentColumnCell(etc: EditableTableComponent, cellColumn: ColumnDetailsT, rowIndex: number) {
-    const {userSetColumnType, elements} = cellColumn;
+    const {userSetColumnType, elements, activeType} = cellColumn;
     const cellElement = elements[rowIndex];
-    if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+    if (activeType.categories || userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       // needs to be mousedown in order to set focusedCell
       cellElement.dispatchEvent(new Event('mousedown'));
     } else {

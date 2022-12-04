@@ -1,6 +1,6 @@
 import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../enums/columnType';
 import {ColumnSettingsInternal} from './columnsSettings';
-import {ColumnType, ColumnTypes} from './columnTypes';
+import {ColumnType, ColumnTypes} from './columnType';
 import {CellStateColors} from './cellStateColors';
 import {CELL_TYPE} from '../enums/cellType';
 import {ColumnSizerT} from './columnSizer';

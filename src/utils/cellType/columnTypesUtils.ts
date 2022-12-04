@@ -1,5 +1,5 @@
 import {YMDFormat} from '../../types/calendarProperties';
-import {ColumnTypes} from '../../types/columnTypes';
+import {ColumnTypes} from '../../types/columnType';
 import {CellText} from '../../types/tableContents';
 import {RegexUtils} from '../regex/regexUtils';
 
@@ -50,6 +50,10 @@ export class ColumnTypesUtils {
             fromYMD: (YMD: YMDFormat) => ColumnTypesUtils.yMDToDMYCellText(YMD),
           },
         },
+      },
+      {
+        name: 'Category2',
+        categories: true,
       },
     ];
   }

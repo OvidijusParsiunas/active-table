@@ -14,7 +14,7 @@ export class UpdateCellsForRows {
       columnIndex: number) {
     CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
     const {userSetColumnType, activeType} = etc.columnsDetails[columnIndex];
-    if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+    if (activeType.categories || userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
       CategoryCellEvents.setEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
     } else if (DATE_COLUMN_TYPE[userSetColumnType] || activeType.calendar) {
       DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex, userSetColumnType);

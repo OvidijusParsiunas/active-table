@@ -50,7 +50,7 @@ export class DataCellEvents {
     // sanitizePastedTextContent causes inputType to no longer be insertFromPaste, hence using this instead
     if (!this.userKeyEventsState[KEYBOARD_EVENT.PASTE]) {
       const isUndo = inputEvent.inputType === UNDO_INPUT_TYPE;
-      CellElement.processAndSetTextOnCell(this, textContainerElement, text, isUndo, false);
+      CellElement.processAndSetTextOnCell(this, textContainerElement, text, false, isUndo, false);
       const columnDetails = this.columnsDetails[columnIndex];
       const userSetColumnType = columnDetails.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
@@ -59,7 +59,8 @@ export class DataCellEvents {
         textContainerElement.style.color =
           columnDetails.activeType.validation(CellElement.getText(textContainerElement))
             ? DataCellEvents.DEFAULT_TEXT_COLOR : DataCellEvents.INVALID_TEXT_COLOR;
-      } else if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+      } else if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category
+          || columnDetails.activeType.categories) {
         CategoryDropdown.updateCategoryDropdown(textContainerElement.parentElement as HTMLElement,
           columnDetails.categoryDropdown, columnDetails.settings.defaultText, true);
       }
@@ -69,9 +70,9 @@ export class DataCellEvents {
 
   // prettier-ignore
   private static updatePastedCellIfCategory(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
-    const {userSetColumnType, categoryDropdown: dropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
-    if (userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-      CategoryDropdown.updateCategoryDropdown(cellElement, dropdown, defaultText, true);
+    const {userSetColumnType, activeType, categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
+    if (userSetColumnType === USER_SET_COLUMN_TYPE.Category || activeType.categories) {
+      CategoryDropdown.updateCategoryDropdown(cellElement, categoryDropdown, defaultText, true);
     }
   }
 

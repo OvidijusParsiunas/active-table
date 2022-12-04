@@ -18,23 +18,17 @@ export class CategoryCellElement {
 
   // prettier-ignore
   public static convertCellFromDataToCategory(etc: EditableTableComponent,
-      rowIndex: number, columnIndex: number, cellElement: HTMLElement, backgroundColor: string) {
+      rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
+    const {categoryDropdown: {categoryToItem}} = etc.columnsDetails[columnIndex];
+    const backgroundColor = categoryToItem[CellElement.getText(cellElement)]?.color || '';
     CategoryCellElement.setCellTextAsAnElement(cellElement, backgroundColor);
     CategoryCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
   }
 
   // prettier-ignore
-  private static convertExistingCellFromDataToCategory(etc: EditableTableComponent, rowIndex: number, columnIndex: number,
-      cellElement: HTMLElement) {
-    const {categoryDropdown: {categoryToItem}} = etc.columnsDetails[columnIndex];
-    CategoryCellElement.convertCellFromDataToCategory(etc, rowIndex, columnIndex,
-      cellElement, categoryToItem[CellElement.getText(cellElement)]?.color || '');
-  }
-
-  // prettier-ignore
   public static convertColumnTypeToCategory(etc: EditableTableComponent, columnIndex: number, previousType: string) {
     CellWithTextElement.convertColumnToTextType(
-      etc, columnIndex, previousType, CategoryCellElement.convertExistingCellFromDataToCategory);
+      etc, columnIndex, previousType, CategoryCellElement.convertCellFromDataToCategory);
   }
 
   // prettier-ignore

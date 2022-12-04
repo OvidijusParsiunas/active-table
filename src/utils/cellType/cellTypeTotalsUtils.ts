@@ -2,7 +2,7 @@ import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {HasRerendered} from '../render/hasRerendered';
-import {ColumnTypes} from '../../types/columnTypes';
+import {ColumnTypes} from '../../types/columnType';
 import {CellText} from '../../types/tableContents';
 import {EMPTY_STRING} from '../../consts/text';
 import {ValidateInput} from './validateInput';

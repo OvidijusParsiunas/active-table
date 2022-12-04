@@ -1,6 +1,7 @@
 import {DateCellCalendarIconElement} from './dateCellCalendarIconElement';
+import {YMDFormat} from '../../../../types/calendarProperties';
 import {RegexUtils} from '../../../../utils/regex/regexUtils';
-import {ColumnType} from '../../../../types/columnTypes';
+import {ColumnType} from '../../../../types/columnType';
 import {DateCellElement} from './dateCellElement';
 import {CellElement} from '../../cellElement';
 
@@ -26,7 +27,10 @@ export class DateCellInputElement {
   private static convertTextToInputValue(textDate: string, dateType: string, type: ColumnType): string {
     if (type.calendar) {
       const isValid = type.validation === undefined || type.validation(textDate);
-      if (isValid) return type.calendar.dateTranslation?.toYMD(textDate).join('-') as string;
+      if (isValid) {
+        const ymd = type.calendar.dateTranslation?.toYMD(textDate) as YMDFormat;
+        return [ymd[0], ymd[1].padStart(2, '0'), ymd[2].padStart(2, '0')].join('-');
+      }
       return '-';
     }
     // below should not be required

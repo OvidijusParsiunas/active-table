@@ -19,7 +19,8 @@ export class WindowEvents {
     if (Dropdown.isDisplayed(this.activeOverlayElements.rowDropdown)) {
       RowDropdownEvents.windowOnKeyDown(this, event);
     }
-    if (this.columnsDetails[columnIndex]?.userSetColumnType === USER_SET_COLUMN_TYPE.Category
+    if (this.columnsDetails[columnIndex].activeType.categories
+          || this.columnsDetails[columnIndex]?.userSetColumnType === USER_SET_COLUMN_TYPE.Category
         && !Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
       CategoryCellEvents.keyDownText(this, rowIndex, columnIndex, event);
     }

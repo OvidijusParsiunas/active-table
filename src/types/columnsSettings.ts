@@ -2,7 +2,7 @@ import {HoverableElementStyleClient} from './hoverableElementStyle';
 import {InterfacesUnion, SetRequired} from './utilityTypes';
 import {USER_SET_COLUMN_TYPE} from '../enums/columnType';
 import {StringDimension} from './dimensions';
-import {ColumnTypes} from './columnTypes';
+import {ColumnTypes} from './columnType';
 import {CellText} from './tableContents';
 import {CSSStyle} from './cssStyle';
 

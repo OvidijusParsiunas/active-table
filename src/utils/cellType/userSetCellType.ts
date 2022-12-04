@@ -9,7 +9,7 @@ import {ColumnsDetailsT} from '../../types/columnDetails';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {CellTypeTotalsUtils} from './cellTypeTotalsUtils';
 import {VALIDABLE_CELL_TYPE} from '../../enums/cellType';
-import {ColumnType} from '../../types/columnTypes';
+import {ColumnType} from '../../types/columnType';
 
 export class UserSetCellType {
   // prettier-ignore
@@ -48,6 +48,7 @@ export class UserSetCellType {
     columnDetails.activeType = columnDetails.types.find((type) => type.name === newTypeEnum) as ColumnType;
   }
 
+  // prettier-ignore
   public static setIfNew(this: EditableTableComponent, newType: string, columnIndex: number) {
     const codeTypeName = DisplayedCellTypeName.get(newType); // from displayed name to code
     // WORK - TYPE - change the naming convention
@@ -58,7 +59,8 @@ export class UserSetCellType {
       UserSetCellType.purgeInvalidCellsIfValidable(this, newTypeEnumStr as keyof typeof VALIDABLE_CELL_TYPE, columnIndex);
       if (TEXT_DIV_COLUMN_TYPE[previousTypeEnum] && !TEXT_DIV_COLUMN_TYPE[newTypeEnumStr]) {
         DataCellElement.convertColumnFromTextDivColumnToData(this, columnIndex);
-      } else if (newTypeEnumStr === USER_SET_COLUMN_TYPE.Category) {
+      } else if (this.columnsDetails[columnIndex].activeType.categories
+          || newTypeEnumStr === USER_SET_COLUMN_TYPE.Category) {
         CategoryDropdownItem.populateItems(this, columnIndex);
         // items need to be populated before we know what color each cell text needs to be turned into
         CategoryCellElement.convertColumnTypeToCategory(this, columnIndex, previousTypeEnum);
