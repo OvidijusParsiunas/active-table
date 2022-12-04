@@ -30,16 +30,18 @@ export class FirefoxCaretDisplayFix {
   }
 
   private static removeBRPadding(etc: EditableTableComponent, textContainerElement: HTMLElement) {
-    const firstElement = textContainerElement.childNodes[0] as HTMLElement;
-    if (firstElement.tagName === FirefoxCaretDisplayFix.BR_TAG_NAME) {
-      firstElement.remove();
+    const textElement = CellElement.getTextElement(textContainerElement);
+    const firstNode = textElement.childNodes[0] as HTMLElement;
+    if (firstNode.tagName === FirefoxCaretDisplayFix.BR_TAG_NAME) {
+      firstNode.remove();
       CaretPosition.setToEndOfText(etc, textContainerElement);
     }
   }
 
   private static addBRPaddingToEmptyCell(textContainerElement: HTMLElement, text: string) {
-    if (text === EMPTY_STRING && textContainerElement.childNodes.length === 0) {
-      textContainerElement.appendChild(document.createElement(FirefoxCaretDisplayFix.BR_TAG_NAME));
+    const textElement = CellElement.getTextElement(textContainerElement);
+    if (text === EMPTY_STRING && textElement.childNodes.length === 0) {
+      textElement.appendChild(document.createElement(FirefoxCaretDisplayFix.BR_TAG_NAME));
     }
   }
 

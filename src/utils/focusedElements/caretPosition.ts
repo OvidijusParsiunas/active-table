@@ -3,8 +3,9 @@ import {CellElement} from '../../elements/cell/cellElement';
 
 export class CaretPosition {
   private static setSelectionToEndOfText(textContainerElement: HTMLElement, selection: Selection) {
+    const textElement = CellElement.getTextElement(textContainerElement);
     const range = document.createRange();
-    range.setStart(textContainerElement.childNodes[0], CellElement.getText(textContainerElement).length || 0);
+    range.setStart(textElement.childNodes[0], CellElement.getText(textElement).length || 0);
     range.collapse(true);
     selection.removeAllRanges();
     selection.addRange(range);

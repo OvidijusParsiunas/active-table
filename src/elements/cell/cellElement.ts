@@ -68,6 +68,14 @@ export class CellElement {
     }
   }
 
+  public static getTextElement(element: HTMLElement): HTMLElement {
+    // if category or date cell
+    if (element.children[0]?.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS)) {
+      return element.children[0] as HTMLElement;
+    }
+    return element;
+  }
+
   // The reason why .trim() is used is because innerText/textContent property does not just return the cell text, but
   // additionally the new line characters (\n) which represent <br> elements within the cell that make it difficult
   // to compare cell text to other strings or use them for other programmatic purposes.
