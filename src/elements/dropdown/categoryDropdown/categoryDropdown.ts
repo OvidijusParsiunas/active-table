@@ -106,7 +106,8 @@ export class CategoryDropdown {
   }
 
   private static setCustomState(categoryDropdown: CategoryDropdownT, categories: Categories) {
-    categoryDropdown.customStyle = categories.dropdownStyle;
+    categoryDropdown.customDropdownStyle = categories.dropdownStyle;
+    categoryDropdown.customItemStyle = categories.optionStyle;
     categoryDropdown.staticItems = categories.options;
   }
 

@@ -8,14 +8,14 @@ export class CategoryDropdownHorizontalScrollFix {
   private static readonly SCROLL_FURTHER_BOTTOM_PX = 14;
 
   public static setPropertiesIfHorizontalScrollPresent(dropdown: CategoryDropdownT) {
-    const {element, scrollbarPresence, customStyle} = dropdown;
+    const {element, scrollbarPresence, customDropdownStyle} = dropdown;
     // fix is only needed when both horizontal and vertical scrolls are present
     if (ScrollbarUtils.isHorizontalPresent(element) && ScrollbarUtils.isVerticalPresent(element)) {
       scrollbarPresence.horizontal = true;
       element.style.paddingBottom = CategoryDropdownHorizontalScrollFix.NEW_BOTTOM_PADDING_IF_PRESENT;
     } else {
       scrollbarPresence.horizontal = false;
-      element.style.paddingBottom = customStyle?.paddingBottom || Dropdown.DROPDOWN_VERTICAL_PX;
+      element.style.paddingBottom = customDropdownStyle?.paddingBottom || Dropdown.DROPDOWN_VERTICAL_PX;
     }
   }
 

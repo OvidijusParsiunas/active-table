@@ -122,6 +122,7 @@ export class CategoryDropdownItem {
   private static addItemElement(etc: EditableTableComponent,
       text: string, color: string, dropdown: CategoryDropdownT, atStart = false) {
     const itemElement = DropdownItem.addPlaneButtonItem(dropdown.element, text, atStart ? 0 : undefined);
+    if (dropdown.customItemStyle) itemElement.style.color = dropdown.customItemStyle.textColor;
     if (!dropdown.staticItems) {
       const deleteButtonElement = CategoryDeleteButton.create(etc, dropdown);
       itemElement.appendChild(deleteButtonElement); 
