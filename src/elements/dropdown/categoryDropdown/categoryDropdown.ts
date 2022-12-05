@@ -1,4 +1,4 @@
-import {Categories, CategoriesDropdownStyle} from '../../../types/categoriesProperties';
+import {CategoriesProperties, CategoriesDropdownStyle} from '../../../types/categoriesProperties';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownItemEvents} from './categoryDropdownItemEvents';
@@ -105,7 +105,7 @@ export class CategoryDropdown {
     categoryDropdown.element.style.border = border || 'none';
   }
 
-  private static setCustomState(categoryDropdown: CategoryDropdownT, categories: Categories) {
+  private static setCustomState(categoryDropdown: CategoryDropdownT, categories: CategoriesProperties) {
     categoryDropdown.customDropdownStyle = categories.dropdownStyle;
     categoryDropdown.customItemStyle = categories.optionStyle;
     categoryDropdown.staticItems = categories.options;

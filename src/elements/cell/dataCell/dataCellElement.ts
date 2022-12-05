@@ -12,7 +12,7 @@ export class DataCellElement {
   private static setCellDataStructure(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, cell: HTMLElement) {
     // overwrites all previous cell content
-    cell.innerText = (cell.children[0] as HTMLElement).innerText; // CAUTION-1
+    cell.innerText = CellElement.getTextElement(cell).innerText; // CAUTION-1
     CellElement.prepContentEditable(cell, false);
     DataCellEvents.setEvents(etc, cell, rowIndex, columnIndex);
   }

@@ -19,5 +19,3 @@ export interface CategoriesProperties {
   optionStyle?: CategoriesDropdownOptionStyle;
   options?: CategoriesOptions;
 }
-
-export type Categories = CategoriesProperties;

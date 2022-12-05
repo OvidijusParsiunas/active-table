@@ -11,6 +11,7 @@ interface Parent {
   defaultText?: CellText;
   isDefaultTextRemovable?: boolean; // true by default
   cellStyle?: CSSStyle;
+  // WORK - option to post process text - e.g. change date format or add currency to start
   header?: HoverableElementStyleClient;
   columnTypes?: ColumnTypes;
   type?: boolean;

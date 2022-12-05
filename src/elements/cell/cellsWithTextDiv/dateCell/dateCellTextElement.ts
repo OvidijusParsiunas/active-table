@@ -10,7 +10,11 @@ export class DateCellTextElement {
       dateProperties: CalendarProperties) {
     if (dateProperties) {
       const integerArr = RegexUtils.extractIntegerStrs(inputDate);
-      return dateProperties.dateConversion?.fromYMD(integerArr as YMDFormat) as string
+      // null when the user clicks on clear button on the calendar
+      if (integerArr) {
+        return dateProperties.dateConversion?.fromYMD(integerArr as YMDFormat) as string
+      }
+      return defaultText;
     }
     // below should not be required
     const integerArr = RegexUtils.extractIntegerStrs(inputDate);

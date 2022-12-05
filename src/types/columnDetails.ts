@@ -52,6 +52,7 @@ export interface ColumnDetailsT {
   elements: HTMLElement[];
   columnSizer: ColumnSizerT;
   types: ColumnTypes;
+  // WORK - user should have option to set type as a string by the name
   activeType: ColumnType;
   // difference between column type and cell type is - is that column type governs the type for all cells within that
   // column whereas cell type is the actual type used on a cell
