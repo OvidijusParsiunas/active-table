@@ -1,5 +1,5 @@
+import {ColumnType, ColumnTypes} from '../../types/columnType';
 import {YMDFormat} from '../../types/calendarProperties';
-import {ColumnTypes} from '../../types/columnType';
 import {CellText} from '../../types/tableContents';
 import {RegexUtils} from '../regex/regexUtils';
 
@@ -45,7 +45,7 @@ export class ColumnTypesUtils {
             month: 1,
             year: 2,
           },
-          dateTranslation: {
+          dateConversion: {
             toYMD: (cellText: string) => ColumnTypesUtils.dMYCellTextToYMD(cellText),
             fromYMD: (YMD: YMDFormat) => ColumnTypesUtils.yMDToDMYCellText(YMD),
           },
@@ -53,8 +53,40 @@ export class ColumnTypesUtils {
       },
       {
         name: 'Category2',
-        categories: true,
+        categories: {
+          dropdownStyle: {
+            width: '70px',
+            textAlign: 'left',
+            paddingTop: '0px',
+            paddingBottom: '0px',
+          },
+          options: [{name: 'truea', backgroundColor: 'red'}, {name: 'false'}],
+        },
+      },
+      {
+        name: 'Category3',
+        categories: {
+          dropdownStyle: {
+            width: '200px',
+            textAlign: 'center',
+          },
+          options: [{name: 'sword', backgroundColor: 'green'}, {name: 'truea'}],
+        },
       },
     ];
+  }
+
+  private static setCategoriesValidation(type: ColumnType, isDefaultTextRemovable: boolean, defaultText: CellText) {
+    if (!type.categories?.options) return; // only setting if available options are defined
+    const optionsMap = new Set<CellText>(type.categories.options.map((option) => option.name));
+    type.validation = (cellText: CellText) => {
+      return !!optionsMap.has(cellText) || (!isDefaultTextRemovable && cellText === defaultText);
+    };
+  }
+
+  public static process(types: ColumnTypes, isDefaultTextRemovable: boolean, defaultText: CellText) {
+    types.forEach((type) => {
+      if (type.categories?.options) ColumnTypesUtils.setCategoriesValidation(type, isDefaultTextRemovable, defaultText);
+    });
   }
 }

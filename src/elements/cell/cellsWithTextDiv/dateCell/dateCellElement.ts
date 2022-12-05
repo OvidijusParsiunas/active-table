@@ -1,8 +1,8 @@
 import {ACTIVE_COLUMN_TYPE, DATE_COLUMN_TYPE, TEXT_DIV_COLUMN_TYPE} from '../../../../enums/columnType';
 import {CalendarProperties, DateTypeToProperties} from '../../../../types/calendarProperties';
+import {CellStructureUtils} from '../../../../utils/cellType/cellStructureUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {DateCellInputElement} from './dateCellInputElement';
-import {CellWithTextElement} from '../cellWithTextElement';
 import {DateCellTextElement} from './dateCellTextElement';
 import {Browser} from '../../../../utils/browser/browser';
 import {DateCellEvents} from './dateCellEvents';
@@ -37,7 +37,7 @@ export class DateCellElement {
   }
 
   // prettier-ignore
-  public static convertCellFromDataToDate(dateType: string, etc: EditableTableComponent,
+  public static setCellDateStructure(dateType: string, etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
     const textElement = DateCellTextElement.setCellTextAsAnElement(cellElement);
     if (Browser.IS_INPUT_DATE_SUPPORTED) DateCellInputElement.addDateInputElement(
@@ -45,10 +45,7 @@ export class DateCellElement {
     setTimeout(() => DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex, dateType));
   }
 
-  // prettier-ignore
-  public static convertColumnTypeToDate(
-      etc: EditableTableComponent, columnIndex: number, previousType: string, dateType: string) {
-    CellWithTextElement.convertColumnToTextType(etc, columnIndex, previousType,
-      DateCellElement.convertCellFromDataToDate.bind(etc, dateType))
+  public static setColumnDateStructure(etc: EditableTableComponent, columnIndex: number, dateType: string) {
+    CellStructureUtils.set(etc, columnIndex, DateCellElement.setCellDateStructure.bind(etc, dateType));
   }
 }

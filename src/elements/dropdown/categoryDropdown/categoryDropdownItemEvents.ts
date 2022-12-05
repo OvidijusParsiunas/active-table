@@ -16,7 +16,7 @@ export class CategoryDropdownItemEvents {
         delete activeItems[typeOfItem];
       }
     }
-    if (event) CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, false);
+    if (event && !dropdown.staticItems) CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, false);
   }
 
   // prettier-ignore
@@ -47,7 +47,7 @@ export class CategoryDropdownItemEvents {
     } else {
       activeItems.hovered = itemElement;
     }
-    CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, true);
+    if (!dropdown.staticItems) CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, true);
   }
 
   public static set(itemElement: HTMLElement, color: string, dropdown: CategoryDropdownT) {

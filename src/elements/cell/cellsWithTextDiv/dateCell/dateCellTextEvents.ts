@@ -15,7 +15,7 @@ export class DateCellTextEvents {
   private static inputText(this: EditableTableComponent, dateType: string, columnIndex: number, event: Event) {
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
       const {activeType} = this.columnsDetails[columnIndex];
-      const cellElement = CellElement.extractCellElement(event.target as HTMLElement);
+      const cellElement = CellElement.getCellElement(event.target as HTMLElement);
       DateCellInputElement.updateInputBasedOnTextDiv(dateType, cellElement, activeType);
     }
   }

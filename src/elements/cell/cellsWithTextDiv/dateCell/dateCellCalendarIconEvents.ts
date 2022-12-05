@@ -19,7 +19,7 @@ export class DateCellCalendarIconEvents {
     const {focusedElements, columnsDetails, activeOverlayElements} = this;
     const svgImage = event.target as HTMLElement;
     const inputElement = svgImage.previousSibling as HTMLInputDateElement;
-    const cellElement = CellElement.extractCellElement(inputElement);
+    const cellElement = CellElement.getCellElement(inputElement);
     setTimeout(() => {
       // this is in a timeout as upon selecting text, then clicking on the icon causes the text blur to activate
       // which purges the selected cell ref

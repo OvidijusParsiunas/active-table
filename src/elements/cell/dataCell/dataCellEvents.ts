@@ -8,20 +8,17 @@ import {CellTypeTotalsUtils} from '../../../utils/cellType/cellTypeTotalsUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../../enums/cellType';
-import {ValidateInput} from '../../../utils/cellType/validateInput';
 import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {KEYBOARD_EVENT} from '../../../consts/keyboardEvents';
 import {PasteUtils} from '../../../utils/paste/pasteUtils';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {UNDO_INPUT_TYPE} from '../../../consts/domEvents';
 import {Browser} from '../../../utils/browser/browser';
+import {DataCellElement} from './dataCellElement';
 import {CellElement} from '../cellElement';
 import {CellEvents} from '../cellEvents';
 
 export class DataCellEvents {
-  private static readonly INVALID_TEXT_COLOR = 'grey';
-  private static readonly DEFAULT_TEXT_COLOR = '';
-
   public static keyDownCell(this: EditableTableComponent, event: KeyboardEvent) {
     // REF-7
     if (event.key === KEYBOARD_KEY.TAB) {
@@ -30,11 +27,13 @@ export class DataCellEvents {
   }
 
   // prettier-ignore
-  private static setTextColorBasedOnValidity(textContainerElement: HTMLElement, userSetColumnType: VALIDABLE_CELL_TYPE) {
-    textContainerElement.style.color =
-      ValidateInput.validate(CellElement.getText(textContainerElement), userSetColumnType)
-        ? DataCellEvents.DEFAULT_TEXT_COLOR : DataCellEvents.INVALID_TEXT_COLOR;
-  }
+  // private static setTextColorBasedOnValidity(textContainerElement:
+  // HTMLElement, userSetColumnType: VALIDABLE_CELL_TYPE) {
+  // should not be required anymore
+  // textContainerElement.style.color =
+  //   ValidateInput.validate(CellElement.getText(textContainerElement), userSetColumnType)
+  //     ? DataCellEvents.DEFAULT_TEXT_COLOR : DataCellEvents.INVALID_TEXT_COLOR;
+  // }
 
   // TO-DO default types per column, cleanup e.g. currency or date will need to be provided by user
   // TO-DO allow user to set default as invalid
@@ -54,25 +53,26 @@ export class DataCellEvents {
       const columnDetails = this.columnsDetails[columnIndex];
       const userSetColumnType = columnDetails.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
-        DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
-      } else if (columnDetails.activeType.validation) {
-        textContainerElement.style.color =
-          columnDetails.activeType.validation(CellElement.getText(textContainerElement))
-            ? DataCellEvents.DEFAULT_TEXT_COLOR : DataCellEvents.INVALID_TEXT_COLOR;
+        // DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
       } else if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category
           || columnDetails.activeType.categories) {
         CategoryDropdown.updateCategoryDropdown(textContainerElement.parentElement as HTMLElement,
           columnDetails.categoryDropdown, columnDetails.settings.defaultText, true);
+      }
+      if (columnDetails.activeType.validation) {
+        DataCellElement.setStyleBasedOnValidity(textContainerElement, columnDetails.activeType.validation);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
     }
   }
 
   // prettier-ignore
-  private static updatePastedCellIfCategory(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
+  private static updatePastedCellIfCategory(etc: EditableTableComponent, textContainer: HTMLElement, columnIndex: number) {
     const {userSetColumnType, activeType, categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
     if (userSetColumnType === USER_SET_COLUMN_TYPE.Category || activeType.categories) {
-      CategoryDropdown.updateCategoryDropdown(cellElement, categoryDropdown, defaultText, true);
+      CategoryDropdown.updateCategoryDropdown(textContainer, categoryDropdown, defaultText, true);
+    } else if (activeType.validation) {
+        DataCellElement.setStyleBasedOnValidity(textContainer, activeType.validation);
     }
   }
 
@@ -83,10 +83,13 @@ export class DataCellEvents {
     if (OverwriteCellsViaCSVOnPaste.isCSVData(clipboardText)) {
       OverwriteCellsViaCSVOnPaste.overwrite(this, clipboardText, event, rowIndex, columnIndex);
     } else {
-      const cellElement = event.target as HTMLElement;
+      const targetElement = event.target as HTMLElement;
+      const {calendar, categories} = this.columnsDetails[columnIndex].activeType;
+      // if the user has deleted all text in calendar/category cell - targetElement can be the <br> tag
+      const containerElement = calendar || categories ? (targetElement.parentElement as HTMLElement) : targetElement;
       setTimeout(() => {
-        DataCellEvents.updatePastedCellIfCategory(this, cellElement, columnIndex);
-        CellEvents.updateCell(this, CellElement.getText(cellElement), rowIndex, columnIndex, {processText: false});
+        DataCellEvents.updatePastedCellIfCategory(this, containerElement, columnIndex);
+        CellEvents.updateCell(this, CellElement.getText(containerElement), rowIndex, columnIndex, {processText: false});
       });
     }
   }
@@ -97,7 +100,8 @@ export class DataCellEvents {
       rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
     if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeContentEditable(textContainerElement);
     CellEvents.setCellToDefaultIfNeeded(etc, rowIndex, columnIndex, textContainerElement);
-    textContainerElement.style.color = DataCellEvents.DEFAULT_TEXT_COLOR;
+     // because invalid text is removed, we can safely set the color to default
+    textContainerElement.style.color = DataCellElement.DEFAULT_TEXT_COLOR;
     const oldType = etc.focusedElements.cell.type as CELL_TYPE;
     FocusedCellUtils.purge(etc.focusedElements.cell);
     setTimeout(() => {

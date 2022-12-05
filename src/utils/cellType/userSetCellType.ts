@@ -1,7 +1,7 @@
-import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE, DATE_COLUMN_TYPE, TEXT_DIV_COLUMN_TYPE} from '../../enums/columnType';
 import {CategoryCellElement} from '../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
-import {CategoryDropdownItem} from '../../elements/dropdown/categoryDropdown/categoryDropdownItem';
+import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE, DATE_COLUMN_TYPE} from '../../enums/columnType';
 import {DateCellElement} from '../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
+import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {DataCellElement} from '../../elements/cell/dataCell/dataCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {DisplayedCellTypeName} from './displayedCellTypeName';
@@ -57,15 +57,14 @@ export class UserSetCellType {
     if (newTypeEnumStr !== previousTypeEnum) {
       UserSetCellType.set(this, newTypeEnumStr, columnIndex);
       UserSetCellType.purgeInvalidCellsIfValidable(this, newTypeEnumStr as keyof typeof VALIDABLE_CELL_TYPE, columnIndex);
-      if (TEXT_DIV_COLUMN_TYPE[previousTypeEnum] && !TEXT_DIV_COLUMN_TYPE[newTypeEnumStr]) {
-        DataCellElement.convertColumnFromTextDivColumnToData(this, columnIndex);
-      } else if (this.columnsDetails[columnIndex].activeType.categories
+      if (this.columnsDetails[columnIndex].activeType.categories
           || newTypeEnumStr === USER_SET_COLUMN_TYPE.Category) {
-        CategoryDropdownItem.populateItems(this, columnIndex);
-        // items need to be populated before we know what color each cell text needs to be turned into
-        CategoryCellElement.convertColumnTypeToCategory(this, columnIndex, previousTypeEnum);
+        CategoryDropdown.setUpDropdown(this, columnIndex);
+        CategoryCellElement.setColumnCategoryStructure(this, columnIndex);    
       } else if (DATE_COLUMN_TYPE[newTypeEnumStr] || this.columnsDetails[columnIndex].activeType.calendar) {
-        DateCellElement.convertColumnTypeToDate(this, columnIndex, previousTypeEnum, newTypeEnumStr);
+        DateCellElement.setColumnDateStructure(this, columnIndex, newTypeEnumStr);
+      } else {
+        DataCellElement.setColumnDataStructure(this, columnIndex);
       }
     }
   }

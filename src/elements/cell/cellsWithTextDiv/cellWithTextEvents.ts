@@ -17,7 +17,7 @@ export class CellWithTextEvents {
       focusCallback: FocusCallback | null, event: FocusEvent) {
     const {focusedElements: {cell}, columnsDetails} = this;
     const textElement = event.target as HTMLElement;
-    const cellElement = CellElement.extractCellElement(textElement);
+    const cellElement = CellElement.getCellElement(textElement);
     DataCellEvents.prepareText(this, rowIndex, columnIndex, textElement);
     focusCallback?.(this, columnIndex, cellElement);
     FocusedCellUtils.set(cell, cellElement, rowIndex, columnIndex, columnsDetails[columnIndex].types);

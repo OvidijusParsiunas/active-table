@@ -1,3 +1,4 @@
+import {Categories, CategoriesDropdownStyle} from '../../../types/categoriesProperties';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownItemEvents} from './categoryDropdownItemEvents';
@@ -7,6 +8,7 @@ import {CategoryDropdownT} from '../../../types/columnDetails';
 import {CategoryDropdownItem} from './categoryDropdownItem';
 import {TableElement} from '../../table/tableElement';
 import {CellText} from '../../../types/tableContents';
+import {CellElement} from '../../cell/cellElement';
 import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
@@ -14,6 +16,7 @@ import {Dropdown} from '../dropdown';
 // TO-DO allow dev to control whether additional elements are allowed to be added
 export class CategoryDropdown {
   private static readonly CATEGORY_DROPDOWN_CLASS = 'category-dropdown';
+  private static readonly MAX_HEIGHT_PX = '150px';
 
   private static generateRightPosition() {
     return `4px`;
@@ -59,12 +62,13 @@ export class CategoryDropdown {
   }
 
   // prettier-ignore
-  public static updateCategoryDropdown(cellElement: HTMLElement, dropdown: CategoryDropdownT,
+  public static updateCategoryDropdown(textContainerElement: HTMLElement, dropdown: CategoryDropdownT,
       defaultText: CellText, updateCellText: boolean, matchingCellElement?: HTMLElement) {
-    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(cellElement.children[0] as HTMLElement,
+    const textElement = CellElement.getTextElement(textContainerElement);
+    CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement,
       dropdown, defaultText, updateCellText, matchingCellElement)
     if (updateCellText) {
-      CategoryDropdown.setPosition(dropdown.element, cellElement);
+      CategoryDropdown.setPosition(dropdown.element, textElement.parentElement as HTMLElement);
     }
   }
 
@@ -92,13 +96,49 @@ export class CategoryDropdown {
     }
   }
 
+  private static setCustomStyle(categoryDropdown: CategoryDropdownT, dropdownStyle: CategoriesDropdownStyle) {
+    const {width, textAlign, paddingTop, paddingBottom, border} = dropdownStyle;
+    categoryDropdown.element.style.width = width || `${Dropdown.DROPDOWN_WIDTH}px`;
+    categoryDropdown.element.style.textAlign = textAlign || 'left';
+    categoryDropdown.element.style.paddingTop = paddingTop || Dropdown.DROPDOWN_VERTICAL_PX;
+    categoryDropdown.element.style.paddingBottom = paddingBottom || Dropdown.DROPDOWN_VERTICAL_PX;
+    categoryDropdown.element.style.border = border || 'none';
+  }
+
+  private static setCustomState(categoryDropdown: CategoryDropdownT, categories: Categories) {
+    categoryDropdown.customStyle = categories.dropdownStyle;
+    categoryDropdown.staticItems = categories.options;
+  }
+
+  // prettier-ignore
+  public static setUpDropdown(etc: EditableTableComponent, columnIndex: number) {
+    const {activeType: {categories}, categoryDropdown} = etc.columnsDetails[columnIndex];
+    if (!categories) return;
+    CategoryDropdown.setCustomState(categoryDropdown, categories)
+    CategoryDropdownItem.populateItems(etc, columnIndex);
+    if (categories.dropdownStyle) CategoryDropdown.setCustomStyle(categoryDropdown, categories.dropdownStyle);
+  }
+
   // WORK - will need to populate upfront if user has set a column as category upfront
+  // REF-8 - Created for every column
   public static createAndAppend(containerElement: HTMLElement) {
     const dropdownElement = Dropdown.createBase();
-    dropdownElement.style.maxHeight = '150px';
+    dropdownElement.style.maxHeight = CategoryDropdown.MAX_HEIGHT_PX;
     dropdownElement.classList.add(CategoryDropdown.CATEGORY_DROPDOWN_CLASS);
     containerElement.appendChild(dropdownElement);
     return dropdownElement;
+  }
+
+  public static getDefaultObj(dropdownElement: HTMLElement): CategoryDropdownT {
+    return {
+      categoryToItem: {},
+      activeItems: {},
+      element: dropdownElement,
+      scrollbarPresence: {
+        horizontal: false,
+        vertical: false,
+      },
+    };
   }
 
   public static createContainerElement() {

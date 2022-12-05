@@ -1,4 +1,5 @@
 import {CalendarProperties} from './calendarProperties';
+import {Categories} from './categoriesProperties';
 import {CellText} from './tableContents';
 
 export interface SortingFuncs {
@@ -14,6 +15,7 @@ export interface SortingFuncs {
 export interface ColumnType {
   name: string;
   // WORK - cell text should be string to allow the client to anticipate consistency
+  // WORK - no need for this for categories if options are set as it will validate them
   validation?: (cellText: CellText) => boolean;
   removeOnFailedValidation?: boolean;
   failedValidationStyle?: () => void;
@@ -22,7 +24,7 @@ export interface ColumnType {
   sorting?: SortingFuncs; // By default the elements will be sorted in ascending ASCII character order
   calendar?: CalendarProperties;
   // date and category cannot exist together
-  categories?: string[] | boolean;
+  categories?: Categories;
   // restrict what options a category can have
   defaultText?: CellText;
 }

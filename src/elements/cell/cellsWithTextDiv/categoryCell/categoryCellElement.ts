@@ -1,6 +1,6 @@
 import {CategoryDropdownItem} from '../../../dropdown/categoryDropdown/categoryDropdownItem';
+import {CellStructureUtils} from '../../../../utils/cellType/cellStructureUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
-import {CellWithTextElement} from '../cellWithTextElement';
 import {CellTextElement} from '../text/cellTextElement';
 import {CategoryCellEvents} from './categoryCellEvents';
 import {EMPTY_STRING} from '../../../../consts/text';
@@ -17,7 +17,7 @@ export class CategoryCellElement {
   }
 
   // prettier-ignore
-  public static convertCellFromDataToCategory(etc: EditableTableComponent,
+  public static setCellCategoryStructure(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
     const {categoryDropdown: {categoryToItem}} = etc.columnsDetails[columnIndex];
     const backgroundColor = categoryToItem[CellElement.getText(cellElement)]?.color || '';
@@ -25,23 +25,23 @@ export class CategoryCellElement {
     CategoryCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
   }
 
-  // prettier-ignore
-  public static convertColumnTypeToCategory(etc: EditableTableComponent, columnIndex: number, previousType: string) {
-    CellWithTextElement.convertColumnToTextType(
-      etc, columnIndex, previousType, CategoryCellElement.convertCellFromDataToCategory);
+  public static setColumnCategoryStructure(etc: EditableTableComponent, columnIndex: number) {
+    CellStructureUtils.set(etc, columnIndex, CategoryCellElement.setCellCategoryStructure);
   }
 
   // prettier-ignore
   public static finaliseEditedText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number,
       processMatching = false) {
-    const {categoryDropdown, settings: {defaultText, isDefaultTextRemovable}} = etc.columnsDetails[columnIndex];
+    const {categoryDropdown,
+      activeType: {categories}, settings: {defaultText, isDefaultTextRemovable}} = etc.columnsDetails[columnIndex];
     const color = categoryDropdown.categoryToItem[CellElement.getText(textElement)]?.color;
     if (CellElement.getText(textElement) === EMPTY_STRING
         || (isDefaultTextRemovable && CellElement.getText(textElement) === defaultText)) {
       textElement.style.backgroundColor = '';
     } else if (processMatching && color) {
       textElement.style.backgroundColor = color;
-    } else {
+       // not using staticItems state as this method may be called before it is available, if not, then refactor
+    } else if (!categories?.options) {
       // if a category is deleted and then added with an already existing text element, use its current background
       CategoryDropdownItem.addNewCategory(etc, textElement, categoryDropdown, textElement.style.backgroundColor);
     }

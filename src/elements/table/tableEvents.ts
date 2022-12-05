@@ -14,7 +14,7 @@ export class TableEvents {
   // prettier-ignore
   private static closeDatePicker(activeOverlayElements: ActiveOverlayElements, targetElement: HTMLElement) {
     if (activeOverlayElements.datePickerCell) {
-      if (activeOverlayElements.datePickerCell !== CellElement.extractCellElement(targetElement)) {
+      if (activeOverlayElements.datePickerCell !== CellElement.getCellElement(targetElement)) {
         DateCellInputElement.toggle(activeOverlayElements.datePickerCell, false);
       }
       delete activeOverlayElements.datePickerCell;
@@ -27,7 +27,7 @@ export class TableEvents {
   private static closeCategoryDropdown(etc: EditableTableComponent, targetElement: HTMLElement) {
     const {focusedElements} = etc;
     if (focusedElements.categoryDropdown && !Dropdown.isPartOfDropdownElement(targetElement)
-        && focusedElements.cell.element !== CellElement.extractCellElement(targetElement)) {
+        && focusedElements.cell.element !== CellElement.getCellElement(targetElement)) {
       CellWithTextEvents.programmaticBlur(etc);
     }
   }

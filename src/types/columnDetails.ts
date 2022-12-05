@@ -1,3 +1,4 @@
+import {CategoriesOptions, CategoriesDropdownStyle} from './categoriesProperties';
 import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../enums/columnType';
 import {ColumnSettingsInternal} from './columnsSettings';
 import {ColumnType, ColumnTypes} from './columnType';
@@ -42,6 +43,8 @@ export interface CategoryDropdownT {
   // REF-8
   element: HTMLElement;
   scrollbarPresence: ScrollbarPresence;
+  customStyle?: CategoriesDropdownStyle;
+  staticItems?: CategoriesOptions;
 }
 
 export interface ColumnDetailsT {

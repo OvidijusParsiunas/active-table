@@ -32,12 +32,12 @@ export class InsertNewCell {
   // prettier-ignore
   private static updateColumnDetailsAndSizers(
       etc: EditableTableComponent, rowIndex: number, columnIndex: number, text: CellText, isNewText: boolean) {
-    const {columnsDetails, categoryDropdownContainer} = etc;
+    const {columnsDetails, categoryDropdownContainer, defaultText} = etc;
     const columnDetails = columnsDetails[columnIndex];
     if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
     if (rowIndex === 0) {
       const categoryDropdown = CategoryDropdown.createAndAppend(categoryDropdownContainer as HTMLElement);
-      ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsInitial, categoryDropdown); // REF-13
+      ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsInitial, categoryDropdown, defaultText); // REF-13
       InsertRemoveColumnSizer.insert(etc, columnsDetails, columnIndex); // REF-13
       if (isNewText) {
         InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
@@ -64,10 +64,10 @@ export class InsertNewCell {
   private static convertCell(etc: EditableTableComponent,
       columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
     if (columnDetails.activeType?.categories || columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-      CategoryCellElement.convertCellFromDataToCategory(etc, rowIndex, columnIndex, newCellElement);
+      CategoryCellElement.setCellCategoryStructure(etc, rowIndex, columnIndex, newCellElement);
       CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (DATE_COLUMN_TYPE[columnDetails.userSetColumnType] || columnDetails.activeType?.calendar) {
-      DateCellElement.convertCellFromDataToDate(columnDetails.userSetColumnType,
+      DateCellElement.setCellDateStructure(columnDetails.userSetColumnType,
         etc, rowIndex, columnIndex, newCellElement);
     }
   }

@@ -28,7 +28,7 @@ export class DateCellInputElement {
     if (type.calendar) {
       const isValid = type.validation === undefined || type.validation(textDate);
       if (isValid) {
-        const ymd = type.calendar.dateTranslation?.toYMD(textDate) as YMDFormat;
+        const ymd = type.calendar.dateConversion?.toYMD(textDate) as YMDFormat;
         return [ymd[0], ymd[1].padStart(2, '0'), ymd[2].padStart(2, '0')].join('-');
       }
       return '-';

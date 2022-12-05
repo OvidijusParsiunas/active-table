@@ -18,22 +18,6 @@ export class CellElement {
   public static readonly CELL_CLASS = 'cell';
 
   // prettier-ignore
-  // this is used for case where element could be the cell element or the text inside a category cell
-  public static extractCellElement(element: HTMLElement) {
-    // if category cell text or date cell text/input container
-    if (element.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS) ||
-        element.classList.contains(DateCellInputElement.DATE_INPUT_CONTAINER_CLASS)) {
-      return element.parentElement as HTMLElement;
-      // if date cell input
-    } else if (element.classList.contains(DateCellInputElement.DATE_INPUT_CLASS) ||
-        element.classList.contains(DateCellCalendarIconElement.CALENDAR_ICON_CONTAINER_CLASS)) {
-      return (element.parentElement as HTMLElement).parentElement as HTMLElement;
-    }
-    // if cell
-    return element;
-  }
-
-  // prettier-ignore
   public static setCellEvents(etc: EditableTableComponent,
       cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     if (rowIndex === 0) {
@@ -66,6 +50,22 @@ export class CellElement {
     } else {
       cellElement.contentEditable = String(!isHeader);
     }
+  }
+
+  // prettier-ignore
+  // this is used for cases where element could be the cell element or the text inside a category cell
+  public static getCellElement(element: HTMLElement) {
+    // if category cell text or date cell text/input container
+    if (element.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS) ||
+        element.classList.contains(DateCellInputElement.DATE_INPUT_CONTAINER_CLASS)) {
+      return element.parentElement as HTMLElement;
+      // if date cell input
+    } else if (element.classList.contains(DateCellInputElement.DATE_INPUT_CLASS) ||
+        element.classList.contains(DateCellCalendarIconElement.CALENDAR_ICON_CONTAINER_CLASS)) {
+      return (element.parentElement as HTMLElement).parentElement as HTMLElement;
+    }
+    // if cell
+    return element;
   }
 
   public static getTextElement(element: HTMLElement): HTMLElement {

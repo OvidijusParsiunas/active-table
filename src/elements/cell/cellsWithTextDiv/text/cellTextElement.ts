@@ -9,7 +9,7 @@ export class CellTextElement {
   public static readonly CELL_TEXT_DIV_CLASS = 'cell-text-div';
 
   private static set(cellElement: HTMLElement, textElement: HTMLElement) {
-    cellElement.innerText = '';
+    cellElement.innerText = ''; // removes all cell content
     cellElement.contentEditable = 'false';
     // not really part of the bug, but in the same area
     if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeTabIndex(cellElement);

@@ -197,7 +197,7 @@ export class Sort {
 
   private static parseYMDFormat(validation: ColumnType['validation'], calendar: CalendarProperties, cellText: string) {
     const isValid = Sort.validateType(validation, cellText);
-    return isValid ? (calendar.dateTranslation?.toYMD(cellText) as unknown as [number]) : undefined;
+    return isValid ? (calendar.dateConversion?.toYMD(cellText) as unknown as [number]) : undefined;
   }
 
   // prettier-ignore

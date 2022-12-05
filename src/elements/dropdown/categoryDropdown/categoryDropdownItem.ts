@@ -2,6 +2,7 @@ import {ActiveCategoryItems, CategoryDropdownT} from '../../../types/columnDetai
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownItemEvents} from './categoryDropdownItemEvents';
+import {CategoriesOptions} from '../../../types/categoriesProperties';
 import {CellText, TableContents} from '../../../types/tableContents';
 import {CategoryDeleteButton} from './categoryDeleteButton';
 import {CellDetails} from '../../../types/focusedCell';
@@ -45,9 +46,10 @@ export class CategoryDropdownItem {
   // prettier-ignore
   private static updateCellTextBgColor(itemElement: HTMLElement | undefined, textElement: HTMLElement,
       dropdown: CategoryDropdownT, defaultText: CellText) {
+    const cellText = CellElement.getText(textElement);
     if (itemElement) {
-      textElement.style.backgroundColor = dropdown.categoryToItem[CellElement.getText(textElement)].color;
-    } else if (CellElement.getText(textElement) === EMPTY_STRING || CellElement.getText(textElement) === defaultText) {
+      textElement.style.backgroundColor = dropdown.categoryToItem[cellText].color;
+    } else if (dropdown.staticItems || cellText === EMPTY_STRING || cellText === defaultText) {
       textElement.style.backgroundColor = '';
     } else {
       textElement.style.backgroundColor = Color.getLatestPasteleColor();
@@ -120,8 +122,10 @@ export class CategoryDropdownItem {
   private static addItemElement(etc: EditableTableComponent,
       text: string, color: string, dropdown: CategoryDropdownT, atStart = false) {
     const itemElement = DropdownItem.addPlaneButtonItem(dropdown.element, text, atStart ? 0 : undefined);
-    const deleteButtonElement = CategoryDeleteButton.create(etc, dropdown);
-    itemElement.appendChild(deleteButtonElement);
+    if (!dropdown.staticItems) {
+      const deleteButtonElement = CategoryDeleteButton.create(etc, dropdown);
+      itemElement.appendChild(deleteButtonElement); 
+    }
     CategoryDropdownItemEvents.set(itemElement, color, dropdown);
     return itemElement;
   }
@@ -138,6 +142,7 @@ export class CategoryDropdownItem {
   // prettier-ignore
   private static addCategoryItems(etc: EditableTableComponent, categoryToColor: CategoryToColor,
       dropdown: CategoryDropdownT) {
+    dropdown.element.replaceChildren();
     Object.keys(categoryToColor).forEach((categoryName) => {
       CategoryDropdownItem.addCategoryItem(etc, categoryName, categoryToColor[categoryName], dropdown);
     });
@@ -147,6 +152,13 @@ export class CategoryDropdownItem {
   private static postProcessCategoryToColor(isDefaultTextRemovable: boolean,
       categoryToColor: CategoryToColor, defaultText: CellText) {
     if (isDefaultTextRemovable) delete categoryToColor[defaultText];
+  }
+
+  private static changeUserOptionsToCategoryToColor(categories: CategoriesOptions): CategoryToColor {
+    return categories.reduce<CategoryToColor>((categoryToColor, category) => {
+      categoryToColor[category.name] = category.backgroundColor || Color.getLatestPasteleColorAndSetNew();
+      return categoryToColor;
+    }, {});
   }
 
   private static aggregateCategoryToColor(contents: TableContents, columnIndex: number) {
@@ -162,7 +174,9 @@ export class CategoryDropdownItem {
   public static populateItems(etc: EditableTableComponent, columnIndex: number) {
     const {contents, columnsDetails} = etc;
     const {categoryDropdown, settings: {defaultText, isDefaultTextRemovable}} = columnsDetails[columnIndex];
-    const categoryToColor = CategoryDropdownItem.aggregateCategoryToColor(contents, columnIndex);
+    const categoryToColor = categoryDropdown.staticItems
+      ? CategoryDropdownItem.changeUserOptionsToCategoryToColor(categoryDropdown.staticItems)
+      : CategoryDropdownItem.aggregateCategoryToColor(contents, columnIndex);
     CategoryDropdownItem.postProcessCategoryToColor(isDefaultTextRemovable, categoryToColor, defaultText);
     CategoryDropdownItem.addCategoryItems(etc, categoryToColor, categoryDropdown);
   }

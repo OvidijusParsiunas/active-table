@@ -10,7 +10,7 @@ export class DateCellTextElement {
       dateProperties: CalendarProperties) {
     if (dateProperties) {
       const integerArr = RegexUtils.extractIntegerStrs(inputDate);
-      return dateProperties.dateTranslation?.fromYMD(integerArr as YMDFormat) as string
+      return dateProperties.dateConversion?.fromYMD(integerArr as YMDFormat) as string
     }
     // below should not be required
     const integerArr = RegexUtils.extractIntegerStrs(inputDate);

@@ -47,12 +47,12 @@ Category cells are the only ones that contain div text elements as they are need
 why all cells do not contain a text element instead of a text node - which would tramendously simplify the complexity of
 the text set/get logic in the app is because a text element within a cell has a drawback:
 If one cell contains a lot of text and is resultantly very high, the text elements in the same row which do not contain that
-much text and are inherntly shorter, would have white space fill up the rest of their cell's height.
+much text and are inherently shorter, would have white space fill up the rest of their cell's height.
 If the user would click on that whitespace, the text editor caret would focus on the left of the text which looks bad.
 Fortunately this can be fixed by shadowRoot.getSelection, however this is not available to all browsers. Hence, because
-the UX cannot be made good for all browsers, the table will continue to use plane text within its data cells to have as
-much of a better user experience as possible. It is true that in those instances the limitation will still be there when
-category cells are used, but at least it will only be problematic in those specific cells.
+the UX cannot be good for all browsers, the table will continue to use plane text within its data cells to have as much
+of a better user experience as possible. It is true that in those instances the limitation will still be there when
+category/date cells are used, but at least it will only be problematic in those specific cells.
 
 REF-6
 Knowing that data cell elements contain a text node and category cells contain a text element with a text node inside,
@@ -63,7 +63,7 @@ Because there is no way in firefox to distinguish if element focus was fired by 
 to hold temporary state to indicate this. Primarily used to decide whether move caret via the setToEndOfText method
 
 REF-8
-The reason why there is one category dropdowns per column is because each one contains unique items for it. Hence it
+The reason why there is one category dropdown per column is because each one contains unique items for it. Hence it
 is inefficient to repopulate the dropdown every time it is clicked on a different column cell.
 
 REF-9
