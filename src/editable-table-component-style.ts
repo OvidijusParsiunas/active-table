@@ -173,6 +173,7 @@ export const ediTableStyle = css`
 
   .category-dropdown {
     overflow: auto;
+    white-space: nowrap;
   }
 
   .dropdown-item {

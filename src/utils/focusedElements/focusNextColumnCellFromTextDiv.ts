@@ -1,13 +1,12 @@
 import {CellWithTextEvents} from '../../elements/cell/cellsWithTextDiv/cellWithTextEvents';
 import {EditableTableComponent} from '../../editable-table-component';
-import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {ColumnDetailsT} from '../../types/columnDetails';
 
 export class FocusNextColumnCellFromTextDiv {
   private static focusDifferentColumnCell(etc: EditableTableComponent, cellColumn: ColumnDetailsT, rowIndex: number) {
-    const {userSetColumnType, elements, activeType} = cellColumn;
+    const {elements, activeType} = cellColumn;
     const cellElement = elements[rowIndex];
-    if (activeType.categories || userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+    if (activeType.categories) {
       // needs to be mousedown in order to set focusedCell
       cellElement.dispatchEvent(new Event('mousedown'));
     } else {

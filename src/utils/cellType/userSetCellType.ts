@@ -1,7 +1,7 @@
 import {CategoryCellElement} from '../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
-import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE, DATE_COLUMN_TYPE} from '../../enums/columnType';
 import {DateCellElement} from '../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categoryDropdown';
+import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
 import {DataCellElement} from '../../elements/cell/dataCell/dataCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {DisplayedCellTypeName} from './displayedCellTypeName';
@@ -57,11 +57,10 @@ export class UserSetCellType {
     if (newTypeEnumStr !== previousTypeEnum) {
       UserSetCellType.set(this, newTypeEnumStr, columnIndex);
       UserSetCellType.purgeInvalidCellsIfValidable(this, newTypeEnumStr as keyof typeof VALIDABLE_CELL_TYPE, columnIndex);
-      if (this.columnsDetails[columnIndex].activeType.categories
-          || newTypeEnumStr === USER_SET_COLUMN_TYPE.Category) {
+      if (this.columnsDetails[columnIndex].activeType.categories) {
         CategoryDropdown.setUpDropdown(this, columnIndex);
         CategoryCellElement.setColumnCategoryStructure(this, columnIndex);    
-      } else if (DATE_COLUMN_TYPE[newTypeEnumStr] || this.columnsDetails[columnIndex].activeType.calendar) {
+      } else if (this.columnsDetails[columnIndex].activeType.calendar) {
         DateCellElement.setColumnDateStructure(this, columnIndex, newTypeEnumStr);
       } else {
         DataCellElement.setColumnDataStructure(this, columnIndex);

@@ -7,7 +7,6 @@ import {RowDropdownEvents} from '../dropdown/rowDropdown/rowDropdownEvents';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
-import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {CellDetails} from '../../types/focusedCell';
 import {Dropdown} from '../dropdown/dropdown';
@@ -20,7 +19,6 @@ export class WindowEvents {
       RowDropdownEvents.windowOnKeyDown(this, event);
     }
     if (this.columnsDetails[columnIndex].activeType.categories
-          || this.columnsDetails[columnIndex]?.userSetColumnType === USER_SET_COLUMN_TYPE.Category
         && !Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
       CategoryCellEvents.keyDownText(this, rowIndex, columnIndex, event);
     }

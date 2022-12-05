@@ -4,10 +4,9 @@ import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
-import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
 import {UpdateIndexColumnWidth} from '../../../elements/indexColumn/updateIndexColumnWidth';
+import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
 import {ColumnDetailsInitial, ColumnDetailsT} from '../../../types/columnDetails';
-import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
@@ -63,10 +62,10 @@ export class InsertNewCell {
   // prettier-ignore
   private static convertCell(etc: EditableTableComponent,
       columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
-    if (columnDetails.activeType?.categories || columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+    if (columnDetails.activeType?.categories) {
       CategoryCellElement.setCellCategoryStructure(etc, rowIndex, columnIndex, newCellElement);
       CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
-    } else if (DATE_COLUMN_TYPE[columnDetails.userSetColumnType] || columnDetails.activeType?.calendar) {
+    } else if (columnDetails.activeType?.calendar) {
       DateCellElement.setCellDateStructure(columnDetails.userSetColumnType,
         etc, rowIndex, columnIndex, newCellElement);
     }

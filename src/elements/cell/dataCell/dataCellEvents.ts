@@ -8,7 +8,6 @@ import {CellTypeTotalsUtils} from '../../../utils/cellType/cellTypeTotalsUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../../enums/cellType';
-import {USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {KEYBOARD_EVENT} from '../../../consts/keyboardEvents';
 import {PasteUtils} from '../../../utils/paste/pasteUtils';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
@@ -38,7 +37,6 @@ export class DataCellEvents {
   // TO-DO default types per column, cleanup e.g. currency or date will need to be provided by user
   // TO-DO allow user to set default as invalid
   // using this instead of keydown because when this is fired the new cell text is available
-  // prettier-ignore
   private static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const inputEvent = event as InputEvent;
     // can be cell element for data cell, text element for category and date cells, or even input element from date picker
@@ -54,8 +52,7 @@ export class DataCellEvents {
       const userSetColumnType = columnDetails.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
       if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
         // DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
-      } else if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category
-          || columnDetails.activeType.categories) {
+      } else if (columnDetails.activeType.categories) {
         CategoryDropdown.updateCategoryDropdown(textContainerElement.parentElement as HTMLElement,
           columnDetails.categoryDropdown, columnDetails.settings.defaultText, true);
       }
@@ -68,8 +65,8 @@ export class DataCellEvents {
 
   // prettier-ignore
   private static updatePastedCellIfCategory(etc: EditableTableComponent, textContainer: HTMLElement, columnIndex: number) {
-    const {userSetColumnType, activeType, categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
-    if (userSetColumnType === USER_SET_COLUMN_TYPE.Category || activeType.categories) {
+    const {activeType, categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
+    if (activeType.categories) {
       CategoryDropdown.updateCategoryDropdown(textContainer, categoryDropdown, defaultText, true);
     } else if (activeType.validation) {
         DataCellElement.setStyleBasedOnValidity(textContainer, activeType.validation);

@@ -1,6 +1,5 @@
 import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
 import {DateCellInputElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellInputElement';
-import {DATE_COLUMN_TYPE, TEXT_DIV_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
@@ -54,10 +53,9 @@ export class OverwriteCellsViaCSVOnPaste {
     const oldType = CellTypeTotalsUtils.parseType(CellElement.getText(cellElement), columnDetails.types);
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
-    if (columnDetails.activeType.categories || columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+    if (columnDetails.activeType.categories) {
       CategoryCellElement.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
-    } else if (Browser.IS_INPUT_DATE_SUPPORTED && (
-        DATE_COLUMN_TYPE[columnDetails.userSetColumnType] || columnDetails.activeType.calendar)) {
+    } else if (Browser.IS_INPUT_DATE_SUPPORTED && columnDetails.activeType.calendar) {
       DateCellInputElement.updateInputBasedOnTextDiv(columnDetails.userSetColumnType, cellElement,
         columnDetails.activeType);
     }
@@ -80,15 +78,10 @@ export class OverwriteCellsViaCSVOnPaste {
   // prettier-ignore
   private static setCaretToEndAndHighlightIfCategory(etc: EditableTableComponent, cellElement: HTMLElement,
       columnIndex: number) {
-    const {userSetColumnType, activeType, categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
-    if (TEXT_DIV_COLUMN_TYPE[userSetColumnType]) {
-      const textElement = cellElement.children[0] as HTMLElement;
-      CaretPosition.setToEndOfText(etc, textElement);
-      if (activeType.categories || userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
-        CategoryDropdown.updateCategoryDropdown(cellElement, categoryDropdown, defaultText, true);
-      }
-    } else {
-      CaretPosition.setToEndOfText(etc, cellElement);
+    const {activeType, categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
+    CaretPosition.setToEndOfText(etc, cellElement);
+    if (activeType.categories) {
+      CategoryDropdown.updateCategoryDropdown(cellElement, categoryDropdown, defaultText, true);
     }
   }
 

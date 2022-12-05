@@ -1,7 +1,6 @@
 import {CategoryCellEvents} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellEvents';
 import {DateCellEvents} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellEvents';
 import {IndexColumnEvents} from '../../../elements/indexColumn/indexColumnEvents';
-import {DATE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../../enums/columnType';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellElement} from '../../../elements/cell/cellElement';
@@ -14,9 +13,9 @@ export class UpdateCellsForRows {
       columnIndex: number) {
     CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
     const {userSetColumnType, activeType} = etc.columnsDetails[columnIndex];
-    if (activeType.categories || userSetColumnType === USER_SET_COLUMN_TYPE.Category) {
+    if (activeType.categories) {
       CategoryCellEvents.setEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
-    } else if (DATE_COLUMN_TYPE[userSetColumnType] || activeType.calendar) {
+    } else if (activeType.calendar) {
       DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex, userSetColumnType);
     }
   }

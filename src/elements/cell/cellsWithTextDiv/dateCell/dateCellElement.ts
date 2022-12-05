@@ -1,7 +1,7 @@
-import {ACTIVE_COLUMN_TYPE, DATE_COLUMN_TYPE, TEXT_DIV_COLUMN_TYPE} from '../../../../enums/columnType';
 import {CalendarProperties, DateTypeToProperties} from '../../../../types/calendarProperties';
 import {CellStructureUtils} from '../../../../utils/cellType/cellStructureUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
+import {ACTIVE_COLUMN_TYPE} from '../../../../enums/columnType';
 import {DateCellInputElement} from './dateCellInputElement';
 import {DateCellTextElement} from './dateCellTextElement';
 import {Browser} from '../../../../utils/browser/browser';
@@ -12,8 +12,6 @@ export class DateCellElement {
 
   private static addNewDateType(dateTypeName: string, dateProperties: CalendarProperties) {
     DateCellElement.DATE_TYPE_TO_PROPERTIES[dateTypeName] = dateProperties;
-    DATE_COLUMN_TYPE[dateTypeName] = dateTypeName;
-    TEXT_DIV_COLUMN_TYPE[dateTypeName] = dateTypeName;
   }
 
   // added through addNewDateType method instead of direct in order to populate other objects with same name from one place
