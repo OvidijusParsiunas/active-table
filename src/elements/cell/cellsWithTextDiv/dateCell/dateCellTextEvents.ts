@@ -12,11 +12,11 @@ export class DateCellTextEvents {
     if (event.key === KEYBOARD_KEY.TAB) CellTextEvents.tabOutOfCell(this, rowIndex, columnIndex, event);
   }
 
-  private static inputText(this: EditableTableComponent, dateType: string, columnIndex: number, event: Event) {
+  private static inputText(this: EditableTableComponent, columnIndex: number, event: Event) {
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
       const {activeType} = this.columnsDetails[columnIndex];
       const cellElement = CellElement.getCellElement(event.target as HTMLElement);
-      DateCellInputElement.updateInputBasedOnTextDiv(dateType, cellElement, activeType);
+      DateCellInputElement.updateInputBasedOnTextDiv(cellElement, activeType);
     }
   }
 
@@ -25,12 +25,10 @@ export class DateCellTextEvents {
     DataCellEvents.blur(this, rowIndex, columnIndex, textElement);
   }
 
-  // prettier-ignore
-  public static setEvents(etc: EditableTableComponent, textElement: HTMLElement, rowIndex: number, columnIndex: number,
-      dateType: string) {
+  public static setEvents(etc: EditableTableComponent, textElement: HTMLElement, rowIndex: number, columnIndex: number) {
     textElement.onfocus = CellWithTextEvents.focusText.bind(etc, rowIndex, columnIndex, null);
     textElement.onblur = DateCellTextEvents.blurText.bind(etc, rowIndex, columnIndex);
-    textElement.oninput = DateCellTextEvents.inputText.bind(etc, dateType, columnIndex);
+    textElement.oninput = DateCellTextEvents.inputText.bind(etc, columnIndex);
     textElement.onkeydown = DateCellTextEvents.keyDownOnText.bind(etc, rowIndex, columnIndex);
   }
 }

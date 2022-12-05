@@ -1,5 +1,4 @@
 import {EditableTableComponent} from '../../../../editable-table-component';
-import {CalendarProperties} from '../../../../types/calendarProperties';
 import {DateCellInputElement} from './dateCellInputElement';
 import {MOUSE_EVENT} from '../../../../consts/mouseEvents';
 import {DateCellTextElement} from './dateCellTextElement';
@@ -23,12 +22,11 @@ export class DateCellInputEvents {
 
   // this is triggered when a date is selected via the date picker
   // prettier-ignore
-  private static inputInput(this: EditableTableComponent, rowIndex: number, columnIndex: number, dateType: string,
-      event: Event) {
+  private static inputInput(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const {elements, settings: {defaultText}, activeType: {calendar}} = this.columnsDetails[columnIndex];
+    if (!calendar) return;
     const inputDate = (event.target as HTMLInputElement).value;
-    const convertedDateFromInput = DateCellTextElement.convertInputValueToText(
-      inputDate, defaultText, dateType, calendar as CalendarProperties);
+    const convertedDateFromInput = DateCellTextElement.convertInputValueToText(inputDate, defaultText, calendar);
     const cellElement = elements[rowIndex];
     CellEvents.updateCell(this, convertedDateFromInput, rowIndex, columnIndex, {element: cellElement});
   }
@@ -49,10 +47,8 @@ export class DateCellInputEvents {
   }
 
   // the user does not use the actual input element and the events are triggered via the date picker
-  // prettier-ignore
-  public static setEvents(etc: EditableTableComponent, inputContainer: HTMLElement, rowIndex: number,
-      columnIndex: number, dateType: string) {
+  public static setEvents(etc: EditableTableComponent, inputContainer: HTMLElement, rowIndex: number, colIndex: number) {
     inputContainer.onchange = DateCellInputEvents.changeInput.bind(etc);
-    inputContainer.oninput = DateCellInputEvents.inputInput.bind(etc, rowIndex, columnIndex, dateType);
+    inputContainer.oninput = DateCellInputEvents.inputInput.bind(etc, rowIndex, colIndex);
   }
 }

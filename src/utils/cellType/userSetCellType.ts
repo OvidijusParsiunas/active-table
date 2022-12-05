@@ -48,7 +48,6 @@ export class UserSetCellType {
     columnDetails.activeType = columnDetails.types.find((type) => type.name === newTypeEnum) as ColumnType;
   }
 
-  // prettier-ignore
   public static setIfNew(this: EditableTableComponent, newType: string, columnIndex: number) {
     const codeTypeName = DisplayedCellTypeName.get(newType); // from displayed name to code
     // WORK - TYPE - change the naming convention
@@ -59,9 +58,9 @@ export class UserSetCellType {
       UserSetCellType.purgeInvalidCellsIfValidable(this, newTypeEnumStr as keyof typeof VALIDABLE_CELL_TYPE, columnIndex);
       if (this.columnsDetails[columnIndex].activeType.categories) {
         CategoryDropdown.setUpDropdown(this, columnIndex);
-        CategoryCellElement.setColumnCategoryStructure(this, columnIndex);    
+        CategoryCellElement.setColumnCategoryStructure(this, columnIndex);
       } else if (this.columnsDetails[columnIndex].activeType.calendar) {
-        DateCellElement.setColumnDateStructure(this, columnIndex, newTypeEnumStr);
+        DateCellElement.setColumnDateStructure(this, columnIndex);
       } else {
         DataCellElement.setColumnDataStructure(this, columnIndex);
       }

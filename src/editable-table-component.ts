@@ -1,7 +1,6 @@
 import {AuxiliaryTableContentInternalUtils} from './utils/auxiliaryTableContent/auxiliaryTableContentInternalUtils';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
 import {ColumnSettings, ColumnsSettings, ColumnsSettingsMap} from './types/columnsSettings';
-import {DateCellElement} from './elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
@@ -188,7 +187,6 @@ export class EditableTableComponent extends LitElement {
     this.shadowRoot?.appendChild(tableElement);
     InitialContentsProcessing.preProcess(this.contents);
     WindowElement.setEvents(this);
-    DateCellElement.populateDefaultDateTypes();
     ColumnSettingsUtils.setUpInternalSettings(this);
   }
 

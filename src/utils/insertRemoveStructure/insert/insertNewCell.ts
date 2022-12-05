@@ -66,8 +66,7 @@ export class InsertNewCell {
       CategoryCellElement.setCellCategoryStructure(etc, rowIndex, columnIndex, newCellElement);
       CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (columnDetails.activeType?.calendar) {
-      DateCellElement.setCellDateStructure(columnDetails.userSetColumnType,
-        etc, rowIndex, columnIndex, newCellElement);
+      DateCellElement.setCellDateStructure(etc, rowIndex, columnIndex, newCellElement);
     }
   }
 

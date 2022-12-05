@@ -1,8 +1,5 @@
 import {DateCellCalendarIconElement} from './dateCellCalendarIconElement';
-import {YMDFormat} from '../../../../types/calendarProperties';
-import {RegexUtils} from '../../../../utils/regex/regexUtils';
 import {ColumnType} from '../../../../types/columnType';
-import {DateCellElement} from './dateCellElement';
 import {CellElement} from '../../cellElement';
 
 export class DateCellInputElement {
@@ -24,42 +21,27 @@ export class DateCellInputElement {
     return (cellElement.children[1] as HTMLElement).children[0] as HTMLInputElement;
   }
 
-  private static convertTextToInputValue(textDate: string, dateType: string, type: ColumnType): string {
+  private static convertTextToInputValue(textDate: string, type: ColumnType): string {
     if (type.calendar) {
       const isValid = type.validation === undefined || type.validation(textDate);
       if (isValid) {
-        const ymd = type.calendar.dateConversion?.toYMD(textDate) as YMDFormat;
+        const ymd = type.calendar.toYMD(textDate);
         return [ymd[0], ymd[1].padStart(2, '0'), ymd[2].padStart(2, '0')].join('-');
       }
-      return '-';
-    }
-    // below should not be required
-    const integerArr = RegexUtils.extractIntegerStrs(textDate);
-    if (integerArr?.length === 3) {
-      const dateTypeToProperties = DateCellElement.DATE_TYPE_TO_PROPERTIES[dateType];
-      return [
-        integerArr[dateTypeToProperties.structureIndexes.year],
-        integerArr[dateTypeToProperties.structureIndexes.month].padStart(2, '0'),
-        integerArr[dateTypeToProperties.structureIndexes.day].padStart(2, '0'),
-      ].join('-');
     }
     return '-';
   }
 
-  // prettier-ignore
-  public static updateInputBasedOnTextDiv(dateType: string, cellElement: HTMLElement, type: ColumnType) {
-    const dateValue = DateCellInputElement.convertTextToInputValue(
-      CellElement.getText(cellElement), dateType, type);
+  public static updateInputBasedOnTextDiv(cellElement: HTMLElement, type: ColumnType) {
+    const dateValue = DateCellInputElement.convertTextToInputValue(CellElement.getText(cellElement), type);
     DateCellInputElement.extractInputElementFromCell(cellElement).value = dateValue;
   }
 
-  private static createInputElement(text: string, dateType: string, type: ColumnType): HTMLInputElement {
+  private static createInputElement(text: string, type: ColumnType): HTMLInputElement {
     const inputElement = document.createElement('input');
     inputElement.type = DateCellInputElement.ELEMENT_TYPE;
     inputElement.classList.add(DateCellInputElement.DATE_INPUT_CLASS);
-    if (text !== undefined && dateType !== undefined) {
-      inputElement.value = DateCellInputElement.convertTextToInputValue(text, dateType, type);
-    }
+    inputElement.value = DateCellInputElement.convertTextToInputValue(text, type);
     return inputElement;
   }
 
@@ -70,11 +52,9 @@ export class DateCellInputElement {
     return inputContainer;
   }
 
-  // prettier-ignore
-  public static addDateInputElement(cellElement: HTMLElement, textElement: HTMLElement, dateType: string,
-      type: ColumnType) {
+  public static addDateInputElement(cellElement: HTMLElement, textElement: HTMLElement, type: ColumnType) {
     const inputContainer = DateCellInputElement.createInputElementContainer();
-    const inputElement = DateCellInputElement.createInputElement(CellElement.getText(textElement), dateType, type);
+    const inputElement = DateCellInputElement.createInputElement(CellElement.getText(textElement), type);
     inputContainer.appendChild(inputElement);
     const svgImage = DateCellCalendarIconElement.get();
     inputContainer.appendChild(svgImage);

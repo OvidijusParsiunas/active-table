@@ -1,5 +1,5 @@
+import {CalendarFunctionality} from '../../types/calendarFunctionality';
 import {EditableTableComponent} from '../../editable-table-component';
-import {CalendarProperties} from '../../types/calendarProperties';
 import {TableContents, TableRow} from '../../types/tableContents';
 import {ColumnType, SortingFuncs} from '../../types/columnType';
 import {CellElementIndex} from '../elements/cellElementIndex';
@@ -195,9 +195,9 @@ export class Sort {
     return (new Date(...ymd1) as unknown as number) - (new Date(...ymd2) as unknown as number);
   }
 
-  private static parseYMDFormat(validation: ColumnType['validation'], calendar: CalendarProperties, cellText: string) {
+  private static parseYMDFormat(validation: ColumnType['validation'], calendar: CalendarFunctionality, cellText: string) {
     const isValid = Sort.validateType(validation, cellText);
-    return isValid ? (calendar.dateConversion?.toYMD(cellText) as unknown as [number]) : undefined;
+    return isValid ? (calendar.toYMD(cellText) as unknown as [number]) : undefined;
   }
 
   // prettier-ignore

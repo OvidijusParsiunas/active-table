@@ -1,31 +1,14 @@
-import {CalendarProperties, YMDFormat} from '../../../../types/calendarProperties';
+import {CalendarFunctionality, YMDFormat} from '../../../../types/calendarFunctionality';
 import {RegexUtils} from '../../../../utils/regex/regexUtils';
 import {CellText} from '../../../../types/tableContents';
 import {CellTextElement} from '../text/cellTextElement';
-import {DateCellElement} from './dateCellElement';
 
 export class DateCellTextElement {
-  // prettier-ignore
-  public static convertInputValueToText(inputDate: string, defaultText: CellText, dateType: string,
-      dateProperties: CalendarProperties) {
-    if (dateProperties) {
-      const integerArr = RegexUtils.extractIntegerStrs(inputDate);
-      // null when the user clicks on clear button on the calendar
-      if (integerArr) {
-        return dateProperties.dateConversion?.fromYMD(integerArr as YMDFormat) as string
-      }
-      return defaultText;
-    }
-    // below should not be required
+  public static convertInputValueToText(inputDate: string, defaultText: CellText, calendarFunc: CalendarFunctionality) {
     const integerArr = RegexUtils.extractIntegerStrs(inputDate);
-    if (integerArr?.length === 3) {
-      const dateTypeToProperties = DateCellElement.DATE_TYPE_TO_PROPERTIES[dateType];
-      const dateArr = new Array<string>();
-      // changing the YYYY-MM-DD format to target type
-      dateArr[dateTypeToProperties.structureIndexes.day] = integerArr[2];
-      dateArr[dateTypeToProperties.structureIndexes.month] = integerArr[1];
-      dateArr[dateTypeToProperties.structureIndexes.year] = integerArr[0];
-      return dateArr.join(dateTypeToProperties.separator);
+    // null when the user clicks on clear button on the calendar
+    if (integerArr) {
+      return calendarFunc.fromYMD(integerArr as YMDFormat) as string;
     }
     return defaultText;
   }

@@ -12,11 +12,11 @@ export class UpdateCellsForRows {
   private static resetCellEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number,
       columnIndex: number) {
     CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
-    const {userSetColumnType, activeType} = etc.columnsDetails[columnIndex];
+    const {activeType} = etc.columnsDetails[columnIndex];
     if (activeType.categories) {
       CategoryCellEvents.setEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
     } else if (activeType.calendar) {
-      DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex, userSetColumnType);
+      DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
     }
   }
 

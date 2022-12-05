@@ -25,9 +25,7 @@ export class DateCellEvents {
     }
   }
 
-  // prettier-ignore
-  public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number,
-      dateType: string) {
+  public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     // important to note that this is still using data events that have not be overwritten here
     // onblur/onfocus do not work for firefox, hence using them on text element to keep it consistent across browsers
     cellElement.onblur = () => {};
@@ -36,10 +34,10 @@ export class DateCellEvents {
     cellElement.onmouseleave = DateCellEvents.mouseLeaveCell.bind(etc);
     cellElement.onmousedown = CellWithTextEvents.mouseDownCell.bind(etc, null);
     const textElement = cellElement.children[0] as HTMLElement;
-    DateCellTextEvents.setEvents(etc, textElement, rowIndex, columnIndex, dateType);
+    DateCellTextEvents.setEvents(etc, textElement, rowIndex, columnIndex);
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
       const inputContainer = cellElement.children[1] as HTMLElement;
-      DateCellInputEvents.setEvents(etc, inputContainer, rowIndex, columnIndex, dateType);
+      DateCellInputEvents.setEvents(etc, inputContainer, rowIndex, columnIndex);
       const calendarElement = inputContainer.children[1] as HTMLElement;
       DateCellCalendarIconEvents.setEvents(etc, calendarElement, rowIndex, columnIndex);
     }

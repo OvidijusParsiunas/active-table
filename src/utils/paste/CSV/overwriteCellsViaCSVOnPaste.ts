@@ -56,8 +56,7 @@ export class OverwriteCellsViaCSVOnPaste {
     if (columnDetails.activeType.categories) {
       CategoryCellElement.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (Browser.IS_INPUT_DATE_SUPPORTED && columnDetails.activeType.calendar) {
-      DateCellInputElement.updateInputBasedOnTextDiv(columnDetails.userSetColumnType, cellElement,
-        columnDetails.activeType);
+      DateCellInputElement.updateInputBasedOnTextDiv(cellElement, columnDetails.activeType);
     }
     setTimeout(() => {
       // CAUTION-2

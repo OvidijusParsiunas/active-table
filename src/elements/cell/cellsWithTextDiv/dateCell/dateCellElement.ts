@@ -1,49 +1,22 @@
-import {CalendarProperties, DateTypeToProperties} from '../../../../types/calendarProperties';
 import {CellStructureUtils} from '../../../../utils/cellType/cellStructureUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
-import {ACTIVE_COLUMN_TYPE} from '../../../../enums/columnType';
 import {DateCellInputElement} from './dateCellInputElement';
 import {DateCellTextElement} from './dateCellTextElement';
 import {Browser} from '../../../../utils/browser/browser';
 import {DateCellEvents} from './dateCellEvents';
 
+// a cell becomes a date when calendar it uses a calendar
 export class DateCellElement {
-  public static readonly DATE_TYPE_TO_PROPERTIES: DateTypeToProperties = {};
-
-  private static addNewDateType(dateTypeName: string, dateProperties: CalendarProperties) {
-    DateCellElement.DATE_TYPE_TO_PROPERTIES[dateTypeName] = dateProperties;
-  }
-
-  // added through addNewDateType method instead of direct in order to populate other objects with same name from one place
-  public static populateDefaultDateTypes() {
-    DateCellElement.addNewDateType(ACTIVE_COLUMN_TYPE.Date_D_M_Y, {
-      separator: '-',
-      structureIndexes: {
-        day: 0,
-        month: 1,
-        year: 2,
-      },
-    });
-    DateCellElement.addNewDateType(ACTIVE_COLUMN_TYPE.Date_M_D_Y, {
-      separator: '-',
-      structureIndexes: {
-        day: 1,
-        month: 0,
-        year: 2,
-      },
-    });
-  }
-
   // prettier-ignore
-  public static setCellDateStructure(dateType: string, etc: EditableTableComponent,
+  public static setCellDateStructure(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
     const textElement = DateCellTextElement.setCellTextAsAnElement(cellElement);
     if (Browser.IS_INPUT_DATE_SUPPORTED) DateCellInputElement.addDateInputElement(
-      cellElement, textElement, dateType, etc.columnsDetails[columnIndex].activeType);
-    setTimeout(() => DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex, dateType));
+      cellElement, textElement, etc.columnsDetails[columnIndex].activeType);
+    setTimeout(() => DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex));
   }
 
-  public static setColumnDateStructure(etc: EditableTableComponent, columnIndex: number, dateType: string) {
-    CellStructureUtils.set(etc, columnIndex, DateCellElement.setCellDateStructure.bind(etc, dateType));
+  public static setColumnDateStructure(etc: EditableTableComponent, columnIndex: number) {
+    CellStructureUtils.set(etc, columnIndex, DateCellElement.setCellDateStructure.bind(etc));
   }
 }

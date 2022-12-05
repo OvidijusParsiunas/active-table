@@ -1,5 +1,5 @@
 import {ColumnType, ColumnTypes} from '../../types/columnType';
-import {YMDFormat} from '../../types/calendarProperties';
+import {YMDFormat} from '../../types/calendarFunctionality';
 import {CellText} from '../../types/tableContents';
 import {RegexUtils} from '../regex/regexUtils';
 
@@ -55,32 +55,16 @@ export class ColumnTypesUtils {
         name: 'Date d-m-y2',
         validation: (cellText: CellText) => ColumnTypesUtils.DEFAULT_REGEX['Date d-m-y2'].test(cellText as string),
         calendar: {
-          separator: '-',
-          structureIndexes: {
-            day: 0,
-            month: 1,
-            year: 2,
-          },
-          dateConversion: {
-            toYMD: (cellText: string) => ColumnTypesUtils.dMYCellTextToYMD(cellText),
-            fromYMD: (YMD: YMDFormat) => ColumnTypesUtils.yMDToDMYCellText(YMD),
-          },
+          toYMD: (cellText: string) => ColumnTypesUtils.dMYCellTextToYMD(cellText),
+          fromYMD: (YMD: YMDFormat) => ColumnTypesUtils.yMDToDMYCellText(YMD),
         },
       },
       {
         name: 'Date m-d-y2',
         validation: (cellText: CellText) => ColumnTypesUtils.DEFAULT_REGEX['Date m-d-y2'].test(cellText as string),
         calendar: {
-          separator: '-',
-          structureIndexes: {
-            day: 0,
-            month: 1,
-            year: 2,
-          },
-          dateConversion: {
-            toYMD: (cellText: string) => ColumnTypesUtils.mdYCellTextToYMD(cellText),
-            fromYMD: (YMD: YMDFormat) => ColumnTypesUtils.yMDToMDYCellText(YMD),
-          },
+          toYMD: (cellText: string) => ColumnTypesUtils.mdYCellTextToYMD(cellText),
+          fromYMD: (YMD: YMDFormat) => ColumnTypesUtils.yMDToMDYCellText(YMD),
         },
       },
       {
