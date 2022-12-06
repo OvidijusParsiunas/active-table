@@ -1,4 +1,4 @@
-import {CellStructureUtils} from '../../../../utils/cellType/cellStructureUtils';
+import {CellStructureUtils} from '../../../../utils/columnType/cellStructureUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {DateCellInputElement} from './dateCellInputElement';
 import {DateCellTextElement} from './dateCellTextElement';
@@ -17,6 +17,6 @@ export class DateCellElement {
   }
 
   public static setColumnDateStructure(etc: EditableTableComponent, columnIndex: number) {
-    CellStructureUtils.set(etc, columnIndex, DateCellElement.setCellDateStructure.bind(etc));
+    CellStructureUtils.setColumn(etc, columnIndex, DateCellElement.setCellDateStructure.bind(etc));
   }
 }

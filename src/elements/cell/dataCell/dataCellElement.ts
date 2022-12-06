@@ -1,8 +1,8 @@
-import {CellStructureUtils} from '../../../utils/cellType/cellStructureUtils';
+import {CellStructureUtils} from '../../../utils/columnType/cellStructureUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {ColumnType} from '../../../types/columnType';
 import {DataCellEvents} from './dataCellEvents';
 import {CellElement} from '../cellElement';
-import {ColumnType} from '../../../types/columnType';
 
 export class DataCellElement {
   private static readonly INVALID_TEXT_COLOR = 'grey';
@@ -18,7 +18,7 @@ export class DataCellElement {
   }
 
   public static setColumnDataStructure(etc: EditableTableComponent, columnIndex: number) {
-    CellStructureUtils.set(etc, columnIndex, DataCellElement.setCellDataStructure);
+    CellStructureUtils.setColumn(etc, columnIndex, DataCellElement.setCellDataStructure);
   }
 
   public static setStyleBasedOnValidity(textContainerElement: HTMLElement, validation: ColumnType['validation']) {

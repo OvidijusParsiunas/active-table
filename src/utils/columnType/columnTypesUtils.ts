@@ -1,17 +1,22 @@
 import {ColumnType, ColumnTypes} from '../../types/columnType';
 import {YMDFormat} from '../../types/calendarFunctionality';
+import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
 import {CellText} from '../../types/tableContents';
 import {RegexUtils} from '../regex/regexUtils';
 
 export class ColumnTypesUtils {
   private static readonly DEFAULT_REGEX = {
-    ['Currency2']: new RegExp(
+    [DEFAULT_COLUMN_TYPES.CURRENCY]: new RegExp(
       // eslint-disable-next-line max-len
       /^(([$€£¥]\s*?-?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?)|(-?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?\s*?[$€£¥]))$/
     ),
     // \s*? is used to allow spaces between symbols
-    ['Date d-m-y2']: new RegExp(/^(0?[1-9]|[12][0-9]|3[01])\s*?[/-]\s*?(0?[1-9]|1[012])\s*?[/-]\s*?\d{4}$/),
-    ['Date m-d-y2']: new RegExp(/^(0?[1-9]|1[012])\s*?[/-]\s*?(0?[1-9]|[12][0-9]|3[01])\s*?[/-]\s*?\d{4}$/),
+    [DEFAULT_COLUMN_TYPES.DATE_DMY]: new RegExp(
+      /^(0?[1-9]|[12][0-9]|3[01])\s*?[/-]\s*?(0?[1-9]|1[012])\s*?[/-]\s*?\d{4}$/
+    ),
+    [DEFAULT_COLUMN_TYPES.DATE_MDY]: new RegExp(
+      /^(0?[1-9]|1[012])\s*?[/-]\s*?(0?[1-9]|[12][0-9]|3[01])\s*?[/-]\s*?\d{4}$/
+    ),
   };
 
   private static mdYCellTextToYMD(cellText: string): YMDFormat {
@@ -43,10 +48,10 @@ export class ColumnTypesUtils {
   public static getDefault(): ColumnTypes {
     return [
       {
-        name: 'Text2',
+        name: DEFAULT_COLUMN_TYPES.TEXT,
       },
       {
-        name: 'Number2',
+        name: DEFAULT_COLUMN_TYPES.NUMBER,
         validation: (cellText: CellText) => !isNaN(cellText as unknown as number),
         sorting: {
           ascending: (cellText1: string, cellText2: string) => {
@@ -56,8 +61,9 @@ export class ColumnTypesUtils {
         },
       },
       {
-        name: 'Currency2',
-        validation: (cellText: CellText) => ColumnTypesUtils.DEFAULT_REGEX['Currency2'].test(cellText as string),
+        name: DEFAULT_COLUMN_TYPES.CURRENCY,
+        validation: (cellText: CellText) =>
+          ColumnTypesUtils.DEFAULT_REGEX[DEFAULT_COLUMN_TYPES.CURRENCY].test(cellText as string),
         sorting: {
           ascending: (cellText1: string, cellText2: string) => {
             return (
@@ -72,23 +78,25 @@ export class ColumnTypesUtils {
         },
       },
       {
-        name: 'Date d-m-y2',
-        validation: (cellText: CellText) => ColumnTypesUtils.DEFAULT_REGEX['Date d-m-y2'].test(cellText as string),
+        name: DEFAULT_COLUMN_TYPES.DATE_DMY,
+        validation: (cellText: CellText) =>
+          ColumnTypesUtils.DEFAULT_REGEX[DEFAULT_COLUMN_TYPES.DATE_DMY].test(cellText as string),
         calendar: {
           toYMD: (cellText: string) => ColumnTypesUtils.dMYCellTextToYMD(cellText),
           fromYMD: (YMD: YMDFormat) => ColumnTypesUtils.yMDToDMYCellText(YMD),
         },
       },
       {
-        name: 'Date m-d-y2',
-        validation: (cellText: CellText) => ColumnTypesUtils.DEFAULT_REGEX['Date m-d-y2'].test(cellText as string),
+        name: DEFAULT_COLUMN_TYPES.DATE_MDY,
+        validation: (cellText: CellText) =>
+          ColumnTypesUtils.DEFAULT_REGEX[DEFAULT_COLUMN_TYPES.DATE_MDY].test(cellText as string),
         calendar: {
           toYMD: (cellText: string) => ColumnTypesUtils.mdYCellTextToYMD(cellText),
           fromYMD: (YMD: YMDFormat) => ColumnTypesUtils.yMDToMDYCellText(YMD),
         },
       },
       {
-        name: 'Category2',
+        name: DEFAULT_COLUMN_TYPES.CATEGORY,
         categories: {
           dropdownStyle: {
             width: '70px',
@@ -96,7 +104,7 @@ export class ColumnTypesUtils {
             paddingTop: '0px',
             paddingBottom: '0px',
           },
-          options: [{name: 'truea', backgroundColor: 'red'}, {name: 'false'}],
+          // options: [{name: 'truea', backgroundColor: 'red'}, {name: 'false'}],
         },
       },
     ];

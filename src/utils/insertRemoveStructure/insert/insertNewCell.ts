@@ -9,7 +9,7 @@ import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBord
 import {ColumnDetailsInitial, ColumnDetailsT} from '../../../types/columnDetails';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
+import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
 import {CellElementIndex} from '../../elements/cellElementIndex';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
@@ -31,13 +31,11 @@ export class InsertNewCell {
   // prettier-ignore
   private static updateColumnDetailsAndSizers(
       etc: EditableTableComponent, rowIndex: number, columnIndex: number, text: CellText, isNewText: boolean) {
-    const {columnsDetails, categoryDropdownContainer, defaultText} = etc;
-    const columnDetails = columnsDetails[columnIndex];
+    const columnDetails = etc.columnsDetails[columnIndex];
     if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
     if (rowIndex === 0) {
-      const categoryDropdown = CategoryDropdown.createAndAppend(categoryDropdownContainer as HTMLElement);
-      ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsInitial, categoryDropdown, defaultText); // REF-13
-      InsertRemoveColumnSizer.insert(etc, columnsDetails, columnIndex); // REF-13
+      ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsInitial); // REF-13
+      InsertRemoveColumnSizer.insert(etc, etc.columnsDetails, columnIndex); // REF-13
       if (isNewText) {
         InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
         UpdateIndexColumnWidth.wrapTextWhenNarrowColumnsBreached(etc); // REF-19
@@ -62,9 +60,13 @@ export class InsertNewCell {
   private static convertCell(etc: EditableTableComponent,
       columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
     if (columnDetails.activeType?.categories) {
-      CategoryCellElement.setCellCategoryStructure(etc, rowIndex, columnIndex, newCellElement);
-      CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
-    } else if (columnDetails.activeType?.calendar) {
+      if (rowIndex === 0) {
+        CategoryDropdown.setUpDropdown(etc, columnIndex);
+      } else {
+        CategoryCellElement.setCellCategoryStructure(etc, rowIndex, columnIndex, newCellElement);
+        CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
+      }
+    } else if (columnDetails.activeType?.calendar && rowIndex > 0) {
       DateCellElement.setCellDateStructure(etc, rowIndex, columnIndex, newCellElement);
     }
   }
@@ -77,12 +79,10 @@ export class InsertNewCell {
   }
 
   // REF-13
-  // the reason for creating object with elements and settings only is because changeWidthsBasedOnColumnInsertRemove
-  // needs them to reset all column widths if required. We can worry about adding the other properties in a timeout
-  // within the updateColumnDetailsAndSizers method
   private static insertInitialColumnDetails(etc: EditableTableComponent, cellText: CellText, index: number) {
-    const {columnsDetails, columnsSettingsInternal} = etc;
-    const columnDetails = ColumnDetails.createInitial(etc, columnsSettingsInternal[cellText]);
+    const {columnsDetails, columnsSettingsInternal, categoryDropdownContainer} = etc;
+    const categoryDropdown = CategoryDropdown.createAndAppend(categoryDropdownContainer as HTMLElement);
+    const columnDetails = ColumnDetails.createInitial(etc, categoryDropdown, columnsSettingsInternal[cellText]);
     columnsDetails.splice(index, 0, columnDetails as ColumnDetailsT);
   }
 

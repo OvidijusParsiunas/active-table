@@ -1,7 +1,7 @@
 import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
+import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
 import {IndexColumn} from '../../../elements/indexColumn/indexColumn';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellText, TableRow} from '../../../types/tableContents';

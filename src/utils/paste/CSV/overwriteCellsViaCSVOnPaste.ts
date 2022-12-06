@@ -4,7 +4,7 @@ import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/cate
 import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {CellTypeTotalsUtils} from '../../cellType/cellTypeTotalsUtils';
+import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
 import {DataUtils} from '../../insertRemoveStructure/shared/dataUtils';
 import {CaretPosition} from '../../focusedElements/caretPosition';
 import {CellElementIndex} from '../../elements/cellElementIndex';

@@ -6,7 +6,7 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {ColumnType} from '../../types/columnType';
 
-export class UserSetCellType {
+export class ChangeColumnType {
   private static purgeInvalidCell(etc: EditableTableComponent, rowIndex: number, columnIndex: number) {
     const relativeRowIndex = rowIndex + 1;
     const cellElement = etc.columnsDetails[columnIndex].elements[relativeRowIndex];
@@ -16,23 +16,23 @@ export class UserSetCellType {
   private static purgeInvalidCells(etc: EditableTableComponent, columnIndex: number) {
     let updateTableEvent = false;
     etc.contents.slice(1).forEach((_, rowIndex) => {
-      const isUpdated = UserSetCellType.purgeInvalidCell(etc, rowIndex, columnIndex);
+      const isUpdated = ChangeColumnType.purgeInvalidCell(etc, rowIndex, columnIndex);
       if (isUpdated && !updateTableEvent) updateTableEvent = true;
     });
     if (updateTableEvent) etc.onTableUpdate(etc.contents);
   }
 
-  private static set(etc: EditableTableComponent, newType: string, columnIndex: number) {
+  private static setNew(etc: EditableTableComponent, newType: string, columnIndex: number) {
     const columnDetails = etc.columnsDetails[columnIndex];
     columnDetails.activeType = columnDetails.types.find((type) => type.name === newType) as ColumnType;
     return columnDetails.activeType;
   }
 
-  public static setIfNew(this: EditableTableComponent, newTypeName: string, columnIndex: number) {
+  public static change(this: EditableTableComponent, newTypeName: string, columnIndex: number) {
     const previousType = this.columnsDetails[columnIndex].activeType;
     if (newTypeName !== previousType.name) {
-      const newType = UserSetCellType.set(this, newTypeName, columnIndex);
-      if (newType.validation) UserSetCellType.purgeInvalidCells(this, columnIndex);
+      const newType = ChangeColumnType.setNew(this, newTypeName, columnIndex);
+      if (newType.validation) ChangeColumnType.purgeInvalidCells(this, columnIndex);
       if (newType.categories) {
         CategoryDropdown.setUpDropdown(this, columnIndex);
         CategoryCellElement.setColumnCategoryStructure(this, columnIndex);

@@ -1,5 +1,5 @@
 import {CategoryDropdownItem} from '../../../dropdown/categoryDropdown/categoryDropdownItem';
-import {CellStructureUtils} from '../../../../utils/cellType/cellStructureUtils';
+import {CellStructureUtils} from '../../../../utils/columnType/cellStructureUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {CellTextElement} from '../text/cellTextElement';
 import {CategoryCellEvents} from './categoryCellEvents';
@@ -26,7 +26,7 @@ export class CategoryCellElement {
   }
 
   public static setColumnCategoryStructure(etc: EditableTableComponent, columnIndex: number) {
-    CellStructureUtils.set(etc, columnIndex, CategoryCellElement.setCellCategoryStructure);
+    CellStructureUtils.setColumn(etc, columnIndex, CategoryCellElement.setCellCategoryStructure);
   }
 
   // prettier-ignore

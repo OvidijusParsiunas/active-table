@@ -1,4 +1,4 @@
-import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
+import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
 import {CellElement} from '../../elements/cell/cellElement';
 import {FocusedCell} from '../../types/focusedCell';
 import {ColumnTypes} from '../../types/columnType';

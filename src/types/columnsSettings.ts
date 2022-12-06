@@ -1,5 +1,6 @@
 import {HoverableElementStyleClient} from './hoverableElementStyle';
 import {InterfacesUnion, SetRequired} from './utilityTypes';
+import {DEFAULT_COLUMN_TYPES} from '../enums/columnType';
 import {StringDimension} from './dimensions';
 import {ColumnTypes} from './columnType';
 import {CellText} from './tableContents';
@@ -12,10 +13,11 @@ interface Parent {
   cellStyle?: CSSStyle;
   // WORK - option to post process text - e.g. change date format or add currency to start
   header?: HoverableElementStyleClient;
-  columnTypes?: ColumnTypes;
-  type?: boolean;
-  availableTypes?: ColumnTypes;
-  // customTypes?: unknown;
+  defaultTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
+  customColumnTypes?: ColumnTypes; // additional custom column types
+  // if not provided the following property will default to first of the following:
+  // 'Text'/First type to not have validation/First available type/Nothing
+  activeTypeName?: string;
   validation?: unknown;
   isSortAvailable?: boolean;
   isDeleteAvailable?: boolean;

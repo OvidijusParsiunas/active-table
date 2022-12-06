@@ -8,13 +8,13 @@ import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {EditableTableComponent} from '../../editable-table-component';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
-import {CellDetails} from '../../types/focusedCell';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class WindowEvents {
   // prettier-ignore
   public static onKeyDown(this: EditableTableComponent, event: KeyboardEvent) {
-    const {rowIndex, columnIndex} = this.focusedElements.cell as CellDetails;
+    const {rowIndex, columnIndex} = this.focusedElements.cell;
+    if (rowIndex === undefined || columnIndex === undefined) return;
     if (Dropdown.isDisplayed(this.activeOverlayElements.rowDropdown)) {
       RowDropdownEvents.windowOnKeyDown(this, event);
     }

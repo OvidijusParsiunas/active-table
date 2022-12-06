@@ -51,7 +51,6 @@ export interface ColumnDetailsT {
   elements: HTMLElement[];
   columnSizer: ColumnSizerT;
   types: ColumnTypes;
-  // WORK - user should have option to set type as a string by the name
   activeType: ColumnType;
   cellTypeTotals: CellTypeTotals;
   categoryDropdown: CategoryDropdownT;
@@ -63,7 +62,13 @@ export interface ColumnDetailsT {
 // REF-13
 export type ColumnDetailsInitial = Pick<
   ColumnDetailsT,
-  'elements' | 'settings' | 'headerStateColors' | 'bordersOverwrittenBySiblings'
+  | 'elements'
+  | 'types'
+  | 'activeType'
+  | 'categoryDropdown'
+  | 'settings'
+  | 'headerStateColors'
+  | 'bordersOverwrittenBySiblings'
 >;
 
 // REF-13

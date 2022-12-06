@@ -2,12 +2,13 @@ import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categor
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
 import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
 import {EditableTableComponent} from '../../editable-table-component';
+import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
 import {CellStateColorProperties} from '../../types/cellStateColors';
-import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
+import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
-import {ColumnTypesUtils} from '../cellType/columnTypesUtils';
-import {CellText} from '../../types/tableContents';
+import {ColumnType, ColumnTypes} from '../../types/columnType';
+import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
 
 // REF-13
 export class ColumnDetails {
@@ -44,28 +45,44 @@ export class ColumnDetails {
     };
   }
 
-  // prettier-ignore
-  public static createInitial(etc: EditableTableComponent,
-      settings?: ColumnSettingsInternal): ColumnDetailsInitial {
-    return {
-      elements: [],
-      settings: settings || ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS,
-      headerStateColors: ColumnDetails.createHeaderStateColors(etc, settings),
-      bordersOverwrittenBySiblings: {},
-    };
+  private static getActiveType(settings: ColumnSettingsInternal, availableTypes: ColumnTypes) {
+    if (settings?.activeTypeName) {
+      const activeType = availableTypes.find((type) => type.name === settings.activeTypeName);
+      if (activeType) return activeType;
+    }
+    const textType = availableTypes.find((type) => type.name === DEFAULT_COLUMN_TYPES.TEXT);
+    if (textType) return textType;
+    const noValidationType = availableTypes.find((type) => !type.validation);
+    if (noValidationType) return noValidationType;
+    const firstType = availableTypes[0];
+    if (firstType) return firstType;
+    return null;
   }
 
   // prettier-ignore
-  public static updateWithNoSizer(columnDetails: ColumnDetailsInitial,
-      categoryDropdown: HTMLElement, componentDefaultText: CellText): ColumnDetailsNoSizer {
-    const {isDefaultTextRemovable, defaultText: settingsDefaultText} = columnDetails.settings;
+  public static createInitial(etc: EditableTableComponent, categoryDropdown: HTMLElement,
+      settings?: ColumnSettingsInternal): ColumnDetailsInitial {
+    const columnSettings = settings || ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS;
+    const {isDefaultTextRemovable, defaultText: settingsDefaultText} = columnSettings;
+    // optimize this
     const types = ColumnTypesUtils.getDefault();
-    ColumnTypesUtils.process(types, isDefaultTextRemovable, settingsDefaultText || componentDefaultText);
-    const newObject: Omit<ColumnDetailsNoSizer, keyof ColumnDetailsInitial> = {
+    ColumnTypesUtils.process(types, isDefaultTextRemovable, settingsDefaultText || etc.defaultText);
+    // WORK - active type should also accept null
+    const activeType = ColumnDetails.getActiveType(columnSettings, types) as ColumnType;
+    return {
+      elements: [],
+      settings: columnSettings,
+      headerStateColors: ColumnDetails.createHeaderStateColors(etc, settings),
+      bordersOverwrittenBySiblings: {},
       types,
-      activeType: types[0],
-      cellTypeTotals: CellTypeTotalsUtils.createObj(types),
+      activeType,
       categoryDropdown: CategoryDropdown.getDefaultObj(categoryDropdown),
+    };
+  }
+
+  public static updateWithNoSizer(columnDetails: ColumnDetailsInitial): ColumnDetailsNoSizer {
+    const newObject: Omit<ColumnDetailsNoSizer, keyof ColumnDetailsInitial> = {
+      cellTypeTotals: CellTypeTotalsUtils.createObj(columnDetails.types),
     };
     Object.assign(columnDetails, newObject);
     return columnDetails as ColumnDetailsNoSizer;

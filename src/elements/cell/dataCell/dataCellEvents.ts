@@ -3,8 +3,8 @@ import {FirefoxCaretDisplayFix} from '../../../utils/browser/firefox/firefoxCare
 import {UserKeyEventsStateUtils} from '../../../utils/userEventsState/userEventsStateUtils';
 import {DateCellInputElement} from '../cellsWithTextDiv/dateCell/dateCellInputElement';
 import {CategoryDropdown} from '../../dropdown/categoryDropdown/categoryDropdown';
+import {CellTypeTotalsUtils} from '../../../utils/columnType/cellTypeTotalsUtils';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
-import {CellTypeTotalsUtils} from '../../../utils/cellType/cellTypeTotalsUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {KEYBOARD_EVENT} from '../../../consts/keyboardEvents';

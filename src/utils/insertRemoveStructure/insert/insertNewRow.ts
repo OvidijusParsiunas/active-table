@@ -62,8 +62,8 @@ export class InsertNewRow {
     if (isNewText) {
       ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
       if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex + 1);
-      setTimeout(() => InsertNewRow.fireCellUpdates(etc, rowIndex));
     }
+    setTimeout(() => InsertNewRow.fireCellUpdates(etc, rowIndex));
   }
 
   public static insertEvent(this: EditableTableComponent) {
