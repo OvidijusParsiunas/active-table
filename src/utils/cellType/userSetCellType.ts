@@ -1,65 +1,50 @@
 import {CategoryCellElement} from '../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
 import {DateCellElement} from '../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categoryDropdown';
-import {USER_SET_COLUMN_TYPE, ACTIVE_COLUMN_TYPE} from '../../enums/columnType';
 import {DataCellElement} from '../../elements/cell/dataCell/dataCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
-import {DisplayedCellTypeName} from './displayedCellTypeName';
-import {ColumnsDetailsT} from '../../types/columnDetails';
+import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {CellTypeTotalsUtils} from './cellTypeTotalsUtils';
-import {VALIDABLE_CELL_TYPE} from '../../enums/cellType';
 import {ColumnType} from '../../types/columnType';
 
 export class UserSetCellType {
-  // prettier-ignore
-  private static purgeInvalidCell(etc: EditableTableComponent, columnsDetails: ColumnsDetailsT,
-      rowIndex: number, columnIndex: number) {
+  private static purgeInvalidCell(etc: EditableTableComponent, rowIndex: number, columnIndex: number) {
     const relativeRowIndex = rowIndex + 1;
-    const cellElement = columnsDetails[columnIndex].elements[relativeRowIndex];
+    const cellElement = etc.columnsDetails[columnIndex].elements[relativeRowIndex];
     return CellEvents.setCellToDefaultIfNeeded(etc, relativeRowIndex, columnIndex, cellElement, false);
   }
 
   private static purgeInvalidCells(etc: EditableTableComponent, columnIndex: number) {
-    const {contents, columnsDetails} = etc;
     let updateTableEvent = false;
-    contents.slice(1).forEach((_, rowIndex) => {
-      const isUpdated = UserSetCellType.purgeInvalidCell(etc, columnsDetails, rowIndex, columnIndex);
+    etc.contents.slice(1).forEach((_, rowIndex) => {
+      const isUpdated = UserSetCellType.purgeInvalidCell(etc, rowIndex, columnIndex);
       if (isUpdated && !updateTableEvent) updateTableEvent = true;
     });
-    if (updateTableEvent) etc.onTableUpdate(contents);
+    if (updateTableEvent) etc.onTableUpdate(etc.contents);
   }
 
-  // prettier-ignore
-  private static purgeInvalidCellsIfValidable(etc: EditableTableComponent,
-      newTypeEnum: VALIDABLE_CELL_TYPE, columnIndex: number) {
-    if (VALIDABLE_CELL_TYPE[newTypeEnum]) UserSetCellType.purgeInvalidCells(etc, columnIndex);
-    if (etc.columnsDetails[columnIndex].activeType.validation) UserSetCellType.purgeInvalidCells(etc, columnIndex);
-  }
-
-  private static set(etc: EditableTableComponent, newTypeEnum: USER_SET_COLUMN_TYPE, columnIndex: number) {
+  private static set(etc: EditableTableComponent, newType: string, columnIndex: number) {
     const columnDetails = etc.columnsDetails[columnIndex];
     const {cellTypeTotals, elements} = columnDetails;
     columnDetails.activeColumnType =
-      newTypeEnum === USER_SET_COLUMN_TYPE.Auto
+      newType === USER_SET_COLUMN_TYPE.Auto
         ? CellTypeTotalsUtils.getActiveColumnType(cellTypeTotals, elements.length - 1)
-        : ACTIVE_COLUMN_TYPE[newTypeEnum as keyof typeof ACTIVE_COLUMN_TYPE] || newTypeEnum;
-    columnDetails.userSetColumnType = newTypeEnum;
-    columnDetails.activeType = columnDetails.types.find((type) => type.name === newTypeEnum) as ColumnType;
+        : newType;
+    columnDetails.userSetColumnType = newType;
+    columnDetails.activeType = columnDetails.types.find((type) => type.name === newType) as ColumnType;
+    return columnDetails.activeType;
   }
 
-  public static setIfNew(this: EditableTableComponent, newType: string, columnIndex: number) {
-    const codeTypeName = DisplayedCellTypeName.get(newType); // from displayed name to code
-    // WORK - TYPE - change the naming convention
-    const newTypeEnumStr = USER_SET_COLUMN_TYPE[codeTypeName as keyof typeof USER_SET_COLUMN_TYPE] || codeTypeName;
-    const previousTypeEnum = this.columnsDetails[columnIndex].userSetColumnType;
-    if (newTypeEnumStr !== previousTypeEnum) {
-      UserSetCellType.set(this, newTypeEnumStr, columnIndex);
-      UserSetCellType.purgeInvalidCellsIfValidable(this, newTypeEnumStr as keyof typeof VALIDABLE_CELL_TYPE, columnIndex);
-      if (this.columnsDetails[columnIndex].activeType.categories) {
+  public static setIfNew(this: EditableTableComponent, newTypeName: string, columnIndex: number) {
+    const previousType = this.columnsDetails[columnIndex].activeType;
+    if (newTypeName !== previousType.name) {
+      const newType = UserSetCellType.set(this, newTypeName, columnIndex);
+      if (newType.validation) UserSetCellType.purgeInvalidCells(this, columnIndex);
+      if (newType.categories) {
         CategoryDropdown.setUpDropdown(this, columnIndex);
         CategoryCellElement.setColumnCategoryStructure(this, columnIndex);
-      } else if (this.columnsDetails[columnIndex].activeType.calendar) {
+      } else if (newType.calendar) {
         DateCellElement.setColumnDateStructure(this, columnIndex);
       } else {
         DataCellElement.setColumnDataStructure(this, columnIndex);

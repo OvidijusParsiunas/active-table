@@ -1,7 +1,5 @@
-import {DisplayedCellTypeName} from '../../../utils/cellType/displayedCellTypeName';
 import {ColumnTypeDropdownItemEvents} from './columnTypeDropdownItemEvents';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {ColumnDetailsT} from '../../../types/columnDetails';
 import {CellElement} from '../../cell/cellElement';
 import {DropdownItem} from '../dropdownItem';
 
@@ -21,15 +19,10 @@ export class ColumnTypeDropdownItem {
     });
   }
 
-  private static setActiveUserChosenColumnType(items: HTMLElement[], columnDetails: ColumnDetailsT) {
-    const userChosenColumnTypeString = DisplayedCellTypeName.get(columnDetails.userSetColumnType);
-    ColumnTypeDropdownItem.setActiveItem(items, userChosenColumnTypeString);
-  }
-
-  // the items are repopulated during every setup
+  // the items are repopulated
   public static setUp(etc: EditableTableComponent, dropdownElement: HTMLElement, columnIndex: number, text: string[]) {
     const columnTypeItems = DropdownItem.addItems(etc, dropdownElement, text);
     ColumnTypeDropdownItemEvents.set(etc, columnTypeItems, columnIndex);
-    ColumnTypeDropdownItem.setActiveUserChosenColumnType(columnTypeItems, etc.columnsDetails[columnIndex]);
+    ColumnTypeDropdownItem.setActiveItem(columnTypeItems, etc.columnsDetails[columnIndex].activeType.name);
   }
 }

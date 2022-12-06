@@ -1,4 +1,3 @@
-import {DisplayedCellTypeName} from '../../../utils/cellType/displayedCellTypeName';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
 import {DropdownItemEvents} from '../dropdownItemEvents';
@@ -14,9 +13,9 @@ export class ColumnTypeDropdown {
   }
 
   public static setUp(etc: EditableTableComponent, dropdownElement: HTMLElement, columnIndex: number) {
-    const {activeColumnType, types} = etc.columnsDetails[columnIndex];
+    const {activeType, types} = etc.columnsDetails[columnIndex];
     const textElement = ColumnTypeDropdown.getColumnTypeItemText(dropdownElement);
-    textElement.innerText = DisplayedCellTypeName.get(activeColumnType);
+    textElement.innerText = activeType.name;
     setTimeout(() => {
       const {columnTypeDropdown} = etc.activeOverlayElements;
       const itemNames = types.map((type) => type.name);
