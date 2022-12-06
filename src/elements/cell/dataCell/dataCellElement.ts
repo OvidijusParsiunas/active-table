@@ -1,13 +1,9 @@
 import {CellStructureUtils} from '../../../utils/columnType/cellStructureUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {ColumnType} from '../../../types/columnType';
 import {DataCellEvents} from './dataCellEvents';
 import {CellElement} from '../cellElement';
 
 export class DataCellElement {
-  private static readonly INVALID_TEXT_COLOR = 'grey';
-  public static readonly DEFAULT_TEXT_COLOR = '';
-
   // prettier-ignore
   private static setCellDataStructure(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, cell: HTMLElement) {
@@ -19,11 +15,5 @@ export class DataCellElement {
 
   public static setColumnDataStructure(etc: EditableTableComponent, columnIndex: number) {
     CellStructureUtils.setColumn(etc, columnIndex, DataCellElement.setCellDataStructure);
-  }
-
-  public static setStyleBasedOnValidity(textContainerElement: HTMLElement, validation: ColumnType['validation']) {
-    textContainerElement.style.color = validation?.(CellElement.getText(textContainerElement))
-      ? DataCellElement.DEFAULT_TEXT_COLOR
-      : DataCellElement.INVALID_TEXT_COLOR;
   }
 }

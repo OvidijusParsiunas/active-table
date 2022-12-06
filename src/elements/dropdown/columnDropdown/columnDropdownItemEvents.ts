@@ -3,9 +3,9 @@ import {RemoveColumn} from '../../../utils/insertRemoveStructure/remove/removeCo
 import {ElementSiblingIterator} from '../../../utils/elements/elementSiblingIterator';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnDropdownItem} from './columnDropdownItem';
+import {Sort} from '../../../utils/columnType/sort';
 import {CellEvents} from '../../cell/cellEvents';
 import {ColumnDropdown} from './columnDropdown';
-import {Sort} from '../../../utils/array/sort';
 
 export class ColumnDropdownItemEvents {
   private static onClickMiddleware(this: EditableTableComponent, func: Function): void {

@@ -7,12 +7,12 @@ import {CellTypeTotalsUtils} from '../../../utils/columnType/cellTypeTotalsUtils
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {Validation} from '../../../utils/columnType/validation';
 import {KEYBOARD_EVENT} from '../../../consts/keyboardEvents';
 import {PasteUtils} from '../../../utils/paste/pasteUtils';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {UNDO_INPUT_TYPE} from '../../../consts/domEvents';
 import {Browser} from '../../../utils/browser/browser';
-import {DataCellElement} from './dataCellElement';
 import {CellElement} from '../cellElement';
 import {CellEvents} from '../cellEvents';
 
@@ -45,7 +45,7 @@ export class DataCellEvents {
           columnDetails.categoryDropdown, columnDetails.settings.defaultText, true);
       }
       if (columnDetails.activeType.validation) {
-        DataCellElement.setStyleBasedOnValidity(textContainerElement, columnDetails.activeType.validation);
+        Validation.setStyleBasedOnValidity(textContainerElement, columnDetails.activeType.validation);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
     }
@@ -57,7 +57,7 @@ export class DataCellEvents {
     if (activeType.categories) {
       CategoryDropdown.updateCategoryDropdown(textContainer, categoryDropdown, defaultText, true);
     } else if (activeType.validation) {
-        DataCellElement.setStyleBasedOnValidity(textContainer, activeType.validation);
+      Validation.setStyleBasedOnValidity(textContainer, activeType.validation);
     }
   }
 
@@ -85,8 +85,7 @@ export class DataCellEvents {
       rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
     if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeContentEditable(textContainerElement);
     CellEvents.setCellToDefaultIfNeeded(etc, rowIndex, columnIndex, textContainerElement);
-     // because invalid text is removed, we can safely set the color to default
-    textContainerElement.style.color = DataCellElement.DEFAULT_TEXT_COLOR;
+    textContainerElement.style.color = Validation.DEFAULT_TEXT_COLOR;
     const oldType = etc.focusedElements.cell.typeName;
     FocusedCellUtils.purge(etc.focusedElements.cell);
     setTimeout(() => {

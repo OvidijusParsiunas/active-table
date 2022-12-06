@@ -2,6 +2,7 @@ import {DateCellCalendarIconElement} from './dateCellCalendarIconElement';
 import {ColumnType} from '../../../../types/columnType';
 import {CellElement} from '../../cellElement';
 
+// the user does not use the actual input element and the events are triggered via the date picker (calendar)
 export class DateCellInputElement {
   public static readonly ELEMENT_TYPE = 'date';
   public static readonly DATE_INPUT_CLASS = 'date-input';

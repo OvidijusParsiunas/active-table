@@ -3,9 +3,36 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {TableContents, TableRow} from '../../types/tableContents';
 import {ColumnType, SortingFuncs} from '../../types/columnType';
 import {CellElementIndex} from '../elements/cellElementIndex';
+import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
 import {CellEvents} from '../../elements/cell/cellEvents';
+import {RegexUtils} from '../regex/regexUtils';
 
 export class Sort {
+  private static extractNumberFromString(text: string) {
+    const numberStringArr = RegexUtils.extractFloatStrs(text);
+    if (numberStringArr && numberStringArr.length > 0) {
+      return Number(numberStringArr[0]);
+    }
+    return 0;
+  }
+
+  public static readonly DEFAULT_TYPES_SORT_FUNCS: {[key in DEFAULT_COLUMN_TYPES]?: SortingFuncs} = {
+    [DEFAULT_COLUMN_TYPES.NUMBER]: {
+      ascending: (cellText1: string, cellText2: string) => {
+        return Number(cellText1) - Number(cellText2);
+      },
+      descending: (cellText1: string, cellText2: string) => Number(cellText2) - Number(cellText1),
+    },
+    [DEFAULT_COLUMN_TYPES.CURRENCY]: {
+      ascending: (cellText1: string, cellText2: string) => {
+        return Sort.extractNumberFromString(cellText1) - Sort.extractNumberFromString(cellText2);
+      },
+      descending: (cellText1: string, cellText2: string) => {
+        return Sort.extractNumberFromString(cellText2) - Sort.extractNumberFromString(cellText1);
+      },
+    },
+  };
+
   // cannot safely identify if nothing has been changed, hence need to send out an update for all cells
   // prettier-ignore
   private static update(etc: EditableTableComponent, sortedDataContents: TableContents) {

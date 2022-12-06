@@ -4,7 +4,7 @@ import {MOUSE_EVENT} from '../../../../consts/mouseEvents';
 import {DateCellTextElement} from './dateCellTextElement';
 import {CellEvents} from '../../cellEvents';
 
-// the user does not use the actual input element and the events are triggered via the date picker
+// the user does not use the actual input element and the events are triggered via the date picker (calendar)
 export class DateCellInputEvents {
   // outstanding bug is when the user opens picker and moves with arrow keys, then clicks escape
   // the picker fires a clear event and does not actually close itself and instead goes to the
