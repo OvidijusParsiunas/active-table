@@ -12,9 +12,7 @@ import {HasRerendered} from '../../render/hasRerendered';
 export class RemoveRow {
   private static updateColumnDetails(removedRowData: TableRow, columnsDetails: ColumnsDetailsT) {
     removedRowData.forEach((cellText: CellText, columnIndex: number) => {
-      const columnDetails = columnsDetails[columnIndex];
-      // CAUTION-2
-      CellTypeTotalsUtils.decrementCellTypeAndSetNewColumnType(columnDetails, cellText as string);
+      CellTypeTotalsUtils.decrementCellType(columnsDetails[columnIndex], cellText as string); // CAUTION-2
     });
   }
 

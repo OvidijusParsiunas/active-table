@@ -43,8 +43,7 @@ export class InsertNewCell {
         UpdateIndexColumnWidth.wrapTextWhenNarrowColumnsBreached(etc); // REF-19
       }
     } else {
-      // CAUTION-2
-      CellTypeTotalsUtils.incrementCellTypeAndSetNewColumnType(columnDetails, text);
+      CellTypeTotalsUtils.incrementCellType(columnDetails, text); // CAUTION-2
     }
   }
 

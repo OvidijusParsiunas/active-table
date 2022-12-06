@@ -7,7 +7,6 @@ import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils'
 import {CellTypeTotalsUtils} from '../../../utils/cellType/cellTypeTotalsUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../../enums/cellType';
 import {KEYBOARD_EVENT} from '../../../consts/keyboardEvents';
 import {PasteUtils} from '../../../utils/paste/pasteUtils';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
@@ -25,18 +24,10 @@ export class DataCellEvents {
     }
   }
 
-  // prettier-ignore
-  // private static setTextColorBasedOnValidity(textContainerElement:
-  // HTMLElement, userSetColumnType: VALIDABLE_CELL_TYPE) {
-  // should not be required anymore
-  // textContainerElement.style.color =
-  //   ValidateInput.validate(CellElement.getText(textContainerElement), userSetColumnType)
-  //     ? DataCellEvents.DEFAULT_TEXT_COLOR : DataCellEvents.INVALID_TEXT_COLOR;
-  // }
-
   // TO-DO default types per column, cleanup e.g. currency or date will need to be provided by user
   // TO-DO allow user to set default as invalid
   // using this instead of keydown because when this is fired the new cell text is available
+  // prettier-ignore
   private static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     const inputEvent = event as InputEvent;
     // can be cell element for data cell, text element for category and date cells, or even input element from date picker
@@ -49,10 +40,7 @@ export class DataCellEvents {
       const isUndo = inputEvent.inputType === UNDO_INPUT_TYPE;
       CellElement.processAndSetTextOnCell(this, textContainerElement, text, false, isUndo, false);
       const columnDetails = this.columnsDetails[columnIndex];
-      const userSetColumnType = columnDetails.userSetColumnType as keyof typeof VALIDABLE_CELL_TYPE;
-      if (VALIDABLE_CELL_TYPE[userSetColumnType]) {
-        // DataCellEvents.setTextColorBasedOnValidity(textContainerElement, userSetColumnType);
-      } else if (columnDetails.activeType.categories) {
+      if (columnDetails.activeType.categories) {
         CategoryDropdown.updateCategoryDropdown(textContainerElement.parentElement as HTMLElement,
           columnDetails.categoryDropdown, columnDetails.settings.defaultText, true);
       }
@@ -99,12 +87,12 @@ export class DataCellEvents {
     CellEvents.setCellToDefaultIfNeeded(etc, rowIndex, columnIndex, textContainerElement);
      // because invalid text is removed, we can safely set the color to default
     textContainerElement.style.color = DataCellElement.DEFAULT_TEXT_COLOR;
-    const oldType = etc.focusedElements.cell.type as CELL_TYPE;
+    const oldType = etc.focusedElements.cell.typeName;
     FocusedCellUtils.purge(etc.focusedElements.cell);
     setTimeout(() => {
       const columnDetails = etc.columnsDetails[columnIndex];
-      const newType = CellTypeTotalsUtils.parseType(CellElement.getText(textContainerElement), columnDetails.types);
-      CellTypeTotalsUtils.changeCellTypeAndSetNewColumnType(columnDetails, oldType, newType); // CAUTION-2
+      const newType = CellTypeTotalsUtils.parseTypeName(CellElement.getText(textContainerElement), columnDetails.types);
+      CellTypeTotalsUtils.changeCellType(columnDetails, oldType, newType); // CAUTION-2
     });
   }
 

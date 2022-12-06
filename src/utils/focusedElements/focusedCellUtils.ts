@@ -12,14 +12,14 @@ export class FocusedCellUtils {
     focusedCell.element = cell;
     focusedCell.rowIndex = 0;
     focusedCell.columnIndex = columnIndex;
-    delete focusedCell.type;
+    delete focusedCell.typeName;
   }
 
   public static setIndexCell(focusedCell: FocusedCell, cell: HTMLElement, rowIndex: number) {
     focusedCell.element = cell;
     focusedCell.rowIndex = rowIndex;
     delete focusedCell.columnIndex;
-    delete focusedCell.type;
+    delete focusedCell.typeName;
   }
 
   // prettier-ignore
@@ -28,7 +28,7 @@ export class FocusedCellUtils {
     focusedCell.element = cellElement;
     focusedCell.rowIndex = rowIndex;
     focusedCell.columnIndex = columnIndex;
-    focusedCell.type = CellTypeTotalsUtils.parseType(CellElement.getText(focusedCell.element), types);
+    focusedCell.typeName = CellTypeTotalsUtils.parseTypeName(CellElement.getText(focusedCell.element), types);
   }
 
   public static incrementColumnIndex(focusedCell: FocusedCell, newColumnIndex: number) {
@@ -41,6 +41,6 @@ export class FocusedCellUtils {
     delete focusedCell.columnIndex;
     delete focusedCell.element;
     delete focusedCell.rowIndex;
-    delete focusedCell.type;
+    delete focusedCell.typeName;
   }
 }

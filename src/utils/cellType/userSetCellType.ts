@@ -3,9 +3,7 @@ import {DateCellElement} from '../../elements/cell/cellsWithTextDiv/dateCell/dat
 import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {DataCellElement} from '../../elements/cell/dataCell/dataCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
-import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellEvents} from '../../elements/cell/cellEvents';
-import {CellTypeTotalsUtils} from './cellTypeTotalsUtils';
 import {ColumnType} from '../../types/columnType';
 
 export class UserSetCellType {
@@ -26,7 +24,6 @@ export class UserSetCellType {
 
   private static set(etc: EditableTableComponent, newType: string, columnIndex: number) {
     const columnDetails = etc.columnsDetails[columnIndex];
-    columnDetails.userSetColumnType = newType;
     columnDetails.activeType = columnDetails.types.find((type) => type.name === newType) as ColumnType;
     return columnDetails.activeType;
   }

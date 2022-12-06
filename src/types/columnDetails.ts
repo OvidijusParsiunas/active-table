@@ -53,10 +53,6 @@ export interface ColumnDetailsT {
   types: ColumnTypes;
   // WORK - user should have option to set type as a string by the name
   activeType: ColumnType;
-  // difference between column type and cell type is - is that column type governs the type for all cells within that
-  // column whereas cell type is the actual type used on a cell
-  // column type set by the user, set to auto by default
-  userSetColumnType: string;
   cellTypeTotals: CellTypeTotals;
   categoryDropdown: CategoryDropdownT;
   settings: ColumnSettingsInternal;

@@ -1,6 +1,5 @@
 import {HoverableElementStyleClient} from './hoverableElementStyle';
 import {InterfacesUnion, SetRequired} from './utilityTypes';
-import {USER_SET_COLUMN_TYPE} from '../enums/columnType';
 import {StringDimension} from './dimensions';
 import {ColumnTypes} from './columnType';
 import {CellText} from './tableContents';
@@ -15,7 +14,7 @@ interface Parent {
   header?: HoverableElementStyleClient;
   columnTypes?: ColumnTypes;
   type?: boolean;
-  availableTypes?: USER_SET_COLUMN_TYPE[];
+  availableTypes?: ColumnTypes;
   // customTypes?: unknown;
   validation?: unknown;
   isSortAvailable?: boolean;

@@ -7,7 +7,6 @@ import {CellTypeTotalsUtils} from '../cellType/cellTypeTotalsUtils';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
 import {ColumnTypesUtils} from '../cellType/columnTypesUtils';
-import {USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellText} from '../../types/tableContents';
 
 // REF-13
@@ -62,12 +61,9 @@ export class ColumnDetails {
     const {isDefaultTextRemovable, defaultText: settingsDefaultText} = columnDetails.settings;
     const types = ColumnTypesUtils.getDefault();
     ColumnTypesUtils.process(types, isDefaultTextRemovable, settingsDefaultText || componentDefaultText);
-    // if (columnDetails.settings.columnTypes) types.push(...columnDetails.settings.columnTypes.map((type) => type.name));
-    // types.push(...Object.keys(USER_SET_COLUMN_TYPE).map((key) => DisplayedCellTypeName.get(key)));
     const newObject: Omit<ColumnDetailsNoSizer, keyof ColumnDetailsInitial> = {
       types,
       activeType: types[0],
-      userSetColumnType: USER_SET_COLUMN_TYPE.Auto,
       cellTypeTotals: CellTypeTotalsUtils.createObj(types),
       categoryDropdown: CategoryDropdown.getDefaultObj(categoryDropdown),
     };
