@@ -1,15 +1,13 @@
 import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from './columnType';
 
-// these are not accessable to the user
-enum AUXILIARY {
-  // this is used for a cell that has no text
-  Empty = 'Empty',
-  // this is used to calculate the amount of dates that apply for both d/m/y and m/d/y formats
-  AllDateFormats = 'AllDateFormats',
+// this is not accessable to the user
+export enum AUXILIARY_CELL_TYPE {
+  // when cell text is empty, invalid, removable default
+  Undefined = 'Empty',
 }
 
-export type CELL_TYPE = ACTIVE_COLUMN_TYPE | AUXILIARY;
-export const CELL_TYPE = {...ACTIVE_COLUMN_TYPE, ...AUXILIARY};
+export type CELL_TYPE = ACTIVE_COLUMN_TYPE | AUXILIARY_CELL_TYPE;
+export const CELL_TYPE = {...ACTIVE_COLUMN_TYPE, ...AUXILIARY_CELL_TYPE};
 
 // cell types that can be validated
 export type VALIDABLE_CELL_TYPE =

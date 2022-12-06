@@ -1,49 +1,34 @@
-import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../../enums/columnType';
 import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
-import {CELL_TYPE, VALIDABLE_CELL_TYPE} from '../../enums/cellType';
+import {AUXILIARY_CELL_TYPE, CELL_TYPE} from '../../enums/cellType';
 import {HasRerendered} from '../render/hasRerendered';
 import {ColumnTypes} from '../../types/columnType';
 import {CellText} from '../../types/tableContents';
 import {EMPTY_STRING} from '../../consts/text';
-import {ValidateInput} from './validateInput';
 
+// TO-DO - may not need this class at all as the only use case for it is to help copy or export csv file correctly
 export class CellTypeTotalsUtils {
-  public static readonly DEFAULT_COLUMN_TYPE = ACTIVE_COLUMN_TYPE.Text;
-
-  public static createObj(): CellTypeTotals {
-    return {
-      [CELL_TYPE.Text]: 0,
-      [CELL_TYPE.Number]: 0,
-      [CELL_TYPE.Currency]: 0,
-      [CELL_TYPE.Date_D_M_Y]: 0,
-      [CELL_TYPE.Date_M_D_Y]: 0,
-      [CELL_TYPE.AllDateFormats]: 0,
-      [CELL_TYPE.Empty]: 0,
-      // this type will never be incremented, but is here as a stub for its cell type
-      [CELL_TYPE.Category]: 0,
+  // TO-DO classes that create objects should just be creating a new instance of that class
+  public static createObj(columnTypes: ColumnTypes): CellTypeTotals {
+    const auxiliaryType = {
+      // when cell text is empty, invalid, removable default
+      [AUXILIARY_CELL_TYPE.Undefined]: 0,
     };
-  }
-
-  private static parseValidable(cellText: CellText) {
-    const validableCellTypeKeys = Object.keys(VALIDABLE_CELL_TYPE) as (keyof typeof VALIDABLE_CELL_TYPE)[];
-    for (let i = 0; i < validableCellTypeKeys.length; i += 1) {
-      // cellText can be number but regex .test() expects a string input in typescript
-      if (ValidateInput.VALIDATORS[validableCellTypeKeys[i]](cellText as string)) return validableCellTypeKeys[i];
-    }
-    return null;
+    return columnTypes.reduce<CellTypeTotals>((cellTypeTotals, type) => {
+      cellTypeTotals[type.name] = 0;
+      return cellTypeTotals;
+    }, auxiliaryType);
   }
 
   public static parseType(cellText: CellText, types: ColumnTypes): CELL_TYPE {
-    if (cellText === EMPTY_STRING) return CELL_TYPE.Empty;
-    const valid = types.find((type) => type.validation?.(cellText));
-    if (valid) return valid.name as CELL_TYPE;
-    const parsedCellType = CellTypeTotalsUtils.parseValidable(cellText);
-    if (!parsedCellType) return CELL_TYPE.Text;
+    if (cellText === EMPTY_STRING) return CELL_TYPE.Undefined;
+    const validType = types.find((type) => type.validation?.(cellText));
+    if (validType) return validType.name as CELL_TYPE;
     // REF-3
-    if (parsedCellType === VALIDABLE_CELL_TYPE.Date_D_M_Y) {
-      if (ValidateInput.validate(cellText, ACTIVE_COLUMN_TYPE.Date_M_D_Y)) return CELL_TYPE.AllDateFormats;
+    // if the first type does not not have validation - return it
+    if (types[0] && typeof types[0].validation !== 'function') {
+      return types[0].name as CELL_TYPE;
     }
-    return parsedCellType;
+    return CELL_TYPE.Undefined;
   }
 
   private static incrementType(type: CELL_TYPE, cellTypeTotals: CellTypeTotals) {
@@ -58,13 +43,11 @@ export class CellTypeTotalsUtils {
   private static changeTypeAndSetColumnType(
       columnDetails: ColumnDetailsT, changeFuncs: ((cellTypeTotals: CellTypeTotals) => void)[]) {
     if (HasRerendered.check(columnDetails)) return; // CAUTION-2
-    const {cellTypeTotals, elements} = columnDetails;
+    const {cellTypeTotals} = columnDetails;
     changeFuncs.forEach((func) => func(cellTypeTotals));
-    if (columnDetails.userSetColumnType === USER_SET_COLUMN_TYPE.Auto) {
-      columnDetails.activeColumnType = CellTypeTotalsUtils.getActiveColumnType(cellTypeTotals, elements.length - 1);
-    }
   }
 
+  // these should perhaps be in a timeout?
   public static incrementCellTypeAndSetNewColumnType(columnDetails: ColumnDetailsT, cellText: CellText) {
     const type = CellTypeTotalsUtils.parseType(cellText, columnDetails.types);
     CellTypeTotalsUtils.changeTypeAndSetColumnType(columnDetails, [CellTypeTotalsUtils.incrementType.bind(this, type)]);
@@ -82,43 +65,27 @@ export class CellTypeTotalsUtils {
       [CellTypeTotalsUtils.decrementType.bind(this, oldType), CellTypeTotalsUtils.incrementType.bind(this, newType)]);
   }
 
-  // prettier-ignore
-  // REF-3
-  private static getDateTypeIfAllDates(cellTypeTotals: CellTypeTotals, numberOfRichRows: number) {
-    const datesTotal = cellTypeTotals[CELL_TYPE.Date_D_M_Y]
-      + cellTypeTotals[CELL_TYPE.Date_M_D_Y] + cellTypeTotals[CELL_TYPE.AllDateFormats];
-    if (datesTotal === numberOfRichRows) {
-      // if all dates apply to both formats, return d/m/y as the primary format
-      if (cellTypeTotals[CELL_TYPE.AllDateFormats] == numberOfRichRows) return ACTIVE_COLUMN_TYPE.Date_D_M_Y;
-      numberOfRichRows -= cellTypeTotals[CELL_TYPE.AllDateFormats];
-      if (cellTypeTotals[CELL_TYPE.Date_D_M_Y] === numberOfRichRows) return ACTIVE_COLUMN_TYPE.Date_D_M_Y;
-      if (cellTypeTotals[CELL_TYPE.Date_M_D_Y] === numberOfRichRows) return ACTIVE_COLUMN_TYPE.Date_M_D_Y;
-    }
-    return null;
-  }
-
-  public static getActiveColumnType(cellTypeTotals: CellTypeTotals, numberOfDataRows: number): ACTIVE_COLUMN_TYPE {
+  // TO-DO - this should only be used when cells are being copied or exported into csv, remove everything if not is used
+  // this needs to be refactored
+  public static getColumnType(cellTypeTotals: CellTypeTotals, numberOfDataRows: number): string {
     const cellTypes = Object.keys(cellTypeTotals) as unknown as CELL_TYPE[];
-    // the logic does not take defaults into consideration as a column type, so if we have default as '-' and
-    // the column contains the following data '-','-',2,4 the column type is number
-    const numberOfRowsWithDefaultText = cellTypeTotals[CELL_TYPE.Empty];
-    const numberOfRichRows = numberOfDataRows - numberOfRowsWithDefaultText;
-    // if the column has nothing but defaults, the column type is set to whatever the default should be
-    if (numberOfRichRows === 0) return CellTypeTotalsUtils.DEFAULT_COLUMN_TYPE;
-    const dateType = CellTypeTotalsUtils.getDateTypeIfAllDates(cellTypeTotals, numberOfRichRows);
-    if (dateType) return dateType;
+    const numberOfUndefinedTypeCells = cellTypeTotals[CELL_TYPE.Undefined];
+    const numberOfTypedCells = numberOfDataRows - numberOfUndefinedTypeCells;
+    // if the column has nothing but undefined cell types, the column type is set to whatever the default should be
+    if (numberOfTypedCells === 0) return Object.keys(cellTypeTotals)[0];
+    // return highest - without this
     for (let i = 0; i < cellTypes.length; i += 1) {
-      if (cellTypes[i] !== CELL_TYPE.Empty) {
-        if (cellTypeTotals[cellTypes[i]] === numberOfRichRows) {
-          return cellTypes[i] as ACTIVE_COLUMN_TYPE;
+      if (cellTypes[i] !== CELL_TYPE.Undefined) {
+        if (cellTypeTotals[cellTypes[i]] === numberOfTypedCells) {
+          return cellTypes[i];
         }
-        // if there is a mixture (exc. default)
+        // if there is a mixture - return highest
         if (cellTypeTotals[cellTypes[i]] !== 0) {
-          return ACTIVE_COLUMN_TYPE.Text;
+          return Object.keys(cellTypeTotals)[0];
         }
       }
     }
-    return CellTypeTotalsUtils.DEFAULT_COLUMN_TYPE;
+    return Object.keys(cellTypeTotals)[0];
   }
 }
 

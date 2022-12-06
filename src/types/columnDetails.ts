@@ -1,9 +1,8 @@
 import {CategoriesOptions, CategoriesDropdownStyle, CategoriesDropdownOptionStyle} from './categoriesProperties';
-import {ACTIVE_COLUMN_TYPE, USER_SET_COLUMN_TYPE} from '../enums/columnType';
 import {ColumnSettingsInternal} from './columnsSettings';
+import {AUXILIARY_CELL_TYPE} from '../enums/cellType';
 import {ColumnType, ColumnTypes} from './columnType';
 import {CellStateColors} from './cellStateColors';
-import {CELL_TYPE} from '../enums/cellType';
 import {ColumnSizerT} from './columnSizer';
 import {Optional} from './utilityTypes';
 
@@ -13,8 +12,8 @@ export interface BordersOverwrittenBySiblings {
 }
 
 export type CellTypeTotals = {
-  [key in CELL_TYPE]: number;
-};
+  [key in string]: number;
+} & {[AUXILIARY_CELL_TYPE.Undefined]: number};
 
 export interface ScrollbarPresence {
   horizontal: boolean;
@@ -56,10 +55,8 @@ export interface ColumnDetailsT {
   activeType: ColumnType;
   // difference between column type and cell type is - is that column type governs the type for all cells within that
   // column whereas cell type is the actual type used on a cell
-  // column type that has been inferred automatically or set by user
-  activeColumnType: ACTIVE_COLUMN_TYPE;
   // column type set by the user, set to auto by default
-  userSetColumnType: USER_SET_COLUMN_TYPE;
+  userSetColumnType: string;
   cellTypeTotals: CellTypeTotals;
   categoryDropdown: CategoryDropdownT;
   settings: ColumnSettingsInternal;

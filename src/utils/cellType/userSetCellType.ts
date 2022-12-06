@@ -26,11 +26,6 @@ export class UserSetCellType {
 
   private static set(etc: EditableTableComponent, newType: string, columnIndex: number) {
     const columnDetails = etc.columnsDetails[columnIndex];
-    const {cellTypeTotals, elements} = columnDetails;
-    columnDetails.activeColumnType =
-      newType === USER_SET_COLUMN_TYPE.Auto
-        ? CellTypeTotalsUtils.getActiveColumnType(cellTypeTotals, elements.length - 1)
-        : newType;
     columnDetails.userSetColumnType = newType;
     columnDetails.activeType = columnDetails.types.find((type) => type.name === newType) as ColumnType;
     return columnDetails.activeType;

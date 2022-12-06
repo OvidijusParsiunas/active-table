@@ -32,6 +32,14 @@ export class ColumnTypesUtils {
     return [YMD[2], YMD[1], YMD[0]].join('-');
   }
 
+  private static extractNumberFromString(text: string) {
+    const numberStringArr = RegexUtils.extractFloatStrs(text);
+    if (numberStringArr && numberStringArr.length > 0) {
+      return Number(numberStringArr[0]);
+    }
+    return 0;
+  }
+
   public static getDefault(): ColumnTypes {
     return [
       {
@@ -50,6 +58,18 @@ export class ColumnTypesUtils {
       {
         name: 'Currency2',
         validation: (cellText: CellText) => ColumnTypesUtils.DEFAULT_REGEX['Currency2'].test(cellText as string),
+        sorting: {
+          ascending: (cellText1: string, cellText2: string) => {
+            return (
+              ColumnTypesUtils.extractNumberFromString(cellText1) - ColumnTypesUtils.extractNumberFromString(cellText2)
+            );
+          },
+          descending: (cellText1: string, cellText2: string) => {
+            return (
+              ColumnTypesUtils.extractNumberFromString(cellText2) - ColumnTypesUtils.extractNumberFromString(cellText1)
+            );
+          },
+        },
       },
       {
         name: 'Date d-m-y2',
@@ -90,6 +110,7 @@ export class ColumnTypesUtils {
     };
   }
 
+  // REF-3
   public static process(types: ColumnTypes, isDefaultTextRemovable: boolean, defaultText: CellText) {
     types.forEach((type) => {
       if (type.categories?.options) ColumnTypesUtils.setCategoriesValidation(type, isDefaultTextRemovable, defaultText);

@@ -67,9 +67,8 @@ export class ColumnDetails {
     const newObject: Omit<ColumnDetailsNoSizer, keyof ColumnDetailsInitial> = {
       types,
       activeType: types[0],
-      activeColumnType: CellTypeTotalsUtils.DEFAULT_COLUMN_TYPE,
       userSetColumnType: USER_SET_COLUMN_TYPE.Auto,
-      cellTypeTotals: CellTypeTotalsUtils.createObj(),
+      cellTypeTotals: CellTypeTotalsUtils.createObj(types),
       categoryDropdown: CategoryDropdown.getDefaultObj(categoryDropdown),
     };
     Object.assign(columnDetails, newObject);

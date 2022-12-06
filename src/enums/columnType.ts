@@ -11,7 +11,7 @@ export enum ACTIVE_COLUMN_TYPE {
   Category = 'Category',
 }
 
-// this is the default column type which defines that actual column type is inferred automaticallly
+// this is used as the default type that has no validation and any sort of restrictions
 enum AUTO {
   Auto = 'Auto',
 }
