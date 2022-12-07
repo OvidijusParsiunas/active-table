@@ -49,7 +49,7 @@ export class ColumnDetails {
       settings?: ColumnSettingsInternal): ColumnDetailsInitial {
     const columnSettings = settings || ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS;
     const {isDefaultTextRemovable, defaultText: settingsDefaultText} = columnSettings;
-    const types = ColumnTypesUtils.getDefault();
+    const types = ColumnTypesUtils.get(columnSettings);
     ColumnTypesUtils.process(types, isDefaultTextRemovable, settingsDefaultText || etc.defaultText);
     return {
       elements: [],

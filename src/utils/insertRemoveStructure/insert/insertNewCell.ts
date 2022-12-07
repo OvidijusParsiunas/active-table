@@ -79,11 +79,11 @@ export class InsertNewCell {
   }
 
   // REF-13
-  private static insertInitialColumnDetails(etc: EditableTableComponent, cellText: CellText, index: number) {
+  private static insertInitialColumnDetails(etc: EditableTableComponent, cellText: CellText, columnIndex: number) {
     const {columnsDetails, columnsSettingsInternal, categoryDropdownContainer} = etc;
     const categoryDropdown = CategoryDropdown.createAndAppend(categoryDropdownContainer as HTMLElement);
     const columnDetails = ColumnDetails.createInitial(etc, categoryDropdown, columnsSettingsInternal[cellText]);
-    columnsDetails.splice(index, 0, columnDetails as ColumnDetailsT);
+    columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
   }
 
   // isNewText indicates whether rowData is already in the contents state or if it needs to be added

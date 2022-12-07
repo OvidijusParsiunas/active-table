@@ -16,7 +16,7 @@ interface Parent {
   defaultTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
   customColumnTypes?: ColumnTypes; // additional custom column types
   // if not provided the following property will default to first of the following:
-  // 'Text'/First type to not have validation/First available type/Nothing
+  // First type to not have validation/First available type/'Text'
   activeTypeName?: string;
   validation?: unknown;
   isSortAvailable?: boolean;
