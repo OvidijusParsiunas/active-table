@@ -1,10 +1,11 @@
 import {CalendarFunctionality} from '../../types/calendarFunctionality';
 import {EditableTableComponent} from '../../editable-table-component';
 import {TableContents, TableRow} from '../../types/tableContents';
-import {ColumnType, SortingFuncs} from '../../types/columnType';
+import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {CellElementIndex} from '../elements/cellElementIndex';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
 import {CellEvents} from '../../elements/cell/cellEvents';
+import {SortingFuncs} from '../../types/sortingFuncs';
 import {RegexUtils} from '../regex/regexUtils';
 
 export class Sort {
@@ -84,28 +85,28 @@ export class Sort {
     return [parsedCellText1, parsedCellText2];
   }
 
-  private static validateType(validation: ColumnType['validation'], cellText: string) {
+  private static validateType(validation: ColumnTypeInternal['validation'], cellText: string) {
     return validation === undefined || validation(cellText) ? cellText : undefined;
   }
 
   // prettier-ignore
   private static validateAndSort(cellText1: string, cellText2: string, sortFunc: SortingFuncs[keyof SortingFuncs],
-      validation: ColumnType['validation'], isAsc: boolean) {
+      validation: ColumnTypeInternal['validation'], isAsc: boolean) {
     const parseResult = Sort.parseComparedText(cellText1, cellText2, isAsc, Sort.validateType.bind(this, validation));
     if (typeof parseResult === 'number') return parseResult;
     return sortFunc(parseResult[0], parseResult[1]);
   }
 
-  private static sortViaSetSortFuncs(type: ColumnType, dataContents: TableContents, columnIndex: number, isAsc: boolean) {
+  private static sortViaSortFuncs(type: ColumnTypeInternal, dataContent: TableContents, colIndex: number, isAsc: boolean) {
     const {sorting, validation} = type;
     if (!sorting) return;
     if (isAsc) {
-      dataContents.sort((a: TableRow, b: TableRow) =>
-        Sort.validateAndSort(a[columnIndex] as string, b[columnIndex] as string, sorting.ascending, validation, isAsc)
+      dataContent.sort((a: TableRow, b: TableRow) =>
+        Sort.validateAndSort(a[colIndex] as string, b[colIndex] as string, sorting.ascending, validation, isAsc)
       );
     } else {
-      dataContents.sort((a: TableRow, b: TableRow) =>
-        Sort.validateAndSort(b[columnIndex] as string, a[columnIndex] as string, sorting.descending, validation, isAsc)
+      dataContent.sort((a: TableRow, b: TableRow) =>
+        Sort.validateAndSort(b[colIndex] as string, a[colIndex] as string, sorting.descending, validation, isAsc)
       );
     }
   }
@@ -114,13 +115,15 @@ export class Sort {
     return (new Date(...ymd1) as unknown as number) - (new Date(...ymd2) as unknown as number);
   }
 
-  private static parseYMDFormat(validation: ColumnType['validation'], calendar: CalendarFunctionality, cellText: string) {
+  // prettier-ignore
+  private static parseYMDFormat(validation: ColumnTypeInternal['validation'],
+      calendar: CalendarFunctionality, cellText: string) {
     const isValid = Sort.validateType(validation, cellText);
     return isValid ? (calendar.toYMD(cellText) as unknown as [number]) : undefined;
   }
 
   // prettier-ignore
-  private static sortDates(type: ColumnType, dataContents: TableContents, columnIndex: number, isAsc: boolean) {
+  private static sortDates(type: ColumnTypeInternal, dataContents: TableContents, columnIndex: number, isAsc: boolean) {
     const {calendar, validation} = type;
     if (!calendar) return;
     dataContents.sort((a: TableRow, b: TableRow) => {
@@ -140,7 +143,7 @@ export class Sort {
     if (activeType.calendar) {
       Sort.sortDates(activeType, dataContents, columnIndex, isAsc);
     } else if (activeType.sorting) {
-      Sort.sortViaSetSortFuncs(activeType, dataContents, columnIndex, isAsc);
+      Sort.sortViaSortFuncs(activeType, dataContents, columnIndex, isAsc);
     } else {
       Sort.sortStrings(dataContents, columnIndex, isAsc);
     }

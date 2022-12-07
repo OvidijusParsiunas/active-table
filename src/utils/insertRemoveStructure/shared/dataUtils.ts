@@ -1,7 +1,7 @@
 import {EditableTableComponent} from '../../../editable-table-component';
+import {ColumnTypeInternal} from '../../../types/columnTypeInternal';
 import {NumberOfIdenticalCells} from '../../numberOfIdenticalCells';
 import {CellText} from '../../../types/tableContents';
-import {ColumnType} from '../../../types/columnType';
 import {EMPTY_STRING} from '../../../consts/text';
 
 export class DataUtils {
@@ -22,11 +22,11 @@ export class DataUtils {
   // note that NumberOfIdenticalCells.get uses the etc.contents top row, so it needs to be up-to-date
   // prettier-ignore
   private static shouldTextBeSetToDefault(etc: EditableTableComponent,
-      text: CellText, defaultText: CellText, rowIndex: number, activeType: ColumnType) {
+      text: CellText, defaultText: CellText, rowIndex: number, activeType: ColumnTypeInternal) {
     const { duplicateHeadersAllowed, columnsDetails } = etc;
     return DataUtils.isTextEmpty(defaultText, text)
       || (rowIndex === 0 && (!duplicateHeadersAllowed && NumberOfIdenticalCells.get(text, columnsDetails) > 1))
-      || (rowIndex > 0 && !(activeType?.validation === undefined || activeType.validation(text)));
+      || (rowIndex > 0 && !(activeType?.validation === undefined || activeType.validation(String(text))));
   }
 
   public static processCellText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellText: CellText) {

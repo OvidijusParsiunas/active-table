@@ -3,8 +3,8 @@ import {DateCellElement} from '../../elements/cell/cellsWithTextDiv/dateCell/dat
 import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {DataCellElement} from '../../elements/cell/dataCell/dataCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
+import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {CellEvents} from '../../elements/cell/cellEvents';
-import {ColumnType} from '../../types/columnType';
 
 export class ChangeColumnType {
   private static purgeInvalidCell(etc: EditableTableComponent, rowIndex: number, columnIndex: number) {
@@ -24,7 +24,7 @@ export class ChangeColumnType {
 
   private static setNew(etc: EditableTableComponent, newType: string, columnIndex: number) {
     const columnDetails = etc.columnsDetails[columnIndex];
-    columnDetails.activeType = columnDetails.types.find((type) => type.name === newType) as ColumnType;
+    columnDetails.activeType = columnDetails.types.find((type) => type.name === newType) as ColumnTypeInternal;
     return columnDetails.activeType;
   }
 

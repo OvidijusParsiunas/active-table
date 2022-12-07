@@ -1,7 +1,7 @@
 import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
+import {ColumnTypesInternal} from '../../types/columnTypeInternal';
 import {CellElement} from '../../elements/cell/cellElement';
 import {FocusedCell} from '../../types/focusedCell';
-import {ColumnTypes} from '../../types/columnType';
 
 export class FocusedCellUtils {
   public static createEmpty(): FocusedCell {
@@ -24,7 +24,7 @@ export class FocusedCellUtils {
 
   // prettier-ignore
   public static set(focusedCell: FocusedCell, cellElement: HTMLElement, rowIndex: number, columnIndex: number,
-      types: ColumnTypes) {
+      types: ColumnTypesInternal) {
     focusedCell.element = cellElement;
     focusedCell.rowIndex = rowIndex;
     focusedCell.columnIndex = columnIndex;

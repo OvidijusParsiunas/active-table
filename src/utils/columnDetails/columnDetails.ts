@@ -5,9 +5,9 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
 import {CellStateColorProperties} from '../../types/cellStateColors';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
+import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
-import {ColumnType} from '../../types/columnType';
 
 // REF-13
 export class ColumnDetails {
@@ -50,14 +50,14 @@ export class ColumnDetails {
     const columnSettings = settings || ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS;
     const {isDefaultTextRemovable, defaultText: settingsDefaultText} = columnSettings;
     const types = ColumnTypesUtils.get(columnSettings);
-    ColumnTypesUtils.process(types, isDefaultTextRemovable, settingsDefaultText || etc.defaultText);
+    const internalTypes = ColumnTypesUtils.process(types, isDefaultTextRemovable, settingsDefaultText || etc.defaultText);
     return {
       elements: [],
       settings: columnSettings,
       headerStateColors: ColumnDetails.createHeaderStateColors(etc, settings),
       bordersOverwrittenBySiblings: {},
-      types,
-      activeType: ColumnTypesUtils.getActiveType(columnSettings, types) as ColumnType,
+      types: internalTypes,
+      activeType: ColumnTypesUtils.getActiveType(columnSettings, types) as ColumnTypeInternal,
       categoryDropdown: CategoryDropdown.getDefaultObj(categoryDropdown),
     };
   }

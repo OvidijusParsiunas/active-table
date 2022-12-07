@@ -21,7 +21,7 @@ export class CalendarFunctionalityUtils {
     return [YMD[2], YMD[1], YMD[0]].join('-');
   }
 
-  public static readonly DEFAULT_TYPES_FUNCTIONALITY: {[key in DEFAULT_COLUMN_TYPES]?: CalendarFunctionality} = {
+  public static readonly DEFAULT_TYPES_FUNCTIONALITY: {[key: string]: CalendarFunctionality} = {
     [DEFAULT_COLUMN_TYPES.DATE_DMY]: {
       toYMD: (cellText: string) => CalendarFunctionalityUtils.dMYCellTextToYMD(cellText),
       fromYMD: (YMD: YMDFormat) => CalendarFunctionalityUtils.yMDToDMYCellText(YMD),

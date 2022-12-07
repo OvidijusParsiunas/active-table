@@ -1,3 +1,4 @@
+import {ColumnTypeInternal, ColumnTypesInternal} from '../../types/columnTypeInternal';
 import {CalendarFunctionalityUtils} from './calendarFunctionalityUtils';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {ColumnType, ColumnTypes} from '../../types/columnType';
@@ -15,7 +16,7 @@ export class ColumnTypesUtils {
     ColumnTypesUtils.DEFAULT_TYPE,
     {
       name: DEFAULT_COLUMN_TYPES.NUMBER,
-      validation: (cellText: CellText) => !isNaN(cellText as unknown as number),
+      validation: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.NUMBER],
       sorting: Sort.DEFAULT_TYPES_SORT_FUNCS[DEFAULT_COLUMN_TYPES.NUMBER],
     },
     {
@@ -76,7 +77,12 @@ export class ColumnTypesUtils {
   // REF-3
   public static process(types: ColumnTypes, isDefaultTextRemovable: boolean, defaultText: CellText) {
     types.forEach((type) => {
-      if (type.categories?.options) Validation.setCategoriesValidation(type, isDefaultTextRemovable, defaultText);
+      if (typeof type.categories === 'boolean') {
+        type.categories = {};
+      } else if (typeof type.categories === 'object') {
+        Validation.setCategoriesValidation(type as ColumnTypeInternal, isDefaultTextRemovable, defaultText);
+      }
     });
+    return types as ColumnTypesInternal;
   }
 }

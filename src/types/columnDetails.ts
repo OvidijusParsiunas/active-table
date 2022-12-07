@@ -1,7 +1,7 @@
 import {CategoriesOptions, CategoriesDropdownStyle, CategoriesDropdownOptionStyle} from './categoriesProperties';
+import {ColumnTypeInternal, ColumnTypesInternal} from './columnTypeInternal';
 import {ColumnSettingsInternal} from './columnsSettings';
 import {AUXILIARY_CELL_TYPE} from '../enums/cellType';
-import {ColumnType, ColumnTypes} from './columnType';
 import {CellStateColors} from './cellStateColors';
 import {ColumnSizerT} from './columnSizer';
 import {Optional} from './utilityTypes';
@@ -50,8 +50,8 @@ export interface CategoryDropdownT {
 export interface ColumnDetailsT {
   elements: HTMLElement[];
   columnSizer: ColumnSizerT;
-  types: ColumnTypes;
-  activeType: ColumnType;
+  types: ColumnTypesInternal;
+  activeType: ColumnTypeInternal;
   cellTypeTotals: CellTypeTotals;
   categoryDropdown: CategoryDropdownT;
   settings: ColumnSettingsInternal;

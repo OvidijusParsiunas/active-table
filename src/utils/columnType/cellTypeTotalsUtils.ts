@@ -1,14 +1,14 @@
 import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
+import {ColumnTypesInternal} from '../../types/columnTypeInternal';
 import {AUXILIARY_CELL_TYPE} from '../../enums/cellType';
 import {HasRerendered} from '../render/hasRerendered';
-import {ColumnTypes} from '../../types/columnType';
 import {CellText} from '../../types/tableContents';
 import {EMPTY_STRING} from '../../consts/text';
 
 // TO-DO - may not need this class at all as the only use case for it is to help copy or export csv file correctly
 export class CellTypeTotalsUtils {
   // TO-DO classes that create objects should just be creating a new instance of that class
-  public static createObj(columnTypes: ColumnTypes): CellTypeTotals {
+  public static createObj(columnTypes: ColumnTypesInternal): CellTypeTotals {
     const auxiliaryType = {
       // when cell text is empty, invalid, removable default
       [AUXILIARY_CELL_TYPE.Undefined]: 0,
@@ -19,9 +19,9 @@ export class CellTypeTotalsUtils {
     }, auxiliaryType);
   }
 
-  public static parseTypeName(cellText: CellText, types: ColumnTypes): string {
+  public static parseTypeName(cellText: CellText, types: ColumnTypesInternal): string {
     if (cellText === EMPTY_STRING) return AUXILIARY_CELL_TYPE.Undefined;
-    const validType = types.find((type) => type.validation?.(cellText));
+    const validType = types.find((type) => type.validation?.(String(cellText)));
     if (validType) return validType.name;
     // REF-3
     // if the first type does not not have validation - return it

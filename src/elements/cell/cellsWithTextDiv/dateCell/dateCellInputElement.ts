@@ -1,5 +1,5 @@
 import {DateCellCalendarIconElement} from './dateCellCalendarIconElement';
-import {ColumnType} from '../../../../types/columnType';
+import {ColumnTypeInternal} from '../../../../types/columnTypeInternal';
 import {CellElement} from '../../cellElement';
 
 // the user does not use the actual input element and the events are triggered via the date picker (calendar)
@@ -22,7 +22,7 @@ export class DateCellInputElement {
     return (cellElement.children[1] as HTMLElement).children[0] as HTMLInputElement;
   }
 
-  private static convertTextToInputValue(textDate: string, type: ColumnType): string {
+  private static convertTextToInputValue(textDate: string, type: ColumnTypeInternal): string {
     if (type.calendar) {
       const isValid = type.validation === undefined || type.validation(textDate);
       if (isValid) {
@@ -33,12 +33,12 @@ export class DateCellInputElement {
     return '-';
   }
 
-  public static updateInputBasedOnTextDiv(cellElement: HTMLElement, type: ColumnType) {
+  public static updateInputBasedOnTextDiv(cellElement: HTMLElement, type: ColumnTypeInternal) {
     const dateValue = DateCellInputElement.convertTextToInputValue(CellElement.getText(cellElement), type);
     DateCellInputElement.extractInputElementFromCell(cellElement).value = dateValue;
   }
 
-  private static createInputElement(text: string, type: ColumnType): HTMLInputElement {
+  private static createInputElement(text: string, type: ColumnTypeInternal): HTMLInputElement {
     const inputElement = document.createElement('input');
     inputElement.type = DateCellInputElement.ELEMENT_TYPE;
     inputElement.classList.add(DateCellInputElement.DATE_INPUT_CLASS);
@@ -53,7 +53,7 @@ export class DateCellInputElement {
     return inputContainer;
   }
 
-  public static addDateInputElement(cellElement: HTMLElement, textElement: HTMLElement, type: ColumnType) {
+  public static addDateInputElement(cellElement: HTMLElement, textElement: HTMLElement, type: ColumnTypeInternal) {
     const inputContainer = DateCellInputElement.createInputElementContainer();
     const inputElement = DateCellInputElement.createInputElement(CellElement.getText(textElement), type);
     inputContainer.appendChild(inputElement);
