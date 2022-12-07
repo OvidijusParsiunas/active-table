@@ -94,7 +94,7 @@ export class ColumnSettingsBorderUtils {
   private static resetIfBorderOverwritten(subjectColumn: ColumnDetailsT, subjectBorder: keyof BordersOverwrittenBySiblings,
       cellStyle: CSSStyle, headerStyle?: CSSStyle) {
     if (subjectColumn?.bordersOverwrittenBySiblings[subjectBorder]) {
-      ColumnSettingsStyleUtils.setDefaultStyles(subjectColumn.elements, cellStyle, headerStyle);
+      ColumnSettingsStyleUtils.applyDefaultStyles(subjectColumn.elements, cellStyle, headerStyle);
       subjectColumn.bordersOverwrittenBySiblings[subjectBorder] = false;
     }
   }

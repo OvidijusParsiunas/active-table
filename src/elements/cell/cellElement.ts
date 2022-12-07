@@ -124,7 +124,7 @@ export class CellElement {
     const columnDetails = columnsDetails[colIndex];
     const cellElement = CellElement.create(cellStyle, isHeader, isHeader ? header.defaultStyle || {} : {});
     const {settings} = columnDetails;
-    if (settings) ColumnSettingsStyleUtils.setSettingsStyleOnCell(settings, cellElement, isHeader);
+    if (settings) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, cellElement, isHeader);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, cellElement); // REF-23
     CellElement.prepContentEditable(cellElement, isHeader);
     // overwritten again if static table

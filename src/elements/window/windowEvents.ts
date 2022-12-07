@@ -19,7 +19,7 @@ export class WindowEvents {
       RowDropdownEvents.windowOnKeyDown(this, event);
     }
     if (this.columnsDetails[columnIndex].activeType.categories
-        && !Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
+        && Dropdown.isDisplayed(this.columnsDetails[columnIndex].categoryDropdown.element)) {
       CategoryCellEvents.keyDownText(this, rowIndex, columnIndex, event);
     }
   }

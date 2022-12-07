@@ -8,18 +8,18 @@ import {GenericObject} from '../../types/genericObject';
 import {CSSStyle} from '../../types/cssStyle';
 
 export class ColumnSettingsStyleUtils {
-  public static setSettingsStyleOnCell(settings: ColumnSettingsInternal, cellElement: HTMLElement, isHeader: boolean) {
+  public static applySettingsStyleOnCell(settings: ColumnSettingsInternal, cellElement: HTMLElement, isHeader: boolean) {
     Object.assign(cellElement.style, settings.cellStyle || {}, isHeader ? settings.header?.defaultStyle || {} : {});
   }
 
-  private static setSettingStyle(columnElements: HTMLElement[], settings: ColumnSettingsInternal) {
-    ColumnSettingsStyleUtils.setSettingsStyleOnCell(settings, columnElements[0], true);
+  private static applySettingStyle(columnElements: HTMLElement[], settings: ColumnSettingsInternal) {
+    ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, columnElements[0], true);
     columnElements.slice(1).forEach((element) => {
-      ColumnSettingsStyleUtils.setSettingsStyleOnCell(settings, element, false);
+      ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, element, false);
     });
   }
 
-  public static setDefaultStyles(columnElements: HTMLElement[], cellStyle: CSSStyle, headerStyle?: CSSStyle) {
+  public static applyDefaultStyles(columnElements: HTMLElement[], cellStyle: CSSStyle, headerStyle?: CSSStyle) {
     CellElement.setDefaultCellStyle(columnElements[0], cellStyle, headerStyle);
     columnElements.slice(1).forEach((element) => {
       CellElement.setDefaultCellStyle(element, cellStyle);
@@ -47,7 +47,7 @@ export class ColumnSettingsStyleUtils {
       ColumnSettingsStyleUtils.unsetHeaderSettingStyle(columnElements[0], settings.header.defaultStyle);
     }
     if (settings.cellStyle) ColumnSettingsStyleUtils.unsetCellSettingStyle(columnElements, settings.cellStyle);
-    ColumnSettingsStyleUtils.setDefaultStyles(columnElements, cellStyle, headerStyle);
+    ColumnSettingsStyleUtils.applyDefaultStyles(columnElements, cellStyle, headerStyle);
   }
 
   // prettier-ignore
@@ -55,7 +55,7 @@ export class ColumnSettingsStyleUtils {
       columnDetails: ColumnDetailsT, settings: ColumnSettingsInternal, isSetNew: boolean) {
     const {cellStyle, header} = etc;
     ColumnSettingsStyleUtils.resetStyleToDefault(columnDetails.elements, settings, cellStyle, header.defaultStyle);
-    if (isSetNew) ColumnSettingsStyleUtils.setSettingStyle(columnDetails.elements, settings);
+    if (isSetNew) ColumnSettingsStyleUtils.applySettingStyle(columnDetails.elements, settings);
     columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(etc, isSetNew ? settings : undefined);
   }
 

@@ -23,8 +23,10 @@ import {ParentResize} from './utils/render/parentResize';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
+import {DEFAULT_COLUMN_TYPES} from './enums/columnType';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {Browser} from './utils/browser/browser';
+import {ColumnType} from './types/columnType';
 import {Render} from './utils/render/render';
 import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
@@ -106,7 +108,18 @@ export class EditableTableComponent extends LitElement {
   columnsDetails: ColumnsDetailsT = [];
 
   @property({type: String})
-  defaultText = '';
+  defaultText: ColumnSettings['defaultText'];
+
+  @property({type: Array<DEFAULT_COLUMN_TYPES>})
+  defaultColumnTypes: ColumnSettings['defaultColumnTypes']; // this will reduce the default types to ones included here
+
+  @property({type: Array<ColumnType>})
+  customColumnTypes: ColumnSettings['customColumnTypes']; // additional custom column types
+
+  // if not provided the following property will default to first of the following:
+  // First type to not have validation/First available type/'Text'
+  @property({type: String})
+  activeTypeName: ColumnSettings['activeTypeName'];
 
   @state()
   tableElementRef: HTMLElement | null = null;

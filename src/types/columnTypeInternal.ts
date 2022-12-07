@@ -13,7 +13,6 @@ export interface Parent {
   customValidationStyleColors?: () => void;
   sorting?: SortingFuncs; // By default the elements will be sorted in ascending ASCII character order
   categories?: CategoriesProperties;
-  // WORK - this should be used to set the default text inside column details - think about cellstyle
   defaultText?: CellText;
 }
 

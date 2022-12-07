@@ -36,7 +36,7 @@ export class ColumnTypesUtils {
     },
   ];
 
-  public static get(settings?: ColumnSettingsInternal): ColumnTypes {
+  public static get(settings: ColumnSettingsInternal): ColumnTypes {
     let columnTypes = [
       ...ColumnTypesUtils.DEFAULT_STATIC_TYPES,
       // the reason why category is not with the default static types is because its validation gets set depending
@@ -46,9 +46,9 @@ export class ColumnTypesUtils {
         categories: {},
       },
     ];
-    const {defaultTypes, customColumnTypes} = settings || {};
-    if (defaultTypes) {
-      const lowerCaseDefaultNames = defaultTypes.map((typeName) => typeName.toLocaleLowerCase());
+    const {defaultColumnTypes, customColumnTypes} = settings;
+    if (defaultColumnTypes) {
+      const lowerCaseDefaultNames = defaultColumnTypes.map((typeName) => typeName.toLocaleLowerCase());
       columnTypes = columnTypes.filter((type) => {
         return lowerCaseDefaultNames.indexOf(type.name.toLocaleLowerCase() as DEFAULT_COLUMN_TYPES) > -1;
       });
@@ -58,16 +58,17 @@ export class ColumnTypesUtils {
     return columnTypes;
   }
 
+  // prettier-ignore
   public static getActiveType(settings: ColumnSettingsInternal, availableTypes: ColumnTypes) {
     if (settings.activeTypeName) {
-      const activeType = availableTypes.find((type) => type.name === settings.activeTypeName);
+      const activeType = availableTypes.find(
+        (type) => type.name.toLocaleLowerCase() === settings.activeTypeName?.toLocaleLowerCase());
       if (activeType) return activeType;
     }
     // if activeTypeName is not provided, default to first of the following:
     // First type to not have validation/First available type/'Text'
-    const noValidationType =
-      settings.customColumnTypes?.find((type) => !type.validation) ||
-      availableTypes.slice(settings.customColumnTypes?.length || 0).find((type) => !type.validation);
+    const noValidationType = settings.customColumnTypes?.find((type) => !type.validation)
+      || availableTypes.slice(settings.customColumnTypes?.length || 0).find((type) => !type.validation);
     if (noValidationType) return noValidationType;
     const firstType = availableTypes[0];
     if (firstType) return firstType;

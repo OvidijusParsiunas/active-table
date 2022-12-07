@@ -15,7 +15,7 @@ interface Parent {
   isDefaultTextRemovable?: boolean; // true by default
   cellStyle?: CSSStyle;
   header?: HoverableElementStyleClient;
-  defaultTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
+  defaultColumnTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
   customColumnTypes?: ColumnTypes; // additional custom column types
   // if not provided the following property will default to first of the following:
   // First type to not have validation/First available type/'Text'

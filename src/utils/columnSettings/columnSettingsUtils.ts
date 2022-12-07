@@ -1,4 +1,4 @@
-import {ColumnSettings, ColumnSettingsInternal, ColumnsSettings, ColumnsSettingsMap} from '../../types/columnsSettings';
+import {ColumnSettingsInternal, ColumnsSettings, ColumnsSettingsMap} from '../../types/columnsSettings';
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnSettingsDefaultTextUtils} from './columnSettingsDefaultTextUtils';
@@ -7,7 +7,6 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
 import {ColumnSettingsWidthUtils} from './columnSettingsWidthUtils';
 import {CellElement} from '../../elements/cell/cellElement';
-import {CellText} from '../../types/tableContents';
 import {EMPTY_STRING} from '../../consts/text';
 
 export class ColumnSettingsUtils {
@@ -41,26 +40,26 @@ export class ColumnSettingsUtils {
     if (oldSettings !== newSettings) ColumnSettingsUtils.change(etc, cellElement, columnIndex, oldSettings, newSettings);
   }
 
-  private static createInternal(clientSettings: ColumnSettings): ColumnSettingsInternal {
-    const internalSettings = clientSettings as ColumnSettingsInternal;
-    internalSettings.defaultText ??= ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS.defaultText;
-    internalSettings.isDefaultTextRemovable ??= true;
-    return internalSettings;
-  }
-
-  private static prepareDefaultInternalColumnSettings(defaultTableText: CellText) {
-    if (defaultTableText) ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS.defaultText = defaultTableText;
+  private static prepareDefaultInternalColumnSettings(etc: EditableTableComponent) {
+    const {defaultText, defaultColumnTypes, customColumnTypes, activeTypeName} = etc;
+    if (defaultText) ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS.defaultText = defaultText;
+    if (defaultColumnTypes) ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS.defaultColumnTypes = defaultColumnTypes;
+    if (customColumnTypes) ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS.customColumnTypes = customColumnTypes;
+    if (activeTypeName) ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS.activeTypeName = activeTypeName;
   }
 
   private static createInternalMap(clientSettings: ColumnsSettings) {
     return clientSettings.reduce<ColumnsSettingsMap>((settingsMap, clientSettings) => {
-      settingsMap[clientSettings.columnName] = ColumnSettingsUtils.createInternal(clientSettings);
+      settingsMap[clientSettings.columnName] = Object.assign(
+        clientSettings,
+        ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS
+      );
       return settingsMap;
     }, {});
   }
 
   public static setUpInternalSettings(etc: EditableTableComponent) {
-    ColumnSettingsUtils.prepareDefaultInternalColumnSettings(etc.defaultText);
+    ColumnSettingsUtils.prepareDefaultInternalColumnSettings(etc);
     etc.columnsSettingsInternal = ColumnSettingsUtils.createInternalMap(etc.columnsSettings);
   }
 }
