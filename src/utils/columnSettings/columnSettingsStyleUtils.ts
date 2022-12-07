@@ -1,6 +1,5 @@
-import {EditableTableComponent} from '../../editable-table-component';
+import {ColumnSettingsInternal, DefaultColumnsSettings} from '../../types/columnsSettings';
 import {GenericElementUtils} from '../elements/genericElementUtils';
-import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {ColumnDetails} from '../columnDetails/columnDetails';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
@@ -19,8 +18,9 @@ export class ColumnSettingsStyleUtils {
     });
   }
 
-  public static applyDefaultStyles(columnElements: HTMLElement[], cellStyle: CSSStyle, headerStyle?: CSSStyle) {
-    CellElement.setDefaultCellStyle(columnElements[0], cellStyle, headerStyle);
+  public static applyDefaultStyles(columnElements: HTMLElement[], defaultColumnsSettings: DefaultColumnsSettings) {
+    const {cellStyle, header} = defaultColumnsSettings;
+    CellElement.setDefaultCellStyle(columnElements[0], cellStyle, header?.defaultStyle);
     columnElements.slice(1).forEach((element) => {
       CellElement.setDefaultCellStyle(element, cellStyle);
     });
@@ -42,30 +42,30 @@ export class ColumnSettingsStyleUtils {
 
   // prettier-ignore
   private static resetStyleToDefault(columnElements: HTMLElement[],
-      settings: ColumnSettingsInternal, cellStyle: CSSStyle, headerStyle?: CSSStyle) {
+      settings: ColumnSettingsInternal, defaultColumnsSettings: DefaultColumnsSettings) {
     if (settings.header?.defaultStyle) {
       ColumnSettingsStyleUtils.unsetHeaderSettingStyle(columnElements[0], settings.header.defaultStyle);
     }
     if (settings.cellStyle) ColumnSettingsStyleUtils.unsetCellSettingStyle(columnElements, settings.cellStyle);
-    ColumnSettingsStyleUtils.applyDefaultStyles(columnElements, cellStyle, headerStyle);
+    ColumnSettingsStyleUtils.applyDefaultStyles(columnElements, defaultColumnsSettings);
   }
 
   // prettier-ignore
-  private static updateColumnStyle(etc: EditableTableComponent,
+  private static updateColumnStyle(defaultColumnsSettings: DefaultColumnsSettings,
       columnDetails: ColumnDetailsT, settings: ColumnSettingsInternal, isSetNew: boolean) {
-    const {cellStyle, header} = etc;
-    ColumnSettingsStyleUtils.resetStyleToDefault(columnDetails.elements, settings, cellStyle, header.defaultStyle);
+    ColumnSettingsStyleUtils.resetStyleToDefault(columnDetails.elements, settings, defaultColumnsSettings);
     if (isSetNew) ColumnSettingsStyleUtils.applySettingStyle(columnDetails.elements, settings);
-    columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(etc, isSetNew ? settings : undefined);
+    columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(
+      defaultColumnsSettings, isSetNew ? settings : undefined);
   }
 
   // prettier-ignore
-  public static changeStyle(etc: EditableTableComponent, columnDetails: ColumnDetailsT,
+  public static changeStyle(defaultColumnsSettings: DefaultColumnsSettings, columnDetails: ColumnDetailsT,
       oldSettings: ColumnSettingsInternal | undefined, newSettings?: ColumnSettingsInternal) {
     if (newSettings && (newSettings.cellStyle || newSettings.header)) {
-      ColumnSettingsStyleUtils.updateColumnStyle(etc, columnDetails, newSettings, true);
+      ColumnSettingsStyleUtils.updateColumnStyle(defaultColumnsSettings, columnDetails, newSettings, true);
     } else if (oldSettings && (oldSettings.cellStyle || oldSettings.header)) {
-      ColumnSettingsStyleUtils.updateColumnStyle(etc, columnDetails, oldSettings, false);
+      ColumnSettingsStyleUtils.updateColumnStyle(defaultColumnsSettings, columnDetails, oldSettings, false);
     }
   }
 }

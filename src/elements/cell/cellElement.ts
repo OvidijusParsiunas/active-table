@@ -27,11 +27,11 @@ export class CellElement {
     }
   }
 
-  public static setDefaultCellStyle(cellElement: HTMLElement, cellStyle: CSSStyle, customStyle?: CSSStyle) {
+  public static setDefaultCellStyle(cellElement: HTMLElement, cellStyle?: CSSStyle, customStyle?: CSSStyle) {
     Object.assign(cellElement.style, cellStyle, customStyle);
   }
 
-  public static create(cellStyle: CSSStyle, isHeader: boolean, customStyle?: CSSStyle) {
+  public static create(isHeader: boolean, cellStyle?: CSSStyle, customStyle?: CSSStyle) {
     const cellElement = document.createElement(isHeader ? 'th' : 'td');
     cellElement.classList.add(CellElement.CELL_CLASS);
     // role for assistive technologies
@@ -119,10 +119,11 @@ export class CellElement {
     }
   }
 
+  // prettier-ignore
   private static createCellDOMElement(etc: EditableTableComponent, text: CellText, colIndex: number, isHeader: boolean) {
-    const {cellStyle, header, columnsDetails, tableElementRef} = etc;
+    const {defaultColumnsSettings: {cellStyle, header}, columnsDetails, tableElementRef} = etc;
     const columnDetails = columnsDetails[colIndex];
-    const cellElement = CellElement.create(cellStyle, isHeader, isHeader ? header.defaultStyle || {} : {});
+    const cellElement = CellElement.create(isHeader, cellStyle, isHeader ? header?.defaultStyle || {} : {});
     const {settings} = columnDetails;
     if (settings) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, cellElement, isHeader);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, cellElement); // REF-23

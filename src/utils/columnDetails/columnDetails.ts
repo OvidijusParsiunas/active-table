@@ -1,10 +1,9 @@
 import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categoryDropdown';
+import {ColumnSettingsInternal, DefaultColumnsSettings} from '../../types/columnsSettings';
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
 import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
-import {EditableTableComponent} from '../../editable-table-component';
 import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
 import {CellStateColorProperties} from '../../types/cellStateColors';
-import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
@@ -15,37 +14,38 @@ export class ColumnDetails {
   public static NEW_COLUMN_WIDTH = 100;
 
   // prettier-ignore
-  private static getHeaderDefaultColor(etc: EditableTableComponent,
+  private static getHeaderDefaultColor(defaultColumnsSettings: DefaultColumnsSettings,
       key: keyof CellStateColorProperties, defaultColor: string, settings?: ColumnSettingsInternal) {
     return settings?.header?.defaultStyle?.[key] || settings?.cellStyle?.[key] ||
-      etc.header.defaultStyle?.[key] || etc.cellStyle[key] || defaultColor;
+      defaultColumnsSettings.header?.defaultStyle?.[key] || defaultColumnsSettings.cellStyle?.[key] || defaultColor;
   }
 
   // prettier-ignore
-  private static getHeaderHoverColor(etc: EditableTableComponent,
+  private static getHeaderHoverColor(defaultColumnsSettings: DefaultColumnsSettings,
       key: keyof CellStateColorProperties, defaultColor: string, settings?: ColumnSettingsInternal) {
-    return settings?.header?.hoverColors?.[key] || etc.header.hoverColors?.[key] ||
-      ColumnDetails.getHeaderDefaultColor(etc, key, defaultColor, settings);
+    return settings?.header?.hoverColors?.[key] || defaultColumnsSettings.header?.hoverColors?.[key] ||
+      ColumnDetails.getHeaderDefaultColor(defaultColumnsSettings, key, defaultColor, settings);
   }
 
   // prettier-ignore
-  public static createHeaderStateColors(etc: EditableTableComponent, settings?: ColumnSettingsInternal) {
+  public static createHeaderStateColors(defaultColumnsSettings: DefaultColumnsSettings,
+      settings?: ColumnSettingsInternal) {
     return {
       hover: {
-        color: ColumnDetails.getHeaderHoverColor(
-          etc, 'color', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES['color'], settings),
-        backgroundColor: ColumnDetails.getHeaderHoverColor(
-          etc, 'backgroundColor', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES['backgroundColor'], settings),
+        color: ColumnDetails.getHeaderHoverColor(defaultColumnsSettings,
+          'color', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES['color'], settings),
+        backgroundColor: ColumnDetails.getHeaderHoverColor(defaultColumnsSettings,
+          'backgroundColor', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES['backgroundColor'], settings),
       },
       default: {
-        color: ColumnDetails.getHeaderDefaultColor(etc, 'color', '', settings),
-        backgroundColor: ColumnDetails.getHeaderDefaultColor(etc, 'backgroundColor', '', settings),
+        color: ColumnDetails.getHeaderDefaultColor(defaultColumnsSettings, 'color', '', settings),
+        backgroundColor: ColumnDetails.getHeaderDefaultColor(defaultColumnsSettings, 'backgroundColor', '', settings),
       }
     };
   }
 
   // prettier-ignore
-  public static createInitial(etc: EditableTableComponent, categoryDropdown: HTMLElement,
+  public static createInitial(defaultColumnsSettings: DefaultColumnsSettings, categoryDropdown: HTMLElement,
       settings?: ColumnSettingsInternal): ColumnDetailsInitial {
     const columnSettings = settings || ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS;
     const {isDefaultTextRemovable, defaultText} = columnSettings;
@@ -54,7 +54,7 @@ export class ColumnDetails {
     return {
       elements: [],
       settings: columnSettings,
-      headerStateColors: ColumnDetails.createHeaderStateColors(etc, settings),
+      headerStateColors: ColumnDetails.createHeaderStateColors(defaultColumnsSettings, settings),
       bordersOverwrittenBySiblings: {},
       types: internalTypes,
       activeType: ColumnTypesUtils.getActiveType(columnSettings, types) as ColumnTypeInternal,

@@ -3,7 +3,7 @@ import {ColumnSettingsAuxBorderUtils} from './columnSettingsAuxBorderUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {GenericElementUtils} from '../elements/genericElementUtils';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
-import {CSSStyle} from '../../types/cssStyle';
+import {DefaultColumnsSettings} from '../../types/columnsSettings';
 
 type OverwritableBorderStyle = 'borderLeftWidth' | 'borderRightWidth';
 
@@ -92,22 +92,22 @@ export class ColumnSettingsBorderUtils {
 
   // prettier-ignore
   private static resetIfBorderOverwritten(subjectColumn: ColumnDetailsT, subjectBorder: keyof BordersOverwrittenBySiblings,
-      cellStyle: CSSStyle, headerStyle?: CSSStyle) {
+      defaultColumnsSettings: DefaultColumnsSettings) {
     if (subjectColumn?.bordersOverwrittenBySiblings[subjectBorder]) {
-      ColumnSettingsStyleUtils.applyDefaultStyles(subjectColumn.elements, cellStyle, headerStyle);
+      ColumnSettingsStyleUtils.applyDefaultStyles(subjectColumn.elements, defaultColumnsSettings);
       subjectColumn.bordersOverwrittenBySiblings[subjectBorder] = false;
     }
   }
 
   // REF-23
   public static updateSiblingColumns(etc: EditableTableComponent, columnIndex: number) {
-    const {columnsDetails, cellStyle, header} = etc;
+    const {columnsDetails, defaultColumnsSettings} = etc;
     const currentColumnDetails = columnsDetails[columnIndex];
     const leftColumnDetails = columnsDetails[columnIndex - 1];
     const rightColumnDetails = columnsDetails[columnIndex + 1];
     // reset sibling columns if their borders were previously overwritten
-    ColumnSettingsBorderUtils.resetIfBorderOverwritten(rightColumnDetails, 'left', cellStyle, header.defaultStyle);
-    ColumnSettingsBorderUtils.resetIfBorderOverwritten(leftColumnDetails, 'right', cellStyle, header.defaultStyle);
+    ColumnSettingsBorderUtils.resetIfBorderOverwritten(rightColumnDetails, 'left', defaultColumnsSettings);
+    ColumnSettingsBorderUtils.resetIfBorderOverwritten(leftColumnDetails, 'right', defaultColumnsSettings);
     // because current column is reanalyzed, need to reset state as some props may no longer be true
     ColumnSettingsBorderUtils.resetBorderOverwritingState(currentColumnDetails);
     // overwrite borders preceded by settings style

@@ -48,13 +48,23 @@ interface MinWidth extends Parent {
 
 // exposed to the client
 // if the user proceeds to set width and minWidth properties - minWidth will take precedence
-export type ColumnSettings = InterfacesUnion<Width | MinWidth | Parent>;
+export type CustomColumnSettings = InterfacesUnion<Width | MinWidth | Parent>;
 
 // exposed to the client
-export type ColumnsSettings = Array<ColumnSettings>;
+export type CustomColumnsSettings = Array<CustomColumnSettings>;
+
+// The following was in a SEPARATE FILE but it needs access to the Width, MinWidth and Parent in order to omit
+// the columnName property, hence instead of exposing these publicly and polluting the intellisense suggested
+// namespaces, I placed these types into the same file
+
+// if the user proceeds to set width and minWidth properties - minWidth will take precedence
+export type DefaultColumnsSettings = InterfacesUnion<BuildDefaultSettingsInterfacesUnion<Width | MinWidth | Parent>>;
+
+// Interfaces extends Parent allows the Interfaces type to be a union of types - allowing this to return a union of types
+type BuildDefaultSettingsInterfacesUnion<Interfaces> = Interfaces extends Parent ? Omit<Interfaces, 'columnName'> : never;
 
 // The following was in a SEPARATE FILE to follow client/internal type naming pattern however it needs access to the Width,
-// MinWidth and parent in order to omit the columnName property, hence instead of exposing these publicly and polluting
+// MinWidth and Parent in order to omit the columnName property, hence instead of exposing these publicly and polluting
 // the intellisense suggested namespaces, I placed these types into the same file
 
 // should be used internally
@@ -62,7 +72,7 @@ export type ColumnsSettings = Array<ColumnSettings>;
 export type ColumnSettingsInternal = InterfacesUnion<BuildInternalSettingsInterfacesUnion<Width | MinWidth | Parent>>;
 
 // Interfaces extends Parent allows the Interfaces type to be a union of types - allowing this to return a union of types
-export type BuildInternalSettingsInterfacesUnion<Interfaces> = Interfaces extends Parent
+type BuildInternalSettingsInterfacesUnion<Interfaces> = Interfaces extends Parent
   ? Omit<SetRequired<Interfaces, 'defaultText' | 'isDefaultTextRemovable'>, 'columnName'>
   : never;
 

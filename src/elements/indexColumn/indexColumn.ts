@@ -25,12 +25,13 @@ export class IndexColumn {
   }
 
   private static createCell(etc: EditableTableComponent, isHeader: boolean) {
+    const {tableDimensionsInternal, defaultColumnsSettings, auxiliaryTableContentInternal} = etc;
     const cell = document.createElement(isHeader ? 'th' : 'td');
     cell.classList.add(CellElement.CELL_CLASS, IndexColumn.INDEX_CELL_CLASS);
-    if (!etc.tableDimensionsInternal.isColumnIndexCellTextWrapped) {
+    if (!tableDimensionsInternal.isColumnIndexCellTextWrapped) {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }
-    Object.assign(cell.style, etc.cellStyle, etc.auxiliaryTableContentInternal.style?.defaultStyle || {});
+    Object.assign(cell.style, defaultColumnsSettings.cellStyle, auxiliaryTableContentInternal.style?.defaultStyle || {});
     if (isHeader) Object.assign(cell.style, AuxiliaryTableContentColors.CELL_COLORS.header.default);
     return cell;
   }

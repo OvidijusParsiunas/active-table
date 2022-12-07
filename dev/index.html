@@ -19,7 +19,7 @@
     <!-- <div style="width: 20px; height: 20px; float: left"></div> -->
     <!-- when the table reaches the parent limit it does a jump down because of the above :/ -->
     <div>
-      <editable-table-component id="etc-element" defaultText=""></editable-table-component>
+      <editable-table-component id="etc-element"></editable-table-component>
     </div>
     <script>
       const myValue = [
@@ -36,22 +36,33 @@
       setTimeout(() => {
         if (element) {
           // element.setAttribute('contents', `[[${myValue[0]}],[${myValue[1]}]]`);
-          element.setAttribute('cellStyle', JSON.stringify({borderRight: '4px solid grey', borderLeft: '8px solid red'}));
           element.setAttribute('tableStyle', JSON.stringify({border: '20px solid black'}));
           // element.setAttribute(
           //   'header',
           //   JSON.stringify({defaultStyle: {backgroundColor: 'lightgrey', borderRight: '1px solid yellow'}})
           // );
+          element.setAttribute(
+            'defaultColumnsSettings',
+            JSON.stringify({
+              cellStyle: {borderRight: '4px solid grey', borderLeft: '8px solid red'},
+              defaultText: '-',
+              // header: {defaultStyle: {backgroundColor: 'lightgrey', borderRight: '1px solid yellow'}},
+            })
+          );
           element.setAttribute('tableDimensions', JSON.stringify({width: '1000px'}));
           element.setAttribute('auxiliaryTableContent', JSON.stringify({displayAddColumnCell: false}));
           // element.setAttribute('tableDimensions', JSON.stringify({maxRows: 7}));
           // element.setAttribute('tableDimensions', JSON.stringify({maxColumns: 5}));
           // element.setAttribute('tableDimensions', JSON.stringify({unlimitedSize: false}));
           // element.setAttribute('tableDimensions', JSON.stringify({width: 300, maxColumns: 7}));
+          element.setAttribute('tableDimensions', JSON.stringify({width: '1000px'}));
+          // element.setAttribute('defaultColumnTypes', JSON.stringify(['number']));
+          element.setAttribute('customColumnTypes', JSON.stringify([{name: 'Custom type', categories: true}]));
+          element.setAttribute('activeTypeName', 'Number');
           element.setAttribute(
             'columnsSettings',
             JSON.stringify([
-              {columnName: 'A', width: '50px'},
+              {columnName: 'R', width: '50px', cellStyle: {color: 'red'}},
               {
                 columnName: 'G',
                 minWidth: '500px',
@@ -67,7 +78,9 @@
                   },
                 },
                 isDefaultTextRemovable: true,
-                defaultText: 'ab',
+                defaultColumnTypes: ['number'],
+                customColumnTypes: [{name: 'Custom type', categories: true}],
+                activeTypeName: 'Custom type',
               },
               {
                 columnName: 'C',

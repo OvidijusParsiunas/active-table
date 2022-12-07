@@ -166,7 +166,7 @@ export class CategoryDropdownItem {
     const categoryToColor: CategoryToColor = {};
     contents.slice(1).forEach((row) => {
       const cellText = row[columnIndex];
-      categoryToColor[cellText] = Color.getLatestPasteleColorAndSetNew();
+      if (cellText !== EMPTY_STRING) categoryToColor[cellText] = Color.getLatestPasteleColorAndSetNew();
     });
     return categoryToColor;
   }

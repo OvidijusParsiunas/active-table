@@ -79,10 +79,12 @@ export class InsertNewCell {
   }
 
   // REF-13
+  // prettier-ignore
   private static insertInitialColumnDetails(etc: EditableTableComponent, cellText: CellText, columnIndex: number) {
-    const {columnsDetails, columnsSettingsInternal, categoryDropdownContainer} = etc;
+    const {columnsDetails, customColumnsSettingsInternal, categoryDropdownContainer, defaultColumnsSettings} = etc;
     const categoryDropdown = CategoryDropdown.createAndAppend(categoryDropdownContainer as HTMLElement);
-    const columnDetails = ColumnDetails.createInitial(etc, categoryDropdown, columnsSettingsInternal[cellText]);
+    const columnDetails = ColumnDetails.createInitial(defaultColumnsSettings,
+      categoryDropdown, customColumnsSettingsInternal[cellText]);
     columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
   }
 

@@ -1,12 +1,10 @@
 import {AuxiliaryTableContentInternalUtils} from './utils/auxiliaryTableContent/auxiliaryTableContentInternalUtils';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
-import {ColumnSettings, ColumnsSettings, ColumnsSettingsMap} from './types/columnsSettings';
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
-import {HoverableElementStyleClient} from './types/hoverableElementStyle';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {TableDimensionsInternal} from './types/tableDimensionsInternal';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
@@ -23,13 +21,17 @@ import {ParentResize} from './utils/render/parentResize';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
-import {DEFAULT_COLUMN_TYPES} from './enums/columnType';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {Browser} from './utils/browser/browser';
-import {ColumnType} from './types/columnType';
 import {Render} from './utils/render/render';
 import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
+import {
+  CustomColumnSettings,
+  CustomColumnsSettings,
+  ColumnsSettingsMap,
+  DefaultColumnsSettings,
+} from './types/columnsSettings';
 
 // TO-DO
 // column validation: potentially highlight what is failing validation in red and display what the problem is upon hover
@@ -95,31 +97,20 @@ export class EditableTableComponent extends LitElement {
   // })
   // updateCell = true;
 
-  @property({type: Array<ColumnSettings>})
-  columnsSettings: ColumnsSettings = [];
+  @property({type: Object})
+  defaultColumnsSettings: DefaultColumnsSettings = {};
+
+  @property({type: Array<CustomColumnSettings>})
+  customColumnsSettings: CustomColumnsSettings = [];
 
   @state()
-  columnsSettingsInternal: ColumnsSettingsMap = {};
+  customColumnsSettingsInternal: ColumnsSettingsMap = {};
 
   // this contains all cell elements, if there is a need to access cell elements outside the context of columns
   // create an entirely new state object and access elements from there as we don't want to store all elements
   // multiple times, and use this instead for data exclusively on columns, such as width etc.
   @state()
   columnsDetails: ColumnsDetailsT = [];
-
-  @property({type: String})
-  defaultText: ColumnSettings['defaultText'];
-
-  @property({type: Array<DEFAULT_COLUMN_TYPES>})
-  defaultColumnTypes: ColumnSettings['defaultColumnTypes']; // this will reduce the default types to ones included here
-
-  @property({type: Array<ColumnType>})
-  customColumnTypes: ColumnSettings['customColumnTypes']; // additional custom column types
-
-  // if not provided the following property will default to first of the following:
-  // First type to not have validation/First available type/'Text'
-  @property({type: String})
-  activeTypeName: ColumnSettings['activeTypeName'];
 
   @state()
   tableElementRef: HTMLElement | null = null;
@@ -163,12 +154,6 @@ export class EditableTableComponent extends LitElement {
 
   @property({type: Object})
   tableStyle: CSSStyle = {};
-
-  @property({type: Object})
-  header: HoverableElementStyleClient = {};
-
-  @property({type: Object})
-  cellStyle: CSSStyle = {};
 
   // REF-22 - to be used by the client
   // auxiliary content is comprised of index column, add new column column and add new row row

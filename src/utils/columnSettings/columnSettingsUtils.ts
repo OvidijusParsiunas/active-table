@@ -1,4 +1,4 @@
-import {ColumnSettingsInternal, ColumnsSettings, ColumnsSettingsMap} from '../../types/columnsSettings';
+import {ColumnSettingsInternal, CustomColumnsSettings, ColumnsSettingsMap} from '../../types/columnsSettings';
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnSettingsDefaultTextUtils} from './columnSettingsDefaultTextUtils';
@@ -24,7 +24,7 @@ export class ColumnSettingsUtils {
     ColumnSettingsDefaultTextUtils.setDefaultText(etc, columnDetails, columnIndex);
     ColumnSettingsWidthUtils.changeWidth(etc, cellElement, oldSettings, newSettings);
     InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
-    ColumnSettingsStyleUtils.changeStyle(etc, columnDetails, oldSettings, newSettings);
+    ColumnSettingsStyleUtils.changeStyle(etc.defaultColumnsSettings, columnDetails, oldSettings, newSettings);
     ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
     AddNewColumnElement.toggle(etc, true);
   }
@@ -32,23 +32,24 @@ export class ColumnSettingsUtils {
   // prettier-ignore
   public static changeColumnSettingsIfNameDifferent(etc: EditableTableComponent,
       cellElement: HTMLElement, columnIndex: number) {
-    const {columnsSettingsInternal, columnsDetails} = etc;
+    const {customColumnsSettingsInternal, columnsDetails} = etc;
     const columnDetails = columnsDetails[columnIndex];
     const oldSettings = columnDetails.settings;
-    const newSettings = columnsSettingsInternal[CellElement.getText(cellElement)]
+    const newSettings = customColumnsSettingsInternal[CellElement.getText(cellElement)]
       || ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS;
     if (oldSettings !== newSettings) ColumnSettingsUtils.change(etc, cellElement, columnIndex, oldSettings, newSettings);
   }
 
   private static prepareDefaultInternalColumnSettings(etc: EditableTableComponent) {
-    const {defaultText, defaultColumnTypes, customColumnTypes, activeTypeName} = etc;
+    const {defaultText, defaultColumnTypes, customColumnTypes, activeTypeName} = etc.defaultColumnsSettings;
     if (defaultText) ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS.defaultText = defaultText;
     if (defaultColumnTypes) ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS.defaultColumnTypes = defaultColumnTypes;
     if (customColumnTypes) ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS.customColumnTypes = customColumnTypes;
     if (activeTypeName) ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS.activeTypeName = activeTypeName;
+    // IMPORTANT - cellStyle and header are not added here
   }
 
-  private static createInternalMap(clientSettings: ColumnsSettings) {
+  private static createInternalMap(clientSettings: CustomColumnsSettings) {
     return clientSettings.reduce<ColumnsSettingsMap>((settingsMap, clientSettings) => {
       settingsMap[clientSettings.columnName] = Object.assign(
         clientSettings,
@@ -60,6 +61,6 @@ export class ColumnSettingsUtils {
 
   public static setUpInternalSettings(etc: EditableTableComponent) {
     ColumnSettingsUtils.prepareDefaultInternalColumnSettings(etc);
-    etc.columnsSettingsInternal = ColumnSettingsUtils.createInternalMap(etc.columnsSettings);
+    etc.customColumnsSettingsInternal = ColumnSettingsUtils.createInternalMap(etc.customColumnsSettings);
   }
 }
