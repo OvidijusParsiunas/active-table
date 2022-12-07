@@ -120,7 +120,6 @@ export class CategoryDropdown {
     if (categories.dropdownStyle) CategoryDropdown.setCustomStyle(categoryDropdown, categories.dropdownStyle);
   }
 
-  // WORK - will need to populate upfront if user has set a column as category upfront
   // REF-8 - Created for every column
   public static createAndAppend(containerElement: HTMLElement) {
     const dropdownElement = Dropdown.createBase();

@@ -6,6 +6,9 @@ import {CellStateColors} from './cellStateColors';
 import {ColumnSizerT} from './columnSizer';
 import {Optional} from './utilityTypes';
 
+// difference between column details and settings is that details is more about the values that are set throughout
+// the component runtime duration and settings are values that can be set by the user which control its behaviour
+
 export interface BordersOverwrittenBySiblings {
   left?: boolean;
   right?: boolean;

@@ -41,9 +41,9 @@ export class ColumnSettingsUtils {
     if (oldSettings !== newSettings) ColumnSettingsUtils.change(etc, cellElement, columnIndex, oldSettings, newSettings);
   }
 
-  private static createInternal(clientSettings: ColumnSettings, defaultTableText: CellText): ColumnSettingsInternal {
+  private static createInternal(clientSettings: ColumnSettings): ColumnSettingsInternal {
     const internalSettings = clientSettings as ColumnSettingsInternal;
-    internalSettings.defaultText ??= defaultTableText || EMPTY_STRING;
+    internalSettings.defaultText ??= ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS.defaultText;
     internalSettings.isDefaultTextRemovable ??= true;
     return internalSettings;
   }
@@ -52,15 +52,15 @@ export class ColumnSettingsUtils {
     if (defaultTableText) ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS.defaultText = defaultTableText;
   }
 
-  private static createInternalMap(clientSettings: ColumnsSettings, defaultTableText: CellText) {
+  private static createInternalMap(clientSettings: ColumnsSettings) {
     return clientSettings.reduce<ColumnsSettingsMap>((settingsMap, clientSettings) => {
-      settingsMap[clientSettings.columnName] = ColumnSettingsUtils.createInternal(clientSettings, defaultTableText);
+      settingsMap[clientSettings.columnName] = ColumnSettingsUtils.createInternal(clientSettings);
       return settingsMap;
     }, {});
   }
 
   public static setUpInternalSettings(etc: EditableTableComponent) {
     ColumnSettingsUtils.prepareDefaultInternalColumnSettings(etc.defaultText);
-    etc.columnsSettingsInternal = ColumnSettingsUtils.createInternalMap(etc.columnsSettings, etc.defaultText);
+    etc.columnsSettingsInternal = ColumnSettingsUtils.createInternalMap(etc.columnsSettings);
   }
 }

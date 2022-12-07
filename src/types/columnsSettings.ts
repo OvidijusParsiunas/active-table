@@ -6,12 +6,14 @@ import {ColumnTypes} from './columnType';
 import {CellText} from './tableContents';
 import {CSSStyle} from './cssStyle';
 
+// difference between column settings and details is that details is more about the values that are set throughout
+// the component runtime duration and settings are values that can be set by the user which control its behaviour
+
 interface Parent {
   columnName: string;
   defaultText?: CellText;
   isDefaultTextRemovable?: boolean; // true by default
   cellStyle?: CSSStyle;
-  // WORK - option to post process text - e.g. change date format or add currency to start
   header?: HoverableElementStyleClient;
   defaultTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
   customColumnTypes?: ColumnTypes; // additional custom column types

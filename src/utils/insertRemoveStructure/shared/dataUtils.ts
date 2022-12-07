@@ -32,7 +32,7 @@ export class DataUtils {
   public static processCellText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellText: CellText) {
     const trimmedText = typeof cellText === 'string' ? cellText.trim() : cellText;
     const {activeType, settings} = etc.columnsDetails[columnIndex];
-    const defaultText = settings.defaultText || etc.defaultText;
+    const {defaultText} = settings;
     const shouldBeSetToDefault = DataUtils.shouldTextBeSetToDefault(etc, trimmedText, defaultText, rowIndex, activeType);
     return shouldBeSetToDefault ? defaultText : trimmedText;
   }

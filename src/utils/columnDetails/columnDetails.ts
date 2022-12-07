@@ -48,9 +48,9 @@ export class ColumnDetails {
   public static createInitial(etc: EditableTableComponent, categoryDropdown: HTMLElement,
       settings?: ColumnSettingsInternal): ColumnDetailsInitial {
     const columnSettings = settings || ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS;
-    const {isDefaultTextRemovable, defaultText: settingsDefaultText} = columnSettings;
+    const {isDefaultTextRemovable, defaultText} = columnSettings;
     const types = ColumnTypesUtils.get(columnSettings);
-    const internalTypes = ColumnTypesUtils.process(types, isDefaultTextRemovable, settingsDefaultText || etc.defaultText);
+    const internalTypes = ColumnTypesUtils.process(types, isDefaultTextRemovable, defaultText);
     return {
       elements: [],
       settings: columnSettings,
