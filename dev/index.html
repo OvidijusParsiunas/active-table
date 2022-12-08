@@ -60,11 +60,12 @@
           element.setAttribute('customColumnTypes', JSON.stringify([{name: 'Custom type', categories: true}]));
           element.setAttribute('activeTypeName', 'Number');
           element.setAttribute(
-            'columnsSettings',
+            'customColumnsSettings',
             JSON.stringify([
               {columnName: 'R', width: '50px', cellStyle: {color: 'red'}},
               {
                 columnName: 'G',
+                defaultText: 'A',
                 minWidth: '500px',
                 cellStyle: {
                   borderLeft: '1px solid red',

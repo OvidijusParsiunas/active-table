@@ -55,30 +55,29 @@ export class ColumnSettingsBorderUtils {
       column.elements, siblingColumn.elements, subjectBorder, 0, column.bordersOverwrittenBySiblings)
   }
 
-  private static isSettingsStyleSet(columnDetails: ColumnDetailsT) {
-    return columnDetails.settings.cellStyle || columnDetails.settings.header?.defaultStyle;
+  private static doesColumnStyleHavePrecedence(columnDetails: ColumnDetailsT) {
+    return columnDetails.settings.stylePrecedence; // REF-23
   }
 
-  // if current column and sibling have custom setting styles, this does not overwrite anything and the user can
-  // set their custom styles within the settings themselves
+  // if current column and sibling have custom setting styles
   // prettier-ignore
   private static unsetBorders(currentColumnDetails: ColumnDetailsT, leftColumnDetails: ColumnDetailsT,
       rightColumnDetails: ColumnDetailsT) {
     if (!currentColumnDetails) return;
     // if current column has a custom style but siblings do not
-    if (ColumnSettingsBorderUtils.isSettingsStyleSet(currentColumnDetails)) {
-      if (rightColumnDetails && !ColumnSettingsBorderUtils.isSettingsStyleSet(rightColumnDetails)) {
+    if (ColumnSettingsBorderUtils.doesColumnStyleHavePrecedence(currentColumnDetails)) {
+      if (rightColumnDetails && !ColumnSettingsBorderUtils.doesColumnStyleHavePrecedence(rightColumnDetails)) {
         ColumnSettingsBorderUtils.unsetColumnBorder(rightColumnDetails, currentColumnDetails, 'left');
       }
-      if (leftColumnDetails && !ColumnSettingsBorderUtils.isSettingsStyleSet(leftColumnDetails)) {
+      if (leftColumnDetails && !ColumnSettingsBorderUtils.doesColumnStyleHavePrecedence(leftColumnDetails)) {
         ColumnSettingsBorderUtils.unsetColumnBorder(leftColumnDetails, currentColumnDetails, 'right');
       }
       // if current column does not have a custom style but siblings do
     } else {
-      if (rightColumnDetails && ColumnSettingsBorderUtils.isSettingsStyleSet(rightColumnDetails)) {
+      if (rightColumnDetails && ColumnSettingsBorderUtils.doesColumnStyleHavePrecedence(rightColumnDetails)) {
         ColumnSettingsBorderUtils.unsetColumnBorder(currentColumnDetails, rightColumnDetails, 'right');
       }
-      if (leftColumnDetails && ColumnSettingsBorderUtils.isSettingsStyleSet(leftColumnDetails)) {
+      if (leftColumnDetails && ColumnSettingsBorderUtils.doesColumnStyleHavePrecedence(leftColumnDetails)) {
         ColumnSettingsBorderUtils.unsetColumnBorder(currentColumnDetails, leftColumnDetails, 'left');
       }
     }

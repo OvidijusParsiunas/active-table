@@ -199,9 +199,9 @@ object such as any of the AuxiliaryTableContentDisplayProps. Hence, this object 
 without having to add optional chaining every its used.
 
 REF-23
-If a cell with a border style that was set in the cellStyle property is beside a column that have a border set by the columnsSettings
+If a cell with a border style that was set in the cellStyle property is beside a column that have a border set by customColumnsSettings
 property (cellStyle), their borders will be displayed side by side which does not look appealing. Hence, we unset (0px) the border of
-the cell without the columnsSettings style to make the one with the custom settings border dominant.
+the cell without the customColumnsSettings style to make the one with the custom settings border dominant.
 We also do this for auxiliary element borders.
 
 REF-24

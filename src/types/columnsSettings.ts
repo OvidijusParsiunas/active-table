@@ -73,8 +73,13 @@ export type ColumnSettingsInternal = InterfacesUnion<BuildInternalSettingsInterf
 
 // Interfaces extends Parent allows the Interfaces type to be a union of types - allowing this to return a union of types
 type BuildInternalSettingsInterfacesUnion<Interfaces> = Interfaces extends Parent
-  ? Omit<SetRequired<Interfaces, 'defaultText' | 'isDefaultTextRemovable'>, 'columnName'>
+  ? Omit<SetRequired<Interfaces, 'defaultText' | 'isDefaultTextRemovable'>, 'columnName'> & StylePrecedence
   : never;
+
+// REF-23
+interface StylePrecedence {
+  stylePrecedence?: boolean;
+}
 
 // should be used internally
 // the benefits of this over the client provided array is that settings can be accessed immediately when

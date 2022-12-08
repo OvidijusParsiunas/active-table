@@ -27,10 +27,10 @@ import {Render} from './utils/render/render';
 import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
 import {
-  CustomColumnSettings,
-  CustomColumnsSettings,
-  ColumnsSettingsMap,
   DefaultColumnsSettings,
+  CustomColumnsSettings,
+  CustomColumnSettings,
+  ColumnsSettingsMap,
 } from './types/columnsSettings';
 
 // TO-DO

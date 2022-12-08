@@ -1,7 +1,6 @@
 import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {ColumnSettingsInternal, DefaultColumnsSettings} from '../../types/columnsSettings';
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
-import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
 import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
 import {CellStateColorProperties} from '../../types/cellStateColors';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
@@ -47,7 +46,7 @@ export class ColumnDetails {
   // prettier-ignore
   public static createInitial(defaultColumnsSettings: DefaultColumnsSettings, categoryDropdown: HTMLElement,
       settings?: ColumnSettingsInternal): ColumnDetailsInitial {
-    const columnSettings = settings || ColumnSettingsUtils.DEFAULT_INTERNAL_COLUMN_SETTINGS;
+    const columnSettings = settings || defaultColumnsSettings as ColumnSettingsInternal;
     const {isDefaultTextRemovable, defaultText} = columnSettings;
     const types = ColumnTypesUtils.get(columnSettings);
     const internalTypes = ColumnTypesUtils.process(types, isDefaultTextRemovable, defaultText);
