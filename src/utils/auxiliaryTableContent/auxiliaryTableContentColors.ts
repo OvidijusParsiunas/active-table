@@ -24,7 +24,11 @@ export class AuxiliaryTableContentColors {
   }
 
   private static getInheritedHoverColor(key: keyof CellStateColorProperties, clientHeader?: HoverableElementStyleClient) {
-    return clientHeader?.hoverColors?.[key] || AuxiliaryTableContentColors.getInheritedDefaultColr(key, clientHeader);
+    return (
+      clientHeader?.hoverColors?.[key] ||
+      AuxiliaryTableContentColors.CELL_COLORS.data.hover?.[key] ||
+      AuxiliaryTableContentColors.getInheritedDefaultColr(key, clientHeader)
+    );
   }
 
   private static overwriteHeaderWithInheritedColors(clientHeader?: HoverableElementStyleClient) {
@@ -43,7 +47,8 @@ export class AuxiliaryTableContentColors {
   // prettier-ignore
   private static getHoverColorValue(etc: EditableTableComponent,
       colorKey: keyof CellStateColorProperties, defaultColor: string): string {
-    return etc.auxiliaryTableContentInternal.style?.hoverColors?.[colorKey]
+    const {style} = etc.auxiliaryTableContentInternal;
+    return style?.hoverColors?.[colorKey] || style?.defaultStyle?.[colorKey]
       || etc.defaultColumnsSettings.cellStyle?.[colorKey] || defaultColor;
   }
 
