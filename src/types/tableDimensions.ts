@@ -4,7 +4,7 @@ import {StringDimension} from './dimensions';
 
 // REF-15
 
-// DO NOT USE THIS INTERFACE INTERNALLY - this is to be used by the client
+// This is to be used by the client exclusively
 
 // REF-19
 // wrapIndexCellText:

@@ -33,6 +33,7 @@ export class DataUtils {
     const trimmedText = typeof cellText === 'string' ? cellText.trim() : cellText;
     const {activeType, settings} = etc.columnsDetails[columnIndex];
     const {defaultText} = settings;
+    if (!activeType.validationProps?.setToDefaultTextOnFailed && trimmedText !== EMPTY_STRING) return trimmedText;
     const shouldBeSetToDefault = DataUtils.shouldTextBeSetToDefault(etc, trimmedText, defaultText, rowIndex, activeType);
     return shouldBeSetToDefault ? defaultText : trimmedText;
   }

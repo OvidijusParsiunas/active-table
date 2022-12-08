@@ -27,8 +27,6 @@ alternatively can refactor cells to be inputs
 https://pablo.berganza.dev/blog/shadow-dom-firefox-contenteditable/
 
 REF-3
-Column types that do not have validation and are not categories with static items (those items are used for validation)
-are set as first in the ColumnTypes array as they are defaulted to when cell text is not valid for the validable types
 
 REF-4
 Identified an issue where the scrollIntoView does not scroll down far enough to an element for it to be fully visible when

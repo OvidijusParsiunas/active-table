@@ -46,6 +46,12 @@
             JSON.stringify({
               cellStyle: {borderRight: '4px solid grey', borderLeft: '8px solid red'},
               defaultText: '-',
+              // customColumnTypes: [
+              //   {
+              //     name: 'Custom type 1',
+              //     categories: true,
+              //   },
+              // ],
               // header: {defaultStyle: {backgroundColor: 'lightgrey', borderRight: '1px solid yellow'}},
             })
           );
@@ -56,9 +62,6 @@
           // element.setAttribute('tableDimensions', JSON.stringify({unlimitedSize: false}));
           // element.setAttribute('tableDimensions', JSON.stringify({width: 300, maxColumns: 7}));
           element.setAttribute('tableDimensions', JSON.stringify({width: '1000px'}));
-          // element.setAttribute('defaultColumnTypes', JSON.stringify(['number']));
-          element.setAttribute('customColumnTypes', JSON.stringify([{name: 'Custom type', categories: true}]));
-          element.setAttribute('activeTypeName', 'Number');
           element.setAttribute(
             'customColumnsSettings',
             JSON.stringify([
@@ -79,9 +82,19 @@
                   },
                 },
                 isDefaultTextRemovable: true,
-                defaultColumnTypes: ['number'],
-                customColumnTypes: [{name: 'Custom type', categories: true}],
-                activeTypeName: 'Custom type',
+                // defaultColumnTypes: ['number'],
+                customColumnTypes: [
+                  {
+                    name: 'Custom type 2',
+                    validation: `(cellText) => {
+                      console.log('call');
+                    }`,
+                    validationProps: {
+                      setToDefaultTextOnFailed: false,
+                    },
+                  },
+                ],
+                activeTypeName: 'Custom type 2',
               },
               {
                 columnName: 'C',

@@ -23,7 +23,7 @@ export class CellTypeTotalsUtils {
     if (cellText === EMPTY_STRING) return AUXILIARY_CELL_TYPE.Undefined;
     const validType = types.find((type) => type.validation?.(String(cellText)));
     if (validType) return validType.name;
-    // REF-3
+    // TO-DO - will need to do filtering to get non validation
     // if the first type does not not have validation - return it
     if (types[0] && typeof types[0].validation !== 'function') {
       return types[0].name;

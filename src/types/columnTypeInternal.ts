@@ -1,5 +1,6 @@
 import {CalendarFunctionality} from './calendarFunctionality';
 import {CategoriesProperties} from './categoriesProperties';
+import {ValidationProps} from './validationProps';
 import {InterfacesUnion} from './utilityTypes';
 import {SortingFuncs} from './sortingFuncs';
 import {CellText} from './tableContents';
@@ -8,12 +9,14 @@ import {CellText} from './tableContents';
 export interface Parent {
   name: string;
   validation?: (cellText: string) => boolean;
-  removeOnFailedValidation?: boolean;
-  failedValidationStyle?: () => void;
-  customValidationStyleColors?: () => void;
+  validationProps?: ValidationProps;
+  // executed after the user removes focus from the selected cell
+  postProcessText?: {
+    func?: (cellText: string) => CellText;
+    customValidationStyleColors?: () => void;
+  };
   sorting?: SortingFuncs; // By default the elements will be sorted in ascending ASCII character order
   categories?: CategoriesProperties;
-  defaultText?: CellText;
 }
 
 interface Calendar extends Omit<Parent, 'sorting'> {

@@ -4,6 +4,7 @@ import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {ColumnType, ColumnTypes} from '../../types/columnType';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
 import {CellText} from '../../types/tableContents';
+import {ObjectUtils} from '../object/objectUtils';
 import {Validation} from './validation';
 import {Sort} from './sort';
 
@@ -67,22 +68,41 @@ export class ColumnTypesUtils {
     }
     // if activeTypeName is not provided, default to first of the following:
     // First type to not have validation/First available type/'Text'
-    const noValidationType = settings.customColumnTypes?.find((type) => !type.validation)
-      || availableTypes.slice(settings.customColumnTypes?.length || 0).find((type) => !type.validation);
+    const noValidationType = availableTypes.find((type) => !type.validation);
     if (noValidationType) return noValidationType;
     const firstType = availableTypes[0];
     if (firstType) return firstType;
     return ColumnTypesUtils.DEFAULT_TYPE;
   }
 
-  // REF-3
+  private static processValidationProps(type: ColumnType) {
+    type.validationProps ??= {};
+    type.validationProps.setToDefaultTextOnFailed ??= true;
+  }
+
+  private static processCategories(type: ColumnType, isDefaultTextRemovable: boolean, defaultText: CellText) {
+    if (typeof type.categories === 'boolean') {
+      type.categories = {};
+    } else if (typeof type.categories === 'object') {
+      Validation.setCategoriesValidation(type as ColumnTypeInternal, isDefaultTextRemovable, defaultText);
+    }
+  }
+
+  // the reason why this is needed is when the argument is JSON stringified, properties that hold functions are removed,
+  // hence they can only be applied to the component as strings
+  private static convertStringFunctionsToRealFunctions(type: ColumnType) {
+    ObjectUtils.convertStringToFunction(type, 'validation');
+    if (type.sorting) {
+      ObjectUtils.convertStringToFunction(type.sorting, 'ascending');
+      ObjectUtils.convertStringToFunction(type.sorting, 'descending');
+    }
+  }
+
   public static process(types: ColumnTypes, isDefaultTextRemovable: boolean, defaultText: CellText) {
     types.forEach((type) => {
-      if (typeof type.categories === 'boolean') {
-        type.categories = {};
-      } else if (typeof type.categories === 'object') {
-        Validation.setCategoriesValidation(type as ColumnTypeInternal, isDefaultTextRemovable, defaultText);
-      }
+      ColumnTypesUtils.convertStringFunctionsToRealFunctions(type);
+      ColumnTypesUtils.processCategories(type, isDefaultTextRemovable, defaultText);
+      ColumnTypesUtils.processValidationProps(type);
     });
     return types as ColumnTypesInternal;
   }

@@ -20,7 +20,6 @@ interface Parent {
   // if not provided the following property will default to first of the following:
   // First type to not have validation/First available type/'Text'
   activeTypeName?: string;
-  validation?: unknown;
   isSortAvailable?: boolean;
   isDeleteAvailable?: boolean;
   isMoveAvailable?: boolean;

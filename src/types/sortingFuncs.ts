@@ -1,3 +1,5 @@
+export type sortingFunc = (cellText1: string, cellText2: string) => number;
+
 export interface SortingFuncs {
   // The functions are expected to return a negative value if cellText1 is less than cellText2, zero if both arguments
   // are equal, or a positive value if cellText1 is greater than cellText2.
