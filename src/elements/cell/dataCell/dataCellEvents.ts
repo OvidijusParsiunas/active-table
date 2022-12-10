@@ -7,7 +7,6 @@ import {CellTypeTotalsUtils} from '../../../utils/columnType/cellTypeTotalsUtils
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {Validation} from '../../../utils/columnType/validation';
 import {KEYBOARD_EVENT} from '../../../consts/keyboardEvents';
 import {PasteUtils} from '../../../utils/paste/pasteUtils';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
@@ -74,7 +73,6 @@ export class DataCellEvents {
       rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
     if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeContentEditable(textContainerElement);
     CellEvents.setCellToDefaultIfNeeded(etc, rowIndex, columnIndex, textContainerElement);
-    textContainerElement.style.color = Validation.DEFAULT_TEXT_COLOR;
     const oldType = etc.focusedElements.cell.typeName;
     FocusedCellUtils.purge(etc.focusedElements.cell);
     setTimeout(() => {

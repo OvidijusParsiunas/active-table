@@ -49,6 +49,7 @@ export class ColumnDetails {
     const {types, activeType} = ColumnTypesUtils.getProcessedTypes(columnSettings);
     return {
       elements: [],
+      textValidity: [],
       settings: columnSettings,
       headerStateColors: ColumnDetails.createHeaderStateColors(defaultColumnsSettings, settings),
       bordersOverwrittenBySiblings: {},

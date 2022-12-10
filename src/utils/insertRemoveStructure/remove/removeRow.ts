@@ -42,6 +42,7 @@ export class RemoveRow {
     // needs to be done synchronously as add new row toggle needs elements count when calling MaximumRows.canAddMore
     removedContentRow[0].forEach((_, columnIndex: number) => {
       etc.columnsDetails[columnIndex].elements.splice(rowIndex, 1);
+      etc.columnsDetails[columnIndex].textValidity.splice(rowIndex, 1);
     });
     return removedContentRow[0];
   }

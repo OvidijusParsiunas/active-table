@@ -44,15 +44,23 @@
           element.setAttribute(
             'defaultColumnsSettings',
             JSON.stringify({
-              cellStyle: {borderRight: '4px solid grey', borderLeft: '8px solid red'},
+              cellStyle: {borderRight: '4px solid grey', borderLeft: '8px solid red', backgroundColor: 'blue'},
               defaultText: '-',
-              // customColumnTypes: [
-              //   {
-              //     name: 'Custom type 1',
-              //     categories: true,
-              //   },
-              // ],
+              customColumnTypes: [
+                {
+                  name: 'Custom type 1',
+                  validation: `(cellText) => {
+                      return !isNaN(cellText)
+                    }`,
+                  validationProps: {
+                    setToDefaultTextOnFailed: false,
+                    failedValidationStyle: {backgroundColor: 'yellow'},
+                  },
+                },
+              ],
+              isDefaultTextRemovable: false,
               // header: {defaultStyle: {backgroundColor: 'lightgrey', borderRight: '1px solid yellow'}},
+              activeTypeName: 'Custom type 1',
             })
           );
           element.setAttribute('tableDimensions', JSON.stringify({width: '1000px'}));
@@ -81,16 +89,17 @@
                     border: '1px solid green',
                   },
                 },
-                isDefaultTextRemovable: true,
+                isDefaultTextRemovable: false,
                 // defaultColumnTypes: ['number'],
                 customColumnTypes: [
                   {
                     name: 'Custom type 2',
                     validation: `(cellText) => {
-                      console.log('call');
+                      return !isNaN(cellText)
                     }`,
                     validationProps: {
                       setToDefaultTextOnFailed: false,
+                      failedValidationStyle: {color: 'yellow'},
                     },
                   },
                 ],
@@ -105,6 +114,29 @@
                   borderBottom: '1px solid red',
                   backgroundColor: 'orange',
                 },
+                customColumnTypes: [
+                  {
+                    name: 'Custom type 3',
+                    validation: `(cellText) => {
+                      return false
+                    }`,
+                    validationProps: {
+                      setToDefaultTextOnFailed: false,
+                      failedValidationStyle: {color: 'green'},
+                    },
+                  },
+                  {
+                    name: 'Custom type 8',
+                    validation: `(cellText) => {
+                      return false
+                    }`,
+                    validationProps: {
+                      setToDefaultTextOnFailed: false,
+                      failedValidationStyle: {color: 'brown', backgroundColor: 'red'},
+                    },
+                  },
+                ],
+                activeTypeName: 'Custom type 3',
                 // header: {
                 //   defaultStyle: {
                 //     border: '1px solid green',

@@ -1,5 +1,7 @@
 import {ColumnSettingsInternal, DefaultColumnsSettings} from '../../types/columnsSettings';
+import {EditableTableComponent} from '../../editable-table-component';
 import {GenericElementUtils} from '../elements/genericElementUtils';
+import {ValidationStyle} from '../columnType/validationStyle';
 import {ColumnDetails} from '../columnDetails/columnDetails';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
@@ -60,12 +62,20 @@ export class ColumnSettingsStyleUtils {
   }
 
   // prettier-ignore
-  public static changeStyle(defaultColumnsSettings: DefaultColumnsSettings, columnDetails: ColumnDetailsT,
+  private static changeStyleFunc(this: EditableTableComponent, columnIndex: number,
       oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal) {
+    const columnDetails = this.columnsDetails[columnIndex];
     if (newSettings.cellStyle || newSettings.header?.defaultStyle) {
-      ColumnSettingsStyleUtils.updateColumnStyle(defaultColumnsSettings, columnDetails, newSettings, true);
+      ColumnSettingsStyleUtils.updateColumnStyle(this.defaultColumnsSettings, columnDetails, newSettings, true);
     } else if (oldSettings.cellStyle || oldSettings.header?.defaultStyle) {
-      ColumnSettingsStyleUtils.updateColumnStyle(defaultColumnsSettings, columnDetails, oldSettings, false);
+      ColumnSettingsStyleUtils.updateColumnStyle(this.defaultColumnsSettings, columnDetails, oldSettings, false);
     }
+  }
+
+  // prettier-ignore
+  public static changeStyle(etc: EditableTableComponent, columnIndex: number,
+      oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal) {
+    ValidationStyle.resetValidationStyle(etc, columnIndex,
+      ColumnSettingsStyleUtils.changeStyleFunc.bind(etc, columnIndex, oldSettings, newSettings))
   }
 }

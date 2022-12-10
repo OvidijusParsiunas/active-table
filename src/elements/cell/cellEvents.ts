@@ -1,4 +1,5 @@
 import {DataUtils} from '../../utils/insertRemoveStructure/shared/dataUtils';
+import {ValidationStyle} from '../../utils/columnType/validationStyle';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
 import {CellText} from '../../types/tableContents';
@@ -31,6 +32,9 @@ export class CellEvents {
     if (CellEvents.executeUpdateOperation('updateContents', options)) etc.contents[rowIndex][columnIndex] = cellText; 
     if (options?.element) CellElement.processCellWithNewText(etc, options.element, cellText, false, false); // CAUTION-1
     if (CellEvents.executeUpdateOperation('updateTableEvent', options)) etc.onTableUpdate(etc.contents);
+    // slight inefficiency using this here as setCellToDefaultIfNeeded and removeTextIfDefault have already validated text,
+    // however having it here minimizes complexity
+    if (rowIndex > 0) ValidationStyle.setCellValidationStyle(etc, rowIndex, columnIndex);
     // not in timeout as functionality that calls updateCell calls etc.onTableUpdate after - should remain that way
     etc.onCellUpdate(cellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
     return cellText;

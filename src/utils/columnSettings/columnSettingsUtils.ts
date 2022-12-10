@@ -28,7 +28,7 @@ export class ColumnSettingsUtils {
     ColumnSettingsDefaultTextUtils.setDefaultText(etc, columnDetails, columnIndex);
     ColumnSettingsWidthUtils.changeWidth(etc, cellElement, oldSettings, newSettings);
     InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
-    ColumnSettingsStyleUtils.changeStyle(etc.defaultColumnsSettings, columnDetails, oldSettings, newSettings);
+    ColumnSettingsStyleUtils.changeStyle(etc, columnIndex, oldSettings, newSettings);
     ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
     AddNewColumnElement.toggle(etc, true);
   }

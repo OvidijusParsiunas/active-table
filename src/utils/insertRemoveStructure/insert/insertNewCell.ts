@@ -11,6 +11,7 @@ import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
 import {CellElementIndex} from '../../elements/cellElementIndex';
+import {ValidationStyle} from '../../columnType/validationStyle';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {CellText} from '../../../types/tableContents';
@@ -51,6 +52,7 @@ export class InsertNewCell {
     const {auxiliaryTableContentInternal: {displayIndexColumn}, contents, columnsDetails} = etc;
     const columnDetails = columnsDetails[columnIndex];
     columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
+    columnDetails.textValidity.splice(rowIndex, 0, ValidationStyle.getDefaultCellTextValidity());
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, displayIndexColumn);
     // cannot place in a timeout as etc.contents length is used to get last row index
     contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
@@ -100,6 +102,8 @@ export class InsertNewCell {
       if (etc.auxiliaryTableContentInternal.displayAddColumnCell) ColumnGroupElement.update(etc);
       if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
       ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
+    } else {
+      ValidationStyle.setCellValidationStyle(etc, rowIndex, columnIndex);
     }
     setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, processedCellText, isNewText));
   }
