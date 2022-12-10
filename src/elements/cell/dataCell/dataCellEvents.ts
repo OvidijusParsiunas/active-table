@@ -38,7 +38,7 @@ export class DataCellEvents {
     // sanitizePastedTextContent causes inputType to no longer be insertFromPaste, hence using this instead
     if (!this.userKeyEventsState[KEYBOARD_EVENT.PASTE]) {
       const isUndo = inputEvent.inputType === UNDO_INPUT_TYPE;
-      CellElement.processAndSetTextOnCell(this, textContainerElement, text, false, isUndo, false);
+      CellElement.processCellWithNewText(this, textContainerElement, text, false, isUndo, false);
       const columnDetails = this.columnsDetails[columnIndex];
       if (columnDetails.activeType.categories) {
         CategoryDropdown.updateCategoryDropdown(textContainerElement.parentElement as HTMLElement,
@@ -52,7 +52,7 @@ export class DataCellEvents {
   }
 
   // prettier-ignore
-  private static updatePastedCellIfCategory(etc: EditableTableComponent, textContainer: HTMLElement, columnIndex: number) {
+  private static updatePastedCellStyle(etc: EditableTableComponent, textContainer: HTMLElement, columnIndex: number) {
     const {activeType, categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
     if (activeType.categories) {
       CategoryDropdown.updateCategoryDropdown(textContainer, categoryDropdown, defaultText, true);
@@ -73,7 +73,7 @@ export class DataCellEvents {
       // if the user has deleted all text in calendar/category cell - targetElement can be the <br> tag
       const containerElement = calendar || categories ? (targetElement.parentElement as HTMLElement) : targetElement;
       setTimeout(() => {
-        DataCellEvents.updatePastedCellIfCategory(this, containerElement, columnIndex);
+        DataCellEvents.updatePastedCellStyle(this, containerElement, columnIndex);
         CellEvents.updateCell(this, CellElement.getText(containerElement), rowIndex, columnIndex, {processText: false});
       });
     }

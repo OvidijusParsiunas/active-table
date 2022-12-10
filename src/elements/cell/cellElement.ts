@@ -97,9 +97,9 @@ export class CellElement {
     }
   }
 
-  // set text is optional as some functions may only need to augment the cell
+  // set text is optional as some elements may only need to toggle the BR padding
   // prettier-ignore
-  public static processAndSetTextOnCell(etc: EditableTableComponent, textContainerElement: HTMLElement, text: CellText,
+  public static processCellWithNewText(etc: EditableTableComponent, textContainerElement: HTMLElement, text: CellText,
       isCellBeingBuilt: boolean, isUndo: boolean, setText = true) {
     if (setText) CellElement.setText(textContainerElement, text as string);
     // whilst it is primarily used for firefox - we use it consistently for all browsers
@@ -130,7 +130,7 @@ export class CellElement {
     CellElement.prepContentEditable(cellElement, isHeader);
     // overwritten again if static table
     if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
-    CellElement.processAndSetTextOnCell(etc, cellElement, text, true, false);
+    CellElement.processCellWithNewText(etc, cellElement, text, true, false);
     return cellElement;
   }
 

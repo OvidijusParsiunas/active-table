@@ -61,10 +61,10 @@ export class ColumnSettingsStyleUtils {
 
   // prettier-ignore
   public static changeStyle(defaultColumnsSettings: DefaultColumnsSettings, columnDetails: ColumnDetailsT,
-      oldSettings: ColumnSettingsInternal | undefined, newSettings?: ColumnSettingsInternal) {
-    if (newSettings && (newSettings.cellStyle || newSettings.header)) {
+      oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal) {
+    if (newSettings.cellStyle || newSettings.header?.defaultStyle) {
       ColumnSettingsStyleUtils.updateColumnStyle(defaultColumnsSettings, columnDetails, newSettings, true);
-    } else if (oldSettings && (oldSettings.cellStyle || oldSettings.header)) {
+    } else if (oldSettings.cellStyle || oldSettings.header?.defaultStyle) {
       ColumnSettingsStyleUtils.updateColumnStyle(defaultColumnsSettings, columnDetails, oldSettings, false);
     }
   }

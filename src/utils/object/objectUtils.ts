@@ -11,7 +11,9 @@ export class ObjectUtils {
 
   public static convertStringToFunction<T, K extends keyof T, R extends T[K]>(object: T, objectKey: K) {
     if (typeof object[objectKey] === 'string') {
-      object[objectKey] = LITElementTypeConverters.convertToFunction(object[objectKey] as string) as R;
+      object[objectKey] = LITElementTypeConverters.convertToFunction(
+        object[objectKey] as unknown as string
+      ) as unknown as R;
     }
   }
 }

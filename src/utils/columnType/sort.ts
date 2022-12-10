@@ -77,7 +77,7 @@ export class Sort {
   // prettier-ignore
   private static parseComparedText<T>(cellText1: string, cellText2: string,
       isAsc: boolean, parse: (cellText: string) => T | undefined) {
-    // the number result follows JavaScript's sort standard to move incorrect text to the bottom
+    // the number result follows JavaScript's sort standard that will cause incorrect text to move to the bottom
     const parsedCellText1 = parse(cellText1);
     if (parsedCellText1 === undefined) return isAsc ? 1 : -1;
     const parsedCellText2 = parse(cellText2);

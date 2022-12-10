@@ -16,7 +16,7 @@ interface UpdateCellOptions {
 }
 
 export class CellEvents {
-  private static executeUpdateOpration(operation: keyof UpdateCellOptions, options?: UpdateCellOptions) {
+  private static executeUpdateOperation(operation: keyof UpdateCellOptions, options?: UpdateCellOptions) {
     return options?.[operation] === undefined || options[operation] === true;
   }
 
@@ -25,12 +25,12 @@ export class CellEvents {
   // prettier-ignore
   public static updateCell(etc: EditableTableComponent,
       cellText: CellText, rowIndex: number, columnIndex: number, options?: UpdateCellOptions) {
-    if (CellEvents.executeUpdateOpration('processText', options)) {
+    if (CellEvents.executeUpdateOperation('processText', options)) {
       cellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText); 
     }
-    if (CellEvents.executeUpdateOpration('updateContents', options)) etc.contents[rowIndex][columnIndex] = cellText; 
-    if (options?.element) CellElement.processAndSetTextOnCell(etc, options.element, cellText, false, false); // CAUTION-1
-    if (CellEvents.executeUpdateOpration('updateTableEvent', options)) etc.onTableUpdate(etc.contents);
+    if (CellEvents.executeUpdateOperation('updateContents', options)) etc.contents[rowIndex][columnIndex] = cellText; 
+    if (options?.element) CellElement.processCellWithNewText(etc, options.element, cellText, false, false); // CAUTION-1
+    if (CellEvents.executeUpdateOperation('updateTableEvent', options)) etc.onTableUpdate(etc.contents);
     // not in timeout as functionality that calls updateCell calls etc.onTableUpdate after - should remain that way
     etc.onCellUpdate(cellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
     return cellText;

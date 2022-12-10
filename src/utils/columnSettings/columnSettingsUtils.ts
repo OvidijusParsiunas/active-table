@@ -19,7 +19,7 @@ import {
 export class ColumnSettingsUtils {
   // prettier-ignore
   private static change(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number,
-      oldSettings?: ColumnSettingsInternal, newSettings?: ColumnSettingsInternal) {
+      oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal) {
     const columnDetails = etc.columnsDetails[columnIndex];
     ColumnSettingsDefaultTextUtils.unsetDefaultText(etc, columnDetails, columnIndex);
     columnDetails.settings = newSettings || etc.defaultColumnsSettings as ColumnSettingsInternal;
