@@ -11,8 +11,6 @@ import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
 import {ColumnDropdownEvents} from './columnDropdownEvents';
 import {ColumnDropdownItem} from './columnDropdownItem';
 import {ColumnTypeDropdown} from './columnTypeDropdown';
-import {CellElement} from '../../cell/cellElement';
-import {CellEvents} from '../../cell/cellEvents';
 import {DropdownItem} from '../dropdownItem';
 import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
@@ -27,18 +25,12 @@ export class ColumnDropdown {
     dropdownElement.style.left = '';
   }
 
-  private static processText(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
-    etc.contents[0][columnIndex] = CellElement.getText(cellElement);
-    CellEvents.setCellToDefaultIfNeeded(etc, 0, columnIndex as number, cellElement);
-  }
-
   // prettier-ignore
   public static processTextAndHide(etc: EditableTableComponent) {
     const {activeOverlayElements, columnsDetails, focusedElements: {cell: {element: cellElement, columnIndex}}} = etc;
     const {columnDropdown, columnTypeDropdown, fullTableOverlay} = activeOverlayElements;
     if (!columnDropdown || !fullTableOverlay || !columnTypeDropdown || !cellElement) return;
     if (GenericElementUtils.doesElementExistInDom(cellElement)) {
-      ColumnDropdown.processText(etc, columnIndex as number, cellElement);
       // TO-DO when user pastes text via the select mode - this should be called
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(etc, cellElement, columnIndex as number);
     }

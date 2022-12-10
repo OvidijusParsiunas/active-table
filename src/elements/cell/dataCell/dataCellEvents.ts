@@ -44,23 +44,11 @@ export class DataCellEvents {
         CategoryDropdown.updateCategoryDropdown(textContainerElement.parentElement as HTMLElement,
           columnDetails.categoryDropdown, columnDetails.settings.defaultText, true);
       }
-      if (columnDetails.activeType.validation) {
-        Validation.setStyleBasedOnValidity(textContainerElement, columnDetails.activeType.validation);
-      }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
     }
   }
 
   // prettier-ignore
-  private static updatePastedCellStyle(etc: EditableTableComponent, textContainer: HTMLElement, columnIndex: number) {
-    const {activeType, categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
-    if (activeType.categories) {
-      CategoryDropdown.updateCategoryDropdown(textContainer, categoryDropdown, defaultText, true);
-    } else if (activeType.validation) {
-      Validation.setStyleBasedOnValidity(textContainer, activeType.validation);
-    }
-  }
-
   private static pasteCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: ClipboardEvent) {
     UserKeyEventsStateUtils.temporarilyIndicateEvent(this.userKeyEventsState, KEYBOARD_EVENT.PASTE);
     PasteUtils.sanitizePastedTextContent(event);
@@ -69,11 +57,12 @@ export class DataCellEvents {
       OverwriteCellsViaCSVOnPaste.overwrite(this, clipboardText, event, rowIndex, columnIndex);
     } else {
       const targetElement = event.target as HTMLElement;
-      const {calendar, categories} = this.columnsDetails[columnIndex].activeType;
+      const {categoryDropdown, settings: {defaultText}, activeType} = this.columnsDetails[columnIndex];
+      const {calendar, categories} = activeType;
       // if the user has deleted all text in calendar/category cell - targetElement can be the <br> tag
       const containerElement = calendar || categories ? (targetElement.parentElement as HTMLElement) : targetElement;
       setTimeout(() => {
-        DataCellEvents.updatePastedCellStyle(this, containerElement, columnIndex);
+        if (categories) CategoryDropdown.updateCategoryDropdown(containerElement, categoryDropdown, defaultText, true);
         CellEvents.updateCell(this, CellElement.getText(containerElement), rowIndex, columnIndex, {processText: false});
       });
     }
