@@ -5,6 +5,7 @@ import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
 import {ColumnSettingsWidthUtils} from './columnSettingsWidthUtils';
+import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 import {CellElement} from '../../elements/cell/cellElement';
 import {GenericObject} from '../../types/genericObject';
 import {EMPTY_STRING} from '../../consts/text';
@@ -22,7 +23,8 @@ export class ColumnSettingsUtils {
       oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal) {
     const columnDetails = etc.columnsDetails[columnIndex];
     ColumnSettingsDefaultTextUtils.unsetDefaultText(etc, columnDetails, columnIndex);
-    columnDetails.settings = newSettings || etc.defaultColumnsSettings as ColumnSettingsInternal;
+    columnDetails.settings = newSettings;
+    Object.assign(columnDetails, ColumnTypesUtils.getProcessedTypes(newSettings))
     ColumnSettingsDefaultTextUtils.setDefaultText(etc, columnDetails, columnIndex);
     ColumnSettingsWidthUtils.changeWidth(etc, cellElement, oldSettings, newSettings);
     InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);

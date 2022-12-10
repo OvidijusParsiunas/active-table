@@ -3,7 +3,6 @@ import {ColumnSettingsInternal, DefaultColumnsSettings} from '../../types/column
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
 import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
 import {CellStateColorProperties} from '../../types/cellStateColors';
-import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
 
@@ -45,18 +44,16 @@ export class ColumnDetails {
 
   // prettier-ignore
   public static createInitial(defaultColumnsSettings: DefaultColumnsSettings, categoryDropdown: HTMLElement,
-      settings?: ColumnSettingsInternal): ColumnDetailsInitial {
+      settings: ColumnSettingsInternal): ColumnDetailsInitial {
     const columnSettings = settings || defaultColumnsSettings as ColumnSettingsInternal;
-    const {isDefaultTextRemovable, defaultText} = columnSettings;
-    const types = ColumnTypesUtils.get(columnSettings);
-    const internalTypes = ColumnTypesUtils.process(types, isDefaultTextRemovable, defaultText);
+    const {types, activeType} = ColumnTypesUtils.getProcessedTypes(columnSettings);
     return {
       elements: [],
       settings: columnSettings,
       headerStateColors: ColumnDetails.createHeaderStateColors(defaultColumnsSettings, settings),
       bordersOverwrittenBySiblings: {},
-      types: internalTypes,
-      activeType: ColumnTypesUtils.getActiveType(columnSettings, types) as ColumnTypeInternal,
+      types,
+      activeType,
       categoryDropdown: CategoryDropdown.getDefaultObj(categoryDropdown),
     };
   }

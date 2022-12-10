@@ -3,6 +3,7 @@ import {CalendarFunctionalityUtils} from './calendarFunctionalityUtils';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {ColumnType, ColumnTypes} from '../../types/columnType';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
+import {ColumnDetailsT} from '../../types/columnDetails';
 import {CellText} from '../../types/tableContents';
 import {ObjectUtils} from '../object/objectUtils';
 import {Validation} from './validation';
@@ -60,7 +61,7 @@ export class ColumnTypesUtils {
   }
 
   // prettier-ignore
-  public static getActiveType(settings: ColumnSettingsInternal, availableTypes: ColumnTypes) {
+  private static getActiveType(settings: ColumnSettingsInternal, availableTypes: ColumnTypes) {
     if (settings.activeTypeName) {
       const activeType = availableTypes.find(
         (type) => type.name.toLocaleLowerCase() === settings.activeTypeName?.toLocaleLowerCase());
@@ -98,12 +99,22 @@ export class ColumnTypesUtils {
     }
   }
 
-  public static process(types: ColumnTypes, isDefaultTextRemovable: boolean, defaultText: CellText) {
+  private static process(types: ColumnTypes, isDefaultTextRemovable: boolean, defaultText: CellText) {
     types.forEach((type) => {
       ColumnTypesUtils.convertStringFunctionsToRealFunctions(type);
       ColumnTypesUtils.processCategories(type, isDefaultTextRemovable, defaultText);
       ColumnTypesUtils.processValidationProps(type);
     });
     return types as ColumnTypesInternal;
+  }
+
+  public static getProcessedTypes(settings: ColumnSettingsInternal): Pick<ColumnDetailsT, 'types' | 'activeType'> {
+    const {isDefaultTextRemovable, defaultText} = settings;
+    const types = ColumnTypesUtils.get(settings);
+    const processedInternalTypes = ColumnTypesUtils.process(types, isDefaultTextRemovable, defaultText);
+    return {
+      types: processedInternalTypes,
+      activeType: ColumnTypesUtils.getActiveType(settings, types) as ColumnTypeInternal,
+    };
   }
 }
