@@ -78,7 +78,7 @@ export class ColumnTypesUtils {
 
   private static processValidationProps(type: ColumnType) {
     type.validationProps ??= {};
-    type.validationProps.setToDefaultTextOnFailed ??= true;
+    type.validationProps.setTextToDefaultOnFail ??= true;
   }
 
   private static processCategories(type: ColumnType, isDefaultTextRemovable: boolean, defaultText: CellText) {

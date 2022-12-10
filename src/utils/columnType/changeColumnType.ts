@@ -31,7 +31,7 @@ export class ChangeColumnType {
 
   private static changeFunc(etc: EditableTableComponent, newTypeName: string, columnIndex: number) {
     const newType = ChangeColumnType.setNew(etc, newTypeName, columnIndex);
-    if (newType.validation && newType.validationProps?.setToDefaultTextOnFailed) {
+    if (newType.validation && newType.validationProps?.setTextToDefaultOnFail) {
       ChangeColumnType.setInvalidCellsToDefault(etc, columnIndex);
     }
     if (newType.categories) {
