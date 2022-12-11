@@ -44,7 +44,7 @@ export class ValidationStyle {
       ValidationStyle.unsetLastValidationStyle(textValidity, textContainerElement);
       ValidationStyle.setValidStyle(columnDetails, textValidity, textContainerElement, defaultColumnsSettings);
     }
-    ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, textContainerElement);
+    ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [textContainerElement]);
   }
 
   // prettier-ignore

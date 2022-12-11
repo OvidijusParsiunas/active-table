@@ -12,10 +12,12 @@ export class ColumnSettingsBorderUtils {
   public static readonly UNSET_PX = '0px';
 
   // REF-23
-  public static overwriteSideBorderIfSiblingsHaveSettings(columnDetails: ColumnDetailsT, cellElement: HTMLElement) {
+  public static overwriteSideBorderIfSiblingsHaveSettings(columnDetails: ColumnDetailsT, cellElements: HTMLElement[]) {
     const {left, right} = columnDetails.bordersOverwrittenBySiblings;
-    if (left) cellElement.style.borderLeftWidth = ColumnSettingsBorderUtils.UNSET_PX;
-    if (right) cellElement.style.borderRightWidth = ColumnSettingsBorderUtils.UNSET_PX;
+    cellElements.forEach((cellElement) => {
+      if (left) cellElement.style.borderLeftWidth = ColumnSettingsBorderUtils.UNSET_PX;
+      if (right) cellElement.style.borderRightWidth = ColumnSettingsBorderUtils.UNSET_PX;
+    });
   }
 
   // prettier-ignore
@@ -96,6 +98,7 @@ export class ColumnSettingsBorderUtils {
       ColumnSettingsStyleUtils.applyDefaultStyles(subjectColumn.elements, etc.defaultColumnsSettings);
       ValidationStyle.reapplyColumnValidationStyle(etc, columnIndex);
       subjectColumn.bordersOverwrittenBySiblings[subjectBorder] = false;
+      ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(subjectColumn, subjectColumn.elements)
     }
   }
 
