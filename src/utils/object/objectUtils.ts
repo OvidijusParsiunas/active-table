@@ -16,4 +16,8 @@ export class ObjectUtils {
       ) as unknown as R;
     }
   }
+  public static areValuesFullyDefined(...values: unknown[]) {
+    const undefinedValue = values.findIndex((value) => value === undefined || value === null);
+    return undefinedValue === -1;
+  }
 }

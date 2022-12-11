@@ -4,7 +4,7 @@ import {DEFAULT_COLUMN_TYPES} from '../enums/columnType';
 import {StringDimension} from './dimensions';
 import {ColumnTypes} from './columnType';
 import {CellText} from './tableContents';
-import {CSSStyle} from './cssStyle';
+import {CellCSSStyle} from './cssStyle';
 
 // difference between column settings and details is that details is more about the values that are set throughout
 // the component runtime duration and settings are values that can be set by the user which control its behaviour
@@ -13,7 +13,7 @@ interface Parent {
   columnName: string;
   defaultText?: CellText;
   isDefaultTextRemovable?: boolean; // true by default
-  cellStyle?: CSSStyle;
+  cellStyle?: CellCSSStyle;
   header?: HoverableElementStyleClient;
   defaultColumnTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
   customColumnTypes?: ColumnTypes; // additional custom column types
@@ -30,7 +30,8 @@ interface Parent {
   };
 }
 
-// TO-DO - can probably make width part of the cellStyle
+// TO-DO - can probably make width part of the cellStyle - take note that CellCSSStyle is currently not using width as
+// it should not be used for processed cell style
 interface Width extends Parent {
   // REF-24
   // if percentage - will use the table width

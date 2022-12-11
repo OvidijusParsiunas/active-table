@@ -5,3 +5,5 @@ export interface StatefulCSSS<T = CSSStyle> {
   hover?: T;
   click?: T;
 }
+
+export type CellCSSStyle = Omit<CSSStyle, 'width' | 'minWidth' | 'maxWidth' | 'height' | 'minHeight' | 'maxHeight'>;

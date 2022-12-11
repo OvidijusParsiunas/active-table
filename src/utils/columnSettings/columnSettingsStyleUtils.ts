@@ -6,7 +6,7 @@ import {ColumnDetails} from '../columnDetails/columnDetails';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
 import {GenericObject} from '../../types/genericObject';
-import {CSSStyle} from '../../types/cssStyle';
+import {CellCSSStyle} from '../../types/cssStyle';
 
 export class ColumnSettingsStyleUtils {
   public static applySettingsStyleOnCell(settings: ColumnSettingsInternal, cellElement: HTMLElement, isHeader: boolean) {
@@ -28,7 +28,7 @@ export class ColumnSettingsStyleUtils {
     });
   }
 
-  private static unsetCellSettingStyle(columnElements: HTMLElement[], style: CSSStyle) {
+  private static unsetCellSettingStyle(columnElements: HTMLElement[], style: CellCSSStyle) {
     const unsetStyles = Object.keys(style).reduce<GenericObject>((obj, styleName) => {
       obj[styleName] = '';
       return obj;
@@ -36,7 +36,7 @@ export class ColumnSettingsStyleUtils {
     columnElements.forEach((element) => Object.assign(element.style, unsetStyles));
   }
 
-  private static unsetHeaderSettingStyle(headerElement: HTMLElement, style: CSSStyle) {
+  private static unsetHeaderSettingStyle(headerElement: HTMLElement, style: CellCSSStyle) {
     Object.keys(style).forEach((styleName) => {
       GenericElementUtils.setStyle(headerElement, styleName, '');
     });

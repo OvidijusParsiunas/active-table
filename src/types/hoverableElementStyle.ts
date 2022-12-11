@@ -1,6 +1,6 @@
 import {CellStateColorProperties} from './cellStateColors';
-import {CSSStyle} from './cssStyle';
+import {CellCSSStyle} from './cssStyle';
 
-export type HoverableElementStyle = {defaultStyle: CSSStyle; hoverColors?: CellStateColorProperties};
+export type HoverableElementStyle = {defaultStyle: CellCSSStyle; hoverColors?: CellStateColorProperties};
 
 export type HoverableElementStyleClient = Partial<HoverableElementStyle>;

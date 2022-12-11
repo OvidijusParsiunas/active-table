@@ -1,4 +1,4 @@
-import {StatefulCSSS, CSSStyle} from './cssStyle';
+import {StatefulCSSS, CellCSSStyle} from './cssStyle';
 import {PX} from './dimensions';
 
 export interface SizerMoveLimits {
@@ -44,4 +44,4 @@ export interface SelectedColumnSizerT {
   initialOffset: number;
 }
 
-export type UserSetColumnSizerStyle = Omit<StatefulCSSS<Pick<CSSStyle, 'backgroundColor'>>, 'default'>;
+export type UserSetColumnSizerStyle = Omit<StatefulCSSS<Pick<CellCSSStyle, 'backgroundColor'>>, 'default'>;

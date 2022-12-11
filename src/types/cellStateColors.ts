@@ -1,6 +1,6 @@
-import {CSSStyle, StatefulCSSS} from './cssStyle';
+import {CellCSSStyle, StatefulCSSS} from './cssStyle';
 
-export type CellStateColorProperties = Pick<CSSStyle, 'backgroundColor' | 'color'>;
+export type CellStateColorProperties = Pick<CellCSSStyle, 'backgroundColor' | 'color'>;
 
 export type CellStateColors = Required<Omit<StatefulCSSS<CellStateColorProperties>, 'click'>>;
 

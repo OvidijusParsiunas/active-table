@@ -3,6 +3,7 @@ import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOv
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
+import {DynamicCellTextUpdate} from './utils/dynamicUpdates/dynamicCellTextUpdate';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
@@ -86,16 +87,11 @@ export class EditableTableComponent extends LitElement {
   })
   headerPresent = true;
 
-  // TO-DO allow the clien to update the table cells without re-renderdering the whole table
-  // @property({
-  //   type: Boolean,
-  //   converter: LITElementTypeConverters.convertToBoolean,
-  //   // hasChanged(newVal: string, oldVal: string) {
-  //   //   console.log(newVal);
-  //   //   return false;
-  //   // },
-  // })
-  // updateCell = true;
+  // set as boolean to not update on initial render
+  @property({
+    type: Object,
+  })
+  updateCellText = true;
 
   @property({type: Object})
   defaultColumnsSettings: DefaultColumnsSettings = {};
@@ -195,6 +191,16 @@ export class EditableTableComponent extends LitElement {
     } else {
       this.onConnect();
     }
+  }
+
+  // using shouldUpdate instead of .hasChanged lifecycle property on the updateCellText property because it cannot access
+  // 'this' variable - which we need to udpate the cell
+  override shouldUpdate(dynamicUpdate: Map<string, unknown>): boolean {
+    if (dynamicUpdate.has('updateCellText') && typeof this.updateCellText === 'object') {
+      DynamicCellTextUpdate.update(this, this.updateCellText);
+      return false; // does not cause a re-render
+    }
+    return true;
   }
 }
 

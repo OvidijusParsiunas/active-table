@@ -46,7 +46,6 @@ export class CellTypeTotalsUtils {
     changeFuncs.forEach((func) => func(columnDetails.cellTypeTotals));
   }
 
-  // WORK - these should perhaps be in a timeout?
   public static incrementCellType(columnDetails: ColumnDetailsT, cellText: CellText) {
     const type = CellTypeTotalsUtils.parseTypeName(cellText, columnDetails.types);
     CellTypeTotalsUtils.callChangeTypeFuncs(columnDetails, [CellTypeTotalsUtils.incrementType.bind(this, type)]);

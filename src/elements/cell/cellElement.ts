@@ -12,7 +12,7 @@ import {HeaderCellEvents} from './headerCell/headerCellEvents';
 import {DataCellEvents} from './dataCell/dataCellEvents';
 import {Browser} from '../../utils/browser/browser';
 import {CellText} from '../../types/tableContents';
-import {CSSStyle} from '../../types/cssStyle';
+import {CellCSSStyle} from '../../types/cssStyle';
 
 export class CellElement {
   public static readonly CELL_CLASS = 'cell';
@@ -27,11 +27,11 @@ export class CellElement {
     }
   }
 
-  public static setDefaultCellStyle(cellElement: HTMLElement, cellStyle?: CSSStyle, customStyle?: CSSStyle) {
+  public static setDefaultCellStyle(cellElement: HTMLElement, cellStyle?: CellCSSStyle, customStyle?: CellCSSStyle) {
     Object.assign(cellElement.style, cellStyle, customStyle);
   }
 
-  public static create(isHeader: boolean, cellStyle?: CSSStyle, customStyle?: CSSStyle) {
+  public static create(isHeader: boolean, cellStyle?: CellCSSStyle, customStyle?: CellCSSStyle) {
     const cellElement = document.createElement(isHeader ? 'th' : 'td');
     cellElement.classList.add(CellElement.CELL_CLASS);
     // role for assistive technologies
