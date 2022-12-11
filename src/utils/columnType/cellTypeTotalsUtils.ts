@@ -21,11 +21,11 @@ export class CellTypeTotalsUtils {
 
   public static parseTypeName(cellText: CellText, types: ColumnTypesInternal): string {
     if (cellText === EMPTY_STRING) return AUXILIARY_CELL_TYPE.Undefined;
-    const validType = types.find((type) => type.validation?.(String(cellText)));
+    const validType = types.find((type) => type.textValidation.func?.(String(cellText)));
     if (validType) return validType.name;
     // TO-DO - will need to do filtering to get non validation
     // if the first type does not not have validation - return it
-    if (types[0] && typeof types[0].validation !== 'function') {
+    if (types[0] && typeof types[0].textValidation.func !== 'function') {
       return types[0].name;
     }
     return AUXILIARY_CELL_TYPE.Undefined;

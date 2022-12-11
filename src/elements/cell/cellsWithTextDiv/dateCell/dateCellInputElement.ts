@@ -24,7 +24,7 @@ export class DateCellInputElement {
 
   private static convertTextToInputValue(textDate: string, type: ColumnTypeInternal): string {
     if (type.calendar) {
-      const isValid = type.validation === undefined || type.validation(textDate);
+      const isValid = type.textValidation.func === undefined || type.textValidation.func(textDate);
       if (isValid) {
         const ymd = type.calendar.toYMD(textDate);
         return [ymd[0], ymd[1].padStart(2, '0'), ymd[2].padStart(2, '0')].join('-');

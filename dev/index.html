@@ -49,12 +49,12 @@
               customColumnTypes: [
                 {
                   name: 'Custom type 1',
-                  validation: `(cellText) => {
+                  textValidation: {
+                    func: `(cellText) => {
                       return !isNaN(cellText)
                     }`,
-                  validationProps: {
                     setTextToDefaultOnFail: false,
-                    failedValidationStyle: {backgroundColor: 'yellow'},
+                    failedStyle: {backgroundColor: 'yellow'},
                   },
                 },
               ],
@@ -94,12 +94,12 @@
                 customColumnTypes: [
                   {
                     name: 'Custom type 2',
-                    validation: `(cellText) => {
-                      return !isNaN(cellText)
-                    }`,
-                    validationProps: {
+                    textValidation: {
+                      func: `(cellText) => {
+                        return !isNaN(cellText)
+                      }`,
                       setTextToDefaultOnFail: false,
-                      failedValidationStyle: {color: 'yellow'},
+                      failedStyle: {color: 'yellow'},
                     },
                   },
                 ],
@@ -117,22 +117,22 @@
                 customColumnTypes: [
                   {
                     name: 'Custom type 3',
-                    validation: `(cellText) => {
-                      return false
+                    textValidation: {
+                      func: `(cellText) => {
+                      return !isNaN(cellText)
                     }`,
-                    validationProps: {
                       setTextToDefaultOnFail: false,
-                      failedValidationStyle: {color: 'green'},
+                      failedStyle: {color: 'green'},
                     },
                   },
                   {
                     name: 'Custom type 8',
-                    validation: `(cellText) => {
-                      return false
-                    }`,
-                    validationProps: {
+                    textValidation: {
+                      func: `(cellText) => {
+                        return !isNaN(cellText)
+                      }`,
                       setTextToDefaultOnFail: false,
-                      failedValidationStyle: {color: 'brown', backgroundColor: 'red'},
+                      failedStyle: {color: 'brown', backgroundColor: 'red'},
                     },
                   },
                 ],

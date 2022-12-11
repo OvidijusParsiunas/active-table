@@ -1,6 +1,6 @@
 import {CalendarFunctionality} from './calendarFunctionality';
 import {CategoriesProperties} from './categoriesProperties';
-import {ValidationProps} from './validationProps';
+import {TextValidation} from './textValidation';
 import {InterfacesUnion} from './utilityTypes';
 import {SortingFuncs} from './sortingFuncs';
 import {CellText} from './tableContents';
@@ -8,8 +8,7 @@ import {CellText} from './tableContents';
 // to be used internally
 export interface Parent {
   name: string;
-  validation?: (cellText: string) => boolean;
-  validationProps?: ValidationProps;
+  textValidation: TextValidation;
   // executed after the user removes focus from the selected cell
   postProcessText?: {
     func?: (cellText: string) => CellText;

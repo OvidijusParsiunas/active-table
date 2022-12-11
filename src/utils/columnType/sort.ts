@@ -5,6 +5,7 @@ import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {CellElementIndex} from '../elements/cellElementIndex';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
 import {CellEvents} from '../../elements/cell/cellEvents';
+import {TextValidation} from '../../types/textValidation';
 import {SortingFuncs} from '../../types/sortingFuncs';
 import {RegexUtils} from '../regex/regexUtils';
 
@@ -85,28 +86,28 @@ export class Sort {
     return [parsedCellText1, parsedCellText2];
   }
 
-  private static validateType(validation: ColumnTypeInternal['validation'], cellText: string) {
-    return validation === undefined || validation(cellText) ? cellText : undefined;
+  private static validateType(validate: TextValidation['func'], cellText: string) {
+    return validate === undefined || validate(cellText) ? cellText : undefined;
   }
 
   // prettier-ignore
   private static validateAndSort(cellText1: string, cellText2: string, sortFunc: SortingFuncs[keyof SortingFuncs],
-      validation: ColumnTypeInternal['validation'], isAsc: boolean) {
-    const parseResult = Sort.parseComparedText(cellText1, cellText2, isAsc, Sort.validateType.bind(this, validation));
+      validate: TextValidation['func'], isAsc: boolean) {
+    const parseResult = Sort.parseComparedText(cellText1, cellText2, isAsc, Sort.validateType.bind(this, validate));
     if (typeof parseResult === 'number') return parseResult;
     return sortFunc(parseResult[0], parseResult[1]);
   }
 
   private static sortViaSortFuncs(type: ColumnTypeInternal, dataContent: TableContents, colIndex: number, isAsc: boolean) {
-    const {sorting, validation} = type;
+    const {sorting, textValidation} = type;
     if (!sorting) return;
     if (isAsc) {
       dataContent.sort((a: TableRow, b: TableRow) =>
-        Sort.validateAndSort(a[colIndex] as string, b[colIndex] as string, sorting.ascending, validation, isAsc)
+        Sort.validateAndSort(a[colIndex] as string, b[colIndex] as string, sorting.ascending, textValidation.func, isAsc)
       );
     } else {
       dataContent.sort((a: TableRow, b: TableRow) =>
-        Sort.validateAndSort(b[colIndex] as string, a[colIndex] as string, sorting.descending, validation, isAsc)
+        Sort.validateAndSort(b[colIndex] as string, a[colIndex] as string, sorting.descending, textValidation.func, isAsc)
       );
     }
   }
@@ -115,21 +116,19 @@ export class Sort {
     return (new Date(...ymd1) as unknown as number) - (new Date(...ymd2) as unknown as number);
   }
 
-  // prettier-ignore
-  private static parseYMDFormat(validation: ColumnTypeInternal['validation'],
-      calendar: CalendarFunctionality, cellText: string) {
-    const isValid = Sort.validateType(validation, cellText);
+  private static parseYMDFormat(validate: TextValidation['func'], calendar: CalendarFunctionality, cellText: string) {
+    const isValid = Sort.validateType(validate, cellText);
     return isValid ? (calendar.toYMD(cellText) as unknown as [number]) : undefined;
   }
 
   // prettier-ignore
   private static sortDates(type: ColumnTypeInternal, dataContents: TableContents, columnIndex: number, isAsc: boolean) {
-    const {calendar, validation} = type;
+    const {calendar, textValidation} = type;
     if (!calendar) return;
     dataContents.sort((a: TableRow, b: TableRow) => {
       // isAsc param is always true because the order at which we pass in text is always the same as the asc sort
       const parseResult = Sort.parseComparedText(a[columnIndex] as string, b[columnIndex] as string, true,
-        Sort.parseYMDFormat.bind(this, validation, calendar)); 
+        Sort.parseYMDFormat.bind(this, textValidation.func, calendar)); 
       if (typeof parseResult === 'number') return parseResult;
       return isAsc
         ? Sort.compareDates(parseResult[0], parseResult[1])

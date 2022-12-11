@@ -28,11 +28,10 @@ export class ValidationStyle {
   // prettier-ignore
   private static setFailedStyle(columnDetails: ColumnDetailsT, textValidity: CellTextValidity,
       textContainerElement: HTMLElement) {
-    const {validationProps} = columnDetails.activeType;
-    const failedValidationStyle = validationProps?.failedValidationStyle
-      || ValidationStyle.DEFAULT_FAILED_VALIDATION_STYLE;
-    Object.assign(textContainerElement.style, failedValidationStyle);
-    textValidity.lastAppliedStyle = failedValidationStyle;
+    const {textValidation} = columnDetails.activeType;
+    const failedStyle = textValidation.failedStyle || ValidationStyle.DEFAULT_FAILED_VALIDATION_STYLE;
+    Object.assign(textContainerElement.style, failedStyle);
+    textValidity.lastAppliedStyle = failedStyle;
   }
 
   // prettier-ignore
@@ -52,9 +51,9 @@ export class ValidationStyle {
       columnIndex: number, overwrite = false) {
     const columnDetails = etc.columnsDetails[columnIndex];
     const textContainerElement = columnDetails.elements[rowIndex];
-    const {validation} = columnDetails.activeType;
-    if (!validation) return;
-    const isValid = validation(CellElement.getText(textContainerElement));
+    const {func: validationFunc} = columnDetails.activeType.textValidation;
+    if (!validationFunc) return;
+    const isValid = validationFunc(CellElement.getText(textContainerElement));
     const textValidity = columnDetails.textValidity[rowIndex];
     if (overwrite || textValidity.isValid !== isValid) {
       ValidationStyle.setStyle(isValid, columnDetails, textValidity, textContainerElement, etc.defaultColumnsSettings)
@@ -90,8 +89,8 @@ export class ValidationStyle {
   // without having to rerun the validation functions
   public static reapplyColumnValidationStyle(etc: EditableTableComponent, columnIndex: number) {
     const columnDetails = etc.columnsDetails[columnIndex];
-    const {validation} = columnDetails.activeType;
-    if (!validation) return;
+    const {func: validationFunc} = columnDetails.activeType.textValidation;
+    if (!validationFunc) return;
     columnDetails.elements.slice(1).forEach((element, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
       Object.assign(element.style, columnDetails.textValidity[relativeRowIndex].lastAppliedStyle);

@@ -18,22 +18,22 @@ export class ColumnTypesUtils {
     ColumnTypesUtils.DEFAULT_TYPE,
     {
       name: DEFAULT_COLUMN_TYPES.NUMBER,
-      validation: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.NUMBER],
+      textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.NUMBER]},
       sorting: Sort.DEFAULT_TYPES_SORT_FUNCS[DEFAULT_COLUMN_TYPES.NUMBER],
     },
     {
       name: DEFAULT_COLUMN_TYPES.CURRENCY,
-      validation: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.CURRENCY],
+      textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.CURRENCY]},
       sorting: Sort.DEFAULT_TYPES_SORT_FUNCS[DEFAULT_COLUMN_TYPES.CURRENCY],
     },
     {
       name: DEFAULT_COLUMN_TYPES.DATE_DMY,
-      validation: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_DMY],
+      textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_DMY]},
       calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_DMY],
     },
     {
       name: DEFAULT_COLUMN_TYPES.DATE_MDY,
-      validation: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_MDY],
+      textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_MDY]},
       calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_MDY],
     },
   ];
@@ -61,7 +61,7 @@ export class ColumnTypesUtils {
   }
 
   // prettier-ignore
-  private static getActiveType(settings: ColumnSettingsInternal, availableTypes: ColumnTypes) {
+  private static getActiveType(settings: ColumnSettingsInternal, availableTypes: ColumnTypesInternal) {
     if (settings.activeTypeName) {
       const activeType = availableTypes.find(
         (type) => type.name.toLocaleLowerCase() === settings.activeTypeName?.toLocaleLowerCase());
@@ -69,16 +69,16 @@ export class ColumnTypesUtils {
     }
     // if activeTypeName is not provided, default to first of the following:
     // First type to not have validation/First available type/'Text'
-    const noValidationType = availableTypes.find((type) => !type.validation);
+    const noValidationType = availableTypes.find((type) => !type.textValidation.func);
     if (noValidationType) return noValidationType;
     const firstType = availableTypes[0];
     if (firstType) return firstType;
     return ColumnTypesUtils.DEFAULT_TYPE;
   }
 
-  private static processValidationProps(type: ColumnType) {
-    type.validationProps ??= {};
-    type.validationProps.setTextToDefaultOnFail ??= true;
+  private static processTextValidationProps(type: ColumnType) {
+    type.textValidation ??= {};
+    type.textValidation.setTextToDefaultOnFail ??= true;
   }
 
   private static processCategories(type: ColumnType, isDefaultTextRemovable: boolean, defaultText: CellText) {
@@ -92,7 +92,7 @@ export class ColumnTypesUtils {
   // the reason why this is needed is when the argument is JSON stringified, properties that hold functions are removed,
   // hence they can only be applied to the component as strings
   private static convertStringFunctionsToRealFunctions(type: ColumnType) {
-    ObjectUtils.convertStringToFunction(type, 'validation');
+    if (type.textValidation) ObjectUtils.convertStringToFunction(type.textValidation, 'func');
     if (type.sorting) {
       ObjectUtils.convertStringToFunction(type.sorting, 'ascending');
       ObjectUtils.convertStringToFunction(type.sorting, 'descending');
@@ -103,7 +103,7 @@ export class ColumnTypesUtils {
     types.forEach((type) => {
       ColumnTypesUtils.convertStringFunctionsToRealFunctions(type);
       ColumnTypesUtils.processCategories(type, isDefaultTextRemovable, defaultText);
-      ColumnTypesUtils.processValidationProps(type);
+      ColumnTypesUtils.processTextValidationProps(type);
     });
     return types as ColumnTypesInternal;
   }
@@ -114,7 +114,7 @@ export class ColumnTypesUtils {
     const processedInternalTypes = ColumnTypesUtils.process(types, isDefaultTextRemovable, defaultText);
     return {
       types: processedInternalTypes,
-      activeType: ColumnTypesUtils.getActiveType(settings, types) as ColumnTypeInternal,
+      activeType: ColumnTypesUtils.getActiveType(settings, processedInternalTypes) as ColumnTypeInternal,
     };
   }
 }

@@ -1,5 +1,6 @@
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
+import {TextValidation} from '../../types/textValidation';
 import {CellText} from '../../types/tableContents';
 import {EMPTY_STRING} from '../../consts/text';
 
@@ -18,22 +19,21 @@ export class Validation {
     ),
   };
 
-  public static readonly DEFAULT_TYPES_FUNCTIONALITY: {[key in DEFAULT_COLUMN_TYPES]?: ColumnTypeInternal['validation']} =
-    {
-      [DEFAULT_COLUMN_TYPES.NUMBER]: (cellText: string) =>
-        cellText !== EMPTY_STRING && !isNaN(cellText as unknown as number),
-      [DEFAULT_COLUMN_TYPES.CURRENCY]: (cellText: string) =>
-        Validation.DEFAULT_TYPES_REGEX[DEFAULT_COLUMN_TYPES.CURRENCY].test(cellText as string),
-      [DEFAULT_COLUMN_TYPES.DATE_DMY]: (cellText: string) =>
-        Validation.DEFAULT_TYPES_REGEX[DEFAULT_COLUMN_TYPES.DATE_DMY].test(cellText as string),
-      [DEFAULT_COLUMN_TYPES.DATE_MDY]: (cellText: string) =>
-        Validation.DEFAULT_TYPES_REGEX[DEFAULT_COLUMN_TYPES.DATE_MDY].test(cellText as string),
-    };
+  public static readonly DEFAULT_TYPES_FUNCTIONALITY: {[key in DEFAULT_COLUMN_TYPES]?: TextValidation['func']} = {
+    [DEFAULT_COLUMN_TYPES.NUMBER]: (cellText: string) =>
+      cellText !== EMPTY_STRING && !isNaN(cellText as unknown as number),
+    [DEFAULT_COLUMN_TYPES.CURRENCY]: (cellText: string) =>
+      Validation.DEFAULT_TYPES_REGEX[DEFAULT_COLUMN_TYPES.CURRENCY].test(cellText as string),
+    [DEFAULT_COLUMN_TYPES.DATE_DMY]: (cellText: string) =>
+      Validation.DEFAULT_TYPES_REGEX[DEFAULT_COLUMN_TYPES.DATE_DMY].test(cellText as string),
+    [DEFAULT_COLUMN_TYPES.DATE_MDY]: (cellText: string) =>
+      Validation.DEFAULT_TYPES_REGEX[DEFAULT_COLUMN_TYPES.DATE_MDY].test(cellText as string),
+  };
 
   public static setCategoriesValidation(type: ColumnTypeInternal, isDefaultTextRemovable: boolean, defaultText: CellText) {
     if (!type.categories?.options) return;
     const optionsMap = new Set<CellText>(type.categories.options.map((option) => option.name));
-    type.validation = (cellText: string) => {
+    type.textValidation.func = (cellText: string) => {
       return !!optionsMap.has(cellText) || (!isDefaultTextRemovable && cellText === defaultText);
     };
   }

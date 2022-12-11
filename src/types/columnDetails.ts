@@ -3,6 +3,7 @@ import {ColumnTypeInternal, ColumnTypesInternal} from './columnTypeInternal';
 import {ColumnSettingsInternal} from './columnsSettings';
 import {AUXILIARY_CELL_TYPE} from '../enums/cellType';
 import {CellStateColors} from './cellStateColors';
+import {ColTextValidity} from './textValidity';
 import {ColumnSizerT} from './columnSizer';
 import {Optional} from './utilityTypes';
 
@@ -52,6 +53,7 @@ export interface CategoryDropdownT {
 
 export interface ColumnDetailsT {
   elements: HTMLElement[];
+  textValidity: ColTextValidity;
   columnSizer: ColumnSizerT;
   types: ColumnTypesInternal;
   activeType: ColumnTypeInternal;
@@ -66,6 +68,7 @@ export interface ColumnDetailsT {
 export type ColumnDetailsInitial = Pick<
   ColumnDetailsT,
   | 'elements'
+  | 'textValidity'
   | 'types'
   | 'activeType'
   | 'categoryDropdown'
