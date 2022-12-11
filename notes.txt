@@ -27,6 +27,8 @@ alternatively can refactor cells to be inputs
 https://pablo.berganza.dev/blog/shadow-dom-firefox-contenteditable/
 
 REF-3
+When customTextProcessing and textValidation both exist, textValidation will validate text after it has been processed and will
+determine if it needs to be set back to default and additionally overwrite the cell style with failedStyle if required.
 
 REF-4
 Identified an issue where the scrollIntoView does not scroll down far enough to an element for it to be fully visible when

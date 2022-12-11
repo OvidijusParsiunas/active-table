@@ -5,7 +5,7 @@ import {DataCellElement} from '../../elements/cell/dataCell/dataCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {CellEvents} from '../../elements/cell/cellEvents';
-import {ValidationStyle} from './validationStyle';
+import {ProcessedTextStyle} from './processedTextStyle';
 
 export class ChangeColumnType {
   private static setInvalidCellToDefault(etc: EditableTableComponent, rowIndex: number, columnIndex: number) {
@@ -48,7 +48,7 @@ export class ChangeColumnType {
   public static change(this: EditableTableComponent, newTypeName: string, columnIndex: number) {
     const previousType = this.columnsDetails[columnIndex].activeType;
     if (newTypeName !== previousType.name) {
-      ValidationStyle.resetValidationStyle(this, columnIndex,
+      ProcessedTextStyle.resetColumnStyle(this, columnIndex,
         ChangeColumnType.changeFunc.bind(this, this, newTypeName, columnIndex));
     }
   }

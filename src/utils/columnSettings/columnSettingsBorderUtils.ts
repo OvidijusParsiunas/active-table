@@ -3,7 +3,7 @@ import {ColumnSettingsAuxBorderUtils} from './columnSettingsAuxBorderUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {GenericElementUtils} from '../elements/genericElementUtils';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
-import {ValidationStyle} from '../columnType/validationStyle';
+import {ProcessedTextStyle} from '../columnType/processedTextStyle';
 
 type OverwritableBorderStyle = 'borderLeftWidth' | 'borderRightWidth';
 
@@ -96,7 +96,7 @@ export class ColumnSettingsBorderUtils {
       subjectColumn: ColumnDetailsT, subjectBorder: keyof BordersOverwrittenBySiblings) {
     if (subjectColumn?.bordersOverwrittenBySiblings[subjectBorder]) {
       ColumnSettingsStyleUtils.applyDefaultStyles(subjectColumn.elements, etc.defaultColumnsSettings);
-      ValidationStyle.reapplyColumnValidationStyle(etc, columnIndex);
+      ProcessedTextStyle.reapplyColumnStyle(etc, columnIndex);
       subjectColumn.bordersOverwrittenBySiblings[subjectBorder] = false;
       ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(subjectColumn, subjectColumn.elements)
     }

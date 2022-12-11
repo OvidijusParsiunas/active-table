@@ -75,6 +75,38 @@
             JSON.stringify([
               {columnName: 'R', width: '50px', cellStyle: {color: 'red'}},
               {
+                columnName: 'Ga',
+                defaultText: 'A',
+                isDefaultTextRemovable: false,
+                customColumnTypes: [
+                  {
+                    name: 'Custom type 2',
+                    textValidation: {
+                      func: `(cellText) => {
+                        return cellText !== 'red'
+                      }`,
+                      setTextToDefaultOnFail: false,
+                      failedStyle: {color: 'red'},
+                    },
+                    customTextProcessing: {
+                      // changeText: `(cellText) => {
+                      //   return 'aa';
+                      // }`,
+                      changeStyle: `(cellText) => {
+                        if (cellText === 'green') {
+                          return {backgroundColor: 'green'}
+                        }
+                        if (cellText === 'purple') {
+                          return {color: 'purple'}
+                        }
+                        return {color: 'black'}
+                      }`,
+                    },
+                  },
+                ],
+                activeTypeName: 'Custom type 2',
+              },
+              {
                 columnName: 'G',
                 defaultText: 'A',
                 minWidth: '500px',

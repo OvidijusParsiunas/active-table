@@ -1,7 +1,7 @@
 import {ColumnSettingsInternal, DefaultColumnsSettings} from '../../types/columnsSettings';
 import {EditableTableComponent} from '../../editable-table-component';
 import {GenericElementUtils} from '../elements/genericElementUtils';
-import {ValidationStyle} from '../columnType/validationStyle';
+import {ProcessedTextStyle} from '../columnType/processedTextStyle';
 import {ColumnDetails} from '../columnDetails/columnDetails';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
@@ -75,7 +75,7 @@ export class ColumnSettingsStyleUtils {
   // prettier-ignore
   public static changeStyle(etc: EditableTableComponent, columnIndex: number,
       oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal) {
-    ValidationStyle.resetValidationStyle(etc, columnIndex,
+    ProcessedTextStyle.resetColumnStyle(etc, columnIndex,
       ColumnSettingsStyleUtils.changeStyleFunc.bind(etc, columnIndex, oldSettings, newSettings))
   }
 }
