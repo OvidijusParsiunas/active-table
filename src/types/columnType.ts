@@ -1,21 +1,16 @@
 import {CalendarFunctionality} from './calendarFunctionality';
 import {CategoriesProperties} from './categoriesProperties';
+import {CustomTextProcessing} from './customTextProcessing';
 import {TextValidation} from './textValidation';
 import {InterfacesUnion} from './utilityTypes';
 import {SortingFuncs} from './sortingFuncs';
-import {CellText} from './tableContents';
 
 // This is to be used by the client exclusively
 
 interface Parent {
   name: string;
   textValidation?: TextValidation;
-  customTextProcessing?: {
-    // IMPORTANT - if utilizing regex inside the function, make sure the escape characters are padded, e.g: \ => \\
-    changeText?: (cellText: string) => CellText;
-    // IMPORTANT - if utilizing regex inside the function, make sure the escape characters are padded, e.g: \ => \\
-    changeStyle?: () => void;
-  };
+  customTextProcessing?: CustomTextProcessing;
   sorting?: SortingFuncs; // By default the elements will be sorted in ascending ASCII character order
 }
 

@@ -1,19 +1,15 @@
 import {CalendarFunctionality} from './calendarFunctionality';
+import {CustomTextProcessing} from './customTextProcessing';
 import {CategoriesProperties} from './categoriesProperties';
 import {TextValidation} from './textValidation';
 import {InterfacesUnion} from './utilityTypes';
 import {SortingFuncs} from './sortingFuncs';
-import {CellText} from './tableContents';
 
 // to be used internally
 export interface Parent {
   name: string;
   textValidation: TextValidation;
-  // executed after the user removes focus from the selected cell
-  postProcessText?: {
-    func?: (cellText: string) => CellText;
-    customValidationStyleColors?: () => void;
-  };
+  customTextProcessing?: CustomTextProcessing;
   sorting?: SortingFuncs; // By default the elements will be sorted in ascending ASCII character order
   categories?: CategoriesProperties;
 }

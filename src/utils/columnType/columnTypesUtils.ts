@@ -93,6 +93,10 @@ export class ColumnTypesUtils {
   // hence they can only be applied to the component as strings
   private static convertStringFunctionsToRealFunctions(type: ColumnType) {
     if (type.textValidation) ObjectUtils.convertStringToFunction(type.textValidation, 'func');
+    if (type.customTextProcessing) {
+      ObjectUtils.convertStringToFunction(type.customTextProcessing, 'changeText');
+      ObjectUtils.convertStringToFunction(type.customTextProcessing, 'changeStyle');
+    }
     if (type.sorting) {
       ObjectUtils.convertStringToFunction(type.sorting, 'ascending');
       ObjectUtils.convertStringToFunction(type.sorting, 'descending');

@@ -31,10 +31,11 @@ export class DataUtils {
 
   // prettier-ignore
   public static processCellText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellText: CellText) {
-    const trimmedText = typeof cellText === 'string' ? cellText.trim() : cellText;
-    const {activeType: {textValidation}, settings: {defaultText}} = etc.columnsDetails[columnIndex];
-    if (!textValidation.setTextToDefaultOnFail && trimmedText !== EMPTY_STRING) return trimmedText;
-    const shouldSetToDefault = DataUtils.shouldBeSetToDefault(etc, trimmedText, defaultText, rowIndex, textValidation);
-    return shouldSetToDefault ? defaultText : trimmedText;
+    let processedText = typeof cellText === 'string' ? cellText.trim() : cellText;
+    const {activeType: {textValidation, customTextProcessing}, settings: {defaultText}} = etc.columnsDetails[columnIndex];
+    if (customTextProcessing?.changeText) processedText = customTextProcessing.changeText(String(processedText)); 
+    if (!textValidation.setTextToDefaultOnFail && processedText !== EMPTY_STRING) return processedText;
+    const shouldSetToDefault = DataUtils.shouldBeSetToDefault(etc, processedText, defaultText, rowIndex, textValidation);
+    return shouldSetToDefault ? defaultText : processedText;
   }
 }
