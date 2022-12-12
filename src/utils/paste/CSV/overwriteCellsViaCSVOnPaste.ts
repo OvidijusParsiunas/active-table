@@ -126,10 +126,31 @@ export class OverwriteCellsViaCSVOnPaste {
     return dataForNewColumns;
   }
 
+  private static insertColumnsInsideIfCantInsertRight(etc: EditableTableComponent, CSV: CSV, startColumnIndex: number) {
+    const columnsToBeOverwritten = etc.columnsDetails.slice(startColumnIndex);
+    const indexOfNoRightInsertionColumn = columnsToBeOverwritten.findIndex((columnDetails) => {
+      return columnDetails.settings.isInsertRightAvailable === false;
+    });
+    // if can insert right for all proceeding, no need to augment csv or table
+    if (indexOfNoRightInsertionColumn === -1) return;
+    if (indexOfNoRightInsertionColumn === 0) {
+      // if the currently pasted on column does not allow right insertion, only overwrite the existing column's cells
+      // this augments the CSV object to contain data for the first column
+      CSV.forEach((row) => row.splice(1, row.length - 1));
+    } else {
+      // insert new columns before the column that has no right insertion and also overwrite that column's cells
+      const numberOfColumnsToBeInserted = CSV[0].length - (indexOfNoRightInsertionColumn + 1);
+      for (let i = 0; i < numberOfColumnsToBeInserted; i += 1) {
+        InsertNewColumn.insert(etc, startColumnIndex + indexOfNoRightInsertionColumn);
+      }
+    }
+  }
+
   // prettier-ignore
   private static overwriteCellsTextUsingCSV(
       etc: EditableTableComponent, CSV: CSV, startRowIndex: number, startColumnIndex: number) {
     const numberOfRowsToOverwrite = etc.contents.length - startRowIndex;
+    OverwriteCellsViaCSVOnPaste.insertColumnsInsideIfCantInsertRight(etc, CSV, startColumnIndex);
     const dataToOverwriteRows = CSV.slice(0, numberOfRowsToOverwrite);
     // the reason why new columns are not created when the existing cells are overwritten is because the creation of new
     // columns allows new column data to be defined - which is gathered after traversing all dataToOverwriteRows

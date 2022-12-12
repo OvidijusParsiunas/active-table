@@ -2,6 +2,7 @@ type Array2D<T> = T[][];
 
 export class ArrayUtils {
   public static transpose<T>(array: Array2D<T>) {
+    if (array.length === 0) return array;
     const newArray: Array2D<T> = [];
     const maxLength = Math.max(array.length, array[0].length);
     rowLoop: for (let i = 0; i < maxLength; i += 1) {

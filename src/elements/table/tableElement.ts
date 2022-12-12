@@ -52,6 +52,8 @@ export class TableElement {
     tableElement.appendChild(columnDropdownElement);
     activeOverlayElements.columnDropdown = columnDropdownElement;
     // row dropdown
+    // WORK - option to not display dropdowns
+    // WORK - need option to not show specific items in row dropdown
     const rowDropdownElement = RowDropdown.create(etc);
     tableElement.appendChild(rowDropdownElement);
     activeOverlayElements.rowDropdown = rowDropdownElement;

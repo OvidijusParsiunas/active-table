@@ -50,6 +50,7 @@ export class CellElement {
     } else {
       cellElement.contentEditable = isHeader ? 'false' : String(isCellTextEditable);
     }
+    if (!isHeader) cellElement.style.cursor = isCellTextEditable ? 'text' : 'default';
   }
 
   // prettier-ignore
