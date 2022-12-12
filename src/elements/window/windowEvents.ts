@@ -2,6 +2,7 @@ import {CategoryCellEvents} from '../cell/cellsWithTextDiv/categoryCell/category
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
 import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
+import {ColumnDropdownEvents} from '../dropdown/columnDropdown/columnDropdownEvents';
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {RowDropdownEvents} from '../dropdown/rowDropdown/rowDropdownEvents';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
@@ -15,6 +16,11 @@ export class WindowEvents {
   public static onKeyDown(this: EditableTableComponent, event: KeyboardEvent) {
     const {rowIndex, columnIndex} = this.focusedElements.cell;
     if (rowIndex === undefined || columnIndex === undefined) return;
+    // workaround for when opened dropdown does not have a focused item
+    if (Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown) && !this.shadowRoot?.activeElement) {
+      ColumnDropdownEvents.onKeyDown.bind(this)(this.activeOverlayElements.columnDropdown as HTMLElement, event);
+      return;
+    }
     if (Dropdown.isDisplayed(this.activeOverlayElements.rowDropdown)) {
       RowDropdownEvents.windowOnKeyDown(this, event);
     }

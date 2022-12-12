@@ -5,7 +5,7 @@ import {ColumnDropdown} from './columnDropdown';
 import {DropdownItem} from '../dropdownItem';
 
 export class ColumnDropdownEvents {
-  private static onKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
+  public static onKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
     if (event.key === KEYBOARD_KEY.ENTER) {
       const itemElement = event.target as HTMLElement;
       if (DropdownItem.doesElementContainInputClass(itemElement)) {
@@ -17,7 +17,7 @@ export class ColumnDropdownEvents {
     } else if (event.key === KEYBOARD_KEY.ESCAPE) {
       ColumnDropdown.processTextAndHide(this);
     }
-    DropdownEvents.itemKeyNavigation(dropdownElement, event);
+    DropdownEvents.itemKeyNavigation(this.shadowRoot as ShadowRoot, dropdownElement, event);
   }
 
   public static set(etc: EditableTableComponent, dropdownElement: HTMLElement) {

@@ -65,6 +65,11 @@ export class ColumnSettingsUtils {
     defaultColumnsSettings.defaultText ??= EMPTY_STRING;
     defaultColumnsSettings.isDefaultTextRemovable ??= true;
     defaultColumnsSettings.isCellTextEditable ??= true;
+    defaultColumnsSettings.isSortAvailable ??= true;
+    defaultColumnsSettings.isDeleteAvailable ??= true;
+    defaultColumnsSettings.isMoveAvailable ??= true;
+    defaultColumnsSettings.isInsertLeftAvailable ??= true;
+    defaultColumnsSettings.isInsertRightAvailable ??= true;
   }
 
   // prettier-ignore

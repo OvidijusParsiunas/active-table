@@ -36,8 +36,9 @@ export class DropdownItemNavigation {
       ? focusedItem : (focusedItem[isNext ? 'nextSibling' : 'previousSibling'] as HTMLElement);
     if (!siblingElement) {
       return DropdownItemNavigation.focusItemWhenOnEdge(focusedItem, dropdownElement, isNext);
-      // when on a title item
-    } else if (siblingElement.classList.contains(DropdownItem.DROPDOWN_TITLE_ITEM_CLASS)) {
+      // when item not displayed or a title item
+    } else if (!DropdownItem.isDisplayed(siblingElement)
+        || siblingElement.classList.contains(DropdownItem.DROPDOWN_TITLE_ITEM_CLASS)) {
       return DropdownItemNavigation.focusSiblingItem(siblingElement, dropdownElement, isNext);
       // when on an input item
     } else if (siblingElement.classList.contains(DropdownItem.DROPDOWN_INPUT_ITEM_CLASS)) {

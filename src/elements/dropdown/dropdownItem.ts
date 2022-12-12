@@ -10,6 +10,16 @@ export class DropdownItem {
   public static readonly DROPDOWN_NESTED_DROPDOWN_ITEM = 'dropdown-nested-dropdown-item';
   // this is used to identify if a mouse event is currently on a dropdown item
   public static readonly DROPDOWN_ITEM_IDENTIFIER = 'dropdown-item-identifier';
+  private static readonly HIDDEN = 'none';
+  private static readonly DISPLAY = '';
+
+  public static toggleItem(item: HTMLElement, isDisplay: boolean) {
+    item.style.display = isDisplay ? DropdownItem.DISPLAY : DropdownItem.HIDDEN;
+  }
+
+  public static isDisplayed(item: HTMLElement) {
+    return item.style.display === DropdownItem.DISPLAY;
+  }
 
   private static createDropdownItemBaseElement(tag: keyof HTMLElementTagNameMap) {
     const dropdownItemBaseDiv = document.createElement(tag);

@@ -35,7 +35,7 @@ export class RowDropdownEvents {
     } else if (event.key === KEYBOARD_KEY.ESCAPE) {
       RowDropdown.hide(this);
     }
-    DropdownEvents.itemKeyNavigation(dropdownElement, event);
+    DropdownEvents.itemKeyNavigation(this.shadowRoot as ShadowRoot, dropdownElement, event);
   }
 
   public static set(etc: EditableTableComponent, dropdownElement: HTMLElement) {

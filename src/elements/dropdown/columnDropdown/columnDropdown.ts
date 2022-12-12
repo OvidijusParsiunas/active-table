@@ -38,6 +38,7 @@ export class ColumnDropdown {
     Dropdown.hide(columnDropdown, fullTableOverlay, columnTypeDropdown);
     ColumnTypeDropdownItem.reset(columnTypeDropdown);
     ColumnDropdown.resetDropdownPosition(columnDropdown);
+    ColumnDropdownItem.resetItems(columnDropdown);
     DropdownItemHighlightUtils.fadeCurrentlyHighlighted(activeOverlayElements);
   }
 

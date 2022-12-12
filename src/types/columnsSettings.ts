@@ -14,20 +14,19 @@ interface Parent {
   defaultText?: CellText;
   isDefaultTextRemovable?: boolean; // true by default
   cellStyle?: CellCSSStyle;
+  isCellTextEditable?: boolean; // true by default
   headerStyleProps?: HoverableElementStyleClient;
   isHeaderTextEditable?: boolean;
-  isCellTextEditable?: boolean; // true by default
   defaultColumnTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
   customColumnTypes?: ColumnTypes; // additional custom column types
   // if not provided the following property will default to first of the following:
   // First type to not have validation/First available type/'Text'
   activeTypeName?: string;
-  isSortAvailable?: boolean;
-  isDeleteAvailable?: boolean;
+  isSortAvailable?: boolean; // true by default
+  isDeleteAvailable?: boolean; // true by default
+  isInsertLeftAvailable?: boolean; // true by default
+  isInsertRightAvailable?: boolean; // true by default
   isMoveAvailable?: boolean;
-  isEditable?: boolean;
-  isInsertLeftAvailable?: boolean;
-  isInsertRightAvailable?: boolean;
 }
 
 // TO-DO - can probably make width part of the cellStyle - take note that CellCSSStyle is currently not using width as
