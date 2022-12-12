@@ -27,8 +27,8 @@ export class AddNewRowElement {
 
   // prettier-ignore
   private static createCell(etc: EditableTableComponent) {
-    const {defaultColumnsSettings: {cellStyle}, auxiliaryTableContentInternal: {displayAddRowCell, style}} = etc;
-    const addNewRowCell = CellElement.create(false, cellStyle, style?.defaultStyle);
+    const {defaultColumnsSettings: {cellStyle}, auxiliaryTableContentInternal: {displayAddRowCell, styleProps}} = etc;
+    const addNewRowCell = CellElement.create(false, cellStyle, styleProps?.default);
     addNewRowCell.id = 'add-new-row-cell';
     if (!displayAddRowCell) {
       // if this is not displayed when there is content, always use the stub style - REF-18

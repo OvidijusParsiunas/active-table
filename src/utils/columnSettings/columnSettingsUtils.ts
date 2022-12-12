@@ -45,7 +45,7 @@ export class ColumnSettingsUtils {
 
   private static createInternalSettings(settings: CustomColumnSettings, defSettings: DefaultColumnsSettings) {
     const internalSettings = settings as ColumnSettingsInternal;
-    if (internalSettings.cellStyle || internalSettings.header?.defaultStyle) {
+    if (internalSettings.cellStyle || internalSettings.headerStyleProps?.default) {
       internalSettings.stylePrecedence = true; // REF-23
     }
     Object.keys(defSettings).forEach((key: string) => {

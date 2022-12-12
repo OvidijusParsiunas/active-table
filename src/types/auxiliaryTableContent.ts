@@ -8,7 +8,7 @@ export interface AuxiliaryTableContentDisplayProps {
 }
 
 export interface AuxiliaryTableContentGenericProps {
-  style?: HoverableElementStyleClient;
+  styleProps?: HoverableElementStyleClient;
   inheritHeaderStyle?: boolean;
 }
 

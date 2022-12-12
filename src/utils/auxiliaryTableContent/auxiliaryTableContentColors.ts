@@ -19,27 +19,27 @@ export class AuxiliaryTableContentColors {
     },
   };
 
-  private static getInheritedDefaultColr(key: keyof CellStateColorProperties, clientHeader?: HoverableElementStyleClient) {
-    return clientHeader?.defaultStyle?.[key] || AuxiliaryTableContentColors.CELL_COLORS.data.default?.[key];
+  private static getInheritedDefaultColr(key: keyof CellStateColorProperties, headerStyle?: HoverableElementStyleClient) {
+    return headerStyle?.default?.[key] || AuxiliaryTableContentColors.CELL_COLORS.data.default?.[key];
   }
 
-  private static getInheritedHoverColor(key: keyof CellStateColorProperties, clientHeader?: HoverableElementStyleClient) {
+  private static getInheritedHoverColor(key: keyof CellStateColorProperties, headerStyle?: HoverableElementStyleClient) {
     return (
-      clientHeader?.hoverColors?.[key] ||
+      headerStyle?.hoverColors?.[key] ||
       AuxiliaryTableContentColors.CELL_COLORS.data.hover?.[key] ||
-      AuxiliaryTableContentColors.getInheritedDefaultColr(key, clientHeader)
+      AuxiliaryTableContentColors.getInheritedDefaultColr(key, headerStyle)
     );
   }
 
-  private static overwriteHeaderWithInheritedColors(clientHeader?: HoverableElementStyleClient) {
+  private static overwriteHeaderWithInheritedColors(headerStyleProps?: HoverableElementStyleClient) {
     AuxiliaryTableContentColors.CELL_COLORS.header = {
       default: {
-        backgroundColor: AuxiliaryTableContentColors.getInheritedDefaultColr('backgroundColor', clientHeader),
-        color: AuxiliaryTableContentColors.getInheritedDefaultColr('color', clientHeader),
+        backgroundColor: AuxiliaryTableContentColors.getInheritedDefaultColr('backgroundColor', headerStyleProps),
+        color: AuxiliaryTableContentColors.getInheritedDefaultColr('color', headerStyleProps),
       },
       hover: {
-        backgroundColor: AuxiliaryTableContentColors.getInheritedHoverColor('backgroundColor', clientHeader),
-        color: AuxiliaryTableContentColors.getInheritedHoverColor('color', clientHeader),
+        backgroundColor: AuxiliaryTableContentColors.getInheritedHoverColor('backgroundColor', headerStyleProps),
+        color: AuxiliaryTableContentColors.getInheritedHoverColor('color', headerStyleProps),
       },
     };
   }
@@ -47,14 +47,14 @@ export class AuxiliaryTableContentColors {
   // prettier-ignore
   private static getHoverColorValue(etc: EditableTableComponent,
       colorKey: keyof CellStateColorProperties, defaultColor: string): string {
-    const {style} = etc.auxiliaryTableContentInternal;
-    return style?.hoverColors?.[colorKey] || style?.defaultStyle?.[colorKey]
+    const {styleProps} = etc.auxiliaryTableContentInternal;
+    return styleProps?.hoverColors?.[colorKey] || styleProps?.default?.[colorKey]
       || etc.defaultColumnsSettings.cellStyle?.[colorKey] || defaultColor;
   }
 
   // prettier-ignore
   private static getDefaultColorValue(etc: EditableTableComponent, colorKey: keyof CellStateColorProperties) {
-    return etc.auxiliaryTableContentInternal.style?.defaultStyle?.[colorKey]
+    return etc.auxiliaryTableContentInternal.styleProps?.default?.[colorKey]
       || etc.defaultColumnsSettings.cellStyle?.[colorKey] || '';
   }
 
@@ -74,9 +74,9 @@ export class AuxiliaryTableContentColors {
     };
     AuxiliaryTableContentColors.CELL_COLORS.data = cellColors;
     AuxiliaryTableContentColors.CELL_COLORS.header = cellColors;
-    const {auxiliaryTableContentInternal: {inheritHeaderStyle}, defaultColumnsSettings: {header}} = etc;
+    const {auxiliaryTableContentInternal: {inheritHeaderStyle}, defaultColumnsSettings: {headerStyleProps}} = etc;
     if (inheritHeaderStyle === undefined || inheritHeaderStyle === true) {
-      AuxiliaryTableContentColors.overwriteHeaderWithInheritedColors(header)
+      AuxiliaryTableContentColors.overwriteHeaderWithInheritedColors(headerStyleProps)
     }
   }
 

@@ -121,9 +121,9 @@ export class CellElement {
 
   // prettier-ignore
   private static createCellDOMElement(etc: EditableTableComponent, text: CellText, colIndex: number, isHeader: boolean) {
-    const {defaultColumnsSettings: {cellStyle, header}, columnsDetails, tableElementRef} = etc;
+    const {defaultColumnsSettings: {cellStyle, headerStyleProps}, columnsDetails, tableElementRef} = etc;
     const columnDetails = columnsDetails[colIndex];
-    const cellElement = CellElement.create(isHeader, cellStyle, isHeader ? header?.defaultStyle || {} : {});
+    const cellElement = CellElement.create(isHeader, cellStyle, isHeader ? headerStyleProps?.default || {} : {});
     const {settings} = columnDetails;
     if (settings) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, cellElement, isHeader);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [cellElement]); // REF-23

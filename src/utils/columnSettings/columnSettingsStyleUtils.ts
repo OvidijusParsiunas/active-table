@@ -10,7 +10,7 @@ import {CellCSSStyle} from '../../types/cssStyle';
 
 export class ColumnSettingsStyleUtils {
   public static applySettingsStyleOnCell(settings: ColumnSettingsInternal, cellElement: HTMLElement, isHeader: boolean) {
-    Object.assign(cellElement.style, settings.cellStyle || {}, isHeader ? settings.header?.defaultStyle || {} : {});
+    Object.assign(cellElement.style, settings.cellStyle || {}, isHeader ? settings.headerStyleProps?.default || {} : {});
   }
 
   private static applySettingStyle(columnElements: HTMLElement[], settings: ColumnSettingsInternal) {
@@ -21,8 +21,8 @@ export class ColumnSettingsStyleUtils {
   }
 
   public static applyDefaultStyles(columnElements: HTMLElement[], defaultColumnsSettings: DefaultColumnsSettings) {
-    const {cellStyle, header} = defaultColumnsSettings;
-    CellElement.setDefaultCellStyle(columnElements[0], cellStyle, header?.defaultStyle);
+    const {cellStyle, headerStyleProps: header} = defaultColumnsSettings;
+    CellElement.setDefaultCellStyle(columnElements[0], cellStyle, header?.default);
     columnElements.slice(1).forEach((element) => {
       CellElement.setDefaultCellStyle(element, cellStyle);
     });
@@ -45,8 +45,8 @@ export class ColumnSettingsStyleUtils {
   // prettier-ignore
   private static resetStyleToDefault(columnElements: HTMLElement[],
       settings: ColumnSettingsInternal, defaultColumnsSettings: DefaultColumnsSettings) {
-    if (settings.header?.defaultStyle) {
-      ColumnSettingsStyleUtils.unsetHeaderSettingStyle(columnElements[0], settings.header.defaultStyle);
+    if (settings.headerStyleProps?.default) {
+      ColumnSettingsStyleUtils.unsetHeaderSettingStyle(columnElements[0], settings.headerStyleProps.default);
     }
     if (settings.cellStyle) ColumnSettingsStyleUtils.unsetCellSettingStyle(columnElements, settings.cellStyle);
     ColumnSettingsStyleUtils.applyDefaultStyles(columnElements, defaultColumnsSettings);
@@ -65,9 +65,9 @@ export class ColumnSettingsStyleUtils {
   private static changeStyleFunc(this: EditableTableComponent, columnIndex: number,
       oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal) {
     const columnDetails = this.columnsDetails[columnIndex];
-    if (newSettings.cellStyle || newSettings.header?.defaultStyle) {
+    if (newSettings.cellStyle || newSettings.headerStyleProps?.default) {
       ColumnSettingsStyleUtils.updateColumnStyle(this.defaultColumnsSettings, columnDetails, newSettings, true);
-    } else if (oldSettings.cellStyle || oldSettings.header?.defaultStyle) {
+    } else if (oldSettings.cellStyle || oldSettings.headerStyleProps?.default) {
       ColumnSettingsStyleUtils.updateColumnStyle(this.defaultColumnsSettings, columnDetails, oldSettings, false);
     }
   }

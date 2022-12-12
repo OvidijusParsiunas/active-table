@@ -31,7 +31,7 @@ export class IndexColumn {
     if (!tableDimensionsInternal.isColumnIndexCellTextWrapped) {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }
-    Object.assign(cell.style, defaultColumnsSettings.cellStyle, auxiliaryTableContentInternal.style?.defaultStyle || {});
+    Object.assign(cell.style, defaultColumnsSettings.cellStyle, auxiliaryTableContentInternal.styleProps?.default || {});
     if (isHeader) Object.assign(cell.style, AuxiliaryTableContentColors.CELL_COLORS.header.default);
     return cell;
   }
