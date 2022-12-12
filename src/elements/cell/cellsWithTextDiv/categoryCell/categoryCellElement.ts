@@ -10,8 +10,8 @@ import {CellElement} from '../../cellElement';
 export class CategoryCellElement {
   private static readonly CATEGORY_TEXT_DIV_CLASS = 'category-text-div';
 
-  private static setCellTextAsAnElement(cellElement: HTMLElement, backgroundColor: string) {
-    const textElement = CellTextElement.setCellTextAsAnElement(cellElement);
+  private static setCellTextAsAnElement(cellElement: HTMLElement, backgroundColor: string, isCellTextEditable: boolean) {
+    const textElement = CellTextElement.setCellTextAsAnElement(cellElement, isCellTextEditable);
     textElement.classList.add(CategoryCellElement.CATEGORY_TEXT_DIV_CLASS);
     textElement.style.backgroundColor = backgroundColor;
   }
@@ -19,9 +19,9 @@ export class CategoryCellElement {
   // prettier-ignore
   public static setCellCategoryStructure(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
-    const {categoryDropdown: {categoryToItem}} = etc.columnsDetails[columnIndex];
+    const {categoryDropdown: {categoryToItem}, settings: {isCellTextEditable}} = etc.columnsDetails[columnIndex];
     const backgroundColor = categoryToItem[CellElement.getText(cellElement)]?.color || '';
-    CategoryCellElement.setCellTextAsAnElement(cellElement, backgroundColor);
+    CategoryCellElement.setCellTextAsAnElement(cellElement, backgroundColor, isCellTextEditable as boolean);
     CategoryCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
   }
 

@@ -1,9 +1,9 @@
 import {BordersOverwrittenBySiblings, ColumnDetailsT} from '../../types/columnDetails';
 import {ColumnSettingsAuxBorderUtils} from './columnSettingsAuxBorderUtils';
+import {ProcessedDataTextStyle} from '../columnType/processedDataTextStyle';
 import {EditableTableComponent} from '../../editable-table-component';
 import {GenericElementUtils} from '../elements/genericElementUtils';
-import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
-import {ProcessedTextStyle} from '../columnType/processedTextStyle';
+import {ResetColumnStyles} from './resetColumnStyles';
 
 type OverwritableBorderStyle = 'borderLeftWidth' | 'borderRightWidth';
 
@@ -95,8 +95,8 @@ export class ColumnSettingsBorderUtils {
   private static resetIfBorderOverwritten(etc: EditableTableComponent, columnIndex: number,
       subjectColumn: ColumnDetailsT, subjectBorder: keyof BordersOverwrittenBySiblings) {
     if (subjectColumn?.bordersOverwrittenBySiblings[subjectBorder]) {
-      ColumnSettingsStyleUtils.applyDefaultStyles(subjectColumn.elements, etc.defaultColumnsSettings);
-      ProcessedTextStyle.reapplyColumnStyle(etc, columnIndex);
+      ResetColumnStyles.applyDefaultStyles(subjectColumn.elements, etc.defaultColumnsSettings);
+      ProcessedDataTextStyle.reapplyCellsStyle(etc, columnIndex);
       subjectColumn.bordersOverwrittenBySiblings[subjectBorder] = false;
       ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(subjectColumn, subjectColumn.elements)
     }

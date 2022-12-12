@@ -37,10 +37,6 @@
         if (element) {
           // element.setAttribute('contents', `[[${myValue[0]}],[${myValue[1]}]]`);
           element.setAttribute('tableStyle', JSON.stringify({border: '20px solid black'}));
-          // element.setAttribute(
-          //   'header',
-          //   JSON.stringify({defaultStyle: {backgroundColor: 'lightgrey', borderRight: '1px solid yellow'}})
-          // );
           element.setAttribute(
             'defaultColumnsSettings',
             JSON.stringify({
@@ -59,7 +55,7 @@
                 },
               ],
               isDefaultTextRemovable: false,
-              // header: {defaultStyle: {backgroundColor: 'lightgrey', borderRight: '1px solid yellow'}},
+              // headerStyleProps: {defaultStyle: {backgroundColor: 'lightgrey', borderRight: '1px solid yellow'}},
               activeTypeName: 'Custom type 1',
             })
           );
@@ -116,7 +112,7 @@
                   borderBottom: '1px solid red',
                   backgroundColor: 'orange',
                 },
-                header: {
+                headerStyleProps: {
                   defaultStyle: {
                     border: '1px solid green',
                   },
@@ -169,7 +165,7 @@
                   },
                 ],
                 activeTypeName: 'Custom type 3',
-                // header: {
+                // headerStyleProps: {
                 //   defaultStyle: {
                 //     border: '1px solid green',
                 //   },
@@ -179,7 +175,7 @@
               //   columnName: 'B',
               //   width: '400px',
               //   cellStyle: {backgroundColor: 'red'},
-              //   header: {hoverColors: {backgroundColor: 'yellow'}},
+              //   headerStyleProps: {hoverColors: {backgroundColor: 'yellow'}},
               // },
             ])
           );

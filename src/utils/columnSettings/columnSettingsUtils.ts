@@ -64,6 +64,7 @@ export class ColumnSettingsUtils {
   private static processDefaultColumnsSettings(defaultColumnsSettings: DefaultColumnsSettings) {
     defaultColumnsSettings.defaultText ??= EMPTY_STRING;
     defaultColumnsSettings.isDefaultTextRemovable ??= true;
+    defaultColumnsSettings.isCellTextEditable ??= true;
   }
 
   // prettier-ignore

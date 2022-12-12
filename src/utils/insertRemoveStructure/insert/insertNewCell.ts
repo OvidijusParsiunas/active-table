@@ -7,10 +7,10 @@ import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTab
 import {UpdateIndexColumnWidth} from '../../../elements/indexColumn/updateIndexColumnWidth';
 import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
 import {ColumnDetailsInitial, ColumnDetailsT} from '../../../types/columnDetails';
+import {ProcessedDataTextStyle} from '../../columnType/processedDataTextStyle';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
-import {ProcessedTextStyle} from '../../columnType/processedTextStyle';
 import {CellElementIndex} from '../../elements/cellElementIndex';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
@@ -52,7 +52,7 @@ export class InsertNewCell {
     const {auxiliaryTableContentInternal: {displayIndexColumn}, contents, columnsDetails} = etc;
     const columnDetails = columnsDetails[columnIndex];
     columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
-    columnDetails.processedStyle.splice(rowIndex, 0, ProcessedTextStyle.getDefaultProcessedTextStyle());
+    columnDetails.processedStyle.splice(rowIndex, 0, ProcessedDataTextStyle.getDefaultProcessedTextStyle());
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, displayIndexColumn);
     // cannot place in a timeout as etc.contents length is used to get last row index
     contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
@@ -103,7 +103,7 @@ export class InsertNewCell {
       if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
       ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
     } else {
-      ProcessedTextStyle.setCellStyle(etc, rowIndex, columnIndex);
+      ProcessedDataTextStyle.setCellStyle(etc, rowIndex, columnIndex); // custom style will be applied in cellEvents
     }
     setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, processedCellText, isNewText));
   }

@@ -4,13 +4,14 @@ import {AddNewColumnElement} from '../table/addNewElements/column/addNewColumnEl
 import {TableDimensionsUtils} from '../../utils/tableDimensions/tableDimensionsUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ExtractElements} from '../../utils/elements/extractElements';
+import {DEFAULT_COLUMN_WIDTH} from '../../consts/defaultColumnWidth';
 import {Browser} from '../../utils/browser/browser';
 import {TableElement} from '../table/tableElement';
 import {IndexColumn} from './indexColumn';
 
 export class UpdateIndexColumnWidth {
   // acts as the recorded column offsetWidth
-  public static WIDTH = 30;
+  public static WIDTH = DEFAULT_COLUMN_WIDTH;
 
   private static wrapColumnTextAndGetDefaultWidth(etc: EditableTableComponent) {
     const {tableBodyElementRef, contents, tableDimensionsInternal} = etc;

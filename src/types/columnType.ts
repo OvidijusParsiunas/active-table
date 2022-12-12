@@ -9,6 +9,7 @@ import {SortingFuncs} from './sortingFuncs';
 
 interface Parent {
   name: string;
+  // textValidation and customTextProcessing only operate on data cells
   // REF-3
   textValidation?: TextValidation; // this is a genuine form of custom text validation and its resulting style
   customTextProcessing?: CustomTextProcessing; // this is used to allow explicit processing of text and its resulting style

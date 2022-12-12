@@ -15,7 +15,7 @@ interface Parent {
   isDefaultTextRemovable?: boolean; // true by default
   cellStyle?: CellCSSStyle;
   headerStyleProps?: HoverableElementStyleClient;
-  isHeaderEditable?: boolean;
+  isHeaderTextEditable?: boolean;
   isCellTextEditable?: boolean;
   defaultColumnTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
   customColumnTypes?: ColumnTypes; // additional custom column types
