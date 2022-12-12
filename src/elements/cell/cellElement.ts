@@ -43,12 +43,12 @@ export class CellElement {
     return cellElement;
   }
 
-  public static prepContentEditable(cellElement: HTMLElement, isHeader: boolean) {
+  public static prepContentEditable(cellElement: HTMLElement, isHeader: boolean, isCellTextEditable: boolean) {
     if (Browser.IS_FIREFOX) {
-      FirefoxCaretDisplayFix.setTabIndex(cellElement, isHeader);
+      if (isCellTextEditable) FirefoxCaretDisplayFix.setTabIndex(cellElement, isHeader);
       FirefoxCaretDisplayFix.removeContentEditable(cellElement);
     } else {
-      cellElement.contentEditable = String(!isHeader);
+      cellElement.contentEditable = isHeader ? 'false' : String(isCellTextEditable);
     }
   }
 
@@ -125,9 +125,9 @@ export class CellElement {
     const columnDetails = columnsDetails[colIndex];
     const cellElement = CellElement.create(isHeader, cellStyle, isHeader ? headerStyleProps?.default || {} : {});
     const {settings} = columnDetails;
-    if (settings) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, cellElement, isHeader);
+    ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, cellElement, isHeader);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [cellElement]); // REF-23
-    CellElement.prepContentEditable(cellElement, isHeader);
+    CellElement.prepContentEditable(cellElement, isHeader, settings.isCellTextEditable);
     // overwritten again if static table
     if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
     CellElement.processCellWithNewText(etc, cellElement, text, true, false);

@@ -10,7 +10,8 @@ export class DateCellElement {
   // prettier-ignore
   public static setCellDateStructure(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
-    const textElement = DateCellTextElement.setCellTextAsAnElement(cellElement);
+    const {isCellTextEditable} = etc.columnsDetails[columnIndex].settings
+    const textElement = DateCellTextElement.setCellTextAsAnElement(cellElement, isCellTextEditable);
     if (Browser.IS_INPUT_DATE_SUPPORTED) DateCellInputElement.addDateInputElement(
       cellElement, textElement, etc.columnsDetails[columnIndex].activeType);
     setTimeout(() => DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex));

@@ -16,16 +16,16 @@ export class CellTextElement {
     cellElement.appendChild(textElement);
   }
 
-  private static createTextElement(text: string) {
+  private static createTextElement(text: string, isCellTextEditable: boolean) {
     const textElement = document.createElement('div');
     textElement.innerText = text;
     textElement.classList.add(CellTextElement.CELL_TEXT_DIV_CLASS);
-    CellElement.prepContentEditable(textElement, false);
+    CellElement.prepContentEditable(textElement, false, isCellTextEditable);
     return textElement;
   }
 
-  public static setCellTextAsAnElement(cellElement: HTMLElement) {
-    const textElement = CellTextElement.createTextElement(cellElement.innerText); // CAUTION-1
+  public static setCellTextAsAnElement(cellElement: HTMLElement, isCellTextEditable: boolean) {
+    const textElement = CellTextElement.createTextElement(cellElement.innerText, isCellTextEditable); // CAUTION-1
     CellTextElement.set(cellElement, textElement);
     return textElement;
   }

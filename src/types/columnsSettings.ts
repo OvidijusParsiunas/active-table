@@ -16,7 +16,7 @@ interface Parent {
   cellStyle?: CellCSSStyle;
   headerStyleProps?: HoverableElementStyleClient;
   isHeaderTextEditable?: boolean;
-  isCellTextEditable?: boolean;
+  isCellTextEditable?: boolean; // true by default
   defaultColumnTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
   customColumnTypes?: ColumnTypes; // additional custom column types
   // if not provided the following property will default to first of the following:
@@ -73,7 +73,8 @@ export type ColumnSettingsInternal = InterfacesUnion<BuildInternalSettingsInterf
 
 // Interfaces extends Parent allows the Interfaces type to be a union of types - allowing this to return a union of types
 type BuildInternalSettingsInterfacesUnion<Interfaces> = Interfaces extends Parent
-  ? Omit<SetRequired<Interfaces, 'defaultText' | 'isDefaultTextRemovable'>, 'columnName'> & StylePrecedence
+  ? Omit<SetRequired<Interfaces, 'defaultText' | 'isDefaultTextRemovable' | 'isCellTextEditable'>, 'columnName'> &
+      StylePrecedence
   : never;
 
 // REF-23

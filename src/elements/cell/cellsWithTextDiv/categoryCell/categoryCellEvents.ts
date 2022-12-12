@@ -58,6 +58,7 @@ export class CategoryCellEvents {
   }
 
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    if (!etc.columnsDetails[columnIndex].settings.isCellTextEditable) return;
     // important to note that this is still using data events that have not be overwritten here
     // onblur/onfocus do not work for firefox, hence using textElement and keeping it consistent across browsers
     cellElement.onblur = () => {};

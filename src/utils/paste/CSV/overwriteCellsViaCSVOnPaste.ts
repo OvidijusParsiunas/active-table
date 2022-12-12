@@ -12,11 +12,25 @@ import {TableRow, CellText} from '../../../types/tableContents';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
 import {CellEvents} from '../../../elements/cell/cellEvents';
+import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {ArrayUtils} from '../../array/arrayUtils';
+import {EMPTY_STRING} from '../../../consts/text';
 import {CSVRow, CSV} from '../../../types/CSV';
 import {Browser} from '../../browser/browser';
 
 export class OverwriteCellsViaCSVOnPaste {
+  // prettier-ignore
+  private static removeDataThatIsNotEditableFromNewRows(columnsDetails: ColumnsDetailsT, dataForNewRows: CSV,
+      startColumnIndex: number) {
+    const existingColumnsToCheck = columnsDetails.slice(startColumnIndex);
+    existingColumnsToCheck.forEach((columnDetails, colIndex) => {
+      if (!columnDetails.settings.isCellTextEditable) dataForNewRows.forEach((dataRow) => {
+        dataRow[colIndex] = EMPTY_STRING;
+      });
+    });
+    return dataForNewRows;
+  }
+
   // if the data does not fill the 2D array, fill cells with empty strings
   private static createRowDataArrayWithEmptyCells(arrayLength: number, data: CSVRow, dataStartIndex: number) {
     const newRowData = DataUtils.createEmptyStringDataArray(arrayLength);
@@ -26,7 +40,9 @@ export class OverwriteCellsViaCSVOnPaste {
 
   // prettier-ignore
   private static createNewRows(etc: EditableTableComponent, dataForNewRows: CSV, startColumnIndex: number) {
-    dataForNewRows.forEach((rowData: CSVRow) => {
+    const processedDataForNewRows = OverwriteCellsViaCSVOnPaste.removeDataThatIsNotEditableFromNewRows(etc.columnsDetails,
+      dataForNewRows, startColumnIndex);
+    processedDataForNewRows.forEach((rowData: CSVRow) => {
       const newRowData = OverwriteCellsViaCSVOnPaste.createRowDataArrayWithEmptyCells(
         etc.contents[0].length, rowData, startColumnIndex);
       InsertNewRow.insert(etc, etc.contents.length, true, newRowData);
@@ -49,6 +65,7 @@ export class OverwriteCellsViaCSVOnPaste {
     const {auxiliaryTableContentInternal: {displayIndexColumn}, columnsDetails} = etc;
     const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, displayIndexColumn);
     const cellElement = rowElement.children[elementIndex] as HTMLElement;
+    if (cellElement.contentEditable === 'false') return;
     const columnDetails = columnsDetails[columnIndex];
     const oldType = CellTypeTotalsUtils.parseTypeName(CellElement.getText(cellElement), columnDetails.types);
     const processedNewCellText = CellEvents.updateCell(

@@ -26,6 +26,7 @@ export class DateCellTextEvents {
   }
 
   public static setEvents(etc: EditableTableComponent, textElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    if (!etc.columnsDetails[columnIndex].settings.isCellTextEditable) return;
     textElement.onfocus = CellWithTextEvents.focusText.bind(etc, rowIndex, columnIndex, null);
     textElement.onblur = DateCellTextEvents.blurText.bind(etc, rowIndex, columnIndex);
     textElement.oninput = DateCellTextEvents.inputText.bind(etc, columnIndex);

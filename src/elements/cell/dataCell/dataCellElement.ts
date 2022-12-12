@@ -9,7 +9,8 @@ export class DataCellElement {
       rowIndex: number, columnIndex: number, cell: HTMLElement) {
     // overwrites all previous cell content
     cell.innerText = CellElement.getTextElement(cell).innerText; // CAUTION-1
-    CellElement.prepContentEditable(cell, false);
+    const {isCellTextEditable} = etc.columnsDetails[columnIndex].settings
+    CellElement.prepContentEditable(cell, false, isCellTextEditable);
     DataCellEvents.setEvents(etc, cell, rowIndex, columnIndex);
   }
 

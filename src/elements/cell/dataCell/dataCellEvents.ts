@@ -106,6 +106,7 @@ export class DataCellEvents {
   }
 
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    if (!etc.columnsDetails[columnIndex].settings.isCellTextEditable) return;
     cellElement.onfocus = DataCellEvents.focusCell.bind(etc, rowIndex, columnIndex);
     cellElement.onblur = DataCellEvents.blurCell.bind(etc, rowIndex, columnIndex);
     // these are used in date cells and overwritten when converted from

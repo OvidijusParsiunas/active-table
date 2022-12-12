@@ -1,5 +1,5 @@
-import {DataUtils} from '../../utils/insertRemoveStructure/shared/dataUtils';
 import {ProcessedDataTextStyle} from '../../utils/columnType/processedDataTextStyle';
+import {DataUtils} from '../../utils/insertRemoveStructure/shared/dataUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
 import {CellText} from '../../types/tableContents';

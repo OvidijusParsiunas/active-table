@@ -13,8 +13,8 @@ export class DateCellTextElement {
     return defaultText;
   }
 
-  public static setCellTextAsAnElement(cellElement: HTMLElement) {
-    const textElement = CellTextElement.setCellTextAsAnElement(cellElement);
+  public static setCellTextAsAnElement(cellElement: HTMLElement, isCellTextEditable: boolean) {
+    const textElement = CellTextElement.setCellTextAsAnElement(cellElement, isCellTextEditable);
     textElement.style.float = 'left';
     return textElement;
   }
