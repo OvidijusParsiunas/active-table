@@ -36,18 +36,26 @@ export class ColumnSettingsUtils {
   }
 
   // prettier-ignore
+  public static parseSettingsChange(etc: EditableTableComponent) {
+    const {customColumnsSettingsInternal, columnsDetails,
+      focusedElements: {cell: {element: cellElement, columnIndex}}} = etc;
+    const columnDetails = columnsDetails[columnIndex as number];
+    const oldSettings = columnDetails.settings;
+    const newSettings = customColumnsSettingsInternal[CellElement.getText(cellElement as HTMLElement)]
+      || etc.defaultColumnsSettings;
+    return { oldSettings, newSettings, areSettingsDifferent: oldSettings !== newSettings }; 
+  }
+
+  // prettier-ignore
   public static changeColumnSettingsIfNameDifferent(etc: EditableTableComponent,
       cellElement: HTMLElement, columnIndex: number) {
-    const {customColumnsSettingsInternal, columnsDetails} = etc;
-    const columnDetails = columnsDetails[columnIndex];
-    const oldSettings = columnDetails.settings;
-    const newSettings = customColumnsSettingsInternal[CellElement.getText(cellElement)] || etc.defaultColumnsSettings;
-    if (oldSettings !== newSettings) ColumnSettingsUtils.change(etc, cellElement, columnIndex, oldSettings, newSettings);
+    const {oldSettings, newSettings, areSettingsDifferent} = ColumnSettingsUtils.parseSettingsChange(etc);
+    if (areSettingsDifferent) ColumnSettingsUtils.change(etc, cellElement, columnIndex, oldSettings, newSettings);
   }
 
   private static createInternalSettings(settings: CustomColumnSettings, defSettings: DefaultColumnsSettings) {
     const internalSettings = settings as ColumnSettingsInternal;
-    if (internalSettings.cellStyle || internalSettings.headerStyleProps?.default) {
+    if (ColumnSettingsStyleUtils.doesSettingHaveSideBorderStyle(internalSettings)) {
       internalSettings.stylePrecedence = true; // REF-23
     }
     Object.keys(defSettings).forEach((key: string) => {

@@ -57,29 +57,26 @@ export class ColumnSettingsBorderUtils {
       column.elements, siblingColumn.elements, subjectBorder, 0, column.bordersOverwrittenBySiblings)
   }
 
-  private static doesColumnStyleHavePrecedence(columnDetails: ColumnDetailsT) {
-    return columnDetails.settings.stylePrecedence; // REF-23
-  }
-
   // if current column and sibling have custom setting styles
+  // REF-23
   // prettier-ignore
   private static unsetBorders(currentColumnDetails: ColumnDetailsT, leftColumnDetails: ColumnDetailsT,
       rightColumnDetails: ColumnDetailsT) {
     if (!currentColumnDetails) return;
     // if current column has a custom style but siblings do not
-    if (ColumnSettingsBorderUtils.doesColumnStyleHavePrecedence(currentColumnDetails)) {
-      if (rightColumnDetails && !ColumnSettingsBorderUtils.doesColumnStyleHavePrecedence(rightColumnDetails)) {
+    if (currentColumnDetails.settings.stylePrecedence) {
+      if (rightColumnDetails && !rightColumnDetails.settings.stylePrecedence) {
         ColumnSettingsBorderUtils.unsetColumnBorder(rightColumnDetails, currentColumnDetails, 'left');
       }
-      if (leftColumnDetails && !ColumnSettingsBorderUtils.doesColumnStyleHavePrecedence(leftColumnDetails)) {
+      if (leftColumnDetails && !leftColumnDetails.settings.stylePrecedence) {
         ColumnSettingsBorderUtils.unsetColumnBorder(leftColumnDetails, currentColumnDetails, 'right');
       }
       // if current column does not have a custom style but siblings do
     } else {
-      if (rightColumnDetails && ColumnSettingsBorderUtils.doesColumnStyleHavePrecedence(rightColumnDetails)) {
+      if (rightColumnDetails && rightColumnDetails.settings.stylePrecedence) {
         ColumnSettingsBorderUtils.unsetColumnBorder(currentColumnDetails, rightColumnDetails, 'right');
       }
-      if (leftColumnDetails && ColumnSettingsBorderUtils.doesColumnStyleHavePrecedence(leftColumnDetails)) {
+      if (leftColumnDetails && leftColumnDetails.settings.stylePrecedence) {
         ColumnSettingsBorderUtils.unsetColumnBorder(currentColumnDetails, leftColumnDetails, 'left');
       }
     }

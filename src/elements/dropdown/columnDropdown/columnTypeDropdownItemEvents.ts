@@ -1,10 +1,11 @@
+import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
 import {ChangeColumnType} from '../../../utils/columnType/changeColumnType';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnDropdown} from './columnDropdown';
 
 export class ColumnTypeDropdownItemEvents {
   private static onClickMiddleware(this: EditableTableComponent, func: Function): void {
-    func();
+    if (!ColumnSettingsUtils.parseSettingsChange(this).areSettingsDifferent) func();
     ColumnDropdown.processTextAndHide(this);
   }
 
