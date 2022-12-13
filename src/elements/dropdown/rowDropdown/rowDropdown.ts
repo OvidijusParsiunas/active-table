@@ -4,6 +4,7 @@ import {MaximumRows} from '../../../utils/insertRemoveStructure/insert/maximumRo
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {RowDropdownItemEvents} from './rowDropdownItemEvents';
 import {RowDropdownEvents} from './rowDropdownEvents';
 import {DropdownItem} from '../dropdownItem';
@@ -40,8 +41,8 @@ export class RowDropdown {
 
   // TO-DO will this work correctly when a scrollbar is introduced
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement) {
-    dropdownElement.style.top = `${cellElement.offsetTop}px`;
-    dropdownElement.style.left = `${cellElement.offsetWidth}px`;
+    dropdownElement.style.top = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
+    dropdownElement.style.left = `${ElementOffset.processWidth(cellElement.offsetWidth)}px`;
   }
 
   public static display(this: EditableTableComponent, rowIndex: number, event: MouseEvent) {

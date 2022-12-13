@@ -6,6 +6,7 @@ import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnDropdownItemEvents} from './columnDropdownItemEvents';
+import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {DropdownItemNavigation} from '../dropdownItemNavigation';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
 import {ColumnDropdownEvents} from './columnDropdownEvents';
@@ -72,11 +73,12 @@ export class ColumnDropdown {
   }
 
   public static getDropdownTopPosition(cellElement: HTMLElement): PX {
-    return `${cellElement.offsetTop + cellElement.offsetHeight}px`;
+    return `${ElementOffset.processTop(cellElement.offsetTop + cellElement.offsetHeight)}px`;
   }
 
   private static getLeftPropertyToCenterDropdown(cellElement: HTMLElement) {
-    return `${cellElement.offsetLeft + cellElement.offsetWidth / 2 - Dropdown.DROPDOWN_WIDTH / 2}px`;
+    const leftOffset = ElementOffset.processLeft(cellElement.offsetLeft + cellElement.offsetWidth / 2);
+    return `${leftOffset - Dropdown.DROPDOWN_WIDTH / 2}px`;
   }
 
   // TO-DO will this work correctly when a scrollbar is introduced

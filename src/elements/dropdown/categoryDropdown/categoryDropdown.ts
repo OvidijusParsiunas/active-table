@@ -3,6 +3,7 @@ import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownItemEvents} from './categoryDropdownItemEvents';
 import {CategoryDropdownScrollbar} from './categoryDropdownScrollbar';
+import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {CategoryDropdownEvents} from './categoryDropdownEvents';
 import {CategoryDropdownT} from '../../../types/columnDetails';
 import {CategoryDropdownItem} from './categoryDropdownItem';
@@ -32,14 +33,14 @@ export class CategoryDropdown {
 
   private static generateTopPosition(cellElement: HTMLElement, textContainerElement: HTMLElement) {
     const textContainerBottom = textContainerElement.offsetTop + textContainerElement.offsetHeight;
-    return `${cellElement.offsetTop + textContainerBottom + 2}px`;
+    return `${ElementOffset.processTop(cellElement.offsetTop + textContainerBottom + 2)}px`;
   }
 
   private static generateLeftPosition(cellElement: HTMLElement, textContainerElement: HTMLElement): PX {
-    return `${cellElement.offsetLeft + textContainerElement.offsetLeft}px`;
+    return `${ElementOffset.processLeft(cellElement.offsetLeft + textContainerElement.offsetLeft)}px`;
   }
 
-  public static setPosition(dropdown: HTMLElement, cellElement: HTMLElement) {
+  private static setPosition(dropdown: HTMLElement, cellElement: HTMLElement) {
     const textContainerElement = cellElement.children[0] as HTMLElement;
     dropdown.style.bottom = '';
     dropdown.style.right = '';

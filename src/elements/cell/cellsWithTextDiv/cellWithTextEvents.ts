@@ -50,7 +50,7 @@ export class CellWithTextEvents {
       blurCallback?.(this);
       // Firefox does not fire the focus event for CaretPosition.setToEndOfText
       if (Browser.IS_FIREFOX) textElement.focus();
-      // in non firefox browsers this also focuses
+      // in non firefox browsers this focuses
       CaretPosition.setToEndOfText(this, textElement);
     }
   }

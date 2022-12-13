@@ -1,6 +1,7 @@
 import {ColumnSettingsInternal, DefaultColumnsSettings} from '../../types/columnsSettings';
 import {ProcessedDataTextStyle} from '../columnType/processedDataTextStyle';
 import {EditableTableComponent} from '../../editable-table-component';
+import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {GenericElementUtils} from '../elements/genericElementUtils';
 import {ColumnDetails} from '../columnDetails/columnDetails';
 import {CellElement} from '../../elements/cell/cellElement';
@@ -11,10 +12,6 @@ import {CellCSSStyle} from '../../types/cssStyle';
 export class ColumnSettingsStyleUtils {
   public static applySettingsStyleOnCell(settings: ColumnSettingsInternal, cellElement: HTMLElement, isHeader: boolean) {
     Object.assign(cellElement.style, settings.cellStyle || {}, isHeader ? settings.headerStyleProps?.default || {} : {});
-  }
-
-  private static applyHeaderSettingStyle(columnElements: HTMLElement[], settings: ColumnSettingsInternal) {
-    ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, columnElements[0], true);
   }
 
   public static unsetCellSettingStyle(element: HTMLElement, style: CellCSSStyle) {
@@ -46,7 +43,8 @@ export class ColumnSettingsStyleUtils {
   private static updateHeaderStyle(defaultColumnsSettings: DefaultColumnsSettings,
       columnDetails: ColumnDetailsT, settings: ColumnSettingsInternal, isSetNew: boolean) {
     ColumnSettingsStyleUtils.resetHeaderStyleToDefault(columnDetails.elements, settings, defaultColumnsSettings);
-    if (isSetNew) ColumnSettingsStyleUtils.applyHeaderSettingStyle(columnDetails.elements, settings);
+    if (isSetNew) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, columnDetails.elements[0], true);
+    ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [columnDetails.elements[0]]);
     columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(
       defaultColumnsSettings, isSetNew ? settings : undefined);
   }

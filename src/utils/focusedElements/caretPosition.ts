@@ -1,5 +1,6 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {CellElement} from '../../elements/cell/cellElement';
+import {Browser} from '../browser/browser';
 
 export class CaretPosition {
   private static setSelectionToEndOfText(textContainerElement: HTMLElement, selection: Selection) {
@@ -27,7 +28,11 @@ export class CaretPosition {
   }
 
   public static setToEndOfText(etc: EditableTableComponent, textContainerElement: HTMLElement) {
-    const selection = CaretPosition.getSelection(etc);
+    let selection = CaretPosition.getSelection(etc);
+    if (Browser.IS_SAFARI && !selection) {
+      textContainerElement.focus();
+      selection = CaretPosition.getSelection(etc);
+    }
     if (selection) CaretPosition.setSelectionToEndOfText(textContainerElement, selection);
   }
 }
