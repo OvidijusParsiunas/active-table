@@ -127,7 +127,7 @@ export class CategoryDropdownItem {
       const deleteButtonElement = CategoryDeleteButton.create(etc, dropdown);
       itemElement.appendChild(deleteButtonElement); 
     }
-    CategoryDropdownItemEvents.set(itemElement, color, dropdown);
+    CategoryDropdownItemEvents.set(etc.shadowRoot as unknown as Document, itemElement, color, dropdown);
     return itemElement;
   }
 
@@ -144,6 +144,7 @@ export class CategoryDropdownItem {
   private static addCategoryItems(etc: EditableTableComponent, categoryToColor: CategoryToColor,
       dropdown: CategoryDropdownT) {
     dropdown.element.replaceChildren();
+    dropdown.categoryToItem = {};
     Object.keys(categoryToColor).forEach((categoryName) => {
       CategoryDropdownItem.addCategoryItem(etc, categoryName, categoryToColor[categoryName], dropdown);
     });

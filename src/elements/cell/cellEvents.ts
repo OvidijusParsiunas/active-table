@@ -65,4 +65,15 @@ export class CellEvents {
         { element: textContainerElement, processText: false });
     }
   }
+
+  public static unsetEvents(cellElement: HTMLElement) {
+    cellElement.onfocus = () => {};
+    cellElement.onblur = () => {};
+    cellElement.onmouseenter = () => {};
+    cellElement.onmouseleave = () => {};
+    cellElement.onmousedown = () => {};
+    cellElement.oninput = () => {};
+    cellElement.onpaste = () => {};
+    cellElement.onkeydown = () => {};
+  }
 }

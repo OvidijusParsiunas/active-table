@@ -29,11 +29,7 @@ export class ChangeColumnType {
     return columnDetails.activeType;
   }
 
-  private static changeFunc(etc: EditableTableComponent, newTypeName: string, columnIndex: number) {
-    const newType = ChangeColumnType.setNew(etc, newTypeName, columnIndex);
-    if (newType.textValidation.func && newType.textValidation.setTextToDefaultOnFail) {
-      ChangeColumnType.setInvalidCellsToDefault(etc, columnIndex);
-    }
+  public static setNewStructureBasedOnType(etc: EditableTableComponent, columnIndex: number, newType: ColumnTypeInternal) {
     if (newType.categories) {
       CategoryDropdown.setUpDropdown(etc, columnIndex);
       CategoryCellElement.setColumnCategoryStructure(etc, columnIndex);
@@ -44,12 +40,20 @@ export class ChangeColumnType {
     }
   }
 
+  private static resetAndChangeFunc(etc: EditableTableComponent, newTypeName: string, columnIndex: number) {
+    const newType = ChangeColumnType.setNew(etc, newTypeName, columnIndex);
+    if (newType.textValidation.func && newType.textValidation.setTextToDefaultOnFail) {
+      ChangeColumnType.setInvalidCellsToDefault(etc, columnIndex);
+    }
+    ChangeColumnType.setNewStructureBasedOnType(etc, columnIndex, newType);
+  }
+
   // prettier-ignore
   public static change(this: EditableTableComponent, newTypeName: string, columnIndex: number) {
     const previousType = this.columnsDetails[columnIndex].activeType;
     if (newTypeName !== previousType.name) {
       ProcessedDataTextStyle.resetDataCellsStyle(this, columnIndex,
-        ChangeColumnType.changeFunc.bind(this, this, newTypeName, columnIndex));
+        ChangeColumnType.resetAndChangeFunc.bind(this, this, newTypeName, columnIndex));
     }
   }
 }

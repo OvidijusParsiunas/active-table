@@ -1,13 +1,11 @@
 import {CellWithTextEvents} from '../../elements/cell/cellsWithTextDiv/cellWithTextEvents';
 import {EditableTableComponent} from '../../editable-table-component';
-import {Browser} from '../browser/browser';
 
 export class FocusNextColumnCellFromTextDiv {
   private static focusDifferentColumnCell(etc: EditableTableComponent, columnIndex: number, rowIndex: number) {
-    const {elements, activeType} = etc.columnsDetails[columnIndex];
+    const {elements, activeType, settings} = etc.columnsDetails[columnIndex];
     const cellElement = elements[rowIndex];
-    // FIREFOX does not have contentEditable set prior to focus, but it uses tabIndex to allow the use of tab key
-    if (Browser.IS_FIREFOX ? cellElement.tabIndex !== 0 : cellElement.contentEditable === 'false') {
+    if (!settings.isCellTextEditable) {
       return FocusNextColumnCellFromTextDiv.focusOrBlurNext(etc, columnIndex, rowIndex);
     }
     if (activeType.categories) {

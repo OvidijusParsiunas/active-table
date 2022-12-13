@@ -43,6 +43,10 @@ export class CellElement {
     return cellElement;
   }
 
+  public static setCursor(cellElement: HTMLElement, isHeader: boolean, isCellTextEditable: boolean) {
+    if (!isHeader) cellElement.style.cursor = isCellTextEditable ? 'text' : 'default';
+  }
+
   public static prepContentEditable(cellElement: HTMLElement, isHeader: boolean, isCellTextEditable: boolean) {
     if (Browser.IS_FIREFOX) {
       if (isCellTextEditable) FirefoxCaretDisplayFix.setTabIndex(cellElement, isHeader);
@@ -50,7 +54,7 @@ export class CellElement {
     } else {
       cellElement.contentEditable = isHeader ? 'false' : String(isCellTextEditable);
     }
-    if (!isHeader) cellElement.style.cursor = isCellTextEditable ? 'text' : 'default';
+    CellElement.setCursor(cellElement, isHeader, isCellTextEditable);
   }
 
   // prettier-ignore

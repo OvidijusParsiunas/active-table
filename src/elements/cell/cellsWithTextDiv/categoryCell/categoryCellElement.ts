@@ -18,7 +18,7 @@ export class CategoryCellElement {
 
   // prettier-ignore
   public static setCellCategoryStructure(etc: EditableTableComponent,
-      rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
+      cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     const {categoryDropdown: {categoryToItem}, settings: {isCellTextEditable}} = etc.columnsDetails[columnIndex];
     const backgroundColor = categoryToItem[CellElement.getText(cellElement)]?.color || '';
     CategoryCellElement.setCellTextAsAnElement(cellElement, backgroundColor, isCellTextEditable as boolean);

@@ -33,6 +33,7 @@ export class Validation {
   public static setCategoriesValidation(type: ColumnTypeInternal, isDefaultTextRemovable: boolean, defaultText: CellText) {
     if (!type.categories?.options) return;
     const optionsMap = new Set<CellText>(type.categories.options.map((option) => option.name));
+    type.textValidation ??= {};
     type.textValidation.func = (cellText: string) => {
       return !!optionsMap.has(cellText) || (!isDefaultTextRemovable && cellText === defaultText);
     };

@@ -65,11 +65,11 @@ export class InsertNewCell {
       if (rowIndex === 0) {
         CategoryDropdown.setUpDropdown(etc, columnIndex);
       } else {
-        CategoryCellElement.setCellCategoryStructure(etc, rowIndex, columnIndex, newCellElement);
+        CategoryCellElement.setCellCategoryStructure(etc, newCellElement, rowIndex, columnIndex);
         CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
       }
     } else if (columnDetails.activeType?.calendar && rowIndex > 0) {
-      DateCellElement.setCellDateStructure(etc, rowIndex, columnIndex, newCellElement);
+      DateCellElement.setCellDateStructure(etc, newCellElement, rowIndex, columnIndex);
     }
   }
 

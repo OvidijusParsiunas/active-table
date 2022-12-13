@@ -6,12 +6,12 @@ import {CellElement} from '../cellElement';
 export class DataCellElement {
   // prettier-ignore
   private static setCellDataStructure(etc: EditableTableComponent,
-      rowIndex: number, columnIndex: number, cell: HTMLElement) {
+      cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     // overwrites all previous cell content
-    cell.innerText = CellElement.getTextElement(cell).innerText; // CAUTION-1
+    cellElement.innerText = CellElement.getTextElement(cellElement).innerText; // CAUTION-1
     const {isCellTextEditable} = etc.columnsDetails[columnIndex].settings
-    CellElement.prepContentEditable(cell, false, isCellTextEditable);
-    DataCellEvents.setEvents(etc, cell, rowIndex, columnIndex);
+    CellElement.prepContentEditable(cellElement, false, isCellTextEditable);
+    DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
   }
 
   public static setColumnDataStructure(etc: EditableTableComponent, columnIndex: number) {
