@@ -29,7 +29,7 @@ interface Parent {
   // columns - new ones will instead be inserted before the subject column, also if the user pastes data on it - no
   // proceeding columns will be overwritten and no new ones will be inserted
   isInsertRightAvailable?: boolean; // true by default
-  isMoveAvailable?: boolean;
+  isMoveAvailable?: boolean; // false by default
 }
 
 // TO-DO - can probably make width part of the cellStyle - take note that CellCSSStyle is currently not using width as

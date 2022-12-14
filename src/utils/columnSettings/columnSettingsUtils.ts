@@ -77,9 +77,9 @@ export class ColumnSettingsUtils {
     defaultColumnsSettings.isCellTextEditable ??= true;
     defaultColumnsSettings.isSortAvailable ??= true;
     defaultColumnsSettings.isDeleteAvailable ??= true;
-    defaultColumnsSettings.isMoveAvailable ??= true;
     defaultColumnsSettings.isInsertLeftAvailable ??= true;
     defaultColumnsSettings.isInsertRightAvailable ??= true;
+    defaultColumnsSettings.isMoveAvailable ??= false;
   }
 
   // prettier-ignore

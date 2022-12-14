@@ -19,14 +19,18 @@ export class ColumnDropdownItem {
   }
 
   private static setUpItems(settings: ColumnSettingsInternal, items: HTMLElement[]) {
-    const {isSortAvailable, isDeleteAvailable, isInsertLeftAvailable, isInsertRightAvailable} = settings;
+    const {isSortAvailable, isDeleteAvailable, isInsertLeftAvailable, isInsertRightAvailable, isMoveAvailable} = settings;
     if (!isSortAvailable) {
       DropdownItem.toggleItem(items[3], false);
       DropdownItem.toggleItem(items[4], false);
     }
     if (!isInsertRightAvailable) DropdownItem.toggleItem(items[5], false);
     if (!isInsertLeftAvailable) DropdownItem.toggleItem(items[6], false);
-    if (!isDeleteAvailable) DropdownItem.toggleItem(items[7], false);
+    if (!isMoveAvailable) {
+      DropdownItem.toggleItem(items[7], false);
+      DropdownItem.toggleItem(items[8], false);
+    }
+    if (!isDeleteAvailable) DropdownItem.toggleItem(items[9], false);
   }
 
   // prettier-ignore

@@ -23,15 +23,15 @@ export class ColumnDropdownItemEvents {
     siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
       etc, Sort.sortContentsColumn.bind(this, etc, columnIndex, false));
     siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
-      etc, InsertNewColumn.insert.bind(this, etc, columnIndex + 1));
-    siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
       etc, InsertNewColumn.insert.bind(this, etc, columnIndex));
     siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
-      etc, RemoveColumn.remove.bind(this, etc, columnIndex));
+      etc, InsertNewColumn.insert.bind(this, etc, columnIndex + 1));
     siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
       etc, MoveColumn.move.bind(this, etc, columnIndex, false));
     siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
       etc, MoveColumn.move.bind(this, etc, columnIndex, true));
+    siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
+      etc, RemoveColumn.remove.bind(this, etc, columnIndex));
     // TO-DO - potential animation can be useful when a new column is inserted
   }
 
