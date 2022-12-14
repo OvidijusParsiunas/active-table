@@ -65,13 +65,18 @@ export class ColumnSettingsBorderUtils {
     if (!currentColumnDetails) return;
     // if current column has custom style precedence
     if (currentColumnDetails.settings.stylePrecedence) {
-    // unset the left column right
+      // remove the left column right border
       if (leftColumnDetails) {
         ColumnSettingsBorderUtils.unsetColumnBorder(leftColumnDetails, currentColumnDetails, 'right');
       }
-      // if right does not have precedence - overwrite its left border
-      if (rightColumnDetails && !rightColumnDetails.settings.stylePrecedence) {
-        ColumnSettingsBorderUtils.unsetColumnBorder(rightColumnDetails, currentColumnDetails, 'left');
+      if (rightColumnDetails) {
+        // if right has precedence, remove current column right border
+        if (rightColumnDetails.settings.stylePrecedence) {
+          ColumnSettingsBorderUtils.unsetColumnBorder(currentColumnDetails, rightColumnDetails, 'right');
+        // if right does not have precedence, remove right column left border
+        } else if (!rightColumnDetails.settings.stylePrecedence) {
+          ColumnSettingsBorderUtils.unsetColumnBorder(rightColumnDetails, currentColumnDetails, 'left');
+        }
       }
       // if current column does not have a custom style but siblings do
     } else {
