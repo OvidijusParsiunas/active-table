@@ -2,6 +2,7 @@ import {InsertNewColumn} from '../../../utils/insertRemoveStructure/insert/inser
 import {RemoveColumn} from '../../../utils/insertRemoveStructure/remove/removeColumn';
 import {ElementSiblingIterator} from '../../../utils/elements/elementSiblingIterator';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {MoveColumn} from '../../../utils/moveStructure/moveColumn';
 import {ColumnDropdownItem} from './columnDropdownItem';
 import {Sort} from '../../../utils/columnType/sort';
 import {CellEvents} from '../../cell/cellEvents';
@@ -27,6 +28,10 @@ export class ColumnDropdownItemEvents {
       etc, InsertNewColumn.insert.bind(this, etc, columnIndex));
     siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
       etc, RemoveColumn.remove.bind(this, etc, columnIndex));
+    siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
+      etc, MoveColumn.move.bind(this, etc, columnIndex, false));
+    siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
+      etc, MoveColumn.move.bind(this, etc, columnIndex, true));
     // TO-DO - potential animation can be useful when a new column is inserted
   }
 

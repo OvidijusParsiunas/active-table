@@ -20,15 +20,15 @@ import {
 
 export class ColumnSettingsUtils {
   // prettier-ignore
-  private static change(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number,
+  private static change(etc: EditableTableComponent, headerElement: HTMLElement, columnIndex: number,
       oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal) {
     const columnDetails = etc.columnsDetails[columnIndex];
     ColumnSettingsDefaultTextUtils.unsetDefaultText(etc, columnDetails, columnIndex);
     columnDetails.settings = newSettings;
-    Object.assign(columnDetails, ColumnTypesUtils.getProcessedTypes(newSettings))
+    Object.assign(columnDetails, ColumnTypesUtils.getProcessedTypes(newSettings));
     ResetColumnStructure.reset(etc, columnDetails, columnIndex);
     ColumnSettingsDefaultTextUtils.setDefaultText(etc, columnDetails, columnIndex);
-    ColumnSettingsWidthUtils.changeWidth(etc, cellElement, oldSettings, newSettings);
+    ColumnSettingsWidthUtils.changeWidth(etc, headerElement, oldSettings, newSettings);
     InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
     ColumnSettingsStyleUtils.changeStyle(etc, columnIndex, oldSettings, newSettings);
     ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);

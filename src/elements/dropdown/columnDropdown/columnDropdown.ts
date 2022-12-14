@@ -57,6 +57,8 @@ export class ColumnDropdown {
     ColumnDropdown.INSERT_COLUMN_ITEMS[0] = DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Right');
     ColumnDropdown.INSERT_COLUMN_ITEMS[1] = DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Left');
     DropdownItem.addButtonItem(etc, dropdownElement, 'Delete');
+    DropdownItem.addButtonItem(etc, dropdownElement, 'Move Left');
+    DropdownItem.addButtonItem(etc, dropdownElement, 'Move Right');
     return dropdownElement;
   }
 
