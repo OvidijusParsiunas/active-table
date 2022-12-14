@@ -63,13 +63,15 @@ export class ColumnSettingsBorderUtils {
   private static unsetBorders(currentColumnDetails: ColumnDetailsT, leftColumnDetails: ColumnDetailsT,
       rightColumnDetails: ColumnDetailsT) {
     if (!currentColumnDetails) return;
-    // if current column has a custom style but siblings do not
+    // if current column has custom style precedence
     if (currentColumnDetails.settings.stylePrecedence) {
+    // unset the left column right
+      if (leftColumnDetails) {
+        ColumnSettingsBorderUtils.unsetColumnBorder(leftColumnDetails, currentColumnDetails, 'right');
+      }
+      // if right does not have precedence - overwrite its left border
       if (rightColumnDetails && !rightColumnDetails.settings.stylePrecedence) {
         ColumnSettingsBorderUtils.unsetColumnBorder(rightColumnDetails, currentColumnDetails, 'left');
-      }
-      if (leftColumnDetails && !leftColumnDetails.settings.stylePrecedence) {
-        ColumnSettingsBorderUtils.unsetColumnBorder(leftColumnDetails, currentColumnDetails, 'right');
       }
       // if current column does not have a custom style but siblings do
     } else {
@@ -82,7 +84,7 @@ export class ColumnSettingsBorderUtils {
     }
   }
 
-  private static resetBorderOverwritingState(currentColumn: ColumnDetailsT) {
+  public static resetBorderOverwritingState(currentColumn: ColumnDetailsT) {
     if (!currentColumn) return;
     currentColumn.bordersOverwrittenBySiblings.left = false;
     currentColumn.bordersOverwrittenBySiblings.right = false;

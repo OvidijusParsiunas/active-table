@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../editable-table-component';
+import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {ChangeColumnType} from '../columnType/changeColumnType';
 import {CellElement} from '../../elements/cell/cellElement';
 import {CellEvents} from '../../elements/cell/cellEvents';
@@ -14,5 +15,6 @@ export class ResetColumnStructure {
     const {elements, activeType} = columnDetails;
     elements.slice(1).forEach((cellElement) => ResetColumnStructure.resetEventsAndCursor(columnDetails, cellElement));
     ChangeColumnType.setNewStructureBasedOnType(etc, columnIndex, activeType);
+    ColumnSettingsBorderUtils.resetBorderOverwritingState(columnDetails);
   }
 }

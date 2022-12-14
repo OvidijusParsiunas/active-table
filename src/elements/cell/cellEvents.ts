@@ -47,7 +47,7 @@ export class CellEvents {
     const cellText = CellElement.getText(textContainerElement);
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     if (processedCellText !== cellText) {
-       // if pointer problems start occuring, .getText() and processCellText are trimming the <br> element
+      // if pointer problems start occuring, .getText() and processCellText are trimming the <br> element
       CellEvents.updateCell(etc, processedCellText, rowIndex, columnIndex,
         { element: textContainerElement, processText: false, updateTableEvent }); 
       return true;

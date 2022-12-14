@@ -1,6 +1,5 @@
 import {SelectedColumnSizerT} from './columnSizer';
 
-// if the element is set - it means that it is visible
 export interface ActiveOverlayElements {
   columnDropdown?: HTMLElement;
   columnTypeDropdown?: HTMLElement;

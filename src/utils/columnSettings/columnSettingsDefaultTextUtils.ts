@@ -11,9 +11,12 @@ export class ColumnSettingsDefaultTextUtils {
   }
 
   public static setDefaultText(etc: EditableTableComponent, columnDetails: ColumnDetailsT, columnIndex: number) {
+    let isCellUpdated = false;
     columnDetails.elements.slice(1).forEach((element: HTMLElement, rowIndex: number) => {
       const relativeIndex = rowIndex + 1;
-      CellEvents.setCellToDefaultIfNeeded(etc, relativeIndex, columnIndex, element, false);
+      const isUpdated = CellEvents.setCellToDefaultIfNeeded(etc, relativeIndex, columnIndex, element, false);
+      if (!isCellUpdated && isUpdated) isCellUpdated = true;
     });
+    etc.onTableUpdate(etc.contents);
   }
 }
