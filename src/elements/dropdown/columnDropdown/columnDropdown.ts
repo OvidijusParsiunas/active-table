@@ -90,7 +90,7 @@ export class ColumnDropdown {
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItemNavigation.focusInputElement(inputElement as HTMLElement);
     ColumnDropdownItemEvents.setItemEvents(etc, columnIndex, dropdownElement);
-    ColumnDropdownItem.updateItemStyle(etc, columnIndex, dropdownElement);
+    ColumnDropdownItem.updateItemsStyle(etc, columnIndex, dropdownElement);
     Dropdown.display(fullTableOverlay);
   }
 }

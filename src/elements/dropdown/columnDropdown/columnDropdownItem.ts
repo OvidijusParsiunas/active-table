@@ -58,8 +58,7 @@ export class ColumnDropdownItem {
     ColumnDropdownItem.setUpItems(etc.columnsDetails[columnIndex].settings, items);
   }
 
-  private static updateMoveColumnItemsStyle(etc: EditableTableComponent, colIndex: number, dropdownElement: HTMLElement) {
-    const items = Array.from(dropdownElement.children) as HTMLElement[];
+  private static updateMoveColumnItemsStyle(etc: EditableTableComponent, colIndex: number, items: HTMLElement[]) {
     const {isMoveAvailable} = etc.columnsDetails[colIndex].settings;
     if (!isMoveAvailable) return;
     items[7].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
@@ -72,8 +71,7 @@ export class ColumnDropdownItem {
     }
   }
 
-  private static updateInsertColumnItemsStyle(etc: EditableTableComponent, dropdownElement: HTMLElement) {
-    const items = Array.from(dropdownElement.children) as HTMLElement[];
+  private static updateInsertColumnItemsStyle(etc: EditableTableComponent, items: HTMLElement[]) {
     const canAddMoreColumns = MaximumColumns.canAddMore(etc);
     if (canAddMoreColumns) {
       items[5].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
@@ -84,8 +82,9 @@ export class ColumnDropdownItem {
     }
   }
 
-  public static updateItemStyle(etc: EditableTableComponent, columnIndex: number, dropdownElement: HTMLElement) {
-    ColumnDropdownItem.updateInsertColumnItemsStyle(etc, dropdownElement);
-    ColumnDropdownItem.updateMoveColumnItemsStyle(etc, columnIndex, dropdownElement);
+  public static updateItemsStyle(etc: EditableTableComponent, columnIndex: number, dropdownElement: HTMLElement) {
+    const items = Array.from(dropdownElement.children) as HTMLElement[];
+    ColumnDropdownItem.updateInsertColumnItemsStyle(etc, items);
+    ColumnDropdownItem.updateMoveColumnItemsStyle(etc, columnIndex, items);
   }
 }

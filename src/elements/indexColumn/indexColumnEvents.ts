@@ -20,6 +20,6 @@ export class IndexColumnEvents {
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number) {
     cellElement.onmouseenter = IndexColumnEvents.mouseEnterCell.bind(etc, rowIndex);
     cellElement.onmouseleave = IndexColumnEvents.mouseLeaveCell.bind(etc, rowIndex);
-    cellElement.onclick = RowDropdown.display.bind(etc, rowIndex);
+    if (etc.rowDropdownSettings.isDisplayed) cellElement.onclick = RowDropdown.display.bind(etc, rowIndex);
   }
 }

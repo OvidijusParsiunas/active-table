@@ -11,6 +11,7 @@ import {TableDimensionsInternal} from './types/tableDimensionsInternal';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {customElement, property, state} from 'lit/decorators.js';
+import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {ediTableStyle} from './editable-table-component-style';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
@@ -33,6 +34,7 @@ import {
   CustomColumnSettings,
   ColumnsSettingsMap,
 } from './types/columnsSettings';
+import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 
 // TO-DO
 // column validation: potentially highlight what is failing validation in red and display what the problem is upon hover
@@ -165,6 +167,9 @@ export class EditableTableComponent extends LitElement {
   @property({type: Object})
   columnResizerStyle: UserSetColumnSizerStyle = {};
 
+  @property({type: Object})
+  rowDropdownSettings: RowDropdownSettings = {};
+
   // CAUTION-4
   override render() {
     Render.renderTable(this);
@@ -176,6 +181,7 @@ export class EditableTableComponent extends LitElement {
     // REF-14
     super.connectedCallback();
     AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
+    RowDropdownSettingsUtil.process(this.rowDropdownSettings);
     const tableElement = TableElement.createInfrastructureElements(this);
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements, this.areHeadersEditable);
     this.shadowRoot?.appendChild(tableElement);

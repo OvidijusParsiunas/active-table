@@ -53,10 +53,11 @@ export class TableElement {
     activeOverlayElements.columnDropdown = columnDropdownElement;
     // row dropdown
     // WORK - option to not display dropdowns
-    // WORK - need option to not show specific items in row dropdown
-    const rowDropdownElement = RowDropdown.create(etc);
-    tableElement.appendChild(rowDropdownElement);
-    activeOverlayElements.rowDropdown = rowDropdownElement;
+    if (etc.rowDropdownSettings.isDisplayed) {
+      const rowDropdownElement = RowDropdown.create(etc);
+      tableElement.appendChild(rowDropdownElement);
+      activeOverlayElements.rowDropdown = rowDropdownElement; 
+    }
   }
 
   private static addCells(etc: EditableTableComponent) {

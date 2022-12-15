@@ -4,7 +4,6 @@ import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils'
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
-import {RowDropdownItemEvents} from './rowDropdownItemEvents';
 import {RowDropdownEvents} from './rowDropdownEvents';
 import {RowDropdownItem} from './rowDropdownItem';
 import {DropdownItem} from '../dropdownItem';
@@ -34,8 +33,7 @@ export class RowDropdown {
   public static display(this: EditableTableComponent, rowIndex: number, event: MouseEvent) {
     const dropdownElement = this.activeOverlayElements.rowDropdown as HTMLElement;
     const fullTableOverlayElement = this.activeOverlayElements.fullTableOverlay as HTMLElement;
-    RowDropdownItemEvents.set(this, rowIndex, dropdownElement);
-    RowDropdownItem.updateItemsStyle(this, dropdownElement);
+    RowDropdownItem.update(this, dropdownElement, rowIndex);
     const cellElement = event.target as HTMLElement;
     RowDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
     Dropdown.display(dropdownElement, fullTableOverlayElement);
@@ -45,10 +43,12 @@ export class RowDropdown {
   public static create(etc: EditableTableComponent) {
     const dropdownElement = Dropdown.createBase();
     RowDropdownEvents.set(etc, dropdownElement);
-    // WORK - include Move Up/Move Down, but not part of default build
-    DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Above');
-    DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Below');
+    DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Up');
+    DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Down');
+    DropdownItem.addButtonItem(etc, dropdownElement, 'Move Up');
+    DropdownItem.addButtonItem(etc, dropdownElement, 'Move Down');
     DropdownItem.addButtonItem(etc, dropdownElement, 'Delete');
+    RowDropdownItem.setUpItems(etc.rowDropdownSettings, dropdownElement);
     return dropdownElement;
   }
 }

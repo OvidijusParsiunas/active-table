@@ -29,6 +29,7 @@ export class IndexColumn {
     const {tableDimensionsInternal, defaultColumnsSettings, auxiliaryTableContentInternal} = etc;
     const cell = document.createElement(isHeader ? 'th' : 'td');
     cell.classList.add(CellElement.CELL_CLASS, IndexColumn.INDEX_CELL_CLASS);
+    cell.style.cursor = etc.rowDropdownSettings.isDisplayed ? 'pointer' : 'default';
     if (!tableDimensionsInternal.isColumnIndexCellTextWrapped) {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }
