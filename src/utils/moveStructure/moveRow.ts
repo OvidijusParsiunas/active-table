@@ -1,4 +1,6 @@
+import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
 import {EditableTableComponent} from '../../editable-table-component';
+import {FocusedCellUtils} from '../focusedElements/focusedCellUtils';
 import {CellElement} from '../../elements/cell/cellElement';
 import {MoveUtils} from './moveUtils';
 
@@ -14,13 +16,35 @@ export class MoveRow {
     return overwrittenText;
   }
 
-  public static move(etc: EditableTableComponent, rowIndex: number, isToDown: boolean) {
+  private static moveDataRows(etc: EditableTableComponent, targetRowIndex: number, siblingIndex: number) {
     const {columnsDetails} = etc;
-    const siblingIndex = isToDown ? rowIndex + 1 : rowIndex - 1;
     const siblingRowText = columnsDetails.map(({elements}) => CellElement.getText(elements[siblingIndex]));
     // overwrite current row using sibling row
-    const overwrittenText = MoveRow.overwrite(etc, siblingRowText, rowIndex);
+    const overwrittenText = MoveRow.overwrite(etc, siblingRowText, targetRowIndex);
     // overwrite sibling row using overwritten row
     MoveRow.overwrite(etc, overwrittenText, siblingIndex);
+  }
+
+  private static moveHeaderToDataRow(etc: EditableTableComponent) {
+    const {columnsDetails} = etc;
+    const dataRowText = columnsDetails.map(({elements}) => CellElement.getText(elements[1]));
+    // overwrite header row using data row
+    const overwrittenText = MoveRow.overwrite(etc, dataRowText, 0);
+    // update header row settings
+    columnsDetails.forEach((column, columnIndex) => {
+      FocusedCellUtils.set(etc.focusedElements.cell, column.elements[0], 0, columnIndex, column.types);
+      ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(etc, column.elements[0], columnIndex);
+    });
+    // overwrite data row using header row
+    MoveRow.overwrite(etc, overwrittenText, 1);
+  }
+
+  public static move(etc: EditableTableComponent, rowIndex: number, isToDown: boolean) {
+    const siblingIndex = isToDown ? rowIndex + 1 : rowIndex - 1;
+    if (rowIndex === 0 || siblingIndex === 0) {
+      MoveRow.moveHeaderToDataRow(etc);
+    } else {
+      MoveRow.moveDataRows(etc, rowIndex, siblingIndex);
+    }
   }
 }

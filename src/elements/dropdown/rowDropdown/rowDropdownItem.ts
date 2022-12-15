@@ -6,13 +6,14 @@ import {DropdownItem} from '../dropdownItem';
 
 export class RowDropdownItem {
   private static updateMoveRowsItemsStyle(etc: EditableTableComponent, rowIndex: number, items: HTMLElement[]) {
-    if (!etc.rowDropdownSettings.isMoveAvailable) return;
+    const {isMoveAvailable, isHeaderRowMovable} = etc.rowDropdownSettings;
+    if (!isMoveAvailable) return;
     items[2].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
     items[3].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
-    if (rowIndex === 0) {
+    if (rowIndex === 0 || (rowIndex === 1 && !isHeaderRowMovable)) {
       items[2].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
     }
-    if (rowIndex === etc.columnsDetails[0].elements.length - 1) {
+    if (rowIndex === etc.columnsDetails[0].elements.length - 1 || (rowIndex === 0 && !isHeaderRowMovable)) {
       items[3].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
     }
   }
