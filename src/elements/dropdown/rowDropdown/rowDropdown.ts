@@ -1,18 +1,16 @@
 import {AuxiliaryTableContentColors} from '../../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
-import {MaximumRows} from '../../../utils/insertRemoveStructure/insert/maximumRows';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {RowDropdownItemEvents} from './rowDropdownItemEvents';
 import {RowDropdownEvents} from './rowDropdownEvents';
+import {RowDropdownItem} from './rowDropdownItem';
 import {DropdownItem} from '../dropdownItem';
 import {Dropdown} from '../dropdown';
 
 export class RowDropdown {
-  private static INSERT_ROW_ITEMS: [HTMLElement?, HTMLElement?] = [];
-
   // prettier-ignore
   public static hide(etc: EditableTableComponent) {
     const {activeOverlayElements: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element, rowIndex}}} = etc;
@@ -27,18 +25,6 @@ export class RowDropdown {
     });
   }
 
-  private static updateItemsStyle(etc: EditableTableComponent) {
-    const canAddMoreRows = MaximumRows.canAddMore(etc);
-    RowDropdown.INSERT_ROW_ITEMS.forEach((item) => {
-      if (!item) return;
-      if (canAddMoreRows) {
-        item.classList.remove(Dropdown.DISABLED_ITEM_CLASS);
-      } else {
-        item.classList.add(Dropdown.DISABLED_ITEM_CLASS);
-      }
-    });
-  }
-
   // TO-DO will this work correctly when a scrollbar is introduced
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement) {
     dropdownElement.style.top = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
@@ -49,7 +35,7 @@ export class RowDropdown {
     const dropdownElement = this.activeOverlayElements.rowDropdown as HTMLElement;
     const fullTableOverlayElement = this.activeOverlayElements.fullTableOverlay as HTMLElement;
     RowDropdownItemEvents.set(this, rowIndex, dropdownElement);
-    RowDropdown.updateItemsStyle(this);
+    RowDropdownItem.updateItemsStyle(this, dropdownElement);
     const cellElement = event.target as HTMLElement;
     RowDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
     Dropdown.display(dropdownElement, fullTableOverlayElement);
@@ -60,8 +46,8 @@ export class RowDropdown {
     const dropdownElement = Dropdown.createBase();
     RowDropdownEvents.set(etc, dropdownElement);
     // WORK - include Move Up/Move Down, but not part of default build
-    RowDropdown.INSERT_ROW_ITEMS[0] = DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Above');
-    RowDropdown.INSERT_ROW_ITEMS[1] = DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Below');
+    DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Above');
+    DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Below');
     DropdownItem.addButtonItem(etc, dropdownElement, 'Delete');
     return dropdownElement;
   }

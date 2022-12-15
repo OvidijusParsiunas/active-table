@@ -1,5 +1,4 @@
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
-import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximumColumns';
 import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
@@ -18,10 +17,6 @@ import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
 
 export class ColumnDropdown {
-  // the reason why this is stored in state is because there is only one column dropdown for the whole table and
-  // instead of having to traverse the dropdown element everytime, we can just store their references here
-  private static INSERT_COLUMN_ITEMS: [HTMLElement?, HTMLElement?] = [];
-
   private static resetDropdownPosition(dropdownElement: HTMLElement) {
     dropdownElement.style.left = '';
   }
@@ -53,24 +48,12 @@ export class ColumnDropdown {
     ColumnTypeDropdown.createColumnDropdown(etc, dropdownElement);
     ColumnDropdownItem.addSortButton(etc, dropdownElement, 'Ascending');
     ColumnDropdownItem.addSortButton(etc, dropdownElement, 'Descending');
-    ColumnDropdown.INSERT_COLUMN_ITEMS[0] = DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Left');
-    ColumnDropdown.INSERT_COLUMN_ITEMS[1] = DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Right');
+    DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Left');
+    DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Right');
     DropdownItem.addButtonItem(etc, dropdownElement, 'Move Left');
     DropdownItem.addButtonItem(etc, dropdownElement, 'Move Right');
     DropdownItem.addButtonItem(etc, dropdownElement, 'Delete');
     return dropdownElement;
-  }
-
-  private static updateInsertColumnItemsStyle(etc: EditableTableComponent) {
-    const canAddMoreColumns = MaximumColumns.canAddMore(etc);
-    ColumnDropdown.INSERT_COLUMN_ITEMS.forEach((item) => {
-      if (!item) return;
-      if (canAddMoreColumns) {
-        item.classList.remove(Dropdown.DISABLED_ITEM_CLASS);
-      } else {
-        item.classList.add(Dropdown.DISABLED_ITEM_CLASS);
-      }
-    });
   }
 
   public static getDropdownTopPosition(cellElement: HTMLElement): PX {
@@ -107,7 +90,7 @@ export class ColumnDropdown {
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItemNavigation.focusInputElement(inputElement as HTMLElement);
     ColumnDropdownItemEvents.setItemEvents(etc, columnIndex, dropdownElement);
-    ColumnDropdown.updateInsertColumnItemsStyle(etc);
+    ColumnDropdownItem.updateItemStyle(etc, columnIndex, dropdownElement);
     Dropdown.display(fullTableOverlay);
   }
 }

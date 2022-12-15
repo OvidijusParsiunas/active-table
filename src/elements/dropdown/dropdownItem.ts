@@ -4,6 +4,7 @@ import {Dropdown} from './dropdown';
 
 export class DropdownItem {
   public static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
+  public static readonly DISABLED_ITEM_CLASS = 'dropdown-disabled-item';
   public static readonly DROPDOWN_INPUT_CLASS = 'dropdown-input';
   public static readonly DROPDOWN_INPUT_ITEM_CLASS = 'dropdown-input-item';
   public static readonly DROPDOWN_TITLE_ITEM_CLASS = 'dropdown-title-item';

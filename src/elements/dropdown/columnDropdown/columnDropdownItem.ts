@@ -1,3 +1,4 @@
+import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximumColumns';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnSettingsInternal} from '../../../types/columnsSettings';
 import {ColumnDropdownItemEvents} from './columnDropdownItemEvents';
@@ -27,6 +28,7 @@ export class ColumnDropdownItem {
     if (!isInsertRightAvailable) DropdownItem.toggleItem(items[5], false);
     if (!isInsertLeftAvailable) DropdownItem.toggleItem(items[6], false);
     if (!isMoveAvailable) {
+      // their display should be toggled if can't move any further
       DropdownItem.toggleItem(items[7], false);
       DropdownItem.toggleItem(items[8], false);
     }
@@ -54,5 +56,36 @@ export class ColumnDropdownItem {
     const items = Array.from(dropdownElement.children) as HTMLElement[];
     ColumnDropdownItem.setUpInputElement(etc, columnIndex, cellElement, items[0], dropdownElement);
     ColumnDropdownItem.setUpItems(etc.columnsDetails[columnIndex].settings, items);
+  }
+
+  private static updateMoveColumnItemsStyle(etc: EditableTableComponent, colIndex: number, dropdownElement: HTMLElement) {
+    const items = Array.from(dropdownElement.children) as HTMLElement[];
+    const {isMoveAvailable} = etc.columnsDetails[colIndex].settings;
+    if (!isMoveAvailable) return;
+    items[7].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
+    items[8].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
+    if (colIndex === 0) {
+      items[7].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
+    }
+    if (colIndex === etc.columnsDetails.length - 1) {
+      items[8].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
+    }
+  }
+
+  private static updateInsertColumnItemsStyle(etc: EditableTableComponent, dropdownElement: HTMLElement) {
+    const items = Array.from(dropdownElement.children) as HTMLElement[];
+    const canAddMoreColumns = MaximumColumns.canAddMore(etc);
+    if (canAddMoreColumns) {
+      items[5].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
+      items[6].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
+    } else {
+      items[5].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
+      items[6].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
+    }
+  }
+
+  public static updateItemStyle(etc: EditableTableComponent, columnIndex: number, dropdownElement: HTMLElement) {
+    ColumnDropdownItem.updateInsertColumnItemsStyle(etc, dropdownElement);
+    ColumnDropdownItem.updateMoveColumnItemsStyle(etc, columnIndex, dropdownElement);
   }
 }
