@@ -51,7 +51,16 @@ export class MoveColumn {
     return { overwrittenText, overwrittenType: targetType };
   }
 
+  private static firstChangeSettingsIfSettingsChanged(etc: EditableTableComponent, columnIndex: number) {
+    const {areSettingsDifferent} = ColumnSettingsUtils.parseSettingsChange(etc);
+    if (areSettingsDifferent) {
+      const currentColumn = etc.columnsDetails[columnIndex];
+      ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(etc, currentColumn.elements[0], columnIndex);
+    }
+  }
+
   public static move(etc: EditableTableComponent, columnIndex: number, isToRight: boolean) {
+    MoveColumn.firstChangeSettingsIfSettingsChanged(etc, columnIndex);
     const currentColumn = etc.columnsDetails[columnIndex];
     const siblingIndex = isToRight ? columnIndex + 1 : columnIndex - 1;
     const siblingColumn = etc.columnsDetails[siblingIndex];
