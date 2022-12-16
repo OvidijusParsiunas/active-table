@@ -37,17 +37,23 @@ export class InsertRemoveColumnSizer {
     InsertRemoveColumnSizer.applySizerStateToElements(columnSizer);
   }
 
+  // prettier-ignore
+  public static updateSizer(columnSizer: ColumnSizerT, columnsDetails: ColumnsDetailsT, sizerIndex: number,
+      tableElement: HTMLElement) {
+    // no need for full creation as there is a need to retain the element and its bindings
+    const newColumnSizer = ColumnSizer.createObject(columnSizer.element, columnsDetails, sizerIndex, tableElement);
+    // cannot simply overwrite columnSizer object as it has already binded to elements
+    // movableElement ref is not overwritten
+    Object.assign(columnSizer, newColumnSizer);
+    InsertRemoveColumnSizer.applySizerStateToElements(columnSizer);
+  }
+
   private static updatePrevious(columnsDetails: ColumnsDetailsT, columnIndex: number, tableElement: HTMLElement) {
     const previousIndex = columnIndex - 1;
     if (previousIndex < 0) return;
     const {columnSizer} = columnsDetails[previousIndex];
     if (columnsDetails[previousIndex].settings.width !== undefined || !columnSizer) return;
-    // no need for full creation as there is a need to retain the element and its bindings
-    const newColumnSizer = ColumnSizer.createObject(columnSizer.element, columnsDetails, previousIndex, tableElement);
-    // cannot simply overwrite columnSizer object as it has already binded to elements
-    // movableElement ref is not overwritten
-    Object.assign(columnSizer, newColumnSizer);
-    InsertRemoveColumnSizer.applySizerStateToElements(columnSizer);
+    InsertRemoveColumnSizer.updateSizer(columnSizer, columnsDetails, columnIndex, tableElement);
   }
 
   private static getNewColumnIndexIfWidthSet(columnsDetails: ColumnsDetailsT, columnIndex: number) {
@@ -60,7 +66,8 @@ export class InsertRemoveColumnSizer {
   }
 
   // REF-13
-  public static insert(etc: EditableTableComponent, columnsDetails: ColumnsDetailsT, columnIndex: number) {
+  public static insert(etc: EditableTableComponent, columnIndex: number) {
+    const {columnsDetails} = etc;
     if (columnsDetails[columnIndex].settings.width !== undefined) return;
     if (etc.tableDimensionsInternal.width !== undefined) {
       columnIndex = InsertRemoveColumnSizer.getNewColumnIndexIfWidthSet(etc.columnsDetails, columnIndex);

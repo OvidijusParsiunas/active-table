@@ -36,7 +36,7 @@ export class InsertNewCell {
     if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
     if (rowIndex === 0) {
       ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsInitial); // REF-13
-      InsertRemoveColumnSizer.insert(etc, etc.columnsDetails, columnIndex); // REF-13
+      InsertRemoveColumnSizer.insert(etc, columnIndex); // REF-13
       if (isNewText) {
         InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
         UpdateIndexColumnWidth.wrapTextWhenNarrowColumnsBreached(etc); // REF-19
