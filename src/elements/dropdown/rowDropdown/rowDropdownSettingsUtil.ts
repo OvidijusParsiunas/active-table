@@ -6,7 +6,7 @@ export class RowDropdownSettingsUtil {
     rowDropdownSettings.isInsertUpAvailable ??= true;
     rowDropdownSettings.isInsertDownAvailable ??= true;
     rowDropdownSettings.isMoveAvailable ??= false;
-    rowDropdownSettings.isHeaderRowMovable ??= rowDropdownSettings.isMoveAvailable;
+    rowDropdownSettings.isHeaderRowEditable ??= rowDropdownSettings.isMoveAvailable;
     rowDropdownSettings.isDeleteAvailable ??= true;
   }
 }
