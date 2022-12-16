@@ -8,6 +8,7 @@ import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellText, TableRow} from '../../../types/tableContents';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ElementDetails} from '../../../types/elementDetails';
+import {MoveRow} from '../../moveStructure/moveRow';
 import {MaximumColumns} from './maximumColumns';
 import {InsertNewCell} from './insertNewCell';
 import {DataUtils} from '../shared/dataUtils';
@@ -58,11 +59,14 @@ export class InsertNewRow {
   // isNewText indicates whether rowData is already in the contents state or if it needs to be added
   public static insert(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
     if (!MaximumRows.canAddMore(etc)) return;
+    const isReplacingHeader = isNewText && rowIndex === 0 && etc.columnsDetails.length > 0;
+    if (isReplacingHeader) rowIndex = 1; // REF-26
     InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
     if (isNewText) {
       ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
       if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex + 1);
     }
+    if (isReplacingHeader) MoveRow.move(etc, 0, true); // REF-26
     setTimeout(() => InsertNewRow.fireCellUpdates(etc, rowIndex));
   }
 

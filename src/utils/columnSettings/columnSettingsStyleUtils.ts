@@ -42,9 +42,9 @@ export class ColumnSettingsStyleUtils {
 
   private static setNewHeaderStyle(defaultColumnsSettings: DefaultColumnsSettings, columnDetails: ColumnDetailsT) {
     const {settings, elements} = columnDetails;
-    const isNewHeaderStyle = settings.cellStyle || settings.headerStyleProps?.default;
-    if (isNewHeaderStyle) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, elements[0], true);
-    const newStyleSettings = isNewHeaderStyle ? settings : undefined;
+    const newHeaderStyle = settings.cellStyle || settings.headerStyleProps?.default;
+    if (newHeaderStyle) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, elements[0], true);
+    const newStyleSettings = newHeaderStyle ? settings : undefined;
     columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(defaultColumnsSettings, newStyleSettings);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [elements[0]]);
   }

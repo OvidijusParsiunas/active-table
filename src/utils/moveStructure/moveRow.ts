@@ -2,6 +2,7 @@ import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {FocusedCellUtils} from '../focusedElements/focusedCellUtils';
 import {CellElement} from '../../elements/cell/cellElement';
+import {FocusedCell} from '../../types/focusedCell';
 import {MoveUtils} from './moveUtils';
 
 export class MoveRow {
@@ -26,17 +27,20 @@ export class MoveRow {
   }
 
   private static moveHeaderToDataRow(etc: EditableTableComponent) {
-    const {columnsDetails} = etc;
+    const {columnsDetails, focusedElements} = etc;
+    const initialFocusedCell = {...focusedElements.cell} as Required<FocusedCell>;
     const dataRowText = columnsDetails.map(({elements}) => CellElement.getText(elements[1]));
     // overwrite header row using data row
     const overwrittenText = MoveRow.overwrite(etc, dataRowText, 0);
     // update header row settings
     columnsDetails.forEach((column, columnIndex) => {
-      FocusedCellUtils.set(etc.focusedElements.cell, column.elements[0], 0, columnIndex, column.types);
+      FocusedCellUtils.set(focusedElements.cell, column.elements[0], 0, columnIndex, column.types);
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(etc, column.elements[0], columnIndex);
     });
     // overwrite data row using header row
     MoveRow.overwrite(etc, overwrittenText, 1);
+    // TO-DO may not be index cell if row dropdown is displayed on the first data column instead
+    FocusedCellUtils.setIndexCell(focusedElements.cell, initialFocusedCell.element, initialFocusedCell.columnIndex);
   }
 
   public static move(etc: EditableTableComponent, rowIndex: number, isToDown: boolean) {

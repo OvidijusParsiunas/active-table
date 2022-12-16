@@ -218,6 +218,14 @@ REF-25
 Given that the add new row button is not always visible and there is no css selector that can identify the last visible row, we manually
 mark the last visible row with an id. This is done to not display bottom border if last row cells contain one in their style settings.
 
+REF-26
+To insert a header row when there is an existing one - we create a new row below it and move the contents of the header row to it.
+The reason for this approach is not to have to create a new row with <td> elements and sizers.
+
+REF-27
+To remove a header row when there is data below the header, we swap the header row with the below data row and then remove the data row.
+The reason for this approach is not to have to create a new row with <td> elements and sizers.
+
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
 does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()

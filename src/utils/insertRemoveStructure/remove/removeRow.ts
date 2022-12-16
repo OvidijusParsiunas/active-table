@@ -8,6 +8,7 @@ import {CellText, TableRow} from '../../../types/tableContents';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {HasRerendered} from '../../render/hasRerendered';
+import {MoveRow} from '../../moveStructure/moveRow';
 
 export class RemoveRow {
   private static updateColumnDetails(removedRowData: TableRow, columnsDetails: ColumnsDetailsT) {
@@ -47,7 +48,18 @@ export class RemoveRow {
     return removedContentRow[0];
   }
 
+  // REF-27
+  private static changeRowIndexIfRemoveHeaderWithDataBelow(etc: EditableTableComponent, rowIndex: number) {
+    const isHeaderRowWithDataBelow = rowIndex === 0 && etc.columnsDetails[0].elements.length > 1;
+    if (isHeaderRowWithDataBelow) {
+      MoveRow.move(etc, 0, true);
+      return 1;
+    }
+    return 0;
+  }
+
   public static remove(etc: EditableTableComponent, rowIndex: number) {
+    rowIndex = RemoveRow.changeRowIndexIfRemoveHeaderWithDataBelow(etc, rowIndex);
     const lastRowIndex = etc.contents.length - 1;
     const lastRowElement = etc.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const removedRowData = RemoveRow.removeRow(etc, rowIndex);
