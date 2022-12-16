@@ -67,7 +67,8 @@ export class ColumnSettingsStyleUtils {
       oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal) {
     // resetDataCellsStyle unsets and reapplies settings style hence we only need to set the header here
     ProcessedDataTextStyle.resetDataCellsStyle(etc, columnIndex,
-      ColumnSettingsStyleUtils.changeHeaderStyleFunc.bind(etc, columnIndex, oldSettings, newSettings))
+      ColumnSettingsStyleUtils.changeHeaderStyleFunc.bind(etc, columnIndex, oldSettings, newSettings),
+      oldSettings.cellStyle)
   }
 
   private static doStylesHaveVisibleDimension(style: CSSStyle, styleKeys: (keyof CSSStyle)[]) {

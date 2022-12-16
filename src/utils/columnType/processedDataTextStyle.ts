@@ -7,6 +7,7 @@ import {DefaultColumnsSettings} from '../../types/columnsSettings';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
 import {CellText} from '../../types/tableContents';
+import {CellCSSStyle} from '../../types/cssStyle';
 
 // this class only operates on data cells
 // REF-3
@@ -88,19 +89,21 @@ export class ProcessedDataTextStyle {
     });
   }
 
-  private static unsetStyleOnColumn(etc: EditableTableComponent, columnIndex: number) {
+  private static unsetStyleOnColumn(etc: EditableTableComponent, columnIndex: number, oldCellStyle?: CellCSSStyle) {
     const columnDetails = etc.columnsDetails[columnIndex];
     columnDetails.elements.slice(1).forEach((element, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
       const processedStyle = columnDetails.processedStyle[relativeRowIndex];
-      ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, element, etc.defaultColumnsSettings);
+      ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, element, etc.defaultColumnsSettings, oldCellStyle);
     });
   }
 
   // using this to first unset the previous processed style, allow new settings/type to be applied and then set
   // new style
-  public static resetDataCellsStyle(etc: EditableTableComponent, columnIndex: number, changeFunc: () => void) {
-    ProcessedDataTextStyle.unsetStyleOnColumn(etc, columnIndex);
+  // prettier-ignore
+  public static resetDataCellsStyle(etc: EditableTableComponent, columnIndex: number, changeFunc: () => void,
+      oldCellStyle?: CellCSSStyle) {
+    ProcessedDataTextStyle.unsetStyleOnColumn(etc, columnIndex, oldCellStyle);
     changeFunc(); // arguments are expected to be binded
     ProcessedDataTextStyle.setStyleOnColumn(etc, columnIndex);
   }

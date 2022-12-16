@@ -55,7 +55,7 @@
                 },
               ],
               isDefaultTextRemovable: false,
-              // headerStyleProps: {defaultStyle: {backgroundColor: 'lightgrey', borderRight: '1px solid yellow'}},
+              // headerStyleProps: {default: {backgroundColor: 'lightgrey', borderRight: '1px solid yellow'}},
               activeTypeName: 'Custom type 1',
             })
           );
@@ -69,7 +69,16 @@
           element.setAttribute(
             'customColumnsSettings',
             JSON.stringify([
-              {columnName: 'R', width: '50px', cellStyle: {color: 'red'}},
+              {
+                columnName: 'R',
+                width: '50px',
+                cellStyle: {color: 'red'},
+                headerStyleProps: {
+                  default: {
+                    color: 'green',
+                  },
+                },
+              },
               {
                 columnName: 'Ga',
                 defaultText: 'A',
@@ -116,7 +125,7 @@
                   backgroundColor: 'orange',
                 },
                 headerStyleProps: {
-                  defaultStyle: {
+                  default: {
                     border: '1px solid green',
                   },
                 },
@@ -134,6 +143,7 @@
                     },
                   },
                 ],
+                isMoveAvailable: true,
                 activeTypeName: 'Custom type 2',
               },
               {
@@ -169,7 +179,7 @@
                 ],
                 activeTypeName: 'Custom type 3',
                 // headerStyleProps: {
-                //   defaultStyle: {
+                //   default: {
                 //     border: '1px solid green',
                 //   },
                 // },
@@ -182,6 +192,7 @@
               // },
             ])
           );
+          element.setAttribute('rowDropdownSettings', JSON.stringify({isMoveAvailable: true}));
           // element.setAttribute('onCellUpdate', aa);
           // element.setAttribute('onTableUpdate', tableUpdate);
           // element.setAttribute('displayAddRowCell', false);

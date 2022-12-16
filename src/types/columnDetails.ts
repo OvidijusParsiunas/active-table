@@ -53,7 +53,7 @@ export interface CategoryDropdownT {
 
 export interface ColumnDetailsT {
   elements: HTMLElement[];
-  processedStyle: ColProcessedTextStyle;
+  processedStyle: ColProcessedTextStyle; // style added via validation
   columnSizer: ColumnSizerT;
   types: ColumnTypesInternal;
   activeType: ColumnTypeInternal;
