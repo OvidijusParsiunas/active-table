@@ -19,7 +19,7 @@ export class ColumnDropdownItem {
     DropdownItem.addButtonItem(etc, dropdownElement, text, ColumnDropdownItem.SORT_ITEM_CLASS);
   }
 
-  private static setUpItems(settings: ColumnSettingsInternal, items: HTMLElement[]) {
+  private static toggleItems(settings: ColumnSettingsInternal, items: HTMLElement[]) {
     const {isSortAvailable, isDeleteAvailable, isInsertLeftAvailable, isInsertRightAvailable, isMoveAvailable} = settings;
     if (!isSortAvailable) {
       DropdownItem.toggleItem(items[3], false);
@@ -55,7 +55,9 @@ export class ColumnDropdownItem {
     ColumnTypeDropdown.setUp(etc, dropdownElement, columnIndex);
     const items = Array.from(dropdownElement.children) as HTMLElement[];
     ColumnDropdownItem.setUpInputElement(etc, columnIndex, cellElement, items[0], dropdownElement);
-    ColumnDropdownItem.setUpItems(etc.columnsDetails[columnIndex].settings, items);
+    ColumnDropdownItem.toggleItems(etc.columnsDetails[columnIndex].settings, items);
+    ColumnDropdownItem.updateItemsStyle(etc, columnIndex, dropdownElement);
+    ColumnDropdownItemEvents.setItemEvents(etc, columnIndex, dropdownElement);
   }
 
   private static updateMoveColumnItemsStyle(etc: EditableTableComponent, colIndex: number, items: HTMLElement[]) {

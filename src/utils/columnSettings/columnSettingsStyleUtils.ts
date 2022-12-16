@@ -40,35 +40,28 @@ export class ColumnSettingsStyleUtils {
     CellElement.setDefaultCellStyle(columnElements[0], cellStyle, headerStyleProps?.default);
   }
 
-  // prettier-ignore
-  private static updateHeaderStyle(defaultColumnsSettings: DefaultColumnsSettings,
-      columnDetails: ColumnDetailsT, settings: ColumnSettingsInternal, isSetNew: boolean) {
-    ColumnSettingsStyleUtils.resetHeaderStyleToDefault(columnDetails.elements, settings, defaultColumnsSettings);
-    if (isSetNew) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, columnDetails.elements[0], true);
-    ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [columnDetails.elements[0]]);
-    // can potentially pass down defaultColumnSettings instead of undefined
-    columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(
-      defaultColumnsSettings, isSetNew ? settings : undefined);
+  private static setNewHeaderStyle(defaultColumnsSettings: DefaultColumnsSettings, columnDetails: ColumnDetailsT) {
+    const {settings, elements} = columnDetails;
+    const isNewHeaderStyle = settings.cellStyle || settings.headerStyleProps?.default;
+    if (isNewHeaderStyle) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, elements[0], true);
+    const newStyleSettings = isNewHeaderStyle ? settings : undefined;
+    columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(defaultColumnsSettings, newStyleSettings);
+    ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [elements[0]]);
   }
 
   // prettier-ignore
   private static changeHeaderStyleFunc(this: EditableTableComponent, columnIndex: number,
-      oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal) {
+      oldSettings: ColumnSettingsInternal) {
     const columnDetails = this.columnsDetails[columnIndex];
-    if (newSettings.cellStyle || newSettings.headerStyleProps?.default) {
-      ColumnSettingsStyleUtils.updateHeaderStyle(this.defaultColumnsSettings, columnDetails, newSettings, true);
-    } else if (oldSettings.cellStyle || oldSettings.headerStyleProps?.default) {
-      ColumnSettingsStyleUtils.updateHeaderStyle(this.defaultColumnsSettings, columnDetails, oldSettings, false);
-    }
+    ColumnSettingsStyleUtils.resetHeaderStyleToDefault(columnDetails.elements, oldSettings, this.defaultColumnsSettings);
+    ColumnSettingsStyleUtils.setNewHeaderStyle(this.defaultColumnsSettings, columnDetails);
   }
 
   // prettier-ignore
-  public static changeStyle(etc: EditableTableComponent, columnIndex: number,
-      oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal) {
+  public static changeStyle(etc: EditableTableComponent, columnIndex: number, oldSettings: ColumnSettingsInternal) {
     // resetDataCellsStyle unsets and reapplies settings style hence we only need to set the header here
     ProcessedDataTextStyle.resetDataCellsStyle(etc, columnIndex,
-      ColumnSettingsStyleUtils.changeHeaderStyleFunc.bind(etc, columnIndex, oldSettings, newSettings),
-      oldSettings.cellStyle)
+      ColumnSettingsStyleUtils.changeHeaderStyleFunc.bind(etc, columnIndex, oldSettings), oldSettings.cellStyle)
   }
 
   private static doStylesHaveVisibleDimension(style: CSSStyle, styleKeys: (keyof CSSStyle)[]) {
