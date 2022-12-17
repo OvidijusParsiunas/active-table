@@ -1,5 +1,6 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {DropdownItemEvents} from './dropdownItemEvents';
+import {CellElement} from '../cell/cellElement';
 import {Dropdown} from './dropdown';
 
 export class DropdownItem {
@@ -31,7 +32,7 @@ export class DropdownItem {
   private static createItem(dropdownElement: HTMLElement) {
     const itemElement = DropdownItem.createDropdownItemBaseElement('div');
     itemElement.tabIndex = dropdownElement.children.length;
-    itemElement.classList.add(DropdownItem.DROPDOWN_ITEM_CLASS);
+    itemElement.classList.add(DropdownItem.DROPDOWN_ITEM_CLASS, CellElement.NOT_SELECTABLE_CLASS);
     return itemElement;
   }
 

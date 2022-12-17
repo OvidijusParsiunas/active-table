@@ -27,18 +27,7 @@ export const ediTableStyle = css`
     color: rgba(0, 0, 0, 0.87);
     font-size: 12px;
     font-weight: 500;
-  }
-
-  th {
     cursor: pointer;
-    user-select: none;
-    /* safari */
-    -webkit-user-select: none;
-  }
-
-  td {
-    /* REF-2 */
-    cursor: text;
   }
 
   .row > *:first-child {
@@ -106,6 +95,12 @@ export const ediTableStyle = css`
     height: inherit;
   }
 
+  .not-selectable {
+    user-select: none;
+    /* safari */
+    -webkit-user-select: none;
+  }
+
   .column-sizer {
     background-size: 20px 5px;
     position: absolute;
@@ -139,9 +134,6 @@ export const ediTableStyle = css`
   .index-cell {
     text-align: center;
     padding: 11px 4px 0px !important;
-    user-select: none;
-    /* safari */
-    -webkit-user-select: none;
   }
 
   .index-cell-overflow {
@@ -151,9 +143,6 @@ export const ediTableStyle = css`
 
   .add-column-cell {
     cursor: pointer;
-    user-select: none;
-    /* safari */
-    -webkit-user-select: none;
   }
 
   .no-content-stub {
@@ -182,9 +171,6 @@ export const ediTableStyle = css`
     color: #6d6d6d;
     position: relative;
     cursor: pointer;
-    user-select: none;
-    /* safari */
-    -webkit-user-select: none;
     /* retaining the outline for dropdown input to make it easier to recognise */
     outline: none;
   }

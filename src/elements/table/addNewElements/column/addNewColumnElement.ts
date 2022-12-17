@@ -29,9 +29,13 @@ export class AddNewColumnElement {
     }
   }
 
-  private static createCell(etc: EditableTableComponent, tag: 'th' | 'td') {
-    const cell = document.createElement(tag);
-    cell.classList.add(CellElement.CELL_CLASS, AddNewColumnElement.ADD_COLUMN_CELL_CLASS);
+  private static createCell(etc: EditableTableComponent, isHeader: boolean) {
+    const cell = CellElement.createBaseCell(isHeader);
+    cell.classList.add(
+      CellElement.CELL_CLASS,
+      CellElement.NOT_SELECTABLE_CLASS,
+      AddNewColumnElement.ADD_COLUMN_CELL_CLASS
+    );
     // backgroundColor controlled by column group - REF-17
     Object.assign(cell.style, etc.defaultColumnsSettings.cellStyle, {backgroundColor: ''});
     AddNewColumnEvents.setEvents(etc, cell);
@@ -39,7 +43,7 @@ export class AddNewColumnElement {
   }
 
   private static createHeaderCell(etc: EditableTableComponent) {
-    const headerCell = AddNewColumnElement.createCell(etc, 'th');
+    const headerCell = AddNewColumnElement.createCell(etc, true);
     headerCell.style.width = AddNewColumnElement.DEFAULT_WIDTH_PX;
     headerCell.innerText = '+';
     Object.assign(
@@ -51,7 +55,7 @@ export class AddNewColumnElement {
   }
 
   private static createDataCell(etc: EditableTableComponent) {
-    return AddNewColumnElement.createCell(etc, 'td');
+    return AddNewColumnElement.createCell(etc, false);
   }
 
   private static isDisplayed(addColumnCellsElementsRef: HTMLElement[]) {

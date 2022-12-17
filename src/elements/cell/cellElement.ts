@@ -16,6 +16,7 @@ import {CellCSSStyle} from '../../types/cssStyle';
 
 export class CellElement {
   public static readonly CELL_CLASS = 'cell';
+  public static readonly NOT_SELECTABLE_CLASS = 'not-selectable';
 
   // prettier-ignore
   public static setCellEvents(etc: EditableTableComponent,
@@ -31,9 +32,17 @@ export class CellElement {
     Object.assign(cellElement.style, cellStyle, customStyle);
   }
 
-  public static create(isHeader: boolean, cellStyle?: CellCSSStyle, customStyle?: CellCSSStyle) {
+  public static createBaseCell(isHeader: boolean) {
     const cellElement = document.createElement(isHeader ? 'th' : 'td');
     cellElement.classList.add(CellElement.CELL_CLASS);
+    return cellElement;
+  }
+
+  // prettier-ignore
+  public static createContentCell(isHeader: boolean, cellStyle?: CellCSSStyle, customStyle?: CellCSSStyle,
+      isColumnDropdownDisplayed?: boolean) {
+    const cellElement = CellElement.createBaseCell(isHeader);
+    if (isHeader && isColumnDropdownDisplayed) cellElement.classList.add(CellElement.NOT_SELECTABLE_CLASS);
     // role for assistive technologies
     cellElement.setAttribute('role', 'textbox');
     // should probably remove border width from headerStyle if cellStyle contains it as it will affect the sizer position
@@ -132,7 +141,8 @@ export class CellElement {
   private static createCellDOMElement(etc: EditableTableComponent, text: CellText, colIndex: number, isHeader: boolean) {
     const {defaultColumnsSettings: {cellStyle, headerStyleProps}, columnsDetails, tableElementRef} = etc;
     const columnDetails = columnsDetails[colIndex];
-    const cellElement = CellElement.create(isHeader, cellStyle, isHeader ? headerStyleProps?.default || {} : {});
+    const cellElement = CellElement.createContentCell(isHeader, cellStyle,
+      isHeader ? headerStyleProps?.default : {}, etc.isColumnDropdownDisplayed);
     const {settings} = columnDetails;
     ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, cellElement, isHeader);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [cellElement]); // REF-23
