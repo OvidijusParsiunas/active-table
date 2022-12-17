@@ -19,15 +19,16 @@ export class FocusNextColumnCellFromTextDiv {
     cellElement.scrollIntoView({block: 'nearest'});
   }
 
-  private static focusOrBlurNextRowFirstCell(etc: EditableTableComponent, columnIndex: number, rowIndex: number) {
+  private static focusOrBlurNextRowFirstCell(etc: EditableTableComponent, rowIndex: number) {
     const firstColumn = etc.columnsDetails[0];
     const nextRowIndex = rowIndex + 1;
     const nextRowFirstCell = firstColumn.elements[nextRowIndex];
     if (nextRowFirstCell) {
       FocusNextColumnCellFromTextDiv.focusDifferentColumnCell(etc, 0, nextRowIndex);
     } else {
+      const focusedCell = etc.focusedElements.cell.element as HTMLElement;
       // if no next cell - blur current as the dropdown will be closed but the cursor would otherwise stay
-      (etc.columnsDetails[columnIndex].elements[rowIndex].children[0] as HTMLElement).blur();
+      (focusedCell.children[0] as HTMLElement).blur();
     }
   }
 
@@ -36,7 +37,7 @@ export class FocusNextColumnCellFromTextDiv {
     if (nextColumn) {
       FocusNextColumnCellFromTextDiv.focusDifferentColumnCell(etc, columnIndex + 1, rowIndex);
     } else {
-      FocusNextColumnCellFromTextDiv.focusOrBlurNextRowFirstCell(etc, columnIndex, rowIndex);
+      FocusNextColumnCellFromTextDiv.focusOrBlurNextRowFirstCell(etc, rowIndex);
     }
   }
 }
