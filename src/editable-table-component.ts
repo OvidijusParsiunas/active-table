@@ -1,5 +1,6 @@
 import {AuxiliaryTableContentInternalUtils} from './utils/auxiliaryTableContent/auxiliaryTableContentInternalUtils';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
+import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
@@ -34,7 +35,6 @@ import {
   CustomColumnSettings,
   ColumnsSettingsMap,
 } from './types/columnsSettings';
-import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 
 // TO-DO
 // column validation: potentially highlight what is failing validation in red and display what the problem is upon hover
@@ -49,8 +49,6 @@ export class EditableTableComponent extends LitElement {
   public static ELEMENT_TAG = 'EDITABLE-TABLE-COMPONENT';
 
   @property({type: Array})
-  // TO-DO cannot insert a header row when there is content already present - maybe don't need to?
-  // TO-DO cannot delete header row - maybe don't need to?
   contents: TableContents = [
     ['R', 'G', 'B', 'Color'],
     [255, 0, 0, 'Red'],
@@ -100,6 +98,14 @@ export class EditableTableComponent extends LitElement {
 
   @property({type: Array<CustomColumnSettings>})
   customColumnsSettings: CustomColumnsSettings = [];
+
+  // the reason why this is toggled for all columns instead of individual ones per custom settings is because
+  // the latter leads to unpleasant UX and consistency is much more preferrable for an adequate experience
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  isColumnDropdownDisplayed = true;
 
   @state()
   customColumnsSettingsInternal: ColumnsSettingsMap = {};

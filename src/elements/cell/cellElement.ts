@@ -20,7 +20,7 @@ export class CellElement {
   // prettier-ignore
   public static setCellEvents(etc: EditableTableComponent,
       cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (rowIndex === 0) {
+    if (rowIndex === 0 && etc.isColumnDropdownDisplayed) {
       HeaderCellEvents.setEvents(etc, cellElement, columnIndex);
     } else {
       DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
@@ -43,18 +43,22 @@ export class CellElement {
     return cellElement;
   }
 
-  public static setCursor(cellElement: HTMLElement, isHeader: boolean, isCellTextEditable: boolean) {
-    if (!isHeader) cellElement.style.cursor = isCellTextEditable ? 'text' : 'default';
+  public static setCursor(cellElement: HTMLElement, isCellTextEditable: boolean) {
+    cellElement.style.cursor = isCellTextEditable ? 'text' : 'default';
   }
 
-  public static prepContentEditable(cellElement: HTMLElement, isHeader: boolean, isCellTextEditable: boolean) {
+  // many methods that call this pass down isColumnDropdownDisplayed as false because they only work with data cells
+  // prettier-ignore
+  public static prepContentEditable(cellElement: HTMLElement, isHeader: boolean, isCellTextEditable: boolean,
+      isColumnDropdownDisplayed: boolean) {
+    const isEditable = !isHeader || !isColumnDropdownDisplayed;
     if (Browser.IS_FIREFOX) {
-      if (isCellTextEditable) FirefoxCaretDisplayFix.setTabIndex(cellElement, isHeader);
+      if (isCellTextEditable && isEditable) FirefoxCaretDisplayFix.setTabIndex(cellElement);
       FirefoxCaretDisplayFix.removeContentEditable(cellElement);
     } else {
-      cellElement.contentEditable = isHeader ? 'false' : String(isCellTextEditable);
+      cellElement.contentEditable = !isEditable ? 'false' : String(isCellTextEditable);
     }
-    CellElement.setCursor(cellElement, isHeader, isCellTextEditable);
+    if (isEditable) CellElement.setCursor(cellElement, isCellTextEditable);
   }
 
   // prettier-ignore
@@ -132,7 +136,7 @@ export class CellElement {
     const {settings} = columnDetails;
     ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, cellElement, isHeader);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [cellElement]); // REF-23
-    CellElement.prepContentEditable(cellElement, isHeader, settings.isCellTextEditable);
+    CellElement.prepContentEditable(cellElement, isHeader, settings.isCellTextEditable, etc.isColumnDropdownDisplayed);
     // overwritten again if static table
     if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
     CellElement.processCellWithNewText(etc, cellElement, text, true, false);

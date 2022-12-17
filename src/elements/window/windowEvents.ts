@@ -3,6 +3,7 @@ import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellIn
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
 import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
 import {ColumnDropdownEvents} from '../dropdown/columnDropdown/columnDropdownEvents';
+import {ColumnSettingsUtils} from '../../utils/columnSettings/columnSettingsUtils';
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {RowDropdownEvents} from '../dropdown/rowDropdown/rowDropdownEvents';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
@@ -14,10 +15,15 @@ import {Dropdown} from '../dropdown/dropdown';
 export class WindowEvents {
   // prettier-ignore
   public static onKeyDown(this: EditableTableComponent, event: KeyboardEvent) {
-    const {rowIndex, columnIndex} = this.focusedElements.cell;
+    const {rowIndex, columnIndex, element} = this.focusedElements.cell;
     if (rowIndex === undefined || columnIndex === undefined) return;
+    if (rowIndex === 0 && !this.isColumnDropdownDisplayed) {
+      if (event.key === KEYBOARD_KEY.ESCAPE) {
+        ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, element as HTMLElement, columnIndex);
+        return;
+      }
     // workaround for when opened dropdown does not have a focused item
-    if (Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown) && !this.shadowRoot?.activeElement) {
+    } else if (Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown) && !this.shadowRoot?.activeElement) {
       ColumnDropdownEvents.onKeyDown.bind(this)(this.activeOverlayElements.columnDropdown as HTMLElement, event);
       return;
     }

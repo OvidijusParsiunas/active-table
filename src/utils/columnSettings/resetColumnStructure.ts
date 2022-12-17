@@ -8,7 +8,7 @@ import {ColumnDetailsT} from '../../types/columnDetails';
 export class ResetColumnStructure {
   private static resetEventsAndCursor(columnDetails: ColumnDetailsT, cellElement: HTMLElement) {
     if (!columnDetails.settings.isCellTextEditable) CellEvents.unsetEvents(cellElement);
-    CellElement.setCursor(cellElement, false, columnDetails.settings.isCellTextEditable);
+    CellElement.setCursor(cellElement, columnDetails.settings.isCellTextEditable);
   }
 
   public static reset(etc: EditableTableComponent, columnDetails: ColumnDetailsT, columnIndex: number) {

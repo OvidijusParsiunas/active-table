@@ -15,18 +15,18 @@ export class FirefoxCaretDisplayFix {
   }
 
   // THIS HAS TO BE CALLED IN A FOCUS EVENT!!!!!!!!!!!!!!!!!
-  public static setContentEditable(textContainerElement: HTMLElement, rowIndex: number) {
-    if (rowIndex > 0) textContainerElement.setAttribute(FirefoxCaretDisplayFix.CONTENT_EDITABLE, 'true');
+  public static setContentEditable(textContainerElement: HTMLElement) {
+    textContainerElement.setAttribute(FirefoxCaretDisplayFix.CONTENT_EDITABLE, 'true');
   }
 
   public static removeTabIndex(cellElement: HTMLElement) {
     cellElement.removeAttribute(FirefoxCaretDisplayFix.TAB_INDEX);
   }
 
-  public static setTabIndex(textContainerElement: HTMLElement, isHeader: boolean) {
+  public static setTabIndex(textContainerElement: HTMLElement) {
     // allows cells to be focused in firefox
     // the reason why this is not applied in Chrome is because the TAB key does not go to the next cell
-    if (!isHeader) textContainerElement.setAttribute(FirefoxCaretDisplayFix.TAB_INDEX, '0');
+    textContainerElement.setAttribute(FirefoxCaretDisplayFix.TAB_INDEX, '0');
   }
 
   private static removeBRPadding(etc: EditableTableComponent, textContainerElement: HTMLElement) {

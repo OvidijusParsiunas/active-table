@@ -2,6 +2,7 @@ import {OverwriteCellsViaCSVOnPaste} from '../../../utils/paste/CSV/overwriteCel
 import {FirefoxCaretDisplayFix} from '../../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {UserKeyEventsStateUtils} from '../../../utils/userEventsState/userEventsStateUtils';
 import {DateCellInputElement} from '../cellsWithTextDiv/dateCell/dateCellInputElement';
+import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
 import {CategoryDropdown} from '../../dropdown/categoryDropdown/categoryDropdown';
 import {CellTypeTotalsUtils} from '../../../utils/columnType/cellTypeTotalsUtils';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
@@ -83,6 +84,9 @@ export class DataCellEvents {
   }
 
   private static blurCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
+    if (rowIndex === 0 && !this.isColumnDropdownDisplayed) {
+      ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, event.target as HTMLElement, columnIndex);
+    }
     DataCellEvents.blur(this, rowIndex, columnIndex, event.target as HTMLElement);
   }
 
@@ -90,8 +94,10 @@ export class DataCellEvents {
   // textContainerElement can be cell element for data cell, text element for category and date cells
   public static prepareText(etc: EditableTableComponent, rowIndex: number, columnIndex: number,
       textContainerElement: HTMLElement) {
-    // THIS HAS TO BE CALLED IN A FOCUS EVENT!!!!!!!!!!!!!!!!!
-    if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.setContentEditable(textContainerElement, rowIndex);
+    if (Browser.IS_FIREFOX) {
+      // THIS HAS TO BE CALLED IN A FOCUS EVENT!!!!!!!!!!!!!!!!!
+     if (rowIndex > 0 || !etc.isColumnDropdownDisplayed) FirefoxCaretDisplayFix.setContentEditable(textContainerElement);
+    }
     // placed here and not in timeout because we need cells with a default value to be recorded before modification
     CellEvents.removeTextIfDefault(etc, rowIndex, columnIndex, textContainerElement);
   }

@@ -48,11 +48,12 @@ export class TableElement {
     tableElement.appendChild(fullTableOverlay);
     activeOverlayElements.fullTableOverlay = fullTableOverlay;
     // column dropdown
-    const columnDropdownElement = ColumnDropdown.create(etc, areHeadersEditable);
-    tableElement.appendChild(columnDropdownElement);
-    activeOverlayElements.columnDropdown = columnDropdownElement;
+    if (etc.isColumnDropdownDisplayed) {
+      const columnDropdownElement = ColumnDropdown.create(etc, areHeadersEditable);
+      tableElement.appendChild(columnDropdownElement);
+      activeOverlayElements.columnDropdown = columnDropdownElement;
+    }
     // row dropdown
-    // WORK - option to not display dropdowns
     if (etc.rowDropdownSettings.isDisplayed) {
       const rowDropdownElement = RowDropdown.create(etc);
       tableElement.appendChild(rowDropdownElement);

@@ -53,8 +53,10 @@ export class ColumnSettingsStyleUtils {
   private static changeHeaderStyleFunc(this: EditableTableComponent, columnIndex: number,
       oldSettings: ColumnSettingsInternal) {
     const columnDetails = this.columnsDetails[columnIndex];
-    ColumnSettingsStyleUtils.resetHeaderStyleToDefault(columnDetails.elements, oldSettings, this.defaultColumnsSettings);
+    const { elements, settings: {isCellTextEditable}} = columnDetails;
+    ColumnSettingsStyleUtils.resetHeaderStyleToDefault(elements, oldSettings, this.defaultColumnsSettings);
     ColumnSettingsStyleUtils.setNewHeaderStyle(this.defaultColumnsSettings, columnDetails);
+    CellElement.prepContentEditable(elements[0], true, isCellTextEditable, this.isColumnDropdownDisplayed);
   }
 
   // prettier-ignore
