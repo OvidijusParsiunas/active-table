@@ -22,15 +22,15 @@ export class ColumnDropdownItem {
   private static toggleItems(settings: ColumnSettingsInternal, items: HTMLElement[]) {
     const {isSortAvailable, isDeleteAvailable, isInsertLeftAvailable, isInsertRightAvailable, isMoveAvailable} = settings;
     if (!isSortAvailable) {
-      DropdownItem.toggleItem(items[3], false);
       DropdownItem.toggleItem(items[4], false);
+      DropdownItem.toggleItem(items[5], false);
     }
     if (!isInsertRightAvailable) DropdownItem.toggleItem(items[5], false);
     if (!isInsertLeftAvailable) DropdownItem.toggleItem(items[6], false);
     if (!isMoveAvailable) {
       // their display should be toggled if can't move any further
-      DropdownItem.toggleItem(items[7], false);
       DropdownItem.toggleItem(items[8], false);
+      DropdownItem.toggleItem(items[9], false);
     }
     if (!isDeleteAvailable) DropdownItem.toggleItem(items[9], false);
   }
@@ -63,24 +63,24 @@ export class ColumnDropdownItem {
   private static updateMoveColumnItemsStyle(etc: EditableTableComponent, colIndex: number, items: HTMLElement[]) {
     const {isMoveAvailable} = etc.columnsDetails[colIndex].settings;
     if (!isMoveAvailable) return;
-    items[7].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
     items[8].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
+    items[9].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
     if (colIndex === 0) {
-      items[7].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
+      items[8].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
     }
     if (colIndex === etc.columnsDetails.length - 1) {
-      items[8].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
+      items[9].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
     }
   }
 
   private static updateInsertColumnItemsStyle(etc: EditableTableComponent, items: HTMLElement[]) {
     const canAddMoreColumns = MaximumColumns.canAddMore(etc);
     if (canAddMoreColumns) {
-      items[5].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
       items[6].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
+      items[7].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
     } else {
-      items[5].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
       items[6].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
+      items[7].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
     }
   }
 

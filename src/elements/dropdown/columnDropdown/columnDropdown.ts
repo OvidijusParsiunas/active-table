@@ -45,8 +45,9 @@ export class ColumnDropdown {
     // selected item
     DropdownItem.addTitle(dropdownElement, 'Property type');
     ColumnTypeDropdown.createColumnDropdown(etc, dropdownElement);
-    ColumnDropdownItem.addSortButton(etc, dropdownElement, 'Ascending');
-    ColumnDropdownItem.addSortButton(etc, dropdownElement, 'Descending');
+    DropdownItem.addDivider(dropdownElement);
+    ColumnDropdownItem.addSortButton(etc, dropdownElement, 'Sort Ascending');
+    ColumnDropdownItem.addSortButton(etc, dropdownElement, 'Sort Descending');
     DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Left');
     DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Right');
     DropdownItem.addButtonItem(etc, dropdownElement, 'Move Left');

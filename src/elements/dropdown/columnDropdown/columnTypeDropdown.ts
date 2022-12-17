@@ -7,15 +7,13 @@ export class ColumnTypeDropdown {
   // this item is used to denote the item used to open up type dropdown
   private static readonly COLUMN_TYPE_ITEM_CLASS = 'dropdown-column-type-item';
 
-  public static getColumnTypeItemText(dropdownElement: HTMLElement): HTMLElement {
-    const buttonElement = dropdownElement.getElementsByClassName(ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS)[0];
-    return buttonElement.children[0] as HTMLElement;
-  }
-
-  public static setUp(etc: EditableTableComponent, dropdownElement: HTMLElement, columnIndex: number) {
+  public static setUp(etc: EditableTableComponent, dropdownEl: HTMLElement, columnIndex: number): string | void {
     const {activeType, types} = etc.columnsDetails[columnIndex];
-    const textElement = ColumnTypeDropdown.getColumnTypeItemText(dropdownElement);
+    const itemElement = dropdownEl.getElementsByClassName(ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS)[0] as HTMLElement;
+    const textElement = itemElement.children[0] as HTMLElement;
     textElement.innerText = activeType.name;
+    if (types.length < 2) return (itemElement.style.pointerEvents = 'none');
+    itemElement.style.pointerEvents = '';
     setTimeout(() => {
       const {columnTypeDropdown} = etc.activeOverlayElements;
       const itemNames = types.map((type) => type.name);

@@ -22,11 +22,9 @@ export const ediTableStyle = css`
   }
 
   /* REF-1 */
-  tbody > *:first-child > th {
+  th {
+    /* TO-DO - please note that this will not work correctly when header is not displaye */
     border-top: none !important;
-    color: rgba(0, 0, 0, 0.87);
-    font-size: 12px;
-    font-weight: 500;
     cursor: pointer;
   }
 
@@ -164,23 +162,43 @@ export const ediTableStyle = css`
   }
 
   .dropdown-item {
-    padding-top: 1px;
-    padding-bottom: 1px;
+    padding-top: 2px;
+    padding-bottom: 2px;
     padding-right: 5px;
     padding-left: 5px;
-    color: #6d6d6d;
+    color: #4b4b4b;
     position: relative;
     cursor: pointer;
     /* retaining the outline for dropdown input to make it easier to recognise */
     outline: none;
+    font-size: 15px;
   }
 
   .dropdown-title-item {
     cursor: default;
+    color: #7c7c7c;
+    font-weight: 600;
+    font-size: 0.75rem;
+    margin-top: 2px;
   }
 
   .dropdown-input-item {
     text-align: center;
+  }
+
+  .dropdown-input {
+    width: 92%;
+    border: 1px solid grey;
+    border-radius: 2px;
+    color: #2d2d2d;
+    font-size: 14px;
+    padding: 3px;
+  }
+
+  .dropdown-item-divider {
+    border-bottom: 1px solid #d4d4d4;
+    margin-top: 2px;
+    margin-bottom: 2px;
   }
 
   .dropdown-highlightable-item:hover {
