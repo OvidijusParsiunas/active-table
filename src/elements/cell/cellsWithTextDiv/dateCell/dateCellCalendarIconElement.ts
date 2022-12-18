@@ -1,3 +1,4 @@
+import {SVGIconUtils} from '../../../../utils/svgIcons/svgIconUtils';
 import {CALENDAR_ICON_SVG_STRING} from './calendarIconSVGString';
 
 export class DateCellCalendarIconElement {
@@ -12,15 +13,13 @@ export class DateCellCalendarIconElement {
     return container;
   }
 
+  // REF-10
   private static createSVGElement() {
-    const parser = new DOMParser();
-    // REF-10
-    const doc = parser.parseFromString(CALENDAR_ICON_SVG_STRING, 'image/svg+xml');
-    const svgIcon = doc.documentElement;
-    // styles are set here as the class does not take effect on svg
-    svgIcon.style.pointerEvents = 'none';
-    svgIcon.style.height = '25px';
-    return svgIcon;
+    const svgIconElement = SVGIconUtils.createSVGElement(CALENDAR_ICON_SVG_STRING);
+    // using style as the class has no effect on svg
+    svgIconElement.style.pointerEvents = 'none';
+    svgIconElement.style.height = '25px';
+    return svgIconElement;
   }
 
   private static createSVG() {

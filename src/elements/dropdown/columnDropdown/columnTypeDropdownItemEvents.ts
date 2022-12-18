@@ -14,7 +14,7 @@ export class ColumnTypeDropdownItemEvents {
     items.forEach((dropdownChildElement) => {
       const dropdownItem = dropdownChildElement as HTMLElement;
       dropdownItem.onclick = ColumnTypeDropdownItemEvents.onClickMiddleware.bind(etc,
-        ChangeColumnType.change.bind(etc, dropdownItem.innerText, columnIndex));
+        ChangeColumnType.change.bind(etc, dropdownItem.innerText.trim(), columnIndex));
     });
   }
 }

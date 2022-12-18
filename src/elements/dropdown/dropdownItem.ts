@@ -1,4 +1,6 @@
+import {CALENDAR_ICON_SVG_STRING} from '../cell/cellsWithTextDiv/dateCell/calendarIconSVGString';
 import {EditableTableComponent} from '../../editable-table-component';
+import {SVGIconUtils} from '../../utils/svgIcons/svgIconUtils';
 import {DropdownItemEvents} from './dropdownItemEvents';
 import {CellElement} from '../cell/cellElement';
 import {Dropdown} from './dropdown';
@@ -50,6 +52,17 @@ export class DropdownItem {
     DropdownItemEvents.addItemEvents(etc.activeOverlayElements, inputElement);
   }
 
+  private static insertIcon(buttonElement: HTMLElement) {
+    // make this more efficient by cloning elements from state
+    const svgIconElement = SVGIconUtils.createSVGElement(CALENDAR_ICON_SVG_STRING);
+    // using style as the class has no effect on svg
+    svgIconElement.style.marginTop = '4.5px';
+    svgIconElement.style.marginRight = '6px';
+    svgIconElement.style.float = 'left';
+    svgIconElement.style.filter = SVGIconUtils.DARK_GREY_FILTER;
+    buttonElement.insertBefore(svgIconElement, buttonElement.children[0]);
+  }
+
   public static addPlaneButtonItem(dropdownElement: HTMLElement, text: string, index?: number) {
     const itemElement = DropdownItem.createItem(dropdownElement);
     const textElement = DropdownItem.createDropdownItemBaseElement('div');
@@ -66,6 +79,7 @@ export class DropdownItem {
   public static addButtonItem(etc: EditableTableComponent, dropdown: HTMLElement, text: string, ...classNames: string[]) {
     const buttonElement = DropdownItem.addPlaneButtonItem(dropdown, text);
     DropdownItemEvents.addItemEvents(etc.activeOverlayElements, buttonElement);
+    DropdownItem.insertIcon(buttonElement);
     if (classNames.length > 0) buttonElement.classList.add(...classNames);
     return buttonElement;
   }

@@ -18,13 +18,13 @@ export class DropdownItemEvents {
   }
 
   private static hideNestedDropdown(event: Event) {
-    const nestedDropdownElement = (event.target as HTMLElement).children[1] as HTMLElement;
+    const nestedDropdownElement = (event.target as HTMLElement).children[2] as HTMLElement;
     nestedDropdownElement.style.display = 'none';
     DropdownItemEvents.resetDropdownPosition(nestedDropdownElement);
   }
 
   private static displayAndSetNestedDropdownPosition(event: Event) {
-    const nestedDropdownElement = (event.target as HTMLElement).children[1] as HTMLElement;
+    const nestedDropdownElement = (event.target as HTMLElement).children[2] as HTMLElement;
     const parentDropdownElement = (event.target as HTMLElement).parentElement as HTMLElement;
     nestedDropdownElement.style.left = parentDropdownElement.style.width;
     nestedDropdownElement.style.display = parentDropdownElement.style.display;

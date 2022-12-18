@@ -10,7 +10,7 @@ export class ColumnTypeDropdown {
   public static setUp(etc: EditableTableComponent, dropdownEl: HTMLElement, columnIndex: number): string | void {
     const {activeType, types} = etc.columnsDetails[columnIndex];
     const itemElement = dropdownEl.getElementsByClassName(ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS)[0] as HTMLElement;
-    const textElement = itemElement.children[0] as HTMLElement;
+    const textElement = itemElement.children[1] as HTMLElement;
     textElement.innerText = activeType.name;
     if (types.length < 2) return (itemElement.style.pointerEvents = 'none');
     itemElement.style.pointerEvents = '';
