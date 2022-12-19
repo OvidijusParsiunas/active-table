@@ -8,6 +8,7 @@ import {DynamicCellTextUpdate} from './utils/dynamicUpdates/dynamicCellTextUpdat
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
+import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {TableDimensionsInternal} from './types/tableDimensionsInternal';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
@@ -194,6 +195,7 @@ export class EditableTableComponent extends LitElement {
     InitialContentsProcessing.preProcess(this.contents);
     WindowElement.setEvents(this);
     ColumnSettingsUtils.setUpInternalSettings(this);
+    DefaultColumnTypes.createDropdownItemsForDefaultTypes();
   }
 
   override connectedCallback() {

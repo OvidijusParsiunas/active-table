@@ -49,15 +49,18 @@ export class RowDropdownItem {
   }
 
   public static setUpItems(etc: EditableTableComponent, dropdownElement: HTMLElement) {
-    const {rowDropdownSettings} = etc;
-    const {isInsertUpAvailable, isInsertDownAvailable, isMoveAvailable, isDeleteAvailable} = rowDropdownSettings;
-    const items = RowDropdownButtonItemConf.ITEMS.map((item) => DropdownItem.addButtonItem(etc, dropdownElement, item));
-    if (!isInsertUpAvailable) DropdownItem.toggleItem(items[0], false);
-    if (!isInsertDownAvailable) DropdownItem.toggleItem(items[1], false);
-    if (!isMoveAvailable) {
-      DropdownItem.toggleItem(items[2], false);
-      DropdownItem.toggleItem(items[3], false);
-    }
-    if (!isDeleteAvailable) DropdownItem.toggleItem(items[4], false);
+    // creating icons is expensive and they are not needed on initial render
+    setTimeout(() => {
+      const {rowDropdownSettings} = etc;
+      const {isInsertUpAvailable, isInsertDownAvailable, isMoveAvailable, isDeleteAvailable} = rowDropdownSettings;
+      const items = RowDropdownButtonItemConf.ITEMS.map((item) => DropdownItem.addButtonItem(etc, dropdownElement, item));
+      if (!isInsertUpAvailable) DropdownItem.toggleItem(items[0], false);
+      if (!isInsertDownAvailable) DropdownItem.toggleItem(items[1], false);
+      if (!isMoveAvailable) {
+        DropdownItem.toggleItem(items[2], false);
+        DropdownItem.toggleItem(items[3], false);
+      }
+      if (!isDeleteAvailable) DropdownItem.toggleItem(items[4], false);
+    });
   }
 }

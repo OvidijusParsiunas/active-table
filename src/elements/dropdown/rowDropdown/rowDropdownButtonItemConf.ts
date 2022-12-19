@@ -3,6 +3,7 @@ import {MOVE_DOWN_ICON_SVG_STRING, MOVE_UP_ICON_SVG_STRING} from '../../../const
 import {TRASH_ICON_SVG_STRING} from '../../../consts/icons/trashIconSVGString';
 import {DropdownButtonItemSettings} from '../../../types/dropdownButtonItem';
 
+// TO-DO - potential opportunity to use code sharding and download strings later
 export class RowDropdownButtonItemConf {
   public static readonly ITEMS: DropdownButtonItemSettings[] = [
     {

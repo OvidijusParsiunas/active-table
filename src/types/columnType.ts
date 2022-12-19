@@ -1,6 +1,7 @@
 import {CalendarFunctionality} from './calendarFunctionality';
 import {CategoriesProperties} from './categoriesProperties';
 import {CustomTextProcessing} from './customTextProcessing';
+import {IconSettings} from './dropdownButtonItem';
 import {TextValidation} from './textValidation';
 import {InterfacesUnion} from './utilityTypes';
 import {SortingFuncs} from './sortingFuncs';
@@ -13,7 +14,8 @@ interface Parent {
   // REF-3
   textValidation?: TextValidation; // this is a genuine form of custom text validation and its resulting style
   customTextProcessing?: CustomTextProcessing; // this is used to allow explicit processing of text and its resulting style
-  sorting?: SortingFuncs; // By default the elements will be sorted in ascending ASCII character order
+  sorting?: SortingFuncs; // by default the elements will be sorted in ascending ASCII character order
+  dropdownIconSettings?: IconSettings; // automatic icon will be used by default, however use this object to add your own
 }
 
 interface Calendar extends Omit<Parent, 'sorting'> {

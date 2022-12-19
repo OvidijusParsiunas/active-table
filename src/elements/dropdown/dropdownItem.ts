@@ -1,5 +1,4 @@
 import {DropdownButtonItemSettings, IconSettings} from '../../types/dropdownButtonItem';
-import {CALENDAR_ICON_SVG_STRING} from '../../consts/icons/calendarIconSVGString';
 import {EditableTableComponent} from '../../editable-table-component';
 import {SVGIconUtils} from '../../utils/svgIcons/svgIconUtils';
 import {DropdownItemEvents} from './dropdownItemEvents';
@@ -10,7 +9,7 @@ export class DropdownItem {
   public static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
   private static readonly DISABLED_ITEM_CLASS = 'dropdown-disabled-item';
   public static readonly DROPDOWN_INPUT_CLASS = 'dropdown-input';
-  private static readonly DROPDOWN_ITEM_ICON_CONTAINER_CLASS = 'dropdown-input-icon-container';
+  private static readonly DROPDOWN_ITEM_ICON_CONTAINER_CLASS = 'dropdown-item-icon-container';
   public static readonly DROPDOWN_INPUT_ITEM_CLASS = 'dropdown-input-item';
   public static readonly DROPDOWN_TITLE_ITEM_CLASS = 'dropdown-title-item';
   public static readonly DROPDOWN_NESTED_DROPDOWN_ITEM = 'dropdown-nested-dropdown-item';
@@ -34,9 +33,9 @@ export class DropdownItem {
     return dropdownItemBaseDiv;
   }
 
-  private static createItem(dropdownElement: HTMLElement) {
+  private static createItem(dropdownElement?: HTMLElement) {
     const itemElement = DropdownItem.createDropdownItemBaseElement('div');
-    itemElement.tabIndex = dropdownElement.children.length;
+    if (dropdownElement) itemElement.tabIndex = dropdownElement.children.length;
     itemElement.classList.add(DropdownItem.DROPDOWN_ITEM_CLASS, CellElement.NOT_SELECTABLE_CLASS);
     return itemElement;
   }
@@ -54,6 +53,7 @@ export class DropdownItem {
     DropdownItemEvents.addItemEvents(etc.activeOverlayElements, inputElement);
   }
 
+  // REF-10
   private static insertIcon(buttonElement: HTMLElement, iconSettings: IconSettings) {
     const {svgString, containerStyle} = iconSettings;
     const container = document.createElement('div');
@@ -66,24 +66,25 @@ export class DropdownItem {
     buttonElement.insertBefore(container, buttonElement.children[0]);
   }
 
-  public static addPlaneButtonItem(dropdownElement: HTMLElement, text: string, index?: number) {
+  public static addPlaneButtonItem(dropdownElement: HTMLElement | undefined, text: string, index?: number) {
     const itemElement = DropdownItem.createItem(dropdownElement);
     const textElement = DropdownItem.createDropdownItemBaseElement('div');
     textElement.innerText = text;
     itemElement.append(textElement);
-    if (index !== undefined && dropdownElement.children[index]) {
-      dropdownElement.insertBefore(itemElement, dropdownElement.children[index]);
-    } else {
-      dropdownElement.appendChild(itemElement);
+    if (dropdownElement) {
+      if (index !== undefined && dropdownElement.children[index]) {
+        dropdownElement.insertBefore(itemElement, dropdownElement.children[index]);
+      } else {
+        dropdownElement.appendChild(itemElement);
+      }
     }
     return itemElement;
   }
 
   // prettier-ignore
-  public static addButtonItem(etc: EditableTableComponent, dropdown: HTMLElement, itemSettings: DropdownButtonItemSettings,
+  public static createButtonWithoutEvents(dropdown: HTMLElement | undefined, itemSettings: DropdownButtonItemSettings,
       ...classNames: string[]) {
     const buttonElement = DropdownItem.addPlaneButtonItem(dropdown, itemSettings.text);
-    DropdownItemEvents.addItemEvents(etc.activeOverlayElements, buttonElement);
     DropdownItem.insertIcon(buttonElement, itemSettings.iconSettings);
     if (classNames.length > 0) buttonElement.classList.add(...classNames);
     return buttonElement;
@@ -102,16 +103,36 @@ export class DropdownItem {
     dropdownElement.appendChild(dividerElement);
   }
 
-  public static addItems(etc: EditableTableComponent, dropdownElement: HTMLElement, itemText: string[]): HTMLElement[] {
-    return itemText.map((text) => {
-      const itemSettings = {text, iconSettings: {svgString: CALENDAR_ICON_SVG_STRING}};
-      return DropdownItem.addButtonItem(etc, dropdownElement, itemSettings);
+  // prettier-ignore
+  public static addButtonItem(etc: EditableTableComponent, dropdown: HTMLElement, itemSettings: DropdownButtonItemSettings,
+      ...classNames: string[]) {
+    const buttonElement = DropdownItem.createButtonWithoutEvents(dropdown, itemSettings, ...classNames);
+    DropdownItemEvents.addItemEvents(etc.activeOverlayElements, buttonElement);
+    return buttonElement;
+  }
+
+  // prettier-ignore
+  public static addNewButtonItems(etc: EditableTableComponent, dropdownElement: HTMLElement,
+      itemsSettings: DropdownButtonItemSettings[]): HTMLElement[] {
+    return itemsSettings.map((item) => {
+      return DropdownItem.addButtonItem(etc, dropdownElement, item);
     });
   }
 
-  public static createNestedDropdown() {
+  public static addButtonItemElements(etc: EditableTableComponent, dropdownElement: HTMLElement, elements: HTMLElement[]) {
+    elements.forEach((element) => {
+      element.tabIndex = dropdownElement.children.length;
+      dropdownElement.appendChild(element);
+      DropdownItemEvents.addItemEvents(etc.activeOverlayElements, element);
+    });
+  }
+
+  public static createNestedDropdown(etc: EditableTableComponent, itemSettings: DropdownButtonItemSettings[]): HTMLElement;
+  public static createNestedDropdown(): HTMLElement;
+  public static createNestedDropdown(etc?: EditableTableComponent, itemSettings?: DropdownButtonItemSettings[]) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.style.top = `-${Number.parseInt(dropdownElement.style.paddingTop) + 22}px`;
+    if (etc && itemSettings) DropdownItem.addNewButtonItems(etc, dropdownElement, itemSettings);
     return dropdownElement;
   }
 

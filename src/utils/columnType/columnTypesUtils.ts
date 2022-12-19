@@ -1,51 +1,26 @@
 import {ColumnTypeInternal, ColumnTypesInternal} from '../../types/columnTypeInternal';
-import {CalendarFunctionalityUtils} from './calendarFunctionalityUtils';
+import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItemConf';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
+import {DropdownItem} from '../../elements/dropdown/dropdownItem';
 import {ColumnType, ColumnTypes} from '../../types/columnType';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
+import {IconSettings} from '../../types/dropdownButtonItem';
 import {ColumnDetailsT} from '../../types/columnDetails';
+import {DefaultColumnTypes} from './defaultColumnTypes';
 import {CellText} from '../../types/tableContents';
 import {ObjectUtils} from '../object/objectUtils';
 import {Validation} from './validation';
-import {Sort} from './sort';
 
 export class ColumnTypesUtils {
-  private static readonly DEFAULT_TYPE: ColumnType = {
-    name: DEFAULT_COLUMN_TYPES.TEXT,
-  };
-
-  private static readonly DEFAULT_STATIC_TYPES: ColumnTypes = [
-    ColumnTypesUtils.DEFAULT_TYPE,
-    {
-      name: DEFAULT_COLUMN_TYPES.NUMBER,
-      textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.NUMBER]},
-      sorting: Sort.DEFAULT_TYPES_SORT_FUNCS[DEFAULT_COLUMN_TYPES.NUMBER],
-    },
-    {
-      name: DEFAULT_COLUMN_TYPES.CURRENCY,
-      textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.CURRENCY]},
-      sorting: Sort.DEFAULT_TYPES_SORT_FUNCS[DEFAULT_COLUMN_TYPES.CURRENCY],
-    },
-    {
-      name: DEFAULT_COLUMN_TYPES.DATE_DMY,
-      textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_DMY]},
-      calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_DMY],
-    },
-    {
-      name: DEFAULT_COLUMN_TYPES.DATE_MDY,
-      textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_MDY]},
-      calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_MDY],
-    },
-  ];
-
   public static get(settings: ColumnSettingsInternal): ColumnTypes {
     let columnTypes = [
-      ...ColumnTypesUtils.DEFAULT_STATIC_TYPES,
+      ...DefaultColumnTypes.DEFAULT_STATIC_TYPES,
       // the reason why category is not with the default static types is because its validation gets set depending
       // on column default settings
       {
         name: DEFAULT_COLUMN_TYPES.CATEGORY,
         categories: {},
+        dropdownItem: DefaultColumnTypes.CATEGORY_TYPE_DROPDOWN_ITEM,
       },
     ];
     const {defaultColumnTypes, customColumnTypes} = settings;
@@ -56,7 +31,7 @@ export class ColumnTypesUtils {
       });
     }
     if (customColumnTypes) columnTypes.push(...customColumnTypes);
-    if (columnTypes.length === 0) columnTypes.push(ColumnTypesUtils.DEFAULT_TYPE);
+    if (columnTypes.length === 0) columnTypes.push(DefaultColumnTypes.DEFAULT_TYPE);
     return columnTypes;
   }
 
@@ -73,7 +48,23 @@ export class ColumnTypesUtils {
     if (noValidationType) return noValidationType;
     const firstType = availableTypes[0];
     if (firstType) return firstType;
-    return ColumnTypesUtils.DEFAULT_TYPE;
+    return DefaultColumnTypes.DEFAULT_TYPE;
+  }
+
+  private static processDropdownItemSettings(type: ColumnType) {
+    const {name, dropdownIconSettings} = type;
+    const iconSettings = dropdownIconSettings || ({} as IconSettings);
+    const {svgString, containerStyle} = DropdownButtonItemConf.DEFAULT_ITEM.iconSettings;
+    iconSettings.svgString ??= svgString;
+    iconSettings.containerStyle ??= containerStyle;
+    // reason for using timeout - creating icons is expensive and they are not needed on initial render
+    setTimeout(() => {
+      const internalColumnType = type as ColumnTypeInternal;
+      internalColumnType.dropdownItem ??= {
+        element: DropdownItem.createButtonWithoutEvents(undefined, {text: name, iconSettings: iconSettings}),
+        settings: {text: name, iconSettings: iconSettings},
+      };
+    });
   }
 
   private static processTextValidationProps(type: ColumnType) {
@@ -108,6 +99,7 @@ export class ColumnTypesUtils {
       ColumnTypesUtils.convertStringFunctionsToRealFunctions(type);
       ColumnTypesUtils.processCategories(type, isDefaultTextRemovable, defaultText);
       ColumnTypesUtils.processTextValidationProps(type);
+      ColumnTypesUtils.processDropdownItemSettings(type);
     });
     return types as ColumnTypesInternal;
   }

@@ -16,14 +16,17 @@ export class ColumnDropdownItem {
   }
 
   public static addItems(etc: EditableTableComponent, dropdownElement: HTMLElement) {
-    DropdownItem.addTitle(dropdownElement, 'Property type');
-    ColumnTypeDropdown.createColumnTypeDropdown(etc, dropdownElement);
-    DropdownItem.addDivider(dropdownElement);
-    ColumnDropdownButtonItemConf.ITEMS.slice(0, 2).forEach((item) => {
-      DropdownItem.addButtonItem(etc, dropdownElement, item, ColumnDropdownItem.SORT_ITEM_CLASS);
-    });
-    ColumnDropdownButtonItemConf.ITEMS.slice(2).forEach((item) => {
-      DropdownItem.addButtonItem(etc, dropdownElement, item);
+    // creating icons is expensive and they are not needed on initial render
+    setTimeout(() => {
+      DropdownItem.addTitle(dropdownElement, 'Property type');
+      ColumnTypeDropdown.create(etc, dropdownElement);
+      DropdownItem.addDivider(dropdownElement);
+      ColumnDropdownButtonItemConf.ITEMS.slice(0, 2).forEach((item) => {
+        DropdownItem.addButtonItem(etc, dropdownElement, item, ColumnDropdownItem.SORT_ITEM_CLASS);
+      });
+      ColumnDropdownButtonItemConf.ITEMS.slice(2).forEach((item) => {
+        DropdownItem.addButtonItem(etc, dropdownElement, item);
+      });
     });
   }
 

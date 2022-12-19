@@ -226,6 +226,11 @@ REF-27
 To remove a header row when there is data below the header, we swap the header row with the below data row and then remove the data row.
 The reason for this approach is not to have to create a new row with <td> elements and sizers.
 
+REF-28
+Default column type dropdown items are created after the DEFAULT_STATIC_TYPES config has been initialised because the creation logic is
+not immediately available on startup (cannot use it in the DEFAULT_STATIC_TYPES variable) and additionally the items are not needed on
+the initial table render.
+
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
 does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()

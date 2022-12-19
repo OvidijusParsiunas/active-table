@@ -15,15 +15,11 @@ export class ColumnTypeDropdown {
     textElement.innerText = activeType.name;
     if (types.length < 2) return (itemElement.style.pointerEvents = 'none');
     itemElement.style.pointerEvents = '';
-    setTimeout(() => {
-      const {columnTypeDropdown} = etc.activeOverlayElements;
-      const itemNames = types.map((type) => type.name);
-      ColumnTypeDropdownItem.setUp(etc, columnTypeDropdown as HTMLElement, columnIndex, itemNames);
-    });
+    setTimeout(() => ColumnTypeDropdownItem.setUp(etc, columnIndex));
   }
 
   // prettier-ignore
-  public static createColumnTypeDropdown(etc: EditableTableComponent, dropdownElement: HTMLElement) {
+  public static create(etc: EditableTableComponent, dropdownElement: HTMLElement) {
     const buttonElement = DropdownItem.addButtonItem(etc, dropdownElement, DropdownButtonItemConf.DEFAULT_ITEM,
       DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM, ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS);
     DropdownItemEvents.addNestedItemEvents(buttonElement);

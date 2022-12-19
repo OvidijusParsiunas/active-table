@@ -4,6 +4,7 @@ import {SORT_ASC_ICON_SVG_STRING, SORT_DESC_ICON_SVG_STRING} from '../../../cons
 import {TRASH_ICON_SVG_STRING} from '../../../consts/icons/trashIconSVGString';
 import {DropdownButtonItemSettings} from '../../../types/dropdownButtonItem';
 
+// TO-DO - potential opportunity to use code sharding and download strings later
 export class ColumnDropdownButtonItemConf {
   public static readonly ITEMS: DropdownButtonItemSettings[] = [
     {
