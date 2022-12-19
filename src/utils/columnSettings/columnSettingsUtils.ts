@@ -8,7 +8,6 @@ import {ColumnSettingsWidthUtils} from './columnSettingsWidthUtils';
 import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 import {ResetColumnStructure} from './resetColumnStructure';
 import {CellElement} from '../../elements/cell/cellElement';
-import {ColumnDetailsT} from '../../types/columnDetails';
 import {GenericObject} from '../../types/genericObject';
 import {EMPTY_STRING} from '../../consts/text';
 import {
@@ -20,14 +19,20 @@ import {
 } from '../../types/columnsSettings';
 
 export class ColumnSettingsUtils {
-  private static updateSizer(etc: EditableTableComponent, columnDetails: ColumnDetailsT, columnIndex: number) {
+  private static updateSizer(etc: EditableTableComponent, columnIndex: number) {
     const {columnsDetails, tableElementRef} = etc;
-    const {columnSizer} = columnDetails;
+    if (!tableElementRef) return;
+    const {columnSizer} = columnsDetails[columnIndex];
     // if not needed - cleanUpCustomColumnSizers will remove it (however it would not insert it otherwise)
     if (!columnSizer) InsertRemoveColumnSizer.insert(etc, columnIndex);
     InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
     if (columnSizer) {
-      InsertRemoveColumnSizer.updateSizer(columnSizer, columnsDetails, columnIndex, tableElementRef as HTMLElement);
+      InsertRemoveColumnSizer.updateSizer(columnSizer, columnsDetails, columnIndex, tableElementRef);
+    }
+    const previousColumnIndex = columnIndex - 1;
+    if (columnIndex > 0 && columnsDetails[previousColumnIndex].columnSizer) {
+      const {columnSizer: previousColumnSizer} = columnsDetails[previousColumnIndex];
+      InsertRemoveColumnSizer.updateSizer(previousColumnSizer, columnsDetails, previousColumnIndex, tableElementRef);
     }
   }
 
@@ -43,7 +48,7 @@ export class ColumnSettingsUtils {
     ColumnSettingsWidthUtils.changeWidth(etc, headerElement, oldSettings, newSettings);
     ColumnSettingsStyleUtils.changeStyle(etc, columnIndex, oldSettings);
     ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
-    ColumnSettingsUtils.updateSizer(etc, columnDetails, columnIndex);
+    ColumnSettingsUtils.updateSizer(etc, columnIndex);
     AddNewColumnElement.toggle(etc, true);
   }
 

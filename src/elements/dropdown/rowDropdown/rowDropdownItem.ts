@@ -6,37 +6,33 @@ import {DropdownItem} from '../dropdownItem';
 
 export class RowDropdownItem {
   private static updateDeleteRowItemStyle(etc: EditableTableComponent, rowIndex: number, items: HTMLElement[]) {
-    if (rowIndex === 0 && !etc.rowDropdownSettings.isHeaderRowEditable) {
-      items[4].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
-    } else {
-      items[4].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
-    }
+    DropdownItem.toggleUsability(items[4], Boolean(rowIndex > 0 || etc.rowDropdownSettings.isHeaderRowEditable));
   }
 
   private static updateMoveRowsItemsStyle(etc: EditableTableComponent, rowIndex: number, items: HTMLElement[]) {
     const {isMoveAvailable, isHeaderRowEditable} = etc.rowDropdownSettings;
     if (!isMoveAvailable) return;
-    items[2].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
-    items[3].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
+    DropdownItem.toggleUsability(items[2], true);
+    DropdownItem.toggleUsability(items[3], true);
     if (rowIndex === 0 || (rowIndex === 1 && !isHeaderRowEditable)) {
-      items[2].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
+      DropdownItem.toggleUsability(items[2], false);
     }
     if (rowIndex === etc.columnsDetails[0].elements.length - 1 || (rowIndex === 0 && !isHeaderRowEditable)) {
-      items[3].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
+      DropdownItem.toggleUsability(items[3], false);
     }
   }
 
   private static updateInsertRowsItemsStyle(etc: EditableTableComponent, rowIndex: number, items: HTMLElement[]) {
     if (MaximumRows.canAddMore(etc)) {
       if (rowIndex === 0 && !etc.rowDropdownSettings.isHeaderRowEditable) {
-        items[0].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
+        DropdownItem.toggleUsability(items[0], false);
       } else {
-        items[0].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
+        DropdownItem.toggleUsability(items[0], true);
       }
-      items[1].classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
+      DropdownItem.toggleUsability(items[1], true);
     } else {
-      items[0].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
-      items[1].classList.add(DropdownItem.DISABLED_ITEM_CLASS);
+      DropdownItem.toggleUsability(items[0], false);
+      DropdownItem.toggleUsability(items[1], false);
     }
   }
 

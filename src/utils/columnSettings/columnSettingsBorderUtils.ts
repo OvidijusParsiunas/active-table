@@ -98,10 +98,9 @@ export class ColumnSettingsBorderUtils {
   private static resetIfBorderOverwritten(etc: EditableTableComponent, columnIndex: number,
       subjectColumn: ColumnDetailsT, subjectBorder: keyof BordersOverwrittenBySiblings) {
     if (subjectColumn?.bordersOverwrittenBySiblings[subjectBorder]) {
+      subjectColumn.bordersOverwrittenBySiblings[subjectBorder] = false;
       // not necessarily changing the style, but need to run this as there are a lot of styles unset and a lot being set
       ColumnSettingsStyleUtils.changeStyle(etc, columnIndex, etc.columnsDetails[columnIndex].settings);
-      subjectColumn.bordersOverwrittenBySiblings[subjectBorder] = false;
-      ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(subjectColumn, subjectColumn.elements)
     }
   }
 
