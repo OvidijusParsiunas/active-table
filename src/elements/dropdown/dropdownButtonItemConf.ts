@@ -4,6 +4,6 @@ import {DropdownButtonItemSettings} from '../../types/dropdownButtonItem';
 export class DropdownButtonItemConf {
   public static readonly DEFAULT_ITEM: DropdownButtonItemSettings = {
     text: '',
-    iconSettings: {svgString: CALENDAR_ICON_SVG_STRING},
+    iconSettings: {svgString: CALENDAR_ICON_SVG_STRING, containerStyle: {marginLeft: '1px', marginRight: '7px'}},
   };
 }

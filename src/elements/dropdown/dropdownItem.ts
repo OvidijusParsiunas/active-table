@@ -13,7 +13,7 @@ export class DropdownItem {
   public static readonly DROPDOWN_INPUT_ITEM_CLASS = 'dropdown-input-item';
   public static readonly DROPDOWN_TITLE_ITEM_CLASS = 'dropdown-title-item';
   public static readonly DROPDOWN_NESTED_DROPDOWN_ITEM = 'dropdown-nested-dropdown-item';
-  private static readonly DROPDOWN_ITEM_DIVIDER_CLASS = 'dropdown-item-divider';
+  public static readonly DROPDOWN_ITEM_DIVIDER_CLASS = 'dropdown-item-divider';
   // this is used to identify if a mouse event is currently on a dropdown item
   public static readonly DROPDOWN_ITEM_IDENTIFIER = 'dropdown-item-identifier';
   private static readonly HIDDEN = 'none';

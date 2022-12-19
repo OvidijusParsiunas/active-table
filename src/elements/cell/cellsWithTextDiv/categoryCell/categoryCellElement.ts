@@ -6,6 +6,7 @@ import {CategoryCellEvents} from './categoryCellEvents';
 import {EMPTY_STRING} from '../../../../consts/text';
 import {CellElement} from '../../cellElement';
 
+// TO-DO potentially rename category to badge
 // the logic for cell and text divs is handled here
 export class CategoryCellElement {
   private static readonly CATEGORY_TEXT_DIV_CLASS = 'category-text-div';

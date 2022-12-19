@@ -59,10 +59,10 @@ export class ColumnTypesUtils {
     iconSettings.containerStyle ??= containerStyle;
     // reason for using timeout - creating icons is expensive and they are not needed on initial render
     setTimeout(() => {
-      const internalColumnType = type as ColumnTypeInternal;
-      internalColumnType.dropdownItem ??= {
-        element: DropdownItem.createButtonWithoutEvents(undefined, {text: name, iconSettings: iconSettings}),
-        settings: {text: name, iconSettings: iconSettings},
+      const settings = {text: name, iconSettings: iconSettings};
+      (type as ColumnTypeInternal).dropdownItem ??= {
+        element: DropdownItem.createButtonWithoutEvents(undefined, settings),
+        settings: settings,
       };
     });
   }

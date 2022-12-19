@@ -38,7 +38,8 @@ export class DropdownItemNavigation {
       return DropdownItemNavigation.focusItemWhenOnEdge(focusedItem, dropdownElement, isNext);
       // when item not displayed or a title item
     } else if (!DropdownItem.isDisplayed(siblingElement)
-        || siblingElement.classList.contains(DropdownItem.DROPDOWN_TITLE_ITEM_CLASS)) {
+        || siblingElement.classList.contains(DropdownItem.DROPDOWN_TITLE_ITEM_CLASS)
+        || siblingElement.classList.contains(DropdownItem.DROPDOWN_ITEM_DIVIDER_CLASS)) {
       return DropdownItemNavigation.focusSiblingItem(siblingElement, dropdownElement, isNext);
       // when on an input item
     } else if (siblingElement.classList.contains(DropdownItem.DROPDOWN_INPUT_ITEM_CLASS)) {
@@ -49,7 +50,7 @@ export class DropdownItemNavigation {
 
   public static focusFirstNestedDropdownItem(focusedItem: HTMLElement) {
     if (focusedItem.classList.contains(DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM)) {
-      const nestedDropdownElement = focusedItem.children[1] as HTMLElement;
+      const nestedDropdownElement = focusedItem.children[2] as HTMLElement;
       // when on item that has open nested dropdown
       if (Dropdown.isDisplayed(nestedDropdownElement)) {
         const lastNestedDropdownElement = nestedDropdownElement.children[0] as HTMLElement;

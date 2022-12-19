@@ -177,7 +177,6 @@ export const ediTableStyle = css`
   .dropdown-item-icon-container {
     display: flex;
     float: left;
-    margin-right: 6px;
     height: 90%;
     align-items: center;
   }

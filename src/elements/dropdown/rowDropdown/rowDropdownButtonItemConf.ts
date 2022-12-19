@@ -25,7 +25,7 @@ export class RowDropdownButtonItemConf {
       text: 'Move Down',
       iconSettings: {
         svgString: MOVE_DOWN_ICON_SVG_STRING,
-        containerStyle: {marginLeft: '2px', marginTop: '1px'},
+        containerStyle: {marginLeft: '2px', marginRight: '6px', marginTop: '1px'},
       },
     },
     {

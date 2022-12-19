@@ -1,6 +1,6 @@
 import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItemConf';
 import {INSERT_RIGHT_ICON_SVG_STRING} from '../../consts/icons/insertIconSVGStrings';
-import {TRASH_ICON_SVG_STRING} from '../../consts/icons/trashIconSVGString';
+import {CATEGORY_ICON_SVG_STRING} from '../../consts/icons/categoryIconSVGString';
 import {ColumnTypeDropdownItem} from '../../types/columnTypeDropdownItem';
 import {CalendarFunctionalityUtils} from './calendarFunctionalityUtils';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
@@ -51,12 +51,13 @@ export class DefaultColumnTypes {
     const settings = {
       text: DEFAULT_COLUMN_TYPES.CATEGORY,
       iconSettings: {
-        svgString: TRASH_ICON_SVG_STRING,
+        svgString: CATEGORY_ICON_SVG_STRING,
+        containerStyle: {marginTop: '2px', marginRight: '6px', marginLeft: '-1px'},
       },
     };
     DefaultColumnTypes.CATEGORY_TYPE_DROPDOWN_ITEM = {
       element: DropdownItem.createButtonWithoutEvents(undefined, settings),
-      settings: settings,
+      settings,
     };
   }
 
@@ -68,7 +69,7 @@ export class DefaultColumnTypes {
       };
       (type as ColumnTypeInternal).dropdownItem = {
         element: DropdownItem.createButtonWithoutEvents(undefined, settings),
-        settings: settings,
+        settings,
       };
     });
   }
