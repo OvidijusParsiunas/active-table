@@ -174,6 +174,14 @@ export const ediTableStyle = css`
     font-size: 15px;
   }
 
+  .dropdown-item-icon-container {
+    display: flex;
+    float: left;
+    margin-right: 6px;
+    height: 90%;
+    align-items: center;
+  }
+
   .dropdown-title-item {
     cursor: default;
     color: #7c7c7c;

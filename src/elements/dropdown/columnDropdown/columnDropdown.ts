@@ -9,7 +9,6 @@ import {DropdownItemNavigation} from '../dropdownItemNavigation';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
 import {ColumnDropdownEvents} from './columnDropdownEvents';
 import {ColumnDropdownItem} from './columnDropdownItem';
-import {ColumnTypeDropdown} from './columnTypeDropdown';
 import {DropdownItem} from '../dropdownItem';
 import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
@@ -41,18 +40,7 @@ export class ColumnDropdown {
     const dropdownElement = Dropdown.createBase();
     ColumnDropdownEvents.set(etc, dropdownElement);
     if (areHeadersEditable) DropdownItem.addInputItem(etc, dropdownElement);
-    // WORK - potentially have this as nested dropdown item and the nested dropdown item itself would then have the
-    // selected item
-    DropdownItem.addTitle(dropdownElement, 'Property type');
-    ColumnTypeDropdown.createColumnDropdown(etc, dropdownElement);
-    DropdownItem.addDivider(dropdownElement);
-    ColumnDropdownItem.addSortButton(etc, dropdownElement, 'Sort Ascending');
-    ColumnDropdownItem.addSortButton(etc, dropdownElement, 'Sort Descending');
-    DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Left');
-    DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Right');
-    DropdownItem.addButtonItem(etc, dropdownElement, 'Move Left');
-    DropdownItem.addButtonItem(etc, dropdownElement, 'Move Right');
-    DropdownItem.addButtonItem(etc, dropdownElement, 'Delete');
+    ColumnDropdownItem.addItems(etc, dropdownElement);
     return dropdownElement;
   }
 

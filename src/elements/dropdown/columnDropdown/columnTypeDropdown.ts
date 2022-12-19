@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../../editable-table-component';
+import {DropdownButtonItemConf} from '../dropdownButtonItemConf';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
 import {DropdownItemEvents} from '../dropdownItemEvents';
 import {DropdownItem} from '../dropdownItem';
@@ -22,11 +23,11 @@ export class ColumnTypeDropdown {
   }
 
   // prettier-ignore
-  public static createColumnDropdown(etc: EditableTableComponent, dropdownElement: HTMLElement) {
-    const buttonElement = DropdownItem.addButtonItem(
-      etc, dropdownElement, '', DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM, ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS);
+  public static createColumnTypeDropdown(etc: EditableTableComponent, dropdownElement: HTMLElement) {
+    const buttonElement = DropdownItem.addButtonItem(etc, dropdownElement, DropdownButtonItemConf.DEFAULT_ITEM,
+      DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM, ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS);
     DropdownItemEvents.addNestedItemEvents(buttonElement);
-    const nestedDropdown = DropdownItem.createNestedDropdown(etc, []); // items readded during every setUp execution
+    const nestedDropdown = DropdownItem.createNestedDropdown(); // items added every time column dropdown is opened (setUp)
     buttonElement.appendChild(nestedDropdown);
     etc.activeOverlayElements.columnTypeDropdown = nestedDropdown;
   }

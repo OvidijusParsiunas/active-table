@@ -6,7 +6,6 @@ import {EditableTableComponent} from '../../../editable-table-component';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {RowDropdownEvents} from './rowDropdownEvents';
 import {RowDropdownItem} from './rowDropdownItem';
-import {DropdownItem} from '../dropdownItem';
 import {Dropdown} from '../dropdown';
 
 export class RowDropdown {
@@ -43,12 +42,7 @@ export class RowDropdown {
   public static create(etc: EditableTableComponent) {
     const dropdownElement = Dropdown.createBase();
     RowDropdownEvents.set(etc, dropdownElement);
-    DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Up');
-    DropdownItem.addButtonItem(etc, dropdownElement, 'Insert Down');
-    DropdownItem.addButtonItem(etc, dropdownElement, 'Move Up');
-    DropdownItem.addButtonItem(etc, dropdownElement, 'Move Down');
-    DropdownItem.addButtonItem(etc, dropdownElement, 'Delete');
-    RowDropdownItem.setUpItems(etc.rowDropdownSettings, dropdownElement);
+    RowDropdownItem.setUpItems(etc, dropdownElement);
     return dropdownElement;
   }
 }

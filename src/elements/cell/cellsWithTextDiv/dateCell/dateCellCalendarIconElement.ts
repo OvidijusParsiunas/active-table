@@ -1,5 +1,5 @@
+import {CALENDAR_ICON_SVG_STRING} from '../../../../consts/icons/calendarIconSVGString';
 import {SVGIconUtils} from '../../../../utils/svgIcons/svgIconUtils';
-import {CALENDAR_ICON_SVG_STRING} from './calendarIconSVGString';
 
 export class DateCellCalendarIconElement {
   public static readonly CALENDAR_ICON_CONTAINER_CLASS = 'calender-icon-container';

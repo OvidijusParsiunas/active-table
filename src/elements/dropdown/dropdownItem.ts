@@ -1,4 +1,5 @@
-import {CALENDAR_ICON_SVG_STRING} from '../cell/cellsWithTextDiv/dateCell/calendarIconSVGString';
+import {DropdownButtonItemSettings, IconSettings} from '../../types/dropdownButtonItem';
+import {CALENDAR_ICON_SVG_STRING} from '../../consts/icons/calendarIconSVGString';
 import {EditableTableComponent} from '../../editable-table-component';
 import {SVGIconUtils} from '../../utils/svgIcons/svgIconUtils';
 import {DropdownItemEvents} from './dropdownItemEvents';
@@ -7,8 +8,9 @@ import {Dropdown} from './dropdown';
 
 export class DropdownItem {
   public static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
-  public static readonly DISABLED_ITEM_CLASS = 'dropdown-disabled-item';
+  private static readonly DISABLED_ITEM_CLASS = 'dropdown-disabled-item';
   public static readonly DROPDOWN_INPUT_CLASS = 'dropdown-input';
+  private static readonly DROPDOWN_ITEM_ICON_CONTAINER_CLASS = 'dropdown-input-icon-container';
   public static readonly DROPDOWN_INPUT_ITEM_CLASS = 'dropdown-input-item';
   public static readonly DROPDOWN_TITLE_ITEM_CLASS = 'dropdown-title-item';
   public static readonly DROPDOWN_NESTED_DROPDOWN_ITEM = 'dropdown-nested-dropdown-item';
@@ -52,15 +54,16 @@ export class DropdownItem {
     DropdownItemEvents.addItemEvents(etc.activeOverlayElements, inputElement);
   }
 
-  private static insertIcon(buttonElement: HTMLElement) {
-    // make this more efficient by cloning elements from state
-    const svgIconElement = SVGIconUtils.createSVGElement(CALENDAR_ICON_SVG_STRING);
+  private static insertIcon(buttonElement: HTMLElement, iconSettings: IconSettings) {
+    const {svgString, containerStyle} = iconSettings;
+    const container = document.createElement('div');
+    container.classList.add(DropdownItem.DROPDOWN_ITEM_ICON_CONTAINER_CLASS);
+    Object.assign(container.style, containerStyle);
+    const svgIconElement = SVGIconUtils.createSVGElement(svgString);
     // using style as the class has no effect on svg
-    svgIconElement.style.marginTop = '4.5px';
-    svgIconElement.style.marginRight = '6px';
-    svgIconElement.style.float = 'left';
     svgIconElement.style.filter = SVGIconUtils.DARK_GREY_FILTER;
-    buttonElement.insertBefore(svgIconElement, buttonElement.children[0]);
+    container.appendChild(svgIconElement);
+    buttonElement.insertBefore(container, buttonElement.children[0]);
   }
 
   public static addPlaneButtonItem(dropdownElement: HTMLElement, text: string, index?: number) {
@@ -76,10 +79,12 @@ export class DropdownItem {
     return itemElement;
   }
 
-  public static addButtonItem(etc: EditableTableComponent, dropdown: HTMLElement, text: string, ...classNames: string[]) {
-    const buttonElement = DropdownItem.addPlaneButtonItem(dropdown, text);
+  // prettier-ignore
+  public static addButtonItem(etc: EditableTableComponent, dropdown: HTMLElement, itemSettings: DropdownButtonItemSettings,
+      ...classNames: string[]) {
+    const buttonElement = DropdownItem.addPlaneButtonItem(dropdown, itemSettings.text);
     DropdownItemEvents.addItemEvents(etc.activeOverlayElements, buttonElement);
-    DropdownItem.insertIcon(buttonElement);
+    DropdownItem.insertIcon(buttonElement, itemSettings.iconSettings);
     if (classNames.length > 0) buttonElement.classList.add(...classNames);
     return buttonElement;
   }
@@ -98,13 +103,15 @@ export class DropdownItem {
   }
 
   public static addItems(etc: EditableTableComponent, dropdownElement: HTMLElement, itemText: string[]): HTMLElement[] {
-    return itemText.map((text) => DropdownItem.addButtonItem(etc, dropdownElement, text));
+    return itemText.map((text) => {
+      const itemSettings = {text, iconSettings: {svgString: CALENDAR_ICON_SVG_STRING}};
+      return DropdownItem.addButtonItem(etc, dropdownElement, itemSettings);
+    });
   }
 
-  public static createNestedDropdown(etc: EditableTableComponent, itemText: string[]) {
+  public static createNestedDropdown() {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.style.top = `-${Number.parseInt(dropdownElement.style.paddingTop) + 22}px`;
-    DropdownItem.addItems(etc, dropdownElement, itemText);
     return dropdownElement;
   }
 
@@ -130,5 +137,16 @@ export class DropdownItem {
 
   public static getInputElement(dropdownElement: HTMLElement) {
     return dropdownElement.getElementsByClassName(DropdownItem.DROPDOWN_INPUT_ITEM_CLASS)[0];
+  }
+
+  public static toggleUsability(item: HTMLElement, isUsable: boolean) {
+    const icon = item.children[0] as HTMLElement;
+    if (isUsable) {
+      item.classList.remove(DropdownItem.DISABLED_ITEM_CLASS);
+      icon.style.filter = '';
+    } else {
+      item.classList.add(DropdownItem.DISABLED_ITEM_CLASS);
+      icon.style.filter = SVGIconUtils.GREY_FILTER;
+    }
   }
 }

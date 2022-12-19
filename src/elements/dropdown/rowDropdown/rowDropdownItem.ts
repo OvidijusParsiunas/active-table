@@ -1,6 +1,6 @@
 import {MaximumRows} from '../../../utils/insertRemoveStructure/insert/maximumRows';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {RowDropdownSettings} from '../../../types/rowDropdownSettings';
+import {RowDropdownButtonItemConf} from './rowDropdownButtonItemConf';
 import {RowDropdownItemEvents} from './rowDropdownItemEvents';
 import {DropdownItem} from '../dropdownItem';
 
@@ -48,9 +48,10 @@ export class RowDropdownItem {
     RowDropdownItemEvents.set(etc, dropdownElement, rowIndex);
   }
 
-  public static setUpItems(settings: RowDropdownSettings, dropdownElement: HTMLElement) {
-    const items = Array.from(dropdownElement.children) as HTMLElement[];
-    const {isInsertUpAvailable, isInsertDownAvailable, isMoveAvailable, isDeleteAvailable} = settings;
+  public static setUpItems(etc: EditableTableComponent, dropdownElement: HTMLElement) {
+    const {rowDropdownSettings} = etc;
+    const {isInsertUpAvailable, isInsertDownAvailable, isMoveAvailable, isDeleteAvailable} = rowDropdownSettings;
+    const items = RowDropdownButtonItemConf.ITEMS.map((item) => DropdownItem.addButtonItem(etc, dropdownElement, item));
     if (!isInsertUpAvailable) DropdownItem.toggleItem(items[0], false);
     if (!isInsertDownAvailable) DropdownItem.toggleItem(items[1], false);
     if (!isMoveAvailable) {
