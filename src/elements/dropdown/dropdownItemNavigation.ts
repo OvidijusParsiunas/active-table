@@ -36,7 +36,7 @@ export class DropdownItemNavigation {
       ? focusedItem : (focusedItem[isNext ? 'nextSibling' : 'previousSibling'] as HTMLElement);
     if (!siblingElement) {
       return DropdownItemNavigation.focusItemWhenOnEdge(focusedItem, dropdownElement, isNext);
-      // when item not displayed or a title item
+      // when item is a title, divider or not displayed
     } else if (!DropdownItem.isDisplayed(siblingElement)
         || siblingElement.classList.contains(DropdownItem.DROPDOWN_TITLE_ITEM_CLASS)
         || siblingElement.classList.contains(DropdownItem.DROPDOWN_ITEM_DIVIDER_CLASS)) {

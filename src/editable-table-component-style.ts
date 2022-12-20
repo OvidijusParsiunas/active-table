@@ -280,7 +280,7 @@ export const ediTableStyle = css`
 
   .calender-icon-container {
     position: absolute;
-    right: -5px;
+    right: 2px;
     top: -4px;
     width: 15px;
     height: 25px;

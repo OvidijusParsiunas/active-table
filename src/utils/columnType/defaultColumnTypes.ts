@@ -18,7 +18,7 @@ export class DefaultColumnTypes {
     name: DEFAULT_COLUMN_TYPES.TEXT,
     dropdownIconSettings: {
       svgString: TEXT_ICON_SVG_STRING,
-      containerStyle: {marginRight: '5px', marginTop: '2px'},
+      containerStyle: {marginLeft: '-0.25px', marginRight: '6px', marginTop: '1.5px'},
     },
   };
 
@@ -30,7 +30,7 @@ export class DefaultColumnTypes {
       sorting: Sort.DEFAULT_TYPES_SORT_FUNCS[DEFAULT_COLUMN_TYPES.NUMBER],
       dropdownIconSettings: {
         svgString: NUMBER_ICON_SVG_STRING,
-        containerStyle: {marginLeft: '-1px', marginRight: '4px', marginTop: '2px'},
+        containerStyle: {marginLeft: '-1px', marginRight: '4.5px', marginTop: '2px'},
       },
     },
     {
@@ -48,7 +48,7 @@ export class DefaultColumnTypes {
       calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_DMY],
       dropdownIconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
-        containerStyle: {marginLeft: '1px', marginRight: '7px'},
+        containerStyle: {marginLeft: '1px', marginRight: '8px'},
       },
     },
     {
@@ -57,7 +57,7 @@ export class DefaultColumnTypes {
       calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_MDY],
       dropdownIconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
-        containerStyle: {marginLeft: '1px', marginRight: '7px'},
+        containerStyle: {marginLeft: '1px', marginRight: '8px'},
       },
     },
   ];
@@ -69,7 +69,7 @@ export class DefaultColumnTypes {
       text: DEFAULT_COLUMN_TYPES.CATEGORY,
       iconSettings: {
         svgString: CATEGORY_ICON_SVG_STRING,
-        containerStyle: {marginTop: '2px', marginRight: '6px', marginLeft: '-1px'},
+        containerStyle: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'},
       },
     };
     DefaultColumnTypes.CATEGORY_TYPE_DROPDOWN_ITEM = {

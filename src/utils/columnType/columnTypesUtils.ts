@@ -1,10 +1,9 @@
 import {ColumnTypeInternal, ColumnTypesInternal} from '../../types/columnTypeInternal';
 import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItemConf';
+import {ColumnType, ColumnTypes, DropdownIconSettings} from '../../types/columnType';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
-import {ColumnType, ColumnTypes} from '../../types/columnType';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
-import {IconSettings} from '../../types/dropdownButtonItem';
 import {ColumnDetailsT} from '../../types/columnDetails';
 import {DefaultColumnTypes} from './defaultColumnTypes';
 import {CellText} from '../../types/tableContents';
@@ -51,15 +50,28 @@ export class ColumnTypesUtils {
     return DefaultColumnTypes.DEFAULT_TYPE;
   }
 
+  private static getReusableDefaultIcon(iconSettings: DropdownIconSettings) {
+    const targetIconName = iconSettings.defaultIconName?.toLocaleLowerCase();
+    if (targetIconName === DEFAULT_COLUMN_TYPES.CATEGORY.toLocaleLowerCase()) {
+      return DefaultColumnTypes.CATEGORY_TYPE_DROPDOWN_ITEM?.settings.iconSettings as DropdownIconSettings;
+    }
+    const defaultSettings = DefaultColumnTypes.DEFAULT_STATIC_TYPES.find((type) => {
+      return type.name.toLocaleLowerCase() === targetIconName;
+    });
+    if (defaultSettings?.dropdownIconSettings) return defaultSettings.dropdownIconSettings;
+    return iconSettings;
+  }
+
   private static processDropdownItemSettings(type: ColumnType) {
     const {name, dropdownIconSettings} = type;
-    const iconSettings = dropdownIconSettings || ({} as IconSettings);
+    let iconSettings = (dropdownIconSettings || {}) as DropdownIconSettings;
+    if (iconSettings.defaultIconName) iconSettings = ColumnTypesUtils.getReusableDefaultIcon(iconSettings);
     const {svgString, containerStyle} = DropdownButtonItemConf.DEFAULT_ITEM.iconSettings;
     iconSettings.svgString ??= svgString;
     iconSettings.containerStyle ??= containerStyle;
     // reason for using timeout - creating icons is expensive and they are not needed on initial render
     setTimeout(() => {
-      const settings = {text: name, iconSettings: iconSettings};
+      const settings = {text: name, iconSettings};
       (type as ColumnTypeInternal).dropdownItem ??= {
         element: DropdownItem.createButtonWithoutEvents(undefined, settings),
         settings: settings,
