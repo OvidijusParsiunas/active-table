@@ -82,7 +82,7 @@ export class DropdownItem {
   }
 
   // prettier-ignore
-  public static createButtonWithoutEvents(dropdown: HTMLElement | undefined, itemSettings: DropdownButtonItemSettings,
+  public static createButtonItemNoEvents(dropdown: HTMLElement | undefined, itemSettings: DropdownButtonItemSettings,
       ...classNames: string[]) {
     const buttonElement = DropdownItem.addPlaneButtonItem(dropdown, itemSettings.text);
     DropdownItem.insertIcon(buttonElement, itemSettings.iconSettings);
@@ -106,7 +106,7 @@ export class DropdownItem {
   // prettier-ignore
   public static addButtonItem(etc: EditableTableComponent, dropdown: HTMLElement, itemSettings: DropdownButtonItemSettings,
       ...classNames: string[]) {
-    const buttonElement = DropdownItem.createButtonWithoutEvents(dropdown, itemSettings, ...classNames);
+    const buttonElement = DropdownItem.createButtonItemNoEvents(dropdown, itemSettings, ...classNames);
     DropdownItemEvents.addItemEvents(etc.activeOverlayElements, buttonElement);
     return buttonElement;
   }
@@ -167,7 +167,7 @@ export class DropdownItem {
       icon.style.filter = '';
     } else {
       item.classList.add(DropdownItem.DISABLED_ITEM_CLASS);
-      icon.style.filter = SVGIconUtils.GREY_FILTER;
+      icon.style.filter = SVGIconUtils.LIGHT_GREY_FILTER;
     }
   }
 }

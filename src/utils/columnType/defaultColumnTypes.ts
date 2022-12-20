@@ -73,7 +73,7 @@ export class DefaultColumnTypes {
       },
     };
     DefaultColumnTypes.CATEGORY_TYPE_DROPDOWN_ITEM = {
-      element: DropdownItem.createButtonWithoutEvents(undefined, settings),
+      element: DropdownItem.createButtonItemNoEvents(undefined, settings),
       settings,
     };
   }
@@ -85,7 +85,7 @@ export class DefaultColumnTypes {
         iconSettings: type.dropdownIconSettings || DropdownButtonItemConf.DEFAULT_ITEM.iconSettings,
       };
       (type as ColumnTypeInternal).dropdownItem = {
-        element: DropdownItem.createButtonWithoutEvents(undefined, settings),
+        element: DropdownItem.createButtonItemNoEvents(undefined, settings),
         settings,
       };
     });

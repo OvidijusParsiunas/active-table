@@ -73,7 +73,7 @@ export class ColumnTypesUtils {
     setTimeout(() => {
       const settings = {text: name, iconSettings};
       (type as ColumnTypeInternal).dropdownItem ??= {
-        element: DropdownItem.createButtonWithoutEvents(undefined, settings),
+        element: DropdownItem.createButtonItemNoEvents(undefined, settings),
         settings: settings,
       };
     });
