@@ -36,8 +36,8 @@ export class ColumnDropdownItem {
       DropdownItem.toggleItem(items[4], false);
       DropdownItem.toggleItem(items[5], false);
     }
-    if (!isInsertRightAvailable) DropdownItem.toggleItem(items[5], false);
     if (!isInsertLeftAvailable) DropdownItem.toggleItem(items[6], false);
+    if (!isInsertRightAvailable) DropdownItem.toggleItem(items[7], false);
     if (!isMoveAvailable) {
       // their display should be toggled if can't move any further
       DropdownItem.toggleItem(items[8], false);
