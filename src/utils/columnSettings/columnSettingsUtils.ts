@@ -1,3 +1,4 @@
+import {HeaderIconCellElement} from '../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnSettingsDefaultTextUtils} from './columnSettingsDefaultTextUtils';
@@ -49,6 +50,7 @@ export class ColumnSettingsUtils {
     ColumnSettingsStyleUtils.changeStyle(etc, columnIndex, oldSettings);
     ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
     ColumnSettingsUtils.updateSizer(etc, columnIndex);
+    if (etc.displayTypeIconInHeaders) HeaderIconCellElement.changeHeaderIcon(etc.columnsDetails[columnIndex]);
     AddNewColumnElement.toggle(etc, true);
   }
 

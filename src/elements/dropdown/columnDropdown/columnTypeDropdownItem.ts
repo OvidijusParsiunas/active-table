@@ -30,7 +30,7 @@ export class ColumnTypeDropdownItem {
   // the items are repopulated every time column dropdown is opened
   public static setUp(etc: EditableTableComponent, columnIndex: number) {
     const {columnTypeDropdown} = etc.activeOverlayElements;
-    const elements = etc.columnsDetails[columnIndex].types.map((type) => type.dropdownItem.element);
+    const elements = etc.columnsDetails[columnIndex].types.map((type) => type.dropdownItem.element) as HTMLElement[];
     DropdownItem.addButtonItemElements(etc, columnTypeDropdown as HTMLElement, elements);
     ColumnTypeDropdownItemEvents.set(etc, elements, columnIndex);
     ColumnTypeDropdownItem.setActiveItem(elements, etc.columnsDetails[columnIndex].activeType.name);

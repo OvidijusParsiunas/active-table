@@ -8,31 +8,37 @@ export class RowDropdownButtonItemConf {
   public static readonly ITEMS: DropdownButtonItemSettings[] = [
     {
       text: 'Insert Up',
-      iconSettings: {svgString: INSERT_UP_ICON_SVG_STRING, containerStyle: {marginRight: '1px', marginTop: '1px'}},
+      iconSettings: {
+        svgString: INSERT_UP_ICON_SVG_STRING,
+        containerStyles: {dropdown: {marginRight: '1px', marginTop: '1px'}},
+      },
     },
     {
       text: 'Insert Down',
-      iconSettings: {svgString: INSERT_DOWN_ICON_SVG_STRING, containerStyle: {marginRight: '1px', marginTop: '1px'}},
+      iconSettings: {
+        svgString: INSERT_DOWN_ICON_SVG_STRING,
+        containerStyles: {dropdown: {marginRight: '1px', marginTop: '1px'}},
+      },
     },
     {
       text: 'Move Up',
       iconSettings: {
         svgString: MOVE_UP_ICON_SVG_STRING,
-        containerStyle: {marginRight: '8px', marginTop: '1px'},
+        containerStyles: {dropdown: {marginRight: '8px', marginTop: '1px'}},
       },
     },
     {
       text: 'Move Down',
       iconSettings: {
         svgString: MOVE_DOWN_ICON_SVG_STRING,
-        containerStyle: {marginLeft: '2px', marginRight: '6px', marginTop: '1px'},
+        containerStyles: {dropdown: {marginLeft: '2px', marginRight: '6px', marginTop: '1px'}},
       },
     },
     {
       text: 'Delete',
       iconSettings: {
         svgString: TRASH_ICON_SVG_STRING,
-        containerStyle: {marginLeft: '-4px', marginRight: '5px'},
+        containerStyles: {dropdown: {marginLeft: '-4px', marginRight: '5px'}},
       },
     },
   ];

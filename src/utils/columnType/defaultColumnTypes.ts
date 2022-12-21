@@ -5,6 +5,7 @@ import {CALENDAR_ICON_SVG_STRING} from '../../consts/icons/calendarIconSVGString
 import {NUMBER_ICON_SVG_STRING} from '../../consts/icons/numberIconSVGString';
 import {ColumnTypeDropdownItem} from '../../types/columnTypeDropdownItem';
 import {TEXT_ICON_SVG_STRING} from '../../consts/icons/textIconSVGString';
+import {DropdownButtonItemSettings} from '../../types/dropdownButtonItem';
 import {CalendarFunctionalityUtils} from './calendarFunctionalityUtils';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
@@ -18,7 +19,10 @@ export class DefaultColumnTypes {
     name: DEFAULT_COLUMN_TYPES.TEXT,
     dropdownIconSettings: {
       svgString: TEXT_ICON_SVG_STRING,
-      containerStyle: {marginLeft: '-0.25px', marginRight: '6px', marginTop: '1.5px'},
+      containerStyles: {
+        dropdown: {marginLeft: '-0.25px', marginRight: '6px', marginTop: '1.5px'},
+        headerCorrections: {marginTop: '2.5px'},
+      },
     },
   };
 
@@ -30,7 +34,10 @@ export class DefaultColumnTypes {
       sorting: Sort.DEFAULT_TYPES_SORT_FUNCS[DEFAULT_COLUMN_TYPES.NUMBER],
       dropdownIconSettings: {
         svgString: NUMBER_ICON_SVG_STRING,
-        containerStyle: {marginLeft: '-1px', marginRight: '4.5px', marginTop: '2px'},
+        containerStyles: {
+          dropdown: {marginLeft: '-1px', marginRight: '4.5px', marginTop: '2px'},
+          headerCorrections: {marginTop: '2.5px'},
+        },
       },
     },
     {
@@ -39,7 +46,10 @@ export class DefaultColumnTypes {
       sorting: Sort.DEFAULT_TYPES_SORT_FUNCS[DEFAULT_COLUMN_TYPES.CURRENCY],
       dropdownIconSettings: {
         svgString: CURRENCY_ICON_SVG_STRING,
-        containerStyle: {marginLeft: '-2px', marginRight: '4px', marginTop: '2px'},
+        containerStyles: {
+          dropdown: {marginLeft: '-2px', marginRight: '4px', marginTop: '2px'},
+          headerCorrections: {marginRight: '3px'},
+        },
       },
     },
     {
@@ -48,7 +58,7 @@ export class DefaultColumnTypes {
       calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_DMY],
       dropdownIconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
-        containerStyle: {marginLeft: '1px', marginRight: '8px'},
+        containerStyles: {dropdown: {marginLeft: '1px', marginRight: '8px'}},
       },
     },
     {
@@ -57,7 +67,7 @@ export class DefaultColumnTypes {
       calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_MDY],
       dropdownIconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
-        containerStyle: {marginLeft: '1px', marginRight: '8px'},
+        containerStyles: {dropdown: {marginLeft: '1px', marginRight: '8px'}},
       },
     },
   ];
@@ -65,11 +75,11 @@ export class DefaultColumnTypes {
   public static CATEGORY_TYPE_DROPDOWN_ITEM: ColumnTypeDropdownItem | null = null;
 
   private static createDropdownItemForCategoryType() {
-    const settings = {
+    const settings: DropdownButtonItemSettings = {
       text: DEFAULT_COLUMN_TYPES.CATEGORY,
       iconSettings: {
         svgString: CATEGORY_ICON_SVG_STRING,
-        containerStyle: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'},
+        containerStyles: {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}},
       },
     };
     DefaultColumnTypes.CATEGORY_TYPE_DROPDOWN_ITEM = {

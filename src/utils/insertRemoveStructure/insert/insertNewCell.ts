@@ -62,7 +62,9 @@ export class InsertNewCell {
   // prettier-ignore
   private static convertCell(etc: EditableTableComponent,
       columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
-    if (rowIndex === 0 && etc.displayTypeIconInHeaders) HeaderIconCellElement.setHeaderIconStructure(newCellElement);
+    if (rowIndex === 0 && etc.displayTypeIconInHeaders) {
+      HeaderIconCellElement.setHeaderIconStructure(newCellElement, columnDetails);
+    }
     if (columnDetails.activeType?.categories) {
       if (rowIndex === 0) {
         CategoryDropdown.setUpDropdown(etc, columnIndex);

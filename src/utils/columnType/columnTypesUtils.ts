@@ -59,23 +59,28 @@ export class ColumnTypesUtils {
       return type.name.toLocaleLowerCase() === targetIconName;
     });
     if (defaultSettings?.dropdownIconSettings) return defaultSettings.dropdownIconSettings;
-    return iconSettings;
+    return DropdownButtonItemConf.DEFAULT_ITEM.iconSettings;
   }
 
   private static processDropdownItemSettings(type: ColumnType) {
     const {name, dropdownIconSettings} = type;
-    let iconSettings = (dropdownIconSettings || {}) as DropdownIconSettings;
-    if (iconSettings.defaultIconName) iconSettings = ColumnTypesUtils.getReusableDefaultIcon(iconSettings);
-    const {svgString, containerStyle} = DropdownButtonItemConf.DEFAULT_ITEM.iconSettings;
-    iconSettings.svgString ??= svgString;
-    iconSettings.containerStyle ??= containerStyle;
+    let iconSettings = null;
+    if (dropdownIconSettings) {
+      if (dropdownIconSettings.defaultIconName) {
+        iconSettings = ColumnTypesUtils.getReusableDefaultIcon(dropdownIconSettings);
+      } else {
+        iconSettings = dropdownIconSettings;
+        iconSettings.svgString ??= DropdownButtonItemConf.DEFAULT_ITEM.iconSettings.svgString;
+      }
+    } else {
+      iconSettings = DropdownButtonItemConf.DEFAULT_ITEM.iconSettings;
+    }
+    const settings = {text: name, iconSettings};
+    const internalType = type as ColumnTypeInternal;
+    internalType.dropdownItem ??= {element: null, settings: settings};
     // reason for using timeout - creating icons is expensive and they are not needed on initial render
     setTimeout(() => {
-      const settings = {text: name, iconSettings};
-      (type as ColumnTypeInternal).dropdownItem ??= {
-        element: DropdownItem.createButtonItemNoEvents(undefined, settings),
-        settings: settings,
-      };
+      internalType.dropdownItem.element ??= DropdownItem.createButtonItemNoEvents(undefined, settings);
     });
   }
 

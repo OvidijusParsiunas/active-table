@@ -55,10 +55,10 @@ export class DropdownItem {
 
   // REF-10
   private static insertIcon(buttonElement: HTMLElement, iconSettings: IconSettings) {
-    const {svgString, containerStyle} = iconSettings;
+    const {svgString, containerStyles} = iconSettings;
     const container = document.createElement('div');
     container.classList.add(DropdownItem.DROPDOWN_ITEM_ICON_CONTAINER_CLASS);
-    Object.assign(container.style, containerStyle);
+    Object.assign(container.style, containerStyles?.dropdown);
     const svgIconElement = SVGIconUtils.createSVGElement(svgString);
     // using style as the class has no effect on svg
     svgIconElement.style.filter = SVGIconUtils.DARK_GREY_FILTER;

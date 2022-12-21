@@ -12,7 +12,7 @@ export class ColumnTypeDropdown {
   private static setupParentItemContents(itemElement: HTMLElement, activeType: ColumnTypeInternal) {
     const {name: activeName, dropdownItem: activeDropdownItem} = activeType;
     // setup icon
-    const activeIconContainerElement = (activeDropdownItem.element.children[0] as HTMLElement).cloneNode(true);
+    const activeIconContainerElement = (activeDropdownItem.element?.children[0] as HTMLElement).cloneNode(true);
     itemElement.replaceChild(activeIconContainerElement as HTMLElement, itemElement.children[0] as HTMLElement);
     // setup text
     const textElement = itemElement.children[1] as HTMLElement;

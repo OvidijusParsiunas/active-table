@@ -1,3 +1,4 @@
+import {HeaderIconCellElement} from '../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
 import {CategoryCellElement} from '../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
 import {DateCellElement} from '../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categoryDropdown';
@@ -46,6 +47,7 @@ export class ChangeColumnType {
       ChangeColumnType.setInvalidCellsToDefault(etc, columnIndex);
     }
     ChangeColumnType.setNewStructureBasedOnType(etc, columnIndex, newType);
+    if (etc.displayTypeIconInHeaders) HeaderIconCellElement.changeHeaderIcon(etc.columnsDetails[columnIndex]);
   }
 
   // prettier-ignore
