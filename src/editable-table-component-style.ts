@@ -106,7 +106,7 @@ export const ediTableStyle = css`
 
   .header-icon-side-text {
     pointer-events: none;
-    display: contents;
+    display: inline;
   }
 
   .not-selectable {

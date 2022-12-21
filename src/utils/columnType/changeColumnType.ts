@@ -47,7 +47,7 @@ export class ChangeColumnType {
       ChangeColumnType.setInvalidCellsToDefault(etc, columnIndex);
     }
     ChangeColumnType.setNewStructureBasedOnType(etc, columnIndex, newType);
-    if (etc.displayTypeIconInHeaders) HeaderIconCellElement.changeHeaderIcon(etc.columnsDetails[columnIndex]);
+    if (etc.areIconsDisplayedInHeaders) HeaderIconCellElement.changeHeaderIcon(etc.columnsDetails[columnIndex]);
   }
 
   // prettier-ignore

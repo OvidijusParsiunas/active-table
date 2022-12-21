@@ -44,7 +44,7 @@ export class CellWithTextEvents {
     // this is also triggered by text, but we only want when cell to focus
     if (targetElement.classList.contains(CellElement.CELL_CLASS)) {
       const cellElement = event.target as HTMLElement;
-      const textElement = cellElement.children[0] as HTMLElement;
+      const textElement = CellElement.getTextElement(cellElement);
       // needed to set cursor at the end
       event.preventDefault();
       blurCallback?.(this);

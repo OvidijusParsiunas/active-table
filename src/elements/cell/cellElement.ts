@@ -1,3 +1,4 @@
+import {EditableHeaderIconCellEvents} from './cellsWithTextDiv/headerIconCell/editable/editableHeaderIconCellEvents';
 import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellCalendarIconElement';
 import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsBorderUtils';
 import {ColumnSettingsStyleUtils} from '../../utils/columnSettings/columnSettingsStyleUtils';
@@ -22,11 +23,11 @@ export class CellElement {
   // prettier-ignore
   public static setCellEvents(etc: EditableTableComponent,
       cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (rowIndex === 0 && etc.isColumnDropdownDisplayed) {
-      HeaderCellEvents.setEvents(etc, cellElement, columnIndex);
-    } else {
-      DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
+    if (rowIndex === 0) {
+      if (etc.isColumnDropdownDisplayed) return HeaderCellEvents.setEvents(etc, cellElement, columnIndex);
+      if (etc.areIconsDisplayedInHeaders) return EditableHeaderIconCellEvents.setEvents(etc, cellElement, 0, columnIndex);
     }
+    DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
   }
 
   public static setDefaultCellStyle(cellElement: HTMLElement, cellStyle?: CellCSSStyle, customStyle?: CellCSSStyle) {
@@ -156,7 +157,6 @@ export class CellElement {
 
   public static createCellElement(etc: EditableTableComponent, cellText: CellText, rowIndex: number, columnIndex: number) {
     const cellElement = CellElement.createCellDOMElement(etc, cellText, columnIndex, rowIndex === 0);
-    CellElement.setCellEvents(etc, cellElement, rowIndex, columnIndex);
     return cellElement;
   }
 }

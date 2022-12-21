@@ -92,7 +92,7 @@ export class EditableTableComponent extends LitElement {
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  displayTypeIconInHeaders = true;
+  areIconsDisplayedInHeaders = true;
 
   // set as boolean to not update on initial render
   @property({

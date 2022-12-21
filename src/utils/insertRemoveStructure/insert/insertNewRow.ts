@@ -18,7 +18,7 @@ export class InsertNewRow {
   // CAUTION-2 if the addition or removal of row causes the parent div to change width, this is indeed run after rerender,
   // however the notification messages are necessary and the rebinding does not seem to cause issues, nevertheless take
   // note of this if editing any of the logic below
-  private static fireCellUpdates(etc: EditableTableComponent, rowIndex: number) {
+  private static bindAndfireCellUpdates(etc: EditableTableComponent, rowIndex: number) {
     const lastRowIndex = etc.contents.length - 1;
     const lastDataRowElement = etc.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const lastRowDetails: ElementDetails = {element: lastDataRowElement, index: lastRowIndex};
@@ -67,7 +67,7 @@ export class InsertNewRow {
       if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex + 1);
     }
     if (isReplacingHeader) MoveRow.move(etc, 0, true); // REF-26
-    setTimeout(() => InsertNewRow.fireCellUpdates(etc, rowIndex));
+    setTimeout(() => InsertNewRow.bindAndfireCellUpdates(etc, rowIndex));
   }
 
   public static insertEvent(this: EditableTableComponent) {

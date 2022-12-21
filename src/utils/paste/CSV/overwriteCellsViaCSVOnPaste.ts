@@ -65,8 +65,8 @@ export class OverwriteCellsViaCSVOnPaste {
     const {auxiliaryTableContentInternal: {displayIndexColumn}, columnsDetails} = etc;
     const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, displayIndexColumn);
     const cellElement = rowElement.children[elementIndex] as HTMLElement;
-    if (cellElement.contentEditable === 'false') return;
     const columnDetails = columnsDetails[columnIndex];
+    if (!columnDetails.settings.isCellTextEditable) return;
     const oldType = CellTypeTotalsUtils.parseTypeName(CellElement.getText(cellElement), columnDetails.types);
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });

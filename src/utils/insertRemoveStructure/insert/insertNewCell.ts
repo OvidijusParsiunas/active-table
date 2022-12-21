@@ -62,8 +62,8 @@ export class InsertNewCell {
   // prettier-ignore
   private static convertCell(etc: EditableTableComponent,
       columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
-    if (rowIndex === 0 && etc.displayTypeIconInHeaders) {
-      HeaderIconCellElement.setHeaderIconStructure(newCellElement, columnDetails);
+    if (rowIndex === 0 && etc.areIconsDisplayedInHeaders) {
+      HeaderIconCellElement.setHeaderIconStructure(etc, newCellElement, columnIndex);
     }
     if (columnDetails.activeType?.categories) {
       if (rowIndex === 0) {

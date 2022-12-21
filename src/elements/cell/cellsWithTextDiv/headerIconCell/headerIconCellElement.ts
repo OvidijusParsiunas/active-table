@@ -1,4 +1,5 @@
 import {IconContainerStyles, IconSettings} from '../../../../types/dropdownButtonItem';
+import {EditableTableComponent} from '../../../../editable-table-component';
 import {SVGIconUtils} from '../../../../utils/svgIcons/svgIconUtils';
 import {ColumnDetailsT} from '../../../../types/columnDetails';
 import {CellTextElement} from '../text/cellTextElement';
@@ -7,8 +8,8 @@ export class HeaderIconCellElement {
   private static readonly TEXT_CLASS = 'header-icon-side-text';
   private static readonly ICON_CONTAINER_CLASS = 'header-icon-container';
 
-  private static createTextElement(cellElement: HTMLElement) {
-    const textElement = CellTextElement.setCellTextAsAnElement(cellElement, false);
+  private static createTextElement(cellElement: HTMLElement, isCellTextEditable: boolean) {
+    const textElement = CellTextElement.setCellTextAsAnElement(cellElement, isCellTextEditable);
     textElement.classList.add(HeaderIconCellElement.TEXT_CLASS);
     return textElement;
   }
@@ -42,10 +43,10 @@ export class HeaderIconCellElement {
     headerElement.replaceChild(svgIconElement, headerElement.children[0] as SVGGraphicsElement);
   }
 
-  public static setHeaderIconStructure(cellElement: HTMLElement, columnDetails: ColumnDetailsT) {
-    const {iconSettings} = columnDetails.activeType.dropdownItem.settings;
-    const svgIconElement = HeaderIconCellElement.createSVG(iconSettings);
-    const textElement = HeaderIconCellElement.createTextElement(cellElement);
+  public static setHeaderIconStructure(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
+    const {activeType, settings} = etc.columnsDetails[columnIndex];
+    const svgIconElement = HeaderIconCellElement.createSVG(activeType.dropdownItem.settings.iconSettings);
+    const textElement = HeaderIconCellElement.createTextElement(cellElement, settings.isCellTextEditable);
     cellElement.insertBefore(svgIconElement, textElement);
   }
 }
