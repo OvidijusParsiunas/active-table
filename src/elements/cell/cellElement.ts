@@ -16,6 +16,7 @@ import {CellCSSStyle} from '../../types/cssStyle';
 
 export class CellElement {
   public static readonly CELL_CLASS = 'cell';
+  private static readonly HEADER_CELL_CLASS = 'header-cell';
   public static readonly NOT_SELECTABLE_CLASS = 'not-selectable';
 
   // prettier-ignore
@@ -34,6 +35,7 @@ export class CellElement {
 
   public static createBaseCell(isHeader: boolean) {
     const cellElement = document.createElement(isHeader ? 'th' : 'td');
+    if (isHeader) cellElement.classList.add(CellElement.HEADER_CELL_CLASS);
     cellElement.classList.add(CellElement.CELL_CLASS);
     return cellElement;
   }
@@ -90,6 +92,9 @@ export class CellElement {
     // if category or date cell
     if (element.children[0]?.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS)) {
       return element.children[0] as HTMLElement;
+      // if header with icon
+    } else if (element.children[1]?.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS)) {
+      return element.children[1] as HTMLElement;
     }
     return element;
   }
@@ -107,12 +112,8 @@ export class CellElement {
   // hence we need to set the text into the correct container
   // CAUTION-1 - be careful that the text does not come from above method
   private static setText(element: HTMLElement, text: CellText) {
-    // if category or date cell
-    if (element.children[0]?.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS)) {
-      (element.children[0] as HTMLElement).innerText = text as string;
-    } else {
-      element.innerText = text as string;
-    }
+    const textElement = CellElement.getTextElement(element);
+    textElement.innerText = text as string;
   }
 
   // set text is optional as some elements may only need to toggle the BR padding

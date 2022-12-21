@@ -9,9 +9,9 @@ export class SVGIconUtils {
     hue-rotate(63deg) brightness(99%) contrast(97%)`;
 
   // REF-10
-  public static createSVGElement(svgString: string) {
+  public static createSVGElement(svgString: string): SVGGraphicsElement {
     const parser = new DOMParser();
     const doc = parser.parseFromString(svgString, 'image/svg+xml');
-    return doc.documentElement;
+    return doc.documentElement as unknown as SVGGraphicsElement;
   }
 }

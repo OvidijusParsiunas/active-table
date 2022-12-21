@@ -69,7 +69,7 @@ export class ColumnDropdown {
     }
   }
 
-  public static displayRelevantDropdownElements(etc: EditableTableComponent, columnIndex: number, event: MouseEvent) {
+  public static displayRelevantDropdownElement(etc: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     const fullTableOverlay = etc.activeOverlayElements.fullTableOverlay as HTMLElement;
     const dropdownElement = etc.activeOverlayElements.columnDropdown as HTMLElement;
     const cellElement = event.target as HTMLElement;

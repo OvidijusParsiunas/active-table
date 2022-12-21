@@ -1,3 +1,4 @@
+import {HeaderIconCellElement} from '../../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
 import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
@@ -61,6 +62,7 @@ export class InsertNewCell {
   // prettier-ignore
   private static convertCell(etc: EditableTableComponent,
       columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
+    if (rowIndex === 0 && etc.displayTypeIconInHeaders) HeaderIconCellElement.setHeaderIconStructure(newCellElement);
     if (columnDetails.activeType?.categories) {
       if (rowIndex === 0) {
         CategoryDropdown.setUpDropdown(etc, columnIndex);

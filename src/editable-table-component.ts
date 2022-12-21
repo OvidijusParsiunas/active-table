@@ -88,6 +88,12 @@ export class EditableTableComponent extends LitElement {
   })
   headerPresent = true;
 
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  displayTypeIconInHeaders = true;
+
   // set as boolean to not update on initial render
   @property({
     type: Object,

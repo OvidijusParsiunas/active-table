@@ -26,7 +26,7 @@ export class HeaderCellEvents {
   private static mouseClick(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     const cellElement = event.target as HTMLElement;
     CellEvents.removeTextIfDefault(this, 0, columnIndex, cellElement);
-    ColumnDropdown.displayRelevantDropdownElements(this, columnIndex, event);
+    ColumnDropdown.displayRelevantDropdownElement(this, columnIndex, event);
     setTimeout(() => FocusedCellUtils.setHeaderCell(this.focusedElements.cell, cellElement, columnIndex));
   }
 

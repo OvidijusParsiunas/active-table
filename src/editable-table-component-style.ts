@@ -21,13 +21,6 @@ export const ediTableStyle = css`
     width: min-content;
   }
 
-  /* REF-1 */
-  th {
-    /* TO-DO - please note that this will not work correctly when header is not displaye */
-    border-top: none !important;
-    cursor: pointer;
-  }
-
   .row > *:first-child {
     border-left: none !important;
     padding-left: 16px;
@@ -91,6 +84,29 @@ export const ediTableStyle = css`
     cursor: col-resize;
     justify-content: center;
     height: inherit;
+  }
+
+  /* this class needs to be after .cell to have style precendence */
+  /* REF-1 */
+  .header-cell {
+    /* TO-DO - please note that this will not work correctly when header is not displayed */
+    border-top: none !important;
+    cursor: pointer;
+    color: grey;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .header-icon-container {
+    float: left;
+    pointer-events: none;
+    /* allows text to wrap around the icon */
+    height: 1px;
+  }
+
+  .header-icon-side-text {
+    pointer-events: none;
+    display: contents;
   }
 
   .not-selectable {
