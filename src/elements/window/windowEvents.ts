@@ -17,7 +17,7 @@ export class WindowEvents {
   public static onKeyDown(this: EditableTableComponent, event: KeyboardEvent) {
     const {rowIndex, columnIndex, element} = this.focusedElements.cell;
     if (rowIndex === undefined || columnIndex === undefined) return;
-    if (rowIndex === 0 && !this.isColumnDropdownDisplayed) {
+    if (rowIndex === 0 && !Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
       if (event.key === KEYBOARD_KEY.ESCAPE) {
         ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, element as HTMLElement, columnIndex);
         return;

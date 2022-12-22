@@ -308,4 +308,10 @@ export const ediTableStyle = css`
     width: 100%;
     height: 100%;
   }
+
+  .column-dropdown-cell-overlay {
+    cursor: pointer;
+    background-color: grey;
+    transition: height 0.2s;
+  }
 `;

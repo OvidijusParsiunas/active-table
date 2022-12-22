@@ -106,7 +106,10 @@ export class EditableTableComponent extends LitElement {
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  isColumnDropdownDisplayed = true;
+  openColDropdownOnCellClick = false;
+
+  @property({type: Object})
+  columnDropdownOpenMethod: {directCell?: boolean; cellOverlay?: boolean} = {cellOverlay: true};
 
   @state()
   customColumnsSettingsInternal: ColumnsSettingsMap = {};

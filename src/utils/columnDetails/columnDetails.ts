@@ -59,9 +59,12 @@ export class ColumnDetails {
     };
   }
 
-  public static updateWithNoSizer(columnDetails: ColumnDetailsInitial): ColumnDetailsNoSizer {
+  // prettier-ignore
+  public static updateWithNoSizer(columnDetails: ColumnDetailsInitial,
+      columnDropdownCellOverlay: HTMLElement): ColumnDetailsNoSizer {
     const newObject: Omit<ColumnDetailsNoSizer, keyof ColumnDetailsInitial> = {
       cellTypeTotals: CellTypeTotalsUtils.createObj(columnDetails.types),
+      columnDropdownCellOverlay,
     };
     Object.assign(columnDetails, newObject);
     return columnDetails as ColumnDetailsNoSizer;

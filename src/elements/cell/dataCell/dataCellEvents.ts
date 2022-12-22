@@ -84,7 +84,7 @@ export class DataCellEvents {
   }
 
   private static blurCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
-    if (rowIndex === 0 && !this.isColumnDropdownDisplayed) {
+    if (rowIndex === 0 && !this.openColDropdownOnCellClick) {
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, event.target as HTMLElement, columnIndex);
     }
     DataCellEvents.blur(this, rowIndex, columnIndex, event.target as HTMLElement);
@@ -96,7 +96,7 @@ export class DataCellEvents {
       textContainerElement: HTMLElement) {
     if (Browser.IS_FIREFOX) {
       // THIS HAS TO BE CALLED IN A FOCUS EVENT!!!!!!!!!!!!!!!!!
-     if (rowIndex > 0 || !etc.isColumnDropdownDisplayed) FirefoxCaretDisplayFix.setContentEditable(textContainerElement);
+     if (rowIndex > 0 || !etc.openColDropdownOnCellClick) FirefoxCaretDisplayFix.setContentEditable(textContainerElement);
     }
     // placed here and not in timeout because we need cells with a default value to be recorded before modification
     CellEvents.removeTextIfDefault(etc, rowIndex, columnIndex, textContainerElement);
@@ -112,7 +112,6 @@ export class DataCellEvents {
   }
 
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (!etc.columnsDetails[columnIndex].settings.isCellTextEditable) return;
     cellElement.onfocus = DataCellEvents.focusCell.bind(etc, rowIndex, columnIndex);
     cellElement.onblur = DataCellEvents.blurCell.bind(etc, rowIndex, columnIndex);
     // these are used in date cells and overwritten when converted from

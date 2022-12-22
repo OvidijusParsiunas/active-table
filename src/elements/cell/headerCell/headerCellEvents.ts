@@ -1,3 +1,4 @@
+import {ColumnDropdownCellOverlay} from '../../dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlay';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {ColumnSizerCellEvents} from '../../columnSizer/columnSizerCellEvents';
 import {ColumnDropdown} from '../../dropdown/columnDropdown/columnDropdown';
@@ -9,14 +10,19 @@ import {CellEvents} from '../cellEvents';
 export class HeaderCellEvents {
   public static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     if (!this.activeOverlayElements.selectedColumnSizer) {
-      CellHighlightUtils.highlight(event.target as HTMLElement, this.columnsDetails[columnIndex].headerStateColors?.hover);
+      const cellElement = event.target as HTMLElement;
+      CellHighlightUtils.highlight(cellElement, this.columnsDetails[columnIndex].headerStateColors?.hover);
       ColumnSizerCellEvents.cellMouseEnter(this.columnsDetails, columnIndex);
+      ColumnDropdownCellOverlay.display(this.columnsDetails[columnIndex]);
+      this.hoveredElements.headerCell = cellElement;
     }
   }
 
   public static mouseLeaveCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     if (!Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
       CellHighlightUtils.fade(event.target as HTMLElement, this.columnsDetails[columnIndex].headerStateColors?.default);
+      ColumnDropdownCellOverlay.hide(this, this.columnsDetails[columnIndex]);
+      delete this.hoveredElements.headerCell;
     }
     if (!this.activeOverlayElements.selectedColumnSizer) {
       ColumnSizerCellEvents.cellMouseLeave(this.columnsDetails, columnIndex);
@@ -26,7 +32,7 @@ export class HeaderCellEvents {
   private static mouseClick(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     const cellElement = event.target as HTMLElement;
     CellEvents.removeTextIfDefault(this, 0, columnIndex, cellElement);
-    ColumnDropdown.displayRelevantDropdownElement(this, columnIndex, event);
+    ColumnDropdown.display(this, columnIndex);
     setTimeout(() => FocusedCellUtils.setHeaderCell(this.focusedElements.cell, cellElement, columnIndex));
   }
 

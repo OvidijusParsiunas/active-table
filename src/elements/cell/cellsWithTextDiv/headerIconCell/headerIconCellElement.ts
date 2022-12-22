@@ -47,7 +47,7 @@ export class HeaderIconCellElement {
   public static setHeaderIconStructure(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
     const {activeType, settings} = etc.columnsDetails[columnIndex];
     const svgIconElement = HeaderIconCellElement.createSVG(activeType.dropdownItem.settings.iconSettings);
-    const isHeaderTextEditable = settings.isHeaderTextEditable && !etc.isColumnDropdownDisplayed;
+    const isHeaderTextEditable = settings.isHeaderTextEditable && !etc.openColDropdownOnCellClick;
     const textElement = HeaderIconCellElement.createTextElement(cellElement, isHeaderTextEditable);
     cellElement.insertBefore(svgIconElement, textElement);
   }

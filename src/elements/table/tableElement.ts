@@ -48,11 +48,9 @@ export class TableElement {
     tableElement.appendChild(fullTableOverlay);
     activeOverlayElements.fullTableOverlay = fullTableOverlay;
     // column dropdown
-    if (etc.isColumnDropdownDisplayed) {
-      const columnDropdownElement = ColumnDropdown.create(etc);
-      tableElement.appendChild(columnDropdownElement);
-      activeOverlayElements.columnDropdown = columnDropdownElement;
-    }
+    const columnDropdownElement = ColumnDropdown.create(etc);
+    tableElement.appendChild(columnDropdownElement);
+    activeOverlayElements.columnDropdown = columnDropdownElement;
     // row dropdown
     if (etc.rowDropdownSettings.isDisplayed) {
       const rowDropdownElement = RowDropdown.create(etc);

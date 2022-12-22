@@ -23,11 +23,16 @@ export class CellElement {
   // prettier-ignore
   public static setCellEvents(etc: EditableTableComponent,
       cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    const header = rowIndex === 0;
-    if (header && etc.isColumnDropdownDisplayed) return HeaderCellEvents.setEvents(etc, cellElement, columnIndex);
-    DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
-    if (header && etc.areIconsDisplayedInHeaders) EditableHeaderIconCellEvents.setEvents(etc, cellElement, 0, columnIndex);
-    
+    if (rowIndex === 0) {
+      if (etc.openColDropdownOnCellClick) {
+        HeaderCellEvents.setEvents(etc, cellElement, columnIndex)
+      } else {
+        DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
+        if (etc.areIconsDisplayedInHeaders) EditableHeaderIconCellEvents.setEvents(etc, cellElement, 0, columnIndex);
+      }
+    } else if (etc.columnsDetails[columnIndex].settings.isCellTextEditable) {
+      DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
+    }
   }
 
   public static setDefaultCellStyle(cellElement: HTMLElement, cellStyle?: CellCSSStyle, customStyle?: CellCSSStyle) {
@@ -43,9 +48,9 @@ export class CellElement {
 
   // prettier-ignore
   public static createContentCell(isHeader: boolean, cellStyle?: CellCSSStyle, customStyle?: CellCSSStyle,
-      isColumnDropdownDisplayed?: boolean) {
+      openColDropdownOnCellClick?: boolean) {
     const cellElement = CellElement.createBaseCell(isHeader);
-    if (isHeader && isColumnDropdownDisplayed) cellElement.classList.add(CellElement.NOT_SELECTABLE_CLASS);
+    if (isHeader && openColDropdownOnCellClick) cellElement.classList.add(CellElement.NOT_SELECTABLE_CLASS);
     // role for assistive technologies
     cellElement.setAttribute('role', 'textbox');
     // should probably remove border width from headerStyle if cellStyle contains it as it will affect the sizer position
@@ -140,13 +145,13 @@ export class CellElement {
     const {defaultColumnsSettings: {cellStyle, headerStyleProps}, columnsDetails, tableElementRef} = etc;
     const columnDetails = columnsDetails[colIndex];
     const cellElement = CellElement.createContentCell(isHeader, cellStyle,
-      isHeader ? headerStyleProps?.default : {}, etc.isColumnDropdownDisplayed);
+      isHeader ? headerStyleProps?.default : {}, etc.openColDropdownOnCellClick);
     const {settings} = columnDetails;
     ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, cellElement, isHeader);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [cellElement]); // REF-23
     const isEditable = isHeader
-      ? !etc.isColumnDropdownDisplayed && settings.isHeaderTextEditable : settings.isCellTextEditable;
-    CellElement.prepContentEditable(cellElement, Boolean(isEditable), etc.isColumnDropdownDisplayed);
+      ? !etc.openColDropdownOnCellClick && settings.isHeaderTextEditable : settings.isCellTextEditable;
+    CellElement.prepContentEditable(cellElement, Boolean(isEditable), etc.openColDropdownOnCellClick);
     // overwritten again if static table
     if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
     CellElement.processCellWithNewText(etc, cellElement, text, true, false);

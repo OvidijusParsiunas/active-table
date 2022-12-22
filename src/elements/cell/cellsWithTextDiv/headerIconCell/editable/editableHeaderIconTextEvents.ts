@@ -1,3 +1,4 @@
+import {ColumnSettingsUtils} from '../../../../../utils/columnSettings/columnSettingsUtils';
 import {EditableTableComponent} from '../../../../../editable-table-component';
 import {KEYBOARD_KEY} from '../../../../../consts/keyboardKeys';
 import {DataCellEvents} from '../../../dataCell/dataCellEvents';
@@ -11,6 +12,7 @@ export class EditableHeaderIconTextEvents {
 
   private static blurText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const textElement = event.target as HTMLElement;
+    ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, textElement, columnIndex);
     DataCellEvents.blur(this, rowIndex, columnIndex, textElement);
   }
 

@@ -1,3 +1,4 @@
+import {ColumnDropdownCellOverlay} from '../../../elements/dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlay';
 import {HeaderIconCellElement} from '../../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
 import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
@@ -36,7 +37,8 @@ export class InsertNewCell {
     const columnDetails = etc.columnsDetails[columnIndex];
     if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
     if (rowIndex === 0) {
-      ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsInitial); // REF-13
+      const columnDropdownCellOverlay = ColumnDropdownCellOverlay.add(etc, columnIndex);
+      ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsInitial, columnDropdownCellOverlay); // REF-13
       InsertRemoveColumnSizer.insert(etc, columnIndex); // REF-13
       if (isNewText) {
         InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);

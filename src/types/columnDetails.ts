@@ -59,6 +59,7 @@ export interface ColumnDetailsT {
   activeType: ColumnTypeInternal;
   cellTypeTotals: CellTypeTotals;
   categoryDropdown: CategoryDropdownT;
+  columnDropdownCellOverlay: HTMLElement;
   settings: ColumnSettingsInternal;
   headerStateColors: CellStateColors;
   bordersOverwrittenBySiblings: BordersOverwrittenBySiblings;

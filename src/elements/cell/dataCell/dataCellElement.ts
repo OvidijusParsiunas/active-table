@@ -11,7 +11,7 @@ export class DataCellElement {
     cellElement.innerText = CellElement.getTextElement(cellElement).innerText; // CAUTION-1
     const {isCellTextEditable} = etc.columnsDetails[columnIndex].settings
     CellElement.prepContentEditable(cellElement, isCellTextEditable);
-    DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
+    if (isCellTextEditable) DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
   }
 
   public static setColumnDataStructure(etc: EditableTableComponent, columnIndex: number) {
