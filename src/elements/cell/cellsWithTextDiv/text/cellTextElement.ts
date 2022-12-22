@@ -20,7 +20,7 @@ export class CellTextElement {
     const textElement = document.createElement('div');
     textElement.innerText = text;
     textElement.classList.add(CellTextElement.CELL_TEXT_DIV_CLASS);
-    CellElement.prepContentEditable(textElement, false, isCellTextEditable, false);
+    CellElement.prepContentEditable(textElement, isCellTextEditable);
     return textElement;
   }
 

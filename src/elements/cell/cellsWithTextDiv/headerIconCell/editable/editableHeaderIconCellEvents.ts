@@ -13,7 +13,7 @@ export class EditableHeaderIconCellEvents {
   }
 
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (!etc.areHeadersEditable) return;
+    if (!etc.columnsDetails[columnIndex].settings.isHeaderTextEditable) return;
     // important to note that this is still using data events that have not be overwritten here
     // onblur/onfocus do not work for firefox, hence using them on text element to keep it consistent across browsers
     cellElement.onblur = () => {};

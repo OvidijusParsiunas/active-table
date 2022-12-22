@@ -23,11 +23,11 @@ export class CellElement {
   // prettier-ignore
   public static setCellEvents(etc: EditableTableComponent,
       cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (rowIndex === 0) {
-      if (etc.isColumnDropdownDisplayed) return HeaderCellEvents.setEvents(etc, cellElement, columnIndex);
-      if (etc.areIconsDisplayedInHeaders) return EditableHeaderIconCellEvents.setEvents(etc, cellElement, 0, columnIndex);
-    }
+    const header = rowIndex === 0;
+    if (header && etc.isColumnDropdownDisplayed) return HeaderCellEvents.setEvents(etc, cellElement, columnIndex);
     DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
+    if (header && etc.areIconsDisplayedInHeaders) EditableHeaderIconCellEvents.setEvents(etc, cellElement, 0, columnIndex);
+    
   }
 
   public static setDefaultCellStyle(cellElement: HTMLElement, cellStyle?: CellCSSStyle, customStyle?: CellCSSStyle) {
@@ -59,18 +59,14 @@ export class CellElement {
     cellElement.style.cursor = isCellTextEditable ? 'text' : 'default';
   }
 
-  // many methods that call this pass down isColumnDropdownDisplayed as false because they only work with data cells
-  // prettier-ignore
-  public static prepContentEditable(cellElement: HTMLElement, isHeader: boolean, isCellTextEditable: boolean,
-      isColumnDropdownDisplayed: boolean) {
-    const isEditable = !isHeader || !isColumnDropdownDisplayed;
+  public static prepContentEditable(cellElement: HTMLElement, isEditable: boolean, isOverlayDisplayed = false) {
     if (Browser.IS_FIREFOX) {
-      if (isCellTextEditable && isEditable) FirefoxCaretDisplayFix.setTabIndex(cellElement);
+      if (isEditable) FirefoxCaretDisplayFix.setTabIndex(cellElement);
       FirefoxCaretDisplayFix.removeContentEditable(cellElement);
     } else {
-      cellElement.contentEditable = !isEditable ? 'false' : String(isCellTextEditable);
+      cellElement.contentEditable = String(isEditable);
     }
-    if (isEditable) CellElement.setCursor(cellElement, isCellTextEditable);
+    if (!isOverlayDisplayed) CellElement.setCursor(cellElement, isEditable);
   }
 
   // prettier-ignore
@@ -140,7 +136,7 @@ export class CellElement {
   }
 
   // prettier-ignore
-  private static createCellDOMElement(etc: EditableTableComponent, text: CellText, colIndex: number, isHeader: boolean) {
+  public static createCellElement(etc: EditableTableComponent, text: CellText, colIndex: number, isHeader: boolean) {
     const {defaultColumnsSettings: {cellStyle, headerStyleProps}, columnsDetails, tableElementRef} = etc;
     const columnDetails = columnsDetails[colIndex];
     const cellElement = CellElement.createContentCell(isHeader, cellStyle,
@@ -148,15 +144,12 @@ export class CellElement {
     const {settings} = columnDetails;
     ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, cellElement, isHeader);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [cellElement]); // REF-23
-    CellElement.prepContentEditable(cellElement, isHeader, settings.isCellTextEditable, etc.isColumnDropdownDisplayed);
+    const isEditable = isHeader
+      ? !etc.isColumnDropdownDisplayed && settings.isHeaderTextEditable : settings.isCellTextEditable;
+    CellElement.prepContentEditable(cellElement, Boolean(isEditable), etc.isColumnDropdownDisplayed);
     // overwritten again if static table
     if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
     CellElement.processCellWithNewText(etc, cellElement, text, true, false);
-    return cellElement;
-  }
-
-  public static createCellElement(etc: EditableTableComponent, cellText: CellText, rowIndex: number, columnIndex: number) {
-    const cellElement = CellElement.createCellDOMElement(etc, cellText, columnIndex, rowIndex === 0);
     return cellElement;
   }
 }

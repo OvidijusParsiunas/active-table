@@ -36,10 +36,10 @@ export class ColumnDropdown {
     DropdownItemHighlightUtils.fadeCurrentlyHighlighted(activeOverlayElements);
   }
 
-  public static create(etc: EditableTableComponent, areHeadersEditable: boolean) {
+  public static create(etc: EditableTableComponent) {
     const dropdownElement = Dropdown.createBase();
     ColumnDropdownEvents.set(etc, dropdownElement);
-    if (areHeadersEditable) DropdownItem.addInputItem(etc, dropdownElement);
+    DropdownItem.addInputItem(etc, dropdownElement);
     ColumnDropdownItem.addItems(etc, dropdownElement);
     return dropdownElement;
   }

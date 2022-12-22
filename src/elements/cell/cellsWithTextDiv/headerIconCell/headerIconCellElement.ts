@@ -8,9 +8,10 @@ export class HeaderIconCellElement {
   private static readonly TEXT_CLASS = 'header-icon-side-text';
   private static readonly ICON_CONTAINER_CLASS = 'header-icon-container';
 
-  private static createTextElement(cellElement: HTMLElement, isCellTextEditable: boolean) {
-    const textElement = CellTextElement.setCellTextAsAnElement(cellElement, isCellTextEditable);
+  private static createTextElement(cellElement: HTMLElement, isHeaderTextEditable: boolean) {
+    const textElement = CellTextElement.setCellTextAsAnElement(cellElement, isHeaderTextEditable);
     textElement.classList.add(HeaderIconCellElement.TEXT_CLASS);
+    textElement.style.pointerEvents = isHeaderTextEditable ? '' : 'none';
     return textElement;
   }
 
@@ -46,7 +47,8 @@ export class HeaderIconCellElement {
   public static setHeaderIconStructure(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
     const {activeType, settings} = etc.columnsDetails[columnIndex];
     const svgIconElement = HeaderIconCellElement.createSVG(activeType.dropdownItem.settings.iconSettings);
-    const textElement = HeaderIconCellElement.createTextElement(cellElement, settings.isCellTextEditable);
+    const isHeaderTextEditable = settings.isHeaderTextEditable && !etc.isColumnDropdownDisplayed;
+    const textElement = HeaderIconCellElement.createTextElement(cellElement, isHeaderTextEditable);
     cellElement.insertBefore(svgIconElement, textElement);
   }
 }

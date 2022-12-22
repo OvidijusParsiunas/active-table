@@ -79,7 +79,7 @@ export class InsertNewCell {
 
   private static create(etc: EditableTableComponent, processedCellText: CellText, rowIndex: number, columnIndex: number) {
     const columnDetails = etc.columnsDetails[columnIndex];
-    const newCellElement = CellElement.createCellElement(etc, processedCellText, rowIndex, columnIndex);
+    const newCellElement = CellElement.createCellElement(etc, processedCellText, columnIndex, rowIndex === 0);
     InsertNewCell.convertCell(etc, columnDetails, rowIndex, columnIndex, newCellElement);
     return newCellElement;
   }

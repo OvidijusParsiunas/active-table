@@ -94,6 +94,7 @@ export class ColumnSettingsUtils {
     defaultColumnsSettings.defaultText ??= EMPTY_STRING;
     defaultColumnsSettings.isDefaultTextRemovable ??= true;
     defaultColumnsSettings.isCellTextEditable ??= true;
+    defaultColumnsSettings.isHeaderTextEditable ??= defaultColumnsSettings.isCellTextEditable;
     defaultColumnsSettings.isSortAvailable ??= true;
     defaultColumnsSettings.isDeleteAvailable ??= true;
     defaultColumnsSettings.isInsertLeftAvailable ??= true;

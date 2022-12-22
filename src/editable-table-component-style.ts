@@ -105,7 +105,6 @@ export const ediTableStyle = css`
   }
 
   .header-icon-side-text {
-    pointer-events: none;
     display: inline;
   }
 

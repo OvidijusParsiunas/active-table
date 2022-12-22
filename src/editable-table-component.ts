@@ -67,12 +67,6 @@ export class EditableTableComponent extends LitElement {
   @property({converter: LITElementTypeConverters.convertToFunction})
   onTableUpdate: (newTableContents: TableContents) => void = () => {};
 
-  @property({
-    type: Boolean,
-    converter: LITElementTypeConverters.convertToBoolean,
-  })
-  areHeadersEditable = true;
-
   // TO-DO make sure this works when pasting into the header will be allowed
   @property({
     type: Boolean,
@@ -196,7 +190,7 @@ export class EditableTableComponent extends LitElement {
     AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
     RowDropdownSettingsUtil.process(this.rowDropdownSettings);
     const tableElement = TableElement.createInfrastructureElements(this);
-    TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements, this.areHeadersEditable);
+    TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
     this.shadowRoot?.appendChild(tableElement);
     InitialContentsProcessing.preProcess(this.contents);
     WindowElement.setEvents(this);

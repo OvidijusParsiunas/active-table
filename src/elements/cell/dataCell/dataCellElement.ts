@@ -10,7 +10,7 @@ export class DataCellElement {
     // overwrites all previous cell content
     cellElement.innerText = CellElement.getTextElement(cellElement).innerText; // CAUTION-1
     const {isCellTextEditable} = etc.columnsDetails[columnIndex].settings
-    CellElement.prepContentEditable(cellElement, false, isCellTextEditable, false);
+    CellElement.prepContentEditable(cellElement, isCellTextEditable);
     DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
   }
 

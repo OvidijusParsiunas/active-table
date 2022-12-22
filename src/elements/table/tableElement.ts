@@ -42,14 +42,14 @@ export class TableElement {
 
   // prettier-ignore
   public static addOverlayElements(etc: EditableTableComponent,
-      tableElement: HTMLElement, activeOverlayElements: ActiveOverlayElements, areHeadersEditable: boolean) {
+      tableElement: HTMLElement, activeOverlayElements: ActiveOverlayElements) {
     // full table overlay for column dropdown
     const fullTableOverlay = FullTableOverlayElement.create(etc);
     tableElement.appendChild(fullTableOverlay);
     activeOverlayElements.fullTableOverlay = fullTableOverlay;
     // column dropdown
     if (etc.isColumnDropdownDisplayed) {
-      const columnDropdownElement = ColumnDropdown.create(etc, areHeadersEditable);
+      const columnDropdownElement = ColumnDropdown.create(etc);
       tableElement.appendChild(columnDropdownElement);
       activeOverlayElements.columnDropdown = columnDropdownElement;
     }
