@@ -1,11 +1,12 @@
 import {CellWithTextEvents} from '../../elements/cell/cellsWithTextDiv/cellWithTextEvents';
 import {EditableTableComponent} from '../../editable-table-component';
+import {CellElement} from '../../elements/cell/cellElement';
 
 export class FocusNextColumnCellFromTextDiv {
   private static focusDifferentColumnCell(etc: EditableTableComponent, columnIndex: number, rowIndex: number) {
     const {elements, activeType, settings} = etc.columnsDetails[columnIndex];
     const cellElement = elements[rowIndex];
-    if (!settings.isCellTextEditable) {
+    if (!settings.isCellTextEditable || (rowIndex === 0 && !settings.isHeaderTextEditable)) {
       return FocusNextColumnCellFromTextDiv.focusOrBlurNext(etc, columnIndex, rowIndex);
     }
     if (activeType.categories) {
@@ -14,7 +15,7 @@ export class FocusNextColumnCellFromTextDiv {
     } else {
       CellWithTextEvents.programmaticBlur(etc);
       // dispatchEvent(new Event('focus')); does not return a selection in firefox for window.document.getSelection()
-      cellElement.focus();
+      CellElement.getTextElement(cellElement).focus();
     }
     cellElement.scrollIntoView({block: 'nearest'});
   }

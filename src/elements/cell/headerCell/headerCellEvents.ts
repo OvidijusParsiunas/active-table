@@ -14,7 +14,7 @@ export class HeaderCellEvents {
     }
   }
 
-  private static mouseLeaveCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
+  public static mouseLeaveCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     if (!Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
       CellHighlightUtils.fade(event.target as HTMLElement, this.columnsDetails[columnIndex].headerStateColors?.default);
     }
