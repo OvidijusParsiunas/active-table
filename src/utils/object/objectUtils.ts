@@ -16,6 +16,8 @@ export class ObjectUtils {
       ) as unknown as R;
     }
   }
+
+  // method to check if value is not nullish
   public static areValuesFullyDefined(...values: unknown[]) {
     const undefinedValue = values.findIndex((value) => value === undefined || value === null);
     return undefinedValue === -1;

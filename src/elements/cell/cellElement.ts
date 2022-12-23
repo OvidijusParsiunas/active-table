@@ -24,11 +24,11 @@ export class CellElement {
   public static setCellEvents(etc: EditableTableComponent,
       cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     if (rowIndex === 0) {
-      if (etc.openColDropdownOnCellClick) {
+      if (etc.columnDropdownSettings.openMethod?.cellClick) {
         HeaderCellEvents.setEvents(etc, cellElement, columnIndex)
       } else {
         DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
-        if (etc.areIconsDisplayedInHeaders) EditableHeaderIconCellEvents.setEvents(etc, cellElement, 0, columnIndex);
+        EditableHeaderIconCellEvents.setEvents(etc, cellElement, 0, columnIndex);
       }
     } else if (etc.columnsDetails[columnIndex].settings.isCellTextEditable) {
       DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
@@ -48,9 +48,9 @@ export class CellElement {
 
   // prettier-ignore
   public static createContentCell(isHeader: boolean, cellStyle?: CellCSSStyle, customStyle?: CellCSSStyle,
-      openColDropdownOnCellClick?: boolean) {
+      isUsedAsAButton?: boolean) {
     const cellElement = CellElement.createBaseCell(isHeader);
-    if (isHeader && openColDropdownOnCellClick) cellElement.classList.add(CellElement.NOT_SELECTABLE_CLASS);
+    if (isHeader && isUsedAsAButton) cellElement.classList.add(CellElement.NOT_SELECTABLE_CLASS);
     // role for assistive technologies
     cellElement.setAttribute('role', 'textbox');
     // should probably remove border width from headerStyle if cellStyle contains it as it will affect the sizer position
@@ -64,14 +64,14 @@ export class CellElement {
     cellElement.style.cursor = isCellTextEditable ? 'text' : 'default';
   }
 
-  public static prepContentEditable(cellElement: HTMLElement, isEditable: boolean, isOverlayDisplayed = false) {
+  public static prepContentEditable(cellElement: HTMLElement, isEditable: boolean, isUsedAsAButton = false) {
     if (Browser.IS_FIREFOX) {
       if (isEditable) FirefoxCaretDisplayFix.setTabIndex(cellElement);
       FirefoxCaretDisplayFix.removeContentEditable(cellElement);
     } else {
       cellElement.contentEditable = String(isEditable);
     }
-    if (!isOverlayDisplayed) CellElement.setCursor(cellElement, isEditable);
+    if (!isUsedAsAButton) CellElement.setCursor(cellElement, isEditable);
   }
 
   // prettier-ignore
@@ -145,13 +145,13 @@ export class CellElement {
     const {defaultColumnsSettings: {cellStyle, headerStyleProps}, columnsDetails, tableElementRef} = etc;
     const columnDetails = columnsDetails[colIndex];
     const cellElement = CellElement.createContentCell(isHeader, cellStyle,
-      isHeader ? headerStyleProps?.default : {}, etc.openColDropdownOnCellClick);
+      isHeader ? headerStyleProps?.default : {}, etc.columnDropdownSettings.openMethod?.cellClick);
     const {settings} = columnDetails;
     ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, cellElement, isHeader);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [cellElement]); // REF-23
     const isEditable = isHeader
-      ? !etc.openColDropdownOnCellClick && settings.isHeaderTextEditable : settings.isCellTextEditable;
-    CellElement.prepContentEditable(cellElement, Boolean(isEditable), etc.openColDropdownOnCellClick);
+      ? !etc.columnDropdownSettings.openMethod?.cellClick && settings.isHeaderTextEditable : settings.isCellTextEditable;
+    CellElement.prepContentEditable(cellElement, Boolean(isEditable), etc.columnDropdownSettings.openMethod?.cellClick);
     // overwritten again if static table
     if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
     CellElement.processCellWithNewText(etc, cellElement, text, true, false);

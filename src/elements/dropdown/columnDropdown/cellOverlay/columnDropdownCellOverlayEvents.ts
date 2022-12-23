@@ -13,7 +13,7 @@ export class ColumnDropdownCellOverlayEvents {
 
   private static mouseLeave(this: EditableTableComponent, columnDetails: ColumnDetailsT) {
     ColumnDropdownCellOverlay.hide(this, columnDetails);
-    delete this.hoveredElements.headerCell;
+    if (this.columnDropdownSettings.openMethod?.overlayClick) delete this.hoveredElements.headerCell;
   }
 
   private static mouseEnter(this: EditableTableComponent, columnDetails: ColumnDetailsT) {

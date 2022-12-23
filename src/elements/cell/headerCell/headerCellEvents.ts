@@ -10,10 +10,11 @@ import {CellEvents} from '../cellEvents';
 export class HeaderCellEvents {
   public static mouseEnterCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     if (!this.activeOverlayElements.selectedColumnSizer) {
+      const columnDetails = this.columnsDetails[columnIndex];
       const cellElement = event.target as HTMLElement;
-      CellHighlightUtils.highlight(cellElement, this.columnsDetails[columnIndex].headerStateColors?.hover);
+      CellHighlightUtils.highlight(cellElement, columnDetails.headerStateColors?.hover);
       ColumnSizerCellEvents.cellMouseEnter(this.columnsDetails, columnIndex);
-      ColumnDropdownCellOverlay.display(this.columnsDetails[columnIndex]);
+      if (this.columnDropdownSettings.openMethod?.overlayClick) ColumnDropdownCellOverlay.display(columnDetails);
       this.hoveredElements.headerCell = cellElement;
     }
   }
@@ -22,7 +23,7 @@ export class HeaderCellEvents {
     if (!Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
       CellHighlightUtils.fade(event.target as HTMLElement, this.columnsDetails[columnIndex].headerStateColors?.default);
       ColumnDropdownCellOverlay.hide(this, this.columnsDetails[columnIndex]);
-      delete this.hoveredElements.headerCell;
+      if (this.columnDropdownSettings.openMethod?.overlayClick) delete this.hoveredElements.headerCell;
     }
     if (!this.activeOverlayElements.selectedColumnSizer) {
       ColumnSizerCellEvents.cellMouseLeave(this.columnsDetails, columnIndex);

@@ -1,4 +1,5 @@
 import {AuxiliaryTableContentInternalUtils} from './utils/auxiliaryTableContent/auxiliaryTableContentInternalUtils';
+import {ColumnDropdownSettingsUtil} from './elements/dropdown/columnDropdown/columnDropdownSettingsUtil';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
@@ -10,6 +11,7 @@ import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {TableDimensionsInternal} from './types/tableDimensionsInternal';
+import {ColumnDropdownSettings} from './types/columnDropdownSettings';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {customElement, property, state} from 'lit/decorators.js';
@@ -100,17 +102,6 @@ export class EditableTableComponent extends LitElement {
   @property({type: Array<CustomColumnSettings>})
   customColumnsSettings: CustomColumnsSettings = [];
 
-  // the reason why this is toggled for all columns instead of individual ones per custom settings is because
-  // the latter leads to unpleasant UX and consistency is much more preferrable for an adequate experience
-  @property({
-    type: Boolean,
-    converter: LITElementTypeConverters.convertToBoolean,
-  })
-  openColDropdownOnCellClick = false;
-
-  @property({type: Object})
-  columnDropdownOpenMethod: {directCell?: boolean; cellOverlay?: boolean} = {cellOverlay: true};
-
   @state()
   customColumnsSettingsInternal: ColumnsSettingsMap = {};
 
@@ -173,9 +164,13 @@ export class EditableTableComponent extends LitElement {
   @state()
   auxiliaryTableContentInternal: AuxiliaryTableContentInternal = AuxiliaryTableContentInternalUtils.getDefault();
 
-  // columnResizer for the client - columnSizer in code for efficiency
+  // called columnResizer for the client - columnSizer in the code
   @property({type: Object})
   columnResizerStyle: UserSetColumnSizerStyle = {};
+
+  // these properties are toggled for all columns for consistent UX
+  @property({type: Object})
+  columnDropdownSettings: ColumnDropdownSettings = {isAvailable: true, openMethod: {overlayClick: true}};
 
   @property({type: Object})
   rowDropdownSettings: RowDropdownSettings = {};
@@ -192,6 +187,7 @@ export class EditableTableComponent extends LitElement {
     super.connectedCallback();
     AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
     RowDropdownSettingsUtil.process(this.rowDropdownSettings);
+    ColumnDropdownSettingsUtil.process(this.columnDropdownSettings);
     const tableElement = TableElement.createInfrastructureElements(this);
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
     this.shadowRoot?.appendChild(tableElement);
