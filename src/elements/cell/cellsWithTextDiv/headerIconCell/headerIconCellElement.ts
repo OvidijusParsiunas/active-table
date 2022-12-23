@@ -1,8 +1,10 @@
-import {IconContainerStyles, IconSettings} from '../../../../types/dropdownButtonItem';
 import {EditableTableComponent} from '../../../../editable-table-component';
+import {ColumnSettingsInternal} from '../../../../types/columnsSettings';
 import {SVGIconUtils} from '../../../../utils/svgIcons/svgIconUtils';
+import {IconSettings} from '../../../../types/dropdownButtonItem';
 import {ColumnDetailsT} from '../../../../types/columnDetails';
 import {CellTextElement} from '../text/cellTextElement';
+import {SVGScale} from '../../../../types/svgScale';
 
 export class HeaderIconCellElement {
   private static readonly TEXT_CLASS = 'header-icon-side-text';
@@ -15,38 +17,45 @@ export class HeaderIconCellElement {
     return textElement;
   }
 
-  private static createSvgIcon(svgString: string) {
-    const svgIconElement = SVGIconUtils.createSVGElement(svgString);
-    svgIconElement.setAttribute('transform', 'scale(1.1, 1.1)');
-    svgIconElement.style.filter = SVGIconUtils.LIGHT_GREY_FILTER;
+  private static setScale(svgIconElement: SVGGraphicsElement, scale?: SVGScale) {
+    const x = scale?.x || 1.1;
+    const y = scale?.y || 1.1;
+    svgIconElement.setAttribute('transform', `scale(${x}, ${y})`);
+  }
+
+  private static createSvgIcon(iconSettings: IconSettings, columnSettings: ColumnSettingsInternal) {
+    const svgIconElement = SVGIconUtils.createSVGElement(iconSettings.svgString);
+    HeaderIconCellElement.setScale(svgIconElement, columnSettings.headerIconStyle?.scale);
+    svgIconElement.style.filter = columnSettings.headerIconStyle?.iconFilterColor || SVGIconUtils.LIGHT_GREY_FILTER;
     return svgIconElement;
   }
 
-  private static createSVGContainer(containerStyles?: IconContainerStyles) {
+  private static createSVGContainer(iconSettings: IconSettings) {
     const container = document.createElement('div');
-    if (containerStyles?.dropdown) Object.assign(container.style, containerStyles.dropdown);
-    if (containerStyles?.headerCorrections) Object.assign(container.style, containerStyles.headerCorrections);
+    const {containerStyles} = iconSettings;
+    if (containerStyles?.dropdown) Object.assign(container.style, containerStyles?.dropdown);
+    if (containerStyles?.headerCorrections) Object.assign(container.style, containerStyles?.headerCorrections);
     container.classList.add(HeaderIconCellElement.ICON_CONTAINER_CLASS);
     return container;
   }
 
-  private static createSVG(iconSettings: IconSettings) {
-    const svgContainer = HeaderIconCellElement.createSVGContainer(iconSettings.containerStyles);
-    const svgIconElement = HeaderIconCellElement.createSvgIcon(iconSettings.svgString);
+  private static createSVG(iconSettings: IconSettings, columnSettings: ColumnSettingsInternal) {
+    const svgContainer = HeaderIconCellElement.createSVGContainer(iconSettings);
+    const svgIconElement = HeaderIconCellElement.createSvgIcon(iconSettings, columnSettings);
     svgContainer.appendChild(svgIconElement);
     return svgContainer;
   }
 
   public static changeHeaderIcon(columnDetails: ColumnDetailsT) {
-    const {elements, activeType} = columnDetails;
-    const svgIconElement = HeaderIconCellElement.createSVG(activeType.dropdownItem.settings.iconSettings);
+    const {elements, activeType, settings} = columnDetails;
+    const svgIconElement = HeaderIconCellElement.createSVG(activeType.dropdownItem.settings.iconSettings, settings);
     const headerElement = elements[0];
     headerElement.replaceChild(svgIconElement, headerElement.children[0] as SVGGraphicsElement);
   }
 
   public static setHeaderIconStructure(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
     const {activeType, settings} = etc.columnsDetails[columnIndex];
-    const svgIconElement = HeaderIconCellElement.createSVG(activeType.dropdownItem.settings.iconSettings);
+    const svgIconElement = HeaderIconCellElement.createSVG(activeType.dropdownItem.settings.iconSettings, settings);
     const isHeaderTextEditable = settings.isHeaderTextEditable && !etc.columnDropdownSettings.openMethod?.cellClick;
     const textElement = HeaderIconCellElement.createTextElement(cellElement, isHeaderTextEditable);
     cellElement.insertBefore(svgIconElement, textElement);

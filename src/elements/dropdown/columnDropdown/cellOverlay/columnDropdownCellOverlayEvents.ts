@@ -13,12 +13,14 @@ export class ColumnDropdownCellOverlayEvents {
 
   private static mouseLeave(this: EditableTableComponent, columnDetails: ColumnDetailsT) {
     ColumnDropdownCellOverlay.hide(this, columnDetails);
-    if (this.columnDropdownSettings.openMethod?.overlayClick) delete this.hoveredElements.headerCell;
+    delete this.hoveredElements.headerCell;
+    ColumnDropdownCellOverlay.resetDefaultColor(this.columnDropdownSettings, columnDetails.columnDropdownCellOverlay);
   }
 
   private static mouseEnter(this: EditableTableComponent, columnDetails: ColumnDetailsT) {
     const headerCellElement = columnDetails.elements[0];
     this.hoveredElements.headerCell = headerCellElement;
+    ColumnDropdownCellOverlay.setHoverColor(this.columnDropdownSettings, columnDetails);
   }
 
   public static setEvents(etc: EditableTableComponent, columnIndex: number, overlayElement: HTMLElement) {

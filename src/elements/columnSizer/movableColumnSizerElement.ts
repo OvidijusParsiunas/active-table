@@ -48,7 +48,9 @@ export class MovableColumnSizerElement {
 
   private static getBackgroundColor(userSetColumnSizerStyle: UserSetColumnSizerStyle) {
     return (
-      userSetColumnSizerStyle.click || userSetColumnSizerStyle.hover || MovableColumnSizerElement.DEFAULT_BACKGROUND_COLOR
+      userSetColumnSizerStyle.click?.backgroundColor ||
+      userSetColumnSizerStyle.hover?.backgroundColor ||
+      MovableColumnSizerElement.DEFAULT_BACKGROUND_COLOR
     );
   }
 

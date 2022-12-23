@@ -313,5 +313,7 @@ export const ediTableStyle = css`
     cursor: pointer;
     background-color: grey;
     transition: height 0.2s;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
   }
 `;

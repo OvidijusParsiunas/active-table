@@ -1,6 +1,7 @@
 import {HoverableElementStyleClient} from './hoverableElementStyle';
 import {InterfacesUnion, SetRequired} from './utilityTypes';
 import {DEFAULT_COLUMN_TYPES} from '../enums/columnType';
+import {HeaderIconStyle} from './headerIconStyle';
 import {StringDimension} from './dimensions';
 import {ColumnTypes} from './columnType';
 import {CellText} from './tableContents';
@@ -17,6 +18,7 @@ interface Parent {
   isCellTextEditable?: boolean; // true by default
   headerStyleProps?: HoverableElementStyleClient;
   isHeaderTextEditable?: boolean; // uses isCellTextEditable by default
+  headerIconStyle?: HeaderIconStyle;
   defaultColumnTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
   customColumnTypes?: ColumnTypes; // additional custom column types
   // if not provided the following property will default to first of the following:
