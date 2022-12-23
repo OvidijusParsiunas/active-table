@@ -23,10 +23,11 @@ export class ColumnDropdownCellOverlayEvents {
     ColumnDropdownCellOverlay.setHoverColor(this.columnDropdownSettings, columnDetails);
   }
 
-  public static setEvents(etc: EditableTableComponent, columnIndex: number, overlayElement: HTMLElement) {
+  public static setEvents(etc: EditableTableComponent, columnIndex: number) {
     const columnDetails = etc.columnsDetails[columnIndex];
-    overlayElement.onmouseenter = ColumnDropdownCellOverlayEvents.mouseEnter.bind(etc, columnDetails);
-    overlayElement.onmouseleave = ColumnDropdownCellOverlayEvents.mouseLeave.bind(etc, columnDetails);
-    overlayElement.onclick = ColumnDropdownCellOverlayEvents.mouseClick.bind(etc, columnIndex, columnDetails);
+    const {columnDropdownCellOverlay} = columnDetails;
+    columnDropdownCellOverlay.onmouseenter = ColumnDropdownCellOverlayEvents.mouseEnter.bind(etc, columnDetails);
+    columnDropdownCellOverlay.onmouseleave = ColumnDropdownCellOverlayEvents.mouseLeave.bind(etc, columnDetails);
+    columnDropdownCellOverlay.onclick = ColumnDropdownCellOverlayEvents.mouseClick.bind(etc, columnIndex, columnDetails);
   }
 }

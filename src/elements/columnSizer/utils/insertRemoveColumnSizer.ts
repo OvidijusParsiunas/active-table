@@ -82,8 +82,9 @@ export class InsertRemoveColumnSizer {
 
   // this is only used for when table width is static, otherwise it is removed directly with the column
   private static removeSizer(newColumnDetails: ColumnDetailsNoSizer) {
-    const cellDividerElement = newColumnDetails.elements[0].nextSibling as HTMLElement;
-    cellDividerElement.replaceChildren();
+    newColumnDetails.columnSizer?.element?.remove();
+    newColumnDetails.columnSizer?.movableElement?.remove();
+    newColumnDetails.columnSizer?.overlayElement?.remove();
     delete newColumnDetails.columnSizer;
   }
 

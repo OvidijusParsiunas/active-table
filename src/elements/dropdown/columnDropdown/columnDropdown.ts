@@ -1,6 +1,8 @@
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
 import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
+import {ColumnDropdownCellOverlay} from './cellOverlay/columnDropdownCellOverlay';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
+import {ColumnDropdownSettings} from '../../../types/columnDropdownSettings';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -44,7 +46,11 @@ export class ColumnDropdown {
     return dropdownElement;
   }
 
-  public static getDropdownTopPosition(cellElement: HTMLElement): PX {
+  public static getDropdownTopPosition(cellElement: HTMLElement, openedViaOverlayClick?: boolean): PX {
+    if (openedViaOverlayClick) {
+      const offsetTop = Number.parseInt(ColumnDropdownCellOverlay.VISIBLE_WIDTH_PX);
+      return `${ElementOffset.processTop(offsetTop)}px`;
+    }
     return `${ElementOffset.processTop(cellElement.offsetTop + cellElement.offsetHeight)}px`;
   }
 
@@ -54,9 +60,11 @@ export class ColumnDropdown {
   }
 
   // TO-DO will this work correctly when a scrollbar is introduced
-  private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement) {
+  // prettier-ignore
+  private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement,
+      openMethod: ColumnDropdownSettings['openMethod']) {
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
-    dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement);
+    dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement, openMethod?.overlayClick);
     // needs to be displayed in order to evalute if in view port
     Dropdown.display(dropdownElement);
     const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement);
@@ -74,7 +82,7 @@ export class ColumnDropdown {
     const dropdownElement = etc.activeOverlayElements.columnDropdown as HTMLElement;
     const cellElement = etc.columnsDetails[columnIndex].elements[0];
     ColumnDropdownItem.setUp(etc, dropdownElement, columnIndex, cellElement);
-    ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
+    ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement, etc.columnDropdownSettings.openMethod);
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItemNavigation.focusInputElement(inputElement as HTMLElement);
     Dropdown.display(fullTableOverlay);

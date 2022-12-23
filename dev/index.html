@@ -55,8 +55,10 @@
                 },
               ],
               isDefaultTextRemovable: false,
-              // headerStyleProps: {default: {backgroundColor: 'lightgrey', borderRight: '1px solid yellow'}},
-              activeTypeName: 'Custom type 1',
+              headerStyleProps: {
+                // default: {color: 'grey', paddingTop: '12px', paddingBottom: '12px'},
+              },
+              activeTypeName: 'Text',
             })
           );
           element.setAttribute('tableDimensions', JSON.stringify({width: '1000px'}));
@@ -108,6 +110,9 @@
                         return {color: 'black'}
                       }`,
                     },
+                    // dropdownIconSettings: {
+                    //   reusableDefaultIcon: `Category`,
+                    // },
                   },
                 ],
                 isInsertLeftAvailable: false,
@@ -141,10 +146,22 @@
                       setTextToDefaultOnFail: false,
                       failedStyle: {color: 'yellow'},
                     },
+                    dropdownIconSettings: {
+                      defaultIconName: `Category`,
+                    },
                   },
                 ],
                 isMoveAvailable: true,
                 activeTypeName: 'Custom type 2',
+                isHeaderTextEditable: false,
+                headerIconStyle: {
+                  iconFilterColor:
+                    'brightness(0) saturate(100%) invert(52%) sepia(63%) saturate(2567%) hue-rotate(74deg) brightness(100%) contrast(89%)',
+                  scale: {
+                    x: 1.5,
+                    y: 1.5,
+                  },
+                },
               },
               {
                 columnName: 'C',
@@ -153,7 +170,7 @@
                   borderLeft: '1px solid red',
                   borderRight: '1px solid red',
                   borderBottom: '1px solid red',
-                  backgroundColor: 'orange',
+                  // backgroundColor: 'orange',
                 },
                 customColumnTypes: [
                   {
@@ -173,7 +190,7 @@
                         return !isNaN(cellText)
                       }`,
                       setTextToDefaultOnFail: false,
-                      failedStyle: {color: 'brown', backgroundColor: 'red'},
+                      failedStyle: {color: 'brown'},
                     },
                   },
                 ],
@@ -193,11 +210,13 @@
             ])
           );
           element.setAttribute('rowDropdownSettings', JSON.stringify({isMoveAvailable: true}));
-          // element.setAttribute('isColumnDropdownDisplayed', false);
+          // element.setAttribute('columnDropdownSettings', JSON.stringify({isAvailable: true}));
+          // element.setAttribute(
+          //   'columnResizerStyle',
+          //   JSON.stringify({hover: {backgroundColor: 'red'}, click: {backgroundColor: 'green'}})
+          // );
           // element.setAttribute('onCellUpdate', aa);
           // element.setAttribute('onTableUpdate', tableUpdate);
-          // element.setAttribute('displayAddRowCell', false);
-          // element.setAttribute('displayAddColumnCell', false);
           // setTimeout(() => {
           //   element.setAttribute('updateCellText', JSON.stringify({newText: 'test', rowIndex: 3, columnIndex: 2}));
           // }, 1000);

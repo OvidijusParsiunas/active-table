@@ -1,11 +1,10 @@
 import {ColumnDropdownSettings, DropdownCellOverlayStyle} from '../../../../types/columnDropdownSettings';
-import {ColumnDropdownCellOverlayEvents} from './columnDropdownCellOverlayEvents';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {ColumnDetailsT} from '../../../../types/columnDetails';
 
 export class ColumnDropdownCellOverlay {
   private static readonly HIDDEN_WIDTH_PX = '0px';
-  private static readonly VISIBLE_WIDTH_PX = '8px';
+  public static readonly VISIBLE_WIDTH_PX = '10px';
   private static readonly COLUMN_DROPDOWN_CELL_OVERLAY_CLASS = 'column-dropdown-cell-overlay';
 
   private static setDefault(columnDropdownCellOverlay: HTMLElement, overlayStyle?: DropdownCellOverlayStyle) {
@@ -34,7 +33,6 @@ export class ColumnDropdownCellOverlay {
     });
   }
 
-  // what happens when sizer is removed etc
   public static display(columnDetails: ColumnDetailsT) {
     const {columnDropdownCellOverlay, elements} = columnDetails;
     columnDropdownCellOverlay.style.height = ColumnDropdownCellOverlay.VISIBLE_WIDTH_PX;
@@ -56,7 +54,6 @@ export class ColumnDropdownCellOverlay {
     const headerCell = etc.columnsDetails[columnIndex].elements[0];
     const cellDividerElement = headerCell.nextSibling as HTMLElement;
     cellDividerElement.appendChild(columnDropdownCellOverlay);
-    ColumnDropdownCellOverlayEvents.setEvents(etc, columnIndex, columnDropdownCellOverlay);
     return columnDropdownCellOverlay;
   }
 }

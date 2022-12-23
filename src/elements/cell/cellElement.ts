@@ -1,3 +1,4 @@
+import {ColumnDropdownCellOverlayEvents} from '../dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlayEvents';
 import {EditableHeaderIconCellEvents} from './cellsWithTextDiv/headerIconCell/editable/editableHeaderIconCellEvents';
 import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellCalendarIconElement';
 import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsBorderUtils';
@@ -29,6 +30,7 @@ export class CellElement {
       } else {
         DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
         EditableHeaderIconCellEvents.setEvents(etc, cellElement, 0, columnIndex);
+        ColumnDropdownCellOverlayEvents.setEvents(etc, columnIndex);
       }
     } else if (etc.columnsDetails[columnIndex].settings.isCellTextEditable) {
       DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
