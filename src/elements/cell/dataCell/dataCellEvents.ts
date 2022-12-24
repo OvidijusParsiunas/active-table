@@ -38,7 +38,7 @@ export class DataCellEvents {
     // sanitizePastedTextContent causes inputType to no longer be insertFromPaste, hence using this instead
     if (!this.userKeyEventsState[KEYBOARD_EVENT.PASTE]) {
       const isUndo = inputEvent.inputType === UNDO_INPUT_TYPE;
-      CellElement.processCellWithNewText(this, textContainerElement, text, false, isUndo, false);
+      CellElement.setNewText(this, textContainerElement, text, false, isUndo, false);
       const columnDetails = this.columnsDetails[columnIndex];
       if (columnDetails.activeType.categories) {
         CategoryDropdown.updateCategoryDropdown(textContainerElement.parentElement as HTMLElement,
@@ -84,7 +84,7 @@ export class DataCellEvents {
   }
 
   private static blurCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
-    if (rowIndex === 0 && !this.columnDropdownSettings.openMethod?.cellClick) {
+    if (rowIndex === 0 && !this.columnDropdownDisplaySettings.openMethod?.cellClick) {
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, event.target as HTMLElement, columnIndex);
     }
     DataCellEvents.blur(this, rowIndex, columnIndex, event.target as HTMLElement);
@@ -94,7 +94,7 @@ export class DataCellEvents {
   // textContainerElement can be cell element for data cell, text element for category and date cells
   public static prepareText(etc: EditableTableComponent, rowIndex: number, columnIndex: number,
       textContainerElement: HTMLElement) {
-    if (Browser.IS_FIREFOX && (rowIndex > 0 || !etc.columnDropdownSettings.openMethod?.cellClick)) {
+    if (Browser.IS_FIREFOX && (rowIndex > 0 || !etc.columnDropdownDisplaySettings.openMethod?.cellClick)) {
       // THIS HAS TO BE CALLED IN A FOCUS EVENT!!!!!!!!!!!!!!!!!
       FirefoxCaretDisplayFix.setContentEditable(textContainerElement);
     }

@@ -52,7 +52,7 @@ export class TableElement {
     tableElement.appendChild(columnDropdownElement);
     activeOverlayElements.columnDropdown = columnDropdownElement;
     // row dropdown
-    if (etc.rowDropdownSettings.isDisplayed) {
+    if (etc.rowDropdownSettings.displaySettings.isAvailable) {
       const rowDropdownElement = RowDropdown.create(etc);
       tableElement.appendChild(rowDropdownElement);
       activeOverlayElements.rowDropdown = rowDropdownElement; 

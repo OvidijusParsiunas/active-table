@@ -4,7 +4,6 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {DEFAULT_COLUMN_WIDTH} from '../../consts/defaultColumnWidth';
 import {ExtractElements} from '../../utils/elements/extractElements';
 import {UpdateIndexColumnWidth} from './updateIndexColumnWidth';
-import {IndexColumnEvents} from './indexColumnEvents';
 import {CellElement} from '../cell/cellElement';
 
 export class IndexColumn {
@@ -29,7 +28,7 @@ export class IndexColumn {
     const {tableDimensionsInternal, defaultColumnsSettings, auxiliaryTableContentInternal} = etc;
     const cell = CellElement.createBaseCell(isHeader);
     cell.classList.add(IndexColumn.INDEX_CELL_CLASS, CellElement.NOT_SELECTABLE_CLASS);
-    cell.style.cursor = etc.rowDropdownSettings.isDisplayed ? 'pointer' : 'default';
+    cell.style.cursor = etc.rowDropdownSettings.displaySettings.openMethod?.cellClick ? 'pointer' : 'default';
     if (!tableDimensionsInternal.isColumnIndexCellTextWrapped) {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }
@@ -55,8 +54,7 @@ export class IndexColumn {
     if (etc.columnsDetails[0]) {
       ColumnSettingsBorderUtils.unsetSubjectBorder([cell], etc.columnsDetails[0].elements, 'right', 0); // REF-23
     }
-    // WORK - can potentially be asynchronous
-    IndexColumnEvents.setEvents(etc, cell, rowIndex);
+    // events are added in updateRowCells method
     rowElement.appendChild(cell);
   }
 }

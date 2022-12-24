@@ -45,7 +45,7 @@ export class InsertNewRow {
       }
     });
     if (displayAddColumnCell) AddNewColumnElement.createAndAppendToRow(etc, newRowElement, rowIndex);
-    setTimeout(() => RowDropdownCellOverlay.add(etc, newRowElement.children[0] as HTMLElement, displayIndexColumn));
+    setTimeout(() => RowDropdownCellOverlay.add(etc, newRowElement.children[0] as HTMLElement, rowIndex));
   }
 
   private static insertNewRow(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {

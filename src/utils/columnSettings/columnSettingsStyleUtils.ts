@@ -56,8 +56,9 @@ export class ColumnSettingsStyleUtils {
     const {elements, settings: {isHeaderTextEditable}} = columnDetails;
     ColumnSettingsStyleUtils.resetHeaderStyleToDefault(elements, oldSettings, this.defaultColumnsSettings);
     ColumnSettingsStyleUtils.setNewHeaderStyle(this.defaultColumnsSettings, columnDetails);
-    const isEditable = !this.columnDropdownSettings.openMethod?.cellClick && isHeaderTextEditable;
-    CellElement.prepContentEditable(elements[0], Boolean(isEditable), this.columnDropdownSettings.openMethod?.cellClick);
+    const isEditable = !this.columnDropdownDisplaySettings.openMethod?.cellClick && isHeaderTextEditable;
+    CellElement.prepContentEditable(elements[0],
+      Boolean(isEditable), this.columnDropdownDisplaySettings.openMethod?.cellClick);
   }
 
   // prettier-ignore

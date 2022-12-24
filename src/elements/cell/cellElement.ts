@@ -1,5 +1,6 @@
 import {ColumnDropdownCellOverlayEvents} from '../dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlayEvents';
 import {EditableHeaderIconCellEvents} from './cellsWithTextDiv/headerIconCell/editable/editableHeaderIconCellEvents';
+import {RowDropdownCellOverlayEvents} from '../dropdown/rowDropdown/cellOverlay/rowDropdownCellOverlayEvents';
 import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellCalendarIconElement';
 import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsBorderUtils';
 import {ColumnSettingsStyleUtils} from '../../utils/columnSettings/columnSettingsStyleUtils';
@@ -25,7 +26,7 @@ export class CellElement {
   public static setCellEvents(etc: EditableTableComponent,
       cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     if (rowIndex === 0) {
-      if (etc.columnDropdownSettings.openMethod?.cellClick) {
+      if (etc.columnDropdownDisplaySettings.openMethod?.cellClick) {
         HeaderCellEvents.setEvents(etc, cellElement, columnIndex)
       } else {
         DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
@@ -34,6 +35,9 @@ export class CellElement {
       }
     } else if (etc.columnsDetails[columnIndex].settings.isCellTextEditable) {
       DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
+    }
+    if (!etc.auxiliaryTableContentInternal.displayIndexColumn && columnIndex === 0) {
+      RowDropdownCellOverlayEvents.addCellEvents(etc, rowIndex, cellElement);
     }
   }
 
@@ -122,7 +126,7 @@ export class CellElement {
 
   // set text is optional as some elements may only need to toggle the BR padding
   // prettier-ignore
-  public static processCellWithNewText(etc: EditableTableComponent, textContainerElement: HTMLElement, text: CellText,
+  public static setNewText(etc: EditableTableComponent, textContainerElement: HTMLElement, text: CellText,
       isCellBeingBuilt: boolean, isUndo: boolean, setText = true) {
     if (setText) CellElement.setText(textContainerElement, text as string);
     // whilst it is primarily used for firefox - we use it consistently for all browsers
@@ -146,17 +150,17 @@ export class CellElement {
   public static createCellElement(etc: EditableTableComponent, text: CellText, colIndex: number, isHeader: boolean) {
     const {defaultColumnsSettings: {cellStyle, headerStyleProps}, columnsDetails, tableElementRef} = etc;
     const columnDetails = columnsDetails[colIndex];
+    const isOpenViaCellClick = etc.columnDropdownDisplaySettings.openMethod?.cellClick;
     const cellElement = CellElement.createContentCell(isHeader, cellStyle,
-      isHeader ? headerStyleProps?.default : {}, etc.columnDropdownSettings.openMethod?.cellClick);
+      isHeader ? headerStyleProps?.default : {}, isOpenViaCellClick);
     const {settings} = columnDetails;
     ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, cellElement, isHeader);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [cellElement]); // REF-23
-    const isEditable = isHeader
-      ? !etc.columnDropdownSettings.openMethod?.cellClick && settings.isHeaderTextEditable : settings.isCellTextEditable;
-    CellElement.prepContentEditable(cellElement, Boolean(isEditable), etc.columnDropdownSettings.openMethod?.cellClick);
+    const isEditable = isHeader ? !isOpenViaCellClick && settings.isHeaderTextEditable : settings.isCellTextEditable;
+    CellElement.prepContentEditable(cellElement, Boolean(isEditable), isOpenViaCellClick);
     // overwritten again if static table
     if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
-    CellElement.processCellWithNewText(etc, cellElement, text, true, false);
+    CellElement.setNewText(etc, cellElement, text, true, false);
     return cellElement;
   }
 }

@@ -14,7 +14,7 @@ export class HeaderCellEvents {
       const cellElement = event.target as HTMLElement;
       CellHighlightUtils.highlight(cellElement, columnDetails.headerStateColors?.hover);
       ColumnSizerCellEvents.cellMouseEnter(this.columnsDetails, columnIndex);
-      if (this.columnDropdownSettings.openMethod?.overlayClick) ColumnDropdownCellOverlay.display(columnDetails);
+      if (this.columnDropdownDisplaySettings.openMethod?.overlayClick) ColumnDropdownCellOverlay.display(columnDetails);
       this.hoveredElements.headerCell = cellElement;
     }
   }
@@ -23,7 +23,7 @@ export class HeaderCellEvents {
     if (!Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
       CellHighlightUtils.fade(event.target as HTMLElement, this.columnsDetails[columnIndex].headerStateColors?.default);
       ColumnDropdownCellOverlay.hide(this, this.columnsDetails[columnIndex]);
-      if (this.columnDropdownSettings.openMethod?.overlayClick) delete this.hoveredElements.headerCell;
+      if (this.columnDropdownDisplaySettings.openMethod?.overlayClick) delete this.hoveredElements.headerCell;
     }
     if (!this.activeOverlayElements.selectedColumnSizer) {
       ColumnSizerCellEvents.cellMouseLeave(this.columnsDetails, columnIndex);

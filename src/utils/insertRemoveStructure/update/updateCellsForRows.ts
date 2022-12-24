@@ -34,9 +34,11 @@ export class UpdateCellsForRows {
       }
       etc.onCellUpdate(CellElement.getText(cellElement as HTMLElement), rowIndex, columnIndex, cellUpdateType);
     });
-    const leftMostCell = rowElement.children[0] as HTMLElement;
-    if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumnEvents.setEvents(etc, leftMostCell, rowIndex);
-    RowDropdownCellOverlayEvents.setEvents(etc, rowIndex, leftMostCell);
+    if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
+      const leftMostCell = rowElement.children[0] as HTMLElement;
+      if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumnEvents.setEvents(etc, leftMostCell, rowIndex);
+      RowDropdownCellOverlayEvents.setOverlayEvents(etc, rowIndex, leftMostCell);
+    }
   }
 
   private static updateLastRow(etc: EditableTableComponent, cellUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {

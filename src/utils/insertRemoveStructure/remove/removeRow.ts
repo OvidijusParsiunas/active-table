@@ -39,6 +39,7 @@ export class RemoveRow {
 
   private static removeRow(etc: EditableTableComponent, rowIndex: number) {
     etc.tableBodyElementRef?.children[rowIndex].remove();
+    etc.rowDropdownCellOverlays.splice(rowIndex, 1);
     const removedContentRow = etc.contents.splice(rowIndex, 1);
     // needs to be done synchronously as add new row toggle needs elements count when calling MaximumRows.canAddMore
     removedContentRow[0].forEach((_, columnIndex: number) => {
@@ -55,7 +56,7 @@ export class RemoveRow {
       MoveRow.move(etc, 0, true);
       return 1;
     }
-    return 0;
+    return rowIndex;
   }
 
   public static remove(etc: EditableTableComponent, rowIndex: number) {

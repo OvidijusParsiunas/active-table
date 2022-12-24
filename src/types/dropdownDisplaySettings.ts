@@ -2,7 +2,7 @@ import {StatefulCSSS, CellCSSStyle} from './cssStyle';
 
 export type DropdownCellOverlayStyle = Omit<StatefulCSSS<Pick<CellCSSStyle, 'backgroundColor'>>, 'click'>;
 
-export interface ColumnDropdownSettings {
+export interface DropdownDisplaySettings {
   isAvailable?: boolean; // true by default
   openMethod?: {
     overlayClick?: boolean; // true by default

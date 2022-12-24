@@ -30,7 +30,7 @@ export class CellEvents {
       cellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText); 
     }
     if (CellEvents.executeUpdateOperation('updateContents', options)) etc.contents[rowIndex][columnIndex] = cellText; 
-    if (options?.element) CellElement.processCellWithNewText(etc, options.element, cellText, false, false); // CAUTION-1
+    if (options?.element) CellElement.setNewText(etc, options.element, cellText, false, false); // CAUTION-1
     if (CellEvents.executeUpdateOperation('updateTableEvent', options)) etc.onTableUpdate(etc.contents);
     // slight inefficiency using this here as setCellToDefaultIfNeeded and removeTextIfDefault have already validated text,
     // however having it here minimizes complexity

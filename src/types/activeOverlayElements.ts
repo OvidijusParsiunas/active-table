@@ -4,8 +4,6 @@ export interface ActiveOverlayElements {
   columnDropdown?: HTMLElement;
   columnTypeDropdown?: HTMLElement;
   rowDropdown?: HTMLElement;
-  // column dropdown overlays are stored inside ColumnDetailsT columnDropdownCellOverlay
-  rowDropdownCellOverlays: HTMLElement[];
   fullTableOverlay?: HTMLElement;
   // cannot get the actual date picker as its native browser element is not accessible
   // the cell is probably not the best element for this but its use is very efficient

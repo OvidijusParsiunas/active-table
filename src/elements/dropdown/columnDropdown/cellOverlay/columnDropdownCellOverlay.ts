@@ -1,4 +1,4 @@
-import {ColumnDropdownSettings, DropdownCellOverlayStyle} from '../../../../types/columnDropdownSettings';
+import {DropdownDisplaySettings, DropdownCellOverlayStyle} from '../../../../types/dropdownDisplaySettings';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {DropdownCellOverlay} from '../../cellOverlay/dropdownCellOverlay';
 import {ColumnDetailsT} from '../../../../types/columnDetails';
@@ -10,15 +10,15 @@ export class ColumnDropdownCellOverlay {
     columnDropdownCellOverlay.style.backgroundColor = overlayStyle?.default?.backgroundColor || '';
   }
 
-  public static resetDefaultColor(columnDropdownSettings: ColumnDropdownSettings, columnDropdownCellOverlay: HTMLElement) {
-    const overlayStyle = columnDropdownSettings.overlayStyle;
+  public static resetDefaultColor(displaySettings: DropdownDisplaySettings, columnDropdownCellOverlay: HTMLElement) {
+    const overlayStyle = displaySettings.overlayStyle;
     if (overlayStyle?.hover?.backgroundColor) {
       ColumnDropdownCellOverlay.setDefault(columnDropdownCellOverlay, overlayStyle);
     }
   }
 
-  public static setHoverColor(columnDropdownSettings: ColumnDropdownSettings, columnDetails: ColumnDetailsT) {
-    const hoverBackgroundColor = columnDropdownSettings.overlayStyle?.hover?.backgroundColor;
+  public static setHoverColor(displaySettings: DropdownDisplaySettings, columnDetails: ColumnDetailsT) {
+    const hoverBackgroundColor = displaySettings.overlayStyle?.hover?.backgroundColor;
     if (hoverBackgroundColor) columnDetails.columnDropdownCellOverlay.style.backgroundColor = hoverBackgroundColor;
   }
 
@@ -50,7 +50,7 @@ export class ColumnDropdownCellOverlay {
   }
 
   public static add(etc: EditableTableComponent, columnIndex: number) {
-    const columnDropdownCellOverlay = ColumnDropdownCellOverlay.create(etc.columnDropdownSettings.overlayStyle);
+    const columnDropdownCellOverlay = ColumnDropdownCellOverlay.create(etc.columnDropdownDisplaySettings.overlayStyle);
     const headerCell = etc.columnsDetails[columnIndex].elements[0];
     const cellDividerElement = headerCell.nextSibling as HTMLElement;
     cellDividerElement.appendChild(columnDropdownCellOverlay);

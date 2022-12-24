@@ -50,7 +50,7 @@ export class ColumnDropdownItem {
   private static setUpInputElement(etc: EditableTableComponent,
       columnIndex: number, cellElement: HTMLElement, inputItem: HTMLElement, dropdownElement: HTMLElement) {
     const {isCellTextEditable, isHeaderTextEditable} = etc.columnsDetails[columnIndex].settings;
-    if (etc.columnDropdownSettings.openMethod?.overlayClick ||
+    if (etc.columnDropdownDisplaySettings.openMethod?.overlayClick ||
         (ObjectUtils.areValuesFullyDefined(isHeaderTextEditable) ? !isHeaderTextEditable : !isCellTextEditable)) {
       DropdownItem.toggleItem(inputItem, false);
     } else {

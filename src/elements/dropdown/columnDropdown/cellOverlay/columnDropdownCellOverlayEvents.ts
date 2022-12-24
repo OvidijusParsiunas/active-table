@@ -11,16 +11,18 @@ export class ColumnDropdownCellOverlayEvents {
     setTimeout(() => FocusedCellUtils.setHeaderCell(this.focusedElements.cell, headerCellElement, columnIndex));
   }
 
+  // prettier-ignore
   private static mouseLeave(this: EditableTableComponent, columnDetails: ColumnDetailsT) {
     ColumnDropdownCellOverlay.hide(this, columnDetails);
     delete this.hoveredElements.headerCell;
-    ColumnDropdownCellOverlay.resetDefaultColor(this.columnDropdownSettings, columnDetails.columnDropdownCellOverlay);
+    ColumnDropdownCellOverlay.resetDefaultColor(this.columnDropdownDisplaySettings,
+      columnDetails.columnDropdownCellOverlay);
   }
 
   private static mouseEnter(this: EditableTableComponent, columnDetails: ColumnDetailsT) {
     const headerCellElement = columnDetails.elements[0];
     this.hoveredElements.headerCell = headerCellElement;
-    ColumnDropdownCellOverlay.setHoverColor(this.columnDropdownSettings, columnDetails);
+    ColumnDropdownCellOverlay.setHoverColor(this.columnDropdownDisplaySettings, columnDetails);
   }
 
   public static setEvents(etc: EditableTableComponent, columnIndex: number) {

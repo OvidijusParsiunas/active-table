@@ -12,10 +12,36 @@ export class RowDropdownCellOverlayEvents {
     this.hoveredElements.leftMostCell = leftMostCell;
   }
 
-  public static setEvents(etc: EditableTableComponent, rowIndex: number, leftMostCell: HTMLElement) {
-    const rowDropdownCellOverlay = etc.activeOverlayElements.rowDropdownCellOverlays[rowIndex];
+  public static setOverlayEvents(etc: EditableTableComponent, rowIndex: number, leftMostCell: HTMLElement) {
+    const rowDropdownCellOverlay = etc.rowDropdownCellOverlays[rowIndex].element;
     rowDropdownCellOverlay.onmouseenter = RowDropdownCellOverlayEvents.mouseEnter.bind(etc, leftMostCell);
     rowDropdownCellOverlay.onmouseleave = RowDropdownCellOverlayEvents.mouseLeave.bind(etc, rowIndex);
     rowDropdownCellOverlay.onclick = RowDropdown.display.bind(etc, rowIndex, leftMostCell);
+  }
+
+  private static cellMouseEnter(this: EditableTableComponent, rowIndex: number, cellElement: HTMLElement) {
+    RowDropdownCellOverlay.display(this, rowIndex);
+    RowDropdownCellOverlayEvents.mouseEnter.bind(this)(cellElement);
+  }
+
+  // This method is adding more events to existing cells instead of overwriting them, the reason for using this approach is
+  // because we would instead need to add logic inside data cell events, category events, header events and more as
+  // row dropdown overlay can appear above them if index column is not displayed
+  // Interestingly using setting events like .onmousenter does not overwrite the events that have been added via
+  // addEventListener, hence they need to be removed here before adding again
+  public static addCellEvents(etc: EditableTableComponent, rowIndex: number, leftMostCell: HTMLElement) {
+    const overlayProperties = etc.rowDropdownCellOverlays[rowIndex];
+    if (overlayProperties?.cellElement) {
+      const {cellElement, enter, leave} = overlayProperties;
+      // need to use the element that has been added with the events as upon inserting a new row etc, the new row index
+      // does not adhere to the original element that was initially binded with the corresponding current index events
+      cellElement.removeEventListener('mouseenter', enter);
+      cellElement.removeEventListener('mouseleave', leave);
+    }
+    overlayProperties.cellElement = leftMostCell;
+    overlayProperties.enter = RowDropdownCellOverlayEvents.cellMouseEnter.bind(etc, rowIndex, leftMostCell);
+    overlayProperties.leave = RowDropdownCellOverlayEvents.mouseLeave.bind(etc, rowIndex, leftMostCell);
+    leftMostCell.addEventListener('mouseenter', overlayProperties.enter);
+    leftMostCell.addEventListener('mouseleave', overlayProperties.leave);
   }
 }

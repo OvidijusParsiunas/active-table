@@ -1,10 +1,11 @@
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
 import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
-import {ColumnDropdownSettings} from '../../../types/columnDropdownSettings';
+import {DropdownDisplaySettings} from '../../../types/dropdownDisplaySettings';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {DropdownCellOverlay} from '../cellOverlay/dropdownCellOverlay';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {DropdownItemNavigation} from '../dropdownItemNavigation';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
@@ -49,7 +50,7 @@ export class ColumnDropdown {
 
   public static getDropdownTopPosition(cellElement: HTMLElement, openedViaOverlayClick?: boolean): PX {
     if (openedViaOverlayClick) {
-      const offsetTop = 5;
+      const offsetTop = DropdownCellOverlay.OFFSET;
       return `${Browser.IS_FIREFOX ? offsetTop + TableElement.BORDER_DIMENSIONS.topWidth : offsetTop}px`;
     }
     return `${ElementOffset.processTop(cellElement.offsetTop + cellElement.offsetHeight)}px`;
@@ -63,7 +64,7 @@ export class ColumnDropdown {
   // TO-DO will this work correctly when a scrollbar is introduced
   // prettier-ignore
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement,
-      openMethod: ColumnDropdownSettings['openMethod']) {
+      openMethod: DropdownDisplaySettings['openMethod']) {
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
     dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement, openMethod?.overlayClick);
     // needs to be displayed in order to evalute if in view port
@@ -78,12 +79,14 @@ export class ColumnDropdown {
     }
   }
 
+  // prettier-ignore
   public static display(etc: EditableTableComponent, columnIndex: number) {
     const fullTableOverlay = etc.activeOverlayElements.fullTableOverlay as HTMLElement;
     const dropdownElement = etc.activeOverlayElements.columnDropdown as HTMLElement;
     const cellElement = etc.columnsDetails[columnIndex].elements[0];
     ColumnDropdownItem.setUp(etc, dropdownElement, columnIndex, cellElement);
-    ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement, etc.columnDropdownSettings.openMethod);
+    ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement,
+      etc.columnDropdownDisplaySettings.openMethod);
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItemNavigation.focusInputElement(inputElement as HTMLElement);
     Dropdown.display(fullTableOverlay);

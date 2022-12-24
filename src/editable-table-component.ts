@@ -1,7 +1,7 @@
 import {AuxiliaryTableContentInternalUtils} from './utils/auxiliaryTableContent/auxiliaryTableContentInternalUtils';
-import {ColumnDropdownSettingsUtil} from './elements/dropdown/columnDropdown/columnDropdownSettingsUtil';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
+import {DropdownDisplaySettingsUtil} from './elements/dropdown/dropdownSettingsUtil';
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
@@ -11,7 +11,8 @@ import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {TableDimensionsInternal} from './types/tableDimensionsInternal';
-import {ColumnDropdownSettings} from './types/columnDropdownSettings';
+import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
+import {DropdownDisplaySettings} from './types/dropdownDisplaySettings';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {customElement, property, state} from 'lit/decorators.js';
@@ -170,10 +171,14 @@ export class EditableTableComponent extends LitElement {
 
   // these properties are toggled for all columns for consistent UX
   @property({type: Object})
-  columnDropdownSettings: ColumnDropdownSettings = {isAvailable: true, openMethod: {overlayClick: true}};
+  columnDropdownDisplaySettings: DropdownDisplaySettings = {isAvailable: true, openMethod: {overlayClick: true}};
 
   @property({type: Object})
-  rowDropdownSettings: RowDropdownSettings = {};
+  rowDropdownSettings: RowDropdownSettings = {displaySettings: {}};
+
+  // column dropdown overlays are stored inside ColumnDetailsT columnDropdownCellOverlay
+  @state()
+  rowDropdownCellOverlays: RowDropdownCellOverlays = [];
 
   // CAUTION-4
   override render() {
@@ -186,8 +191,8 @@ export class EditableTableComponent extends LitElement {
     // REF-14
     super.connectedCallback();
     AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
-    RowDropdownSettingsUtil.process(this.rowDropdownSettings);
-    ColumnDropdownSettingsUtil.process(this.columnDropdownSettings);
+    RowDropdownSettingsUtil.process(this.rowDropdownSettings, this.auxiliaryTableContentInternal.displayIndexColumn);
+    DropdownDisplaySettingsUtil.process(this.columnDropdownDisplaySettings);
     const tableElement = TableElement.createInfrastructureElements(this);
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
     this.shadowRoot?.appendChild(tableElement);

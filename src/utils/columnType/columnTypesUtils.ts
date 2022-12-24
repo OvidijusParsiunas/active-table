@@ -70,7 +70,11 @@ export class ColumnTypesUtils {
         iconSettings = ColumnTypesUtils.getReusableDefaultIcon(dropdownIconSettings);
       } else {
         iconSettings = dropdownIconSettings;
-        iconSettings.svgString ??= DropdownButtonItemConf.DEFAULT_ITEM.iconSettings.svgString;
+        if (Object.keys(dropdownIconSettings).length === 0) {
+          iconSettings = DropdownButtonItemConf.DEFAULT_ITEM.iconSettings;
+        } else {
+          iconSettings.svgString ??= DropdownButtonItemConf.DEFAULT_ITEM.iconSettings.svgString;
+        }
       }
     } else {
       iconSettings = DropdownButtonItemConf.DEFAULT_ITEM.iconSettings;
