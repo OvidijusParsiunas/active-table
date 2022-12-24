@@ -1,10 +1,9 @@
 import {ColumnDropdownSettings, DropdownCellOverlayStyle} from '../../../../types/columnDropdownSettings';
 import {EditableTableComponent} from '../../../../editable-table-component';
+import {DropdownCellOverlay} from '../../cellOverlay/dropdownCellOverlay';
 import {ColumnDetailsT} from '../../../../types/columnDetails';
 
 export class ColumnDropdownCellOverlay {
-  private static readonly HIDDEN_WIDTH_PX = '0px';
-  public static readonly VISIBLE_WIDTH_PX = '10px';
   private static readonly COLUMN_DROPDOWN_CELL_OVERLAY_CLASS = 'column-dropdown-cell-overlay';
 
   private static setDefault(columnDropdownCellOverlay: HTMLElement, overlayStyle?: DropdownCellOverlayStyle) {
@@ -28,14 +27,14 @@ export class ColumnDropdownCellOverlay {
     const currentHeader = etc.hoveredElements.headerCell;
     setTimeout(() => {
       if (currentHeader !== etc.hoveredElements.headerCell) {
-        columnDropdownCellOverlay.style.height = ColumnDropdownCellOverlay.HIDDEN_WIDTH_PX;
+        columnDropdownCellOverlay.style.height = DropdownCellOverlay.HIDDEN_PX;
       }
     });
   }
 
   public static display(columnDetails: ColumnDetailsT) {
     const {columnDropdownCellOverlay, elements} = columnDetails;
-    columnDropdownCellOverlay.style.height = ColumnDropdownCellOverlay.VISIBLE_WIDTH_PX;
+    columnDropdownCellOverlay.style.height = DropdownCellOverlay.VISIBLE_PX;
     const onePercentWidth = elements[0].offsetWidth / 100;
     columnDropdownCellOverlay.style.width = `${onePercentWidth * 50}px`;
     columnDropdownCellOverlay.style.right = `${onePercentWidth * 25}px`;
@@ -43,8 +42,9 @@ export class ColumnDropdownCellOverlay {
 
   private static create(overlayStyle?: DropdownCellOverlayStyle) {
     const columnDropdownCellOverlay = document.createElement('div');
+    columnDropdownCellOverlay.classList.add(DropdownCellOverlay.DROPDOWN_CELL_OVERLAY_CLASS);
     columnDropdownCellOverlay.classList.add(ColumnDropdownCellOverlay.COLUMN_DROPDOWN_CELL_OVERLAY_CLASS);
-    columnDropdownCellOverlay.style.height = ColumnDropdownCellOverlay.HIDDEN_WIDTH_PX;
+    columnDropdownCellOverlay.style.height = DropdownCellOverlay.HIDDEN_PX;
     ColumnDropdownCellOverlay.setDefault(columnDropdownCellOverlay, overlayStyle);
     return columnDropdownCellOverlay;
   }

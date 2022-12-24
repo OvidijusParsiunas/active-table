@@ -29,11 +29,10 @@ export class RowDropdown {
     dropdownElement.style.left = `${ElementOffset.processWidth(cellElement.offsetWidth)}px`;
   }
 
-  public static display(this: EditableTableComponent, rowIndex: number, event: MouseEvent) {
+  public static display(this: EditableTableComponent, rowIndex: number, cellElement: HTMLElement) {
     const dropdownElement = this.activeOverlayElements.rowDropdown as HTMLElement;
     const fullTableOverlayElement = this.activeOverlayElements.fullTableOverlay as HTMLElement;
     RowDropdownItem.update(this, dropdownElement, rowIndex);
-    const cellElement = event.target as HTMLElement;
     RowDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement);
     Dropdown.display(dropdownElement, fullTableOverlayElement);
     setTimeout(() => FocusedCellUtils.setIndexCell(this.focusedElements.cell, cellElement, rowIndex));

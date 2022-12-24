@@ -309,11 +309,20 @@ export const ediTableStyle = css`
     height: 100%;
   }
 
-  .column-dropdown-cell-overlay {
+  .dropdown-cell-overlay {
     cursor: pointer;
     background-color: grey;
+  }
+
+  .column-dropdown-cell-overlay {
     transition: height 0.2s;
     border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+
+  .row-dropdown-cell-overlay {
+    transition: width 0.2s;
+    border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
   }
 `;

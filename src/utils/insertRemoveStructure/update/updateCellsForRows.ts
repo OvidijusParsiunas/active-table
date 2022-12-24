@@ -1,3 +1,5 @@
+// eslint-disable-next-line max-len
+import {RowDropdownCellOverlayEvents} from '../../../elements/dropdown/rowDropdown/cellOverlay/rowDropdownCellOverlayEvents';
 import {CategoryCellEvents} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellEvents';
 import {DateCellEvents} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellEvents';
 import {IndexColumnEvents} from '../../../elements/indexColumn/indexColumnEvents';
@@ -32,6 +34,9 @@ export class UpdateCellsForRows {
       }
       etc.onCellUpdate(CellElement.getText(cellElement as HTMLElement), rowIndex, columnIndex, cellUpdateType);
     });
+    const leftMostCell = rowElement.children[0] as HTMLElement;
+    if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumnEvents.setEvents(etc, leftMostCell, rowIndex);
+    RowDropdownCellOverlayEvents.setEvents(etc, rowIndex, leftMostCell);
   }
 
   private static updateLastRow(etc: EditableTableComponent, cellUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {
@@ -48,9 +53,6 @@ export class UpdateCellsForRows {
         const relativeContentsRowIndex = lowerRowIndex + startRowIndex;
         const rowElement = row as HTMLElement;
         UpdateCellsForRows.updateRowCells(etc, rowElement, relativeContentsRowIndex, CELL_UPDATE_TYPE.UPDATE);
-        if (etc.auxiliaryTableContentInternal.displayIndexColumn) {
-          IndexColumnEvents.setEvents(etc, rowElement.children[0] as HTMLElement, relativeContentsRowIndex);
-        }
       });
     }
   }

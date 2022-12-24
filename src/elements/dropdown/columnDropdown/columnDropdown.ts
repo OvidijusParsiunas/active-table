@@ -1,6 +1,5 @@
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
 import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
-import {ColumnDropdownCellOverlay} from './cellOverlay/columnDropdownCellOverlay';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {ColumnDropdownSettings} from '../../../types/columnDropdownSettings';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
@@ -11,6 +10,8 @@ import {DropdownItemNavigation} from '../dropdownItemNavigation';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
 import {ColumnDropdownEvents} from './columnDropdownEvents';
 import {ColumnDropdownItem} from './columnDropdownItem';
+import {Browser} from '../../../utils/browser/browser';
+import {TableElement} from '../../table/tableElement';
 import {DropdownItem} from '../dropdownItem';
 import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
@@ -48,8 +49,8 @@ export class ColumnDropdown {
 
   public static getDropdownTopPosition(cellElement: HTMLElement, openedViaOverlayClick?: boolean): PX {
     if (openedViaOverlayClick) {
-      const offsetTop = Number.parseInt(ColumnDropdownCellOverlay.VISIBLE_WIDTH_PX);
-      return `${ElementOffset.processTop(offsetTop)}px`;
+      const offsetTop = 5;
+      return `${Browser.IS_FIREFOX ? offsetTop + TableElement.BORDER_DIMENSIONS.topWidth : offsetTop}px`;
     }
     return `${ElementOffset.processTop(cellElement.offsetTop + cellElement.offsetHeight)}px`;
   }

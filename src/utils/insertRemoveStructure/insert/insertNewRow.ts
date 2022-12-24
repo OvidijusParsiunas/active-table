@@ -1,3 +1,4 @@
+import {RowDropdownCellOverlay} from '../../../elements/dropdown/rowDropdown/cellOverlay/rowDropdownCellOverlay';
 import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
@@ -44,6 +45,7 @@ export class InsertNewRow {
       }
     });
     if (displayAddColumnCell) AddNewColumnElement.createAndAppendToRow(etc, newRowElement, rowIndex);
+    setTimeout(() => RowDropdownCellOverlay.add(etc, newRowElement.children[0] as HTMLElement, displayIndexColumn));
   }
 
   private static insertNewRow(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
@@ -67,7 +69,14 @@ export class InsertNewRow {
       if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex + 1);
     }
     if (isReplacingHeader) MoveRow.move(etc, 0, true); // REF-26
-    setTimeout(() => InsertNewRow.bindAndfireCellUpdates(etc, rowIndex));
+    setTimeout(() => {
+      if (isNewText) {
+        InsertNewRow.bindAndfireCellUpdates(etc, rowIndex);
+        // this ensures that the following is only run once during initial render and starts with rowIndex 0
+      } else if (rowIndex === etc.contents.length - 1) {
+        InsertNewRow.bindAndfireCellUpdates(etc, 0);
+      }
+    });
   }
 
   public static insertEvent(this: EditableTableComponent) {
