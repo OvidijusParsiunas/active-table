@@ -24,11 +24,14 @@ export class IndexColumn {
     UpdateIndexColumnWidth.update(etc, textRowsArr.length === 0 ? undefined : textRowsArr);
   }
 
+  // prettier-ignore
   private static createCell(etc: EditableTableComponent, isHeader: boolean) {
     const {tableDimensionsInternal, defaultColumnsSettings, auxiliaryTableContentInternal} = etc;
     const cell = CellElement.createBaseCell(isHeader);
     cell.classList.add(IndexColumn.INDEX_CELL_CLASS, CellElement.NOT_SELECTABLE_CLASS);
-    cell.style.cursor = etc.rowDropdownSettings.displaySettings.openMethod?.cellClick ? 'pointer' : 'default';
+    const {displaySettings, isHeaderRowEditable} = etc.rowDropdownSettings;
+    cell.style.cursor = displaySettings.openMethod?.cellClick && (!isHeader || isHeaderRowEditable)
+      ? 'pointer' : 'default';
     if (!tableDimensionsInternal.isColumnIndexCellTextWrapped) {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }

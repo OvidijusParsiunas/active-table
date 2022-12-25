@@ -10,7 +10,7 @@ export class NumberOfIdenticalCells {
   // prettier-ignore
   public static get(targetText: CellText, columnsDetails: ColumnsDetailsT) {
     return columnsDetails.map((columnDetails) => {
-      return CellElement.getText(columnDetails.elements[0]);
+      return columnDetails.elements.length > 0 ? CellElement.getText(columnDetails.elements[0]) : '';
     }).filter((cellText: CellText) => cellText === targetText).length;
   }
 }

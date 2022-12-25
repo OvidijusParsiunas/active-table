@@ -28,7 +28,7 @@ export class DropdownItemNavigation {
   public static focusSiblingItem(focusedItem: HTMLElement,
       dropdownElement: HTMLElement, isNext: boolean, isEdgeItem = false): void {
     if (focusedItem.classList.contains(DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM)) {
-      const nestedDropdownElement = focusedItem.children[1] as HTMLElement;
+      const nestedDropdownElement = focusedItem.children[2] as HTMLElement;
       // when on item that has open nested dropdown
       if (Dropdown.isDisplayed(nestedDropdownElement)) Dropdown.hide(nestedDropdownElement);
     }

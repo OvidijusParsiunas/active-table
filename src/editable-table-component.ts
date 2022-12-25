@@ -1,7 +1,7 @@
 import {AuxiliaryTableContentInternalUtils} from './utils/auxiliaryTableContent/auxiliaryTableContentInternalUtils';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
-import {DropdownDisplaySettingsUtil} from './elements/dropdown/dropdownSettingsUtil';
+import {DropdownDisplaySettingsUtil} from './elements/dropdown/dropdownDisplaySettingsUtil';
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
@@ -41,7 +41,6 @@ import {
 } from './types/columnsSettings';
 
 // TO-DO
-// column validation: potentially highlight what is failing validation in red and display what the problem is upon hover
 // rename file name from using hyphen case to camel
 
 // spellcheck can be enabled or disabled by the user - enabled by default
@@ -70,7 +69,6 @@ export class EditableTableComponent extends LitElement {
   @property({converter: LITElementTypeConverters.convertToFunction})
   onTableUpdate: (newTableContents: TableContents) => void = () => {};
 
-  // TO-DO make sure this works when pasting into the header will be allowed
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
@@ -174,7 +172,7 @@ export class EditableTableComponent extends LitElement {
   columnDropdownDisplaySettings: DropdownDisplaySettings = {isAvailable: true, openMethod: {overlayClick: true}};
 
   @property({type: Object})
-  rowDropdownSettings: RowDropdownSettings = {displaySettings: {}};
+  rowDropdownSettings: RowDropdownSettings = {displaySettings: {isAvailable: true, openMethod: {overlayClick: true}}};
 
   // column dropdown overlays are stored inside ColumnDetailsT columnDropdownCellOverlay
   @state()

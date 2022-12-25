@@ -24,8 +24,6 @@ export class DataCellEvents {
     }
   }
 
-  // TO-DO default types per column, cleanup e.g. currency or date will need to be provided by user
-  // TO-DO allow user to set default as invalid
   // using this instead of keydown because when this is fired the new cell text is available
   // prettier-ignore
   private static inputCell(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {

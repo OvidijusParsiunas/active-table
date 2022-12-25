@@ -1,5 +1,6 @@
 import {AuxiliaryTableContentColors} from '../../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
+import {FullTableOverlayElement} from '../../fullTableOverlay/fullTableOverlayElement';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -35,11 +36,11 @@ export class RowDropdown {
 
   public static display(this: EditableTableComponent, rowIndex: number, cellElement: HTMLElement) {
     const dropdownElement = this.activeOverlayElements.rowDropdown as HTMLElement;
-    const fullTableOverlayElement = this.activeOverlayElements.fullTableOverlay as HTMLElement;
     RowDropdownItem.update(this, dropdownElement, rowIndex);
     const cellClick = this.rowDropdownSettings.displaySettings.openMethod?.cellClick as boolean;
     RowDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement, cellClick);
-    Dropdown.display(dropdownElement, fullTableOverlayElement);
+    Dropdown.display(dropdownElement);
+    FullTableOverlayElement.display(this);
     setTimeout(() => FocusedCellUtils.setIndexCell(this.focusedElements.cell, cellElement, rowIndex));
   }
 

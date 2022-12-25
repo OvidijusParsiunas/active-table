@@ -14,7 +14,6 @@ import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
 
-// TO-DO allow dev to control whether additional elements are allowed to be added
 export class CategoryDropdown {
   private static readonly CATEGORY_DROPDOWN_CLASS = 'category-dropdown';
   private static readonly MAX_HEIGHT_PX = '150px';

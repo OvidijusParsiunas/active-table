@@ -33,8 +33,10 @@ export class DataUtils {
   public static processCellText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellText: CellText) {
     let processedText = typeof cellText === 'string' ? cellText.trim() : cellText;
     const {activeType: {textValidation, customTextProcessing}, settings: {defaultText}} = etc.columnsDetails[columnIndex];
-    if (customTextProcessing?.changeText) processedText = customTextProcessing.changeText(String(processedText)); 
-    if (!textValidation.setTextToDefaultOnFail && processedText !== EMPTY_STRING) return processedText;
+    if (rowIndex > 0) {
+      if (customTextProcessing?.changeText) processedText = customTextProcessing.changeText(String(processedText)); 
+      if (!textValidation.setTextToDefaultOnFail && processedText !== EMPTY_STRING) return processedText;
+    }
     const shouldSetToDefault = DataUtils.shouldBeSetToDefault(etc, processedText, defaultText, rowIndex, textValidation);
     return shouldSetToDefault ? defaultText : processedText;
   }

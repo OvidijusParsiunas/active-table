@@ -28,6 +28,7 @@ export class ColumnDropdownCellOverlayEvents {
   public static setEvents(etc: EditableTableComponent, columnIndex: number) {
     const columnDetails = etc.columnsDetails[columnIndex];
     const {columnDropdownCellOverlay} = columnDetails;
+    if (!columnDropdownCellOverlay) return; // can occur if pasting multiple headers and creating multiple columns
     columnDropdownCellOverlay.onmouseenter = ColumnDropdownCellOverlayEvents.mouseEnter.bind(etc, columnDetails);
     columnDropdownCellOverlay.onmouseleave = ColumnDropdownCellOverlayEvents.mouseLeave.bind(etc, columnDetails);
     columnDropdownCellOverlay.onclick = ColumnDropdownCellOverlayEvents.mouseClick.bind(etc, columnIndex, columnDetails);

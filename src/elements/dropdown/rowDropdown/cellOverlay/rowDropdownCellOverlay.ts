@@ -1,25 +1,24 @@
 import {DropdownCellOverlayStyle, DropdownDisplaySettings} from '../../../../types/dropdownDisplaySettings';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {DropdownCellOverlay} from '../../cellOverlay/dropdownCellOverlay';
-import {ColumnDetailsT} from '../../../../types/columnDetails';
 
 export class RowDropdownCellOverlay {
   private static readonly ROW_DROPDOWN_CELL_OVERLAY_CLASS = 'row-dropdown-cell-overlay';
 
-  private static setDefault(columnDropdownCellOverlay: HTMLElement, overlayStyle?: DropdownCellOverlayStyle) {
-    columnDropdownCellOverlay.style.backgroundColor = overlayStyle?.default?.backgroundColor || '';
+  private static setDefault(rowDropdownCellOverlay: HTMLElement, overlayStyle?: DropdownCellOverlayStyle) {
+    rowDropdownCellOverlay.style.backgroundColor = overlayStyle?.default?.backgroundColor || '';
   }
 
-  public static resetDefaultColor(displaySettings: DropdownDisplaySettings, columnDropdownCellOverlay: HTMLElement) {
+  public static resetDefaultColor(displaySettings: DropdownDisplaySettings, rowDropdownCellOverlay: HTMLElement) {
     const overlayStyle = displaySettings.overlayStyle;
     if (overlayStyle?.hover?.backgroundColor) {
-      RowDropdownCellOverlay.setDefault(columnDropdownCellOverlay, overlayStyle);
+      RowDropdownCellOverlay.setDefault(rowDropdownCellOverlay, overlayStyle);
     }
   }
 
-  public static setHoverColor(displaySettings: DropdownDisplaySettings, columnDetails: ColumnDetailsT) {
+  public static setHoverColor(displaySettings: DropdownDisplaySettings, rowDropdownCellOverlay: HTMLElement) {
     const hoverBackgroundColor = displaySettings.overlayStyle?.hover?.backgroundColor;
-    if (hoverBackgroundColor) columnDetails.columnDropdownCellOverlay.style.backgroundColor = hoverBackgroundColor;
+    if (hoverBackgroundColor) rowDropdownCellOverlay.style.backgroundColor = hoverBackgroundColor;
   }
 
   public static hide(etc: EditableTableComponent, rowIndex: number) {
@@ -51,7 +50,7 @@ export class RowDropdownCellOverlay {
     rowDropdownCellOverlay.classList.add(RowDropdownCellOverlay.ROW_DROPDOWN_CELL_OVERLAY_CLASS);
     rowDropdownCellOverlay.classList.add(DropdownCellOverlay.DROPDOWN_CELL_OVERLAY_CLASS);
     rowDropdownCellOverlay.style.width = DropdownCellOverlay.HIDDEN_PX;
-    // RowDropdownCellOverlay.setDefault(columnDropdownCellOverlay, overlayStyle);
+    RowDropdownCellOverlay.setDefault(rowDropdownCellOverlay, overlayStyle);
     return rowDropdownCellOverlay;
   }
 
@@ -63,7 +62,7 @@ export class RowDropdownCellOverlay {
   }
 
   public static add(etc: EditableTableComponent, element: HTMLElement, rowIndex: number) {
-    const rowDropdownCellOverlay = RowDropdownCellOverlay.create(etc.columnDropdownDisplaySettings.overlayStyle);
+    const rowDropdownCellOverlay = RowDropdownCellOverlay.create(etc.rowDropdownSettings.displaySettings.overlayStyle);
     const {displayIndexColumn} = etc.auxiliaryTableContentInternal;
     const cellDividerElement = RowDropdownCellOverlay.getCellDividerElement(element, displayIndexColumn);
     cellDividerElement.appendChild(rowDropdownCellOverlay);

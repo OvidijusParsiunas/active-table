@@ -3,8 +3,10 @@ import {DateCellInputElement} from '../../../elements/cell/cellsWithTextDiv/date
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
+import {ColumnSettingsUtils} from '../../columnSettings/columnSettingsUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
+import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
 import {DataUtils} from '../../insertRemoveStructure/shared/dataUtils';
 import {CaretPosition} from '../../focusedElements/caretPosition';
 import {CellElementIndex} from '../../elements/cellElementIndex';
@@ -13,6 +15,7 @@ import {CellElement} from '../../../elements/cell/cellElement';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
 import {CellEvents} from '../../../elements/cell/cellEvents';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
+import {FocusedCell} from '../../../types/focusedCell';
 import {ArrayUtils} from '../../array/arrayUtils';
 import {EMPTY_STRING} from '../../../consts/text';
 import {CSVRow, CSV} from '../../../types/CSV';
@@ -49,6 +52,18 @@ export class OverwriteCellsViaCSVOnPaste {
     });
   }
 
+  private static changeColumnSettings(etc: EditableTableComponent, columnIndex: number) {
+    const {elements, types} = etc.columnsDetails[columnIndex];
+    FocusedCellUtils.set(etc.focusedElements.cell, elements[0], 0, columnIndex, types);
+    ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(etc, elements[0], columnIndex);
+  }
+
+  private static processNewColumn(etc: EditableTableComponent) {
+    const lastColumnIndex = etc.columnsDetails.length - 1;
+    CellEvents.setCellToDefaultIfNeeded(etc, 0, lastColumnIndex, etc.columnsDetails[lastColumnIndex].elements[0], false);
+    OverwriteCellsViaCSVOnPaste.changeColumnSettings(etc, lastColumnIndex);
+  }
+
   // prettier-ignore
   private static createNewColumns(etc: EditableTableComponent, dataForNewColumnsByRow: CSV, startRowIndex: number) {
     const dataForNewColumnsByColumn = ArrayUtils.transpose(dataForNewColumnsByRow);
@@ -56,6 +71,7 @@ export class OverwriteCellsViaCSVOnPaste {
       const newColumnData = OverwriteCellsViaCSVOnPaste.createRowDataArrayWithEmptyCells(
         etc.contents.length, columnData, startRowIndex);
       InsertNewColumn.insert(etc, etc.contents[0].length, newColumnData);
+      OverwriteCellsViaCSVOnPaste.processNewColumn(etc);
     });
   }
 
@@ -67,6 +83,8 @@ export class OverwriteCellsViaCSVOnPaste {
     const cellElement = rowElement.children[elementIndex] as HTMLElement;
     const columnDetails = columnsDetails[columnIndex];
     if (!columnDetails.settings.isCellTextEditable) return;
+     // this is to allow duplicate headers to be identified
+    if (rowIndex === 0) CellElement.setNewText(etc, cellElement, newCellText, false, false);
     const oldType = CellTypeTotalsUtils.parseTypeName(CellElement.getText(cellElement), columnDetails.types);
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
@@ -75,6 +93,7 @@ export class OverwriteCellsViaCSVOnPaste {
     } else if (Browser.IS_INPUT_DATE_SUPPORTED && columnDetails.activeType.calendar) {
       DateCellInputElement.updateInputBasedOnTextDiv(cellElement, columnDetails.activeType);
     }
+    if (rowIndex === 0) OverwriteCellsViaCSVOnPaste.changeColumnSettings(etc, columnIndex);
     setTimeout(() => {
       // CAUTION-2
       const newType = CellTypeTotalsUtils.parseTypeName(processedNewCellText, columnDetails.types);
@@ -162,12 +181,19 @@ export class OverwriteCellsViaCSVOnPaste {
     etc.onTableUpdate(etc.contents);
   }
 
+  private static focusOriginalCellAfterProcess(etc: EditableTableComponent, process: () => void) {
+    const {element, rowIndex, columnIndex} = etc.focusedElements.cell as Required<FocusedCell>;
+    process();
+    FocusedCellUtils.set(etc.focusedElements.cell, element, rowIndex, columnIndex, etc.columnsDetails[columnIndex].types);
+  }
+
   // prettier-ignore
   public static overwrite(etc: EditableTableComponent,
       clipboardText: string, event: ClipboardEvent, rowIndex: number, columnIndex: number,) {
     event.preventDefault();
     const CSV = ParseCSVClipboardText.parse(clipboardText);
-    OverwriteCellsViaCSVOnPaste.overwriteCellsTextUsingCSV(etc, CSV, rowIndex, columnIndex);
+    OverwriteCellsViaCSVOnPaste.focusOriginalCellAfterProcess(etc,
+      OverwriteCellsViaCSVOnPaste.overwriteCellsTextUsingCSV.bind(this, etc, CSV, rowIndex, columnIndex));
   }
 
   public static isCSVData(clipboardText: string): boolean {

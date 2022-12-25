@@ -22,7 +22,8 @@ export class IndexColumnEvents {
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number) {
     cellElement.onmouseenter = IndexColumnEvents.mouseEnterCell.bind(etc, rowIndex);
     cellElement.onmouseleave = IndexColumnEvents.mouseLeaveCell.bind(etc, rowIndex);
-    const {displaySettings} = etc.rowDropdownSettings;
+    const {displaySettings, isHeaderRowEditable} = etc.rowDropdownSettings;
+    if (!isHeaderRowEditable && rowIndex === 0) return;
     if (displaySettings.isAvailable && displaySettings.openMethod?.cellClick) {
       cellElement.onclick = RowDropdown.display.bind(etc, rowIndex, cellElement);
     } else {

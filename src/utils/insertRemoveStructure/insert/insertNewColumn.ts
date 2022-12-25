@@ -26,7 +26,6 @@ export class InsertNewColumn {
     rowElements.forEach((rowElement: Node, rowIndex: number) => {
       const cellText = columnData ? columnData[rowIndex] : EMPTY_STRING;
       InsertNewCell.insertToRow(etc, rowElement as HTMLElement, rowIndex, columnIndex, cellText as string, true);
-      // TO-DO - potentially display all the time
       setTimeout(() => InsertNewColumn.updateColumns(etc, rowElement as HTMLElement, rowIndex, columnIndex));
     });
   }

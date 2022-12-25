@@ -27,7 +27,7 @@ export class CellEvents {
   public static updateCell(etc: EditableTableComponent,
       cellText: CellText, rowIndex: number, columnIndex: number, options?: UpdateCellOptions) {
     if (CellEvents.executeUpdateOperation('processText', options)) {
-      cellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText); 
+      cellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
     }
     if (CellEvents.executeUpdateOperation('updateContents', options)) etc.contents[rowIndex][columnIndex] = cellText; 
     if (options?.element) CellElement.setNewText(etc, options.element, cellText, false, false); // CAUTION-1

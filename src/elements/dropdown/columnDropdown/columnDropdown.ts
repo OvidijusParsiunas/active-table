@@ -1,4 +1,5 @@
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
+import {FullTableOverlayElement} from '../../fullTableOverlay/fullTableOverlayElement';
 import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {DropdownDisplaySettings} from '../../../types/dropdownDisplaySettings';
@@ -67,7 +68,7 @@ export class ColumnDropdown {
       openMethod: DropdownDisplaySettings['openMethod']) {
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
     dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement, openMethod?.overlayClick);
-    // needs to be displayed in order to evalute if in view port
+    // needs to be displayed here to evalute if in view port
     Dropdown.display(dropdownElement);
     const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement);
     if (!visibilityDetails.isFullyVisible) {
@@ -81,7 +82,6 @@ export class ColumnDropdown {
 
   // prettier-ignore
   public static display(etc: EditableTableComponent, columnIndex: number) {
-    const fullTableOverlay = etc.activeOverlayElements.fullTableOverlay as HTMLElement;
     const dropdownElement = etc.activeOverlayElements.columnDropdown as HTMLElement;
     const cellElement = etc.columnsDetails[columnIndex].elements[0];
     ColumnDropdownItem.setUp(etc, dropdownElement, columnIndex, cellElement);
@@ -89,6 +89,6 @@ export class ColumnDropdown {
       etc.columnDropdownDisplaySettings.openMethod);
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItemNavigation.focusInputElement(inputElement as HTMLElement);
-    Dropdown.display(fullTableOverlay);
+    FullTableOverlayElement.display(etc);
   }
 }
