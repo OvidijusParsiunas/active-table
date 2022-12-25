@@ -302,6 +302,10 @@ export const ediTableStyle = css`
     text-align: center;
   }
 
+  .checkbox-cell > * {
+    cursor: pointer;
+  }
+
   #full-table-overlay {
     position: absolute;
     top: 0;

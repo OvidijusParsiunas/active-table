@@ -4,5 +4,6 @@ export enum DEFAULT_COLUMN_TYPES {
   CURRENCY = 'Currency',
   DATE_DMY = 'Date d-m-y',
   DATE_MDY = 'Date m-d-y',
+  CHECKBOX = 'Checkbox',
   CATEGORY = 'Category',
 }

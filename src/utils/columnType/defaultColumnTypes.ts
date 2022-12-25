@@ -70,6 +70,15 @@ export class DefaultColumnTypes {
         containerStyles: {dropdown: {marginLeft: '1px', marginRight: '8px'}},
       },
     },
+    {
+      name: DEFAULT_COLUMN_TYPES.CHECKBOX,
+      // textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_MDY]},
+      dropdownIconSettings: {
+        svgString: CATEGORY_ICON_SVG_STRING,
+        containerStyles: {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}},
+      },
+      checkbox: true,
+    },
   ];
 
   public static CATEGORY_TYPE_DROPDOWN_ITEM: ColumnTypeDropdownItem | null = null;

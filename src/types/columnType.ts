@@ -27,10 +27,14 @@ interface Calendar extends Omit<Parent, 'sorting'> {
   calendar: CalendarFunctionality;
 }
 
+interface Checkbox extends Omit<Parent, 'sorting'> {
+  checkbox: true;
+}
+
 interface Categories extends Omit<Parent, 'validation'> {
   categories: CategoriesProperties | true;
 }
 
-export type ColumnType = InterfacesUnion<Calendar | Categories | Parent>;
+export type ColumnType = InterfacesUnion<Calendar | Checkbox | Categories | Parent>;
 
 export type ColumnTypes = ColumnType[];

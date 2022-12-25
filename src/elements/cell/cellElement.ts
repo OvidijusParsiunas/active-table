@@ -8,6 +8,7 @@ import {ColumnSettingsWidthUtils} from '../../utils/columnSettings/columnSetting
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
+import {CheckboxCellElement} from './checkboxCell/checkboxCellElement';
 import {ColumnDetails} from '../../utils/columnDetails/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
@@ -103,6 +104,9 @@ export class CellElement {
       // if header with icon
     } else if (element.children[1]?.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS)) {
       return element.children[1] as HTMLElement;
+      // if checkbox cell
+    } else if (element.classList.contains(CheckboxCellElement.CHECKBOX_CELL_CLASS)) {
+      return element.children[0] as HTMLElement;
     }
     return element;
   }

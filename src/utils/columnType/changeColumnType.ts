@@ -2,6 +2,7 @@ import {HeaderIconCellElement} from '../../elements/cell/cellsWithTextDiv/header
 import {CategoryCellElement} from '../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
 import {DateCellElement} from '../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categoryDropdown';
+import {CheckboxCellElement} from '../../elements/cell/checkboxCell/checkboxCellElement';
 import {DataCellElement} from '../../elements/cell/dataCell/dataCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
@@ -36,6 +37,8 @@ export class ChangeColumnType {
       CategoryCellElement.setColumnCategoryStructure(etc, columnIndex);
     } else if (newType.calendar) {
       DateCellElement.setColumnDateStructure(etc, columnIndex);
+    } else if (newType.checkbox) {
+      CheckboxCellElement.setColumnCheckboxStructure(etc, columnIndex);
     } else {
       DataCellElement.setColumnDataStructure(etc, columnIndex);
     }

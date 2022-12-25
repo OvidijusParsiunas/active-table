@@ -1,12 +1,19 @@
 import {CellWithTextEvents} from '../../elements/cell/cellsWithTextDiv/cellWithTextEvents';
+import {CheckboxCellElement} from '../../elements/cell/checkboxCell/checkboxCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CellElement} from '../../elements/cell/cellElement';
+import {Browser} from '../browser/browser';
 
 export class FocusNextColumnCellFromTextDiv {
   private static focusDifferentColumnCell(etc: EditableTableComponent, columnIndex: number, rowIndex: number) {
     const {elements, activeType, settings} = etc.columnsDetails[columnIndex];
     const cellElement = elements[rowIndex];
-    if (!settings.isCellTextEditable || (rowIndex === 0 && !settings.isHeaderTextEditable)) {
+    if (
+      !settings.isCellTextEditable ||
+      (rowIndex === 0 && !settings.isHeaderTextEditable) ||
+      // REF-29
+      (Browser.IS_SAFARI && cellElement.classList.contains(CheckboxCellElement.CHECKBOX_CELL_CLASS))
+    ) {
       return FocusNextColumnCellFromTextDiv.focusOrBlurNext(etc, columnIndex, rowIndex);
     }
     if (activeType.categories) {

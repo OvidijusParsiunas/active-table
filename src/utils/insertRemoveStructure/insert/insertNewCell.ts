@@ -6,6 +6,7 @@ import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
+import {CheckboxCellElement} from '../../../elements/cell/checkboxCell/checkboxCellElement';
 import {UpdateIndexColumnWidth} from '../../../elements/indexColumn/updateIndexColumnWidth';
 import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
 import {ColumnDetailsInitial, ColumnDetailsT} from '../../../types/columnDetails';
@@ -67,14 +68,17 @@ export class InsertNewCell {
     if (rowIndex === 0 && etc.areIconsDisplayedInHeaders) {
       HeaderIconCellElement.setHeaderIconStructure(etc, newCellElement, columnIndex);
     }
-    if (columnDetails.activeType?.categories) {
+    if (!columnDetails.activeType) return;
+    if (columnDetails.activeType.categories) {
       if (rowIndex === 0) {
         CategoryDropdown.setUpDropdown(etc, columnIndex);
       } else {
         CategoryCellElement.setCellCategoryStructure(etc, newCellElement, rowIndex, columnIndex);
         CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
       }
-    } else if (columnDetails.activeType?.calendar && rowIndex > 0) {
+    } else if (columnDetails.activeType.checkbox) {
+      CheckboxCellElement.setCellCheckboxStructure(etc, newCellElement, rowIndex, columnIndex);
+    } else if (columnDetails.activeType.calendar && rowIndex > 0) {
       DateCellElement.setCellDateStructure(etc, newCellElement, rowIndex, columnIndex);
     }
   }
