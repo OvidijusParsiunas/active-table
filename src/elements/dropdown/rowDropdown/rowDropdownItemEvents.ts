@@ -18,9 +18,9 @@ export class RowDropdownItemEvents {
     const firstItem = dropdownElement.getElementsByClassName(DropdownItem.DROPDOWN_ITEM_CLASS)[0] as HTMLElement;
     const siblingIterator = ElementSiblingIterator.create(firstItem);
     siblingIterator.currentElement().onclick = RowDropdownItemEvents.onClickMiddleware.bind(
-      etc, InsertNewRow.insert.bind(this, etc, rowIndex, true, undefined));
+      etc, InsertNewRow.insert.bind(this, etc, rowIndex, true));
     siblingIterator.next().onclick = RowDropdownItemEvents.onClickMiddleware.bind(
-      etc, InsertNewRow.insert.bind(this, etc, rowIndex + 1, true, undefined));
+      etc, InsertNewRow.insert.bind(this, etc, rowIndex + 1, true));
     siblingIterator.next().onclick = RowDropdownItemEvents.onClickMiddleware.bind(
       etc, MoveRow.move.bind(this, etc, rowIndex, false));
     siblingIterator.next().onclick = RowDropdownItemEvents.onClickMiddleware.bind(

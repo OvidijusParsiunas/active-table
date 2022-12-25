@@ -2,6 +2,7 @@
 import {RowDropdownCellOverlayEvents} from '../../../elements/dropdown/rowDropdown/cellOverlay/rowDropdownCellOverlayEvents';
 import {CategoryCellEvents} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellEvents';
 import {DateCellEvents} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellEvents';
+import {CheckboxCellEvents} from '../../../elements/cell/checkboxCell/checkboxCellEvents';
 import {IndexColumnEvents} from '../../../elements/indexColumn/indexColumnEvents';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
@@ -37,7 +38,9 @@ export class UpdateCellsForRows {
     if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
       const leftMostCell = rowElement.children[0] as HTMLElement;
       if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumnEvents.setEvents(etc, leftMostCell, rowIndex);
-      RowDropdownCellOverlayEvents.setOverlayEvents(etc, rowIndex, leftMostCell);
+      if (etc.rowDropdownSettings.displaySettings.openMethod?.overlayClick) {
+        RowDropdownCellOverlayEvents.setOverlayEvents(etc, rowIndex, leftMostCell);
+      }
     }
   }
 
