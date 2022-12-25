@@ -1,11 +1,11 @@
 import {ColumnDropdownCellOverlayEvents} from '../dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlayEvents';
-import {EditableHeaderIconCellEvents} from './cellsWithTextDiv/headerIconCell/editable/editableHeaderIconCellEvents';
 import {RowDropdownCellOverlayEvents} from '../dropdown/rowDropdown/cellOverlay/rowDropdownCellOverlayEvents';
 import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellCalendarIconElement';
 import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsBorderUtils';
 import {ColumnSettingsStyleUtils} from '../../utils/columnSettings/columnSettingsStyleUtils';
 import {ColumnSettingsWidthUtils} from '../../utils/columnSettings/columnSettingsWidthUtils';
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
+import {EditableHeaderCellEvents} from './headerCell/editable/editableHeaderCellEvents';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {CheckboxCellElement} from './checkboxCell/checkboxCellElement';
@@ -31,7 +31,7 @@ export class CellElement {
         HeaderCellEvents.setEvents(etc, cellElement, columnIndex)
       } else {
         DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
-        EditableHeaderIconCellEvents.setEvents(etc, cellElement, 0, columnIndex);
+        EditableHeaderCellEvents.setEvents(etc, cellElement, 0, columnIndex);
         ColumnDropdownCellOverlayEvents.setEvents(etc, columnIndex);
       }
     } else if (etc.columnsDetails[columnIndex].settings.isCellTextEditable) {

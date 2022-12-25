@@ -30,10 +30,10 @@ export class HeaderCellEvents {
     }
   }
 
-  private static mouseClick(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
+  public static mouseClick(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
     const cellElement = event.target as HTMLElement;
     CellEvents.removeTextIfDefault(this, 0, columnIndex, cellElement);
-    ColumnDropdown.display(this, columnIndex);
+    if (this.columnDropdownDisplaySettings.openMethod?.cellClick) ColumnDropdown.display(this, columnIndex);
     setTimeout(() => FocusedCellUtils.setHeaderCell(this.focusedElements.cell, cellElement, columnIndex));
   }
 

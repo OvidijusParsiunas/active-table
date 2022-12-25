@@ -70,10 +70,14 @@ export class InsertNewRow {
     }
     if (isReplacingHeader) MoveRow.move(etc, 0, true); // REF-26
     setTimeout(() => {
-      if (isNewText) {
+      // this is used to prevent multiple rebindings of same rows as upon the insertion of multiple via the initial
+      // table render or after pasting, the contents array would be populated synchronously which would cause
+      // the lastRowIndex to be high every time this is called and rows between rowIndex and lastRowIndex would
+      // be rebinded multiple times
+      if (!rowData) {
         InsertNewRow.bindAndfireCellUpdates(etc, rowIndex);
-        // this ensures that the following is only run once during initial render and starts with rowIndex 0
       } else if (rowIndex === etc.contents.length - 1) {
+        // may not be best to start from 0 but this method has no concept of starting point
         InsertNewRow.bindAndfireCellUpdates(etc, 0);
       }
     });
