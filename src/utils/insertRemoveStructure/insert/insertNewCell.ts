@@ -64,7 +64,8 @@ export class InsertNewCell {
 
   // prettier-ignore
   private static convertCell(etc: EditableTableComponent,
-      columnDetails: ColumnDetailsT, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
+      rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
+    const columnDetails = etc.columnsDetails[columnIndex];
     if (rowIndex === 0 && etc.areIconsDisplayedInHeaders) {
       HeaderIconCellElement.setHeaderIconStructure(etc, newCellElement, columnIndex);
     }
@@ -83,13 +84,6 @@ export class InsertNewCell {
     }
   }
 
-  private static create(etc: EditableTableComponent, processedCellText: CellText, rowIndex: number, columnIndex: number) {
-    const columnDetails = etc.columnsDetails[columnIndex];
-    const newCellElement = CellElement.createCellElement(etc, processedCellText, columnIndex, rowIndex === 0);
-    InsertNewCell.convertCell(etc, columnDetails, rowIndex, columnIndex, newCellElement);
-    return newCellElement;
-  }
-
   // REF-13
   // prettier-ignore
   private static insertInitialColumnDetails(etc: EditableTableComponent, cellText: CellText, columnIndex: number) {
@@ -106,8 +100,9 @@ export class InsertNewCell {
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: CellText, isNewText: boolean) {
     if (rowIndex === 0) InsertNewCell.insertInitialColumnDetails(etc, cellText, columnIndex); // REF-13
     const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
-    const newCellElement = InsertNewCell.create(etc, processedCellText, rowIndex, columnIndex);
+    const newCellElement = CellElement.createCellElement(etc, processedCellText, columnIndex, rowIndex === 0);
     InsertNewCell.insert(etc, rowElement, newCellElement, processedCellText, isNewText, rowIndex, columnIndex);
+    InsertNewCell.convertCell(etc, rowIndex, columnIndex, newCellElement); // need text set before conversion (checkbox)
     if (rowIndex === 0) {
       if (etc.auxiliaryTableContentInternal.displayAddColumnCell) ColumnGroupElement.update(etc);
       if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
