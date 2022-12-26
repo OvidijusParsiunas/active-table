@@ -82,7 +82,8 @@ export class OverwriteCellsViaCSVOnPaste {
     const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, displayIndexColumn);
     const cellElement = rowElement.children[elementIndex] as HTMLElement;
     const columnDetails = columnsDetails[columnIndex];
-    if (!columnDetails.settings.isCellTextEditable) return;
+    if ((rowIndex === 0 && !columnDetails.settings.isHeaderTextEditable)
+      || rowIndex > 0 && !columnDetails.settings.isCellTextEditable) return;
      // this is to allow duplicate headers to be identified
     if (rowIndex === 0) CellElement.setNewText(etc, cellElement, newCellText, false, false);
     const oldType = CellTypeTotalsUtils.parseTypeName(CellElement.getText(cellElement), columnDetails.types);
@@ -145,6 +146,13 @@ export class OverwriteCellsViaCSVOnPaste {
     return dataForNewColumns;
   }
 
+  // no new rows should be created if no columns that are to be overwritten/created allow text edit
+  private static canNewRowsBeCreated(etc: EditableTableComponent, CSV: CSV, startColumnIndex: number) {
+    return etc.columnsDetails
+      .slice(startColumnIndex, startColumnIndex + CSV[0].length)
+      .find((columnDetails) => columnDetails.settings.isCellTextEditable);
+  }
+
   private static insertColumnsInsideIfCantInsertRight(etc: EditableTableComponent, CSV: CSV, startColumnIndex: number) {
     const columnsToBeOverwritten = etc.columnsDetails.slice(startColumnIndex);
     const indexOfNoRightInsertionColumn = columnsToBeOverwritten.findIndex((columnDetails) => {
@@ -176,6 +184,7 @@ export class OverwriteCellsViaCSVOnPaste {
     const dataForNewColumnsByRow = OverwriteCellsViaCSVOnPaste.overwriteExistingCells(
       etc, dataToOverwriteRows, startRowIndex, startColumnIndex);
     OverwriteCellsViaCSVOnPaste.createNewColumns(etc, dataForNewColumnsByRow, startRowIndex);
+    if (!OverwriteCellsViaCSVOnPaste.canNewRowsBeCreated(etc, CSV, startColumnIndex)) return;
     const dataForNewRows = CSV.slice(numberOfRowsToOverwrite);
     OverwriteCellsViaCSVOnPaste.createNewRows(etc, dataForNewRows, startColumnIndex);
     etc.onTableUpdate(etc.contents);
