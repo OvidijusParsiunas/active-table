@@ -3,6 +3,7 @@ import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItem
 import {CATEGORY_ICON_SVG_STRING} from '../../consts/icons/categoryIconSVGString';
 import {CURRENCY_ICON_SVG_STRING} from '../../consts/icons/currencyIconSVGString';
 import {CALENDAR_ICON_SVG_STRING} from '../../consts/icons/calendarIconSVGString';
+import {CHECKBOX_ICON_SVG_STRING} from '../../consts/icons/checkboxIconSVGString';
 import {NUMBER_ICON_SVG_STRING} from '../../consts/icons/numberIconSVGString';
 import {ColumnTypeDropdownItem} from '../../types/columnTypeDropdownItem';
 import {TEXT_ICON_SVG_STRING} from '../../consts/icons/textIconSVGString';
@@ -73,10 +74,12 @@ export class DefaultColumnTypes {
     },
     {
       name: DEFAULT_COLUMN_TYPES.CHECKBOX,
-      // textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_MDY]},
       dropdownIconSettings: {
-        svgString: CATEGORY_ICON_SVG_STRING,
-        containerStyles: {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}},
+        svgString: CHECKBOX_ICON_SVG_STRING,
+        containerStyles: {
+          dropdown: {marginTop: '1.5px', marginRight: '6px'},
+          headerCorrections: {marginTop: '3px', marginRight: '6px', marginLeft: '3.3px'},
+        },
       },
       checkbox: true,
       customTextProcessing: {

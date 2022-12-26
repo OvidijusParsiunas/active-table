@@ -18,8 +18,8 @@ export class HeaderIconCellElement {
   }
 
   private static setScale(svgIconElement: SVGGraphicsElement, scale?: SVGScale) {
-    const x = scale?.x || 1.1;
-    const y = scale?.y || 1.1;
+    const x = scale?.x || 1.2;
+    const y = scale?.y || 1.2;
     svgIconElement.setAttribute('transform', `scale(${x}, ${y})`);
   }
 
