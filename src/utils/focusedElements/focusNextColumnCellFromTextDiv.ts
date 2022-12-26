@@ -12,7 +12,7 @@ export class FocusNextColumnCellFromTextDiv {
       !settings.isCellTextEditable ||
       (rowIndex === 0 && !settings.isHeaderTextEditable) ||
       // REF-29
-      (Browser.IS_SAFARI && cellElement.classList.contains(CheckboxCellElement.CHECKBOX_CELL_CLASS))
+      (Browser.IS_SAFARI && CheckboxCellElement.isCheckboxCell(cellElement))
     ) {
       return FocusNextColumnCellFromTextDiv.focusOrBlurNext(etc, columnIndex, rowIndex);
     }

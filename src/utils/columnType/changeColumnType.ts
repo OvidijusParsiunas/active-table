@@ -7,7 +7,9 @@ import {DataCellElement} from '../../elements/cell/dataCell/dataCellElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {ProcessedDataTextStyle} from './processedDataTextStyle';
+import {CellElement} from '../../elements/cell/cellElement';
 import {CellEvents} from '../../elements/cell/cellEvents';
+import {ColumnDetailsT} from '../../types/columnDetails';
 
 export class ChangeColumnType {
   private static setInvalidCellToDefault(etc: EditableTableComponent, rowIndex: number, columnIndex: number) {
@@ -44,7 +46,17 @@ export class ChangeColumnType {
     }
   }
 
+  // this is required as switching to another type makes it difficult to overwrite text element (as there isn't one) for
+  // checkboxes when validation fails
+  private static resetCheckboxElements(columnDetails: ColumnDetailsT) {
+    columnDetails.elements.slice(1).forEach((element) => {
+      element.innerText = CellElement.getText(element);
+    });
+  }
+
   private static resetAndChangeFunc(etc: EditableTableComponent, newTypeName: string, columnIndex: number) {
+    const columnDetails = etc.columnsDetails[columnIndex];
+    if (columnDetails.activeType.checkbox) ChangeColumnType.resetCheckboxElements(columnDetails);
     const newType = ChangeColumnType.setNew(etc, newTypeName, columnIndex);
     if (newType.textValidation.func && newType.textValidation.setTextToDefaultOnFail) {
       ChangeColumnType.setInvalidCellsToDefault(etc, columnIndex);

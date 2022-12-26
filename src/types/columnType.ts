@@ -28,6 +28,10 @@ interface Calendar extends Omit<Parent, 'sorting'> {
 }
 
 interface Checkbox extends Omit<Parent, 'sorting'> {
+  // By default this comes with a customTextProcessing propertu function that uses '', '0', '00' and 'false' to uncheck
+  // the checkbox and all other values to check it
+  // You can overwite this property with your own function that returns a string value of 'true' when the passed in value
+  // should check the checkbox and 'false' for unchecking it
   checkbox: true;
 }
 

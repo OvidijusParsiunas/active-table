@@ -107,7 +107,7 @@ export class CellElement {
     } else if (element.children[1]?.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS)) {
       return element.children[1] as HTMLElement;
       // if checkbox cell
-    } else if (element.classList.contains(CheckboxCellElement.CHECKBOX_CELL_CLASS)) {
+    } else if (CheckboxCellElement.isCheckboxCell(element)) {
       return element.children[0] as HTMLElement;
     }
     return element;
@@ -119,6 +119,8 @@ export class CellElement {
   // CAUTION-1 - The returned string should not be used to set text on other cells as .trim() removes \n chars for
   // <br> tags which are used to set the pointer position.
   public static getText(element: HTMLElement) {
+    const checkboxValue = CheckboxCellElement.getValue(element);
+    if (checkboxValue !== undefined) return checkboxValue;
     return element.innerText.trim();
   }
 
@@ -126,8 +128,10 @@ export class CellElement {
   // hence we need to set the text into the correct container
   // CAUTION-1 - be careful that the text does not come from above method
   private static setText(element: HTMLElement, text: CellText) {
-    const textElement = CellElement.getTextElement(element);
-    textElement.innerText = text as string;
+    if (!CheckboxCellElement.setValue(element, text)) {
+      const textElement = CellElement.getTextElement(element);
+      textElement.innerText = text as string;
+    }
   }
 
   // set text is optional as some elements may only need to toggle the BR padding

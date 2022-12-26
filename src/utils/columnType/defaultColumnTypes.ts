@@ -1,3 +1,4 @@
+import {CheckboxCellElement} from '../../elements/cell/checkboxCell/checkboxCellElement';
 import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItemConf';
 import {CATEGORY_ICON_SVG_STRING} from '../../consts/icons/categoryIconSVGString';
 import {CURRENCY_ICON_SVG_STRING} from '../../consts/icons/currencyIconSVGString';
@@ -78,6 +79,9 @@ export class DefaultColumnTypes {
         containerStyles: {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}},
       },
       checkbox: true,
+      customTextProcessing: {
+        changeText: CheckboxCellElement.defaultChangeTextFunc,
+      },
     },
   ];
 

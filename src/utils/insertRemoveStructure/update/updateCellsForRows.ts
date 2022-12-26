@@ -16,12 +16,14 @@ export class UpdateCellsForRows {
       columnIndex: number) {
     CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
     if (rowIndex > 0) {
-      const {categories, calendar} = etc.columnsDetails[columnIndex].activeType;
+      const {categories, calendar, checkbox} = etc.columnsDetails[columnIndex].activeType;
       if (categories) {
         CategoryCellEvents.setEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
       } else if (calendar) {
         DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
-      } 
+      } else if (checkbox) {
+        CheckboxCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
+      }
     }
   }
 

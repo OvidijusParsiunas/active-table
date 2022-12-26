@@ -25,7 +25,8 @@ export class CellTextElement {
   }
 
   public static setCellTextAsAnElement(cellElement: HTMLElement, isCellTextEditable: boolean) {
-    const textElement = CellTextElement.createTextElement(cellElement.innerText, isCellTextEditable); // CAUTION-1
+    const text = CellElement.getText(cellElement);
+    const textElement = CellTextElement.createTextElement(text, isCellTextEditable); // CAUTION-1
     CellTextElement.set(cellElement, textElement);
     return textElement;
   }

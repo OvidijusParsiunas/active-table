@@ -77,10 +77,12 @@ export class InsertNewCell {
         CategoryCellElement.setCellCategoryStructure(etc, newCellElement, rowIndex, columnIndex);
         CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
       }
-    } else if (columnDetails.activeType.checkbox) {
-      CheckboxCellElement.setCellCheckboxStructure(etc, newCellElement, rowIndex, columnIndex);
-    } else if (columnDetails.activeType.calendar && rowIndex > 0) {
-      DateCellElement.setCellDateStructure(etc, newCellElement, rowIndex, columnIndex);
+    } else if (rowIndex > 0) {
+      if (columnDetails.activeType.checkbox) {
+        CheckboxCellElement.setCellCheckboxStructure(etc, newCellElement, rowIndex, columnIndex);
+      } if (columnDetails.activeType.calendar) {
+        DateCellElement.setCellDateStructure(etc, newCellElement, rowIndex, columnIndex);
+      }
     }
   }
 
