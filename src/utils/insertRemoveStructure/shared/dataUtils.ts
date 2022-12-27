@@ -17,8 +17,6 @@ export class DataUtils {
     return false;
   }
 
-  // TO-DO - initial table population should be subject to validation if type set beforehand
-  // currently etc.columnsDetails is set after the data is inserted which does not allow it to be validated
   // note that NumberOfIdenticalCells.get uses the etc.contents top row, so it needs to be up-to-date
   // prettier-ignore
   private static shouldBeSetToDefault(etc: EditableTableComponent,

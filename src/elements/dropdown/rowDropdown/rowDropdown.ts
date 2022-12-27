@@ -35,7 +35,6 @@ export class RowDropdown {
     }
   }
 
-  // TO-DO will this work correctly when a scrollbar is introduced
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdown: HTMLElement, cellClick: boolean) {
     dropdown.style.top = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
     dropdown.style.left = `${ElementOffset.processWidth(

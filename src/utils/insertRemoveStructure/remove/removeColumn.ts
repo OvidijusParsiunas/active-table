@@ -23,12 +23,16 @@ export class RemoveColumn {
   }
 
   // prettier-ignore
-  private static updateTableDimensions(etc: EditableTableComponent, columnDetails: ColumnDetailsT) {
+  public static reduceStaticWidthTotal(etc: EditableTableComponent, columnDetails: ColumnDetailsT) {
     if (columnDetails.settings && ColumnSettingsWidthUtils.isWidthDefined(columnDetails.settings)) {
-      const { width } = ColumnSettingsWidthUtils.getSettingsWidthNumber(
+      const {width} = ColumnSettingsWidthUtils.getSettingsWidthNumber(
         etc.tableElementRef as HTMLElement, columnDetails.settings);
       TableElement.changeStaticWidthTotal(-width);
     }
+  }
+
+  private static updateTableDimensions(etc: EditableTableComponent, columnDetails: ColumnDetailsT) {
+    RemoveColumn.reduceStaticWidthTotal(etc, columnDetails);
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, false);
   }
 

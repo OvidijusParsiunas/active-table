@@ -30,7 +30,6 @@ export class ColumnDropdown {
     const {columnDropdown, columnTypeDropdown, fullTableOverlay} = activeOverlayElements;
     if (!columnDropdown || !fullTableOverlay || !columnTypeDropdown || !cellElement) return;
     if (GenericElementUtils.doesElementExistInDom(cellElement)) {
-      // TO-DO when user pastes text via the select mode - this should be called
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(etc, cellElement, columnIndex as number);
     }
     CellHighlightUtils.fade(cellElement, columnsDetails[columnIndex as number]?.headerStateColors.default);
@@ -62,7 +61,6 @@ export class ColumnDropdown {
     return `${leftOffset - Dropdown.DROPDOWN_WIDTH / 2}px`;
   }
 
-  // TO-DO will this work correctly when a scrollbar is introduced
   // prettier-ignore
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement,
       openMethod: DropdownDisplaySettings['openMethod']) {

@@ -9,6 +9,7 @@ import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {HasRerendered} from '../../render/hasRerendered';
 import {MoveRow} from '../../moveStructure/moveRow';
+import {RemoveColumn} from './removeColumn';
 
 export class RemoveRow {
   private static updateColumnDetails(removedRowData: TableRow, columnsDetails: ColumnsDetailsT) {
@@ -18,7 +19,9 @@ export class RemoveRow {
   }
 
   // when the last row has been removed, there are no more columns
-  private static removeAllColumnsDetails(columnsDetails: ColumnsDetailsT) {
+  private static removeAllColumnsDetails(etc: EditableTableComponent) {
+    const {columnsDetails} = etc;
+    columnsDetails.forEach((columnDetails) => RemoveColumn.reduceStaticWidthTotal(etc, columnDetails));
     columnsDetails.splice(0, columnsDetails.length);
   }
 
@@ -30,7 +33,7 @@ export class RemoveRow {
     etc.onTableUpdate(etc.contents);
     if (HasRerendered.check(etc.columnsDetails)) return; // CAUTION-2
     if (etc.contents.length === 0) {
-      RemoveRow.removeAllColumnsDetails(etc.columnsDetails);
+      RemoveRow.removeAllColumnsDetails(etc);
     } else {
       RemoveRow.updateColumnDetails(removedRowData, etc.columnsDetails);
     }
