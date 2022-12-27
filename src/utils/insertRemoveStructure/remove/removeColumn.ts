@@ -1,3 +1,4 @@
+import {RowDropdownCellOverlay} from '../../../elements/dropdown/rowDropdown/cellOverlay/rowDropdownCellOverlay';
 import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
@@ -82,6 +83,7 @@ export class RemoveColumn {
       removedColumnDetails.categoryDropdown.element.remove();
       InsertRemoveColumnSizer.remove(etc, columnIndex);
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
+      if (columnIndex === 0 && etc.columnsDetails.length > 0) RowDropdownCellOverlay.resetOverlays(etc);
       etc.onTableUpdate(etc.contents);
     });
   }

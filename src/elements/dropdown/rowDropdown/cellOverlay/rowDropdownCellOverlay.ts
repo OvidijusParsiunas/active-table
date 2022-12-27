@@ -1,5 +1,7 @@
 import {DropdownCellOverlayStyle, DropdownDisplaySettings} from '../../../../types/dropdownDisplaySettings';
 import {EditableTableComponent} from '../../../../editable-table-component';
+import {RowDropdownCellOverlayEvents} from './rowDropdownCellOverlayEvents';
+import {ExtractElements} from '../../../../utils/elements/extractElements';
 import {DropdownCellOverlay} from '../../cellOverlay/dropdownCellOverlay';
 
 export class RowDropdownCellOverlay {
@@ -54,23 +56,34 @@ export class RowDropdownCellOverlay {
     return rowDropdownCellOverlay;
   }
 
-  private static getCellDividerElement(element: HTMLElement, displayIndexColumn: boolean) {
-    let cellDividerElement = element.nextSibling as HTMLElement;
+  private static getCellDividerElement(leftMostCell: HTMLElement, displayIndexColumn: boolean) {
+    let cellDividerElement = leftMostCell.nextSibling as HTMLElement;
     // index column does not have a cell divider so using the first data column divider instead
     if (displayIndexColumn) cellDividerElement = cellDividerElement.nextSibling as HTMLElement;
     return cellDividerElement;
   }
 
-  public static add(etc: EditableTableComponent, element: HTMLElement, rowIndex: number) {
+  public static add(etc: EditableTableComponent, rowIndex: number, leftMostCell: HTMLElement) {
     const rowDropdownCellOverlay = RowDropdownCellOverlay.create(etc.rowDropdownSettings.displaySettings.overlayStyle);
     const {displayIndexColumn} = etc.auxiliaryTableContentInternal;
-    const cellDividerElement = RowDropdownCellOverlay.getCellDividerElement(element, displayIndexColumn);
+    const cellDividerElement = RowDropdownCellOverlay.getCellDividerElement(leftMostCell, displayIndexColumn);
     cellDividerElement.appendChild(rowDropdownCellOverlay);
     etc.rowDropdownCellOverlays.splice(rowIndex, 0, {
       element: rowDropdownCellOverlay,
       // these events are stubs and will be replaced by real ones in RowDropdownCellOverlayEvents.addCellEvents
       enter: () => {},
       leave: () => {},
+    });
+  }
+
+  public static resetOverlays(etc: EditableTableComponent) {
+    if (!etc.rowDropdownSettings.displaySettings.openMethod?.overlayClick) return;
+    etc.rowDropdownCellOverlays.splice(0, etc.rowDropdownCellOverlays.length);
+    const rows = ExtractElements.textRowsArrFromTBody(etc.tableBodyElementRef as HTMLElement, etc.contents);
+    rows.forEach((rowElement, rowIndex) => {
+      const leftMostCell = rowElement.children[0] as HTMLElement;
+      RowDropdownCellOverlay.add(etc, rowIndex, leftMostCell);
+      RowDropdownCellOverlayEvents.setOverlayEvents(etc, rowIndex, leftMostCell);
     });
   }
 }
