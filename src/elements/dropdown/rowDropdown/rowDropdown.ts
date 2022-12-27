@@ -26,6 +26,15 @@ export class RowDropdown {
     });
   }
 
+  private static focusCell(etc: EditableTableComponent, rowIndex: number, cellElement: HTMLElement) {
+    const {auxiliaryTableContentInternal, focusedElements, columnsDetails} = etc;
+    if (auxiliaryTableContentInternal.displayIndexColumn) {
+      FocusedCellUtils.setIndexCell(focusedElements.cell, cellElement, rowIndex);
+    } else {
+      FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, 0, columnsDetails[0].types);
+    }
+  }
+
   // TO-DO will this work correctly when a scrollbar is introduced
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdown: HTMLElement, cellClick: boolean) {
     dropdown.style.top = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
@@ -41,7 +50,7 @@ export class RowDropdown {
     RowDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement, cellClick);
     Dropdown.display(dropdownElement);
     FullTableOverlayElement.display(this);
-    setTimeout(() => FocusedCellUtils.setIndexCell(this.focusedElements.cell, cellElement, rowIndex));
+    setTimeout(() => RowDropdown.focusCell(this, rowIndex, cellElement));
   }
 
   public static create(etc: EditableTableComponent) {

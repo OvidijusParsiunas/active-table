@@ -26,6 +26,16 @@ export class MoveRow {
     MoveRow.overwrite(etc, overwrittenText, siblingIndex);
   }
 
+  private static resetFocusedCell(etc: EditableTableComponent, initialFocusedCell: Required<FocusedCell>) {
+    const {auxiliaryTableContentInternal, focusedElements, columnsDetails} = etc;
+    const {element, rowIndex, columnIndex} = initialFocusedCell;
+    if (auxiliaryTableContentInternal.displayIndexColumn) {
+      FocusedCellUtils.setIndexCell(focusedElements.cell, element, columnIndex);
+    } else {
+      FocusedCellUtils.set(focusedElements.cell, element, rowIndex, columnIndex, columnsDetails[columnIndex].types);
+    }
+  }
+
   private static moveHeaderToDataRow(etc: EditableTableComponent) {
     const {columnsDetails, focusedElements} = etc;
     const initialFocusedCell = {...focusedElements.cell} as Required<FocusedCell>;
@@ -39,8 +49,7 @@ export class MoveRow {
     });
     // overwrite data row using header row
     MoveRow.overwrite(etc, overwrittenText, 1);
-    // TO-DO may not be index cell if row dropdown is displayed on the first data column instead
-    FocusedCellUtils.setIndexCell(focusedElements.cell, initialFocusedCell.element, initialFocusedCell.columnIndex);
+    MoveRow.resetFocusedCell(etc, initialFocusedCell);
   }
 
   public static move(etc: EditableTableComponent, rowIndex: number, isToDown: boolean) {
