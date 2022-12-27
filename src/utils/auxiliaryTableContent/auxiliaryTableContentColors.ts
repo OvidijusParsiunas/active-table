@@ -77,6 +77,9 @@ export class AuxiliaryTableContentColors {
     const {auxiliaryTableContentInternal: {inheritHeaderStyle}, defaultColumnsSettings: {headerStyleProps}} = etc;
     if (inheritHeaderStyle === undefined || inheritHeaderStyle === true) {
       AuxiliaryTableContentColors.overwriteHeaderWithInheritedColors(headerStyleProps)
+    } else {
+      AuxiliaryTableContentColors.CELL_COLORS.data.default.color = 'black';
+      AuxiliaryTableContentColors.CELL_COLORS.header.default.color = 'black';
     }
   }
 

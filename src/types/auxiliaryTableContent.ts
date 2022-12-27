@@ -5,11 +5,12 @@ export interface AuxiliaryTableContentDisplayProps {
   // called cells to the client, but cells internally as it is made up of multiple cells
   displayAddColumnCell?: boolean; // true by default
   displayIndexColumn?: boolean; // true by default
+  indexColumnCountStartsAtHeader?: boolean; // false by default
 }
 
 export interface AuxiliaryTableContentGenericProps {
   styleProps?: HoverableElementStyleClient;
-  inheritHeaderStyle?: boolean;
+  inheritHeaderStyle?: boolean; // true by default, applied to header only and will not inherit the default header style
 }
 
 // REF-22

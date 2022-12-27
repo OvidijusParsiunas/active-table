@@ -43,12 +43,14 @@ export class IndexColumn {
   private static createHeaderCell(etc: EditableTableComponent) {
     const headerCell = IndexColumn.createCell(etc, true);
     headerCell.style.width = IndexColumn.DEFAULT_WIDTH_PX;
+    if (etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader) headerCell.innerText = '1';
     return headerCell;
   }
 
   private static createDataCell(etc: EditableTableComponent, rowIndex: number) {
     const dataCell = IndexColumn.createCell(etc, false);
-    dataCell.innerText = String(rowIndex);
+    const indexNumber = etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? rowIndex + 1 : rowIndex;
+    dataCell.innerText = String(indexNumber);
     return dataCell;
   }
 

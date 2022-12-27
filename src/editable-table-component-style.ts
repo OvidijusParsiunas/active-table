@@ -23,7 +23,6 @@ export const ediTableStyle = css`
 
   .row > *:first-child {
     border-left: none !important;
-    padding-left: 16px;
   }
 
   .row > .cell:last-of-type {
@@ -89,7 +88,6 @@ export const ediTableStyle = css`
   /* this class needs to be after .cell to have style precendence */
   /* REF-1 */
   .header-cell {
-    /* TO-DO - please note that this will not work correctly when header is not displayed */
     border-top: none !important;
     cursor: pointer;
     color: grey;

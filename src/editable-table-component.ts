@@ -75,14 +75,6 @@ export class EditableTableComponent extends LitElement {
   })
   duplicateHeadersAllowed = true;
 
-  // TO-DO - there should still be a dropdown and only insert left/right and remove the column options
-  // column index should start count at the header row
-  @property({
-    type: Boolean,
-    converter: LITElementTypeConverters.convertToBoolean,
-  })
-  headerPresent = true;
-
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
