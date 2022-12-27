@@ -32,12 +32,26 @@ export class ColumnDropdownCellOverlay {
     });
   }
 
-  public static display(columnDetails: ColumnDetailsT) {
+  private static setHorizontalDimensions(columnDetails: ColumnDetailsT) {
     const {columnDropdownCellOverlay, elements} = columnDetails;
-    columnDropdownCellOverlay.style.height = DropdownCellOverlay.VISIBLE_PX;
     const onePercentWidth = elements[0].offsetWidth / 100;
     columnDropdownCellOverlay.style.width = `${onePercentWidth * 50}px`;
     columnDropdownCellOverlay.style.right = `${onePercentWidth * 25}px`;
+  }
+
+  public static display(columnDetails: ColumnDetailsT) {
+    columnDetails.columnDropdownCellOverlay.style.height = DropdownCellOverlay.VISIBLE_PX;
+    ColumnDropdownCellOverlay.setHorizontalDimensions(columnDetails);
+  }
+
+  private static isDisplayed(columnDropdownCellOverlay: HTMLElement) {
+    return columnDropdownCellOverlay.style.height === DropdownCellOverlay.VISIBLE_PX;
+  }
+
+  public static updateIfDisplayed(columnDetails: ColumnDetailsT) {
+    if (ColumnDropdownCellOverlay.isDisplayed(columnDetails.columnDropdownCellOverlay)) {
+      ColumnDropdownCellOverlay.setHorizontalDimensions(columnDetails);
+    }
   }
 
   private static create(overlayStyle?: DropdownCellOverlayStyle) {

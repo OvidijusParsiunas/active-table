@@ -34,13 +34,32 @@ export class ColumnTypesUtils {
     return columnTypes;
   }
 
+  private static getTypeByName(availableTypes: ColumnTypesInternal, targetName: string) {
+    return availableTypes.find((type) => type.name.toLocaleLowerCase() === targetName?.toLocaleLowerCase());
+  }
+
   // prettier-ignore
-  private static getActiveType(settings: ColumnSettingsInternal, availableTypes: ColumnTypesInternal) {
-    if (settings.activeTypeName) {
-      const activeType = availableTypes.find(
-        (type) => type.name.toLocaleLowerCase() === settings.activeTypeName?.toLocaleLowerCase());
-      if (activeType) return activeType;
+  private static getTypeBasedOnProperties(settings: ColumnSettingsInternal, availableTypes: ColumnTypesInternal,
+      previousTypeName?: string) {
+    // if changing type due to settings change - the activeType would already be set - then try to see if the previous
+    // type is present in the new settings and if it is use it
+    if (previousTypeName) {
+      const type = ColumnTypesUtils.getTypeByName(availableTypes, previousTypeName);
+      if (type) return type;
     }
+    // if there is no previous type or it is not found in new settings - use the one the user has set
+    if (settings.activeTypeName) {
+      const type = ColumnTypesUtils.getTypeByName(availableTypes, settings.activeTypeName);
+      if (type) return type;
+    }
+    return undefined;
+  }
+
+  // prettier-ignore
+  private static getActiveType(settings: ColumnSettingsInternal, availableTypes: ColumnTypesInternal,
+      previousTypeName?: string) {
+    const activeType = ColumnTypesUtils.getTypeBasedOnProperties(settings, availableTypes, previousTypeName);
+    if (activeType) return activeType;
     // if activeTypeName is not provided, default to first of the following:
     // First type to not have validation/First available type/'Text'
     const noValidationType = availableTypes.find((type) => !type.textValidation.func);
@@ -125,13 +144,15 @@ export class ColumnTypesUtils {
     return types as ColumnTypesInternal;
   }
 
-  public static getProcessedTypes(settings: ColumnSettingsInternal): Pick<ColumnDetailsT, 'types' | 'activeType'> {
+  // prettier-ignore
+  public static getProcessedTypes(settings: ColumnSettingsInternal,
+      previousTypeName?: string): Pick<ColumnDetailsT, 'types' | 'activeType'> {
     const {isDefaultTextRemovable, defaultText} = settings;
     const types = ColumnTypesUtils.get(settings);
     const processedInternalTypes = ColumnTypesUtils.process(types, isDefaultTextRemovable, defaultText);
     return {
       types: processedInternalTypes,
-      activeType: ColumnTypesUtils.getActiveType(settings, processedInternalTypes) as ColumnTypeInternal,
+      activeType: ColumnTypesUtils.getActiveType(settings, processedInternalTypes, previousTypeName) as ColumnTypeInternal,
     };
   }
 }

@@ -1,5 +1,6 @@
 import {HeaderIconCellElement} from '../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
+import {ColumnDropdownCellOverlay} from '../../elements/dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlay';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnSettingsDefaultTextUtils} from './columnSettingsDefaultTextUtils';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
@@ -43,7 +44,7 @@ export class ColumnSettingsUtils {
     const columnDetails = etc.columnsDetails[columnIndex];
     ColumnSettingsDefaultTextUtils.unsetDefaultText(etc, columnDetails, columnIndex);
     columnDetails.settings = newSettings;
-    Object.assign(columnDetails, ColumnTypesUtils.getProcessedTypes(newSettings));
+    Object.assign(columnDetails, ColumnTypesUtils.getProcessedTypes(newSettings, columnDetails.activeType.name));
     ResetColumnStructure.reset(etc, columnDetails, columnIndex);
     ColumnSettingsDefaultTextUtils.setDefaultText(etc, columnDetails, columnIndex);
     ColumnSettingsWidthUtils.changeWidth(etc, headerElement, oldSettings, newSettings);
@@ -51,6 +52,7 @@ export class ColumnSettingsUtils {
     ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
     ColumnSettingsUtils.updateSizer(etc, columnIndex);
     if (etc.areIconsDisplayedInHeaders) HeaderIconCellElement.changeHeaderIcon(etc.columnsDetails[columnIndex]);
+    ColumnDropdownCellOverlay.updateIfDisplayed(columnDetails);
     AddNewColumnElement.toggle(etc, true);
   }
 

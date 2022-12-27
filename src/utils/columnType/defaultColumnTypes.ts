@@ -78,7 +78,7 @@ export class DefaultColumnTypes {
         svgString: CHECKBOX_ICON_SVG_STRING,
         containerStyles: {
           dropdown: {marginTop: '1.5px', marginRight: '6px'},
-          headerCorrections: {marginTop: '3px', marginRight: '6px', marginLeft: '3.3px'},
+          headerCorrections: {marginTop: '3px', marginRight: '6px', marginLeft: '3px'},
         },
       },
       checkbox: true,
