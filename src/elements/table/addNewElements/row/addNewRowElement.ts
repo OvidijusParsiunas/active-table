@@ -9,6 +9,7 @@ export class AddNewRowElement {
   private static readonly DEFAULT_COL_SPAN = 1_000_000_000;
   private static readonly HIDDEN = 'none';
   private static readonly VISIBLE = '';
+  public static readonly ID = 'add-new-row-cell';
 
   public static isDisplayed(addNewRowCell: HTMLElement) {
     return addNewRowCell.style.display === AddNewRowElement.VISIBLE;
@@ -29,7 +30,7 @@ export class AddNewRowElement {
   private static createCell(etc: EditableTableComponent) {
     const {defaultColumnsSettings: {cellStyle}, auxiliaryTableContentInternal: {displayAddRowCell, styleProps}} = etc;
     const addNewRowCell = CellElement.createContentCell(false, cellStyle, styleProps?.default);
-    addNewRowCell.id = 'add-new-row-cell';
+    addNewRowCell.id = AddNewRowElement.ID;
     if (!displayAddRowCell) {
       // if this is not displayed when there is content, always use the stub style - REF-18
       NoContentStubElement.convertToStub(addNewRowCell);

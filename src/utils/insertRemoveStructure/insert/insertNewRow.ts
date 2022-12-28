@@ -6,6 +6,7 @@ import {RowElement} from '../../../elements/table/addNewElements/row/rowElement'
 import {EditableTableComponent} from '../../../editable-table-component';
 import {IndexColumn} from '../../../elements/indexColumn/indexColumn';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
+import {PaginationUtils} from '../../pagination/paginationUtils';
 import {CellText, TableRow} from '../../../types/tableContents';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ElementDetails} from '../../../types/elementDetails';
@@ -48,9 +49,20 @@ export class InsertNewRow {
     setTimeout(() => RowDropdownCellOverlay.add(etc, rowIndex, newRowElement.children[0] as HTMLElement));
   }
 
+  // prettier-ignore
+  private static updagePagination(etc: EditableTableComponent,
+      rowIndex: number, isNewText: boolean, newRowElement: HTMLElement) {
+    if (!isNewText) {
+      PaginationUtils.initialRowUpdates(etc, rowIndex, newRowElement);
+    } else {
+      PaginationUtils.updateOnRowChange(etc, rowIndex, newRowElement);
+    }
+  }
+
   private static insertNewRow(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
     const newRowData = rowData || DataUtils.createEmptyStringDataArray(etc.contents[0]?.length || 1);
     const newRowElement = RowElement.create();
+    if (etc.pagination) InsertNewRow.updagePagination(etc, rowIndex, isNewText, newRowElement);
     etc.tableBodyElementRef?.insertBefore(newRowElement, etc.tableBodyElementRef.children[rowIndex]);
     // don't need a timeout as addition of row with new text is not expensive
     if (isNewText) etc.contents.splice(rowIndex, 0, []);

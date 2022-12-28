@@ -3,6 +3,7 @@ import {PaginationButtonEvents} from './paginationButtonEvents';
 
 export class PaginationButtonElement {
   private static readonly PAGINATION_BUTTON_CLASS = 'pagination-button';
+  public static readonly DISABLED_PAGINATION_BUTTON_CLASS = 'pagination-button-disabled';
 
   public static create(etc: EditableTableComponent, number: number) {
     const button = document.createElement('div');

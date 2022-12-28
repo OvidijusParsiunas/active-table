@@ -4,6 +4,7 @@ import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
 import {IndexColumn} from '../../../elements/indexColumn/indexColumn';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
+import {PaginationUtils} from '../../pagination/paginationUtils';
 import {CellText, TableRow} from '../../../types/tableContents';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
@@ -49,6 +50,7 @@ export class RemoveRow {
       etc.columnsDetails[columnIndex].elements.splice(rowIndex, 1);
       etc.columnsDetails[columnIndex].processedStyle.splice(rowIndex, 1);
     });
+    if (etc.pagination) PaginationUtils.updateOnRowChange(etc, rowIndex);
     return removedContentRow[0];
   }
 
