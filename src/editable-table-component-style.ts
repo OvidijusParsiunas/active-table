@@ -323,4 +323,25 @@ export const ediTableStyle = css`
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
   }
+
+  #pagination-button-container {
+    border: 1px solid black;
+    position: absolute;
+    right: 0;
+    display: flex;
+  }
+
+  .pagination-button {
+    border-right: 1px solid black;
+    width: 20px;
+    height: 20px;
+    background-color: yellow;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .pagination-button:last-child {
+    border-right: 0px;
+  }
 `;

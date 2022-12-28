@@ -6,6 +6,7 @@ import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElem
 import {InsertRemoveColumnSizer} from '../columnSizer/utils/insertRemoveColumnSizer';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
+import {PaginationButtonContainer} from '../pagination/paginationButtonContainer';
 import {AddNewColumnElement} from './addNewElements/column/addNewColumnElement';
 import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
@@ -113,6 +114,10 @@ export class TableElement {
     etc.tableElementRef.appendChild(etc.tableBodyElementRef);
     etc.categoryDropdownContainer = CategoryDropdown.createContainerElement();
     etc.tableElementRef.appendChild(etc.categoryDropdownContainer);
+    if (etc.paginationInternal) {
+      etc.paginationInternal.buttonContainer = PaginationButtonContainer.create(etc);
+      etc.tableElementRef.appendChild(etc.paginationInternal.buttonContainer);
+    }
     TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtils.generateUsingElement(etc.tableElementRef as HTMLElement);
     return etc.tableElementRef;
   }

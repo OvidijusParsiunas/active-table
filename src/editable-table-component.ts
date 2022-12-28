@@ -15,12 +15,14 @@ import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {DropdownDisplaySettings} from './types/dropdownDisplaySettings';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
+import {PaginationUtils} from './utils/pagination/paginationUtils';
 import {customElement, property, state} from 'lit/decorators.js';
 import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {ediTableStyle} from './editable-table-component-style';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {CellText, TableContents} from './types/tableContents';
+import {PaginationInternal} from './types/paginationInternal';
 import {UserSetColumnSizerStyle} from './types/columnSizer';
 import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
@@ -30,6 +32,7 @@ import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {Browser} from './utils/browser/browser';
+import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
@@ -170,6 +173,12 @@ export class EditableTableComponent extends LitElement {
   @state()
   rowDropdownCellOverlays: RowDropdownCellOverlays = [];
 
+  @property({type: Object})
+  pagination: Pagination = {numberOfEntries: 2};
+
+  @state()
+  paginationInternal: PaginationInternal = PaginationUtils.getDefaultInternal();
+
   // CAUTION-4
   override render() {
     Render.renderTable(this);
@@ -183,6 +192,7 @@ export class EditableTableComponent extends LitElement {
     AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
     RowDropdownSettingsUtil.process(this.rowDropdownSettings, this.auxiliaryTableContentInternal.displayIndexColumn);
     DropdownDisplaySettingsUtil.process(this.columnDropdownDisplaySettings);
+    if (this.pagination) PaginationUtils.processInternal(this.pagination, this.paginationInternal);
     const tableElement = TableElement.createInfrastructureElements(this);
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
     this.shadowRoot?.appendChild(tableElement);
