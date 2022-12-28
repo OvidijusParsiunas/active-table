@@ -58,11 +58,10 @@
               headerStyleProps: {
                 // default: {color: 'grey', paddingTop: '12px', paddingBottom: '12px'},
               },
-              activeTypeName: 'Text',
             })
           );
           element.setAttribute('tableDimensions', JSON.stringify({width: '1000px'}));
-          // element.setAttribute('auxiliaryTableContent', JSON.stringify({displayAddColumnCell: false}));
+          // element.setAttribute('auxiliaryTableContent', JSON.stringify({displayIndexColumn: false}));
           // element.setAttribute('tableDimensions', JSON.stringify({maxRows: 7}));
           // element.setAttribute('tableDimensions', JSON.stringify({maxColumns: 5}));
           // element.setAttribute('tableDimensions', JSON.stringify({unlimitedSize: false}));
@@ -153,7 +152,7 @@
                 ],
                 isMoveAvailable: true,
                 activeTypeName: 'Custom type 2',
-                isHeaderTextEditable: false,
+                isHeaderTextEditable: true,
                 headerIconStyle: {
                   iconFilterColor:
                     'brightness(0) saturate(100%) invert(52%) sepia(63%) saturate(2567%) hue-rotate(74deg) brightness(100%) contrast(89%)',

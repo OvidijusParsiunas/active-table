@@ -98,12 +98,12 @@ export const ediTableStyle = css`
   .header-icon-container {
     float: left;
     pointer-events: none;
-    /* allows text to wrap around the icon */
-    height: 1px;
+    /* the height is set to allow the text to be present below the icon when there is not enough space in the cell */
+    height: 15px;
   }
 
   .header-icon-side-text {
-    display: inline;
+    display: flex;
   }
 
   .not-selectable {
