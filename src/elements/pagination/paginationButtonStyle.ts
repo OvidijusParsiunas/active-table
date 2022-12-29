@@ -13,7 +13,7 @@ export class PaginationButtonStyle {
     buttonElement.style.backgroundColor = PaginationButtonStyle.DISABLED_BACKGROUND_COLOR;
   }
 
-  public static unsetActive(buttonElement: HTMLElement) {
+  public static unset(buttonElement: HTMLElement) {
     buttonElement.style.backgroundColor = PaginationButtonStyle.DEFAULT_BACKGROUND_COLOR;
   }
 

@@ -1,3 +1,4 @@
+import {PaginationNumberButtonElement} from '../../elements/pagination/buttons/number/paginationNumberButtonElement';
 import {PaginationButtonElement} from '../../elements/pagination/paginationButtonElement';
 import {EditableTableComponent} from '../../editable-table-component';
 
@@ -9,31 +10,33 @@ export class PaginationUpdateButtons {
     return Math.ceil(expectedNumberOfDataRows / numberOfEntries);
   }
 
-  private static getLastButtonAndNumberOfButtons(etc: EditableTableComponent, isInsert: boolean) {
+  private static getLastNumberButtonAndTheirQuantity(etc: EditableTableComponent, isInsert: boolean) {
     const buttonContainer = etc.paginationInternal.buttonContainer as HTMLElement;
-    const lastButton = buttonContainer.children[buttonContainer.children.length - 1] as HTMLElement;
-    const numberOfButtons = PaginationUpdateButtons.getExpectedNumberOfButtons(etc, isInsert);
-    return {lastButton, numberOfButtons};
+    const lastNumberButton = buttonContainer.children[buttonContainer.children.length - 2] as HTMLElement;
+    const expectedTotal = PaginationUpdateButtons.getExpectedNumberOfButtons(etc, isInsert);
+    return {lastNumberButton, expectedTotal};
   }
 
   public static updateOnRowRemove(etc: EditableTableComponent) {
-    const {lastButton, numberOfButtons} = PaginationUpdateButtons.getLastButtonAndNumberOfButtons(etc, false);
-    if (Number(lastButton.innerText) > numberOfButtons) {
-      if ((etc.paginationInternal.buttonContainer as HTMLElement).children.length > 1) {
-        lastButton.remove();
+    const {buttonContainer} = etc.paginationInternal;
+    const {lastNumberButton, expectedTotal} = PaginationUpdateButtons.getLastNumberButtonAndTheirQuantity(etc, false);
+    if (buttonContainer && Number(lastNumberButton.innerText) > expectedTotal) {
+      if (buttonContainer.children.length - 2 > 1) {
+        lastNumberButton.remove();
       } else {
-        PaginationButtonElement.setDisabled(lastButton);
+        PaginationButtonElement.setDisabled(buttonContainer);
       }
     }
   }
 
   public static updateOnRowInsert(etc: EditableTableComponent) {
-    const {lastButton, numberOfButtons} = PaginationUpdateButtons.getLastButtonAndNumberOfButtons(etc, true);
-    if (etc.contents.length === 1) {
-      PaginationButtonElement.unsetDisabled(lastButton);
-    } else if (Number(lastButton.innerText) < numberOfButtons) {
-      const buttonElement = PaginationButtonElement.create(etc, numberOfButtons);
-      (etc.paginationInternal.buttonContainer as HTMLElement).appendChild(buttonElement);
+    const {buttonContainer} = etc.paginationInternal;
+    const {lastNumberButton, expectedTotal} = PaginationUpdateButtons.getLastNumberButtonAndTheirQuantity(etc, true);
+    if (buttonContainer && etc.contents.length === 1) {
+      PaginationButtonElement.unsetDisabled(buttonContainer);
+    } else if (Number(lastNumberButton.innerText) < expectedTotal) {
+      const buttonElement = PaginationNumberButtonElement.create(etc, expectedTotal);
+      lastNumberButton.insertAdjacentElement('afterend', buttonElement);
     }
   }
 }

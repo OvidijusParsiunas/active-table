@@ -1,3 +1,6 @@
+import {PaginationPreviousButtonElement} from './buttons/prevNext/paginationPreviousButtonElement';
+import {PaginationNumberButtonElement} from './buttons/number/paginationNumberButtonElement';
+import {PaginationNextButtonElement} from './buttons/prevNext/paginationNextButtonElement';
 import {PaginationUpdateButtons} from '../../utils/pagination/paginationUpdateButtons';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationButtonElement} from './paginationButtonElement';
@@ -7,21 +10,25 @@ export class PaginationButtonContainerElement {
   private static readonly PAGINATION_BUTTON_CONTAINER_ID = 'pagination-button-container';
   private static readonly GAP = 10;
 
-  private static addButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
+  private static addNumberButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
     const numberOfButtons = PaginationUpdateButtons.getExpectedNumberOfButtons(etc);
     for (let i = 0; i < Math.max(numberOfButtons, 1); i += 1) {
-      const buttonElement = PaginationButtonElement.create(etc, i + 1);
+      const buttonElement = PaginationNumberButtonElement.create(etc, i + 1);
       buttonContainerElement.appendChild(buttonElement);
     }
   }
 
   private static populateButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
-    PaginationButtonContainerElement.addButtons(etc, buttonContainerElement);
+    const previousButton = PaginationPreviousButtonElement.create(etc);
+    buttonContainerElement.appendChild(previousButton);
+    PaginationButtonContainerElement.addNumberButtons(etc, buttonContainerElement);
     if (etc.contents.length < 2) {
-      PaginationButtonElement.setDisabled(buttonContainerElement.children[0] as HTMLElement);
+      PaginationButtonElement.setDisabled(buttonContainerElement);
     } else {
       PaginationButtonElement.setActive(etc.paginationInternal, buttonContainerElement, 1);
     }
+    const nextButton = PaginationNextButtonElement.create(etc);
+    buttonContainerElement.appendChild(nextButton);
   }
 
   private static setHeight(buttonContainerElement: HTMLElement) {
