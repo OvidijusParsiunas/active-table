@@ -10,17 +10,17 @@ export class PaginationUtils {
   private static readonly VISIBLE_ROW = '';
   private static readonly HIDDEN_ROW = 'none';
 
-  private static getVisibleRowIndexes(paginationInternal: PaginationInternal) {
+  private static getVisibleRowIndexes(paginationInternal: PaginationInternal, rowIndex: number) {
     const {activeButtonNumber, numberOfEntries} = paginationInternal;
     const maxVisibleRowIndex = activeButtonNumber * numberOfEntries + 1;
     const minVisibleRowIndex = maxVisibleRowIndex - numberOfEntries;
-    return {maxVisibleRowIndex, minVisibleRowIndex};
+    const visibleRowIndex = rowIndex - minVisibleRowIndex;
+    return {maxVisibleRowIndex, minVisibleRowIndex, visibleRowIndex};
   }
 
   private static updateRowsOnRemoval(etc: EditableTableComponent, rowIndex: number) {
     const {visibleRows, activeButtonNumber} = etc.paginationInternal;
-    const {minVisibleRowIndex} = PaginationUtils.getVisibleRowIndexes(etc.paginationInternal);
-    const visibleRowIndex = minVisibleRowIndex % rowIndex;
+    const {visibleRowIndex} = PaginationUtils.getVisibleRowIndexes(etc.paginationInternal, rowIndex);
     visibleRows.splice(visibleRowIndex, 1);
     if (visibleRows.length > 0) {
       const lastVisibleRow = visibleRows[visibleRows.length - 1];
@@ -43,13 +43,15 @@ export class PaginationUtils {
   }
 
   private static updateRowsOnNewInsert(etc: EditableTableComponent, rowIndex: number, newRowElement: HTMLElement) {
-    const {numberOfEntries, visibleRows} = etc.paginationInternal;
-    const {maxVisibleRowIndex, minVisibleRowIndex} = PaginationUtils.getVisibleRowIndexes(etc.paginationInternal);
+    const {numberOfEntries, visibleRows, activeButtonNumber} = etc.paginationInternal;
+    const {maxVisibleRowIndex, visibleRowIndex} = PaginationUtils.getVisibleRowIndexes(etc.paginationInternal, rowIndex);
     if (maxVisibleRowIndex > rowIndex) {
       if (visibleRows.length === numberOfEntries) PaginationUtils.hideLastVisibleRow(etc.paginationInternal);
-      visibleRows.splice(rowIndex % minVisibleRowIndex, 0, newRowElement);
+      visibleRows.splice(visibleRowIndex, 0, newRowElement);
     } else {
       newRowElement.style.display = PaginationUtils.HIDDEN_ROW;
+      // wait for a new button to be created when on last
+      setTimeout(() => PaginationUtils.displayRowsForDifferentButton(etc, activeButtonNumber + 1));
     }
   }
 
@@ -93,6 +95,11 @@ export class PaginationUtils {
   public static displayRowsForDifferentButton(etc: EditableTableComponent, buttonNumber: number) {
     PaginationUtils.hideAllRows(etc.paginationInternal);
     PaginationUtils.setCorrectRowsAsVisible(etc, buttonNumber);
+    PaginationButtonElement.setActive(
+      etc.paginationInternal,
+      etc.paginationInternal.buttonContainer as HTMLElement,
+      buttonNumber
+    );
   }
 
   public static processInternal(pagination: Pagination, paginationInternal: PaginationInternal) {

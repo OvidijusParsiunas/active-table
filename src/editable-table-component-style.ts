@@ -344,17 +344,16 @@ export const ediTableStyle = css`
 
   .pagination-button-disabled {
     pointer-events: none;
-    background-color: grey;
   }
 
   .pagination-button:last-child {
     border-right: 0px;
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
   }
 
   .pagination-button:first-child {
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
   }
 `;

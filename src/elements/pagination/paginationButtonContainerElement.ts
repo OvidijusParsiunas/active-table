@@ -18,8 +18,9 @@ export class PaginationButtonContainerElement {
   private static populateButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
     PaginationButtonContainerElement.addButtons(etc, buttonContainerElement);
     if (etc.contents.length < 2) {
-      const buttonElement = buttonContainerElement.children[0] as HTMLElement;
-      buttonElement.classList.add(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS);
+      PaginationButtonElement.setDisabled(buttonContainerElement.children[0] as HTMLElement);
+    } else {
+      PaginationButtonElement.setActive(etc.paginationInternal, buttonContainerElement, 1);
     }
   }
 

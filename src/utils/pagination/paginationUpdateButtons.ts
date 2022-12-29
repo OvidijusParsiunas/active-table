@@ -22,7 +22,7 @@ export class PaginationUpdateButtons {
       if ((etc.paginationInternal.buttonContainer as HTMLElement).children.length > 1) {
         lastButton.remove();
       } else {
-        lastButton.classList.add(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS);
+        PaginationButtonElement.setDisabled(lastButton);
       }
     }
   }
@@ -30,7 +30,7 @@ export class PaginationUpdateButtons {
   public static updateOnRowInsert(etc: EditableTableComponent) {
     const {lastButton, numberOfButtons} = PaginationUpdateButtons.getLastButtonAndNumberOfButtons(etc, true);
     if (etc.contents.length === 1) {
-      lastButton.classList.remove(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS);
+      PaginationButtonElement.unsetDisabled(lastButton);
     } else if (Number(lastButton.innerText) < numberOfButtons) {
       const buttonElement = PaginationButtonElement.create(etc, numberOfButtons);
       (etc.paginationInternal.buttonContainer as HTMLElement).appendChild(buttonElement);
