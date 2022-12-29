@@ -96,6 +96,11 @@ export class InsertNewRow {
   }
 
   public static insertEvent(this: EditableTableComponent) {
-    InsertNewRow.insert(this, this.contents.length, true);
+    let newRowIndex = this.contents.length;
+    if (this.paginationInternal) {
+      const {maxVisibleRowIndex} = PaginationUtils.getRelativeRowIndexes(this.paginationInternal);
+      if (maxVisibleRowIndex < newRowIndex) newRowIndex = maxVisibleRowIndex;
+    }
+    InsertNewRow.insert(this, newRowIndex, true);
   }
 }

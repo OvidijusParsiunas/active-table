@@ -10,7 +10,7 @@ export class PaginationUtils {
   private static readonly VISIBLE_ROW = '';
   private static readonly HIDDEN_ROW = 'none';
 
-  private static getVisibleRowIndexes(paginationInternal: PaginationInternal, rowIndex: number) {
+  public static getRelativeRowIndexes(paginationInternal: PaginationInternal, rowIndex = 0) {
     const {activeButtonNumber, numberOfEntries} = paginationInternal;
     const maxVisibleRowIndex = activeButtonNumber * numberOfEntries + 1;
     const minVisibleRowIndex = maxVisibleRowIndex - numberOfEntries;
@@ -20,7 +20,7 @@ export class PaginationUtils {
 
   private static updateRowsOnRemoval(etc: EditableTableComponent, rowIndex: number) {
     const {visibleRows, activeButtonNumber} = etc.paginationInternal;
-    const {visibleRowIndex} = PaginationUtils.getVisibleRowIndexes(etc.paginationInternal, rowIndex);
+    const {visibleRowIndex} = PaginationUtils.getRelativeRowIndexes(etc.paginationInternal, rowIndex);
     visibleRows.splice(visibleRowIndex, 1);
     if (visibleRows.length > 0) {
       const lastVisibleRow = visibleRows[visibleRows.length - 1];
@@ -44,7 +44,7 @@ export class PaginationUtils {
 
   private static updateRowsOnNewInsert(etc: EditableTableComponent, rowIndex: number, newRowElement: HTMLElement) {
     const {numberOfEntries, visibleRows, activeButtonNumber} = etc.paginationInternal;
-    const {maxVisibleRowIndex, visibleRowIndex} = PaginationUtils.getVisibleRowIndexes(etc.paginationInternal, rowIndex);
+    const {maxVisibleRowIndex, visibleRowIndex} = PaginationUtils.getRelativeRowIndexes(etc.paginationInternal, rowIndex);
     if (maxVisibleRowIndex > rowIndex) {
       if (visibleRows.length === numberOfEntries) PaginationUtils.hideLastVisibleRow(etc.paginationInternal);
       visibleRows.splice(visibleRowIndex, 0, newRowElement);
