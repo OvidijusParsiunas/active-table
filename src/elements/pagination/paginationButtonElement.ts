@@ -1,3 +1,4 @@
+import {PaginationButtonContainerElement} from './paginationButtonContainerElement';
 import {PaginationInternal} from '../../types/paginationInternal';
 import {PaginationButtonEvents} from './paginationButtonEvents';
 import {PaginationButtonStyle} from './paginationButtonStyle';
@@ -13,7 +14,9 @@ export class PaginationButtonElement {
       buttonElement.classList.remove(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS);
       PaginationButtonStyle.unset(buttonElement as HTMLElement);
     });
-    const numberButton = buttonContainer.children[1] as HTMLElement;
+    const numberButton = buttonContainer.children[
+      PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS / 2
+    ] as HTMLElement;
     numberButton.classList.add(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
     PaginationButtonStyle.setActive(numberButton);
   }
@@ -23,16 +26,19 @@ export class PaginationButtonElement {
       buttonElement.classList.add(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS);
       PaginationButtonStyle.setDisabled(buttonElement as HTMLElement);
     });
-    const numberButton = buttonContainer.children[1] as HTMLElement;
+    const numberButton = buttonContainer.children[
+      PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS / 2
+    ] as HTMLElement;
     numberButton.classList.remove(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
   }
 
   public static setActive(paginationInternal: PaginationInternal, buttonContainer: HTMLElement, buttonNumber: number) {
     const buttons = Array.from(buttonContainer.children) as HTMLElement[];
-    const previousActive = buttons[paginationInternal.activeButtonNumber];
+    const previousActive =
+      buttons[paginationInternal.activeButtonNumber + (PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS / 2 - 1)];
     if (previousActive) previousActive.classList.remove(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
     paginationInternal.activeButtonNumber = buttonNumber;
-    const newActiveButton = buttons[buttonNumber];
+    const newActiveButton = buttons[buttonNumber + (PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS / 2 - 1)];
     newActiveButton.classList.add(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
     PaginationButtonStyle.setActive(newActiveButton, previousActive);
   }

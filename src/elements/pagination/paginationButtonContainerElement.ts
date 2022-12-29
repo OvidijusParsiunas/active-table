@@ -1,6 +1,8 @@
 import {PaginationPreviousButtonElement} from './buttons/prevNext/paginationPreviousButtonElement';
 import {PaginationNumberButtonElement} from './buttons/number/paginationNumberButtonElement';
+import {PaginationFirstButtonElement} from './buttons/boundary/paginationFirstButtonElement';
 import {PaginationNextButtonElement} from './buttons/prevNext/paginationNextButtonElement';
+import {PaginationLastButtonElement} from './buttons/boundary/paginationLastButtonElement';
 import {PaginationUpdateButtons} from '../../utils/pagination/paginationUpdateButtons';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationButtonElement} from './paginationButtonElement';
@@ -9,6 +11,7 @@ import {TableElement} from '../table/tableElement';
 export class PaginationButtonContainerElement {
   private static readonly PAGINATION_BUTTON_CONTAINER_ID = 'pagination-button-container';
   private static readonly GAP = 10;
+  public static NUMBER_OF_SIDE_BUTTONS = 0;
 
   private static addNumberButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
     const numberOfButtons = PaginationUpdateButtons.getExpectedNumberOfButtons(etc);
@@ -18,17 +21,31 @@ export class PaginationButtonContainerElement {
     }
   }
 
+  private static addButton(buttonContainerElement: HTMLElement, buttonElement: HTMLElement) {
+    buttonContainerElement.appendChild(buttonElement);
+    PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS += 1;
+  }
+
   private static populateButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
-    const previousButton = PaginationPreviousButtonElement.create(etc);
-    buttonContainerElement.appendChild(previousButton);
+    const {displayPrevNext, displayStartEnd} = etc.paginationInternal;
+    if (displayStartEnd) {
+      PaginationButtonContainerElement.addButton(buttonContainerElement, PaginationFirstButtonElement.create(etc));
+    }
+    if (displayPrevNext) {
+      PaginationButtonContainerElement.addButton(buttonContainerElement, PaginationPreviousButtonElement.create(etc));
+    }
     PaginationButtonContainerElement.addNumberButtons(etc, buttonContainerElement);
+    if (displayPrevNext) {
+      PaginationButtonContainerElement.addButton(buttonContainerElement, PaginationNextButtonElement.create(etc));
+    }
+    if (displayStartEnd) {
+      PaginationButtonContainerElement.addButton(buttonContainerElement, PaginationLastButtonElement.create(etc));
+    }
     if (etc.contents.length < 2) {
       PaginationButtonElement.setDisabled(buttonContainerElement);
     } else {
       PaginationButtonElement.setActive(etc.paginationInternal, buttonContainerElement, 1);
     }
-    const nextButton = PaginationNextButtonElement.create(etc);
-    buttonContainerElement.appendChild(nextButton);
   }
 
   private static setHeight(buttonContainerElement: HTMLElement) {

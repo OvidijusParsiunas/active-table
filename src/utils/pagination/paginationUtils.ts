@@ -103,7 +103,7 @@ export class PaginationUtils {
   }
 
   public static processInternal(pagination: Pagination, paginationInternal: PaginationInternal) {
-    paginationInternal.numberOfEntries = pagination.numberOfEntries;
+    Object.assign(paginationInternal, pagination);
   }
 
   public static getDefaultInternal(): PaginationInternal {
@@ -111,6 +111,8 @@ export class PaginationUtils {
       activeButtonNumber: 1,
       visibleRows: [],
       numberOfEntries: 10,
+      displayPrevNext: true,
+      displayStartEnd: true,
     };
   }
 }
