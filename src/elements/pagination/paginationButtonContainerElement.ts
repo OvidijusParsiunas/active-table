@@ -14,8 +14,10 @@ export class PaginationButtonContainerElement {
   public static NUMBER_OF_SIDE_BUTTONS = 0;
 
   private static addNumberButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
-    const numberOfButtons = PaginationUpdateButtons.getExpectedNumberOfButtons(etc);
-    for (let i = 0; i < Math.max(numberOfButtons, 1); i += 1) {
+    const requiredNumberOfButtons = PaginationUpdateButtons.getExpectedNumberOfButtons(etc);
+    const {maxNumberOfButtons} = etc.paginationInternal;
+    const buttonsToAdd = requiredNumberOfButtons < maxNumberOfButtons ? requiredNumberOfButtons : maxNumberOfButtons;
+    for (let i = 0; i < buttonsToAdd; i += 1) {
       const buttonElement = PaginationNumberButtonElement.create(etc, i + 1);
       buttonContainerElement.appendChild(buttonElement);
     }
@@ -44,7 +46,7 @@ export class PaginationButtonContainerElement {
     if (etc.contents.length < 2) {
       PaginationButtonElement.setDisabled(buttonContainerElement);
     } else {
-      PaginationButtonElement.setActive(etc.paginationInternal, buttonContainerElement, 1);
+      PaginationButtonElement.setActive(etc, buttonContainerElement, 1);
     }
   }
 

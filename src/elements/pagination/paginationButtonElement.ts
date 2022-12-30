@@ -1,7 +1,8 @@
 import {PaginationSideButtonUtils} from '../../utils/pagination/paginationSideButtonUtils';
+import {PaginationUpdateButtons} from '../../utils/pagination/paginationUpdateButtons';
 import {PaginationButtonContainerElement} from './paginationButtonContainerElement';
 import {PaginationUtils} from '../../utils/pagination/paginationUtils';
-import {PaginationInternal} from '../../types/paginationInternal';
+import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationButtonEvents} from './paginationButtonEvents';
 import {PaginationButtonStyle} from './paginationButtonStyle';
 import {CellText} from '../../types/tableContents';
@@ -32,14 +33,31 @@ export class PaginationButtonElement {
     if (PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS > 0) numberButton.style.display = 'none';
   }
 
-  public static setActive(paginationInternal: PaginationInternal, buttonContainer: HTMLElement, buttonNumber: number) {
-    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
-    const previousActive = numberButtons[paginationInternal.activeButtonNumber - 1];
-    if (previousActive) previousActive.classList.remove(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
-    paginationInternal.activeButtonNumber = buttonNumber;
-    const newActiveButton = numberButtons[buttonNumber - 1];
+  private static setNewActive(numberButtons: HTMLElement[], lastButtonNumber: number, buttonNumber: number) {
+    const newActiveIndex = numberButtons.length - (lastButtonNumber - buttonNumber) - 1;
+    const newActiveButton = numberButtons[newActiveIndex];
     newActiveButton.classList.add(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
-    PaginationButtonStyle.setActive(newActiveButton, previousActive);
+    return newActiveButton;
+  }
+
+  private static unsetPreviousActive(etc: EditableTableComponent, numberButtons: HTMLElement[], lastButtonNumber: number) {
+    const previousActiveIndex = numberButtons.length - (lastButtonNumber - etc.paginationInternal.activeButtonNumber) - 1;
+    const previousActiveButton = numberButtons[previousActiveIndex];
+    if (previousActiveButton) {
+      previousActiveButton.classList.remove(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
+      return previousActiveButton;
+    }
+    return undefined;
+  }
+
+  public static setActive(etc: EditableTableComponent, buttonContainer: HTMLElement, buttonNumber: number) {
+    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
+    const lastButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
+    const previousActiveButton = PaginationButtonElement.unsetPreviousActive(etc, numberButtons, lastButtonNumber);
+    etc.paginationInternal.activeButtonNumber = buttonNumber;
+    const newActiveButton = PaginationButtonElement.setNewActive(numberButtons, lastButtonNumber, buttonNumber);
+    PaginationButtonStyle.setActive(newActiveButton, previousActiveButton);
+    PaginationUpdateButtons.updateOnNewActive(etc);
     PaginationSideButtonUtils.toggleSideButtons(buttonContainer, buttonNumber);
   }
 

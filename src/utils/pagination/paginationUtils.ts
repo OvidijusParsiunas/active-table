@@ -11,6 +11,11 @@ export class PaginationUtils {
   private static readonly VISIBLE_ROW = '';
   private static readonly HIDDEN_ROW = 'none';
 
+  public static getLastPossibleButtonNumber(etc: EditableTableComponent) {
+    const {contents, paginationInternal} = etc;
+    return Math.ceil((contents.length - 1) / paginationInternal.numberOfEntries);
+  }
+
   public static getNumberButtons(buttonContainer: HTMLElement) {
     const allButtons = Array.from(buttonContainer.children) as HTMLElement[];
     const halfOfSideButtons = PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS / 2;
@@ -103,22 +108,22 @@ export class PaginationUtils {
   public static displayRowsForDifferentButton(etc: EditableTableComponent, buttonNumber: number) {
     PaginationUtils.hideAllRows(etc.paginationInternal);
     PaginationUtils.setCorrectRowsAsVisible(etc, buttonNumber);
-    PaginationButtonElement.setActive(
-      etc.paginationInternal,
-      etc.paginationInternal.buttonContainer as HTMLElement,
-      buttonNumber
-    );
+    PaginationButtonElement.setActive(etc, etc.paginationInternal.buttonContainer as HTMLElement, buttonNumber);
   }
 
   public static processInternal(pagination: Pagination, paginationInternal: PaginationInternal) {
+    if (pagination.maxNumberOfButtons !== undefined && pagination.maxNumberOfButtons < 1) {
+      pagination.maxNumberOfButtons = 1;
+    }
     Object.assign(paginationInternal, pagination);
   }
 
   public static getDefaultInternal(): PaginationInternal {
     return {
+      numberOfEntries: 10,
+      maxNumberOfButtons: 8,
       activeButtonNumber: 1,
       visibleRows: [],
-      numberOfEntries: 10,
       displayPrevNext: true,
       displayFirstLast: true,
     };
