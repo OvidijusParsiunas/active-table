@@ -33,14 +33,18 @@ export class PaginationButtonElement {
     if (PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS > 0) numberButton.style.display = 'none';
   }
 
-  private static setNewActive(numberButtons: HTMLElement[], lastButtonNumber: number, buttonNumber: number) {
+  private static setNewActive(buttonContainer: HTMLElement, buttonNumber: number) {
+    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
+    const lastButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
     const newActiveIndex = numberButtons.length - (lastButtonNumber - buttonNumber) - 1;
     const newActiveButton = numberButtons[newActiveIndex];
     newActiveButton.classList.add(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
     return newActiveButton;
   }
 
-  private static unsetPreviousActive(etc: EditableTableComponent, numberButtons: HTMLElement[], lastButtonNumber: number) {
+  private static unsetPreviousActive(etc: EditableTableComponent, buttonContainer: HTMLElement) {
+    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
+    const lastButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
     const previousActiveIndex = numberButtons.length - (lastButtonNumber - etc.paginationInternal.activeButtonNumber) - 1;
     const previousActiveButton = numberButtons[previousActiveIndex];
     if (previousActiveButton) {
@@ -51,13 +55,11 @@ export class PaginationButtonElement {
   }
 
   public static setActive(etc: EditableTableComponent, buttonContainer: HTMLElement, buttonNumber: number) {
-    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
-    const lastButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
-    const previousActiveButton = PaginationButtonElement.unsetPreviousActive(etc, numberButtons, lastButtonNumber);
+    const previousActiveButton = PaginationButtonElement.unsetPreviousActive(etc, buttonContainer);
     etc.paginationInternal.activeButtonNumber = buttonNumber;
-    const newActiveButton = PaginationButtonElement.setNewActive(numberButtons, lastButtonNumber, buttonNumber);
-    PaginationButtonStyle.setActive(newActiveButton, previousActiveButton);
     PaginationUpdateButtons.updateOnNewActive(etc);
+    const newActiveButton = PaginationButtonElement.setNewActive(buttonContainer, buttonNumber);
+    PaginationButtonStyle.setActive(newActiveButton, previousActiveButton);
     PaginationSideButtonUtils.toggleSideButtons(buttonContainer, buttonNumber);
   }
 

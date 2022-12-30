@@ -56,11 +56,11 @@ export class PaginationUpdateButtons {
     // shift buttons to get active number button close to middle
     const numberOfButtonsToShift = activeButtonNumber <= numberButtons.length / 2
       ? firstVisibleButtonNumber - 1 : firstNonLeftShiftNumber - activeButtonNumber;
-    numberButtons.slice(numberButtons.length - numberOfButtonsToShift).forEach((button) => button.remove());
     for (let i = numberOfButtonsToShift - 1; i >= 0; i -= 1) {
       const buttonElement = PaginationNumberButtonElement.create(etc, firstVisibleButtonNumber - i - 1);
       firstVisibleButton.insertAdjacentElement('beforebegin', buttonElement);
     }
+    numberButtons.slice(numberButtons.length - numberOfButtonsToShift).forEach((button) => button.remove());
   }
 
   // prettier-ignore
@@ -74,12 +74,12 @@ export class PaginationUpdateButtons {
     // if lower shift buttons to get active number button close to the middle
     const numberOfButtonsToRemove = activeButtonNumber > lastButtonNumber - numberButtons.length / 2
       ? lastButtonNumber - lastVisibleButtonNumber : activeButtonNumber - lastNonRightShiftNumber;
-    numberButtons.slice(0, numberOfButtonsToRemove).forEach((button) => button.remove());
     const lastVisibleButton = numberButtons[numberButtons.length - 1];
     for (let i = numberOfButtonsToRemove - 1; i >= 0; i -= 1) {
       const buttonElement = PaginationNumberButtonElement.create(etc, i + lastVisibleButtonNumber + 1);
       lastVisibleButton.insertAdjacentElement('afterend', buttonElement);
     }
+    numberButtons.slice(0, numberOfButtonsToRemove).forEach((button) => button.remove());
   }
 
   // prettier-ignore

@@ -8,7 +8,7 @@ export class PaginationLastButtonEvents {
     PaginationButtonStyle.mouseEnter(buttonElement);
     const {activeButtonNumber, buttonContainer} = this.paginationInternal;
     if (!buttonContainer) return;
-    const numberOfNumberButtons = PaginationUtils.getNumberButtons(buttonContainer).length;
+    const numberOfNumberButtons = PaginationUtils.getLastPossibleButtonNumber(this);
     if (numberOfNumberButtons <= activeButtonNumber) return;
     PaginationUtils.displayRowsForDifferentButton(this, numberOfNumberButtons);
   }
