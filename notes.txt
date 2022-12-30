@@ -1,3 +1,17 @@
+FILTERING - search
+Functionality to drag row
+Only show add elements cells if the mouse is over the table
+Custom default values per cell
+Language packages
+
+unbeatable
+suitable
+elegant-table
+active-table
+
+settings icon - https://thenounproject.com/search/icons/?iconspage=1&q=sort
+
+
 update homepage property in package
 
 detect React:

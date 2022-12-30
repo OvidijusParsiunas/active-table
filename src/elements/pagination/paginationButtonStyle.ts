@@ -31,6 +31,9 @@ export class PaginationButtonStyle {
 
   // prettier-ignore
   public static mouseLeave(buttonElement: HTMLElement) {
+    // this is required because mouseLeave can be fired when the hovered button is disabled
+    // as pointer-events are set to none
+    if (buttonElement.classList.contains(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) return;
     buttonElement.style.backgroundColor = buttonElement
       .classList.contains(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)
       ? PaginationButtonStyle.DEFAULT_ACTIVE_BACKGROUND_COLOR : PaginationButtonStyle.DEFAULT_BACKGROUND_COLOR;

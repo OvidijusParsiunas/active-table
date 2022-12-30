@@ -334,8 +334,9 @@ export const ediTableStyle = css`
 
   .pagination-button {
     border-right: 1px solid black;
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 25px;
+    padding-top: 3px;
     background-color: yellow;
     text-align: center;
     cursor: pointer;

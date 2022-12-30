@@ -1,4 +1,3 @@
-import {PaginationButtonContainerElement} from '../../paginationButtonContainerElement';
 import {PaginationUtils} from '../../../../utils/pagination/paginationUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {PaginationButtonStyle} from '../../paginationButtonStyle';
@@ -8,8 +7,7 @@ export class PaginationNextButtonEvents {
     const buttonElement = event.target as HTMLElement;
     PaginationButtonStyle.mouseEnter(buttonElement);
     const {activeButtonNumber, buttonContainer} = this.paginationInternal;
-    const numberOfLeftSideButtons = PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS;
-    if (!buttonContainer || buttonContainer.children.length - numberOfLeftSideButtons <= activeButtonNumber) return;
+    if (!buttonContainer || PaginationUtils.getNumberButtons(buttonContainer).length <= activeButtonNumber) return;
     PaginationUtils.displayRowsForDifferentButton(this, activeButtonNumber + 1);
   }
 

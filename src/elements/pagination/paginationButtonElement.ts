@@ -1,4 +1,6 @@
+import {PaginationSideButtonUtils} from '../../utils/pagination/paginationSideButtonUtils';
 import {PaginationButtonContainerElement} from './paginationButtonContainerElement';
+import {PaginationUtils} from '../../utils/pagination/paginationUtils';
 import {PaginationInternal} from '../../types/paginationInternal';
 import {PaginationButtonEvents} from './paginationButtonEvents';
 import {PaginationButtonStyle} from './paginationButtonStyle';
@@ -6,19 +8,18 @@ import {CellText} from '../../types/tableContents';
 
 export class PaginationButtonElement {
   private static readonly PAGINATION_BUTTON_CLASS = 'pagination-button';
-  private static readonly DISABLED_PAGINATION_BUTTON_CLASS = 'pagination-button-disabled';
+  public static readonly DISABLED_PAGINATION_BUTTON_CLASS = 'pagination-button-disabled';
   public static readonly ACTIVE_PAGINATION_BUTTON_CLASS = 'pagination-button-active';
 
   public static unsetDisabled(buttonContainer: HTMLElement) {
-    Array.from(buttonContainer.children).forEach((buttonElement) => {
-      buttonElement.classList.remove(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS);
-      PaginationButtonStyle.unset(buttonElement as HTMLElement);
-    });
-    const numberButton = buttonContainer.children[
-      PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS / 2
-    ] as HTMLElement;
-    numberButton.classList.add(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
+    const numberButton = PaginationUtils.getNumberButtons(buttonContainer)[0];
+    numberButton.classList.replace(
+      PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS,
+      PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS
+    );
+    PaginationButtonStyle.unset(numberButton as HTMLElement);
     PaginationButtonStyle.setActive(numberButton);
+    if (PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS > 0) numberButton.style.display = '';
   }
 
   public static setDisabled(buttonContainer: HTMLElement) {
@@ -26,21 +27,20 @@ export class PaginationButtonElement {
       buttonElement.classList.add(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS);
       PaginationButtonStyle.setDisabled(buttonElement as HTMLElement);
     });
-    const numberButton = buttonContainer.children[
-      PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS / 2
-    ] as HTMLElement;
+    const numberButton = PaginationUtils.getNumberButtons(buttonContainer)[0];
     numberButton.classList.remove(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
+    if (PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS > 0) numberButton.style.display = 'none';
   }
 
   public static setActive(paginationInternal: PaginationInternal, buttonContainer: HTMLElement, buttonNumber: number) {
-    const buttons = Array.from(buttonContainer.children) as HTMLElement[];
-    const previousActive =
-      buttons[paginationInternal.activeButtonNumber + (PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS / 2 - 1)];
+    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
+    const previousActive = numberButtons[paginationInternal.activeButtonNumber - 1];
     if (previousActive) previousActive.classList.remove(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
     paginationInternal.activeButtonNumber = buttonNumber;
-    const newActiveButton = buttons[buttonNumber + (PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS / 2 - 1)];
+    const newActiveButton = numberButtons[buttonNumber - 1];
     newActiveButton.classList.add(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
     PaginationButtonStyle.setActive(newActiveButton, previousActive);
+    PaginationSideButtonUtils.toggleSideButtons(buttonContainer, buttonNumber);
   }
 
   public static create(text: CellText) {

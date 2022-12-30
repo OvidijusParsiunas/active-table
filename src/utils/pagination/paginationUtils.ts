@@ -1,3 +1,4 @@
+import {PaginationButtonContainerElement} from '../../elements/pagination/paginationButtonContainerElement';
 import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
 import {PaginationButtonElement} from '../../elements/pagination/paginationButtonElement';
 import {EditableTableComponent} from '../../editable-table-component';
@@ -9,6 +10,12 @@ import {Pagination} from '../../types/pagination';
 export class PaginationUtils {
   private static readonly VISIBLE_ROW = '';
   private static readonly HIDDEN_ROW = 'none';
+
+  public static getNumberButtons(buttonContainer: HTMLElement) {
+    const allButtons = Array.from(buttonContainer.children) as HTMLElement[];
+    const halfOfSideButtons = PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS / 2;
+    return allButtons.slice(halfOfSideButtons, allButtons.length - halfOfSideButtons);
+  }
 
   public static getRelativeRowIndexes(paginationInternal: PaginationInternal, rowIndex = 0) {
     const {activeButtonNumber, numberOfEntries} = paginationInternal;
@@ -57,12 +64,13 @@ export class PaginationUtils {
 
   public static updateOnRowChange(etc: EditableTableComponent, rowIndex: number, newRowElement?: HTMLElement) {
     if (rowIndex === 0 && etc.contents.length === 0) return;
+    // buttons need to be updated first as displayRowsForDifferentButton will use them to toggle the side buttons
     if (newRowElement) {
-      PaginationUtils.updateRowsOnNewInsert(etc, rowIndex, newRowElement);
       PaginationUpdateButtons.updateOnRowInsert(etc);
+      PaginationUtils.updateRowsOnNewInsert(etc, rowIndex, newRowElement);
     } else {
-      PaginationUtils.updateRowsOnRemoval(etc, rowIndex);
       PaginationUpdateButtons.updateOnRowRemove(etc);
+      PaginationUtils.updateRowsOnRemoval(etc, rowIndex);
     }
   }
 
@@ -112,7 +120,7 @@ export class PaginationUtils {
       visibleRows: [],
       numberOfEntries: 10,
       displayPrevNext: true,
-      displayStartEnd: true,
+      displayFirstLast: true,
     };
   }
 }

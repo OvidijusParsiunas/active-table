@@ -1,8 +1,8 @@
 import {PaginationPreviousButtonElement} from './buttons/prevNext/paginationPreviousButtonElement';
+import {PaginationFirstButtonElement} from './buttons/firstLast/paginationFirstButtonElement';
 import {PaginationNumberButtonElement} from './buttons/number/paginationNumberButtonElement';
-import {PaginationFirstButtonElement} from './buttons/boundary/paginationFirstButtonElement';
+import {PaginationLastButtonElement} from './buttons/firstLast/paginationLastButtonElement';
 import {PaginationNextButtonElement} from './buttons/prevNext/paginationNextButtonElement';
-import {PaginationLastButtonElement} from './buttons/boundary/paginationLastButtonElement';
 import {PaginationUpdateButtons} from '../../utils/pagination/paginationUpdateButtons';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationButtonElement} from './paginationButtonElement';
@@ -27,8 +27,8 @@ export class PaginationButtonContainerElement {
   }
 
   private static populateButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
-    const {displayPrevNext, displayStartEnd} = etc.paginationInternal;
-    if (displayStartEnd) {
+    const {displayPrevNext, displayFirstLast} = etc.paginationInternal;
+    if (displayFirstLast) {
       PaginationButtonContainerElement.addButton(buttonContainerElement, PaginationFirstButtonElement.create(etc));
     }
     if (displayPrevNext) {
@@ -38,7 +38,7 @@ export class PaginationButtonContainerElement {
     if (displayPrevNext) {
       PaginationButtonContainerElement.addButton(buttonContainerElement, PaginationNextButtonElement.create(etc));
     }
-    if (displayStartEnd) {
+    if (displayFirstLast) {
       PaginationButtonContainerElement.addButton(buttonContainerElement, PaginationLastButtonElement.create(etc));
     }
     if (etc.contents.length < 2) {

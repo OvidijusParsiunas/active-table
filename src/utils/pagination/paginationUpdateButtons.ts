@@ -1,7 +1,8 @@
 import {PaginationNumberButtonElement} from '../../elements/pagination/buttons/number/paginationNumberButtonElement';
-import {PaginationButtonContainerElement} from '../../elements/pagination/paginationButtonContainerElement';
 import {PaginationButtonElement} from '../../elements/pagination/paginationButtonElement';
 import {EditableTableComponent} from '../../editable-table-component';
+import {PaginationSideButtonUtils} from './paginationSideButtonUtils';
+import {PaginationUtils} from './paginationUtils';
 
 export class PaginationUpdateButtons {
   public static getExpectedNumberOfButtons(etc: EditableTableComponent, isBeforeInsert = false) {
@@ -13,19 +14,19 @@ export class PaginationUpdateButtons {
 
   private static getLastNumberButtonAndTheirQuantity(etc: EditableTableComponent, isInsert: boolean) {
     const buttonContainer = etc.paginationInternal.buttonContainer as HTMLElement;
-    const lastNumberButton = buttonContainer.children[
-      buttonContainer.children.length - (PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS / 2 + 1)
-    ] as HTMLElement;
+    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
+    const lastNumberButton = numberButtons[numberButtons.length - 1];
     const expectedTotal = PaginationUpdateButtons.getExpectedNumberOfButtons(etc, isInsert);
     return {lastNumberButton, expectedTotal};
   }
 
   public static updateOnRowRemove(etc: EditableTableComponent) {
-    const {buttonContainer} = etc.paginationInternal;
+    const {buttonContainer, activeButtonNumber} = etc.paginationInternal;
     const {lastNumberButton, expectedTotal} = PaginationUpdateButtons.getLastNumberButtonAndTheirQuantity(etc, false);
     if (buttonContainer && Number(lastNumberButton.innerText) > expectedTotal) {
-      if (buttonContainer.children.length - PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS > 1) {
+      if (PaginationUtils.getNumberButtons(buttonContainer).length > 1) {
         lastNumberButton.remove();
+        PaginationSideButtonUtils.toggleSideButtons(buttonContainer, activeButtonNumber);
       } else {
         PaginationButtonElement.setDisabled(buttonContainer);
       }
