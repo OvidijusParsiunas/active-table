@@ -33,34 +33,47 @@ export class PaginationButtonElement {
     if (PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS > 0) numberButton.style.display = 'none';
   }
 
+  private static programmaticMouseEnterTrigger(numberButtons: HTMLElement[], newActiveIndex: number) {
+    const hoverNewElement = numberButtons[newActiveIndex];
+    if (hoverNewElement && !hoverNewElement.classList.contains(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)) {
+      PaginationButtonStyle.mouseEnter(hoverNewElement);
+    }
+  }
+
   private static setNewActive(buttonContainer: HTMLElement, buttonNumber: number) {
     const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
     const lastButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
     const newActiveIndex = numberButtons.length - (lastButtonNumber - buttonNumber) - 1;
     const newActiveButton = numberButtons[newActiveIndex];
     newActiveButton.classList.add(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
-    return newActiveButton;
+    return {newActiveButton, numberButtons};
   }
 
-  private static unsetPreviousActive(etc: EditableTableComponent, buttonContainer: HTMLElement) {
+  private static unsetPreviousActive(etc: EditableTableComponent, buttonContainer: HTMLElement, buttonNumber: number) {
     const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
     const lastButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
     const previousActiveIndex = numberButtons.length - (lastButtonNumber - etc.paginationInternal.activeButtonNumber) - 1;
     const previousActiveButton = numberButtons[previousActiveIndex];
+    const newActiveIndex = numberButtons.length - (lastButtonNumber - buttonNumber) - 1;
     if (previousActiveButton) {
       previousActiveButton.classList.remove(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
-      return previousActiveButton;
+      return {previousActiveButton, newActiveIndex};
     }
-    return undefined;
+    return {newActiveIndex};
   }
 
+  // prettier-ignore
   public static setActive(etc: EditableTableComponent, buttonContainer: HTMLElement, buttonNumber: number) {
-    const previousActiveButton = PaginationButtonElement.unsetPreviousActive(etc, buttonContainer);
+    const {previousActiveButton, newActiveIndex} = PaginationButtonElement.unsetPreviousActive(
+      etc, buttonContainer, buttonNumber);
     etc.paginationInternal.activeButtonNumber = buttonNumber;
     PaginationUpdateButtons.updateOnNewActive(etc);
-    const newActiveButton = PaginationButtonElement.setNewActive(buttonContainer, buttonNumber);
+    const {newActiveButton, numberButtons} = PaginationButtonElement.setNewActive(buttonContainer, buttonNumber);
     PaginationButtonStyle.setActive(newActiveButton, previousActiveButton);
     PaginationSideButtonUtils.toggleSideButtons(buttonContainer, buttonNumber);
+    if (!etc.paginationInternal.clickedSideButton) {
+      PaginationButtonElement.programmaticMouseEnterTrigger(numberButtons, newActiveIndex);
+    }
   }
 
   public static create(text: CellText) {

@@ -1,6 +1,7 @@
 import {PaginationButtonContainerElement} from '../../elements/pagination/paginationButtonContainerElement';
 import {PaginationButtonElement} from '../../elements/pagination/paginationButtonElement';
 import {PaginationButtonStyle} from '../../elements/pagination/paginationButtonStyle';
+import {PaginationInternal} from '../../types/paginationInternal';
 import {PaginationUtils} from './paginationUtils';
 
 export class PaginationSideButtonUtils {
@@ -37,5 +38,10 @@ export class PaginationSideButtonUtils {
     const halfOfSideButtons = PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS / 2;
     PaginationSideButtonUtils.toggleLeftSideButtons(buttons, activeButtonNumber, halfOfSideButtons);
     PaginationSideButtonUtils.toggleRightSideButtons(buttonContainer, buttons, activeButtonNumber, halfOfSideButtons);
+  }
+
+  public static markClick(paginationInternal: PaginationInternal) {
+    paginationInternal.clickedSideButton = true;
+    setTimeout(() => (paginationInternal.clickedSideButton = false));
   }
 }

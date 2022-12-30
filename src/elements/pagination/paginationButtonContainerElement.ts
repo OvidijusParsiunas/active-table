@@ -3,7 +3,7 @@ import {PaginationFirstButtonElement} from './buttons/firstLast/paginationFirstB
 import {PaginationNumberButtonElement} from './buttons/number/paginationNumberButtonElement';
 import {PaginationLastButtonElement} from './buttons/firstLast/paginationLastButtonElement';
 import {PaginationNextButtonElement} from './buttons/prevNext/paginationNextButtonElement';
-import {PaginationUpdateButtons} from '../../utils/pagination/paginationUpdateButtons';
+import {PaginationUtils} from '../../utils/pagination/paginationUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationButtonElement} from './paginationButtonElement';
 import {TableElement} from '../table/tableElement';
@@ -14,10 +14,9 @@ export class PaginationButtonContainerElement {
   public static NUMBER_OF_SIDE_BUTTONS = 0;
 
   private static addNumberButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
-    const requiredNumberOfButtons = PaginationUpdateButtons.getExpectedNumberOfButtons(etc);
+    const requiredNumberOfButtons = PaginationUtils.getLastPossibleButtonNumber(etc);
     const {maxNumberOfButtons} = etc.paginationInternal;
-    const buttonsToAdd = requiredNumberOfButtons < maxNumberOfButtons ? requiredNumberOfButtons : maxNumberOfButtons;
-    for (let i = 0; i < buttonsToAdd; i += 1) {
+    for (let i = 0; i < Math.min(requiredNumberOfButtons, maxNumberOfButtons); i += 1) {
       const buttonElement = PaginationNumberButtonElement.create(etc, i + 1);
       buttonContainerElement.appendChild(buttonElement);
     }

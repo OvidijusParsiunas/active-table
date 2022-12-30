@@ -11,9 +11,10 @@ export class PaginationUtils {
   private static readonly VISIBLE_ROW = '';
   private static readonly HIDDEN_ROW = 'none';
 
-  public static getLastPossibleButtonNumber(etc: EditableTableComponent) {
+  public static getLastPossibleButtonNumber(etc: EditableTableComponent, isBeforeInsert = false) {
     const {contents, paginationInternal} = etc;
-    return Math.ceil((contents.length - 1) / paginationInternal.numberOfEntries);
+    const numberOfRows = isBeforeInsert ? contents.length : contents.length - 1;
+    return Math.ceil(numberOfRows / paginationInternal.numberOfEntries);
   }
 
   public static getNumberButtons(buttonContainer: HTMLElement) {

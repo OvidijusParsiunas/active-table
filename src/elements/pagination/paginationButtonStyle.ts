@@ -41,6 +41,7 @@ export class PaginationButtonStyle {
 
   // prettier-ignore
   public static mouseEnter(buttonElement: HTMLElement) {
+    if (buttonElement.classList.contains(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) return;
     buttonElement.style.backgroundColor = buttonElement
       .classList.contains(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)
       ? PaginationButtonStyle.HOVER_ACTIVE_BACKGROUND_COLOR : PaginationButtonStyle.HOVER_BACKGROUND_COLOR;
