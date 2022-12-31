@@ -1,49 +1,97 @@
+import {ColumnSettingsStyleUtils} from '../../utils/columnSettings/columnSettingsStyleUtils';
 import {PaginationButtonElement} from './paginationButtonElement';
+import {IPaginationStyle} from '../../types/paginationInternal';
+import {PropertiesOfType} from '../../types/utilityTypes';
+import {StatefulCSSS} from '../../types/cssStyle';
 
+// action buttons will never be active
 export class PaginationButtonStyle {
-  private static DEFAULT_ACTIVE_BACKGROUND_COLOR = 'green';
-  private static HOVER_ACTIVE_BACKGROUND_COLOR = 'lightgreen';
-  private static MOUSE_DOWN_ACTIVE_BACKGROUND_COLOR = 'deepskyblue';
-  private static DEFAULT_BACKGROUND_COLOR = '';
-  private static HOVER_BACKGROUND_COLOR = 'orange';
-  private static MOUSE_DOWN_BACKGROUND_COLOR = 'red';
-  private static DISABLED_BACKGROUND_COLOR = 'grey';
-
-  public static setDisabled(buttonElement: HTMLElement) {
-    buttonElement.style.backgroundColor = PaginationButtonStyle.DISABLED_BACKGROUND_COLOR;
-  }
-
-  public static unset(buttonElement: HTMLElement) {
-    buttonElement.style.backgroundColor = PaginationButtonStyle.DEFAULT_BACKGROUND_COLOR;
-  }
-
-  public static setActive(newActiveButton: HTMLElement, previousActiveButton?: HTMLElement) {
-    if (previousActiveButton) previousActiveButton.style.backgroundColor = PaginationButtonStyle.DEFAULT_BACKGROUND_COLOR;
-    newActiveButton.style.backgroundColor = PaginationButtonStyle.DEFAULT_ACTIVE_BACKGROUND_COLOR;
+  // prettier-ignore
+  private static unsetAllCSSStates(buttonElement: HTMLElement,
+      paginationStyle: IPaginationStyle, buttonType: keyof PropertiesOfType<IPaginationStyle, Required<StatefulCSSS>>) {
+    ColumnSettingsStyleUtils.unsetCellSettingStyle(buttonElement, paginationStyle[buttonType].click);
+    ColumnSettingsStyleUtils.unsetCellSettingStyle(buttonElement, paginationStyle[buttonType].hover);
+    ColumnSettingsStyleUtils.unsetCellSettingStyle(buttonElement, paginationStyle[buttonType].default);
   }
 
   // prettier-ignore
-  public static mouseDown(buttonElement: HTMLElement) {
-    buttonElement.style.backgroundColor = buttonElement
-      .classList.contains(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)
-      ? PaginationButtonStyle.MOUSE_DOWN_ACTIVE_BACKGROUND_COLOR : PaginationButtonStyle.MOUSE_DOWN_BACKGROUND_COLOR;
+  private static unsetAll(buttonElement: HTMLElement, paginationStyle: IPaginationStyle, isActionButton: boolean) {
+    if (buttonElement.classList.contains(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)) {
+      PaginationButtonStyle.unsetAllCSSStates(buttonElement, paginationStyle, 'activeButton');
+    } else if (buttonElement.classList.contains(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) {
+      ColumnSettingsStyleUtils.unsetCellSettingStyle(buttonElement, paginationStyle.disabledButtons);
+    } else {
+      PaginationButtonStyle.unsetAllCSSStates(buttonElement, paginationStyle,
+        isActionButton ? 'actionButtons' : 'buttons');
+    }
+  }
+
+  public static setDefault(buttonElement: HTMLElement, paginationStyle: IPaginationStyle, isActionButton: boolean) {
+    PaginationButtonStyle.unsetAll(buttonElement, paginationStyle, isActionButton);
+    Object.assign(buttonElement.style, paginationStyle.buttons.default);
+    if (isActionButton) {
+      Object.assign(buttonElement.style, paginationStyle.actionButtons.default);
+    }
   }
 
   // prettier-ignore
-  public static mouseLeave(buttonElement: HTMLElement) {
+  public static setActive(newActiveButton: HTMLElement, paginationStyle: IPaginationStyle,
+      previousActiveButton?: HTMLElement) {
+    if (previousActiveButton) {
+      PaginationButtonStyle.unsetAllCSSStates(previousActiveButton, paginationStyle, 'activeButton');
+      PaginationButtonStyle.unsetAllCSSStates(previousActiveButton, paginationStyle, 'buttons');
+      Object.assign(previousActiveButton.style, paginationStyle.buttons.default);
+    }
+    if (newActiveButton.classList.contains(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) {
+      ColumnSettingsStyleUtils.unsetCellSettingStyle(newActiveButton, paginationStyle.disabledButtons);
+    } else {
+      PaginationButtonStyle.unsetAllCSSStates(newActiveButton, paginationStyle, 'buttons');
+    }
+    Object.assign(newActiveButton.style, paginationStyle.activeButton.default);
+  }
+
+  public static setDisabled(buttonElement: HTMLElement, paginationStyle: IPaginationStyle, isActionButton: boolean) {
+    PaginationButtonStyle.unsetAll(buttonElement, paginationStyle, isActionButton);
+    Object.assign(buttonElement.style, paginationStyle.disabledButtons);
+  }
+
+  public static mouseDown(buttonElement: HTMLElement, paginationStyle: IPaginationStyle, isActionButton: boolean) {
+    if (buttonElement.classList.contains(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)) {
+      Object.assign(buttonElement.style, paginationStyle.activeButton.click);
+    } else if (isActionButton) {
+      Object.assign(buttonElement.style, paginationStyle.actionButtons.click);
+    } else {
+      Object.assign(buttonElement.style, paginationStyle.buttons.click);
+    }
+  }
+
+  public static mouseEnter(buttonElement: HTMLElement, paginationStyle: IPaginationStyle, isActionButton: boolean) {
+    if (buttonElement.classList.contains(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) return;
+    if (buttonElement.classList.contains(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)) {
+      // needed to unset click style and reset default + hover styles
+      PaginationButtonStyle.unsetAllCSSStates(buttonElement, paginationStyle, 'activeButton');
+      Object.assign(buttonElement.style, paginationStyle.activeButton.default);
+      Object.assign(buttonElement.style, paginationStyle.activeButton.hover);
+    } else {
+      // needed to unset click style and reset default + hover styles
+      PaginationButtonStyle.setDefault(buttonElement, paginationStyle, isActionButton);
+      if (isActionButton) {
+        Object.assign(buttonElement.style, paginationStyle.actionButtons.hover);
+      } else {
+        Object.assign(buttonElement.style, paginationStyle.buttons.hover);
+      }
+    }
+  }
+
+  public static mouseLeave(buttonElement: HTMLElement, paginationStyle: IPaginationStyle, isActionButton: boolean) {
     // this is required because mouseLeave can be fired when the hovered button is disabled
     // as pointer-events are set to none
     if (buttonElement.classList.contains(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) return;
-    buttonElement.style.backgroundColor = buttonElement
-      .classList.contains(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)
-      ? PaginationButtonStyle.DEFAULT_ACTIVE_BACKGROUND_COLOR : PaginationButtonStyle.DEFAULT_BACKGROUND_COLOR;
-  }
-
-  // prettier-ignore
-  public static mouseEnter(buttonElement: HTMLElement) {
-    if (buttonElement.classList.contains(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) return;
-    buttonElement.style.backgroundColor = buttonElement
-      .classList.contains(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)
-      ? PaginationButtonStyle.HOVER_ACTIVE_BACKGROUND_COLOR : PaginationButtonStyle.HOVER_BACKGROUND_COLOR;
+    if (buttonElement.classList.contains(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)) {
+      PaginationButtonStyle.unsetAll(buttonElement, paginationStyle, false);
+      Object.assign(buttonElement.style, paginationStyle.activeButton.default);
+    } else {
+      PaginationButtonStyle.setDefault(buttonElement, paginationStyle, isActionButton);
+    }
   }
 }

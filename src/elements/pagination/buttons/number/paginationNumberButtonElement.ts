@@ -4,7 +4,7 @@ import {PaginationButtonElement} from '../../paginationButtonElement';
 
 export class PaginationNumberButtonElement {
   public static create(etc: EditableTableComponent, buttonNumber: number) {
-    const buttonElement = PaginationButtonElement.create(buttonNumber);
+    const buttonElement = PaginationButtonElement.create(buttonNumber, etc.paginationInternal.style, false);
     setTimeout(() => PaginationNumberButtonEvents.setEvents(etc, buttonNumber, buttonElement));
     return buttonElement;
   }

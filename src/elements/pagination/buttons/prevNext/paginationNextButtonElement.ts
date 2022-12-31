@@ -4,7 +4,7 @@ import {PaginationButtonElement} from '../../paginationButtonElement';
 
 export class PaginationNextButtonElement {
   public static create(etc: EditableTableComponent) {
-    const previousButtonElement = PaginationButtonElement.create('&#62');
+    const previousButtonElement = PaginationButtonElement.create('&#62', etc.paginationInternal.style, true);
     setTimeout(() => PaginationNextButtonEvents.setEvents(etc, previousButtonElement));
     return previousButtonElement;
   }

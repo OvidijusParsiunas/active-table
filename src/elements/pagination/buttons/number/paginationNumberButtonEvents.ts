@@ -13,10 +13,14 @@ export class PaginationNumberButtonEvents {
   private static buttonMouseUp(this: EditableTableComponent, buttonNumber: number, event: MouseEvent) {
     PaginationNumberButtonEvents.markClick(this.paginationInternal);
     const buttonElement = event.target as HTMLElement;
-    PaginationButtonStyle.mouseEnter(buttonElement);
     const {paginationInternal} = this;
-    if (paginationInternal.activeButtonNumber === buttonNumber) return;
-    PaginationUtils.displayRowsForDifferentButton(this, buttonNumber);
+    if (paginationInternal.activeButtonNumber === buttonNumber) {
+      PaginationButtonStyle.mouseEnter(buttonElement, this.paginationInternal.style, false);
+    } else {
+      PaginationUtils.displayRowsForDifferentButton(this, buttonNumber);
+      // for the case when mouse clicks on a number button and no new buttons are created
+      PaginationButtonStyle.mouseEnter(buttonElement, this.paginationInternal.style, false);
+    }
   }
 
   public static setEvents(etc: EditableTableComponent, buttonNumber: number, buttonElement: HTMLElement) {

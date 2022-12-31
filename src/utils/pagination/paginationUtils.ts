@@ -1,11 +1,19 @@
 import {PaginationButtonContainerElement} from '../../elements/pagination/paginationButtonContainerElement';
 import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
 import {PaginationButtonElement} from '../../elements/pagination/paginationButtonElement';
+import {IPaginationStyle, PaginationInternal} from '../../types/paginationInternal';
 import {EditableTableComponent} from '../../editable-table-component';
-import {PaginationInternal} from '../../types/paginationInternal';
+import {Pagination, PaginationStyle} from '../../types/pagination';
 import {PaginationUpdateButtons} from './paginationUpdateButtons';
 import {ExtractElements} from '../elements/extractElements';
-import {Pagination} from '../../types/pagination';
+import {PropertiesOfType} from '../../types/utilityTypes';
+import {StatefulCSSS} from '../../types/cssStyle';
+
+interface DefaultBackgroundColors {
+  def: string;
+  hover: string;
+  click: string;
+}
 
 export class PaginationUtils {
   private static readonly VISIBLE_ROW = '';
@@ -112,10 +120,43 @@ export class PaginationUtils {
     PaginationButtonElement.setActive(etc, etc.paginationInternal.buttonContainer as HTMLElement, buttonNumber);
   }
 
+  // prettier-ignore
+  private static setInternalStyle(style: IPaginationStyle, defaultBackgrounds: DefaultBackgroundColors,
+      buttonType: keyof PropertiesOfType<IPaginationStyle, Required<StatefulCSSS>>) {
+    (style as PaginationStyle<StatefulCSSS>)[buttonType] ??= {};
+    const {def, hover, click} = defaultBackgrounds;
+    style[buttonType].click ??= style[buttonType].hover || style[buttonType].default || {backgroundColor: click};
+    style[buttonType].hover ??= style[buttonType].default || {backgroundColor: hover};
+    style[buttonType].default ??= {backgroundColor: def};
+  }
+
+  // prettier-ignore
+  private static processButtonStyle(pagination: Pagination, paginationInternal: PaginationInternal) {
+    if (pagination.style) Object.assign(paginationInternal.style, pagination.style);
+    const actionButtonsUseButtonStyle = !paginationInternal.style.actionButtons && paginationInternal.style.buttons;
+    (paginationInternal as Required<Pagination>).style.buttons ??= {};
+    PaginationUtils.setInternalStyle(paginationInternal.style, {def: 'yellow', hover: 'orange', click: 'red'}, 'buttons');
+    if (actionButtonsUseButtonStyle) {
+      paginationInternal.style.actionButtons = paginationInternal.style.buttons;
+    } else {
+      PaginationUtils.setInternalStyle(paginationInternal.style,
+        {def: 'green', hover: 'blue', click: 'deepskyblue'}, 'actionButtons');
+    }
+    PaginationUtils.setInternalStyle(paginationInternal.style,
+      {def: 'brown', hover: 'violet', click: 'purple'}, 'activeButton');
+    paginationInternal.style.disabledButtons ??= {backgroundColor: 'grey'};
+  }
+
+  private static processStyle(pagination: Pagination, paginationInternal: PaginationInternal) {
+    PaginationUtils.processButtonStyle(pagination, paginationInternal);
+    delete pagination.style; // deleted so that Object.assign wouldn't apply it
+  }
+
   public static processInternal(pagination: Pagination, paginationInternal: PaginationInternal) {
     if (pagination.maxNumberOfButtons !== undefined && pagination.maxNumberOfButtons < 1) {
       pagination.maxNumberOfButtons = 1;
     }
+    PaginationUtils.processStyle(pagination, paginationInternal);
     Object.assign(paginationInternal, pagination);
   }
 
@@ -127,6 +168,7 @@ export class PaginationUtils {
       visibleRows: [],
       displayPrevNext: true,
       displayFirstLast: true,
-    };
+      style: {}, // this is going to be populated during the call of processInternal method
+    } as unknown as PaginationInternal;
   }
 }

@@ -5,8 +5,8 @@ import {PaginationButtonStyle} from '../../paginationButtonStyle';
 export class PaginationLastButtonEvents {
   private static buttonMouseUp(this: EditableTableComponent, event: MouseEvent) {
     const buttonElement = event.target as HTMLElement;
-    PaginationButtonStyle.mouseEnter(buttonElement);
-    const {activeButtonNumber, buttonContainer} = this.paginationInternal;
+    const {activeButtonNumber, buttonContainer, style} = this.paginationInternal;
+    PaginationButtonStyle.mouseEnter(buttonElement, style, true);
     if (!buttonContainer) return;
     const numberOfNumberButtons = PaginationUtils.getLastPossibleButtonNumber(this);
     if (numberOfNumberButtons <= activeButtonNumber) return;

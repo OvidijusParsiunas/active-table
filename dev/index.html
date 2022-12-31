@@ -209,6 +209,35 @@
             ])
           );
           element.setAttribute('rowDropdownSettings', JSON.stringify({isMoveAvailable: true}));
+          element.setAttribute(
+            'pagination',
+            JSON.stringify({
+              // displayPrevNext: false,
+              // displayFirstLast: false,
+              numberOfEntries: 2,
+              maxNumberOfButtons: 7,
+              style: {
+                buttons: {
+                  default: {backgroundColor: 'purple'},
+                  hover: {backgroundColor: 'orange'},
+                  click: {backgroundColor: 'red'},
+                },
+                activeButton: {
+                  default: {backgroundColor: 'brown'},
+                  hover: {backgroundColor: 'violet'},
+                  click: {backgroundColor: 'green'},
+                },
+                actionButtons: {
+                  default: {backgroundColor: 'blue'},
+                  hover: {backgroundColor: 'skyblue'},
+                  click: {backgroundColor: 'deepskyblue'},
+                },
+                disabledButtons: {
+                  backgroundColor: 'grey',
+                },
+              },
+            })
+          );
           // element.setAttribute('columnDropdownDisplaySettings', JSON.stringify({isAvailable: true}));
           // element.setAttribute(
           //   'columnResizerStyle',

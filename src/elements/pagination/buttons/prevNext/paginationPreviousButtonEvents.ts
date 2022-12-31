@@ -4,11 +4,11 @@ import {PaginationButtonStyle} from '../../paginationButtonStyle';
 
 export class PaginationPreviousButtonEvents {
   private static buttonMouseUp(this: EditableTableComponent, event: MouseEvent) {
-    const {activeButtonNumber} = this.paginationInternal;
+    const {activeButtonNumber, style} = this.paginationInternal;
     if (activeButtonNumber === 1) return;
     PaginationUtils.displayRowsForDifferentButton(this, activeButtonNumber - 1);
     const buttonElement = event.target as HTMLElement;
-    PaginationButtonStyle.mouseEnter(buttonElement);
+    PaginationButtonStyle.mouseEnter(buttonElement, style, true);
   }
 
   public static setEvents(etc: EditableTableComponent, previousButtonElement: HTMLElement) {

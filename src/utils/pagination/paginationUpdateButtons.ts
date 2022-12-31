@@ -6,7 +6,6 @@ import {PaginationUtils} from './paginationUtils';
 
 export class PaginationUpdateButtons {
   private static removeLastNumberButton(etc: EditableTableComponent, numberButtons: HTMLElement[]) {
-    const {buttonContainer, activeButtonNumber} = etc.paginationInternal;
     numberButtons[numberButtons.length - 1].remove();
     const firstNumberButton = numberButtons[0];
     const firstNumber = Number(firstNumberButton.innerText);
@@ -14,18 +13,20 @@ export class PaginationUpdateButtons {
       const buttonElement = PaginationNumberButtonElement.create(etc, firstNumber - 1);
       firstNumberButton.insertAdjacentElement('beforebegin', buttonElement);
     }
-    PaginationActionButtonUtils.toggleActionButtons(buttonContainer as HTMLElement, activeButtonNumber);
+    const {paginationInternal} = etc;
+    PaginationActionButtonUtils.toggleActionButtons(paginationInternal, paginationInternal.buttonContainer as HTMLElement);
   }
 
   public static updateOnRowRemove(etc: EditableTableComponent) {
-    const {buttonContainer} = etc.paginationInternal;
-    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer as HTMLElement);
+    const {buttonContainer, style} = etc.paginationInternal;
+    if (!buttonContainer) return;
+    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
     const lastNumberButton = numberButtons[numberButtons.length - 1];
-    if (buttonContainer && Number(lastNumberButton.innerText) > PaginationUtils.getLastPossibleButtonNumber(etc)) {
+    if (Number(lastNumberButton.innerText) > PaginationUtils.getLastPossibleButtonNumber(etc)) {
       if (numberButtons.length > 1) {
         PaginationUpdateButtons.removeLastNumberButton(etc, numberButtons);
       } else {
-        PaginationButtonElement.setDisabled(buttonContainer);
+        PaginationButtonElement.setDisabled(buttonContainer, style);
       }
     }
   }
@@ -40,9 +41,9 @@ export class PaginationUpdateButtons {
   }
 
   public static updateOnRowInsert(etc: EditableTableComponent) {
-    const {buttonContainer} = etc.paginationInternal;
+    const {buttonContainer, style} = etc.paginationInternal;
     if (buttonContainer && etc.contents.length === 1) {
-      PaginationButtonElement.unsetDisabled(buttonContainer);
+      PaginationButtonElement.unsetDisabled(buttonContainer, style);
     } else if (buttonContainer) {
       const {maxNumberOfButtons} = etc.paginationInternal;
       const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);

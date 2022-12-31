@@ -43,7 +43,7 @@ export class PaginationButtonContainerElement {
       PaginationButtonContainerElement.addButton(buttonContainerElement, PaginationLastButtonElement.create(etc));
     }
     if (etc.contents.length < 2) {
-      PaginationButtonElement.setDisabled(buttonContainerElement);
+      PaginationButtonElement.setDisabled(buttonContainerElement, etc.paginationInternal.style);
     } else {
       PaginationButtonElement.setActive(etc, buttonContainerElement, 1);
     }
