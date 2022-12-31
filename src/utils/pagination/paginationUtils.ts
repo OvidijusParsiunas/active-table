@@ -19,7 +19,7 @@ export class PaginationUtils {
 
   public static getNumberButtons(buttonContainer: HTMLElement) {
     const allButtons = Array.from(buttonContainer.children) as HTMLElement[];
-    const halfOfSideButtons = PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS / 2;
+    const halfOfSideButtons = PaginationButtonContainerElement.NUMBER_OF_ACTION_BUTTONS / 2;
     return allButtons.slice(halfOfSideButtons, allButtons.length - halfOfSideButtons);
   }
 

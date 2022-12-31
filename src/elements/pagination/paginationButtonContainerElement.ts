@@ -11,7 +11,7 @@ import {TableElement} from '../table/tableElement';
 export class PaginationButtonContainerElement {
   private static readonly PAGINATION_BUTTON_CONTAINER_ID = 'pagination-button-container';
   private static readonly GAP = 10;
-  public static NUMBER_OF_SIDE_BUTTONS = 0;
+  public static NUMBER_OF_ACTION_BUTTONS = 0;
 
   private static addNumberButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
     const requiredNumberOfButtons = PaginationUtils.getLastPossibleButtonNumber(etc);
@@ -24,7 +24,7 @@ export class PaginationButtonContainerElement {
 
   private static addButton(buttonContainerElement: HTMLElement, buttonElement: HTMLElement) {
     buttonContainerElement.appendChild(buttonElement);
-    PaginationButtonContainerElement.NUMBER_OF_SIDE_BUTTONS += 1;
+    PaginationButtonContainerElement.NUMBER_OF_ACTION_BUTTONS += 1;
   }
 
   private static populateButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {

@@ -1,7 +1,7 @@
 import {PaginationNumberButtonElement} from '../../elements/pagination/buttons/number/paginationNumberButtonElement';
 import {PaginationButtonElement} from '../../elements/pagination/paginationButtonElement';
+import {PaginationActionButtonUtils} from './paginationActionButtonUtils';
 import {EditableTableComponent} from '../../editable-table-component';
-import {PaginationSideButtonUtils} from './paginationSideButtonUtils';
 import {PaginationUtils} from './paginationUtils';
 
 export class PaginationUpdateButtons {
@@ -14,7 +14,7 @@ export class PaginationUpdateButtons {
       const buttonElement = PaginationNumberButtonElement.create(etc, firstNumber - 1);
       firstNumberButton.insertAdjacentElement('beforebegin', buttonElement);
     }
-    PaginationSideButtonUtils.toggleSideButtons(buttonContainer as HTMLElement, activeButtonNumber);
+    PaginationActionButtonUtils.toggleActionButtons(buttonContainer as HTMLElement, activeButtonNumber);
   }
 
   public static updateOnRowRemove(etc: EditableTableComponent) {

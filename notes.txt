@@ -234,6 +234,13 @@ the initial table render.
 REF-29
 Safari does not support the focus of a checkbox, therefore we do not focus it's cell for that browser when tabbing
 
+REF-30
+When new buttons are being created in pagination during a shift and the mouse is over a new button - the mouse enter event
+does not get triggered, hence we need to apply it programmatically. Because it is set in PaginationButtonElement.setActive
+method, the shift can be triggered by side buttons and row events, hence we need a way to identify if it was activated
+via number click events. Passing down an indicator via parameters would have complicated the code too much, hence I opted
+for an easier solution to hold temporary state of when a number button has been clicked. 
+
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
 does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()

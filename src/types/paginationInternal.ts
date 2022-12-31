@@ -4,5 +4,5 @@ export interface PaginationInternal extends Required<Pagination> {
   buttonContainer?: HTMLElement;
   visibleRows: HTMLElement[];
   activeButtonNumber: number;
-  clickedSideButton?: boolean;
+  clickedNumberButton?: boolean; // REF-30
 }
