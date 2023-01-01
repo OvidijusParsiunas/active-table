@@ -6,6 +6,7 @@ import {InitialContentsProcessing} from './utils/contents/initialContentsProcess
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
 import {DynamicCellTextUpdate} from './utils/dynamicUpdates/dynamicCellTextUpdate';
+import {PaginationInternalUtils} from './utils/pagination/paginationInternalUtils';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
@@ -192,7 +193,7 @@ export class EditableTableComponent extends LitElement {
     AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
     RowDropdownSettingsUtil.process(this.rowDropdownSettings, this.auxiliaryTableContentInternal.displayIndexColumn);
     DropdownDisplaySettingsUtil.process(this.columnDropdownDisplaySettings);
-    if (this.pagination) PaginationUtils.processInternal(this.pagination, this.paginationInternal);
+    if (this.pagination) PaginationInternalUtils.process(this.pagination, this.paginationInternal);
     const tableElement = TableElement.createInfrastructureElements(this);
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
     this.shadowRoot?.appendChild(tableElement);

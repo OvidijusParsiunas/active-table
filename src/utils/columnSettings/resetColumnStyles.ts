@@ -4,6 +4,7 @@ import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
 import {DefaultColumnsSettings} from '../../types/columnsSettings';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
+import {ElementStyle} from '../elements/elementStyle';
 import {CellCSSStyle} from '../../types/cssStyle';
 
 export class ResetColumnStyles {
@@ -26,9 +27,7 @@ export class ResetColumnStyles {
   public static setDefaultStyle(columnDetails: ColumnDetailsT, processedStyle: CellProcessedTextStyle,
       textContainerElement: HTMLElement, defaultColumnsSettings: DefaultColumnsSettings, oldCellStyle?: CellCSSStyle) {
     ResetColumnStyles.unsetLastAppliedStyle(processedStyle, textContainerElement);
-    if (oldCellStyle) {
-      ColumnSettingsStyleUtils.unsetCellSettingStyle(textContainerElement, oldCellStyle);
-    }
+    if (oldCellStyle) ElementStyle.unsetStyle(textContainerElement, oldCellStyle);
     CellElement.setDefaultCellStyle(textContainerElement, defaultColumnsSettings.cellStyle);
     ColumnSettingsStyleUtils.applySettingsStyleOnCell(columnDetails.settings, textContainerElement, false);
   }

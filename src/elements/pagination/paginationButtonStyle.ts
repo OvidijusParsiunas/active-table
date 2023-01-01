@@ -1,6 +1,6 @@
-import {ColumnSettingsStyleUtils} from '../../utils/columnSettings/columnSettingsStyleUtils';
 import {PaginationButtonElement} from './paginationButtonElement';
 import {IPaginationStyle} from '../../types/paginationInternal';
+import {ElementStyle} from '../../utils/elements/elementStyle';
 import {PropertiesOfType} from '../../types/utilityTypes';
 import {StatefulCSSS} from '../../types/cssStyle';
 
@@ -9,9 +9,9 @@ export class PaginationButtonStyle {
   // prettier-ignore
   private static unsetAllCSSStates(buttonElement: HTMLElement,
       paginationStyle: IPaginationStyle, buttonType: keyof PropertiesOfType<IPaginationStyle, Required<StatefulCSSS>>) {
-    ColumnSettingsStyleUtils.unsetCellSettingStyle(buttonElement, paginationStyle[buttonType].click);
-    ColumnSettingsStyleUtils.unsetCellSettingStyle(buttonElement, paginationStyle[buttonType].hover);
-    ColumnSettingsStyleUtils.unsetCellSettingStyle(buttonElement, paginationStyle[buttonType].default);
+    ElementStyle.unsetStyle(buttonElement, paginationStyle[buttonType].click);
+    ElementStyle.unsetStyle(buttonElement, paginationStyle[buttonType].hover);
+    ElementStyle.unsetStyle(buttonElement, paginationStyle[buttonType].default);
   }
 
   // prettier-ignore
@@ -19,7 +19,7 @@ export class PaginationButtonStyle {
     if (buttonElement.classList.contains(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)) {
       PaginationButtonStyle.unsetAllCSSStates(buttonElement, paginationStyle, 'activeButton');
     } else if (buttonElement.classList.contains(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) {
-      ColumnSettingsStyleUtils.unsetCellSettingStyle(buttonElement, paginationStyle.disabledButtons);
+      ElementStyle.unsetStyle(buttonElement, paginationStyle.disabledButtons);
     } else {
       PaginationButtonStyle.unsetAllCSSStates(buttonElement, paginationStyle,
         isActionButton ? 'actionButtons' : 'buttons');
@@ -28,9 +28,10 @@ export class PaginationButtonStyle {
 
   public static setDefault(buttonElement: HTMLElement, paginationStyle: IPaginationStyle, isActionButton: boolean) {
     PaginationButtonStyle.unsetAll(buttonElement, paginationStyle, isActionButton);
-    Object.assign(buttonElement.style, paginationStyle.buttons.default);
     if (isActionButton) {
       Object.assign(buttonElement.style, paginationStyle.actionButtons.default);
+    } else {
+      Object.assign(buttonElement.style, paginationStyle.buttons.default);
     }
   }
 
@@ -39,11 +40,10 @@ export class PaginationButtonStyle {
       previousActiveButton?: HTMLElement) {
     if (previousActiveButton) {
       PaginationButtonStyle.unsetAllCSSStates(previousActiveButton, paginationStyle, 'activeButton');
-      PaginationButtonStyle.unsetAllCSSStates(previousActiveButton, paginationStyle, 'buttons');
       Object.assign(previousActiveButton.style, paginationStyle.buttons.default);
     }
     if (newActiveButton.classList.contains(PaginationButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) {
-      ColumnSettingsStyleUtils.unsetCellSettingStyle(newActiveButton, paginationStyle.disabledButtons);
+      ElementStyle.unsetStyle(newActiveButton, paginationStyle.disabledButtons);
     } else {
       PaginationButtonStyle.unsetAllCSSStates(newActiveButton, paginationStyle, 'buttons');
     }

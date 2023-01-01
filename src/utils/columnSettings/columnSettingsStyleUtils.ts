@@ -7,20 +7,12 @@ import {ColumnDetails} from '../columnDetails/columnDetails';
 import {CellElement} from '../../elements/cell/cellElement';
 import {CellCSSStyle, CSSStyle} from '../../types/cssStyle';
 import {ColumnDetailsT} from '../../types/columnDetails';
-import {GenericObject} from '../../types/genericObject';
+import {ElementStyle} from '../elements/elementStyle';
 import {RegexUtils} from '../regex/regexUtils';
 
 export class ColumnSettingsStyleUtils {
   public static applySettingsStyleOnCell(settings: ColumnSettingsInternal, cellElement: HTMLElement, isHeader: boolean) {
     Object.assign(cellElement.style, settings.cellStyle || {}, isHeader ? settings.headerStyleProps?.default || {} : {});
-  }
-
-  public static unsetCellSettingStyle(element: HTMLElement, style: CellCSSStyle) {
-    const unsetStyles = Object.keys(style).reduce<GenericObject>((obj, styleName) => {
-      obj[styleName] = '';
-      return obj;
-    }, {});
-    Object.assign(element.style, unsetStyles);
   }
 
   private static unsetHeaderSettingStyle(headerElement: HTMLElement, style: CellCSSStyle) {
@@ -35,7 +27,7 @@ export class ColumnSettingsStyleUtils {
     if (settings.headerStyleProps?.default) {
       ColumnSettingsStyleUtils.unsetHeaderSettingStyle(columnElements[0], settings.headerStyleProps.default);
     }
-    if (settings.cellStyle) ColumnSettingsStyleUtils.unsetCellSettingStyle(columnElements[0], settings.cellStyle);
+    if (settings.cellStyle) ElementStyle.unsetStyle(columnElements[0], settings.cellStyle);
     const {cellStyle, headerStyleProps} = defaultColumnsSettings;
     CellElement.setDefaultCellStyle(columnElements[0], cellStyle, headerStyleProps?.default);
   }
