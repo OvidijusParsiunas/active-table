@@ -1,4 +1,4 @@
-import {Pagination, PaginationStyle} from './pagination';
+import {Pagination, PaginationPositions, PaginationStyle} from './pagination';
 import {StatefulCSSS} from './cssStyle';
 
 // (InternalPaginationStyle)
@@ -10,4 +10,5 @@ export interface PaginationInternal extends Required<Pagination> {
   activeButtonNumber: number;
   clickedNumberButton?: boolean; // REF-30
   style: IPaginationStyle;
+  positions: Required<PaginationPositions>;
 }

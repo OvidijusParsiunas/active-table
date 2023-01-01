@@ -1,17 +1,17 @@
 import {CSSStyle, StatefulCSSS} from './cssStyle';
-import {PX} from './dimensions';
 
-interface ContainerStyle {
-  border: string;
-  margin?: PX;
-  marginTop?: PX;
-  marginLeft?: PX;
-  marginRight?: PX;
-  marginBottom?: PX;
-  top?: PX;
-  left?: PX;
-  right?: PX;
-  bottom?: PX;
+export interface PaginationPositions {
+  container?: PaginationPosition;
+}
+
+export interface ContainerStyle {
+  border?: string;
+  margin?: string;
+  marginTop?: string;
+  marginLeft?: string;
+  marginRight?: string;
+  marginBottom?: string;
+  float?: 'right' | 'left' | '';
 }
 
 type ActionButtonStyle<T> = T & {
@@ -29,10 +29,19 @@ export interface PaginationStyle<T> {
   actionButtons?: ActionButtonStyle<T>; // will also use 'buttons' style
 }
 
+export type PaginationPosition =
+  | 'top-left'
+  | 'top-middle'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-middle'
+  | 'bottom-right';
+
 export interface Pagination {
   numberOfEntries?: number; // by default set to 10
   maxNumberOfButtons?: number; // by default set to 8
   displayPrevNext?: boolean; // by default true
   displayFirstLast?: boolean; // by default true
   style?: PaginationStyle<StatefulCSSS>;
+  positions?: PaginationPositions;
 }

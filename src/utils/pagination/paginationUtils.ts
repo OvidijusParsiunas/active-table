@@ -120,6 +120,9 @@ export class PaginationUtils {
       displayPrevNext: true,
       displayFirstLast: true,
       style: {}, // this is going to be populated during the call of processInternal method
+      positions: {
+        container: 'bottom-right',
+      },
     } as unknown as PaginationInternal;
   }
 }

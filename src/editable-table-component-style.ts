@@ -325,11 +325,11 @@ export const ediTableStyle = css`
   }
 
   #pagination-button-container {
-    border: 1px solid black;
     border-radius: 2px;
-    position: absolute;
     right: 0;
     display: flex;
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    width: fit-content;
   }
 
   .pagination-button {

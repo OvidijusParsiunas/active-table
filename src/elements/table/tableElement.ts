@@ -114,10 +114,7 @@ export class TableElement {
     etc.tableElementRef.appendChild(etc.tableBodyElementRef);
     etc.categoryDropdownContainer = CategoryDropdown.createContainerElement();
     etc.tableElementRef.appendChild(etc.categoryDropdownContainer);
-    if (etc.paginationInternal) {
-      etc.paginationInternal.buttonContainer = PaginationButtonContainerElement.create(etc);
-      etc.tableElementRef.appendChild(etc.paginationInternal.buttonContainer);
-    }
+    if (etc.paginationInternal) etc.paginationInternal.buttonContainer = PaginationButtonContainerElement.create(etc);
     TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtils.generateUsingElement(etc.tableElementRef as HTMLElement);
     return etc.tableElementRef;
   }

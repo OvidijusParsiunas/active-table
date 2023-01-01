@@ -6,11 +6,9 @@ import {PaginationNextButtonElement} from './buttons/prevNext/paginationNextButt
 import {PaginationUtils} from '../../utils/pagination/paginationUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationButtonElement} from './paginationButtonElement';
-import {TableElement} from '../table/tableElement';
 
 export class PaginationButtonContainerElement {
   private static readonly PAGINATION_BUTTON_CONTAINER_ID = 'pagination-button-container';
-  private static readonly GAP = 10;
   public static NUMBER_OF_ACTION_BUTTONS = 0;
 
   private static addNumberButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
@@ -49,20 +47,22 @@ export class PaginationButtonContainerElement {
     }
   }
 
-  private static setHeight(buttonContainerElement: HTMLElement) {
-    const bottomMargin =
-      TableElement.BORDER_DIMENSIONS.bottomWidth +
-      PaginationButtonContainerElement.GAP +
-      buttonContainerElement.offsetHeight;
-    buttonContainerElement.style.bottom = `-${bottomMargin}px`;
+  // prettier-ignore
+  private static insertToDOM(etc: EditableTableComponent) {
+    const containerPosition = etc.paginationInternal.positions.container;
+    if (!etc.tableElementRef) return;
+    // insert before if on top of table or after if it is below the table
+    const insertPosition = containerPosition === 'top-left' || containerPosition === 'top-middle'
+      || containerPosition === 'top-right' ? 'beforebegin' : 'afterend'
+    etc.tableElementRef.insertAdjacentElement(insertPosition, etc.paginationInternal.buttonContainer as HTMLElement);
   }
 
   public static create(etc: EditableTableComponent) {
     const buttonContainerElement = document.createElement('div');
     buttonContainerElement.id = PaginationButtonContainerElement.PAGINATION_BUTTON_CONTAINER_ID;
+    Object.assign(buttonContainerElement.style, etc.paginationInternal.style.container);
     PaginationButtonContainerElement.populateButtons(etc, buttonContainerElement);
-    // need to wait for border to be set and visible
-    setTimeout(() => PaginationButtonContainerElement.setHeight(buttonContainerElement));
+    setTimeout(() => PaginationButtonContainerElement.insertToDOM(etc));
     return buttonContainerElement;
   }
 }
