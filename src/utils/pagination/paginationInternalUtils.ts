@@ -42,10 +42,15 @@ export class PaginationInternalUtils {
   private static mergeActionButtonsStyleWithNewButtons(style: IPaginationStyle) {
     (style as PaginationStyle<StatefulCSSS>).actionButtons ??= {};
     const {buttons, actionButtons} = style;
-    const buttonsClone = JSON.parse(JSON.stringify(buttons)); // structuredClone does not seem to work properly
+    // structuredClone does not seem to work properly
+    const buttonsClone = JSON.parse(JSON.stringify(buttons)) as typeof actionButtons;
     Object.assign(buttonsClone.default, actionButtons.default);
     Object.assign(buttonsClone.hover, actionButtons.hover);
     Object.assign(buttonsClone.click, actionButtons.click);
+    buttonsClone.previousText = actionButtons.previousText || '&#60';
+    buttonsClone.nextText = actionButtons.nextText || '&#62';
+    buttonsClone.firstText = actionButtons.firstText || '&#8810';
+    buttonsClone.lastText = actionButtons.lastText || '&#8811';
     return buttonsClone;
   }
 

@@ -1,5 +1,13 @@
 import {CSSStyle, StatefulCSSS} from './cssStyle';
 
+export type PaginationPosition =
+  | 'top-left'
+  | 'top-middle'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-middle'
+  | 'bottom-right';
+
 export interface PaginationPositions {
   container?: PaginationPosition;
 }
@@ -28,14 +36,6 @@ export interface PaginationStyle<T> {
   disabledButtons?: CSSStyle; // disabled buttons do not have any mouse events
   actionButtons?: ActionButtonStyle<T>; // will also use 'buttons' style
 }
-
-export type PaginationPosition =
-  | 'top-left'
-  | 'top-middle'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-middle'
-  | 'bottom-right';
 
 export interface Pagination {
   numberOfEntries?: number; // by default set to 10

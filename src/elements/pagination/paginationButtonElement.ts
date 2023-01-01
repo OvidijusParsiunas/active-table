@@ -30,7 +30,7 @@ export class PaginationButtonElement {
       PaginationButtonStyle.setDisabled(buttons[buttons.length - 1 - i] as HTMLElement, paginationStyle, true);
     }
     const numberButton = PaginationUtils.getNumberButtons(buttonContainer)[0];
-    PaginationButtonStyle.setDisabled(numberButton, paginationStyle, true);
+    PaginationButtonStyle.setDisabled(numberButton, paginationStyle, false);
     numberButton.classList.remove(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
     if (PaginationButtonContainerElement.NUMBER_OF_ACTION_BUTTONS > 0) numberButton.style.display = 'none';
     buttons.forEach((buttonElement) => {

@@ -51,7 +51,7 @@ export class PaginationButtonStyle {
   }
 
   public static setDisabled(buttonElement: HTMLElement, paginationStyle: IPaginationStyle, isActionButton: boolean) {
-    PaginationButtonStyle.unsetAll(buttonElement, paginationStyle, isActionButton);
+    PaginationButtonStyle.setDefault(buttonElement, paginationStyle, isActionButton);
     Object.assign(buttonElement.style, paginationStyle.disabledButtons);
   }
 

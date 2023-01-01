@@ -4,7 +4,8 @@ import {PaginationButtonElement} from '../../paginationButtonElement';
 
 export class PaginationLastButtonElement {
   public static create(etc: EditableTableComponent) {
-    const lastButtonElement = PaginationButtonElement.create('&#8811', etc.paginationInternal.style, true);
+    const {style} = etc.paginationInternal;
+    const lastButtonElement = PaginationButtonElement.create(style.actionButtons.lastText as string, style, true);
     setTimeout(() => PaginationLastButtonEvents.setEvents(etc, lastButtonElement));
     return lastButtonElement;
   }
