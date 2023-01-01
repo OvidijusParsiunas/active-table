@@ -1,7 +1,6 @@
 // eslint-disable-next-line max-len
 import {PaginationNumberButtonElement} from '../../elements/pagination/buttonContainer/buttons/number/paginationNumberButtonElement';
 import {PaginationButtonElement} from '../../elements/pagination/buttonContainer/paginationButtonElement';
-import {PaginationActionButtonUtils} from './paginationActionButtonUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationUtils} from './paginationUtils';
 
@@ -14,8 +13,6 @@ export class PaginationUpdateButtons {
       const buttonElement = PaginationNumberButtonElement.create(etc, firstNumber - 1);
       firstNumberButton.insertAdjacentElement('beforebegin', buttonElement);
     }
-    const {paginationInternal} = etc;
-    PaginationActionButtonUtils.toggleActionButtons(paginationInternal, paginationInternal.buttonContainer as HTMLElement);
   }
 
   public static updateOnRowRemove(etc: EditableTableComponent) {
@@ -42,11 +39,10 @@ export class PaginationUpdateButtons {
   }
 
   public static updateOnRowInsert(etc: EditableTableComponent) {
-    const {buttonContainer, style} = etc.paginationInternal;
+    const {buttonContainer, style, maxNumberOfButtons} = etc.paginationInternal;
     if (buttonContainer && etc.contents.length === 1) {
       PaginationButtonElement.unsetDisabled(buttonContainer, style);
-    } else if (buttonContainer) {
-      const {maxNumberOfButtons} = etc.paginationInternal;
+    } else {
       const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
       // if number of buttons is at limit - updateOnNewActive will handle it
       if (numberButtons.length < maxNumberOfButtons) {
