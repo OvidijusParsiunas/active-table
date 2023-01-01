@@ -16,9 +16,10 @@ export class IndexColumn {
   public static updateIndexes(etc: EditableTableComponent, startIndex: number) {
     const {tableBodyElementRef, contents} = etc;
     const textRowsArr = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, contents, startIndex);
+    const auxiliaryPaddingIndex = Number(etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader);
     textRowsArr.forEach((row, rowIndex) => {
       const indexCell = row.children[0] as HTMLElement;
-      const relativeIndex = startIndex + rowIndex;
+      const relativeIndex = startIndex + rowIndex + auxiliaryPaddingIndex;
       indexCell.innerText = String(relativeIndex);
     });
     UpdateIndexColumnWidth.update(etc, textRowsArr.length === 0 ? undefined : textRowsArr);

@@ -1,4 +1,4 @@
-import {IPaginationStyle} from '../../types/paginationInternal';
+import {IPaginationStyle} from '../../../types/paginationInternal';
 import {PaginationButtonStyle} from './paginationButtonStyle';
 
 export class PaginationButtonEvents {

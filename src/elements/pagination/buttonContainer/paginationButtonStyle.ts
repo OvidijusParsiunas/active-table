@@ -1,8 +1,8 @@
+import {IPaginationStyle} from '../../../types/paginationInternal';
 import {PaginationButtonElement} from './paginationButtonElement';
-import {IPaginationStyle} from '../../types/paginationInternal';
-import {ElementStyle} from '../../utils/elements/elementStyle';
-import {PropertiesOfType} from '../../types/utilityTypes';
-import {StatefulCSSS} from '../../types/cssStyle';
+import {ElementStyle} from '../../../utils/elements/elementStyle';
+import {PropertiesOfType} from '../../../types/utilityTypes';
+import {StatefulCSSS} from '../../../types/cssStyle';
 
 // action buttons will never be active
 export class PaginationButtonStyle {

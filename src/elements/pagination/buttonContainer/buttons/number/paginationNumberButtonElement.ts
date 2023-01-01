@@ -1,4 +1,4 @@
-import {EditableTableComponent} from '../../../../editable-table-component';
+import {EditableTableComponent} from '../../../../../editable-table-component';
 import {PaginationNumberButtonEvents} from './paginationNumberButtonEvents';
 import {PaginationButtonElement} from '../../paginationButtonElement';
 

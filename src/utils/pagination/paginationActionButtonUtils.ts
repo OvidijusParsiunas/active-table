@@ -1,6 +1,7 @@
-import {PaginationButtonContainerElement} from '../../elements/pagination/paginationButtonContainerElement';
-import {PaginationButtonElement} from '../../elements/pagination/paginationButtonElement';
-import {PaginationButtonStyle} from '../../elements/pagination/paginationButtonStyle';
+// eslint-disable-next-line max-len
+import {PaginationButtonContainerElement} from '../../elements/pagination/buttonContainer/paginationButtonContainerElement';
+import {PaginationButtonElement} from '../../elements/pagination/buttonContainer/paginationButtonElement';
+import {PaginationButtonStyle} from '../../elements/pagination/buttonContainer/paginationButtonStyle';
 import {IPaginationStyle, PaginationInternal} from '../../types/paginationInternal';
 import {PaginationUtils} from './paginationUtils';
 

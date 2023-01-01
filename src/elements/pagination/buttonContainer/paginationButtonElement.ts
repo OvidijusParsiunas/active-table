@@ -1,12 +1,12 @@
-import {PaginationActionButtonUtils} from '../../utils/pagination/paginationActionButtonUtils';
-import {PaginationUpdateButtons} from '../../utils/pagination/paginationUpdateButtons';
+import {PaginationActionButtonUtils} from '../../../utils/pagination/paginationActionButtonUtils';
+import {PaginationUpdateButtons} from '../../../utils/pagination/paginationUpdateButtons';
 import {PaginationButtonContainerElement} from './paginationButtonContainerElement';
-import {PaginationUtils} from '../../utils/pagination/paginationUtils';
-import {EditableTableComponent} from '../../editable-table-component';
-import {IPaginationStyle} from '../../types/paginationInternal';
+import {PaginationUtils} from '../../../utils/pagination/paginationUtils';
+import {EditableTableComponent} from '../../../editable-table-component';
+import {IPaginationStyle} from '../../../types/paginationInternal';
 import {PaginationButtonEvents} from './paginationButtonEvents';
 import {PaginationButtonStyle} from './paginationButtonStyle';
-import {CellText} from '../../types/tableContents';
+import {CellText} from '../../../types/tableContents';
 
 export class PaginationButtonElement {
   private static readonly PAGINATION_BUTTON_CLASS = 'pagination-button';

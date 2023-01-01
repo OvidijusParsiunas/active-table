@@ -1,5 +1,5 @@
-import {PaginationUtils} from '../../../../utils/pagination/paginationUtils';
-import {EditableTableComponent} from '../../../../editable-table-component';
+import {PaginationUtils} from '../../../../../utils/pagination/paginationUtils';
+import {EditableTableComponent} from '../../../../../editable-table-component';
 import {PaginationButtonStyle} from '../../paginationButtonStyle';
 
 export class PaginationLastButtonEvents {

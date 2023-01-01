@@ -1,6 +1,7 @@
-import {PaginationButtonContainerElement} from '../../elements/pagination/paginationButtonContainerElement';
+// eslint-disable-next-line max-len
+import {PaginationButtonContainerElement} from '../../elements/pagination/buttonContainer/paginationButtonContainerElement';
+import {PaginationButtonElement} from '../../elements/pagination/buttonContainer/paginationButtonElement';
 import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
-import {PaginationButtonElement} from '../../elements/pagination/paginationButtonElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationInternal} from '../../types/paginationInternal';
 import {PaginationUpdateButtons} from './paginationUpdateButtons';
@@ -13,7 +14,7 @@ export class PaginationUtils {
   public static getLastPossibleButtonNumber(etc: EditableTableComponent, isBeforeInsert = false) {
     const {contents, paginationInternal} = etc;
     const numberOfRows = isBeforeInsert ? contents.length : contents.length - 1;
-    return Math.ceil(numberOfRows / paginationInternal.numberOfEntries);
+    return Math.ceil(numberOfRows / paginationInternal.numberOfRows);
   }
 
   public static getNumberButtons(buttonContainer: HTMLElement) {
@@ -23,9 +24,9 @@ export class PaginationUtils {
   }
 
   public static getRelativeRowIndexes(paginationInternal: PaginationInternal, rowIndex = 0) {
-    const {activeButtonNumber, numberOfEntries} = paginationInternal;
-    const maxVisibleRowIndex = activeButtonNumber * numberOfEntries + 1;
-    const minVisibleRowIndex = maxVisibleRowIndex - numberOfEntries;
+    const {activeButtonNumber, numberOfRows} = paginationInternal;
+    const maxVisibleRowIndex = activeButtonNumber * numberOfRows + 1;
+    const minVisibleRowIndex = maxVisibleRowIndex - numberOfRows;
     const visibleRowIndex = rowIndex - minVisibleRowIndex;
     return {maxVisibleRowIndex, minVisibleRowIndex, visibleRowIndex};
   }
@@ -55,10 +56,10 @@ export class PaginationUtils {
   }
 
   private static updateRowsOnNewInsert(etc: EditableTableComponent, rowIndex: number, newRowElement: HTMLElement) {
-    const {numberOfEntries, visibleRows, activeButtonNumber} = etc.paginationInternal;
+    const {numberOfRows, visibleRows, activeButtonNumber} = etc.paginationInternal;
     const {maxVisibleRowIndex, visibleRowIndex} = PaginationUtils.getRelativeRowIndexes(etc.paginationInternal, rowIndex);
     if (maxVisibleRowIndex > rowIndex) {
-      if (visibleRows.length === numberOfEntries) PaginationUtils.hideLastVisibleRow(etc.paginationInternal);
+      if (visibleRows.length === numberOfRows) PaginationUtils.hideLastVisibleRow(etc.paginationInternal);
       visibleRows.splice(visibleRowIndex, 0, newRowElement);
     } else {
       newRowElement.style.display = PaginationUtils.HIDDEN_ROW;
@@ -80,7 +81,7 @@ export class PaginationUtils {
   }
 
   public static initialRowUpdates(etc: EditableTableComponent, rowIndex: number, newRowElement: HTMLElement) {
-    if (rowIndex > etc.paginationInternal.numberOfEntries) {
+    if (rowIndex > etc.paginationInternal.numberOfRows) {
       newRowElement.style.display = PaginationUtils.HIDDEN_ROW;
     } else if (rowIndex > 0) {
       etc.paginationInternal.visibleRows.push(newRowElement);
@@ -89,10 +90,10 @@ export class PaginationUtils {
 
   // prettier-ignore
   private static setCorrectRowsAsVisible(etc: EditableTableComponent, buttonNumber: number) {
-    const {paginationInternal: {numberOfEntries, visibleRows}, tableBodyElementRef, contents} = etc;
+    const {paginationInternal: {numberOfRows, visibleRows}, tableBodyElementRef, contents} = etc;
     const tableRows = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, contents);
-    const startingRowIndex = numberOfEntries * (buttonNumber - 1) + 1;
-    tableRows.slice(startingRowIndex, startingRowIndex + numberOfEntries).forEach((rowElement) => {
+    const startingRowIndex = numberOfRows * (buttonNumber - 1) + 1;
+    tableRows.slice(startingRowIndex, startingRowIndex + numberOfRows).forEach((rowElement) => {
       (rowElement as HTMLElement).style.display = PaginationUtils.VISIBLE_ROW;
       visibleRows.push(rowElement as HTMLElement);
     });
@@ -113,7 +114,7 @@ export class PaginationUtils {
 
   public static getDefaultInternal(): PaginationInternal {
     return {
-      numberOfEntries: 10,
+      numberOfRows: 10,
       maxNumberOfButtons: 8,
       activeButtonNumber: 1,
       visibleRows: [],

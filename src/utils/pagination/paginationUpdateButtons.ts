@@ -1,5 +1,6 @@
-import {PaginationNumberButtonElement} from '../../elements/pagination/buttons/number/paginationNumberButtonElement';
-import {PaginationButtonElement} from '../../elements/pagination/paginationButtonElement';
+// eslint-disable-next-line max-len
+import {PaginationNumberButtonElement} from '../../elements/pagination/buttonContainer/buttons/number/paginationNumberButtonElement';
+import {PaginationButtonElement} from '../../elements/pagination/buttonContainer/paginationButtonElement';
 import {PaginationActionButtonUtils} from './paginationActionButtonUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationUtils} from './paginationUtils';

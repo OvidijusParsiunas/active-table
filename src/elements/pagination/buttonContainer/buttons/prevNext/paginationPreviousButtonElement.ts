@@ -1,5 +1,5 @@
 import {PaginationPreviousButtonEvents} from './paginationPreviousButtonEvents';
-import {EditableTableComponent} from '../../../../editable-table-component';
+import {EditableTableComponent} from '../../../../../editable-table-component';
 import {PaginationButtonElement} from '../../paginationButtonElement';
 
 export class PaginationPreviousButtonElement {

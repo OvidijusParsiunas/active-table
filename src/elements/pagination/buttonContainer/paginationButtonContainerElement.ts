@@ -3,8 +3,8 @@ import {PaginationFirstButtonElement} from './buttons/firstLast/paginationFirstB
 import {PaginationNumberButtonElement} from './buttons/number/paginationNumberButtonElement';
 import {PaginationLastButtonElement} from './buttons/firstLast/paginationLastButtonElement';
 import {PaginationNextButtonElement} from './buttons/prevNext/paginationNextButtonElement';
-import {PaginationUtils} from '../../utils/pagination/paginationUtils';
-import {EditableTableComponent} from '../../editable-table-component';
+import {PaginationUtils} from '../../../utils/pagination/paginationUtils';
+import {EditableTableComponent} from '../../../editable-table-component';
 import {PaginationButtonElement} from './paginationButtonElement';
 
 export class PaginationButtonContainerElement {

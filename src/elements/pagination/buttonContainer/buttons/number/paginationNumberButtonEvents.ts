@@ -1,6 +1,6 @@
-import {PaginationUtils} from '../../../../utils/pagination/paginationUtils';
-import {EditableTableComponent} from '../../../../editable-table-component';
-import {PaginationInternal} from '../../../../types/paginationInternal';
+import {PaginationUtils} from '../../../../../utils/pagination/paginationUtils';
+import {EditableTableComponent} from '../../../../../editable-table-component';
+import {PaginationInternal} from '../../../../../types/paginationInternal';
 import {PaginationButtonStyle} from '../../paginationButtonStyle';
 
 export class PaginationNumberButtonEvents {
