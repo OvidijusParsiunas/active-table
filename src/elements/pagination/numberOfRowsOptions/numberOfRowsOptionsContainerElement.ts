@@ -1,4 +1,4 @@
-import {NumberOfRowsOptionsElement} from './optionsButton/numberOfRowsOptionsElement';
+import {NumberOfRowsOptionsButtonElement} from './optionsButton/numberOfRowsOptionsButtonElement';
 import {NumberOfRowsDropdown} from './optionsButton/numberOfRowsDropdown';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {PaginationElements} from '../paginationElements';
@@ -27,7 +27,7 @@ export class NumberOfRowsOptionsContainerElement {
   public static create(etc: EditableTableComponent) {
     const numberOfRowsOptionsContainer = NumberOfRowsOptionsContainerElement.createContainer();
     numberOfRowsOptionsContainer.appendChild(NumberOfRowsOptionsContainerElement.createText());
-    const optionsButton = NumberOfRowsOptionsElement.create(etc);
+    const optionsButton = NumberOfRowsOptionsButtonElement.create(etc);
     numberOfRowsOptionsContainer.appendChild(optionsButton);
     etc.paginationInternal.numberOfRowsDropdown = NumberOfRowsDropdown.create(etc, optionsButton);
     numberOfRowsOptionsContainer.appendChild(etc.paginationInternal.numberOfRowsDropdown);

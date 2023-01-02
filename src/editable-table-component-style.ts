@@ -373,14 +373,11 @@ export const ediTableStyle = css`
     display: inline-block;
     border: 1px solid grey;
     border-radius: 5px;
-    padding: 1px 5px;
     cursor: pointer;
   }
 
   #pagination-of-rows-options-button-arrow {
     display: inline-block;
-    transform: translateY(-16%);
-    margin-left: 4px;
     pointer-events: none;
     user-select: none;
     color: #353535;

@@ -2,6 +2,7 @@ import {TableElement} from '../../elements/table/tableElement';
 import {Browser} from '../browser/browser';
 
 // this class is used to augment the offset by the browser as safari and firefox calculate them differently
+// ONLY for elements inside the table
 export class ElementOffset {
   public static processLeft(offset: number) {
     if (Browser.IS_FIREFOX) {
