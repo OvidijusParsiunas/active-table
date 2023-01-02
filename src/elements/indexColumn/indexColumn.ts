@@ -4,6 +4,7 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {DEFAULT_COLUMN_WIDTH} from '../../consts/defaultColumnWidth';
 import {ExtractElements} from '../../utils/elements/extractElements';
 import {UpdateIndexColumnWidth} from './updateIndexColumnWidth';
+import {Browser} from '../../utils/browser/browser';
 import {CellElement} from '../cell/cellElement';
 
 export class IndexColumn {
@@ -43,7 +44,6 @@ export class IndexColumn {
 
   private static createHeaderCell(etc: EditableTableComponent) {
     const headerCell = IndexColumn.createCell(etc, true);
-    headerCell.style.width = IndexColumn.DEFAULT_WIDTH_PX;
     if (etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader) headerCell.innerText = '1';
     return headerCell;
   }
@@ -62,5 +62,7 @@ export class IndexColumn {
     }
     // events are added in updateRowCells method
     rowElement.appendChild(cell);
+    // the element needs to be added first for the style to be applied in Safari
+    if (rowIndex === 0) cell.style.width = IndexColumn.DEFAULT_WIDTH_PX;
   }
 }

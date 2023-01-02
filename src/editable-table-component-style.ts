@@ -399,4 +399,23 @@ export const ediTableStyle = css`
   .number-of-rows-dropdown-item {
     padding-left: 10px;
   }
+
+  .hidden-row {
+    line-height: 0px;
+    height: 0px !important;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .hidden-row > * {
+    line-height: 0px;
+    height: 0px;
+    padding: 0px !important;
+    font-size: 0px;
+    border-bottom-width: 0px !important;
+  }
+
+  .hidden-row > th > * {
+    display: none;
+  }
 `;

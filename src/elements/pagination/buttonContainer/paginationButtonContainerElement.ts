@@ -13,7 +13,8 @@ export class PaginationButtonContainerElement {
   public static NUMBER_OF_ACTION_BUTTONS = 0;
 
   private static addNumberButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
-    const requiredNumberOfButtons = PaginationUtils.getLastPossibleButtonNumber(etc);
+    // the reason why 1 button is required when it should be 0 is because we hide it and show it when a row is added
+    const requiredNumberOfButtons = Math.max(PaginationUtils.getLastPossibleButtonNumber(etc), 1);
     const {maxNumberOfButtons} = etc.paginationInternal;
     for (let i = 0; i < Math.min(requiredNumberOfButtons, maxNumberOfButtons); i += 1) {
       const buttonElement = PaginationNumberButtonElement.create(etc, i + 1);
@@ -41,7 +42,8 @@ export class PaginationButtonContainerElement {
     if (displayFirstLast) {
       PaginationButtonContainerElement.addButton(buttonContainerElement, PaginationLastButtonElement.create(etc));
     }
-    if (etc.contents.length < 2) {
+    const minNumberOfButtonsToBeActive = etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? 1 : 2;
+    if (etc.contents.length < minNumberOfButtonsToBeActive) {
       PaginationButtonElement.setDisabled(buttonContainerElement, etc.paginationInternal.style);
     } else {
       PaginationButtonElement.setActive(etc, buttonContainerElement, 1);

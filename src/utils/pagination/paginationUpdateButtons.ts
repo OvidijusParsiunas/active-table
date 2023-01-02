@@ -39,7 +39,8 @@ export class PaginationUpdateButtons {
 
   public static updateOnRowInsert(etc: EditableTableComponent) {
     const {buttonContainer, style, maxNumberOfButtons} = etc.paginationInternal;
-    if (etc.contents.length === 1) {
+    const expectedItemsBeforeInsert = etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? 0 : 1;
+    if (etc.contents.length === expectedItemsBeforeInsert) {
       PaginationButtonElement.unsetDisabled(buttonContainer, style);
     } else {
       const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);

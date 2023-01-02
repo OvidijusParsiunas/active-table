@@ -22,6 +22,8 @@ export class CellElement {
   public static readonly CELL_CLASS = 'cell';
   private static readonly HEADER_CELL_CLASS = 'header-cell';
   public static readonly NOT_SELECTABLE_CLASS = 'not-selectable';
+  public static readonly HEADER_TAG = 'TH';
+  public static readonly DATA_TAG = 'TD';
 
   // prettier-ignore
   public static setCellEvents(etc: EditableTableComponent,
@@ -47,7 +49,7 @@ export class CellElement {
   }
 
   public static createBaseCell(isHeader: boolean) {
-    const cellElement = document.createElement(isHeader ? 'th' : 'td');
+    const cellElement = document.createElement(isHeader ? CellElement.HEADER_TAG : CellElement.DATA_TAG);
     if (isHeader) cellElement.classList.add(CellElement.HEADER_CELL_CLASS);
     cellElement.classList.add(CellElement.CELL_CLASS);
     return cellElement;

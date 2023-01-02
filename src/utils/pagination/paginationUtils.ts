@@ -8,12 +8,10 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationInternal} from '../../types/paginationInternal';
 import {PaginationUpdateButtons} from './paginationUpdateButtons';
 import {ExtractElements} from '../elements/extractElements';
+import {CellElement} from '../../elements/cell/cellElement';
 
 export class PaginationUtils {
-  private static readonly VISIBLE_ROW = '';
-  // using visibility collapse instead of display: 'none' because when indexColumnCountStartsAtHeader is set to true
-  // and we make the header element, it would no longer apply column width property
-  private static readonly COLLAPSED_ROW = 'collapse';
+  private static HIDDEN_ROW_CLASS = 'hidden-row';
 
   // prettier-ignore
   public static getLastPossibleButtonNumber(etc: EditableTableComponent, isBeforeInsert = false) {
@@ -38,6 +36,25 @@ export class PaginationUtils {
     return {maxVisibleRowIndex, minVisibleRowIndex, visibleRowIndex};
   }
 
+  private static hideRow(rowElement: HTMLElement) {
+    // cannot set display to 'none' for header as column widths will no longer be applied
+    // visability: collapse does not work in safari hence using the below for consistency
+    // if all cell tags are going to be 'TD' then use a class to identify the header row
+    if (rowElement.children[0]?.tagName === CellElement.HEADER_TAG) {
+      rowElement.classList.add(PaginationUtils.HIDDEN_ROW_CLASS);
+    } else {
+      rowElement.style.display = 'none';
+    }
+  }
+
+  public static displayRow(rowElement: HTMLElement) {
+    if ((rowElement.children[0] as HTMLElement).tagName === CellElement.HEADER_TAG) {
+      rowElement.classList.remove(PaginationUtils.HIDDEN_ROW_CLASS);
+    } else {
+      rowElement.style.display = '';
+    }
+  }
+
   private static updateRowsOnRemoval(etc: EditableTableComponent, rowIndex: number) {
     const {visibleRows, activeButtonNumber} = etc.paginationInternal;
     const {visibleRowIndex} = PaginationUtils.getRelativeRowIndexes(etc, rowIndex);
@@ -46,7 +63,7 @@ export class PaginationUtils {
       const lastVisibleRow = visibleRows[visibleRows.length - 1];
       const nextRow = lastVisibleRow?.nextSibling as HTMLElement;
       if (nextRow && nextRow.children[0]?.id !== AddNewRowElement.ID) {
-        nextRow.style.visibility = PaginationUtils.VISIBLE_ROW;
+        PaginationUtils.displayRow(nextRow as HTMLElement);
         visibleRows.push(nextRow);
       }
     } else if (activeButtonNumber > 1) {
@@ -58,7 +75,7 @@ export class PaginationUtils {
     const {visibleRows} = paginationInternal;
     if (visibleRows.length === 0) return;
     const lastRow = visibleRows[visibleRows.length - 1];
-    lastRow.style.visibility = PaginationUtils.COLLAPSED_ROW;
+    PaginationUtils.hideRow(lastRow);
     paginationInternal.visibleRows.splice(paginationInternal.visibleRows.length - 1, 1);
   }
 
@@ -69,14 +86,9 @@ export class PaginationUtils {
       if (visibleRows.length === numberOfRows) PaginationUtils.hideLastVisibleRow(etc.paginationInternal);
       visibleRows.splice(visibleRowIndex, 0, newRowElement);
     } else {
-      // visibility collapse does not allow the application of validation styling, hence first hiding, then collapsing
-      newRowElement.style.display = 'none';
-      setTimeout(() => {
-        newRowElement.style.visibility = PaginationUtils.COLLAPSED_ROW;
-        newRowElement.style.display = '';
-        // wait for a new button to be created when on last
-        PaginationUtils.displayRowsForDifferentButton(etc, activeButtonNumber + 1);
-      });
+      PaginationUtils.hideRow(newRowElement);
+      // wait for a new button to be created when on last
+      setTimeout(() => PaginationUtils.displayRowsForDifferentButton(etc, activeButtonNumber + 1));
     }
   }
 
@@ -99,7 +111,7 @@ export class PaginationUtils {
   public static initialRowUpdates(etc: EditableTableComponent, rowIndex: number, newRowElement: HTMLElement) {
     const dataRowIndex = etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? rowIndex + 1 : rowIndex;
     if (dataRowIndex > etc.paginationInternal.numberOfRows) {
-      newRowElement.style.visibility = PaginationUtils.COLLAPSED_ROW;
+      PaginationUtils.hideRow(newRowElement);
     } else if (dataRowIndex > 0) {
       etc.paginationInternal.visibleRows.push(newRowElement);
     }
@@ -112,15 +124,13 @@ export class PaginationUtils {
     let startingRowIndex = numberOfRows * (buttonNumber - 1);
     if (!etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader) startingRowIndex += 1; 
     tableRows.slice(startingRowIndex, startingRowIndex + numberOfRows).forEach((rowElement) => {
-      (rowElement as HTMLElement).style.visibility = PaginationUtils.VISIBLE_ROW;
+      PaginationUtils.displayRow(rowElement as HTMLElement);
       visibleRows.push(rowElement as HTMLElement);
     });
   }
 
   private static hideAllRows(paginationInternal: PaginationInternal) {
-    paginationInternal.visibleRows.forEach((rowElement) => {
-      rowElement.style.visibility = PaginationUtils.COLLAPSED_ROW;
-    });
+    paginationInternal.visibleRows.forEach((rowElement) => PaginationUtils.hideRow(rowElement));
     paginationInternal.visibleRows = [];
   }
 

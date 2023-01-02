@@ -1,12 +1,13 @@
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
 import {IndexColumn} from '../../elements/indexColumn/indexColumn';
+import {CellElement} from '../../elements/cell/cellElement';
 import {TableContents} from '../../types/tableContents';
 
 export class ExtractElements {
   public static textCellsArrFromRow(rowElement: HTMLElement) {
     return Array.from(rowElement.children).filter(
       (child) =>
-        (child.tagName === 'TH' || child.tagName === 'TD') &&
+        (child.tagName === CellElement.HEADER_TAG || child.tagName === CellElement.DATA_TAG) &&
         !child.classList.contains(AddNewColumnElement.ADD_COLUMN_CELL_CLASS) &&
         !child.classList.contains(IndexColumn.INDEX_CELL_CLASS)
     );
