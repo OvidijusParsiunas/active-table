@@ -42,6 +42,8 @@ export interface Pagination {
   maxNumberOfButtons?: number; // by default set to 8
   displayPrevNext?: boolean; // by default true
   displayFirstLast?: boolean; // by default true
+  displayNumberOfVisibleRows?: boolean; // by default true
+  displayNumberOfRowsOptions?: number[];
   style?: PaginationStyle<StatefulCSSS>;
   positions?: PaginationPositions;
 }

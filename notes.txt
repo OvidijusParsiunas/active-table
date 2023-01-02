@@ -241,6 +241,10 @@ method, the shift can be triggered by side buttons and row events, hence we need
 via number click events. Passing down an indicator via parameters would have complicated the code too much, hence I opted
 for an easier solution to hold temporary state of when a number button has been clicked. 
 
+REF-31
+When a pagination button style is programmatically set to hover, sometimes the pagination button container shifts upwards/downwards
+when a new row is inserted or older is removed, hence the mouse is no longer on a button and the style should not be applied.
+
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
 does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()

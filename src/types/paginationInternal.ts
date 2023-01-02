@@ -5,10 +5,13 @@ import {StatefulCSSS} from './cssStyle';
 export type IPaginationStyle = Required<PaginationStyle<Required<StatefulCSSS>>>;
 
 export interface PaginationInternal extends Required<Pagination> {
-  buttonContainer?: HTMLElement;
+  buttonContainer: HTMLElement;
+  numberOfVisibleRowsElement?: HTMLElement;
+  numberOfRowsOptionsElement?: HTMLElement;
   visibleRows: HTMLElement[];
   activeButtonNumber: number;
   clickedNumberButton?: boolean; // REF-30
+  programaticallyHoveredButton?: HTMLElement;
   style: IPaginationStyle;
   positions: Required<PaginationPositions>;
 }

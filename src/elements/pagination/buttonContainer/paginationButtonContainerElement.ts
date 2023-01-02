@@ -3,6 +3,7 @@ import {PaginationFirstButtonElement} from './buttons/firstLast/paginationFirstB
 import {PaginationNumberButtonElement} from './buttons/number/paginationNumberButtonElement';
 import {PaginationLastButtonElement} from './buttons/firstLast/paginationLastButtonElement';
 import {PaginationNextButtonElement} from './buttons/prevNext/paginationNextButtonElement';
+import {PaginationButtonContainerEvents} from './paginationButtonContainerEvents';
 import {PaginationUtils} from '../../../utils/pagination/paginationUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {PaginationButtonElement} from './paginationButtonElement';
@@ -54,13 +55,14 @@ export class PaginationButtonContainerElement {
     // insert before if on top of table or after if it is below the table
     const insertPosition = containerPosition === 'top-left' || containerPosition === 'top-middle'
       || containerPosition === 'top-right' ? 'beforebegin' : 'afterend'
-    etc.tableElementRef.insertAdjacentElement(insertPosition, etc.paginationInternal.buttonContainer as HTMLElement);
+    etc.tableElementRef.insertAdjacentElement(insertPosition, etc.paginationInternal.buttonContainer);
   }
 
   public static create(etc: EditableTableComponent) {
     const buttonContainerElement = document.createElement('div');
     buttonContainerElement.id = PaginationButtonContainerElement.PAGINATION_BUTTON_CONTAINER_ID;
     Object.assign(buttonContainerElement.style, etc.paginationInternal.style.container);
+    PaginationButtonContainerEvents.setEvents(buttonContainerElement, etc.paginationInternal);
     PaginationButtonContainerElement.populateButtons(etc, buttonContainerElement);
     setTimeout(() => PaginationButtonContainerElement.insertToDOM(etc));
     return buttonContainerElement;

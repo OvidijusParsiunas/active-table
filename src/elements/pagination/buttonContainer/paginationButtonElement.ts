@@ -1,11 +1,12 @@
 import {PaginationActionButtonUtils} from '../../../utils/pagination/paginationActionButtonUtils';
 import {PaginationUpdateButtons} from '../../../utils/pagination/paginationUpdateButtons';
+import {IPaginationStyle, PaginationInternal} from '../../../types/paginationInternal';
 import {PaginationButtonContainerElement} from './paginationButtonContainerElement';
 import {PaginationUtils} from '../../../utils/pagination/paginationUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {IPaginationStyle} from '../../../types/paginationInternal';
 import {PaginationButtonEvents} from './paginationButtonEvents';
 import {PaginationButtonStyle} from './paginationButtonStyle';
+import {PaginationElements} from '../paginationElements';
 import {CellText} from '../../../types/tableContents';
 
 export class PaginationButtonElement {
@@ -39,11 +40,14 @@ export class PaginationButtonElement {
   }
 
   // prettier-ignore
-  private static programmaticMouseEnterTrigger(numberButtons: HTMLElement[], paginationStyle: IPaginationStyle,
+  private static programmaticMouseEnterTrigger(numberButtons: HTMLElement[], pagination: PaginationInternal,
       previousLocationOfNewIndex: number) {
     const hoverNewElement = numberButtons[previousLocationOfNewIndex];
     if (hoverNewElement && !hoverNewElement.classList.contains(PaginationButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)) {
-      PaginationButtonStyle.mouseEnter(hoverNewElement, paginationStyle, false);
+      PaginationButtonStyle.mouseEnter(hoverNewElement, pagination.style, false);
+      // REF-31
+      pagination.programaticallyHoveredButton = hoverNewElement;
+      setTimeout(() => delete pagination.programaticallyHoveredButton);
     }
   }
 
@@ -73,21 +77,25 @@ export class PaginationButtonElement {
   public static setActive(etc: EditableTableComponent, buttonContainer: HTMLElement, buttonNumber: number) {
     const {previousActiveButton, previousLocationOfNewIndex} = PaginationButtonElement.unsetPreviousActive(
       etc, buttonContainer, buttonNumber);
-    const {style, clickedNumberButton} = etc.paginationInternal;
-    etc.paginationInternal.activeButtonNumber = buttonNumber;
-    PaginationUpdateButtons.updateOnNewActive(etc);
+    const {paginationInternal} = etc;
+    const {style, clickedNumberButton} = paginationInternal;
+    paginationInternal.activeButtonNumber = buttonNumber;
+    PaginationUpdateButtons.updateOnNewActive(etc, buttonContainer);
     const {newActiveButton, numberButtons} = PaginationButtonElement.setNewActive(buttonContainer, buttonNumber);
     PaginationButtonStyle.setActive(newActiveButton, style, previousActiveButton);
-    PaginationActionButtonUtils.toggleActionButtons(etc.paginationInternal, buttonContainer);
+    PaginationActionButtonUtils.toggleActionButtons(paginationInternal, buttonContainer);
     // REF-30
     if (clickedNumberButton) {
-      PaginationButtonElement.programmaticMouseEnterTrigger(numberButtons, style, previousLocationOfNewIndex);
+      PaginationButtonElement.programmaticMouseEnterTrigger(numberButtons, paginationInternal, previousLocationOfNewIndex);
     }
   }
 
   public static create(text: CellText, paginationStyle: IPaginationStyle, isActionButton: boolean) {
     const button = document.createElement('div');
-    button.classList.add(PaginationButtonElement.PAGINATION_BUTTON_CLASS);
+    button.classList.add(
+      PaginationButtonElement.PAGINATION_BUTTON_CLASS,
+      PaginationElements.PAGINATION_TEXT_COMPONENT_CLASS
+    );
     button.innerHTML = String(text);
     PaginationButtonStyle.setDefault(button, paginationStyle, isActionButton);
     setTimeout(() => PaginationButtonEvents.setEvents(button, paginationStyle, isActionButton));

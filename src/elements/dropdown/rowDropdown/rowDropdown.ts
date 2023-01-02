@@ -4,7 +4,6 @@ import {FullTableOverlayElement} from '../../fullTableOverlay/fullTableOverlayEl
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {DropdownCellOverlay} from '../cellOverlay/dropdownCellOverlay';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {RowDropdownEvents} from './rowDropdownEvents';
 import {RowDropdownItem} from './rowDropdownItem';
@@ -37,9 +36,7 @@ export class RowDropdown {
 
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdown: HTMLElement, cellClick: boolean) {
     dropdown.style.top = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
-    dropdown.style.left = `${ElementOffset.processWidth(
-      cellClick ? cellElement.offsetWidth : DropdownCellOverlay.OFFSET
-    )}px`;
+    dropdown.style.left = `${ElementOffset.processWidth(cellClick ? cellElement.offsetWidth : 5)}px`;
   }
 
   public static display(this: EditableTableComponent, rowIndex: number, cellElement: HTMLElement) {

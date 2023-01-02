@@ -1,5 +1,6 @@
 // eslint-disable-next-line max-len
 import {PaginationButtonContainerElement} from '../../elements/pagination/buttonContainer/paginationButtonContainerElement';
+import {NumberOfVisibleRowsElement} from '../../elements/pagination/numberOfVisibleRows/numberOfVisibleRowsElement';
 import {PaginationButtonElement} from '../../elements/pagination/buttonContainer/paginationButtonElement';
 import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
 import {PaginationActionButtonUtils} from './paginationActionButtonUtils';
@@ -92,6 +93,7 @@ export class PaginationUtils {
       PaginationUtils.updateRowsOnRemoval(etc, rowIndex);
     }
     PaginationActionButtonUtils.toggleActionButtons(etc.paginationInternal, etc.paginationInternal.buttonContainer);
+    setTimeout(() => NumberOfVisibleRowsElement.update(etc));
   }
 
   public static initialRowUpdates(etc: EditableTableComponent, rowIndex: number, newRowElement: HTMLElement) {
@@ -125,7 +127,8 @@ export class PaginationUtils {
   public static displayRowsForDifferentButton(etc: EditableTableComponent, buttonNumber: number) {
     PaginationUtils.hideAllRows(etc.paginationInternal);
     PaginationUtils.setCorrectRowsAsVisible(etc, buttonNumber);
-    PaginationButtonElement.setActive(etc, etc.paginationInternal.buttonContainer as HTMLElement, buttonNumber);
+    PaginationButtonElement.setActive(etc, etc.paginationInternal.buttonContainer, buttonNumber);
+    NumberOfVisibleRowsElement.update(etc);
   }
 
   public static getDefaultInternal(): PaginationInternal {
@@ -140,6 +143,8 @@ export class PaginationUtils {
       positions: {
         container: 'bottom-right',
       },
+      displayNumberOfVisibleRows: true,
+      displayNumberOfRowsOptions: [],
     } as unknown as PaginationInternal;
   }
 }

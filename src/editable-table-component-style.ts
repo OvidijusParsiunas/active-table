@@ -163,7 +163,7 @@ export const ediTableStyle = css`
 
   .editable-table-component-dropdown {
     position: absolute;
-    box-shadow: rgb(232 232 232) 0px 2px 5px 0px;
+    box-shadow: rgb(15 15 15 / 5%) 0px 0px 0px 1px, rgb(15 15 15 / 10%) 0px 3px 6px, rgb(15 15 15 / 20%) 0px 9px 24px;
     border-radius: 5px;
     background-color: white;
     z-index: 1;
@@ -328,7 +328,6 @@ export const ediTableStyle = css`
     border-radius: 2px;
     right: 0;
     display: flex;
-    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     width: fit-content;
   }
 
@@ -355,5 +354,17 @@ export const ediTableStyle = css`
   .pagination-button:first-child {
     border-top-left-radius: 1px;
     border-bottom-left-radius: 1px;
+  }
+
+  #pagination-number-of-visible-rows {
+    padding-top: 4px;
+  }
+
+  #pagination-of-rows-options {
+    padding-top: 4px;
+  }
+
+  .pagination-text-component {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   }
 `;

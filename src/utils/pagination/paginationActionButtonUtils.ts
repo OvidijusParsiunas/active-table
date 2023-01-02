@@ -20,7 +20,7 @@ export class PaginationActionButtonUtils {
   private static toggleRightButtons(buttons: HTMLElement[], halfOfActionButtons: number, pagination: PaginationInternal,
       buttonContainer: HTMLElement) {
     const {activeButtonNumber, style} = pagination;
-    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer as HTMLElement);
+    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
     const callback = activeButtonNumber === Number(numberButtons[numberButtons.length - 1].innerText)
       ? PaginationActionButtonUtils.setButtonAsDisabled : PaginationActionButtonUtils.setButtonAsEnabled;
     const rightActionButtons = buttons.slice(buttons.length - halfOfActionButtons);
@@ -39,7 +39,6 @@ export class PaginationActionButtonUtils {
   // prettier-ignore
   public static toggleActionButtons(pagination: PaginationInternal, buttonContainer: HTMLElement) {
     const {activeButtonNumber, style} = pagination;
-    if (!buttonContainer) return;
     const buttons = Array.from(buttonContainer.children) as HTMLElement[];
     const halfOfActionButtons = PaginationButtonContainerElement.NUMBER_OF_ACTION_BUTTONS / 2;
     PaginationActionButtonUtils.toggleLeftButtons(buttons, activeButtonNumber, halfOfActionButtons, style);

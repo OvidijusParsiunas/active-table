@@ -6,7 +6,6 @@ import {DropdownDisplaySettings} from '../../../types/dropdownDisplaySettings';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {DropdownCellOverlay} from '../cellOverlay/dropdownCellOverlay';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {DropdownItemNavigation} from '../dropdownItemNavigation';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
@@ -50,7 +49,7 @@ export class ColumnDropdown {
 
   public static getDropdownTopPosition(cellElement: HTMLElement, openedViaOverlayClick?: boolean): PX {
     if (openedViaOverlayClick) {
-      const offsetTop = DropdownCellOverlay.OFFSET;
+      const offsetTop = 1;
       return `${Browser.IS_FIREFOX ? offsetTop + TableElement.BORDER_DIMENSIONS.topWidth : offsetTop}px`;
     }
     return `${ElementOffset.processTop(cellElement.offsetTop + cellElement.offsetHeight)}px`;

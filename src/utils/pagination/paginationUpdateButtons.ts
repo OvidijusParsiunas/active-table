@@ -17,7 +17,6 @@ export class PaginationUpdateButtons {
 
   public static updateOnRowRemove(etc: EditableTableComponent) {
     const {buttonContainer, style} = etc.paginationInternal;
-    if (!buttonContainer) return;
     const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
     const lastNumberButton = numberButtons[numberButtons.length - 1];
     if (Number(lastNumberButton.innerText) > PaginationUtils.getLastPossibleButtonNumber(etc)) {
@@ -40,7 +39,7 @@ export class PaginationUpdateButtons {
 
   public static updateOnRowInsert(etc: EditableTableComponent) {
     const {buttonContainer, style, maxNumberOfButtons} = etc.paginationInternal;
-    if (buttonContainer && etc.contents.length === 1) {
+    if (etc.contents.length === 1) {
       PaginationButtonElement.unsetDisabled(buttonContainer, style);
     } else {
       const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
@@ -100,9 +99,8 @@ export class PaginationUpdateButtons {
   }
 
   // prettier-ignore
-  public static updateOnNewActive(etc: EditableTableComponent) {
-    const {activeButtonNumber, buttonContainer, maxNumberOfButtons} = etc.paginationInternal;
-    if (!buttonContainer) return;
+  public static updateOnNewActive(etc: EditableTableComponent, buttonContainer: HTMLElement) {
+    const {activeButtonNumber, maxNumberOfButtons} = etc.paginationInternal;
     const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
     if (numberButtons.length < maxNumberOfButtons) return;
     const lastVisibleButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
