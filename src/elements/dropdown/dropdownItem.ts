@@ -2,12 +2,14 @@ import {DropdownButtonItemSettings, IconSettings} from '../../types/dropdownButt
 import {EditableTableComponent} from '../../editable-table-component';
 import {SVGIconUtils} from '../../utils/svgIcons/svgIconUtils';
 import {DropdownItemEvents} from './dropdownItemEvents';
+import {Optional} from '../../types/utilityTypes';
 import {CellElement} from '../cell/cellElement';
 import {Dropdown} from './dropdown';
 
 export class DropdownItem {
   public static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
   private static readonly DISABLED_ITEM_CLASS = 'dropdown-disabled-item';
+  public static readonly ACTIVE_ITEM_CLASS = 'active-dropdown-item';
   public static readonly DROPDOWN_INPUT_CLASS = 'dropdown-input';
   private static readonly DROPDOWN_ITEM_ICON_CONTAINER_CLASS = 'dropdown-item-icon-container';
   public static readonly DROPDOWN_INPUT_ITEM_CLASS = 'dropdown-input-item';
@@ -82,10 +84,10 @@ export class DropdownItem {
   }
 
   // prettier-ignore
-  public static createButtonItemNoEvents(dropdown: HTMLElement | undefined, itemSettings: DropdownButtonItemSettings,
-      ...classNames: string[]) {
+  public static createButtonItemNoEvents(dropdown: HTMLElement | undefined,
+      itemSettings: Optional<DropdownButtonItemSettings, 'iconSettings'>, ...classNames: string[]) {
     const buttonElement = DropdownItem.addPlaneButtonItem(dropdown, itemSettings.text);
-    DropdownItem.insertIcon(buttonElement, itemSettings.iconSettings);
+    if (itemSettings.iconSettings) DropdownItem.insertIcon(buttonElement, itemSettings.iconSettings);
     if (classNames.length > 0) buttonElement.classList.add(...classNames);
     return buttonElement;
   }
@@ -104,8 +106,8 @@ export class DropdownItem {
   }
 
   // prettier-ignore
-  public static addButtonItem(etc: EditableTableComponent, dropdown: HTMLElement, itemSettings: DropdownButtonItemSettings,
-      ...classNames: string[]) {
+  public static addButtonItem(etc: EditableTableComponent, dropdown: HTMLElement,
+      itemSettings: Optional<DropdownButtonItemSettings, 'iconSettings'>, ...classNames: string[]) {
     const buttonElement = DropdownItem.createButtonItemNoEvents(dropdown, itemSettings, ...classNames);
     DropdownItemEvents.addItemEvents(etc.activeOverlayElements, buttonElement);
     return buttonElement;

@@ -7,7 +7,7 @@ export type IPaginationStyle = Required<PaginationStyle<Required<StatefulCSSS>>>
 export interface PaginationInternal extends Required<Pagination> {
   buttonContainer: HTMLElement;
   numberOfVisibleRowsElement?: HTMLElement;
-  numberOfRowsOptionsElement?: HTMLElement;
+  numberOfRowsDropdown?: HTMLElement;
   visibleRows: HTMLElement[];
   activeButtonNumber: number;
   clickedNumberButton?: boolean; // REF-30

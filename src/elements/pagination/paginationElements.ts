@@ -1,6 +1,6 @@
+import {NumberOfRowsOptionsContainerElement} from './numberOfRowsOptions/numberOfRowsOptionsContainerElement';
 import {PaginationButtonContainerElement} from './buttonContainer/paginationButtonContainerElement';
 import {NumberOfVisibleRowsElement} from './numberOfVisibleRows/numberOfVisibleRowsElement';
-import {NumberOfRowsOptionsElement} from './numberOfRowsOptions/numberOfRowsOptionsElement';
 import {EditableTableComponent} from '../../editable-table-component';
 
 export class PaginationElements {
@@ -8,9 +8,7 @@ export class PaginationElements {
 
   public static create(etc: EditableTableComponent) {
     etc.paginationInternal.buttonContainer = PaginationButtonContainerElement.create(etc);
-    if (etc.paginationInternal.displayNumberOfRowsOptions) {
-      etc.paginationInternal.numberOfRowsOptionsElement = NumberOfRowsOptionsElement.create(etc);
-    }
+    if (etc.paginationInternal.displayNumberOfRowsOptions) NumberOfRowsOptionsContainerElement.create(etc);
     if (etc.paginationInternal.displayNumberOfVisibleRows) {
       etc.paginationInternal.numberOfVisibleRowsElement = NumberOfVisibleRowsElement.create(etc);
     }

@@ -5,12 +5,10 @@ import {CellElement} from '../../cell/cellElement';
 import {DropdownItem} from '../dropdownItem';
 
 export class ColumnTypeDropdownItem {
-  private static readonly ACTIVE_ITEM_CLASS = 'active-dropdown-item';
-
   private static unsetActiveItem(dropdownElement: HTMLElement) {
-    const activeItem = dropdownElement.getElementsByClassName(ColumnTypeDropdownItem.ACTIVE_ITEM_CLASS)[0] as HTMLElement;
+    const activeItem = dropdownElement.getElementsByClassName(DropdownItem.ACTIVE_ITEM_CLASS)[0] as HTMLElement;
     (activeItem.children[0] as HTMLElement).style.filter = '';
-    activeItem.classList.remove(ColumnTypeDropdownItem.ACTIVE_ITEM_CLASS);
+    activeItem.classList.remove(DropdownItem.ACTIVE_ITEM_CLASS);
   }
 
   public static reset(dropdownElement: HTMLElement) {
@@ -19,12 +17,11 @@ export class ColumnTypeDropdownItem {
   }
 
   private static setActiveItem(items: HTMLElement[], targetItemText: string) {
-    items.forEach((item) => {
-      if (CellElement.getText(item) == targetItemText) {
-        item.classList.add(ColumnTypeDropdownItem.ACTIVE_ITEM_CLASS);
-        (item.children[0] as HTMLElement).style.filter = SVGIconUtils.WHITE_FILTER;
-      }
-    });
+    const activeItem = items.find((item) => CellElement.getText(item) === targetItemText);
+    if (activeItem) {
+      activeItem.classList.add(DropdownItem.ACTIVE_ITEM_CLASS);
+      (activeItem.children[0] as HTMLElement).style.filter = SVGIconUtils.WHITE_FILTER;
+    }
   }
 
   // the items are repopulated every time column dropdown is opened

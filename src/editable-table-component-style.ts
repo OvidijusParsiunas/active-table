@@ -362,9 +362,41 @@ export const ediTableStyle = css`
 
   #pagination-of-rows-options {
     padding-top: 4px;
+    float: right;
+  }
+
+  #pagination-of-rows-options-text {
+    display: inline-block;
+  }
+
+  #pagination-of-rows-options-button {
+    display: inline-block;
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 1px 5px;
+    cursor: pointer;
+  }
+
+  #pagination-of-rows-options-button-arrow {
+    display: inline-block;
+    transform: translateY(-16%);
+    margin-left: 4px;
+    pointer-events: none;
+    user-select: none;
+    color: #353535;
+  }
+
+  #pagination-of-rows-options-button-text {
+    display: inline-block;
+    pointer-events: none;
+    user-select: none;
   }
 
   .pagination-text-component {
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  }
+
+  .number-of-rows-dropdown-item {
+    padding-left: 10px;
   }
 `;

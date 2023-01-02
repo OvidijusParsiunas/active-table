@@ -1,3 +1,5 @@
+import {NumberOfRowsDropdownEvents} from '../pagination/numberOfRowsOptions/optionsButton/numberOfRowsDropdownEvents';
+import {NumberOfRowsDropdown} from '../pagination/numberOfRowsOptions/optionsButton/numberOfRowsDropdown';
 import {CategoryCellEvents} from '../cell/cellsWithTextDiv/categoryCell/categoryCellEvents';
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
@@ -16,6 +18,9 @@ export class WindowEvents {
   // prettier-ignore
   public static onKeyDown(this: EditableTableComponent, event: KeyboardEvent) {
     const {rowIndex, columnIndex, element} = this.focusedElements.cell;
+    if (Dropdown.isDisplayed(this.paginationInternal.numberOfRowsDropdown)) {
+      NumberOfRowsDropdownEvents.windowOnKeyDown.bind(this)(this, event);
+    }
     if (rowIndex === undefined || columnIndex === undefined) return;
     if (rowIndex === 0 && !Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
       if (event.key === KEYBOARD_KEY.ESCAPE) {
@@ -44,6 +49,9 @@ export class WindowEvents {
 
   // prettier-ignore
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
+    if (Dropdown.isDisplayed(this.paginationInternal.numberOfRowsDropdown)) {
+      NumberOfRowsDropdown.hide(this.paginationInternal.numberOfRowsDropdown as HTMLElement);
+    }
     // window event.target can only identify the parent element in shadow dom, not elements
     // inside it, hence if the user clicks inside the element, the elements inside will
     // handle the click event instead (full table overlay element for column dropdown)
