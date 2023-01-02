@@ -2,6 +2,7 @@ import {PaginationActionButtonUtils} from '../../../utils/pagination/paginationA
 import {PaginationUpdateButtons} from '../../../utils/pagination/paginationUpdateButtons';
 import {IPaginationStyle, PaginationInternal} from '../../../types/paginationInternal';
 import {PaginationButtonContainerElement} from './paginationButtonContainerElement';
+import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {PaginationUtils} from '../../../utils/pagination/paginationUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {PaginationButtonEvents} from './paginationButtonEvents';
@@ -94,7 +95,8 @@ export class PaginationButtonElement {
     const button = document.createElement('div');
     button.classList.add(
       PaginationButtonElement.PAGINATION_BUTTON_CLASS,
-      PaginationElements.PAGINATION_TEXT_COMPONENT_CLASS
+      PaginationElements.PAGINATION_TEXT_COMPONENT_CLASS,
+      GenericElementUtils.NOT_SELECTABLE_CLASS
     );
     button.innerHTML = String(text);
     PaginationButtonStyle.setDefault(button, paginationStyle, isActionButton);

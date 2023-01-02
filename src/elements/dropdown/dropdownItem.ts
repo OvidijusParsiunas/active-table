@@ -1,9 +1,9 @@
 import {DropdownButtonItemSettings, IconSettings} from '../../types/dropdownButtonItem';
+import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {SVGIconUtils} from '../../utils/svgIcons/svgIconUtils';
 import {DropdownItemEvents} from './dropdownItemEvents';
 import {Optional} from '../../types/utilityTypes';
-import {CellElement} from '../cell/cellElement';
 import {Dropdown} from './dropdown';
 
 export class DropdownItem {
@@ -38,7 +38,7 @@ export class DropdownItem {
   private static createItem(dropdownElement?: HTMLElement) {
     const itemElement = DropdownItem.createDropdownItemBaseElement('div');
     if (dropdownElement) itemElement.tabIndex = dropdownElement.children.length;
-    itemElement.classList.add(DropdownItem.DROPDOWN_ITEM_CLASS, CellElement.NOT_SELECTABLE_CLASS);
+    itemElement.classList.add(DropdownItem.DROPDOWN_ITEM_CLASS, GenericElementUtils.NOT_SELECTABLE_CLASS);
     return itemElement;
   }
 

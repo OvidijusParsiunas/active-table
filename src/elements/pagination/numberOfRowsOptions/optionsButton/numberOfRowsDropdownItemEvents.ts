@@ -7,12 +7,14 @@ import {NumberOfRowsDropdown} from './numberOfRowsDropdown';
 export class NumberOfRowsDropdownItemEvents {
   private static itemMouseDown(pagination: PaginationInternal, optionsButton: HTMLElement, event: MouseEvent) {
     const dropdown = pagination.numberOfRowsDropdown as HTMLElement;
-    const targetItem = event.target as HTMLElement;
-    NumberOfRowsOptionsButtonElement.updateButtonText(optionsButton, targetItem.innerText);
+    const newNumberOfRows = (event.target as HTMLElement).innerText;
+    if (pagination.numberOfRows !== Number(newNumberOfRows)) {
+      NumberOfRowsOptionsButtonElement.updateButtonText(optionsButton, newNumberOfRows);
+    }
     NumberOfRowsDropdown.hide(dropdown);
     const items = Array.from(dropdown.children) as HTMLElement[];
     NumberOfRowsDropdownItem.unsetAllItemStyles(dropdown, items);
-    NumberOfRowsDropdownItem.setActive(items, targetItem.innerText);
+    NumberOfRowsDropdownItem.setActive(items, newNumberOfRows);
   }
 
   public static setEvents(etc: EditableTableComponent, item: HTMLElement, optionsButton: HTMLElement) {

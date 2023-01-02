@@ -1,5 +1,6 @@
 import {AuxiliaryTableContentColors} from '../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsBorderUtils';
+import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {DEFAULT_COLUMN_WIDTH} from '../../consts/defaultColumnWidth';
 import {ExtractElements} from '../../utils/elements/extractElements';
@@ -30,7 +31,7 @@ export class IndexColumn {
   private static createCell(etc: EditableTableComponent, isHeader: boolean) {
     const {tableDimensionsInternal, defaultColumnsSettings, auxiliaryTableContentInternal} = etc;
     const cell = CellElement.createBaseCell(isHeader);
-    cell.classList.add(IndexColumn.INDEX_CELL_CLASS, CellElement.NOT_SELECTABLE_CLASS);
+    cell.classList.add(IndexColumn.INDEX_CELL_CLASS, GenericElementUtils.NOT_SELECTABLE_CLASS);
     const {displaySettings, isHeaderRowEditable} = etc.rowDropdownSettings;
     cell.style.cursor = displaySettings.openMethod?.cellClick && (!isHeader || isHeaderRowEditable)
       ? 'pointer' : 'default';
@@ -45,6 +46,10 @@ export class IndexColumn {
   private static createHeaderCell(etc: EditableTableComponent) {
     const headerCell = IndexColumn.createCell(etc, true);
     if (etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader) headerCell.innerText = '1';
+    headerCell.style.width = IndexColumn.DEFAULT_WIDTH_PX;
+    // Safari does not always apply the width immediately, however do need the line above as it would otherwise cause
+    // the table width to change when a row is removed
+    if (Browser.IS_SAFARI) setTimeout(() => (headerCell.style.width = IndexColumn.DEFAULT_WIDTH_PX));
     return headerCell;
   }
 
@@ -62,7 +67,5 @@ export class IndexColumn {
     }
     // events are added in updateRowCells method
     rowElement.appendChild(cell);
-    // the element needs to be added first for the style to be applied in Safari
-    if (rowIndex === 0) cell.style.width = IndexColumn.DEFAULT_WIDTH_PX;
   }
 }

@@ -33,7 +33,7 @@ export class AddNewColumnElement {
     const cell = CellElement.createBaseCell(isHeader);
     cell.classList.add(
       CellElement.CELL_CLASS,
-      CellElement.NOT_SELECTABLE_CLASS,
+      GenericElementUtils.NOT_SELECTABLE_CLASS,
       AddNewColumnElement.ADD_COLUMN_CELL_CLASS
     );
     // backgroundColor controlled by column group - REF-17

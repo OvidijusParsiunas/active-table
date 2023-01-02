@@ -14,7 +14,7 @@ export class NumberOfRowsDropdown {
   }
 
   private static getDropdownTopPosition(buttonElement: HTMLElement): PX {
-    return `${buttonElement.offsetTop}px`;
+    return `${buttonElement.offsetTop + buttonElement.offsetHeight}px`;
   }
 
   private static getLeftPropertyToCenterDropdown(buttonElement: HTMLElement) {

@@ -7,6 +7,7 @@ import {ColumnSettingsWidthUtils} from '../../utils/columnSettings/columnSetting
 import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {EditableHeaderCellEvents} from './headerCell/editable/editableHeaderCellEvents';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
+import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {CheckboxCellElement} from './checkboxCell/checkboxCellElement';
 import {ColumnDetails} from '../../utils/columnDetails/columnDetails';
@@ -21,7 +22,6 @@ import {CellCSSStyle} from '../../types/cssStyle';
 export class CellElement {
   public static readonly CELL_CLASS = 'cell';
   private static readonly HEADER_CELL_CLASS = 'header-cell';
-  public static readonly NOT_SELECTABLE_CLASS = 'not-selectable';
   public static readonly HEADER_TAG = 'TH';
   public static readonly DATA_TAG = 'TD';
 
@@ -48,18 +48,18 @@ export class CellElement {
     Object.assign(cellElement.style, cellStyle, customStyle);
   }
 
-  public static createBaseCell(isHeader: boolean) {
+  public static createBaseCell(isHeader: boolean): HTMLTableCellElement {
     const cellElement = document.createElement(isHeader ? CellElement.HEADER_TAG : CellElement.DATA_TAG);
     if (isHeader) cellElement.classList.add(CellElement.HEADER_CELL_CLASS);
     cellElement.classList.add(CellElement.CELL_CLASS);
-    return cellElement;
+    return cellElement as HTMLTableCellElement;
   }
 
   // prettier-ignore
   public static createContentCell(isHeader: boolean, cellStyle?: CellCSSStyle, customStyle?: CellCSSStyle,
       isUsedAsAButton?: boolean) {
     const cellElement = CellElement.createBaseCell(isHeader);
-    if (isHeader && isUsedAsAButton) cellElement.classList.add(CellElement.NOT_SELECTABLE_CLASS);
+    if (isHeader && isUsedAsAButton) cellElement.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);
     // role for assistive technologies
     cellElement.setAttribute('role', 'textbox');
     // should probably remove border width from headerStyle if cellStyle contains it as it will affect the sizer position

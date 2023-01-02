@@ -1,6 +1,7 @@
+import {GenericElementUtils} from '../../../../utils/elements/genericElementUtils';
+import {NumberOfRowsOptionsButtonEvents} from './numberOfRowsOptionsButtonEvents';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {Browser} from '../../../../utils/browser/browser';
-import {NumberOfRowsOptionsButtonEvents} from './numberOfRowsOptionsButtonEvents';
 
 export class NumberOfRowsOptionsButtonElement {
   private static readonly BUTTON_ID = 'pagination-of-rows-options-button';
@@ -10,6 +11,7 @@ export class NumberOfRowsOptionsButtonElement {
   private static createButtonArrow() {
     const arrow = document.createElement('div');
     arrow.id = NumberOfRowsOptionsButtonElement.ARROW_ID;
+    arrow.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);
     if (Browser.IS_FIREFOX) {
       arrow.style.transform = 'translateY(-8%) scaleX(1.4)';
       arrow.style.fontSize = '14px';
@@ -25,6 +27,7 @@ export class NumberOfRowsOptionsButtonElement {
 
   public static updateButtonText(optionsButton: HTMLElement, numberOfRows: string) {
     const text = optionsButton.children[0] as HTMLElement;
+    text.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);
     text.innerText = numberOfRows;
   }
 

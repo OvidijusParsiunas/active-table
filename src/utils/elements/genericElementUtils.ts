@@ -1,6 +1,8 @@
 import {GenericObject} from '../../types/genericObject';
 
 export class GenericElementUtils {
+  public static readonly NOT_SELECTABLE_CLASS = 'not-selectable';
+
   public static hideElements(...elements: HTMLElement[]) {
     elements.forEach((element: HTMLElement) => (element.style.display = 'none'));
   }

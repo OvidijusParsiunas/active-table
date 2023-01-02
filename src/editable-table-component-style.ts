@@ -338,7 +338,6 @@ export const ediTableStyle = css`
     padding-top: 3px;
     text-align: center;
     cursor: pointer;
-    user-select: none;
   }
 
   .pagination-button-disabled {
@@ -379,14 +378,12 @@ export const ediTableStyle = css`
   #pagination-of-rows-options-button-arrow {
     display: inline-block;
     pointer-events: none;
-    user-select: none;
     color: #353535;
   }
 
   #pagination-of-rows-options-button-text {
     display: inline-block;
     pointer-events: none;
-    user-select: none;
   }
 
   .pagination-text-component {

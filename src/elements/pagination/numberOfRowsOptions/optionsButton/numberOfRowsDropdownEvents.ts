@@ -5,6 +5,12 @@ import {KEYBOARD_KEY} from '../../../../consts/keyboardKeys';
 import {NumberOfRowsDropdown} from './numberOfRowsDropdown';
 
 export class NumberOfRowsDropdownEvents {
+  public static windowOnMouseDown(etc: EditableTableComponent) {
+    if (!etc.paginationInternal.mouseDownOnNumberOfRowsButton) {
+      NumberOfRowsDropdown.hide(etc.paginationInternal.numberOfRowsDropdown as HTMLElement);
+    }
+  }
+
   // the reason why we track window key events is because the table is not actually focused when it is displayed,
   // (unlike column dropdown which has an input), hence initially clicking tab does not focus the dropdown and
   // instead we need to focus it programmatically here. Once focused, the actual dropdown events can take over.

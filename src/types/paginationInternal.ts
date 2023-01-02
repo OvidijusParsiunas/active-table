@@ -11,6 +11,7 @@ export interface PaginationInternal extends Required<Pagination> {
   visibleRows: HTMLElement[];
   activeButtonNumber: number;
   clickedNumberButton?: boolean; // REF-30
+  mouseDownOnNumberOfRowsButton?: boolean;
   programaticallyHoveredButton?: HTMLElement;
   style: IPaginationStyle;
   positions: Required<PaginationPositions>;

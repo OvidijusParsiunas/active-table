@@ -1,5 +1,4 @@
 import {NumberOfRowsDropdownEvents} from '../pagination/numberOfRowsOptions/optionsButton/numberOfRowsDropdownEvents';
-import {NumberOfRowsDropdown} from '../pagination/numberOfRowsOptions/optionsButton/numberOfRowsDropdown';
 import {CategoryCellEvents} from '../cell/cellsWithTextDiv/categoryCell/categoryCellEvents';
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
@@ -50,7 +49,7 @@ export class WindowEvents {
   // prettier-ignore
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
     if (Dropdown.isDisplayed(this.paginationInternal.numberOfRowsDropdown)) {
-      NumberOfRowsDropdown.hide(this.paginationInternal.numberOfRowsDropdown as HTMLElement);
+      NumberOfRowsDropdownEvents.windowOnMouseDown.bind(this)(this);
     }
     // window event.target can only identify the parent element in shadow dom, not elements
     // inside it, hence if the user clicks inside the element, the elements inside will
