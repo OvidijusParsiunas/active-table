@@ -1,6 +1,7 @@
 import {PaginationStyle, Pagination, ContainerStyle, PaginationPositions} from '../../types/pagination';
 import {IPaginationStyle, PaginationInternal} from '../../types/paginationInternal';
 import {DefaultContainerPositions} from './defaultContainerPositions';
+import {EditableTableComponent} from '../../editable-table-component';
 import {PropertiesOfType} from '../../types/utilityTypes';
 import {StatefulCSSS} from '../../types/cssStyle';
 
@@ -15,12 +16,26 @@ type PositionProps = {
 };
 
 export class PaginationInternalUtils {
-  private static processNumberOfRows(pagination: Pagination, paginationInternal: PaginationInternal) {
+  private static setNumberOfRows(etc: EditableTableComponent) {
+    const {paginationInternal, contents, auxiliaryTableContent} = etc;
+    const firstItemText = paginationInternal.numberOfRowsOptionsItemText[0];
+    if (firstItemText.toLocaleLowerCase() === 'all') {
+      paginationInternal.isAllRowsOptionSelected = true;
+      paginationInternal.numberOfRows = auxiliaryTableContent.indexColumnCountStartsAtHeader
+        ? contents.length
+        : contents.length - 1;
+    } else {
+      paginationInternal.numberOfRows = Number(firstItemText);
+    }
+  }
+
+  private static processNumberOfRows(etc: EditableTableComponent) {
+    const {pagination, paginationInternal} = etc;
     const {numberOfRowsOptions, numberOfRows} = pagination;
-    if (numberOfRowsOptions) {
+    if (numberOfRowsOptions || numberOfRowsOptions === undefined) {
       const {numberOfRowsOptionsItemText: InumberOfRowsOptionsItemText} = paginationInternal;
       if (!InumberOfRowsOptionsItemText.find((value) => value === String(numberOfRows))) {
-        paginationInternal.numberOfRows = Number(InumberOfRowsOptionsItemText[0]);
+        PaginationInternalUtils.setNumberOfRows(etc);
       }
     }
   }
@@ -34,11 +49,14 @@ export class PaginationInternalUtils {
   // prettier-ignore
   private static setNumberOfRowsOptionsText(pagination: Pagination, paginationInternal: PaginationInternal) {
     const {numberOfRowsOptions} = pagination;
-    const {numberOfRowsOptions: InumberOfRowsOptions} = paginationInternal;
-    // numberOfRowsOptions value is already truthy
-    const options = typeof numberOfRowsOptions === 'boolean' ? InumberOfRowsOptions : numberOfRowsOptions;
-    paginationInternal.numberOfRowsOptionsItemText = (options as (number|string)[])
-      .map((option) => PaginationInternalUtils.processOptionsItemText(option));
+    if (numberOfRowsOptions || numberOfRowsOptions === undefined) {
+      const {numberOfRowsOptions: InumberOfRowsOptions} = paginationInternal; // default options
+      // numberOfRowsOptions value is already truthy
+      const options = typeof numberOfRowsOptions === 'boolean' || numberOfRowsOptions === undefined
+        || numberOfRowsOptions.length === 0 ? InumberOfRowsOptions : numberOfRowsOptions;
+      paginationInternal.numberOfRowsOptionsItemText = (options as (number|string)[])
+        .map((option) => PaginationInternalUtils.processOptionsItemText(option));
+    }
   }
 
   private static setContainerStyle(style: IPaginationStyle, positionProperties: ContainerStyle) {
@@ -114,15 +132,16 @@ export class PaginationInternalUtils {
     return positionProperties;
   }
 
-  public static process(pagination: Pagination, paginationInternal: PaginationInternal) {
+  public static process(etc: EditableTableComponent) {
+    const {pagination, paginationInternal} = etc;
     if (pagination.maxNumberOfButtons !== undefined && pagination.maxNumberOfButtons < 1) {
       pagination.maxNumberOfButtons = 1;
     }
     const positionProperties = PaginationInternalUtils.processPosition(pagination, paginationInternal);
     PaginationInternalUtils.processStyle(pagination, paginationInternal, positionProperties);
-    if (pagination.numberOfRowsOptions) PaginationInternalUtils.setNumberOfRowsOptionsText(pagination, paginationInternal);
+    PaginationInternalUtils.setNumberOfRowsOptionsText(pagination, paginationInternal);
     Object.assign(paginationInternal, pagination);
-    PaginationInternalUtils.processNumberOfRows(pagination, paginationInternal);
+    PaginationInternalUtils.processNumberOfRows(etc);
   }
 
   public static getDefault(): PaginationInternal {
@@ -138,7 +157,7 @@ export class PaginationInternalUtils {
         container: 'bottom-right',
       },
       displayNumberOfVisibleRows: true,
-      numberOfRowsOptions: [4, 10, 25, 50, 'All'],
+      numberOfRowsOptions: [10, 25, 50, 'All'],
       isAllRowsOptionSelected: false,
     } as unknown as PaginationInternal;
   }

@@ -1,6 +1,7 @@
 import {GenericElementUtils} from '../../../../utils/elements/genericElementUtils';
 import {NumberOfRowsOptionsButtonEvents} from './numberOfRowsOptionsButtonEvents';
 import {EditableTableComponent} from '../../../../editable-table-component';
+import {PaginationInternal} from '../../../../types/paginationInternal';
 import {Browser} from '../../../../utils/browser/browser';
 
 export class NumberOfRowsOptionsButtonElement {
@@ -27,13 +28,15 @@ export class NumberOfRowsOptionsButtonElement {
 
   public static updateButtonText(optionsButton: HTMLElement, numberOfRows: string) {
     const text = optionsButton.children[0] as HTMLElement;
-    text.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);
     text.innerText = numberOfRows;
   }
 
-  private static createButtonText() {
+  private static createButtonText(pagination: PaginationInternal) {
+    const {isAllRowsOptionSelected, numberOfRowsOptionsItemText, numberOfRows} = pagination;
     const text = document.createElement('div');
     text.id = NumberOfRowsOptionsButtonElement.TEXT_ID;
+    text.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);
+    text.innerText = isAllRowsOptionSelected ? numberOfRowsOptionsItemText[0] : String(numberOfRows);
     return text;
   }
 
@@ -46,8 +49,7 @@ export class NumberOfRowsOptionsButtonElement {
 
   public static create(etc: EditableTableComponent) {
     const optionsButton = NumberOfRowsOptionsButtonElement.createOptionsButton();
-    optionsButton.appendChild(NumberOfRowsOptionsButtonElement.createButtonText());
-    NumberOfRowsOptionsButtonElement.updateButtonText(optionsButton, String(etc.paginationInternal.numberOfRows));
+    optionsButton.appendChild(NumberOfRowsOptionsButtonElement.createButtonText(etc.paginationInternal));
     optionsButton.appendChild(NumberOfRowsOptionsButtonElement.createButtonArrow());
     NumberOfRowsOptionsButtonEvents.setEvents(etc, optionsButton);
     return optionsButton;

@@ -7,7 +7,7 @@ import {PX} from '../../../../types/dimensions';
 import {SIDE} from '../../../../types/side';
 
 export class NumberOfRowsDropdown {
-  private static DROPDOWN_WIDTH = 45;
+  private static DROPDOWN_WIDTH = 24;
 
   public static hide(dropdownElement: HTMLElement, dropdownItems?: HTMLElement[]) {
     Dropdown.hide(dropdownElement);
@@ -41,9 +41,18 @@ export class NumberOfRowsDropdown {
     NumberOfRowsDropdown.displayAndSetDropdownPosition(buttonElement, dropdownElement);
   }
 
+  private static setWidth(dropdownElement: HTMLElement, numberOfRowsOptionsItemText: string[]) {
+    const maxTextCharLength = numberOfRowsOptionsItemText.reduce((currrentMax, value) => {
+      return isNaN(Number(value)) ? currrentMax : Math.max(currrentMax, value.length);
+    }, 1);
+    const textLength = maxTextCharLength * 8;
+    NumberOfRowsDropdown.DROPDOWN_WIDTH = NumberOfRowsDropdown.DROPDOWN_WIDTH + textLength;
+    dropdownElement.style.width = `${NumberOfRowsDropdown.DROPDOWN_WIDTH}px`;
+  }
+
   public static create(etc: EditableTableComponent, optionsButton: HTMLElement) {
     const dropdownElement = Dropdown.createBase();
-    dropdownElement.style.width = `${NumberOfRowsDropdown.DROPDOWN_WIDTH}px`;
+    NumberOfRowsDropdown.setWidth(dropdownElement, etc.paginationInternal.numberOfRowsOptionsItemText);
     NumberOfRowsDropdownItem.populate(etc, dropdownElement, optionsButton);
     NumberOfRowsDropdownEvents.set(etc, dropdownElement);
     return dropdownElement;
