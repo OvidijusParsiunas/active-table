@@ -39,11 +39,11 @@ export interface PaginationStyle<T> {
 
 export interface Pagination {
   numberOfRows?: number; // by default set to 10
+  numberOfRowsOptions?: (number | 'All' | 'all')[] | boolean;
   maxNumberOfButtons?: number; // by default set to 8
   displayPrevNext?: boolean; // by default true
   displayFirstLast?: boolean; // by default true
   displayNumberOfVisibleRows?: boolean; // by default true
-  displayNumberOfRowsOptions?: (number | 'All' | 'all')[];
   style?: PaginationStyle<StatefulCSSS>;
   positions?: PaginationPositions;
 }

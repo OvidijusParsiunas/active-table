@@ -16,4 +16,5 @@ export interface PaginationInternal extends Required<Pagination> {
   clickedNumberButton?: boolean; // REF-30
   mouseDownOnNumberOfRowsButton?: boolean;
   isAllRowsOptionSelected: boolean;
+  numberOfRowsOptionsItemText: string[];
 }

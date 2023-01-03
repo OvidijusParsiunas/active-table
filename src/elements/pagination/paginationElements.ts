@@ -8,7 +8,7 @@ export class PaginationElements {
 
   public static create(etc: EditableTableComponent) {
     etc.paginationInternal.buttonContainer = PaginationButtonContainerElement.create(etc);
-    if (etc.paginationInternal.displayNumberOfRowsOptions) NumberOfRowsOptionsContainerElement.create(etc);
+    if (etc.paginationInternal.numberOfRowsOptionsItemText) NumberOfRowsOptionsContainerElement.create(etc);
     if (etc.paginationInternal.displayNumberOfVisibleRows) {
       etc.paginationInternal.numberOfVisibleRowsElement = NumberOfVisibleRowsElement.create(etc);
     }

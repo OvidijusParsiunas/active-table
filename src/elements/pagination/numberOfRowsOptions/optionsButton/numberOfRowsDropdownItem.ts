@@ -26,9 +26,9 @@ export class NumberOfRowsDropdownItem {
   }
 
   public static populate(etc: EditableTableComponent, dropdownElement: HTMLElement, optionsButton: HTMLElement) {
-    const itemsText = ['4', '10', '25', '50', 'All'];
-    itemsText.forEach((itemText) => {
-      const item = DropdownItem.addButtonItem(etc, dropdownElement, {text: itemText}, NumberOfRowsDropdownItem.ITEM_CLASS);
+    etc.paginationInternal.numberOfRowsOptionsItemText.forEach((itemText) => {
+      const itemsSettings = {text: String(itemText)};
+      const item = DropdownItem.addButtonItem(etc, dropdownElement, itemsSettings, NumberOfRowsDropdownItem.ITEM_CLASS);
       NumberOfRowsDropdownItemEvents.setEvents(etc, item, optionsButton);
     });
     const activeItemText = String(etc.paginationInternal.numberOfRows);

@@ -143,22 +143,4 @@ export class PaginationUtils {
     PaginationButtonElement.setActive(etc, etc.paginationInternal.buttonContainer, buttonNumber);
     NumberOfVisibleRowsElement.update(etc);
   }
-
-  public static getDefaultInternal(): PaginationInternal {
-    return {
-      numberOfRows: 10,
-      maxNumberOfButtons: 8,
-      activeButtonNumber: 1,
-      visibleRows: [],
-      displayPrevNext: true,
-      displayFirstLast: true,
-      style: {}, // this is going to be populated during the call of processInternal method
-      positions: {
-        container: 'bottom-right',
-      },
-      displayNumberOfVisibleRows: true,
-      displayNumberOfRowsOptions: [],
-      isAllRowsOptionSelected: false,
-    } as unknown as PaginationInternal;
-  }
 }

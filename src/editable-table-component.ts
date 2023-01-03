@@ -16,7 +16,6 @@ import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {DropdownDisplaySettings} from './types/dropdownDisplaySettings';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
-import {PaginationUtils} from './utils/pagination/paginationUtils';
 import {customElement, property, state} from 'lit/decorators.js';
 import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {ediTableStyle} from './editable-table-component-style';
@@ -175,10 +174,10 @@ export class EditableTableComponent extends LitElement {
   rowDropdownCellOverlays: RowDropdownCellOverlays = [];
 
   @property({type: Object})
-  pagination: Pagination = {numberOfEntries: 2};
+  pagination: Pagination = {};
 
   @state()
-  paginationInternal: PaginationInternal = PaginationUtils.getDefaultInternal();
+  paginationInternal: PaginationInternal = PaginationInternalUtils.getDefault();
 
   // CAUTION-4
   override render() {
