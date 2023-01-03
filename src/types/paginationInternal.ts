@@ -10,9 +10,10 @@ export interface PaginationInternal extends Required<Pagination> {
   numberOfRowsDropdown?: HTMLElement;
   visibleRows: HTMLElement[];
   activeButtonNumber: number;
-  clickedNumberButton?: boolean; // REF-30
-  mouseDownOnNumberOfRowsButton?: boolean;
-  programaticallyHoveredButton?: HTMLElement;
   style: IPaginationStyle;
   positions: Required<PaginationPositions>;
+  programaticallyHoveredButton?: HTMLElement;
+  clickedNumberButton?: boolean; // REF-30
+  mouseDownOnNumberOfRowsButton?: boolean;
+  isAllRowsOptionSelected: boolean;
 }

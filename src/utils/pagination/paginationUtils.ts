@@ -16,6 +16,7 @@ export class PaginationUtils {
   // prettier-ignore
   public static getLastPossibleButtonNumber(etc: EditableTableComponent, isBeforeInsert = false) {
     const {contents, paginationInternal, auxiliaryTableContentInternal: {indexColumnCountStartsAtHeader}} = etc;
+    if (paginationInternal.isAllRowsOptionSelected) return 1;
     const contentLength = indexColumnCountStartsAtHeader ? contents.length + 1 : contents.length;
     const numberOfRows = isBeforeInsert ? contentLength : contentLength - 1;
     return Math.ceil(numberOfRows / paginationInternal.numberOfRows);
@@ -28,8 +29,8 @@ export class PaginationUtils {
   }
 
   public static getRelativeRowIndexes(etc: EditableTableComponent, rowIndex = 0) {
-    const {activeButtonNumber, numberOfRows} = etc.paginationInternal;
-    let maxVisibleRowIndex = activeButtonNumber * numberOfRows;
+    const {activeButtonNumber, numberOfRows, isAllRowsOptionSelected} = etc.paginationInternal;
+    let maxVisibleRowIndex = isAllRowsOptionSelected ? etc.contents.length + 1 : activeButtonNumber * numberOfRows;
     if (!etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader) maxVisibleRowIndex += 1;
     const minVisibleRowIndex = maxVisibleRowIndex - numberOfRows;
     const visibleRowIndex = rowIndex - minVisibleRowIndex;
@@ -80,10 +81,12 @@ export class PaginationUtils {
   }
 
   private static updateRowsOnNewInsert(etc: EditableTableComponent, rowIndex: number, newRowElement: HTMLElement) {
-    const {numberOfRows, visibleRows, activeButtonNumber} = etc.paginationInternal;
+    const {numberOfRows, visibleRows, activeButtonNumber, isAllRowsOptionSelected} = etc.paginationInternal;
     const {maxVisibleRowIndex, visibleRowIndex} = PaginationUtils.getRelativeRowIndexes(etc, rowIndex);
     if (maxVisibleRowIndex > rowIndex) {
-      if (visibleRows.length === numberOfRows) PaginationUtils.hideLastVisibleRow(etc.paginationInternal);
+      if (visibleRows.length === numberOfRows && !isAllRowsOptionSelected) {
+        PaginationUtils.hideLastVisibleRow(etc.paginationInternal);
+      }
       visibleRows.splice(visibleRowIndex, 0, newRowElement);
     } else {
       PaginationUtils.hideRow(newRowElement);
@@ -155,6 +158,7 @@ export class PaginationUtils {
       },
       displayNumberOfVisibleRows: true,
       displayNumberOfRowsOptions: [],
+      isAllRowsOptionSelected: false,
     } as unknown as PaginationInternal;
   }
 }

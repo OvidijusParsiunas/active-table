@@ -13,8 +13,10 @@ interface PartiallyVisible {
 type VisibilityDetails = FullyVisible | PartiallyVisible;
 
 export class ElementVisibility {
-  public static getDetailsInWindow(element: HTMLElement): VisibilityDetails {
-    const {topWidth: topBorderWidth, leftWidth: leftBorderWidth} = TableElement.BORDER_DIMENSIONS;
+  // prettier-ignore
+  public static getDetailsInWindow(element: HTMLElement, isInsideTable = true): VisibilityDetails {
+    const {topWidth: topBorderWidth, leftWidth: leftBorderWidth} = isInsideTable
+      ? TableElement.BORDER_DIMENSIONS : {topWidth: 0, leftWidth: 0};
     let top = element.offsetTop;
     let left = element.offsetLeft;
     const width = element.offsetWidth;

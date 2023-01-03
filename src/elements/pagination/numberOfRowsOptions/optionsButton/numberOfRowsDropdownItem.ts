@@ -4,6 +4,7 @@ import {DropdownItem} from '../../../dropdown/dropdownItem';
 
 export class NumberOfRowsDropdownItem {
   private static readonly ITEM_CLASS = 'number-of-rows-dropdown-item';
+  public static readonly ALL_ITEM_TEXT = 'all'; // lower case as it will be compared against user set text
 
   private static unsetHoverColors(items: HTMLElement[]) {
     items.forEach((item) => (item.style.backgroundColor = ''));

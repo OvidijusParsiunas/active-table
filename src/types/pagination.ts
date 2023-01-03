@@ -43,7 +43,7 @@ export interface Pagination {
   displayPrevNext?: boolean; // by default true
   displayFirstLast?: boolean; // by default true
   displayNumberOfVisibleRows?: boolean; // by default true
-  displayNumberOfRowsOptions?: number[];
+  displayNumberOfRowsOptions?: (number | 'All' | 'all')[];
   style?: PaginationStyle<StatefulCSSS>;
   positions?: PaginationPositions;
 }

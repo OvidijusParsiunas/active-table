@@ -362,6 +362,7 @@ export const ediTableStyle = css`
   #pagination-of-rows-options {
     padding-top: 4px;
     float: right;
+    position: relative;
   }
 
   #pagination-of-rows-options-text {

@@ -6,11 +6,21 @@ import {PaginationNextButtonElement} from './buttons/prevNext/paginationNextButt
 import {PaginationButtonContainerEvents} from './paginationButtonContainerEvents';
 import {PaginationUtils} from '../../../utils/pagination/paginationUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {PaginationInternal} from '../../../types/paginationInternal';
 import {PaginationButtonElement} from './paginationButtonElement';
 
 export class PaginationButtonContainerElement {
   private static readonly PAGINATION_BUTTON_CONTAINER_ID = 'pagination-button-container';
   public static NUMBER_OF_ACTION_BUTTONS = 0;
+
+  private static setStyle(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
+    const minNumberOfButtonsToBeActive = etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? 1 : 2;
+    if (etc.contents.length < minNumberOfButtonsToBeActive) {
+      PaginationButtonElement.setDisabled(buttonContainerElement, etc.paginationInternal.style);
+    } else {
+      PaginationButtonElement.setActive(etc, buttonContainerElement, 1);
+    }
+  }
 
   private static addNumberButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
     // the reason why 1 button is required when it should be 0 is because we hide it and show it when a row is added
@@ -27,7 +37,7 @@ export class PaginationButtonContainerElement {
     PaginationButtonContainerElement.NUMBER_OF_ACTION_BUTTONS += 1;
   }
 
-  private static populateButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
+  private static addButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
     const {displayPrevNext, displayFirstLast} = etc.paginationInternal;
     if (displayFirstLast) {
       PaginationButtonContainerElement.addButton(buttonContainerElement, PaginationFirstButtonElement.create(etc));
@@ -42,12 +52,18 @@ export class PaginationButtonContainerElement {
     if (displayFirstLast) {
       PaginationButtonContainerElement.addButton(buttonContainerElement, PaginationLastButtonElement.create(etc));
     }
-    const minNumberOfButtonsToBeActive = etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? 1 : 2;
-    if (etc.contents.length < minNumberOfButtonsToBeActive) {
-      PaginationButtonElement.setDisabled(buttonContainerElement, etc.paginationInternal.style);
-    } else {
-      PaginationButtonElement.setActive(etc, buttonContainerElement, 1);
-    }
+  }
+
+  private static resetState(pagination: PaginationInternal) {
+    pagination.activeButtonNumber = 1;
+    PaginationButtonContainerElement.NUMBER_OF_ACTION_BUTTONS = 0;
+  }
+
+  public static repopulateButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
+    PaginationButtonContainerElement.resetState(etc.paginationInternal);
+    buttonContainerElement.replaceChildren();
+    PaginationButtonContainerElement.addButtons(etc, buttonContainerElement);
+    PaginationButtonContainerElement.setStyle(etc, buttonContainerElement);
   }
 
   // prettier-ignore
@@ -65,7 +81,7 @@ export class PaginationButtonContainerElement {
     buttonContainerElement.id = PaginationButtonContainerElement.PAGINATION_BUTTON_CONTAINER_ID;
     Object.assign(buttonContainerElement.style, etc.paginationInternal.style.container);
     PaginationButtonContainerEvents.setEvents(buttonContainerElement, etc.paginationInternal);
-    PaginationButtonContainerElement.populateButtons(etc, buttonContainerElement);
+    PaginationButtonContainerElement.repopulateButtons(etc, buttonContainerElement);
     setTimeout(() => PaginationButtonContainerElement.insertToDOM(etc));
     return buttonContainerElement;
   }

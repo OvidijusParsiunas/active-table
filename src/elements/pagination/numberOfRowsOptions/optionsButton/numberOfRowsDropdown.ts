@@ -9,8 +9,10 @@ import {SIDE} from '../../../../types/side';
 export class NumberOfRowsDropdown {
   private static DROPDOWN_WIDTH = 45;
 
-  public static hide(dropdownElement: HTMLElement) {
+  public static hide(dropdownElement: HTMLElement, dropdownItems?: HTMLElement[]) {
     Dropdown.hide(dropdownElement);
+    const items = dropdownItems || (Array.from(dropdownElement.children) as HTMLElement[]);
+    NumberOfRowsDropdownItem.unsetAllItemStyles(dropdownElement, items);
   }
 
   private static getDropdownTopPosition(buttonElement: HTMLElement): PX {
@@ -23,11 +25,12 @@ export class NumberOfRowsDropdown {
   }
 
   private static displayAndSetDropdownPosition(buttonElement: HTMLElement, dropdownElement: HTMLElement) {
+    dropdownElement.style.bottom = '';
     dropdownElement.style.left = NumberOfRowsDropdown.getLeftPropertyToCenterDropdown(buttonElement);
     dropdownElement.style.top = NumberOfRowsDropdown.getDropdownTopPosition(buttonElement);
     // needs to be displayed here to evalute if in view port
     Dropdown.display(dropdownElement);
-    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement);
+    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement, false);
     if (!visibilityDetails.isFullyVisible && visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
       dropdownElement.style.bottom = '0px';
       dropdownElement.style.top = '';
