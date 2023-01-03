@@ -1,17 +1,19 @@
 import {NumberOfRowsOptionsButtonElement} from './optionsButton/numberOfRowsOptionsButtonElement';
 import {NumberOfRowsDropdown} from './optionsButton/numberOfRowsDropdown';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {PaginationInternal} from '../../../types/paginationInternal';
+import {NumberOfRowsOptions} from '../../../types/pagination';
 import {PaginationElements} from '../paginationElements';
 
 export class NumberOfRowsOptionsContainerElement {
   private static readonly ID = 'pagination-of-rows-options';
   private static readonly TEXT_ID = 'pagination-of-rows-options-text';
 
-  private static createText() {
+  private static createText(pagination: PaginationInternal) {
     const textElement = document.createElement('div');
     textElement.id = NumberOfRowsOptionsContainerElement.TEXT_ID;
     textElement.style.marginRight = '8px';
-    textElement.innerText = 'Rows per page:';
+    textElement.innerText = (pagination.numberOfRowsOptions as NumberOfRowsOptions).prefixText as string;
     return textElement;
   }
 
@@ -26,7 +28,7 @@ export class NumberOfRowsOptionsContainerElement {
 
   public static create(etc: EditableTableComponent) {
     const numberOfRowsOptionsContainer = NumberOfRowsOptionsContainerElement.createContainer();
-    numberOfRowsOptionsContainer.appendChild(NumberOfRowsOptionsContainerElement.createText());
+    numberOfRowsOptionsContainer.appendChild(NumberOfRowsOptionsContainerElement.createText(etc.paginationInternal));
     const optionsButton = NumberOfRowsOptionsButtonElement.create(etc);
     numberOfRowsOptionsContainer.appendChild(optionsButton);
     etc.paginationInternal.numberOfRowsDropdown = NumberOfRowsDropdown.create(etc, optionsButton);

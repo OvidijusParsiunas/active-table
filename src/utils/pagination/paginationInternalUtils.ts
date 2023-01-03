@@ -1,9 +1,17 @@
-import {PaginationStyle, Pagination, ContainerStyle, PaginationPositions} from '../../types/pagination';
+// eslint-disable-next-line max-len
+import {NumberOfRowsDropdownItem} from '../../elements/pagination/numberOfRowsOptions/optionsButton/numberOfRowsDropdownItem';
 import {IPaginationStyle, PaginationInternal} from '../../types/paginationInternal';
 import {DefaultContainerPositions} from './defaultContainerPositions';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PropertiesOfType} from '../../types/utilityTypes';
 import {StatefulCSSS} from '../../types/cssStyle';
+import {
+  PaginationPositions,
+  NumberOfRowsOptions,
+  PaginationStyle,
+  ContainerStyle,
+  Pagination,
+} from '../../types/pagination';
 
 interface DefaultBackgroundColors {
   def: string;
@@ -19,7 +27,7 @@ export class PaginationInternalUtils {
   private static setNumberOfRows(etc: EditableTableComponent) {
     const {paginationInternal, contents, auxiliaryTableContent} = etc;
     const firstItemText = paginationInternal.numberOfRowsOptionsItemText[0];
-    if (firstItemText.toLocaleLowerCase() === 'all') {
+    if (firstItemText.toLocaleLowerCase() === NumberOfRowsDropdownItem.ALL_ITEM_TEXT) {
       paginationInternal.isAllRowsOptionSelected = true;
       paginationInternal.numberOfRows = auxiliaryTableContent.indexColumnCountStartsAtHeader
         ? contents.length
@@ -50,13 +58,22 @@ export class PaginationInternalUtils {
   private static setNumberOfRowsOptionsText(pagination: Pagination, paginationInternal: PaginationInternal) {
     const {numberOfRowsOptions} = pagination;
     if (numberOfRowsOptions || numberOfRowsOptions === undefined) {
-      const {numberOfRowsOptions: InumberOfRowsOptions} = paginationInternal; // default options
-      // numberOfRowsOptions value is already truthy
-      const options = typeof numberOfRowsOptions === 'boolean' || numberOfRowsOptions === undefined
-        || numberOfRowsOptions.length === 0 ? InumberOfRowsOptions : numberOfRowsOptions;
+      const defaultOptions = (paginationInternal.numberOfRowsOptions as NumberOfRowsOptions).options; // default options
+      const options = numberOfRowsOptions === undefined || numberOfRowsOptions === true
+        || !numberOfRowsOptions.options || numberOfRowsOptions.options.length === 0
+          ? defaultOptions : numberOfRowsOptions.options;
       paginationInternal.numberOfRowsOptionsItemText = (options as (number|string)[])
         .map((option) => PaginationInternalUtils.processOptionsItemText(option));
     }
+  }
+
+  private static processNumberOfRowsOptions(pagination: Pagination, paginationInternal: PaginationInternal) {
+    const {numberOfRowsOptions} = pagination;
+    if (numberOfRowsOptions !== undefined && typeof numberOfRowsOptions !== 'boolean' && numberOfRowsOptions.prefixText) {
+      (paginationInternal.numberOfRowsOptions as NumberOfRowsOptions).prefixText = numberOfRowsOptions.prefixText;
+    }
+    PaginationInternalUtils.setNumberOfRowsOptionsText(pagination, paginationInternal);
+    delete pagination.numberOfRowsOptions;
   }
 
   private static setContainerStyle(style: IPaginationStyle, positionProperties: ContainerStyle) {
@@ -139,7 +156,7 @@ export class PaginationInternalUtils {
     }
     const positionProperties = PaginationInternalUtils.processPosition(pagination, paginationInternal);
     PaginationInternalUtils.processStyle(pagination, paginationInternal, positionProperties);
-    PaginationInternalUtils.setNumberOfRowsOptionsText(pagination, paginationInternal);
+    PaginationInternalUtils.processNumberOfRowsOptions(pagination, paginationInternal);
     Object.assign(paginationInternal, pagination);
     PaginationInternalUtils.processNumberOfRows(etc);
   }
@@ -157,7 +174,10 @@ export class PaginationInternalUtils {
         container: 'bottom-right',
       },
       displayNumberOfVisibleRows: true,
-      numberOfRowsOptions: [10, 25, 50, 'All'],
+      numberOfRowsOptions: {
+        options: [10, 25, 50, 'All'],
+        prefixText: 'Rows per page:',
+      },
       isAllRowsOptionSelected: false,
     } as unknown as PaginationInternal;
   }

@@ -34,6 +34,7 @@ export class NumberOfVisibleRowsElement {
     const numberOfVisibleRowsElementElement = document.createElement('div');
     numberOfVisibleRowsElementElement.id = NumberOfVisibleRowsElement.ID;
     numberOfVisibleRowsElementElement.classList.add(PaginationElements.PAGINATION_TEXT_COMPONENT_CLASS);
+    Object.assign(numberOfVisibleRowsElementElement.style, etc.paginationInternal.style.numberOfVisibleRows);
     numberOfVisibleRowsElementElement.style.float = 'right';
     numberOfVisibleRowsElementElement.style.marginTop = '10px';
     numberOfVisibleRowsElementElement.style.marginRight = '10px';

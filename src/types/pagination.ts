@@ -35,11 +35,13 @@ export interface PaginationStyle<T> {
   activeButton?: T;
   disabledButtons?: CSSStyle; // disabled buttons do not have any mouse events
   actionButtons?: ActionButtonStyle<T>; // will also use 'buttons' style
+  numberOfVisibleRows?: CSSStyle;
 }
 
 export interface Pagination {
   numberOfRows?: number; // by default set to 10
-  numberOfRowsOptions?: (number | 'All' | 'all')[] | boolean;
+  // 'All'|'all' causes all table rows to be displayed
+  numberOfRowsOptions?: (number | 'All' | 'all')[] | boolean; // by default [10, 25, 50, 'All']
   maxNumberOfButtons?: number; // by default set to 8
   displayPrevNext?: boolean; // by default true
   displayFirstLast?: boolean; // by default true
