@@ -21,7 +21,8 @@ and the use of both would result in thick middle borders
 For the table borders to be set, use tableStyle
 
 REF-2
-contentEditable does not display the caret correctly in shadow dom in FireFox
+contentEditable does not display the caret correctly in shadow dom in FireFox all the time and on initial mouse down on text
+element in the Safari browser
 the workaround is to set contentEditable every time the data cell is focused
 alternatively can refactor cells to be inputs
 https://pablo.berganza.dev/blog/shadow-dom-firefox-contenteditable/

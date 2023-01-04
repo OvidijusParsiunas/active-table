@@ -1,5 +1,4 @@
 import {OverwriteCellsViaCSVOnPaste} from '../../../utils/paste/CSV/overwriteCellsViaCSVOnPaste';
-import {FirefoxCaretDisplayFix} from '../../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {UserKeyEventsStateUtils} from '../../../utils/userEventsState/userEventsStateUtils';
 import {DateCellInputElement} from '../cellsWithTextDiv/dateCell/dateCellInputElement';
 import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
@@ -8,11 +7,11 @@ import {CellTypeTotalsUtils} from '../../../utils/columnType/cellTypeTotalsUtils
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CaretDisplayFix} from '../../../utils/browser/caretDisplayFix';
 import {KEYBOARD_EVENT} from '../../../consts/keyboardEvents';
 import {PasteUtils} from '../../../utils/paste/pasteUtils';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {UNDO_INPUT_TYPE} from '../../../consts/domEvents';
-import {Browser} from '../../../utils/browser/browser';
 import {CellElement} from '../cellElement';
 import {CellEvents} from '../cellEvents';
 
@@ -70,7 +69,7 @@ export class DataCellEvents {
   // textContainerElement can be cell element for data cell, text element for category and date cells
   public static blur(etc: EditableTableComponent,
       rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
-    if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeContentEditable(textContainerElement);
+    if (CaretDisplayFix.isIssueBrowser()) CaretDisplayFix.removeContentEditable(textContainerElement);
     CellEvents.setCellToDefaultIfNeeded(etc, rowIndex, columnIndex, textContainerElement);
     const oldType = etc.focusedElements.cell.typeName;
     FocusedCellUtils.purge(etc.focusedElements.cell);
@@ -92,9 +91,9 @@ export class DataCellEvents {
   // textContainerElement can be cell element for data cell, text element for category and date cells
   public static prepareText(etc: EditableTableComponent, rowIndex: number, columnIndex: number,
       textContainerElement: HTMLElement) {
-    if (Browser.IS_FIREFOX && (rowIndex > 0 || !etc.columnDropdownDisplaySettings.openMethod?.cellClick)) {
+    if (CaretDisplayFix.isIssueBrowser() && (rowIndex > 0 || !etc.columnDropdownDisplaySettings.openMethod?.cellClick)) {
       // THIS HAS TO BE CALLED IN A FOCUS EVENT!!!!!!!!!!!!!!!!!
-      FirefoxCaretDisplayFix.setContentEditable(textContainerElement);
+      CaretDisplayFix.setContentEditable(textContainerElement);
     }
     // placed here and not in timeout because we need cells with a default value to be recorded before modification
     CellEvents.removeTextIfDefault(etc, rowIndex, columnIndex, textContainerElement);

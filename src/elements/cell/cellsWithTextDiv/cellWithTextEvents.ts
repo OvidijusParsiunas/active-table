@@ -1,10 +1,10 @@
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CaretDisplayFix} from '../../../utils/browser/caretDisplayFix';
 import {CategoryCellEvents} from './categoryCell/categoryCellEvents';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {DataCellEvents} from '../dataCell/dataCellEvents';
-import {Browser} from '../../../utils/browser/browser';
 import {CellDetails} from '../../../types/focusedCell';
 import {CellElement} from '../cellElement';
 
@@ -48,8 +48,8 @@ export class CellWithTextEvents {
       // needed to set cursor at the end
       event.preventDefault();
       blurCallback?.(this);
-      // Firefox does not fire the focus event for CaretPosition.setToEndOfText
-      if (Browser.IS_FIREFOX) textElement.focus();
+      // Firefox and Safari do not fire the focus event for CaretPosition.setToEndOfText
+      if (CaretDisplayFix.isIssueBrowser()) textElement.focus();
       // in non firefox browsers this focuses
       CaretPosition.setToEndOfText(this, textElement);
     }

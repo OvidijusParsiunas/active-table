@@ -4,7 +4,6 @@ import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellC
 import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsBorderUtils';
 import {ColumnSettingsStyleUtils} from '../../utils/columnSettings/columnSettingsStyleUtils';
 import {ColumnSettingsWidthUtils} from '../../utils/columnSettings/columnSettingsWidthUtils';
-import {FirefoxCaretDisplayFix} from '../../utils/browser/firefox/firefoxCaretDisplayFix';
 import {EditableHeaderCellEvents} from './headerCell/editable/editableHeaderCellEvents';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
@@ -12,10 +11,10 @@ import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {CheckboxCellElement} from './checkboxCell/checkboxCellElement';
 import {ColumnDetails} from '../../utils/columnDetails/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
+import {CaretDisplayFix} from '../../utils/browser/caretDisplayFix';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {HeaderCellEvents} from './headerCell/headerCellEvents';
 import {DataCellEvents} from './dataCell/dataCellEvents';
-import {Browser} from '../../utils/browser/browser';
 import {CellText} from '../../types/tableContents';
 import {CellCSSStyle} from '../../types/cssStyle';
 
@@ -74,9 +73,9 @@ export class CellElement {
   }
 
   public static prepContentEditable(cellElement: HTMLElement, isEditable: boolean, isUsedAsAButton = false) {
-    if (Browser.IS_FIREFOX) {
-      if (isEditable) FirefoxCaretDisplayFix.setTabIndex(cellElement);
-      FirefoxCaretDisplayFix.removeContentEditable(cellElement);
+    if (CaretDisplayFix.isIssueBrowser()) {
+      if (isEditable) CaretDisplayFix.setTabIndex(cellElement);
+      CaretDisplayFix.removeContentEditable(cellElement);
     } else {
       // the reason why this is in a timeout is because when contentEditable is changed it fires blur on a text element
       // which is problematic when column settings are changed after header text is changed during multi row data paste
@@ -144,9 +143,9 @@ export class CellElement {
     // whilst it is primarily used for firefox - we use it consistently for all browsers
     if (isCellBeingBuilt) {
       // in a timeout as text elements may not be populated upfront (data or category)
-      setTimeout(() => FirefoxCaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo));
+      setTimeout(() => CaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo));
     } else {
-      FirefoxCaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo);
+      CaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo);
     }
   }
 

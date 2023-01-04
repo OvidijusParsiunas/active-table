@@ -1,5 +1,4 @@
-import {FirefoxCaretDisplayFix} from '../../../../utils/browser/firefox/firefoxCaretDisplayFix';
-import {Browser} from '../../../../utils/browser/browser';
+import {CaretDisplayFix} from '../../../../utils/browser/caretDisplayFix';
 import {CellElement} from '../../cellElement';
 
 export class CellTextElement {
@@ -12,7 +11,7 @@ export class CellTextElement {
     cellElement.innerText = ''; // removes all cell content
     cellElement.contentEditable = 'false';
     // not really part of the bug, but in the same area
-    if (Browser.IS_FIREFOX) FirefoxCaretDisplayFix.removeTabIndex(cellElement);
+    if (CaretDisplayFix.isIssueBrowser()) CaretDisplayFix.removeTabIndex(cellElement);
     cellElement.appendChild(textElement);
   }
 
