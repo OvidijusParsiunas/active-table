@@ -16,23 +16,23 @@ import {Dropdown} from '../dropdown/dropdown';
 export class WindowEvents {
   // prettier-ignore
   public static onKeyDown(this: EditableTableComponent, event: KeyboardEvent) {
-    const {rowIndex, columnIndex, element} = this.focusedElements.cell;
     if (Dropdown.isDisplayed(this.paginationInternal.numberOfRowsDropdown)) {
       NumberOfRowsDropdownEvents.windowOnKeyDown.bind(this)(this, event);
     }
+    if (Dropdown.isDisplayed(this.activeOverlayElements.rowDropdown)) {
+      RowDropdownEvents.windowOnKeyDown(this, event);
+    }
+    const {rowIndex, columnIndex, element} = this.focusedElements.cell;
     if (rowIndex === undefined || columnIndex === undefined) return;
     if (rowIndex === 0 && !Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
-      if (event.key === KEYBOARD_KEY.ESCAPE) {
-        ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, element as HTMLElement, columnIndex);
-        return;
-      }
+    if (event.key === KEYBOARD_KEY.ESCAPE) {
+      ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, element as HTMLElement, columnIndex);
+      return;
+    }
     // workaround for when opened dropdown does not have a focused item
     } else if (Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown) && !this.shadowRoot?.activeElement) {
       ColumnDropdownEvents.onKeyDown.bind(this)(this.activeOverlayElements.columnDropdown as HTMLElement, event);
       return;
-    }
-    if (Dropdown.isDisplayed(this.activeOverlayElements.rowDropdown)) {
-      RowDropdownEvents.windowOnKeyDown(this, event);
     }
     if (this.columnsDetails[columnIndex].activeType.categories
         && Dropdown.isDisplayed(this.columnsDetails[columnIndex].categoryDropdown.element)) {

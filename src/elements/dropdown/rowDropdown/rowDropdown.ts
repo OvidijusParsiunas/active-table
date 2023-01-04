@@ -2,11 +2,15 @@ import {AuxiliaryTableContentColors} from '../../../utils/auxiliaryTableContent/
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
 import {FullTableOverlayElement} from '../../fullTableOverlay/fullTableOverlayElement';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
+import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
+import {Browser} from '../../../utils/browser/browser';
 import {RowDropdownEvents} from './rowDropdownEvents';
+import {TableElement} from '../../table/tableElement';
 import {RowDropdownItem} from './rowDropdownItem';
+import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
 
 export class RowDropdown {
@@ -35,8 +39,22 @@ export class RowDropdown {
   }
 
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdown: HTMLElement, cellClick: boolean) {
-    dropdown.style.top = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
+    const initialTopValue = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
+    dropdown.style.top = initialTopValue;
     dropdown.style.left = `${ElementOffset.processWidth(cellClick ? cellElement.offsetWidth : 5)}px`;
+    // needs to be displayed here to evalute if in view port
+    Dropdown.display(dropdown);
+    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdown);
+    if (!visibilityDetails.isFullyVisible && visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
+      const tableTopOffset = (dropdown.parentElement as HTMLElement).offsetTop + TableElement.BORDER_DIMENSIONS.topWidth;
+      let newTopValue = window.pageYOffset + window.innerHeight - tableTopOffset - dropdown.offsetHeight;
+      if (Browser.IS_FIREFOX) newTopValue += TableElement.BORDER_DIMENSIONS.topWidth;
+      dropdown.style.top = `${newTopValue}px`;
+      const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdown);
+      if (!visibilityDetails.isFullyVisible && visibilityDetails.blockingSides.has(SIDE.TOP)) {
+        dropdown.style.top = initialTopValue;
+      }
+    }
   }
 
   public static display(this: EditableTableComponent, rowIndex: number, cellElement: HTMLElement) {
@@ -44,7 +62,6 @@ export class RowDropdown {
     RowDropdownItem.update(this, dropdownElement, rowIndex);
     const cellClick = this.rowDropdownSettings.displaySettings.openMethod?.cellClick as boolean;
     RowDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement, cellClick);
-    Dropdown.display(dropdownElement);
     FullTableOverlayElement.display(this);
     setTimeout(() => RowDropdown.focusCell(this, rowIndex, cellElement));
   }
