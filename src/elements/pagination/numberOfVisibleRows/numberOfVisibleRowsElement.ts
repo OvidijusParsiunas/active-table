@@ -1,3 +1,4 @@
+import {Containers, PaginationContainerElement} from '../paginationContainer/paginationContainerElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {PaginationInternal} from '../../../types/paginationInternal';
 import {PaginationElements} from '../paginationElements';
@@ -30,18 +31,15 @@ export class NumberOfVisibleRowsElement {
     }
   }
 
-  public static create(etc: EditableTableComponent) {
+  public static create(etc: EditableTableComponent, containers: Containers) {
     const numberOfVisibleRowsElement = document.createElement('div');
     numberOfVisibleRowsElement.id = NumberOfVisibleRowsElement.ID;
     numberOfVisibleRowsElement.classList.add(PaginationElements.PAGINATION_TEXT_COMPONENT_CLASS);
-    Object.assign(numberOfVisibleRowsElement.style, etc.paginationInternal.style.numberOfVisibleRows);
-    numberOfVisibleRowsElement.style.float = 'right';
-    numberOfVisibleRowsElement.style.marginTop = '10px';
-    numberOfVisibleRowsElement.style.marginRight = '10px';
-    setTimeout(() => {
-      NumberOfVisibleRowsElement.update(etc);
-      etc.paginationInternal.buttonContainer.insertAdjacentElement('afterend', numberOfVisibleRowsElement);
-    });
+    const {style, positions} = etc.paginationInternal;
+    numberOfVisibleRowsElement.style.order = String(positions.numberOfVisibleRows.order);
+    Object.assign(numberOfVisibleRowsElement.style, style.numberOfVisibleRows);
+    PaginationContainerElement.addToContainer(positions.numberOfVisibleRows.side, containers, numberOfVisibleRowsElement);
+    setTimeout(() => NumberOfVisibleRowsElement.update(etc));
     return numberOfVisibleRowsElement;
   }
 }

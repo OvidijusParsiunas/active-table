@@ -1,14 +1,13 @@
 // eslint-disable-next-line max-len
 import {NumberOfRowsDropdownItem} from '../../elements/pagination/numberOfRowsOptions/optionsButton/numberOfRowsDropdownItem';
 import {IPaginationStyle, PaginationInternal} from '../../types/paginationInternal';
-import {DefaultContainerPositions} from './defaultContainerPositions';
 import {EditableTableComponent} from '../../editable-table-component';
 import {StatefulCSSS} from '../../types/cssStyle';
 import {
-  PaginationPositions,
+  PaginationPositionSide,
   NumberOfRowsOptions,
+  PaginationPositions,
   PageButtonStyle,
-  ContainerStyle,
   Pagination,
 } from '../../types/pagination';
 
@@ -18,13 +17,15 @@ interface DefaultBackgroundColors {
   click: string;
 }
 
-type PositionProps = {
-  [key in keyof Required<PaginationPositions>]: ContainerStyle;
-};
-
 type StatefulStyle = {[key: string]: StatefulCSSS};
 
 export class PaginationInternalUtils {
+  private static readonly DEFAULT_SIDE = 'bottom-right';
+  // prettier-ignore
+  private static readonly SIDES: Set<PaginationPositionSide> = new Set([
+    'top-left', 'top-middle', 'top-right', 'bottom-left', 'bottom-middle', PaginationInternalUtils.DEFAULT_SIDE,
+  ]);
+
   private static setNumberOfRows(etc: EditableTableComponent) {
     const {paginationInternal, contents, auxiliaryTableContent} = etc;
     const firstItemText = paginationInternal.numberOfRowsOptionsItemText[0];
@@ -78,24 +79,10 @@ export class PaginationInternalUtils {
   }
 
   private static setNumberOfRowsOptionsStyle(style: IPaginationStyle) {
+    // only adding stateful style for button as it is the only one that has default stategful css
     const defButtonsBackgroundColors = {def: '', hover: '#f5f5f5', click: '#f5f5f5'};
-    style.numberOfRowsOptions ??= {};
     const statefulStyle = style.numberOfRowsOptions as StatefulStyle;
     PaginationInternalUtils.setStatefulCSS(statefulStyle, defButtonsBackgroundColors, 'button');
-  }
-
-  private static setContainerStyle(pageButtonsStyle: PageButtonStyle, positionProperties: ContainerStyle) {
-    const {container} = pageButtonsStyle;
-    const containerStyle: ContainerStyle = {
-      border: container?.border || '1px solid black',
-      margin: container?.margin || '0px',
-      marginTop: container?.marginTop || positionProperties.marginTop || '0px',
-      marginLeft: container?.marginLeft || positionProperties.marginLeft || '0px',
-      marginRight: container?.marginRight || positionProperties.marginRight || '0px',
-      marginBottom: container?.marginBottom || positionProperties.marginBottom || '0px',
-      float: container?.float || positionProperties.float || '',
-    };
-    pageButtonsStyle.container = containerStyle;
   }
 
   // prettier-ignore
@@ -142,23 +129,26 @@ export class PaginationInternalUtils {
     paginationInternal.style.pageButtons.disabledButtons ??= {backgroundColor: 'grey'};
   }
 
-  // prettier-ignore
-  private static processStyle(pagination: Pagination, paginationInternal: PaginationInternal,
-      positionProperties: PositionProps) {
+  private static processStyle(pagination: Pagination, paginationInternal: PaginationInternal) {
     if (pagination.style) Object.assign(paginationInternal.style, pagination.style);
     PaginationInternalUtils.processPageButtonStyle(paginationInternal);
-    PaginationInternalUtils.setContainerStyle(paginationInternal.style.pageButtons, positionProperties.container);
+    paginationInternal.style.numberOfRowsOptions ??= {};
     PaginationInternalUtils.setNumberOfRowsOptionsStyle(paginationInternal.style);
+    paginationInternal.style.numberOfVisibleRows ??= {};
     delete pagination.style; // deleted so that Object.assign wouldn't apply it
+  }
+
+  private static processSides(positions: Required<PaginationPositions>) {
+    Object.keys(positions).forEach((componentName) => {
+      const component = positions[componentName as keyof PaginationPositions];
+      if (!PaginationInternalUtils.SIDES.has(component.side)) component.side = PaginationInternalUtils.DEFAULT_SIDE;
+    });
   }
 
   private static processPosition(pagination: Pagination, paginationInternal: PaginationInternal) {
     if (pagination.positions) Object.assign(paginationInternal.positions, pagination.positions);
+    PaginationInternalUtils.processSides(paginationInternal.positions);
     delete pagination.positions; // deleted so that Object.assign wouldn't apply it
-    const positionProperties: PositionProps = {
-      container: DefaultContainerPositions.POSITIONS[paginationInternal.positions.container],
-    };
-    return positionProperties;
   }
 
   public static process(etc: EditableTableComponent) {
@@ -166,8 +156,8 @@ export class PaginationInternalUtils {
     if (pagination.maxNumberOfButtons !== undefined && pagination.maxNumberOfButtons < 1) {
       pagination.maxNumberOfButtons = 1;
     }
-    const positionProperties = PaginationInternalUtils.processPosition(pagination, paginationInternal);
-    PaginationInternalUtils.processStyle(pagination, paginationInternal, positionProperties);
+    PaginationInternalUtils.processPosition(pagination, paginationInternal);
+    PaginationInternalUtils.processStyle(pagination, paginationInternal);
     PaginationInternalUtils.processNumberOfRowsOptions(pagination, paginationInternal);
     Object.assign(paginationInternal, pagination);
     PaginationInternalUtils.processNumberOfRows(etc);
@@ -183,7 +173,18 @@ export class PaginationInternalUtils {
       displayFirstLast: true,
       style: {}, // this is going to be populated during the call of processInternal method
       positions: {
-        container: 'bottom-right',
+        pageButtons: {
+          side: PaginationInternalUtils.DEFAULT_SIDE,
+          order: 3,
+        },
+        numberOfVisibleRows: {
+          side: PaginationInternalUtils.DEFAULT_SIDE,
+          order: 2,
+        },
+        numberOfRowsOptions: {
+          side: PaginationInternalUtils.DEFAULT_SIDE,
+          order: 1,
+        },
       },
       displayNumberOfVisibleRows: true,
       numberOfRowsOptions: {

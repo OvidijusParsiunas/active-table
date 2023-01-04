@@ -325,6 +325,7 @@ export const ediTableStyle = css`
   }
 
   #pagination-button-container {
+    border: 1px solid black;
     border-radius: 2px;
     right: 0;
     display: flex;
@@ -360,8 +361,7 @@ export const ediTableStyle = css`
   }
 
   #pagination-of-rows-options {
-    padding-top: 4px;
-    float: right;
+    padding-top: 2px;
     position: relative;
   }
 
@@ -412,5 +412,43 @@ export const ediTableStyle = css`
 
   .hidden-row > th > * {
     display: none;
+  }
+
+  .pagination-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #pagination-top-container > div > * {
+    margin-bottom: 10px;
+  }
+
+  #pagination-bottom-container > div > * {
+    margin-top: 10px;
+  }
+
+  .pagination-container-column {
+    display: flex;
+  }
+
+  .pagination-container-left-column > div {
+    margin-right: 10px;
+  }
+
+  .pagination-container-middle-column {
+    justify-content: center;
+  }
+
+  .pagination-container-middle-column > div {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .pagination-container-right-column {
+    justify-content: end;
+  }
+
+  .pagination-container-right-column > div {
+    margin-left: 10px;
   }
 `;

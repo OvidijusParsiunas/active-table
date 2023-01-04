@@ -1,6 +1,6 @@
 import {CSSStyle, StatefulCSSS} from './cssStyle';
 
-export type PaginationPosition =
+export type PaginationPositionSide =
   | 'top-left'
   | 'top-middle'
   | 'top-right'
@@ -8,18 +8,15 @@ export type PaginationPosition =
   | 'bottom-middle'
   | 'bottom-right';
 
-export interface PaginationPositions {
-  container?: PaginationPosition;
+export interface PaginationPosition {
+  side: PaginationPositionSide;
+  order?: number;
 }
 
-export interface ContainerStyle {
-  border?: string;
-  margin?: string;
-  marginTop?: string;
-  marginLeft?: string;
-  marginRight?: string;
-  marginBottom?: string;
-  float?: 'right' | 'left' | '';
+export interface PaginationPositions {
+  pageButtons?: PaginationPosition;
+  numberOfVisibleRows?: PaginationPosition;
+  numberOfRowsOptions?: PaginationPosition;
 }
 
 export interface NumberOfRowsOptionsStyle<T = StatefulCSSS> {
@@ -38,7 +35,7 @@ type ActionButtonStyle<T> = T & {
 };
 
 export interface PageButtonStyle<T = StatefulCSSS> {
-  container?: ContainerStyle;
+  container?: CSSStyle;
   buttons?: T;
   activeButton?: T;
   disabledButtons?: CSSStyle; // disabled buttons do not have any mouse events

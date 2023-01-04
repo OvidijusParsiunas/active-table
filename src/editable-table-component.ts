@@ -9,6 +9,7 @@ import {DynamicCellTextUpdate} from './utils/dynamicUpdates/dynamicCellTextUpdat
 import {PaginationInternalUtils} from './utils/pagination/paginationInternalUtils';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
+import {PaginationElements} from './elements/pagination/paginationElements';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {TableDimensionsInternal} from './types/tableDimensionsInternal';
@@ -57,6 +58,22 @@ export class EditableTableComponent extends LitElement {
   @property({type: Array})
   contents: TableContents = [
     ['R', 'G', 'B', 'Color'],
+    [255, 0, 0, 'Red'],
+    [254, 0, 0, 'Red'],
+    [0, 255, 0, 'Green'],
+    [0, 254, 0, 'Green'],
+    [255, 0, 0, 'Red'],
+    [254, 0, 0, 'Red'],
+    [0, 255, 0, 'Green'],
+    [0, 254, 0, 'Green'],
+    [255, 0, 0, 'Red'],
+    [254, 0, 0, 'Red'],
+    [0, 255, 0, 'Green'],
+    [0, 254, 0, 'Green'],
+    [255, 0, 0, 'Red'],
+    [254, 0, 0, 'Red'],
+    [0, 255, 0, 'Green'],
+    [0, 254, 0, 'Green'],
     [255, 0, 0, 'Red'],
     [254, 0, 0, 'Red'],
     [0, 255, 0, 'Green'],
@@ -196,6 +213,7 @@ export class EditableTableComponent extends LitElement {
     const tableElement = TableElement.createInfrastructureElements(this);
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
     this.shadowRoot?.appendChild(tableElement);
+    if (this.pagination) PaginationElements.create(this);
     InitialContentsProcessing.preProcess(this.contents);
     WindowElement.setEvents(this);
     ColumnSettingsUtils.setUpInternalSettings(this);

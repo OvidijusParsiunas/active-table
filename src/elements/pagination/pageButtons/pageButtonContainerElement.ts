@@ -1,3 +1,4 @@
+import {Containers, PaginationContainerElement} from '../paginationContainer/paginationContainerElement';
 import {PreviousPageButtonElement} from './buttons/prevNext/previousPageButtonElement';
 import {FirstPageButtonElement} from './buttons/firstLast/firstPageButtonElement';
 import {PageNumberButtonElement} from './buttons/number/pageNumberButtonElement';
@@ -67,23 +68,15 @@ export class PageButtonContainerElement {
     PageButtonContainerElement.setStyle(etc, buttonContainerElement);
   }
 
-  // prettier-ignore
-  private static insertToDOM(etc: EditableTableComponent) {
-    const containerPosition = etc.paginationInternal.positions.container;
-    if (!etc.tableElementRef) return;
-    // insert before if on top of table or after if it is below the table
-    const insertPosition = containerPosition === 'top-left' || containerPosition === 'top-middle'
-      || containerPosition === 'top-right' ? 'beforebegin' : 'afterend'
-    etc.tableElementRef.insertAdjacentElement(insertPosition, etc.paginationInternal.buttonContainer);
-  }
-
-  public static create(etc: EditableTableComponent) {
+  public static create(etc: EditableTableComponent, containers: Containers) {
     const buttonContainerElement = document.createElement('div');
     buttonContainerElement.id = PageButtonContainerElement.PAGINATION_BUTTON_CONTAINER_ID;
-    Object.assign(buttonContainerElement.style, etc.paginationInternal.style.pageButtons.container);
+    const {style, positions} = etc.paginationInternal;
+    buttonContainerElement.style.order = String(positions.pageButtons.order);
+    Object.assign(buttonContainerElement.style, style.pageButtons.container);
     PageButtonContainerEvents.setEvents(buttonContainerElement, etc.paginationInternal);
     PageButtonContainerElement.repopulateButtons(etc, buttonContainerElement);
-    setTimeout(() => PageButtonContainerElement.insertToDOM(etc));
+    PaginationContainerElement.addToContainer(positions.pageButtons.side, containers, buttonContainerElement);
     return buttonContainerElement;
   }
 }
