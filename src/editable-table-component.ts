@@ -62,22 +62,6 @@ export class EditableTableComponent extends LitElement {
     [254, 0, 0, 'Red'],
     [0, 255, 0, 'Green'],
     [0, 254, 0, 'Green'],
-    [255, 0, 0, 'Red'],
-    [254, 0, 0, 'Red'],
-    [0, 255, 0, 'Green'],
-    [0, 254, 0, 'Green'],
-    [255, 0, 0, 'Red'],
-    [254, 0, 0, 'Red'],
-    [0, 255, 0, 'Green'],
-    [0, 254, 0, 'Green'],
-    [255, 0, 0, 'Red'],
-    [254, 0, 0, 'Red'],
-    [0, 255, 0, 'Green'],
-    [0, 254, 0, 'Green'],
-    [255, 0, 0, 'Red'],
-    [254, 0, 0, 'Red'],
-    [0, 255, 0, 'Green'],
-    [0, 254, 0, 'Green'],
   ];
 
   // REF-20
@@ -191,7 +175,7 @@ export class EditableTableComponent extends LitElement {
   rowDropdownCellOverlays: RowDropdownCellOverlays = [];
 
   @property({type: Object})
-  pagination: Pagination = {};
+  pagination: Pagination | null = null;
 
   @state()
   paginationInternal: PaginationInternal = PaginationInternalUtils.getDefault();

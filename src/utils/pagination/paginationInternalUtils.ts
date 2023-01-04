@@ -39,11 +39,10 @@ export class PaginationInternalUtils {
     }
   }
 
-  private static processNumberOfRows(etc: EditableTableComponent) {
-    const {pagination, paginationInternal} = etc;
+  private static processNumberOfRows(etc: EditableTableComponent, pagination: Pagination) {
     const {numberOfRowsOptions, numberOfRows} = pagination;
     if (numberOfRowsOptions || numberOfRowsOptions === undefined) {
-      const {numberOfRowsOptionsItemText: InumberOfRowsOptionsItemText} = paginationInternal;
+      const {numberOfRowsOptionsItemText: InumberOfRowsOptionsItemText} = etc.paginationInternal;
       if (!InumberOfRowsOptionsItemText.find((value) => value === String(numberOfRows))) {
         PaginationInternalUtils.setNumberOfRows(etc);
       }
@@ -132,8 +131,10 @@ export class PaginationInternalUtils {
   private static processStyle(pagination: Pagination, paginationInternal: PaginationInternal) {
     if (pagination.style) Object.assign(paginationInternal.style, pagination.style);
     PaginationInternalUtils.processPageButtonStyle(paginationInternal);
-    paginationInternal.style.numberOfRowsOptions ??= {};
-    PaginationInternalUtils.setNumberOfRowsOptionsStyle(paginationInternal.style);
+    if (pagination.numberOfRowsOptions !== false) {
+      paginationInternal.style.numberOfRowsOptions ??= {};
+      PaginationInternalUtils.setNumberOfRowsOptionsStyle(paginationInternal.style);
+    }
     paginationInternal.style.numberOfVisibleRows ??= {};
     delete pagination.style; // deleted so that Object.assign wouldn't apply it
   }
@@ -153,14 +154,19 @@ export class PaginationInternalUtils {
 
   public static process(etc: EditableTableComponent) {
     const {pagination, paginationInternal} = etc;
+    if (!pagination) return;
     if (pagination.maxNumberOfButtons !== undefined && pagination.maxNumberOfButtons < 1) {
       pagination.maxNumberOfButtons = 1;
     }
     PaginationInternalUtils.processPosition(pagination, paginationInternal);
     PaginationInternalUtils.processStyle(pagination, paginationInternal);
-    PaginationInternalUtils.processNumberOfRowsOptions(pagination, paginationInternal);
+    if (pagination.numberOfRowsOptions !== false) {
+      PaginationInternalUtils.processNumberOfRowsOptions(pagination, paginationInternal);
+    }
     Object.assign(paginationInternal, pagination);
-    PaginationInternalUtils.processNumberOfRows(etc);
+    if (pagination.displayNumberOfVisibleRows !== false) {
+      PaginationInternalUtils.processNumberOfRows(etc, pagination);
+    }
   }
 
   public static getDefault(): PaginationInternal {
