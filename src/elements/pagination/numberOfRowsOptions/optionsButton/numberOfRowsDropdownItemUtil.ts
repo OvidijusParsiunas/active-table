@@ -1,4 +1,4 @@
-import {PaginationButtonContainerElement} from '../../buttonContainer/paginationButtonContainerElement';
+import {PageButtonContainerElement} from '../../pageButtons/pageButtonContainerElement';
 import {NumberOfRowsOptionsButtonElement} from './numberOfRowsOptionsButtonElement';
 import {PaginationUtils} from '../../../../utils/pagination/paginationUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
@@ -9,7 +9,7 @@ export class NumberOfRowsDropdownItemUtil {
   private static updateRowsAndPaginationComponents(etc: EditableTableComponent, optionsButton: HTMLElement,
       newNumberOfRows: string) {
     const {buttonContainer} = etc.paginationInternal;
-    PaginationButtonContainerElement.repopulateButtons(etc, buttonContainer);
+    PageButtonContainerElement.repopulateButtons(etc, buttonContainer);
     NumberOfRowsOptionsButtonElement.updateButtonText(optionsButton, newNumberOfRows);
     PaginationUtils.displayRowsForDifferentButton(etc, 1);
   }

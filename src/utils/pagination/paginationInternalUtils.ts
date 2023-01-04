@@ -3,12 +3,11 @@ import {NumberOfRowsDropdownItem} from '../../elements/pagination/numberOfRowsOp
 import {IPaginationStyle, PaginationInternal} from '../../types/paginationInternal';
 import {DefaultContainerPositions} from './defaultContainerPositions';
 import {EditableTableComponent} from '../../editable-table-component';
-import {PropertiesOfType} from '../../types/utilityTypes';
 import {StatefulCSSS} from '../../types/cssStyle';
 import {
   PaginationPositions,
   NumberOfRowsOptions,
-  PaginationStyle,
+  PageButtonStyle,
   ContainerStyle,
   Pagination,
 } from '../../types/pagination';
@@ -22,6 +21,8 @@ interface DefaultBackgroundColors {
 type PositionProps = {
   [key in keyof Required<PaginationPositions>]: ContainerStyle;
 };
+
+type StatefulStyle = {[key: string]: StatefulCSSS};
 
 export class PaginationInternalUtils {
   private static setNumberOfRows(etc: EditableTableComponent) {
@@ -76,33 +77,41 @@ export class PaginationInternalUtils {
     delete pagination.numberOfRowsOptions;
   }
 
-  private static setContainerStyle(style: IPaginationStyle, positionProperties: ContainerStyle) {
+  private static setNumberOfRowsOptionsStyle(style: IPaginationStyle) {
+    const defButtonsBackgroundColors = {def: '', hover: '#f5f5f5', click: '#f5f5f5'};
+    style.numberOfRowsOptions ??= {};
+    const statefulStyle = style.numberOfRowsOptions as StatefulStyle;
+    PaginationInternalUtils.setStatefulCSS(statefulStyle, defButtonsBackgroundColors, 'button');
+  }
+
+  private static setContainerStyle(pageButtonsStyle: PageButtonStyle, positionProperties: ContainerStyle) {
+    const {container} = pageButtonsStyle;
     const containerStyle: ContainerStyle = {
-      border: style.container?.border || '1px solid black',
-      margin: style.container?.margin || '0px',
-      marginTop: style.container?.marginTop || positionProperties.marginTop || '0px',
-      marginLeft: style.container?.marginLeft || positionProperties.marginLeft || '0px',
-      marginRight: style.container?.marginRight || positionProperties.marginRight || '0px',
-      marginBottom: style.container?.marginBottom || positionProperties.marginBottom || '0px',
-      float: style.container?.float || positionProperties.float || '',
+      border: container?.border || '1px solid black',
+      margin: container?.margin || '0px',
+      marginTop: container?.marginTop || positionProperties.marginTop || '0px',
+      marginLeft: container?.marginLeft || positionProperties.marginLeft || '0px',
+      marginRight: container?.marginRight || positionProperties.marginRight || '0px',
+      marginBottom: container?.marginBottom || positionProperties.marginBottom || '0px',
+      float: container?.float || positionProperties.float || '',
     };
-    style.container = containerStyle;
+    pageButtonsStyle.container = containerStyle;
   }
 
   // prettier-ignore
-  private static setStatefulCSS(style: IPaginationStyle, defaultBackgrounds: DefaultBackgroundColors,
-      buttonType: keyof PropertiesOfType<IPaginationStyle, Required<StatefulCSSS>>) {
-    (style as PaginationStyle<StatefulCSSS>)[buttonType] ??= {};
+  private static setStatefulCSS<T extends StatefulStyle>(style: T, defaultBackgrounds: DefaultBackgroundColors,
+      elementType: keyof T) {
+    (style[elementType] as unknown as StatefulStyle) ??= {};
     const {def, hover, click} = defaultBackgrounds;
-    style[buttonType].click ??= style[buttonType].hover || style[buttonType].default || {backgroundColor: click};
-    style[buttonType].hover ??= style[buttonType].default || {backgroundColor: hover};
-    style[buttonType].default ??= {backgroundColor: def};
+    style[elementType].click ??= style[elementType].hover || style[elementType].default || {backgroundColor: click};
+    style[elementType].hover ??= style[elementType].default || {backgroundColor: hover};
+    style[elementType].default ??= {backgroundColor: def};
   }
 
   // actionButtons reuse buttons style
-  private static mergeActionButtonsStyleWithNewButtons(style: IPaginationStyle) {
-    (style as PaginationStyle<StatefulCSSS>).actionButtons ??= {};
-    const {buttons, actionButtons} = style;
+  private static mergeActionButtonsStyleWithNewButtons(pageButtonsStyle: PageButtonStyle) {
+    (pageButtonsStyle as unknown as StatefulStyle).actionButtons ??= {};
+    const {buttons, actionButtons} = pageButtonsStyle as Required<PageButtonStyle<Required<StatefulCSSS>>>;
     // structuredClone does not seem to work properly
     const buttonsClone = JSON.parse(JSON.stringify(buttons)) as typeof actionButtons;
     Object.assign(buttonsClone.default, actionButtons.default);
@@ -115,28 +124,31 @@ export class PaginationInternalUtils {
     return buttonsClone;
   }
 
-  private static processButtonStyle(paginationInternal: PaginationInternal) {
+  private static processPageButtonStyle(paginationInternal: PaginationInternal) {
+    (paginationInternal.style.pageButtons as unknown as StatefulStyle) ??= {};
+    const statefulStyle = paginationInternal.style.pageButtons as StatefulStyle;
     // buttons
     const defButtonsBackgroundColors = {def: 'yellow', hover: 'orange', click: 'red'};
-    PaginationInternalUtils.setStatefulCSS(paginationInternal.style, defButtonsBackgroundColors, 'buttons');
+    PaginationInternalUtils.setStatefulCSS(statefulStyle, defButtonsBackgroundColors, 'buttons');
     // actionButtons
-    const newActionButtons = PaginationInternalUtils.mergeActionButtonsStyleWithNewButtons(paginationInternal.style);
-    paginationInternal.style.actionButtons = newActionButtons;
+    const newActionButtons = PaginationInternalUtils.mergeActionButtonsStyleWithNewButtons(statefulStyle);
+    paginationInternal.style.pageButtons.actionButtons = newActionButtons;
     const defActionBackgroundColors = {def: 'green', hover: 'blue', click: 'deepskyblue'};
-    PaginationInternalUtils.setStatefulCSS(paginationInternal.style, defActionBackgroundColors, 'actionButtons');
+    PaginationInternalUtils.setStatefulCSS(statefulStyle, defActionBackgroundColors, 'actionButtons');
     // activeButton
     const defBackgroundColors = {def: 'brown', hover: 'violet', click: 'purple'};
-    PaginationInternalUtils.setStatefulCSS(paginationInternal.style, defBackgroundColors, 'activeButton');
+    PaginationInternalUtils.setStatefulCSS(statefulStyle, defBackgroundColors, 'activeButton');
     // disabledButtons
-    paginationInternal.style.disabledButtons ??= {backgroundColor: 'grey'};
+    paginationInternal.style.pageButtons.disabledButtons ??= {backgroundColor: 'grey'};
   }
 
   // prettier-ignore
   private static processStyle(pagination: Pagination, paginationInternal: PaginationInternal,
       positionProperties: PositionProps) {
     if (pagination.style) Object.assign(paginationInternal.style, pagination.style);
-    PaginationInternalUtils.processButtonStyle(paginationInternal);
-    PaginationInternalUtils.setContainerStyle(paginationInternal.style, positionProperties.container);
+    PaginationInternalUtils.processPageButtonStyle(paginationInternal);
+    PaginationInternalUtils.setContainerStyle(paginationInternal.style.pageButtons, positionProperties.container);
+    PaginationInternalUtils.setNumberOfRowsOptionsStyle(paginationInternal.style);
     delete pagination.style; // deleted so that Object.assign wouldn't apply it
   }
 
@@ -165,7 +177,7 @@ export class PaginationInternalUtils {
     return {
       numberOfRows: 10,
       maxNumberOfButtons: 8,
-      activeButtonNumber: 1,
+      activePageNumber: 1,
       visibleRows: [],
       displayPrevNext: true,
       displayFirstLast: true,

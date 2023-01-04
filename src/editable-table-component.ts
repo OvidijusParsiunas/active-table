@@ -192,7 +192,7 @@ export class EditableTableComponent extends LitElement {
     AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
     RowDropdownSettingsUtil.process(this.rowDropdownSettings, this.auxiliaryTableContentInternal.displayIndexColumn);
     DropdownDisplaySettingsUtil.process(this.columnDropdownDisplaySettings);
-    if (this.pagination) PaginationInternalUtils.process(this.pagination, this.paginationInternal);
+    if (this.pagination) PaginationInternalUtils.process(this);
     const tableElement = TableElement.createInfrastructureElements(this);
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
     this.shadowRoot?.appendChild(tableElement);

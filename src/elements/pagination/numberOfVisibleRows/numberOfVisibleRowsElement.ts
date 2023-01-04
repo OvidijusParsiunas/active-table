@@ -6,8 +6,8 @@ export class NumberOfVisibleRowsElement {
   private static readonly ID = 'pagination-number-of-visible-rows';
 
   private static updateForRelativeRowNumber(pagination: PaginationInternal, dataRowsLength: number) {
-    const {activeButtonNumber, numberOfRows, numberOfVisibleRowsElement} = pagination as Required<PaginationInternal>;
-    const maxRowIndex = activeButtonNumber * numberOfRows;
+    const {activePageNumber, numberOfRows, numberOfVisibleRowsElement} = pagination as Required<PaginationInternal>;
+    const maxRowIndex = activePageNumber * numberOfRows;
     const minVisibleRowIndex = dataRowsLength < 1 ? 0 : Math.max(maxRowIndex - numberOfRows + 1, 1);
     const maxVisibleRowIndex = Math.min(dataRowsLength, maxRowIndex);
     numberOfVisibleRowsElement.innerText = `${minVisibleRowIndex}-${maxVisibleRowIndex} of ${dataRowsLength}`;
@@ -31,17 +31,17 @@ export class NumberOfVisibleRowsElement {
   }
 
   public static create(etc: EditableTableComponent) {
-    const numberOfVisibleRowsElementElement = document.createElement('div');
-    numberOfVisibleRowsElementElement.id = NumberOfVisibleRowsElement.ID;
-    numberOfVisibleRowsElementElement.classList.add(PaginationElements.PAGINATION_TEXT_COMPONENT_CLASS);
-    Object.assign(numberOfVisibleRowsElementElement.style, etc.paginationInternal.style.numberOfVisibleRows);
-    numberOfVisibleRowsElementElement.style.float = 'right';
-    numberOfVisibleRowsElementElement.style.marginTop = '10px';
-    numberOfVisibleRowsElementElement.style.marginRight = '10px';
+    const numberOfVisibleRowsElement = document.createElement('div');
+    numberOfVisibleRowsElement.id = NumberOfVisibleRowsElement.ID;
+    numberOfVisibleRowsElement.classList.add(PaginationElements.PAGINATION_TEXT_COMPONENT_CLASS);
+    Object.assign(numberOfVisibleRowsElement.style, etc.paginationInternal.style.numberOfVisibleRows);
+    numberOfVisibleRowsElement.style.float = 'right';
+    numberOfVisibleRowsElement.style.marginTop = '10px';
+    numberOfVisibleRowsElement.style.marginRight = '10px';
     setTimeout(() => {
       NumberOfVisibleRowsElement.update(etc);
-      etc.paginationInternal.buttonContainer.insertAdjacentElement('afterend', numberOfVisibleRowsElementElement);
+      etc.paginationInternal.buttonContainer.insertAdjacentElement('afterend', numberOfVisibleRowsElement);
     });
-    return numberOfVisibleRowsElementElement;
+    return numberOfVisibleRowsElement;
   }
 }

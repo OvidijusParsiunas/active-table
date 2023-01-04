@@ -1,19 +1,24 @@
-import {Pagination, PaginationPositions, PaginationStyle} from './pagination';
+import {PageButtonStyle, Pagination, PaginationPositions, PaginationStyle} from './pagination';
 import {StatefulCSSS} from './cssStyle';
 
+// (InternalPageButtonsStyle)
+export type IPageButtonsStyle = Required<PageButtonStyle<Required<StatefulCSSS>>>;
+
 // (InternalPaginationStyle)
-export type IPaginationStyle = Required<PaginationStyle<Required<StatefulCSSS>>>;
+export interface IPaginationStyle extends PaginationStyle<Required<StatefulCSSS>> {
+  pageButtons: IPageButtonsStyle;
+}
 
 export interface PaginationInternal extends Required<Pagination> {
+  style: IPaginationStyle;
+  positions: Required<PaginationPositions>;
   buttonContainer: HTMLElement;
   numberOfVisibleRowsElement?: HTMLElement;
   numberOfRowsDropdown?: HTMLElement;
   visibleRows: HTMLElement[];
-  activeButtonNumber: number;
-  style: IPaginationStyle;
-  positions: Required<PaginationPositions>;
-  programaticallyHoveredButton?: HTMLElement;
-  clickedNumberButton?: boolean; // REF-30
+  activePageNumber: number;
+  programaticallyHoveredPageNumberButton?: HTMLElement;
+  clickedPageNumberButton?: boolean; // REF-30
   mouseDownOnNumberOfRowsButton?: boolean;
   isAllRowsOptionSelected: boolean;
   numberOfRowsOptionsItemText: string[];

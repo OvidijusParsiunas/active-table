@@ -1,12 +1,11 @@
-// eslint-disable-next-line max-len
-import {PaginationButtonContainerElement} from '../../elements/pagination/buttonContainer/paginationButtonContainerElement';
 import {NumberOfVisibleRowsElement} from '../../elements/pagination/numberOfVisibleRows/numberOfVisibleRowsElement';
-import {PaginationButtonElement} from '../../elements/pagination/buttonContainer/paginationButtonElement';
+import {PageButtonContainerElement} from '../../elements/pagination/pageButtons/pageButtonContainerElement';
+import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
 import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
-import {PaginationActionButtonUtils} from './paginationActionButtonUtils';
+import {PaginationPageActionButtonUtils} from './paginationPageActionButtonUtils';
+import {PaginationUpdatePageButtons} from './paginationUpdatePageButtons';
 import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationInternal} from '../../types/paginationInternal';
-import {PaginationUpdateButtons} from './paginationUpdateButtons';
 import {ExtractElements} from '../elements/extractElements';
 import {CellElement} from '../../elements/cell/cellElement';
 
@@ -14,7 +13,7 @@ export class PaginationUtils {
   private static HIDDEN_ROW_CLASS = 'hidden-row';
 
   // prettier-ignore
-  public static getLastPossibleButtonNumber(etc: EditableTableComponent, isBeforeInsert = false) {
+  public static getLastPossiblePageNumber(etc: EditableTableComponent, isBeforeInsert = false) {
     const {contents, paginationInternal, auxiliaryTableContentInternal: {indexColumnCountStartsAtHeader}} = etc;
     if (paginationInternal.isAllRowsOptionSelected) return 1;
     const contentLength = indexColumnCountStartsAtHeader ? contents.length + 1 : contents.length;
@@ -24,13 +23,13 @@ export class PaginationUtils {
 
   public static getNumberButtons(buttonContainer: HTMLElement) {
     const allButtons = Array.from(buttonContainer.children) as HTMLElement[];
-    const halfOfSideButtons = PaginationButtonContainerElement.NUMBER_OF_ACTION_BUTTONS / 2;
+    const halfOfSideButtons = PageButtonContainerElement.NUMBER_OF_ACTION_BUTTONS / 2;
     return allButtons.slice(halfOfSideButtons, allButtons.length - halfOfSideButtons);
   }
 
   public static getRelativeRowIndexes(etc: EditableTableComponent, rowIndex = 0) {
-    const {activeButtonNumber, numberOfRows, isAllRowsOptionSelected} = etc.paginationInternal;
-    let maxVisibleRowIndex = isAllRowsOptionSelected ? etc.contents.length + 1 : activeButtonNumber * numberOfRows;
+    const {activePageNumber, numberOfRows, isAllRowsOptionSelected} = etc.paginationInternal;
+    let maxVisibleRowIndex = isAllRowsOptionSelected ? etc.contents.length + 1 : activePageNumber * numberOfRows;
     if (!etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader) maxVisibleRowIndex += 1;
     const minVisibleRowIndex = maxVisibleRowIndex - numberOfRows;
     const visibleRowIndex = rowIndex - minVisibleRowIndex;
@@ -57,7 +56,7 @@ export class PaginationUtils {
   }
 
   private static updateRowsOnRemoval(etc: EditableTableComponent, rowIndex: number) {
-    const {visibleRows, activeButtonNumber} = etc.paginationInternal;
+    const {visibleRows, activePageNumber} = etc.paginationInternal;
     const {visibleRowIndex} = PaginationUtils.getRelativeRowIndexes(etc, rowIndex);
     visibleRows.splice(visibleRowIndex, 1);
     if (visibleRows.length > 0) {
@@ -67,8 +66,8 @@ export class PaginationUtils {
         PaginationUtils.displayRow(nextRow as HTMLElement);
         visibleRows.push(nextRow);
       }
-    } else if (activeButtonNumber > 1) {
-      PaginationUtils.displayRowsForDifferentButton(etc, activeButtonNumber - 1);
+    } else if (activePageNumber > 1) {
+      PaginationUtils.displayRowsForDifferentButton(etc, activePageNumber - 1);
     }
   }
 
@@ -81,7 +80,7 @@ export class PaginationUtils {
   }
 
   private static updateRowsOnNewInsert(etc: EditableTableComponent, rowIndex: number, newRowElement: HTMLElement) {
-    const {numberOfRows, visibleRows, activeButtonNumber, isAllRowsOptionSelected} = etc.paginationInternal;
+    const {numberOfRows, visibleRows, activePageNumber, isAllRowsOptionSelected} = etc.paginationInternal;
     const {maxVisibleRowIndex, visibleRowIndex} = PaginationUtils.getRelativeRowIndexes(etc, rowIndex);
     if (maxVisibleRowIndex > rowIndex) {
       if (visibleRows.length === numberOfRows && !isAllRowsOptionSelected) {
@@ -91,7 +90,7 @@ export class PaginationUtils {
     } else {
       PaginationUtils.hideRow(newRowElement);
       // wait for a new button to be created when on last
-      setTimeout(() => PaginationUtils.displayRowsForDifferentButton(etc, activeButtonNumber + 1));
+      setTimeout(() => PaginationUtils.displayRowsForDifferentButton(etc, activePageNumber + 1));
     }
   }
 
@@ -101,13 +100,13 @@ export class PaginationUtils {
         && rowIndex === 0 && etc.contents.length === 0) return;
     // buttons need to be updated first as displayRowsForDifferentButton will use them to toggle the side buttons
     if (newRowElement) {
-      PaginationUpdateButtons.updateOnRowInsert(etc);
+      PaginationUpdatePageButtons.updateOnRowInsert(etc);
       PaginationUtils.updateRowsOnNewInsert(etc, rowIndex, newRowElement);
     } else {
-      PaginationUpdateButtons.updateOnRowRemove(etc);
+      PaginationUpdatePageButtons.updateOnRowRemove(etc);
       PaginationUtils.updateRowsOnRemoval(etc, rowIndex);
     }
-    PaginationActionButtonUtils.toggleActionButtons(etc.paginationInternal, etc.paginationInternal.buttonContainer);
+    PaginationPageActionButtonUtils.toggleActionButtons(etc.paginationInternal, etc.paginationInternal.buttonContainer);
     setTimeout(() => NumberOfVisibleRowsElement.update(etc));
   }
 
@@ -140,7 +139,7 @@ export class PaginationUtils {
   public static displayRowsForDifferentButton(etc: EditableTableComponent, buttonNumber: number) {
     PaginationUtils.hideAllRows(etc.paginationInternal);
     PaginationUtils.setCorrectRowsAsVisible(etc, buttonNumber);
-    PaginationButtonElement.setActive(etc, etc.paginationInternal.buttonContainer, buttonNumber);
+    PageButtonElement.setActive(etc, etc.paginationInternal.buttonContainer, buttonNumber);
     NumberOfVisibleRowsElement.update(etc);
   }
 }

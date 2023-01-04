@@ -217,25 +217,34 @@
               numberOfRows: 2,
               maxNumberOfButtons: 7,
               style: {
-                buttons: {
-                  default: {backgroundColor: 'purple'},
-                  hover: {backgroundColor: 'orange'},
-                  click: {backgroundColor: 'red'},
+                pageButtons: {
+                  buttons: {
+                    default: {backgroundColor: 'purple'},
+                    hover: {backgroundColor: 'orange'},
+                    click: {backgroundColor: 'red'},
+                  },
+                  activeButton: {
+                    default: {backgroundColor: 'brown'},
+                    hover: {backgroundColor: 'violet'},
+                    click: {backgroundColor: 'green'},
+                  },
+                  actionButtons: {
+                    default: {backgroundColor: 'blue'},
+                    hover: {backgroundColor: 'skyblue'},
+                    click: {backgroundColor: 'deepskyblue'},
+                  },
+                  disabledButtons: {
+                    backgroundColor: 'grey',
+                  },
                 },
-                activeButton: {
-                  default: {backgroundColor: 'brown'},
-                  hover: {backgroundColor: 'violet'},
-                  click: {backgroundColor: 'green'},
-                },
-                actionButtons: {
-                  default: {backgroundColor: 'blue'},
-                  hover: {backgroundColor: 'skyblue'},
-                  click: {backgroundColor: 'deepskyblue'},
-                },
-                disabledButtons: {
-                  backgroundColor: 'grey',
+                numberOfRowsOptions: {
+                  // container: {backgroundColor: 'green'},
                 },
               },
+              // numberOfRowsOptions: {
+              //   options: [1, 2, 3, 4],
+              //   prefixText: 'Example prefix:',
+              // },
             })
           );
           // element.setAttribute('columnDropdownDisplaySettings', JSON.stringify({isAvailable: true}));
