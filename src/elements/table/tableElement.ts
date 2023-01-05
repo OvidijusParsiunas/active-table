@@ -11,6 +11,7 @@ import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
 import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
+import {CustomRowProperties} from '../../utils/rows/customRowProperties';
 import {TableBorderDimensions} from '../../types/tableBorderDimensions';
 import {TableBorderDimensionsUtils} from './tableBorderDimensionsUtils';
 import {ActiveOverlayElements} from '../../types/activeOverlayElements';
@@ -18,7 +19,6 @@ import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
-import {StripedRows} from '../../utils/stripedRows/stripedRows';
 import {IndexColumn} from '../indexColumn/indexColumn';
 import {TableRow} from '../../types/tableContents';
 import {TableEvents} from './tableEvents';
@@ -85,7 +85,7 @@ export class TableElement {
     if (etc.auxiliaryTableContentInternal.displayIndexColumn) UpdateIndexColumnWidth.update(etc);
     // needs to be after UpdateIndexColumnWidth.update as the new index column width can impact the add new column display
     ToggleAdditionElements.update(etc, true, AddNewColumnElement.toggle);
-    StripedRows.updateRows(etc);
+    CustomRowProperties.update(etc);
   }
 
   private static createTableBody() {

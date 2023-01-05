@@ -8,15 +8,10 @@ export class StripedRows {
     evenRow: {backgroundColor: 'grey'},
   };
 
-  public static updateRows(etc: EditableTableComponent, startIndex = 0) {
-    const {tableBodyElementRef, stripedRowsInternal} = etc;
-    if (!tableBodyElementRef || !stripedRowsInternal) return;
-    const rows = Array.from(tableBodyElementRef.children) as HTMLElement[];
-    rows.slice(startIndex).forEach((row, rowIndex) => {
-      const relativeIndex = rowIndex + startIndex;
-      const style = relativeIndex % 2 ? stripedRowsInternal.evenRow : stripedRowsInternal.oddRow;
-      Object.assign(row.style, style);
-    });
+  public static setRowStyle(rowElement: HTMLElement, index: number, stripedRows: StripedRowsInternal) {
+    const style = index % 2 ? stripedRows.evenRow : stripedRows.oddRow;
+    Object.assign(rowElement.style, style);
+    return style;
   }
 
   public static process(etc: EditableTableComponent) {

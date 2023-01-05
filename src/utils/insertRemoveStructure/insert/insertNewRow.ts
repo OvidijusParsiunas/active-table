@@ -2,16 +2,15 @@ import {RowDropdownCellOverlay} from '../../../elements/dropdown/rowDropdown/cel
 import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
-import {RowHoverEvents} from '../../../elements/table/addNewElements/row/rowHoverEvents';
 import {RowElement} from '../../../elements/table/addNewElements/row/rowElement';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {IndexColumn} from '../../../elements/indexColumn/indexColumn';
+import {CustomRowProperties} from '../../rows/customRowProperties';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {PaginationUtils} from '../../pagination/paginationUtils';
 import {CellText, TableRow} from '../../../types/tableContents';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ElementDetails} from '../../../types/elementDetails';
-import {StripedRows} from '../../stripedRows/stripedRows';
 import {MoveRow} from '../../moveStructure/moveRow';
 import {MaximumColumns} from './maximumColumns';
 import {InsertNewCell} from './insertNewCell';
@@ -77,15 +76,14 @@ export class InsertNewRow {
     if (!MaximumRows.canAddMore(etc)) return;
     const isReplacingHeader = isNewText && rowIndex === 0 && etc.columnsDetails.length > 0;
     if (isReplacingHeader) rowIndex = 1; // REF-26
-    const newRowElement = InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
+    InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
     if (isNewText) {
       ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
       if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex + 1);
-      StripedRows.updateRows(etc, rowIndex);
+      CustomRowProperties.update(etc, rowIndex);
     }
     if (isReplacingHeader) MoveRow.move(etc, 0, true); // REF-26
     setTimeout(() => {
-      RowHoverEvents.addEvents(etc.rowHover, newRowElement, rowIndex);
       // this is used to prevent multiple rebindings of same rows as upon the insertion of multiple via the initial
       // table render or after pasting, the contents array would be populated synchronously which would cause
       // the lastRowIndex to be high every time this is called and rows between rowIndex and lastRowIndex would

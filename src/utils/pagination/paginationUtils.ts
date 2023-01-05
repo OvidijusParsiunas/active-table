@@ -62,7 +62,7 @@ export class PaginationUtils {
     if (visibleRows.length > 0) {
       const lastVisibleRow = visibleRows[visibleRows.length - 1];
       const nextRow = lastVisibleRow?.nextSibling as HTMLElement;
-      if (nextRow && nextRow.children[0]?.id !== AddNewRowElement.ID) {
+      if (nextRow && !AddNewRowElement.isAddNewRowRow(nextRow)) {
         PaginationUtils.displayRow(nextRow as HTMLElement);
         visibleRows.push(nextRow);
       }
