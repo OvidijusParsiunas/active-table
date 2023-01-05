@@ -10,6 +10,7 @@ import {PaginationUtils} from '../../pagination/paginationUtils';
 import {CellText, TableRow} from '../../../types/tableContents';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ElementDetails} from '../../../types/elementDetails';
+import {StripedRows} from '../../stripedRows/stripedRows';
 import {MoveRow} from '../../moveStructure/moveRow';
 import {MaximumColumns} from './maximumColumns';
 import {InsertNewCell} from './insertNewCell';
@@ -79,6 +80,7 @@ export class InsertNewRow {
     if (isNewText) {
       ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
       if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex + 1);
+      StripedRows.updateRows(etc, rowIndex);
     }
     if (isReplacingHeader) MoveRow.move(etc, 0, true); // REF-26
     setTimeout(() => {

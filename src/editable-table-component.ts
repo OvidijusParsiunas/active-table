@@ -17,14 +17,17 @@ import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {DropdownDisplaySettings} from './types/dropdownDisplaySettings';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
+import {StripedRows as StripedRowsType} from './types/stripedRows';
 import {customElement, property, state} from 'lit/decorators.js';
 import {RowDropdownSettings} from './types/rowDropdownSettings';
+import {StripedRowsInternal} from './types/stripedRowsInternal';
 import {ediTableStyle} from './editable-table-component-style';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {CellText, TableContents} from './types/tableContents';
 import {PaginationInternal} from './types/paginationInternal';
 import {UserSetColumnSizerStyle} from './types/columnSizer';
+import {StripedRows} from './utils/stripedRows/stripedRows';
 import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {ParentResize} from './utils/render/parentResize';
@@ -84,17 +87,17 @@ export class EditableTableComponent extends LitElement {
   })
   areIconsDisplayedInHeaders = true;
 
-  // set as boolean to not update on initial render
-  @property({
-    type: Object,
-  })
-  updateCellText = true;
-
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
   spellCheck = false;
+
+  // set as boolean to not update on initial render
+  @property({
+    type: Object,
+  })
+  updateCellText = true;
 
   @property({type: Object})
   defaultColumnsSettings: DefaultColumnsSettings = {};
@@ -180,6 +183,12 @@ export class EditableTableComponent extends LitElement {
   rowDropdownCellOverlays: RowDropdownCellOverlays = [];
 
   @property({type: Object})
+  stripedRows: StripedRowsType | boolean | null = null;
+
+  @state()
+  stripedRowsInternal: StripedRowsInternal | null = null;
+
+  @property({type: Object})
   pagination: Pagination | null = null;
 
   @state()
@@ -199,6 +208,7 @@ export class EditableTableComponent extends LitElement {
     RowDropdownSettingsUtil.process(this.rowDropdownSettings, this.auxiliaryTableContentInternal.displayIndexColumn);
     DropdownDisplaySettingsUtil.process(this.columnDropdownDisplaySettings);
     if (this.pagination) PaginationInternalUtils.process(this);
+    StripedRows.process(this);
     const tableElement = TableElement.createInfrastructureElements(this);
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
     this.shadowRoot?.appendChild(tableElement);
@@ -207,6 +217,7 @@ export class EditableTableComponent extends LitElement {
     WindowElement.setEvents(this);
     ColumnSettingsUtils.setUpInternalSettings(this);
     DefaultColumnTypes.createDropdownItemsForDefaultTypes();
+    this.spellcheck = this.spellCheck;
   }
 
   override connectedCallback() {

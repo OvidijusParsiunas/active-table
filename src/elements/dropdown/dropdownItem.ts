@@ -48,7 +48,6 @@ export class DropdownItem {
     itemElement.classList.add(DropdownItem.DROPDOWN_INPUT_ITEM_CLASS);
     const inputElement = DropdownItem.createDropdownItemBaseElement('input');
     inputElement.classList.add(DropdownItem.DROPDOWN_INPUT_CLASS);
-    inputElement.spellcheck = etc.spellCheck;
     itemElement.appendChild(inputElement);
     dropdownElement.appendChild(itemElement);
     DropdownItemEvents.addItemEvents(etc.activeOverlayElements, inputElement);

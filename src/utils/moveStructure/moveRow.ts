@@ -2,6 +2,7 @@ import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {FocusedCellUtils} from '../focusedElements/focusedCellUtils';
 import {CellElement} from '../../elements/cell/cellElement';
+import {StripedRows} from '../stripedRows/stripedRows';
 import {FocusedCell} from '../../types/focusedCell';
 import {MoveUtils} from './moveUtils';
 
@@ -59,5 +60,6 @@ export class MoveRow {
     } else {
       MoveRow.moveDataRows(etc, rowIndex, siblingIndex);
     }
+    StripedRows.updateRows(etc, rowIndex);
   }
 }

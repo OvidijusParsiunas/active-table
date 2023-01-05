@@ -8,6 +8,7 @@ import {PaginationUtils} from '../../pagination/paginationUtils';
 import {CellText, TableRow} from '../../../types/tableContents';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
+import {StripedRows} from '../../stripedRows/stripedRows';
 import {HasRerendered} from '../../render/hasRerendered';
 import {MoveRow} from '../../moveStructure/moveRow';
 import {RemoveColumn} from './removeColumn';
@@ -71,6 +72,7 @@ export class RemoveRow {
     const removedRowData = RemoveRow.removeRow(etc, rowIndex);
     ToggleAdditionElements.update(etc, false, AddNewRowElement.toggle);
     if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex);
+    StripedRows.updateRows(etc, rowIndex);
     setTimeout(() => RemoveRow.update(etc, rowIndex, lastRowElement, lastRowIndex, removedRowData));
   }
 }

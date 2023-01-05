@@ -21,6 +21,12 @@ export const ediTableStyle = css`
     width: min-content;
   }
 
+  .row {
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 13px;
+    font-weight: 400;
+  }
+
   .row > *:first-child {
     border-left: none !important;
   }
@@ -42,9 +48,8 @@ export const ediTableStyle = css`
     box-sizing: border-box;
     outline: none;
     overflow-wrap: anywhere;
-    font-size: 13px;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.87);
+    font-size: inherit;
+    font-weight: inherit;
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-bottom-color: rgba(0, 0, 0, 0.12);

@@ -18,6 +18,7 @@ import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
+import {StripedRows} from '../../utils/stripedRows/stripedRows';
 import {IndexColumn} from '../indexColumn/indexColumn';
 import {TableRow} from '../../types/tableContents';
 import {TableEvents} from './tableEvents';
@@ -84,6 +85,7 @@ export class TableElement {
     if (etc.auxiliaryTableContentInternal.displayIndexColumn) UpdateIndexColumnWidth.update(etc);
     // needs to be after UpdateIndexColumnWidth.update as the new index column width can impact the add new column display
     ToggleAdditionElements.update(etc, true, AddNewColumnElement.toggle);
+    StripedRows.updateRows(etc);
   }
 
   private static createTableBody() {
