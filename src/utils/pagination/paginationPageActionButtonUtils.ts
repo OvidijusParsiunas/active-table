@@ -1,7 +1,8 @@
 import {PageButtonContainerElement} from '../../elements/pagination/pageButtons/pageButtonContainerElement';
-import {IPageButtonsStyle, IPaginationStyle, PaginationInternal} from '../../types/paginationInternal';
 import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
 import {PageButtonStyle} from '../../elements/pagination/pageButtons/pageButtonStyle';
+import {IPageButtonsStyle, IPaginationStyle} from '../../types/paginationInternal';
+import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationUtils} from './paginationUtils';
 
 export class PaginationPageActionButtonUtils {
@@ -16,11 +17,10 @@ export class PaginationPageActionButtonUtils {
   }
 
   // prettier-ignore
-  private static toggleRightButtons(buttons: HTMLElement[], halfOfActionButtons: number, pagination: PaginationInternal,
-      buttonContainer: HTMLElement) {
-    const {activePageNumber, style} = pagination;
-    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
-    const callback = activePageNumber === Number(numberButtons[numberButtons.length - 1].innerText)
+  private static toggleRightButtons(etc: EditableTableComponent, buttons: HTMLElement[], halfOfActionButtons: number) {
+    const {activePageNumber, style} = etc.paginationInternal;
+    const lastPageNumber = Math.max(PaginationUtils.getLastPossiblePageNumber(etc), 1);
+    const callback = activePageNumber === lastPageNumber
       ? PaginationPageActionButtonUtils.setButtonAsDisabled : PaginationPageActionButtonUtils.setButtonAsEnabled;
     const rightActionButtons = buttons.slice(buttons.length - halfOfActionButtons);
     rightActionButtons.forEach((button) => callback(button, style.pageButtons));
@@ -35,11 +35,11 @@ export class PaginationPageActionButtonUtils {
     leftActionButtons.forEach((button) => callback(button, paginationStyle.pageButtons));
   }
 
-  public static toggleActionButtons(pagination: PaginationInternal, buttonContainer: HTMLElement) {
-    const {activePageNumber, style} = pagination;
+  public static toggleActionButtons(etc: EditableTableComponent, buttonContainer: HTMLElement) {
+    const {activePageNumber, style} = etc.paginationInternal;
     const buttons = Array.from(buttonContainer.children) as HTMLElement[];
     const halfOfActionButtons = PageButtonContainerElement.NUMBER_OF_ACTION_BUTTONS / 2;
     PaginationPageActionButtonUtils.toggleLeftButtons(buttons, activePageNumber, halfOfActionButtons, style);
-    PaginationPageActionButtonUtils.toggleRightButtons(buttons, halfOfActionButtons, pagination, buttonContainer);
+    PaginationPageActionButtonUtils.toggleRightButtons(etc, buttons, halfOfActionButtons);
   }
 }

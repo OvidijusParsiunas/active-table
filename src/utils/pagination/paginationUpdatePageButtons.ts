@@ -16,7 +16,7 @@ export class PaginationUpdatePageButtons {
 
   public static updateOnRowRemove(etc: EditableTableComponent) {
     const {buttonContainer, style} = etc.paginationInternal;
-    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
+    const numberButtons = PaginationUtils.getPageNumberButtons(buttonContainer);
     const lastNumberButton = numberButtons[numberButtons.length - 1];
     if (Number(lastNumberButton.innerText) > PaginationUtils.getLastPossiblePageNumber(etc)) {
       if (numberButtons.length > 1) {
@@ -37,14 +37,14 @@ export class PaginationUpdatePageButtons {
   }
 
   public static updateOnRowInsert(etc: EditableTableComponent) {
-    const {buttonContainer, style, maxNumberOfButtons} = etc.paginationInternal;
+    const {buttonContainer, style, maxNumberOfVisiblePageButtons} = etc.paginationInternal;
     const expectedItemsBeforeInsert = etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? 0 : 1;
     if (etc.contents.length === expectedItemsBeforeInsert) {
       PageButtonElement.unsetDisabled(buttonContainer, style.pageButtons);
     } else {
-      const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
+      const numberButtons = PaginationUtils.getPageNumberButtons(buttonContainer);
       // if number of buttons is at limit - updateOnNewActive will handle it
-      if (numberButtons.length < maxNumberOfButtons) {
+      if (numberButtons.length < maxNumberOfVisiblePageButtons) {
         PaginationUpdatePageButtons.addNewNumberButtonAtEndIfNeeded(etc, numberButtons);
       }
     }
@@ -99,9 +99,9 @@ export class PaginationUpdatePageButtons {
   }
 
   public static updateOnNewActive(etc: EditableTableComponent, buttonContainer: HTMLElement) {
-    const {activePageNumber, maxNumberOfButtons} = etc.paginationInternal;
-    const numberButtons = PaginationUtils.getNumberButtons(buttonContainer);
-    if (numberButtons.length < maxNumberOfButtons) return;
+    const {activePageNumber, maxNumberOfVisiblePageButtons} = etc.paginationInternal;
+    const numberButtons = PaginationUtils.getPageNumberButtons(buttonContainer);
+    if (numberButtons.length < maxNumberOfVisiblePageButtons) return;
     const lastVisibleButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
     // number that should not trigger shift to the right
     const lastNonRightShiftNumber = Math.floor(lastVisibleButtonNumber - numberButtons.length / 2) + 1;

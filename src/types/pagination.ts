@@ -57,7 +57,7 @@ export interface NumberOfRowsOptions {
 export interface Pagination {
   numberOfRows?: number; // by default set to 10
   numberOfRowsOptions?: NumberOfRowsOptions | boolean;
-  maxNumberOfButtons?: number; // by default set to 8
+  maxNumberOfVisiblePageButtons?: number; // by default set to 8
   displayPrevNext?: boolean; // by default true
   displayFirstLast?: boolean; // by default true
   displayNumberOfVisibleRows?: boolean; // by default true

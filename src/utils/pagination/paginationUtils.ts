@@ -21,7 +21,7 @@ export class PaginationUtils {
     return Math.ceil(numberOfRows / paginationInternal.numberOfRows);
   }
 
-  public static getNumberButtons(buttonContainer: HTMLElement) {
+  public static getPageNumberButtons(buttonContainer: HTMLElement) {
     const allButtons = Array.from(buttonContainer.children) as HTMLElement[];
     const halfOfSideButtons = PageButtonContainerElement.NUMBER_OF_ACTION_BUTTONS / 2;
     return allButtons.slice(halfOfSideButtons, allButtons.length - halfOfSideButtons);
@@ -106,7 +106,7 @@ export class PaginationUtils {
       PaginationUpdatePageButtons.updateOnRowRemove(etc);
       PaginationUtils.updateRowsOnRemoval(etc, rowIndex);
     }
-    PaginationPageActionButtonUtils.toggleActionButtons(etc.paginationInternal, etc.paginationInternal.buttonContainer);
+    PaginationPageActionButtonUtils.toggleActionButtons(etc, etc.paginationInternal.buttonContainer);
     setTimeout(() => NumberOfVisibleRowsElement.update(etc));
   }
 

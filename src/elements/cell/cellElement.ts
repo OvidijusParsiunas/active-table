@@ -172,6 +172,7 @@ export class CellElement {
     // overwritten again if static table
     if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
     CellElement.setNewText(etc, cellElement, text, true, false);
+    cellElement.spellcheck = etc.spellCheck;
     return cellElement;
   }
 }

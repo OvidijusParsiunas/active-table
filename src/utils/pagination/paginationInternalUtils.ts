@@ -155,8 +155,8 @@ export class PaginationInternalUtils {
   public static process(etc: EditableTableComponent) {
     const {pagination, paginationInternal} = etc;
     if (!pagination) return;
-    if (pagination.maxNumberOfButtons !== undefined && pagination.maxNumberOfButtons < 1) {
-      pagination.maxNumberOfButtons = 1;
+    if (pagination.maxNumberOfVisiblePageButtons !== undefined && pagination.maxNumberOfVisiblePageButtons < 1) {
+      pagination.maxNumberOfVisiblePageButtons = 1;
     }
     PaginationInternalUtils.processPosition(pagination, paginationInternal);
     PaginationInternalUtils.processStyle(pagination, paginationInternal);
@@ -172,11 +172,14 @@ export class PaginationInternalUtils {
   public static getDefault(): PaginationInternal {
     return {
       numberOfRows: 10,
-      maxNumberOfButtons: 8,
-      activePageNumber: 1,
-      visibleRows: [],
+      numberOfRowsOptions: {
+        options: [10, 25, 50, 'All'],
+        prefixText: 'Rows per page:',
+      },
+      maxNumberOfVisiblePageButtons: 8,
       displayPrevNext: true,
       displayFirstLast: true,
+      displayNumberOfVisibleRows: true,
       style: {}, // this is going to be populated during the call of processInternal method
       positions: {
         pageButtons: {
@@ -192,11 +195,8 @@ export class PaginationInternalUtils {
           order: 1,
         },
       },
-      displayNumberOfVisibleRows: true,
-      numberOfRowsOptions: {
-        options: [10, 25, 50, 'All'],
-        prefixText: 'Rows per page:',
-      },
+      visibleRows: [],
+      activePageNumber: 1,
       isAllRowsOptionSelected: false,
     } as unknown as PaginationInternal;
   }

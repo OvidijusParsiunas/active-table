@@ -47,7 +47,6 @@ import {
 // TO-DO
 // rename file name from using hyphen case to camel
 
-// spellcheck can be enabled or disabled by the user - enabled by default
 // new row or column buttons can be made optional
 @customElement('editable-table-component')
 export class EditableTableComponent extends LitElement {
@@ -90,6 +89,12 @@ export class EditableTableComponent extends LitElement {
     type: Object,
   })
   updateCellText = true;
+
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  spellCheck = false;
 
   @property({type: Object})
   defaultColumnsSettings: DefaultColumnsSettings = {};
