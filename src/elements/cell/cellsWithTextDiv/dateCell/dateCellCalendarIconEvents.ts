@@ -33,7 +33,11 @@ export class DateCellCalendarIconEvents {
       // for this particular browser
       // firefox date picker has a fade out animation which does not allow the user to open up another date picker
       // while the current one is open, hence need to wait for animation to finish
-      inputElement.showPicker();
+      if (Browser.IS_SAFARI) {
+        inputElement.dispatchEvent(new MouseEvent('click'));
+      } else {
+        inputElement.showPicker();
+      }
     }, DateCellCalendarIconEvents.PICKER_DISPLAY_DELAY_ML);
   }
 
