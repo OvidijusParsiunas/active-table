@@ -1,10 +1,15 @@
 import {CellStateColorProperties} from '../../types/cellStateColors';
 
 export class CellHighlightUtils {
-  public static readonly DEFAULT_HOVER_PROPERTIES: Required<CellStateColorProperties> = {
+  public static DEFAULT_HOVER_PROPERTIES: Required<CellStateColorProperties> = {
     backgroundColor: '#f7f7f7',
     color: '',
   };
+
+  public static unsetDefaultHoverProperties() {
+    CellHighlightUtils.DEFAULT_HOVER_PROPERTIES.backgroundColor = '';
+    CellHighlightUtils.DEFAULT_HOVER_PROPERTIES.color = '';
+  }
 
   public static fade(cellElement: HTMLElement, defaultColorProperties?: CellStateColorProperties) {
     cellElement.style.backgroundColor = defaultColorProperties?.backgroundColor || '';

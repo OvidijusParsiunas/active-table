@@ -12,7 +12,7 @@ export class AddNewRowEvents {
     CellHighlightUtils.fade(event.target as HTMLElement, AuxiliaryTableContentColors.CELL_COLORS.data.default);
   }
 
-  public static setEvents(etc: EditableTableComponent, addNewRowCellElement: HTMLElement) {
+  public static setCellEvents(etc: EditableTableComponent, addNewRowCellElement: HTMLElement) {
     addNewRowCellElement.onclick = InsertNewRow.insertEvent.bind(etc);
     addNewRowCellElement.onmouseenter = AddNewRowEvents.mouseEnterCell.bind(etc);
     addNewRowCellElement.onmouseleave = AddNewRowEvents.mouseLeaveCell.bind(etc);

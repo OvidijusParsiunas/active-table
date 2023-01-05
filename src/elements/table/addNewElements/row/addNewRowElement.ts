@@ -3,6 +3,7 @@ import {EditableTableComponent} from '../../../../editable-table-component';
 import {NoContentStubElement} from '../shared/noContentStubElement';
 import {CellElement} from '../../../cell/cellElement';
 import {AddNewRowEvents} from './addNewRowEvents';
+import {RowHoverEvents} from './rowHoverEvents';
 import {RowElement} from './rowElement';
 
 export class AddNewRowElement {
@@ -41,12 +42,13 @@ export class AddNewRowElement {
     AddNewRowElement.setDisplay(addNewRowCell, displayAddRowCell);
     // set to high number to always merge cells in this row
     addNewRowCell.colSpan = AddNewRowElement.DEFAULT_COL_SPAN;
-    AddNewRowEvents.setEvents(etc, addNewRowCell);
+    AddNewRowEvents.setCellEvents(etc, addNewRowCell);
     return addNewRowCell;
   }
 
   public static create(etc: EditableTableComponent) {
     const addNewRowRow = RowElement.create();
+    if (etc.rowHover?.style && etc.rowHover.hoverAddNewRowButton) RowHoverEvents.addEvents(etc.rowHover, addNewRowRow, 1);
     const addNewRowCell = AddNewRowElement.createCell(etc);
     addNewRowRow.appendChild(addNewRowCell);
     return addNewRowCell;

@@ -8,6 +8,7 @@ import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentIntern
 import {DynamicCellTextUpdate} from './utils/dynamicUpdates/dynamicCellTextUpdate';
 import {PaginationInternalUtils} from './utils/pagination/paginationInternalUtils';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
+import {RowHoverEvents} from './elements/table/addNewElements/row/rowHoverEvents';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {PaginationElements} from './elements/pagination/paginationElements';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
@@ -38,6 +39,7 @@ import {ColumnsDetailsT} from './types/columnDetails';
 import {Browser} from './utils/browser/browser';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
+import {RowHover} from './types/rowHover';
 import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
 import {
@@ -157,6 +159,9 @@ export class EditableTableComponent extends LitElement {
   @property({type: Object})
   tableStyle: CSSStyle = {};
 
+  @property({type: Object})
+  rowHover: RowHover | null = null;
+
   // REF-22 - to be used by the client
   // auxiliary content is comprised of index column, add new column column and add new row row
   // Not using AuxiliaryTableContentColors.CELL_COLORS for default value as the '' values will stop logical OR operators
@@ -182,6 +187,8 @@ export class EditableTableComponent extends LitElement {
   @state()
   rowDropdownCellOverlays: RowDropdownCellOverlays = [];
 
+  // if using pagination with user defined numberOfRowsOptions, the options need to have an even number or otherwise
+  // two rows could have same color (as rows are hidden and not removed)
   @property({type: Object})
   stripedRows: StripedRowsType | boolean | null = null;
 
@@ -208,7 +215,8 @@ export class EditableTableComponent extends LitElement {
     RowDropdownSettingsUtil.process(this.rowDropdownSettings, this.auxiliaryTableContentInternal.displayIndexColumn);
     DropdownDisplaySettingsUtil.process(this.columnDropdownDisplaySettings);
     if (this.pagination) PaginationInternalUtils.process(this);
-    StripedRows.process(this);
+    if (this.stripedRows) StripedRows.process(this);
+    if (this.rowHover) RowHoverEvents.process(this.rowHover);
     const tableElement = TableElement.createInfrastructureElements(this);
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
     this.shadowRoot?.appendChild(tableElement);

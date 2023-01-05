@@ -1,5 +1,6 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {StripedRowsInternal} from '../../types/stripedRowsInternal';
+import {CellHighlightUtils} from '../color/cellHighlightUtils';
 
 export class StripedRows {
   private static readonly DEFAULT_PROPERTIES: StripedRowsInternal = {
@@ -29,5 +30,6 @@ export class StripedRows {
         oddRow: stripedRows.oddRow || StripedRows.DEFAULT_PROPERTIES.oddRow,
       };
     }
+    CellHighlightUtils.unsetDefaultHoverProperties();
   }
 }
