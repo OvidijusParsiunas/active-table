@@ -10,7 +10,7 @@ import {SortingFuncs} from './sortingFuncs';
 // This is to be used by the client exclusively
 
 export type DropdownIconSettings = {
-  defaultIconName?: DEFAULT_COLUMN_TYPES; // can reuse one of the existing icons
+  reusableIconName?: DEFAULT_COLUMN_TYPES; // can reuse one of the existing icons
 } & IconSettings;
 
 interface Parent {

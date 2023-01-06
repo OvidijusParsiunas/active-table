@@ -70,7 +70,7 @@ export class ColumnTypesUtils {
   }
 
   private static getReusableDefaultIcon(iconSettings: DropdownIconSettings) {
-    const targetIconName = iconSettings.defaultIconName?.toLocaleLowerCase();
+    const targetIconName = iconSettings.reusableIconName?.toLocaleLowerCase();
     if (targetIconName === DEFAULT_COLUMN_TYPES.CATEGORY.toLocaleLowerCase()) {
       return DefaultColumnTypes.CATEGORY_TYPE_DROPDOWN_ITEM?.settings.iconSettings as DropdownIconSettings;
     }
@@ -85,7 +85,7 @@ export class ColumnTypesUtils {
     const {name, dropdownIconSettings} = type;
     let iconSettings = null;
     if (dropdownIconSettings) {
-      if (dropdownIconSettings.defaultIconName) {
+      if (dropdownIconSettings.reusableIconName) {
         iconSettings = ColumnTypesUtils.getReusableDefaultIcon(dropdownIconSettings);
       } else {
         iconSettings = dropdownIconSettings;
