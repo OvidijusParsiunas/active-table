@@ -19,7 +19,7 @@ export class PaginationPageActionButtonUtils {
   // prettier-ignore
   private static toggleRightButtons(etc: EditableTableComponent, buttons: HTMLElement[], halfOfActionButtons: number) {
     const {activePageNumber, style} = etc.paginationInternal;
-    const lastPageNumber = Math.max(PaginationUtils.getLastPossiblePageNumber(etc), 1);
+    const lastPageNumber = PaginationUtils.getLastPossiblePageNumber(etc);
     const callback = activePageNumber === lastPageNumber
       ? PaginationPageActionButtonUtils.setButtonAsDisabled : PaginationPageActionButtonUtils.setButtonAsEnabled;
     const rightActionButtons = buttons.slice(buttons.length - halfOfActionButtons);

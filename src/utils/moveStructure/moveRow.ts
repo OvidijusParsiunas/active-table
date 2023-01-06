@@ -2,6 +2,7 @@ import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {FocusedCellUtils} from '../focusedElements/focusedCellUtils';
 import {CustomRowProperties} from '../rows/customRowProperties';
+import {PaginationUtils} from '../pagination/paginationUtils';
 import {CellElement} from '../../elements/cell/cellElement';
 import {FocusedCell} from '../../types/focusedCell';
 import {MoveUtils} from './moveUtils';
@@ -61,5 +62,6 @@ export class MoveRow {
       MoveRow.moveDataRows(etc, rowIndex, siblingIndex);
     }
     CustomRowProperties.update(etc, rowIndex);
+    if (etc.pagination) PaginationUtils.updateOnRowMove(etc, siblingIndex);
   }
 }

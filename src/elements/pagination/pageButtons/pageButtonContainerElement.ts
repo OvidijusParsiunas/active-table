@@ -26,7 +26,7 @@ export class PageButtonContainerElement {
 
   private static addNumberButtons(etc: EditableTableComponent, buttonContainerElement: HTMLElement) {
     // the reason why 1 button is required when it should be 0 is because we hide it and show it when a row is added
-    const requiredNumberOfButtons = Math.max(PaginationUtils.getLastPossiblePageNumber(etc), 1);
+    const requiredNumberOfButtons = PaginationUtils.getLastPossiblePageNumber(etc);
     const {maxNumberOfVisiblePageButtons} = etc.paginationInternal;
     for (let i = 0; i < Math.min(requiredNumberOfButtons, maxNumberOfVisiblePageButtons); i += 1) {
       const buttonElement = PageNumberButtonElement.create(etc, i + 1);

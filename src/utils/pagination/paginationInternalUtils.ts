@@ -51,29 +51,41 @@ export class PaginationInternalUtils {
 
   private static processOptionsItemText(userNumber: number | string) {
     const number = Number(userNumber);
-    if (!isNaN(number) && number < 1) return '1';
+    if (!isNaN(number) && number < 1) return '2';
     return String(userNumber);
   }
 
+  // REF-32
+  private static changeOptionNumberToEven(options: (number | string)[]) {
+    return options.map((option) => {
+      const number = Number(option);
+      if (Number.isNaN(number)) return option;
+      return number % 2 === 1 ? number + 1 : number;
+    });
+  }
+
   // prettier-ignore
-  private static setNumberOfRowsOptionsText(pagination: Pagination, paginationInternal: PaginationInternal) {
+  private static setNumberOfRowsOptionsText(etc: EditableTableComponent) {
+    const pagination = etc.pagination as Pagination;
     const {numberOfRowsOptions} = pagination;
     if (numberOfRowsOptions || numberOfRowsOptions === undefined) {
-      const defaultOptions = (paginationInternal.numberOfRowsOptions as NumberOfRowsOptions).options; // default options
-      const options = numberOfRowsOptions === undefined || numberOfRowsOptions === true
+      const defaultOptions = (etc.paginationInternal.numberOfRowsOptions as NumberOfRowsOptions).options;
+      let options = (numberOfRowsOptions === undefined || numberOfRowsOptions === true
         || !numberOfRowsOptions.options || numberOfRowsOptions.options.length === 0
-          ? defaultOptions : numberOfRowsOptions.options;
-      paginationInternal.numberOfRowsOptionsItemText = (options as (number|string)[])
+          ? defaultOptions : numberOfRowsOptions.options) as (number|string)[];
+      if (etc.stripedRows) options = PaginationInternalUtils.changeOptionNumberToEven(options);
+      etc.paginationInternal.numberOfRowsOptionsItemText = options
         .map((option) => PaginationInternalUtils.processOptionsItemText(option));
     }
   }
 
-  private static processNumberOfRowsOptions(pagination: Pagination, paginationInternal: PaginationInternal) {
+  private static processNumberOfRowsOptions(etc: EditableTableComponent) {
+    const pagination = etc.pagination as Pagination;
     const {numberOfRowsOptions} = pagination;
     if (numberOfRowsOptions !== undefined && typeof numberOfRowsOptions !== 'boolean' && numberOfRowsOptions.prefixText) {
-      (paginationInternal.numberOfRowsOptions as NumberOfRowsOptions).prefixText = numberOfRowsOptions.prefixText;
+      (etc.paginationInternal.numberOfRowsOptions as NumberOfRowsOptions).prefixText = numberOfRowsOptions.prefixText;
     }
-    PaginationInternalUtils.setNumberOfRowsOptionsText(pagination, paginationInternal);
+    PaginationInternalUtils.setNumberOfRowsOptionsText(etc);
     delete pagination.numberOfRowsOptions;
   }
 
@@ -161,7 +173,7 @@ export class PaginationInternalUtils {
     PaginationInternalUtils.processPosition(pagination, paginationInternal);
     PaginationInternalUtils.processStyle(pagination, paginationInternal);
     if (pagination.numberOfRowsOptions !== false) {
-      PaginationInternalUtils.processNumberOfRowsOptions(pagination, paginationInternal);
+      PaginationInternalUtils.processNumberOfRowsOptions(etc);
     }
     Object.assign(paginationInternal, pagination);
     if (pagination.displayNumberOfVisibleRows !== false) {
