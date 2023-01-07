@@ -1,4 +1,5 @@
-import {CategoriesProperties, CategoriesDropdownStyle} from '../../../types/categoriesProperties';
+import {SelectProperties, CategoriesDropdownStyle} from '../../../types/categoriesProperties';
+import {LabelCellElement} from '../../cell/cellsWithTextDiv/selectCell/labelCellElement';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownItemEvents} from './categoryDropdownItemEvents';
@@ -17,6 +18,7 @@ import {Dropdown} from '../dropdown';
 export class CategoryDropdown {
   private static readonly CATEGORY_DROPDOWN_CLASS = 'category-dropdown';
   private static readonly MAX_HEIGHT_PX = '150px';
+  private static readonly ONE_ACTIVE_COLOR_BACKGROUND_COLOR = '#4a69d4';
 
   private static generateRightPosition() {
     return `4px`;
@@ -31,12 +33,15 @@ export class CategoryDropdown {
   }
 
   private static generateTopPosition(cellElement: HTMLElement, textContainerElement: HTMLElement) {
-    const textContainerBottom = textContainerElement.offsetTop + textContainerElement.offsetHeight;
-    return `${ElementOffset.processTop(cellElement.offsetTop + textContainerBottom + 2)}px`;
+    const topPadding = LabelCellElement.isCategoryText(textContainerElement)
+      ? textContainerElement.offsetTop + textContainerElement.offsetHeight + 2
+      : cellElement.offsetHeight - 8;
+    return `${ElementOffset.processTop(cellElement.offsetTop + topPadding)}px`;
   }
 
   private static generateLeftPosition(cellElement: HTMLElement, textContainerElement: HTMLElement): PX {
-    return `${ElementOffset.processLeft(cellElement.offsetLeft + textContainerElement.offsetLeft)}px`;
+    const leftPadding = LabelCellElement.isCategoryText(textContainerElement) ? textContainerElement.offsetLeft : 1;
+    return `${ElementOffset.processLeft(cellElement.offsetLeft + leftPadding)}px`;
   }
 
   private static setPosition(dropdown: HTMLElement, cellElement: HTMLElement) {
@@ -79,14 +84,26 @@ export class CategoryDropdown {
     CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, dropdown, defaultText, false);
   }
 
+  private static getWidth(cellElement: HTMLElement, dropdown: CategoryDropdownT, dropdownStyle?: CategoriesDropdownStyle) {
+    if (dropdownStyle?.width) {
+      return dropdownStyle.width;
+    }
+    if (dropdown.oneActiveColor) {
+      return cellElement.offsetWidth - 2;
+    }
+    const textContainerElement = cellElement.children[0] as HTMLElement;
+    return Dropdown.DROPDOWN_WIDTH - textContainerElement.offsetLeft;
+  }
+
   // prettier-ignore
   public static display(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
-    const {categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
+    const {categoryDropdown, settings: {defaultText}, activeType: {categories}} = etc.columnsDetails[columnIndex];
     const {element: dropdownEl, categoryToItem} = categoryDropdown;
-    if (Object.keys(categoryToItem).length > 0) {
+    if (Object.keys(categoryToItem).length > 0 && categories) {
       CategoryDropdownEvents.set(etc, dropdownEl);
       CategoryDropdownItemEvents.blurItem(categoryDropdown, 'hovered');
       CategoryDropdownItemEvents.blurItem(categoryDropdown, 'matchingWithCellText');
+      dropdownEl.style.width = `${CategoryDropdown.getWidth(cellElement, categoryDropdown, categories.dropdownStyle)}px`
       Dropdown.display(dropdownEl);
       dropdownEl.scrollLeft = 0;
       CategoryDropdownScrollbar.setProperties(categoryDropdown);
@@ -97,15 +114,14 @@ export class CategoryDropdown {
   }
 
   private static setCustomStyle(categoryDropdown: CategoryDropdownT, dropdownStyle: CategoriesDropdownStyle) {
-    const {width, textAlign, paddingTop, paddingBottom, border} = dropdownStyle;
-    categoryDropdown.element.style.width = width || `${Dropdown.DROPDOWN_WIDTH}px`;
+    const {textAlign, paddingTop, paddingBottom, border} = dropdownStyle;
     categoryDropdown.element.style.textAlign = textAlign || 'left';
     categoryDropdown.element.style.paddingTop = paddingTop || Dropdown.DROPDOWN_VERTICAL_PX;
     categoryDropdown.element.style.paddingBottom = paddingBottom || Dropdown.DROPDOWN_VERTICAL_PX;
     categoryDropdown.element.style.border = border || 'none';
   }
 
-  private static setCustomState(categoryDropdown: CategoryDropdownT, categories: CategoriesProperties) {
+  private static setCustomState(categoryDropdown: CategoryDropdownT, categories: SelectProperties) {
     categoryDropdown.customDropdownStyle = categories.dropdownStyle;
     categoryDropdown.customItemStyle = categories.optionStyle;
     categoryDropdown.staticItems = categories.options;
@@ -115,6 +131,8 @@ export class CategoryDropdown {
   public static setUpDropdown(etc: EditableTableComponent, columnIndex: number) {
     const {activeType: {categories}, categoryDropdown} = etc.columnsDetails[columnIndex];
     if (!categories) return;
+    categoryDropdown.oneActiveColor = etc.columnsDetails[columnIndex].activeType.isSelect ?
+      CategoryDropdown.ONE_ACTIVE_COLOR_BACKGROUND_COLOR : undefined;
     CategoryDropdown.setCustomState(categoryDropdown, categories)
     CategoryDropdownItem.populateItems(etc, columnIndex);
     if (categories.dropdownStyle) CategoryDropdown.setCustomStyle(categoryDropdown, categories.dropdownStyle);

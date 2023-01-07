@@ -1,7 +1,7 @@
 import {NumberOfRowsDropdownEvents} from '../pagination/numberOfRowsOptions/optionsButton/numberOfRowsDropdownEvents';
-import {CategoryCellEvents} from '../cell/cellsWithTextDiv/categoryCell/categoryCellEvents';
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
+import {SelectCellEvents} from '../cell/cellsWithTextDiv/selectCell/selectCellEvents';
 import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
 import {ColumnDropdownEvents} from '../dropdown/columnDropdown/columnDropdownEvents';
 import {ColumnSettingsUtils} from '../../utils/columnSettings/columnSettingsUtils';
@@ -34,9 +34,9 @@ export class WindowEvents {
       ColumnDropdownEvents.onKeyDown.bind(this)(this.activeOverlayElements.columnDropdown as HTMLElement, event);
       return;
     }
-    if (this.columnsDetails[columnIndex].activeType.categories
-        && Dropdown.isDisplayed(this.columnsDetails[columnIndex].categoryDropdown.element)) {
-      CategoryCellEvents.keyDownText(this, rowIndex, columnIndex, event);
+    const {activeType, categoryDropdown} = this.columnsDetails[columnIndex];
+    if ((activeType.categories || activeType.isSelect) && Dropdown.isDisplayed(categoryDropdown.element)) {
+      SelectCellEvents.keyDownText(this, rowIndex, columnIndex, event);
     }
   }
 

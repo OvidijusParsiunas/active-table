@@ -1,7 +1,7 @@
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
 import {CalendarFunctionality} from './calendarFunctionality';
 import {CustomTextProcessing} from './customTextProcessing';
-import {CategoriesProperties} from './categoriesProperties';
+import {SelectProperties} from './categoriesProperties';
 import {TextValidation} from './textValidation';
 import {InterfacesUnion} from './utilityTypes';
 import {SortingFuncs} from './sortingFuncs';
@@ -13,7 +13,7 @@ export interface Parent {
   textValidation: TextValidation; // this is a genuine form of custom text validation and its resulting style
   customTextProcessing?: CustomTextProcessing; // this is used to allow explicit processing of text and its resulting style
   sorting?: SortingFuncs; // By default the elements will be sorted in ascending ASCII character order
-  categories?: CategoriesProperties;
+  categories?: SelectProperties;
   dropdownItem: ColumnTypeDropdownItem;
 }
 
@@ -25,6 +25,10 @@ interface Checkbox extends Omit<Parent, 'sorting'> {
   checkbox: true;
 }
 
-export type ColumnTypeInternal = InterfacesUnion<Calendar | Checkbox | Parent>;
+interface Select extends Omit<Parent, 'validation'> {
+  isSelect: boolean; // this will be replaced by categories getting renamed to labelSelect
+}
+
+export type ColumnTypeInternal = InterfacesUnion<Calendar | Checkbox | Select | Parent>;
 
 export type ColumnTypesInternal = ColumnTypeInternal[];

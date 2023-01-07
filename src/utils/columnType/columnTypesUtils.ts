@@ -14,12 +14,18 @@ export class ColumnTypesUtils {
   public static get(settings: ColumnSettingsInternal): ColumnTypes {
     let columnTypes = [
       ...DefaultColumnTypes.DEFAULT_STATIC_TYPES,
-      // the reason why category is not with the default static types is because its validation gets set depending
-      // on column default settings
+      // the reason why select and category are not with the default static types is because their validation
+      // is not generic and get set by on column settings - setCategoriesValidation
+      {
+        name: DEFAULT_COLUMN_TYPES.SELECT,
+        categories: {},
+        dropdownItem: DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM,
+        isSelect: true,
+      },
       {
         name: DEFAULT_COLUMN_TYPES.CATEGORY,
         categories: {},
-        dropdownItem: DefaultColumnTypes.CATEGORY_TYPE_DROPDOWN_ITEM,
+        dropdownItem: DefaultColumnTypes.SELECT_LABEL_TYPE_DROPDOWN_ITEM,
       },
     ];
     const {defaultColumnTypes, customColumnTypes} = settings;
@@ -69,10 +75,12 @@ export class ColumnTypesUtils {
     return DefaultColumnTypes.DEFAULT_TYPE;
   }
 
+  // prettier-ignore
   private static getReusableDefaultIcon(iconSettings: DropdownIconSettings) {
     const targetIconName = iconSettings.reusableIconName?.toLocaleLowerCase();
-    if (targetIconName === DEFAULT_COLUMN_TYPES.CATEGORY.toLocaleLowerCase()) {
-      return DefaultColumnTypes.CATEGORY_TYPE_DROPDOWN_ITEM?.settings.iconSettings as DropdownIconSettings;
+    if (targetIconName === DEFAULT_COLUMN_TYPES.SELECT.toLocaleLowerCase()
+      || targetIconName === DEFAULT_COLUMN_TYPES.CATEGORY.toLocaleLowerCase()) {
+      return DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM?.settings.iconSettings as DropdownIconSettings;
     }
     const defaultSettings = DefaultColumnTypes.DEFAULT_STATIC_TYPES.find((type) => {
       return type.name.toLocaleLowerCase() === targetIconName;

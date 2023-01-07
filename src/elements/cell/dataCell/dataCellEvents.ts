@@ -38,7 +38,7 @@ export class DataCellEvents {
       CellElement.setNewText(this, textContainerElement, text, false, isUndo, false);
       const columnDetails = this.columnsDetails[columnIndex];
       if (columnDetails.activeType.categories) {
-        CategoryDropdown.updateCategoryDropdown(textContainerElement.parentElement as HTMLElement,
+        CategoryDropdown.updateCategoryDropdown(textContainerElement,
           columnDetails.categoryDropdown, columnDetails.settings.defaultText, true);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});

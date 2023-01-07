@@ -17,7 +17,7 @@ export class CategoryDropdownEvents {
     // target is dropdown when clicked on top/bottom paddding
     if (targetElement.classList.contains(Dropdown.DROPDOWN_CLASS)
       || targetElement.classList.contains(CategoryDeleteButton.CATEGORY_DELETE_BUTTON_CLASS)) return;
-    const { rowIndex, columnIndex, element: cellElement } = this.focusedElements.cell as CellDetails;
+    const {rowIndex, columnIndex, element: cellElement} = this.focusedElements.cell as CellDetails;
     const itemElement = targetElement.classList.contains(DropdownItem.DROPDOWN_ITEM_CLASS)
       ? targetElement : targetElement.parentElement;
     CategoryDropdownItem.selectExistingCategory(this, itemElement as HTMLElement, rowIndex, columnIndex,

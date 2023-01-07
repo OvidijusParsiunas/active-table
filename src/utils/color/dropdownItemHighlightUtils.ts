@@ -2,7 +2,7 @@ import {ActiveOverlayElements} from '../../types/activeOverlayElements';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
 
 export class DropdownItemHighlightUtils {
-  private static readonly HOVER_BACKGROUND_COLOR = '#eaeaea';
+  public static readonly HOVER_BACKGROUND_COLOR = '#eaeaea';
 
   // Accepted behaviour - fadeFocused is triggered twice when moving to a different item
   public static fadeCurrentlyHighlighted(activeOverlayElements: ActiveOverlayElements) {

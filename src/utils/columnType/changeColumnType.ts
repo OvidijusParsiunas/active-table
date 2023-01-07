@@ -1,5 +1,5 @@
 import {HeaderIconCellElement} from '../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
-import {CategoryCellElement} from '../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
+import {ConvertToSelectCell} from '../../elements/cell/cellsWithTextDiv/selectCell/convertToSelectCell';
 import {DateCellElement} from '../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {CheckboxCellElement} from '../../elements/cell/checkboxCell/checkboxCellElement';
@@ -36,7 +36,7 @@ export class ChangeColumnType {
   public static setNewStructureBasedOnType(etc: EditableTableComponent, columnIndex: number, newType: ColumnTypeInternal) {
     if (newType.categories) {
       CategoryDropdown.setUpDropdown(etc, columnIndex);
-      CategoryCellElement.setColumnCategoryStructure(etc, columnIndex);
+      ConvertToSelectCell.convertColumn(etc, columnIndex, newType);
     } else if (newType.calendar) {
       DateCellElement.setColumnDateStructure(etc, columnIndex);
     } else if (newType.checkbox) {

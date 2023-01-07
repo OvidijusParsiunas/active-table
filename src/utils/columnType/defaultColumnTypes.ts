@@ -88,19 +88,32 @@ export class DefaultColumnTypes {
     },
   ];
 
-  public static CATEGORY_TYPE_DROPDOWN_ITEM: ColumnTypeDropdownItem | null = null;
+  public static SELECT_TYPE_DROPDOWN_ITEM: ColumnTypeDropdownItem | null = null;
 
-  private static createDropdownItemForCategoryType() {
-    const settings: DropdownButtonItemSettings = {
-      text: DEFAULT_COLUMN_TYPES.CATEGORY,
-      iconSettings: {
-        svgString: CATEGORY_ICON_SVG_STRING,
-        containerStyles: {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}},
-      },
+  public static SELECT_LABEL_TYPE_DROPDOWN_ITEM: ColumnTypeDropdownItem | null = null;
+
+  // the reason why select and category are not with the default static types is because their validation
+  // is not generic and get set by column settings - setCategoriesValidation
+  private static createDropdownItemForSelectTypes() {
+    const iconSettings = {
+      svgString: CATEGORY_ICON_SVG_STRING,
+      containerStyles: {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}},
     };
-    DefaultColumnTypes.CATEGORY_TYPE_DROPDOWN_ITEM = {
-      element: DropdownItem.createButtonItemNoEvents(undefined, settings),
-      settings,
+    const selectSettings: DropdownButtonItemSettings = {
+      text: DEFAULT_COLUMN_TYPES.SELECT,
+      iconSettings,
+    };
+    DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM = {
+      element: DropdownItem.createButtonItemNoEvents(undefined, selectSettings),
+      settings: selectSettings,
+    };
+    const selectLabelSettings: DropdownButtonItemSettings = {
+      text: DEFAULT_COLUMN_TYPES.CATEGORY,
+      iconSettings,
+    };
+    DefaultColumnTypes.SELECT_LABEL_TYPE_DROPDOWN_ITEM = {
+      element: DropdownItem.createButtonItemNoEvents(undefined, selectLabelSettings),
+      settings: selectLabelSettings,
     };
   }
 
@@ -120,6 +133,6 @@ export class DefaultColumnTypes {
   // REF-28
   public static createDropdownItemsForDefaultTypes() {
     DefaultColumnTypes.createDropdownItemsForDefaultStaticTypes();
-    DefaultColumnTypes.createDropdownItemForCategoryType();
+    DefaultColumnTypes.createDropdownItemForSelectTypes();
   }
 }

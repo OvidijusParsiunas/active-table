@@ -1,6 +1,6 @@
 import {ColumnDropdownCellOverlay} from '../../../elements/dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlay';
 import {HeaderIconCellElement} from '../../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
-import {CategoryCellElement} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellElement';
+import {ConvertToSelectCell} from '../../../elements/cell/cellsWithTextDiv/selectCell/convertToSelectCell';
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
@@ -74,8 +74,7 @@ export class InsertNewCell {
       if (rowIndex === 0) {
         CategoryDropdown.setUpDropdown(etc, columnIndex);
       } else {
-        CategoryCellElement.setCellCategoryStructure(etc, newCellElement, rowIndex, columnIndex);
-        CategoryCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
+        ConvertToSelectCell.convertCell(etc, rowIndex, columnIndex, newCellElement);
       }
     } else if (rowIndex > 0) {
       if (columnDetails.activeType.checkbox) {

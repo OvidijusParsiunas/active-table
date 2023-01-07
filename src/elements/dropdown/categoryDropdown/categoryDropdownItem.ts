@@ -1,3 +1,4 @@
+import {LabelCellElement} from '../../cell/cellsWithTextDiv/selectCell/labelCellElement';
 import {ActiveCategoryItems, CategoryDropdownT} from '../../../types/columnDetails';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -30,15 +31,17 @@ export class CategoryDropdownItem {
   public static selectExistingCategory(etc: EditableTableComponent,
       activeItemElement: HTMLElement, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItemElement, rowIndex, columnIndex, textElement);
-    textElement.style.backgroundColor = activeItemElement?.style.backgroundColor;
+    if (LabelCellElement.isCategoryText(textElement)) {
+      textElement.style.backgroundColor = activeItemElement?.style.backgroundColor;
+    }
   }
 
   // prettier-ignore
   public static addNewCategory(etc: EditableTableComponent, textElement: HTMLElement, dropdown: CategoryDropdownT,
       color?: string) {
     const newCategory = CellElement.getText(textElement);
-    const newColor = color || Color.getLatestPasteleColorAndSetNew();
-    textElement.style.backgroundColor = newColor;
+    const newColor = dropdown.oneActiveColor || color || Color.getLatestPasteleColorAndSetNew();
+    if (!dropdown.oneActiveColor) textElement.style.backgroundColor = newColor;
     CategoryDropdownItem.addCategoryItem(etc, newCategory, newColor, dropdown);
     Color.setNewLatestPasteleColor();
   }
@@ -84,7 +87,9 @@ export class CategoryDropdownItem {
       CategoryDropdownItemEvents.blurItem(dropdown, 'matchingWithCellText');
     }
     CategoryDropdownItem.updateItemColor(itemElement, activeItems);
-    if (updateCellText) CategoryDropdownItem.updateCellTextBgColor(itemElement, textElement, dropdown, defaultText);
+    if (updateCellText && !dropdown.oneActiveColor) {
+      CategoryDropdownItem.updateCellTextBgColor(itemElement, textElement, dropdown, defaultText);
+    }
   }
 
   // prettier-ignore
@@ -156,18 +161,18 @@ export class CategoryDropdownItem {
     if (isDefaultTextRemovable) delete categoryToColor[defaultText];
   }
 
-  private static changeUserOptionsToCategoryToColor(categories: CategoriesOptions): CategoryToColor {
+  private static changeUserOptionsToCategoryToColor(categories: CategoriesOptions, color?: string): CategoryToColor {
     return categories.reduce<CategoryToColor>((categoryToColor, category) => {
-      categoryToColor[category.name] = category.backgroundColor || Color.getLatestPasteleColorAndSetNew();
+      categoryToColor[category.name] = color || category.backgroundColor || Color.getLatestPasteleColorAndSetNew();
       return categoryToColor;
     }, {});
   }
 
-  private static aggregateCategoryToColor(contents: TableContents, columnIndex: number) {
+  private static aggregateCategoryToColor(contents: TableContents, columnIndex: number, color?: string) {
     const categoryToColor: CategoryToColor = {};
     contents.slice(1).forEach((row) => {
       const cellText = row[columnIndex];
-      if (cellText !== EMPTY_STRING) categoryToColor[cellText] = Color.getLatestPasteleColorAndSetNew();
+      if (cellText !== EMPTY_STRING) categoryToColor[cellText] = color || Color.getLatestPasteleColorAndSetNew();
     });
     return categoryToColor;
   }
@@ -176,9 +181,10 @@ export class CategoryDropdownItem {
   public static populateItems(etc: EditableTableComponent, columnIndex: number) {
     const {contents, columnsDetails} = etc;
     const {categoryDropdown, settings: {defaultText, isDefaultTextRemovable}} = columnsDetails[columnIndex];
+    const {oneActiveColor} = categoryDropdown;
     const categoryToColor = categoryDropdown.staticItems
-      ? CategoryDropdownItem.changeUserOptionsToCategoryToColor(categoryDropdown.staticItems)
-      : CategoryDropdownItem.aggregateCategoryToColor(contents, columnIndex);
+      ? CategoryDropdownItem.changeUserOptionsToCategoryToColor(categoryDropdown.staticItems, oneActiveColor)
+      : CategoryDropdownItem.aggregateCategoryToColor(contents, columnIndex, oneActiveColor);
     CategoryDropdownItem.postProcessCategoryToColor(isDefaultTextRemovable, categoryToColor, defaultText);
     CategoryDropdownItem.addCategoryItems(etc, categoryToColor, categoryDropdown);
   }

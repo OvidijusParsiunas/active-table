@@ -2,7 +2,7 @@ import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils'
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CaretDisplayFix} from '../../../utils/browser/caretDisplayFix';
-import {CategoryCellEvents} from './categoryCell/categoryCellEvents';
+import {SelectCellEvents} from './selectCell/selectCellEvents';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {DataCellEvents} from '../dataCell/dataCellEvents';
 import {CellDetails} from '../../../types/focusedCell';
@@ -34,7 +34,7 @@ export class CellWithTextEvents {
     // the above will not trigger the CategoryCellEvents.blur functionality if dropdown has been focused, but will blur
     // the element in the dom, the following will trigger the required programmatic functionality
     if (etc.focusedElements.categoryDropdown) {
-      CategoryCellEvents.blurring(etc, rowIndex, columnIndex, textElement);
+      SelectCellEvents.blurring(etc, rowIndex, columnIndex, textElement);
       delete etc.focusedElements.categoryDropdown;
     }
   }

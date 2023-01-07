@@ -109,9 +109,10 @@
                         return {color: 'black'}
                       }`,
                     },
-                    // dropdownIconSettings: {
-                    //   reusableDefaultIcon: `Category`,
-                    // },
+                    dropdownIconSettings: {
+                      reusableIconName: `Category`,
+                      // WORK - this does not work propely when property misspelled
+                    },
                   },
                 ],
                 isInsertLeftAvailable: false,
@@ -146,7 +147,7 @@
                       failedStyle: {color: 'yellow'},
                     },
                     dropdownIconSettings: {
-                      defaultIconName: `Category`,
+                      reusableIconName: `Category`,
                     },
                   },
                 ],

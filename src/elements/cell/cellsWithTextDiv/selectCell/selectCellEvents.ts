@@ -4,14 +4,14 @@ import {CategoryDropdown} from '../../../dropdown/categoryDropdown/categoryDropd
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {KEYBOARD_KEY} from '../../../../consts/keyboardKeys';
 import {DataCellEvents} from '../../dataCell/dataCellEvents';
-import {CategoryCellElement} from './categoryCellElement';
 import {CellWithTextEvents} from '../cellWithTextEvents';
 import {CellTextEvents} from '../text/cellTextEvents';
+import {SelectCellElement} from './selectCellElement';
 import {Dropdown} from '../../../dropdown/dropdown';
 import {CellElement} from '../../cellElement';
 
 // the logic for cell and text divs is handled here
-export class CategoryCellEvents {
+export class SelectCellEvents {
   // the reason why this is triggered by window is because when the user clicks on dropdown padding or delete button
   // keydown events will no longer be fired through the cell text - however we need to maintain the same behaviour
   // prettier-ignore
@@ -37,14 +37,14 @@ export class CategoryCellEvents {
     const {element, categoryToItem} = etc.columnsDetails[columnIndex].categoryDropdown;
     Dropdown.hide(element);
     if (!categoryToItem[CellElement.getText(textElement)]) {
-      CategoryCellElement.finaliseEditedText(etc, textElement, columnIndex);
+      SelectCellElement.finaliseEditedText(etc, textElement, columnIndex);
     }
     DataCellEvents.blur(etc, rowIndex, columnIndex, textElement);
   }
 
   private static blurText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
     if (!this.focusedElements.categoryDropdown) {
-      CategoryCellEvents.blurring(this, rowIndex, columnIndex, event.target as HTMLElement);
+      SelectCellEvents.blurring(this, rowIndex, columnIndex, event.target as HTMLElement);
     }
   }
 
@@ -66,9 +66,9 @@ export class CategoryCellEvents {
     // these are used in date cells and overwritten when converted from
     cellElement.onmouseenter = () => {};
     cellElement.onmouseleave = () => {};
-    cellElement.onmousedown = CellWithTextEvents.mouseDownCell.bind(etc, CategoryCellEvents.blurIfDropdownFocused);
+    cellElement.onmousedown = CellWithTextEvents.mouseDownCell.bind(etc, SelectCellEvents.blurIfDropdownFocused);
     const textElement = cellElement.children[0] as HTMLElement;
-    textElement.onblur = CategoryCellEvents.blurText.bind(etc, rowIndex, columnIndex);
+    textElement.onblur = SelectCellEvents.blurText.bind(etc, rowIndex, columnIndex);
     textElement.onfocus = CellWithTextEvents.focusText.bind(etc, rowIndex, columnIndex, CategoryDropdown.display);
   }
 }

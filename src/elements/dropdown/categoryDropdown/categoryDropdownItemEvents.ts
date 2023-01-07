@@ -1,3 +1,4 @@
+import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
 import {CategoryDropdownHorizontalScrollFix} from './categoryDropdownHorizontalScrollFix';
 import {ActiveCategoryItems, CategoryDropdownT} from '../../../types/columnDetails';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
@@ -7,12 +8,13 @@ import {SIDE} from '../../../types/side';
 export class CategoryDropdownItemEvents {
   // prettier-ignore
   public static blurItem(dropdown: CategoryDropdownT, typeOfItem: keyof ActiveCategoryItems, event?: MouseEvent) {
-    const { activeItems, scrollbarPresence } = dropdown;
+    const {activeItems, scrollbarPresence, oneActiveColor} = dropdown;
     const itemElement = activeItems[typeOfItem] as HTMLElement;
     if (itemElement !== undefined) {
       if (typeOfItem === 'matchingWithCellText'
           || (typeOfItem === 'hovered' && itemElement !== activeItems.matchingWithCellText)) {
         itemElement.style.backgroundColor = '';
+        if (oneActiveColor) itemElement.style.color = '';
         delete activeItems[typeOfItem];
       }
     }
@@ -35,19 +37,24 @@ export class CategoryDropdownItemEvents {
   }
 
   private static highlightItem(this: Document, color: string, dropdown: CategoryDropdownT, event: MouseEvent) {
-    const {scrollbarPresence, activeItems} = dropdown;
+    const {scrollbarPresence, activeItems, oneActiveColor, staticItems} = dropdown;
     // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
-    if (activeItems.hovered) activeItems.hovered.style.backgroundColor = '';
+    if (activeItems.hovered) {
+      activeItems.hovered.style.backgroundColor = '';
+      if (oneActiveColor) activeItems.hovered.style.color = '';
+    }
     const itemElement = event.target as HTMLElement;
     itemElement.style.backgroundColor = color;
     const dropdownElement = itemElement.parentElement as HTMLElement;
     CategoryDropdownItemEvents.scrollToItem(this, itemElement, scrollbarPresence.horizontal, dropdownElement, event);
     if (itemElement === activeItems.matchingWithCellText) {
+      if (oneActiveColor) itemElement.style.color = 'white';
       delete activeItems.hovered;
     } else {
+      if (oneActiveColor) itemElement.style.backgroundColor = DropdownItemHighlightUtils.HOVER_BACKGROUND_COLOR;
       activeItems.hovered = itemElement;
     }
-    if (!dropdown.staticItems) CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, true);
+    if (!staticItems) CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, true);
   }
 
   public static set(shadow: Document, itemElement: HTMLElement, color: string, dropdown: CategoryDropdownT) {

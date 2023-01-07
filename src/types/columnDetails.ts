@@ -41,6 +41,7 @@ export interface CategoryToItem {
 export interface CategoryDropdownT {
   // dropdown item
   categoryToItem: CategoryToItem;
+  oneActiveColor?: string; // used for none label
   // items that exhibit certain behaviours
   activeItems: ActiveCategoryItems;
   // REF-8

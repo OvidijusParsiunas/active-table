@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-len
 import {RowDropdownCellOverlayEvents} from '../../../elements/dropdown/rowDropdown/cellOverlay/rowDropdownCellOverlayEvents';
-import {CategoryCellEvents} from '../../../elements/cell/cellsWithTextDiv/categoryCell/categoryCellEvents';
+import {SelectCellEvents} from '../../../elements/cell/cellsWithTextDiv/selectCell/selectCellEvents';
 import {DateCellEvents} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellEvents';
 import {CheckboxCellEvents} from '../../../elements/cell/checkboxCell/checkboxCellEvents';
 import {IndexColumnEvents} from '../../../elements/indexColumn/indexColumnEvents';
@@ -18,7 +18,7 @@ export class UpdateCellsForRows {
     if (rowIndex > 0) {
       const {categories, calendar, checkbox} = etc.columnsDetails[columnIndex].activeType;
       if (categories) {
-        CategoryCellEvents.setEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
+        SelectCellEvents.setEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
       } else if (calendar) {
         DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
       } else if (checkbox) {

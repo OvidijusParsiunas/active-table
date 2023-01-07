@@ -1,5 +1,5 @@
+import {CategoriesOptions, SelectOptions, SelectProperties} from './categoriesProperties';
 import {CalendarFunctionality} from './calendarFunctionality';
-import {CategoriesProperties} from './categoriesProperties';
 import {CustomTextProcessing} from './customTextProcessing';
 import {DEFAULT_COLUMN_TYPES} from '../enums/columnType';
 import {IconSettings} from './dropdownButtonItem';
@@ -36,9 +36,14 @@ interface Checkbox extends Omit<Parent, 'sorting'> {
 }
 
 interface Categories extends Omit<Parent, 'validation'> {
-  categories: CategoriesProperties | true;
+  categories: SelectProperties<CategoriesOptions> | true;
 }
 
-export type ColumnType = InterfacesUnion<Calendar | Checkbox | Categories | Parent>;
+interface Select extends Omit<Parent, 'validation'> {
+  categories: SelectProperties<SelectOptions> | true;
+  isSelect: boolean; // this will be replaced by categories getting renamed to labelSelect
+}
+
+export type ColumnType = InterfacesUnion<Calendar | Checkbox | Select | Categories | Parent>;
 
 export type ColumnTypes = ColumnType[];
