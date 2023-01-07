@@ -18,7 +18,7 @@ export class CategoryDropdownItemEvents {
         delete activeItems[typeOfItem];
       }
     }
-    if (event && !dropdown.staticItems) CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, false);
+    if (event && !dropdown.staticItems) CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical);
   }
 
   // prettier-ignore
@@ -37,7 +37,7 @@ export class CategoryDropdownItemEvents {
   }
 
   private static highlightItem(this: Document, color: string, dropdown: CategoryDropdownT, event: MouseEvent) {
-    const {scrollbarPresence, activeItems, oneActiveColor, staticItems} = dropdown;
+    const {scrollbarPresence, activeItems, oneActiveColor, staticItems, element} = dropdown;
     // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
     if (activeItems.hovered) {
       activeItems.hovered.style.backgroundColor = '';
@@ -54,7 +54,7 @@ export class CategoryDropdownItemEvents {
       if (oneActiveColor) itemElement.style.backgroundColor = DropdownItemHighlightUtils.HOVER_BACKGROUND_COLOR;
       activeItems.hovered = itemElement;
     }
-    if (!staticItems) CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, true);
+    if (!staticItems) CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, element);
   }
 
   public static set(shadow: Document, itemElement: HTMLElement, color: string, dropdown: CategoryDropdownT) {

@@ -6,18 +6,14 @@ export class NumberOfRowsDropdownItem {
   private static readonly ITEM_CLASS = 'number-of-rows-dropdown-item';
   public static readonly ALL_ITEM_TEXT = 'all'; // lower case as it will be compared against user set text
 
-  private static unsetHoverColors(items: HTMLElement[]) {
+  public static unsetHoverColors(items: HTMLElement[]) {
+    // active item uses a class so unsetting this prop doesn't affect it
     items.forEach((item) => (item.style.backgroundColor = ''));
   }
 
-  private static unsetActiveItem(dropdownElement: HTMLElement) {
+  public static unsetActiveItem(dropdownElement: HTMLElement) {
     const activeItem = dropdownElement.getElementsByClassName(DropdownItem.ACTIVE_ITEM_CLASS)[0] as HTMLElement;
     activeItem?.classList.remove(DropdownItem.ACTIVE_ITEM_CLASS);
-  }
-
-  public static unsetAllItemStyles(dropdownElement: HTMLElement, items: HTMLElement[]) {
-    NumberOfRowsDropdownItem.unsetActiveItem(dropdownElement);
-    NumberOfRowsDropdownItem.unsetHoverColors(items);
   }
 
   public static setActive(items: HTMLElement[], targetItemText: string) {

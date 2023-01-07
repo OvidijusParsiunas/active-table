@@ -53,15 +53,16 @@ export class CategoryDeleteButton {
     return containerElement;
   }
 
-  public static changeVisibility(event: MouseEvent, isVerticalScrollPresent: boolean, display: boolean) {
+  public static changeVisibility(event: MouseEvent, verticalScrollPresent: boolean, displayOnDropdown?: HTMLElement) {
     // event.isTrusted ensures that the item only appears when using a mouse
     if (event.isTrusted) {
       const itemElement = event.target as HTMLElement;
       const buttonContainerElement = itemElement.children[1] as HTMLElement;
-      buttonContainerElement.style.display = display ? 'block' : 'none';
-      if (display) {
+      buttonContainerElement.style.display = displayOnDropdown ? 'block' : 'none';
+      if (displayOnDropdown) {
         const buttonElement = buttonContainerElement.children[0] as HTMLElement;
-        buttonElement.style.left = isVerticalScrollPresent ? '145px' : '160px';
+        const rightSideDelta = verticalScrollPresent ? 31 : 16;
+        buttonElement.style.left = `${displayOnDropdown.offsetWidth - rightSideDelta}px`;
       }
     }
   }

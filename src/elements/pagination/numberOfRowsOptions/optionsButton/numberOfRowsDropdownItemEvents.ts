@@ -13,6 +13,7 @@ export class NumberOfRowsDropdownItemEvents {
     }
     const items = Array.from(dropdown.children) as HTMLElement[];
     NumberOfRowsDropdown.hide(dropdown, items);
+    NumberOfRowsDropdownItem.unsetActiveItem(dropdown);
     NumberOfRowsDropdownItem.setActive(items, newNumberOfRows);
   }
 

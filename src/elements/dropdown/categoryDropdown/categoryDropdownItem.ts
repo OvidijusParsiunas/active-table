@@ -20,8 +20,7 @@ interface CategoryToColor {
 export class CategoryDropdownItem {
   // prettier-ignore
   private static updateCellElementIfNotUpdated(etc: EditableTableComponent,
-      activeItem: HTMLElement, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
-    const newText = CellElement.getText(activeItem.children[0] as HTMLElement);
+      newText: string, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     if ((etc.contents[rowIndex][columnIndex]) !== newText) {
       CellEvents.updateCell(etc, newText, rowIndex, columnIndex, {processText: false, element: textElement});
     }
@@ -30,9 +29,13 @@ export class CategoryDropdownItem {
   // prettier-ignore
   public static selectExistingCategory(etc: EditableTableComponent,
       activeItemElement: HTMLElement, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
-    CategoryDropdownItem.updateCellElementIfNotUpdated(etc, activeItemElement, rowIndex, columnIndex, textElement);
+    const newText = CellElement.getText(activeItemElement.children[0] as HTMLElement);
+    CategoryDropdownItem.updateCellElementIfNotUpdated(etc, newText, rowIndex, columnIndex, textElement);
+    // console.log(activeItemElement);
+    console.log(activeItemElement.children[0].textContent)
+    // console.log(textElement);
     if (LabelCellElement.isCategoryText(textElement)) {
-      textElement.style.backgroundColor = activeItemElement?.style.backgroundColor;
+      textElement.style.backgroundColor = etc.columnsDetails[columnIndex].categoryDropdown.categoryToItem[newText]?.color;
     }
   }
 
@@ -97,7 +100,8 @@ export class CategoryDropdownItem {
     const {element, rowIndex, columnIndex} = etc.focusedElements.cell as CellDetails;
     const {categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
     const textElement = element.children[0] as HTMLElement;
-    CategoryDropdownItem.updateCellElementIfNotUpdated(etc, item, rowIndex, columnIndex, textElement);
+    const itemText = CellElement.getText(item.children[0] as HTMLElement);
+    CategoryDropdownItem.updateCellElementIfNotUpdated(etc, itemText, rowIndex, columnIndex, textElement);
     CategoryDropdownItem.attemptHighlightMatchingCellCategoryItem(textElement, categoryDropdown, defaultText, true, item);
     CaretPosition.setToEndOfText(etc, textElement);
   }

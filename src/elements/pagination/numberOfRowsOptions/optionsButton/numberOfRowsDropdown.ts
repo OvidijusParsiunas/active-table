@@ -12,7 +12,7 @@ export class NumberOfRowsDropdown {
   public static hide(dropdownElement: HTMLElement, dropdownItems?: HTMLElement[]) {
     Dropdown.hide(dropdownElement);
     const items = dropdownItems || (Array.from(dropdownElement.children) as HTMLElement[]);
-    NumberOfRowsDropdownItem.unsetAllItemStyles(dropdownElement, items);
+    NumberOfRowsDropdownItem.unsetHoverColors(items);
   }
 
   private static getDropdownTopPosition(buttonElement: HTMLElement): PX {
