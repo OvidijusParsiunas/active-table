@@ -456,4 +456,13 @@ export const ediTableStyle = css`
   .pagination-container-right-column > div {
     margin-left: 10px;
   }
+
+  .sticky-header-body > *:first-child {
+    top: 0;
+    position: sticky;
+  }
+
+  .sticky-header-body > *:first-child > th {
+    background-color: white;
+  }
 `;

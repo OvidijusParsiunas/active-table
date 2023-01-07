@@ -62,7 +62,7 @@ export class ColumnDropdown {
 
   // prettier-ignore
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement,
-      openMethod: DropdownDisplaySettings['openMethod']) {
+      openMethod: DropdownDisplaySettings['openMethod'], isHeaderSticky: boolean) {
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
     dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement, openMethod?.overlayClick);
     // needs to be displayed here to evalute if in view port
@@ -73,6 +73,8 @@ export class ColumnDropdown {
         dropdownElement.style.left = '0px';
       } else if (visibilityDetails.blockingSides.has(SIDE.RIGHT)) {
         dropdownElement.style.left = `${cellElement.offsetLeft + cellElement.offsetWidth - Dropdown.DROPDOWN_WIDTH}px`;
+      } else if (visibilityDetails.blockingSides.has(SIDE.TOP) && isHeaderSticky) {
+        Dropdown.correctTopPositionForStickyHeader(cellElement, dropdownElement, !!openMethod?.cellClick);
       }
     }
   }
@@ -83,7 +85,7 @@ export class ColumnDropdown {
     const cellElement = etc.columnsDetails[columnIndex].elements[0];
     ColumnDropdownItem.setUp(etc, dropdownElement, columnIndex, cellElement);
     ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement,
-      etc.columnDropdownDisplaySettings.openMethod);
+      etc.columnDropdownDisplaySettings.openMethod, etc.isHeaderSticky);
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItemNavigation.focusInputElement(inputElement as HTMLElement);
     FullTableOverlayElement.display(etc);

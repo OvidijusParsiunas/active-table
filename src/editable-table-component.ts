@@ -95,6 +95,12 @@ export class EditableTableComponent extends LitElement {
   })
   spellCheck = false;
 
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  isHeaderSticky = true;
+
   // set as boolean to not update on initial render
   @property({
     type: Object,
@@ -144,12 +150,10 @@ export class EditableTableComponent extends LitElement {
   @state()
   userKeyEventsState: UserKeyEventsState = UserKeyEventsStateUtils.createNew();
 
-  // REF-15 - to be used by the client
   // TO-DO height - keep in mind that by resizing columns - the height can change
   @property({type: Object})
   tableDimensions: TableDimensions = {};
 
-  // REF-15 - to be used internally
   @state()
   tableDimensionsInternal: TableDimensionsInternal = {recordedParentWidth: 0};
 

@@ -2,6 +2,7 @@ import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/sta
 import {ToggleAdditionElements} from '../table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../table/addNewElements/column/addNewColumnElement';
 import {TableDimensionsUtils} from '../../utils/tableDimensions/tableDimensionsUtils';
+import {AddNewRowElement} from '../table/addNewElements/row/addNewRowElement';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ExtractElements} from '../../utils/elements/extractElements';
 import {DEFAULT_COLUMN_WIDTH} from '../../consts/defaultColumnWidth';
@@ -49,17 +50,46 @@ export class UpdateIndexColumnWidth {
     );
   }
 
+  private static changeWidth(etc: EditableTableComponent, firstRow: HTMLElement, newWidth: number) {
+    UpdateIndexColumnWidth.changeCellAndTableWidths(etc, firstRow, newWidth);
+    // if the above has set the width too high
+    if (UpdateIndexColumnWidth.shouldTextBeWrapped(etc)) UpdateIndexColumnWidth.forceWrap(etc, firstRow);
+  }
+
+  private static getCellOverflow(cell: HTMLElement) {
+    return cell.scrollWidth + (Number.parseInt(cell.style.borderRightWidth) || 0);
+  }
+
+  private static getIndexColumnOverflowWidth(firstRow: HTMLElement, lastCell: HTMLElement) {
+    const overflowWidth = UpdateIndexColumnWidth.getCellOverflow(lastCell);
+    // if using pagination and the last row is not visible, then overflowWidth will be 0 and we must temporarily add
+    // the last cell contents to the first data row cell to measure the overflow
+    if (overflowWidth === 0) {
+      const firstDataRow = firstRow.nextSibling as HTMLElement;
+      if (firstDataRow && !AddNewRowElement.isAddNewRowRow(firstDataRow)) {
+        const firstDataCell = firstDataRow.children[0] as HTMLElement;
+        const firstCellContent = firstDataCell.textContent;
+        firstDataCell.textContent = lastCell.textContent;
+        setTimeout(() => (firstDataCell.textContent = firstCellContent));
+        return UpdateIndexColumnWidth.getCellOverflow(firstDataCell);
+      }
+    }
+    return overflowWidth;
+  }
+
   // this works because the 'block' display style is not set on the table
   // checking if the cells width is overflown and if so - increase its width (cannot decrease the width)
   private static updateColumnWidthWhenOverflow(etc: EditableTableComponent, firstRow: HTMLElement, lastCell: HTMLElement) {
     // overflow width does not include the borderRightWidth - which the ChangeIndexColumnWidth.WIDTH does
-    const overflowWidth = lastCell.scrollWidth + (Number.parseInt(lastCell.style.borderRightWidth) || 0);
-    if (UpdateIndexColumnWidth.WIDTH !== overflowWidth) {
+    const overflowWidth = UpdateIndexColumnWidth.getIndexColumnOverflowWidth(firstRow, lastCell);
+    if (UpdateIndexColumnWidth.WIDTH !== overflowWidth && overflowWidth !== 0) {
       // Firefox does not include lastCell paddingRight (4px) when setting the new width
       const newWidth = overflowWidth + (Browser.IS_FIREFOX ? 4 : 0);
-      UpdateIndexColumnWidth.changeCellAndTableWidths(etc, firstRow, newWidth);
-      // if the above has set the width too high
-      if (UpdateIndexColumnWidth.shouldTextBeWrapped(etc)) UpdateIndexColumnWidth.forceWrap(etc, firstRow);
+      if (Browser.IS_SAFARI) {
+        setTimeout(() => UpdateIndexColumnWidth.changeWidth(etc, firstRow, newWidth));
+      } else {
+        UpdateIndexColumnWidth.changeWidth(etc, firstRow, newWidth);
+      }
     }
   }
 

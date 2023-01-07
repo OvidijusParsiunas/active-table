@@ -88,8 +88,10 @@ export class TableElement {
     CustomRowProperties.update(etc);
   }
 
-  private static createTableBody() {
-    return document.createElement('tbody');
+  private static createTableBody(isHeaderSticky: boolean) {
+    const body = document.createElement('tbody');
+    if (isHeaderSticky) body.classList.add('sticky-header-body');
+    return body;
   }
 
   private static createTableElement(etc: EditableTableComponent) {
@@ -110,7 +112,7 @@ export class TableElement {
       etc.columnGroupRef = ColumnGroupElement.create();
       etc.tableElementRef.appendChild(etc.columnGroupRef);
     }
-    etc.tableBodyElementRef = TableElement.createTableBody();
+    etc.tableBodyElementRef = TableElement.createTableBody(etc.isHeaderSticky);
     etc.addRowCellElementRef = AddNewRowElement.create(etc); // REF-18
     etc.tableElementRef.appendChild(etc.tableBodyElementRef);
     etc.categoryDropdownContainer = CategoryDropdown.createContainerElement();

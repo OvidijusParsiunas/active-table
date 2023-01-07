@@ -2,8 +2,6 @@ import {MaxStructureDimensions} from './maxStructureDimensions';
 import {InterfacesUnion} from './utilityTypes';
 import {StringDimension} from './dimensions';
 
-// REF-15
-
 // This is to be used by the client exclusively
 
 // REF-19
