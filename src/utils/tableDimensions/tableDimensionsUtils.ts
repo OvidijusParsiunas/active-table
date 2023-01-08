@@ -49,7 +49,7 @@ export class TableDimensionsUtils {
   private static setDefaultDimension(tableDimensionsInternal: TableDimensionsInternal, parentElement: HTMLElement) {
     // 100% width of the parent element
     tableDimensionsInternal.maxWidth = parentElement.offsetWidth;
-    tableDimensionsInternal.isPercentage = true;
+    tableDimensionsInternal.wasPercentage = true;
   }
 
   // prettier-ignore
@@ -57,11 +57,11 @@ export class TableDimensionsUtils {
     const {tableDimensions, tableDimensionsInternal, tableElementRef, parentElement} = etc;
     if (!tableElementRef || !parentElement) return;
     const numberDimension = StringDimensionUtils.generateNumberDimensionFromClientString(key,
-      parentElement, tableDimensions, TableDimensionsUtils.MINIMAL_TABLE_WIDTH);
+      parentElement, tableDimensions, true, TableDimensionsUtils.MINIMAL_TABLE_WIDTH);
       if (etc.overflow) OverflowUtils.unsetBorderDimensions(numberDimension)
     if (numberDimension !== undefined) {
-      tableDimensionsInternal[key] = numberDimension.width;
-      tableDimensionsInternal.isPercentage = numberDimension.isPercentage;
+      tableDimensionsInternal[key] = numberDimension.number;
+      tableDimensionsInternal.wasPercentage = numberDimension.wasPercentage;
     }
   }
 

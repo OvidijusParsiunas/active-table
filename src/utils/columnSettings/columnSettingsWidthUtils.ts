@@ -15,9 +15,9 @@ export class ColumnSettingsWidthUtils {
   public static getSettingsWidthNumber(tableElement: HTMLElement, settings: ColumnSettingsInternal): SuccessResult {
     const result = settings.minWidth !== undefined ?
         StringDimensionUtils.generateNumberDimensionFromClientString(
-          'minWidth', tableElement, settings, ColumnDetails.MINIMAL_COLUMN_WIDTH)
+          'minWidth', tableElement, settings, true, ColumnDetails.MINIMAL_COLUMN_WIDTH)
       : StringDimensionUtils.generateNumberDimensionFromClientString(
-          'width', tableElement, settings, ColumnDetails.MINIMAL_COLUMN_WIDTH);
+          'width', tableElement, settings, true, ColumnDetails.MINIMAL_COLUMN_WIDTH);
     // Should always return a successful result for column as parent width should technically be determinible
     return result as SuccessResult;
   }
@@ -25,9 +25,9 @@ export class ColumnSettingsWidthUtils {
   // prettier-ignore
   public static updateColumnWidth(tableElement: HTMLElement,
       cellElement: HTMLElement, settings: ColumnSettingsInternal, isNewSetting: boolean) {
-    const {width} = ColumnSettingsWidthUtils.getSettingsWidthNumber(tableElement, settings);
-    cellElement.style.width = `${width}px`;
-    TableElement.changeStaticWidthTotal(isNewSetting ? width : -width); 
+    const {number: numberWidth} = ColumnSettingsWidthUtils.getSettingsWidthNumber(tableElement, settings);
+    cellElement.style.width = `${numberWidth}px`;
+    TableElement.changeStaticWidthTotal(isNewSetting ? numberWidth : -numberWidth); 
   }
 
   // prettier-ignore

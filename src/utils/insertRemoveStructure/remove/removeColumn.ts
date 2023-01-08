@@ -26,9 +26,9 @@ export class RemoveColumn {
   // prettier-ignore
   public static reduceStaticWidthTotal(etc: EditableTableComponent, columnDetails: ColumnDetailsT) {
     if (columnDetails.settings && ColumnSettingsWidthUtils.isWidthDefined(columnDetails.settings)) {
-      const {width} = ColumnSettingsWidthUtils.getSettingsWidthNumber(
+      const {number} = ColumnSettingsWidthUtils.getSettingsWidthNumber(
         etc.tableElementRef as HTMLElement, columnDetails.settings);
-      TableElement.changeStaticWidthTotal(-width);
+      TableElement.changeStaticWidthTotal(-number);
     }
   }
 

@@ -16,12 +16,12 @@ interface Initial {
 
 interface Width extends Parent {
   width: number;
-  isPercentage: boolean; // used to resize the table if the parent width has changed
+  wasPercentage: boolean; // used to resize the table if the parent width has changed
 }
 
 interface MaxWidth extends Parent {
   maxWidth: number;
-  isPercentage: boolean; // used to resize the table if the parent width has changed
+  wasPercentage: boolean; // used to resize the table if the parent width has changed
 }
 
 export type TableDimensionsInternal = InterfacesUnion<Width | MaxWidth | Initial>;

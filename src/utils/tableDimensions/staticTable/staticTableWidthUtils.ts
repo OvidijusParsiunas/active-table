@@ -40,10 +40,10 @@ export class StaticTableWidthUtils {
   private static resetMinWidthColumns(minWidthColumns: ColumnDetailsT[], tableElement: HTMLElement) {
     minWidthColumns.forEach((columnDetails) => {
       const {settings, elements} = columnDetails;
-      const {width} = ColumnSettingsWidthUtils.getSettingsWidthNumber(tableElement, settings as ColumnSettingsInternal);
+      const {number} = ColumnSettingsWidthUtils.getSettingsWidthNumber(tableElement, settings as ColumnSettingsInternal);
       const headerCell = elements[0];
-      if (headerCell.offsetWidth !== width) {
-        headerCell.style.width = `${width}px`;
+      if (headerCell.offsetWidth !== number) {
+        headerCell.style.width = `${number}px`;
       }
     });
   }
