@@ -6,7 +6,7 @@ export class ParentResize {
   private static shouldRerenderTable(etc: EditableTableComponent) {
     const parentElement = etc.parentElement as HTMLElement;
     return (
-      etc.tableDimensionsInternal.isPercentage &&
+      etc.tableDimensionsInternal.wasPercentage &&
       // resize callback gets triggered on multiple occassions when the parent width has not changed:
       // on startup, after table has been resized, when parent height is changed and when column height is changed
       // this condition prevents the table from re-rendering itself when the above occurs
