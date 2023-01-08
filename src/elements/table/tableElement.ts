@@ -46,8 +46,8 @@ export class TableElement {
       tableElement: HTMLElement, activeOverlayElements: ActiveOverlayElements) {
     // full table overlay for column dropdown
     const fullTableOverlay = FullTableOverlayElement.create(etc);
-    tableElement.appendChild(fullTableOverlay);
     activeOverlayElements.fullTableOverlay = fullTableOverlay;
+    (etc.overflowInternal?.overflowContainer || tableElement).appendChild(fullTableOverlay);
     // column dropdown
     const columnDropdownElement = ColumnDropdown.create(etc);
     tableElement.appendChild(columnDropdownElement);

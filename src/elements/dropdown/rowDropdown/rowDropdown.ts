@@ -51,12 +51,16 @@ export class RowDropdown {
     }
   }
 
+  private static getLeft(cellElement: HTMLElement, cellClick: boolean) {
+    return `${ElementOffset.processWidth(cellClick ? cellElement.offsetWidth : 5)}px`;
+  }
+
   // prettier-ignore
-  private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdown: HTMLElement, cellClick: boolean,
+  private static displayAndSetPosition(cellElement: HTMLElement, dropdown: HTMLElement, cellClick: boolean,
       isHeaderSticky: boolean) {
     const initialTopValue: PX = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
     dropdown.style.top = initialTopValue;
-    dropdown.style.left = `${ElementOffset.processWidth(cellClick ? cellElement.offsetWidth : 5)}px`;
+    dropdown.style.left = RowDropdown.getLeft(cellElement, cellClick);
     // needs to be displayed here to evalute if in view port
     Dropdown.display(dropdown);
     const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdown);
@@ -70,11 +74,31 @@ export class RowDropdown {
     }
   }
 
+  // prettier-ignore
+  private static displayAndSetPositionOverflow(etc: EditableTableComponent, cellElement: HTMLElement,
+      dropdown: HTMLElement, cellClick: boolean) {
+    const {tableElementRef, overflowInternal, isHeaderSticky} = etc;
+    if (!tableElementRef || !overflowInternal?.overflowContainer) return;
+    const isStickyCell = isHeaderSticky && cellElement.tagName === CellElement.HEADER_TAG;
+    dropdown.style.top = isStickyCell ?
+      `${overflowInternal.overflowContainer.scrollTop}px` : `${ElementOffset.processTop(cellElement.offsetTop)}px`;
+    dropdown.style.left = RowDropdown.getLeft(cellElement, cellClick);
+    // needs to be displayed here to evalute if overflow
+    Dropdown.display(dropdown);
+    if (tableElementRef.offsetHeight !== overflowInternal.overflowContainer.scrollHeight && !isStickyCell) {
+      dropdown.style.top = `${tableElementRef.offsetHeight - dropdown.offsetHeight}px`;
+    }
+  }
+
   public static display(this: EditableTableComponent, rowIndex: number, cellElement: HTMLElement) {
     const dropdownElement = this.activeOverlayElements.rowDropdown as HTMLElement;
     RowDropdownItem.update(this, dropdownElement, rowIndex);
     const cellClick = this.rowDropdownSettings.displaySettings.openMethod?.cellClick as boolean;
-    RowDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement, cellClick, this.isHeaderSticky);
+    if (this.overflowInternal?.overflowContainer) {
+      RowDropdown.displayAndSetPositionOverflow(this, cellElement, dropdownElement, cellClick);
+    } else {
+      RowDropdown.displayAndSetPosition(cellElement, dropdownElement, cellClick, this.isHeaderSticky);
+    }
     FullTableOverlayElement.display(this);
     setTimeout(() => RowDropdown.focusCell(this, rowIndex, cellElement));
   }

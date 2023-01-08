@@ -6,6 +6,7 @@ import {GenericElementUtils} from '../elements/genericElementUtils';
 import {TableDimensions} from '../../types/tableDimensions';
 import {ColumnsDetailsT} from '../../types/columnDetails';
 import {TableContents} from '../../types/tableContents';
+import {OverflowUtils} from '../overflow/overflowUtils';
 
 export class TableDimensionsUtils {
   public static readonly MINIMAL_TABLE_WIDTH = 70;
@@ -57,6 +58,7 @@ export class TableDimensionsUtils {
     if (!tableElementRef || !parentElement) return;
     const numberDimension = StringDimensionUtils.generateNumberDimensionFromClientString(key,
       parentElement, tableDimensions, TableDimensionsUtils.MINIMAL_TABLE_WIDTH);
+      if (etc.overflow) OverflowUtils.unsetBorderDimensions(numberDimension)
     if (numberDimension !== undefined) {
       tableDimensionsInternal[key] = numberDimension.width;
       tableDimensionsInternal.isPercentage = numberDimension.isPercentage;

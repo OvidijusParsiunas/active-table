@@ -10,7 +10,6 @@ export const ediTableStyle = css`
   table {
     border-spacing: 0px;
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     position: relative;
   }
 
@@ -335,6 +334,7 @@ export const ediTableStyle = css`
     right: 0;
     display: flex;
     width: fit-content;
+    height: fit-content;
   }
 
   .pagination-button {

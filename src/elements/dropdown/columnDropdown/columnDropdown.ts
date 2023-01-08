@@ -79,13 +79,36 @@ export class ColumnDropdown {
     }
   }
 
+  // fix positon of nested dropdown
+  // prettier-ignore
+  private static displayAndSetPositionForOverflow(etc: EditableTableComponent, cellElement: HTMLElement,
+      dropdownElement: HTMLElement) {
+    const {tableElementRef, overflowInternal} = etc;
+    if (!tableElementRef || !overflowInternal?.overflowContainer) return;
+    const overflowElement = overflowInternal.overflowContainer;
+    dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
+    dropdownElement.style.top = `${etc.columnDropdownDisplaySettings.openMethod?.overlayClick
+      ? overflowElement.scrollTop + 1 : overflowElement.scrollTop + cellElement.offsetHeight}px`;
+    // needs to be displayed here to evalute if scrollwidth has appeared
+    Dropdown.display(dropdownElement);
+    if (tableElementRef.offsetWidth !== overflowElement.scrollWidth) {
+      dropdownElement.style.left = `${tableElementRef.offsetWidth - dropdownElement.offsetWidth}px`;
+    } else if (dropdownElement.offsetLeft < 0) {
+      dropdownElement.style.left = '0px';
+    }
+  }
+
   // prettier-ignore
   public static display(etc: EditableTableComponent, columnIndex: number) {
     const dropdownElement = etc.activeOverlayElements.columnDropdown as HTMLElement;
     const cellElement = etc.columnsDetails[columnIndex].elements[0];
     ColumnDropdownItem.setUp(etc, dropdownElement, columnIndex, cellElement);
-    ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement,
-      etc.columnDropdownDisplaySettings.openMethod, etc.isHeaderSticky);
+    if (etc.overflowInternal) {
+      ColumnDropdown.displayAndSetPositionForOverflow(etc, cellElement, dropdownElement);
+    } else {
+      ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement,
+        etc.columnDropdownDisplaySettings.openMethod, etc.isHeaderSticky); 
+    }
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItemNavigation.focusInputElement(inputElement as HTMLElement);
     FullTableOverlayElement.display(etc);

@@ -6,14 +6,19 @@ import {TableElement} from '../table/tableElement';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class FullTableOverlayElement {
-  // this is a bug fix for a situation where the user was able to click the table border, focus and unfocus a cell
+  // etc offsets is a bug fix for a situation where the user was able to click the table border, focus and unfocus a cell
   // and therefore not allow the column dropdown to close because there is nothing focused
   public static display(etc: EditableTableComponent) {
     const fullTableOverlay = etc.activeOverlayElements.fullTableOverlay as HTMLElement;
     fullTableOverlay.style.width = `${etc.offsetWidth}px`;
     fullTableOverlay.style.height = `${etc.offsetHeight}px`;
-    fullTableOverlay.style.top = `-${Browser.IS_FIREFOX ? 0 : TableElement.BORDER_DIMENSIONS.topWidth}px`;
-    fullTableOverlay.style.left = `-${Browser.IS_FIREFOX ? 0 : TableElement.BORDER_DIMENSIONS.leftWidth}px`;
+    if (etc.overflowInternal?.overflowContainer) {
+      fullTableOverlay.style.top = `${etc.offsetTop}px`;
+      fullTableOverlay.style.left = `${etc.offsetLeft}px`;
+    } else {
+      fullTableOverlay.style.top = `-${Browser.IS_FIREFOX ? 0 : TableElement.BORDER_DIMENSIONS.topWidth}px`;
+      fullTableOverlay.style.left = `-${Browser.IS_FIREFOX ? 0 : TableElement.BORDER_DIMENSIONS.leftWidth}px`;
+    }
     Dropdown.display(fullTableOverlay);
   }
 

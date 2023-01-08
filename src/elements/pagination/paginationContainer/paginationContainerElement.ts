@@ -1,5 +1,6 @@
 import {PaginationPositions, PaginationPositionSide} from '../../../types/pagination';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {OverflowUtils} from '../../../utils/overflow/overflowUtils';
 
 export interface Containers {
   top?: HTMLElement;
@@ -48,11 +49,12 @@ export class PaginationContainerElement {
     return container;
   }
 
-  private static addContainer(tableElementRef: HTMLElement, id: string) {
+  private static addContainer(parentEl: HTMLElement, id: string) {
     const container = PaginationContainerElement.createContainerElement();
     container.id = id;
     const insertionLocation = id === PaginationContainerElement.TOP_CONTAINER_ID ? 'beforebegin' : 'afterend';
-    tableElementRef.insertAdjacentElement(insertionLocation, container);
+    parentEl.insertAdjacentElement(insertionLocation, container);
+    if (OverflowUtils.isOverflowElement(parentEl)) OverflowUtils.adjustPaginationContainer(container);
     return container;
   }
 
@@ -70,13 +72,14 @@ export class PaginationContainerElement {
     const isTopRequired = PaginationContainerElement.isContainerRequired(etc.paginationInternal.positions, 'top');
     const isBottomRequired = PaginationContainerElement.isContainerRequired(etc.paginationInternal.positions, 'bottom');
     const {tableElementRef: table} = etc;
-    if (!table) return containers;
+    const parentEl = etc.overflowInternal?.overflowContainer || table;
+    if (!parentEl) return containers;
     if (isTopRequired) {
-      const container = PaginationContainerElement.addContainer(table, PaginationContainerElement.TOP_CONTAINER_ID);
+      const container = PaginationContainerElement.addContainer(parentEl, PaginationContainerElement.TOP_CONTAINER_ID);
       containers.top = container;
     }
     if (isBottomRequired) {
-      const container = PaginationContainerElement.addContainer(table, PaginationContainerElement.BOTTOM_CONTAINER_ID);
+      const container = PaginationContainerElement.addContainer(parentEl, PaginationContainerElement.BOTTOM_CONTAINER_ID);
       containers.bottom = container;
     }
     return containers;

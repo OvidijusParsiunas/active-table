@@ -31,9 +31,6 @@ export class CategoryDropdownItem {
       activeItemElement: HTMLElement, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const newText = CellElement.getText(activeItemElement.children[0] as HTMLElement);
     CategoryDropdownItem.updateCellElementIfNotUpdated(etc, newText, rowIndex, columnIndex, textElement);
-    // console.log(activeItemElement);
-    console.log(activeItemElement.children[0].textContent)
-    // console.log(textElement);
     if (LabelCellElement.isCategoryText(textElement)) {
       textElement.style.backgroundColor = etc.columnsDetails[columnIndex].categoryDropdown.categoryToItem[newText]?.color;
     }

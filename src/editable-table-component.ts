@@ -26,10 +26,12 @@ import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {CellText, TableContents} from './types/tableContents';
 import {PaginationInternal} from './types/paginationInternal';
+import {OverflowUtils} from './utils/overflow/overflowUtils';
 import {UserSetColumnSizerStyle} from './types/columnSizer';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
 import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
+import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
@@ -37,6 +39,7 @@ import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {StripedRows} from './utils/rows/stripedRows';
 import {Browser} from './utils/browser/browser';
+import {Overflow} from './types/overflow';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {RowHover} from './types/rowHover';
@@ -95,6 +98,7 @@ export class EditableTableComponent extends LitElement {
   })
   spellCheck = false;
 
+  // WORK - header row events do not work in Firefox when row in not initial position
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
@@ -184,6 +188,7 @@ export class EditableTableComponent extends LitElement {
   @property({type: Object})
   columnDropdownDisplaySettings: DropdownDisplaySettings = {isAvailable: true, openMethod: {overlayClick: true}};
 
+  // WORK - cell click should be the default one when nothing is set by the user and index is available
   @property({type: Object})
   rowDropdownSettings: RowDropdownSettings = {displaySettings: {isAvailable: true, openMethod: {overlayClick: true}}};
 
@@ -198,6 +203,12 @@ export class EditableTableComponent extends LitElement {
 
   @state()
   stripedRowsInternal: StripedRowsInternal | null = null;
+
+  @property({type: Object})
+  overflow: Overflow | null = null;
+
+  @state()
+  overflowInternal: OverflowInternal | null = null;
 
   @property({type: Object})
   pagination: Pagination | null = null;
@@ -222,8 +233,9 @@ export class EditableTableComponent extends LitElement {
     if (this.stripedRows) StripedRows.process(this);
     if (this.rowHover) RowHoverEvents.process(this.rowHover);
     const tableElement = TableElement.createInfrastructureElements(this);
+    if (this.overflow) OverflowUtils.setupContainer(this, tableElement);
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
-    this.shadowRoot?.appendChild(tableElement);
+    this.shadowRoot?.appendChild(this.overflowInternal?.overflowContainer || tableElement);
     if (this.pagination) PaginationElements.create(this);
     InitialContentsProcessing.preProcess(this.contents);
     WindowElement.setEvents(this);

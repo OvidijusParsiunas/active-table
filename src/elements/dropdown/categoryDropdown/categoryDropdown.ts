@@ -5,6 +5,7 @@ import {EditableTableComponent} from '../../../editable-table-component';
 import {CategoryDropdownItemEvents} from './categoryDropdownItemEvents';
 import {CategoryDropdownScrollbar} from './categoryDropdownScrollbar';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
+import {OverflowUtils} from '../../../utils/overflow/overflowUtils';
 import {CategoryDropdownEvents} from './categoryDropdownEvents';
 import {CategoryDropdownT} from '../../../types/columnDetails';
 import {CategoryDropdownItem} from './categoryDropdownItem';
@@ -44,12 +45,7 @@ export class CategoryDropdown {
     return `${ElementOffset.processLeft(cellElement.offsetLeft + leftPadding)}px`;
   }
 
-  private static setPosition(dropdown: HTMLElement, cellElement: HTMLElement) {
-    const textContainerElement = cellElement.children[0] as HTMLElement;
-    dropdown.style.bottom = '';
-    dropdown.style.right = '';
-    dropdown.style.left = CategoryDropdown.generateLeftPosition(cellElement, textContainerElement);
-    dropdown.style.top = CategoryDropdown.generateTopPosition(cellElement, textContainerElement);
+  private static correctPosition(dropdown: HTMLElement, cellElement: HTMLElement, textContainerElement: HTMLElement) {
     const details = ElementVisibility.getDetailsInWindow(dropdown);
     if (!details.isFullyVisible) {
       if (details.blockingSides.has(SIDE.RIGHT)) {
@@ -63,6 +59,29 @@ export class CategoryDropdown {
         // reduces the dropdown height and the bottom property keeps the dropdown position close to cell
         dropdown.style.bottom = CategoryDropdown.generateBottomPosition(cellElement, textContainerElement);
       }
+    }
+  }
+
+  // prettier-ignore
+  private static correctPositionForOverflow(dropdown: HTMLElement, tableElement: HTMLElement,
+      overflowElement: HTMLElement) {
+    if (tableElement.offsetHeight !== overflowElement.scrollHeight) {
+      dropdown.style.top = `${tableElement.offsetHeight - dropdown.offsetHeight}px`;
+    }
+  }
+
+  private static setPosition(dropdown: HTMLElement, cellElement: HTMLElement) {
+    const textContainerElement = cellElement.children[0] as HTMLElement;
+    dropdown.style.bottom = '';
+    dropdown.style.right = '';
+    dropdown.style.left = CategoryDropdown.generateLeftPosition(cellElement, textContainerElement);
+    dropdown.style.top = CategoryDropdown.generateTopPosition(cellElement, textContainerElement);
+    const tableElement = (dropdown.parentElement as HTMLElement).parentElement as HTMLElement;
+    const overflowElement = tableElement.parentElement as HTMLElement;
+    if (OverflowUtils.isOverflowElement(overflowElement)) {
+      CategoryDropdown.correctPositionForOverflow(dropdown, tableElement, overflowElement);
+    } else {
+      CategoryDropdown.correctPosition(dropdown, cellElement, textContainerElement);
     }
   }
 
