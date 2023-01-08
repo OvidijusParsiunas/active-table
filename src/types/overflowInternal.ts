@@ -1,3 +1,5 @@
 export interface OverflowInternal {
-  overflowContainer?: HTMLElement;
+  overflowContainer: HTMLElement;
+  isWidthPercentage?: boolean;
+  isHeightPercentage?: boolean;
 }

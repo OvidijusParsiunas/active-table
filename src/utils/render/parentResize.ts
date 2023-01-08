@@ -3,10 +3,20 @@ import {Render} from './render';
 
 // CAUTION-2
 export class ParentResize {
+  private static doesOverflowNeedRerender(etc: EditableTableComponent, parentElement: HTMLElement) {
+    if (!etc.overflowInternal) return false;
+    const {isHeightPercentage, isWidthPercentage} = etc.overflowInternal;
+    return (
+      (isHeightPercentage && etc.tableDimensionsInternal.recordedParentHeight !== parentElement.offsetHeight) ||
+      (isWidthPercentage && etc.tableDimensionsInternal.recordedParentWidth !== parentElement.offsetWidth)
+    );
+  }
+
   private static shouldRerenderTable(etc: EditableTableComponent) {
     const parentElement = etc.parentElement as HTMLElement;
+    if (ParentResize.doesOverflowNeedRerender(etc, parentElement)) return true;
     return (
-      etc.tableDimensionsInternal.wasPercentage &&
+      etc.tableDimensionsInternal.isPercentage &&
       // resize callback gets triggered on multiple occassions when the parent width has not changed:
       // on startup, after table has been resized, when parent height is changed and when column height is changed
       // this condition prevents the table from re-rendering itself when the above occurs

@@ -159,7 +159,7 @@ export class EditableTableComponent extends LitElement {
   tableDimensions: TableDimensions = {};
 
   @state()
-  tableDimensionsInternal: TableDimensionsInternal = {recordedParentWidth: 0};
+  tableDimensionsInternal: TableDimensionsInternal = {recordedParentWidth: 0, recordedParentHeight: 0};
 
   @state()
   categoryDropdownContainer: HTMLElement | null = null;
@@ -233,7 +233,7 @@ export class EditableTableComponent extends LitElement {
     if (this.stripedRows) StripedRows.process(this);
     if (this.rowHover) RowHoverEvents.process(this.rowHover);
     const tableElement = TableElement.createInfrastructureElements(this);
-    if (this.overflow) OverflowUtils.setupContainer(this, tableElement);
+    if (this.overflow) OverflowUtils.setupContainer(this, tableElement); // must not be after BORDER_DIMENSIONS is set
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
     this.shadowRoot?.appendChild(this.overflowInternal?.overflowContainer || tableElement);
     if (this.pagination) PaginationElements.create(this);

@@ -4,7 +4,7 @@ import {StringDimension} from '../../types/dimensions';
 import {RegexUtils} from '../regex/regexUtils';
 
 export type PossibleStringDimensions<T> = PropertiesOfType<T, StringDimension>;
-export type SuccessResult = {number: number; wasPercentage: boolean};
+export type SuccessResult = {number: number; isPercentage: boolean};
 type Result = SuccessResult | undefined;
 
 export class StringDimensionUtils {
@@ -28,8 +28,8 @@ export class StringDimensionUtils {
       if (extractedNumber > 100) extractedNumber = 100;
       const offset = isWidth ? parentElement.offsetWidth : parentElement.offsetHeight;
       const dimension = offset * (extractedNumber / 100);
-      return { number: StringDimensionUtils.processDimension(dimension, minimalDimension), wasPercentage: true };
+      return { number: StringDimensionUtils.processDimension(dimension, minimalDimension), isPercentage: true };
     }
-    return { number: StringDimensionUtils.processDimension(extractedNumber, minimalDimension), wasPercentage: false };
+    return { number: StringDimensionUtils.processDimension(extractedNumber, minimalDimension), isPercentage: false };
   }
 }

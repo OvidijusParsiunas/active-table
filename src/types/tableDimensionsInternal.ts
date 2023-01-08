@@ -7,21 +7,23 @@ import {InterfacesUnion} from './utilityTypes';
 type Parent = {
   preserveNarrowColumns?: boolean;
   recordedParentWidth: number;
+  recordedParentHeight: number;
   isColumnIndexCellTextWrapped?: boolean; // REF-19
 } & MaxStructureDimensions;
 
 interface Initial {
   recordedParentWidth: number;
+  recordedParentHeight: number;
 }
 
 interface Width extends Parent {
   width: number;
-  wasPercentage: boolean; // used to resize the table if the parent width has changed
+  isPercentage: boolean; // used to resize the table if the parent width has changed
 }
 
 interface MaxWidth extends Parent {
   maxWidth: number;
-  wasPercentage: boolean; // used to resize the table if the parent width has changed
+  isPercentage: boolean; // used to resize the table if the parent width has changed
 }
 
 export type TableDimensionsInternal = InterfacesUnion<Width | MaxWidth | Initial>;
