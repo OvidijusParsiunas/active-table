@@ -1,6 +1,8 @@
 import {DropdownItemHighlightUtils} from '../../utils/color/dropdownItemHighlightUtils';
 import {ElementVisibility} from '../../utils/elements/elementVisibility';
 import {ActiveOverlayElements} from '../../types/activeOverlayElements';
+import {EditableTableComponent} from '../../editable-table-component';
+import {OverflowUtils} from '../../utils/overflow/overflowUtils';
 
 export class DropdownItemEvents {
   // prettier-ignore
@@ -23,11 +25,7 @@ export class DropdownItemEvents {
     DropdownItemEvents.resetDropdownPosition(nestedDropdownElement);
   }
 
-  private static displayAndSetNestedDropdownPosition(event: Event) {
-    const nestedDropdownElement = (event.target as HTMLElement).children[2] as HTMLElement;
-    const parentDropdownElement = (event.target as HTMLElement).parentElement as HTMLElement;
-    nestedDropdownElement.style.left = parentDropdownElement.style.width;
-    nestedDropdownElement.style.display = parentDropdownElement.style.display;
+  private static correctPosition(nestedDropdownElement: HTMLElement, parentDropdownElement: HTMLElement) {
     const visibilityDetails = ElementVisibility.getDetailsInWindow(nestedDropdownElement);
     if (!visibilityDetails.isFullyVisible) {
       nestedDropdownElement.style.left = `-${parentDropdownElement.style.width}`;
@@ -38,8 +36,33 @@ export class DropdownItemEvents {
     }
   }
 
-  public static addNestedItemEvents(element: HTMLElement) {
-    element.addEventListener('mouseenter', DropdownItemEvents.displayAndSetNestedDropdownPosition);
+  // prettier-ignore
+  private static correctPositionForOverflow(etc: EditableTableComponent,
+      nestedDropdownElement: HTMLElement, parentDropdownElement: HTMLElement) {
+    const {tableElementRef, overflowInternal} = etc;
+    if (!tableElementRef || !overflowInternal) return;
+    if (tableElementRef.offsetWidth !== overflowInternal.overflowContainer.scrollWidth) {
+      nestedDropdownElement.style.left = `-${parentDropdownElement.style.width}`;
+      if (nestedDropdownElement.getBoundingClientRect().x < 0) {
+        nestedDropdownElement.style.left = '';
+      }
+    }
+  }
+
+  private static displayAndSetNestedDropdownPosition(this: EditableTableComponent, event: Event) {
+    const nestedDropdownElement = (event.target as HTMLElement).children[2] as HTMLElement;
+    const parentDropdownElement = (event.target as HTMLElement).parentElement as HTMLElement;
+    nestedDropdownElement.style.left = parentDropdownElement.style.width;
+    nestedDropdownElement.style.display = parentDropdownElement.style.display;
+    if (this.overflowInternal && OverflowUtils.isOverflowElement(this.overflowInternal.overflowContainer)) {
+      DropdownItemEvents.correctPositionForOverflow(this, nestedDropdownElement, parentDropdownElement);
+    } else {
+      DropdownItemEvents.correctPosition(nestedDropdownElement, parentDropdownElement);
+    }
+  }
+
+  public static addNestedItemEvents(etc: EditableTableComponent, element: HTMLElement) {
+    element.addEventListener('mouseenter', DropdownItemEvents.displayAndSetNestedDropdownPosition.bind(etc));
     element.addEventListener('mouseleave', DropdownItemEvents.hideNestedDropdown);
   }
 }

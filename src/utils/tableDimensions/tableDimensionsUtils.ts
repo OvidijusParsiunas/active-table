@@ -59,7 +59,7 @@ export class TableDimensionsUtils {
     const numberDimension = StringDimensionUtils.generateNumberDimensionFromClientString(key,
       parentElement, tableDimensions, true, TableDimensionsUtils.MINIMAL_TABLE_WIDTH);
     if (numberDimension !== undefined) {
-      if (etc.overflow) OverflowUtils.unsetBorderDimensions(numberDimension);
+      if (etc.overflow) OverflowUtils.processNumberDimension(numberDimension);
       tableDimensionsInternal[key] = numberDimension.number;
       tableDimensionsInternal.isPercentage = numberDimension.isPercentage;
     }

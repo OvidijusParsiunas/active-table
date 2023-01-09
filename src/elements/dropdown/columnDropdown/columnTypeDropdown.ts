@@ -32,7 +32,7 @@ export class ColumnTypeDropdown {
   public static create(etc: EditableTableComponent, dropdownElement: HTMLElement) {
     const buttonElement = DropdownItem.addButtonItem(etc, dropdownElement, DropdownButtonItemConf.DEFAULT_ITEM,
       DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM, ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS);
-    DropdownItemEvents.addNestedItemEvents(buttonElement);
+    DropdownItemEvents.addNestedItemEvents(etc, buttonElement);
     const nestedDropdown = DropdownItem.createNestedDropdown(); // items added every time column dropdown is opened (setUp)
     buttonElement.appendChild(nestedDropdown);
     etc.activeOverlayElements.columnTypeDropdown = nestedDropdown;

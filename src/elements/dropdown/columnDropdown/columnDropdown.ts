@@ -79,7 +79,6 @@ export class ColumnDropdown {
     }
   }
 
-  // fix positon of nested dropdown
   // prettier-ignore
   private static displayAndSetPositionForOverflow(etc: EditableTableComponent, cellElement: HTMLElement,
       dropdownElement: HTMLElement) {

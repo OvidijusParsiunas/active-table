@@ -1,6 +1,5 @@
 import {PaginationPositions, PaginationPositionSide} from '../../../types/pagination';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {OverflowUtils} from '../../../utils/overflow/overflowUtils';
 
 export interface Containers {
   top?: HTMLElement;
@@ -54,7 +53,6 @@ export class PaginationContainerElement {
     container.id = id;
     const insertionLocation = id === PaginationContainerElement.TOP_CONTAINER_ID ? 'beforebegin' : 'afterend';
     parentEl.insertAdjacentElement(insertionLocation, container);
-    if (OverflowUtils.isOverflowElement(parentEl)) OverflowUtils.adjustPaginationContainer(container);
     return container;
   }
 

@@ -68,6 +68,9 @@ export class CategoryDropdown {
     if (tableElement.offsetHeight !== overflowElement.scrollHeight) {
       dropdown.style.top = `${tableElement.offsetHeight - dropdown.offsetHeight}px`;
     }
+    if (tableElement.offsetWidth !== overflowElement.scrollWidth) {
+      dropdown.style.left = `${tableElement.offsetWidth - dropdown.offsetWidth}px`;
+    }
   }
 
   private static setPosition(dropdown: HTMLElement, cellElement: HTMLElement) {

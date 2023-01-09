@@ -14,12 +14,6 @@ export class OverflowUtils {
     return element?.id === OverflowUtils.ID;
   }
 
-  public static adjustPaginationContainer(paginationContainer: HTMLElement) {
-    if (Browser.IS_SAFARI || Browser.IS_FIREFOX) {
-      // paginationContainer.style.width = 'calc(100% - 15px)';
-    }
-  }
-
   // a simple way to not take the border into consideration when doing table width calculation, however if there are issues
   // feel free to investigate a better way
   public static unsetBorderDimensions(numberDimension: SuccessResult) {
@@ -32,15 +26,20 @@ export class OverflowUtils {
     TableElement.BORDER_DIMENSIONS.bottomWidth = 0;
   }
 
+  public static processNumberDimension(numberDimension: SuccessResult) {
+    OverflowUtils.unsetBorderDimensions(numberDimension);
+    numberDimension.number -= OverflowUtils.SCROLLBAR_WIDTH;
+  }
+
   private static moveBorderToOverlay(tableStyle: CSSStyle, overflowContainer: HTMLElement, tableElement: HTMLElement) {
     overflowContainer.style.border = tableStyle.border as string;
     tableElement.style.border = '';
   }
 
-  private static adjustForScrollbarWidth(overflowContainer: HTMLElement, overflow: Overflow) {
+  private static adjustStyleForScrollbarWidth(overflowContainer: HTMLElement, overflow: Overflow) {
     if (Browser.IS_SAFARI || Browser.IS_FIREFOX) {
-      // how will max width work?
-      if (!overflow.isScrollbarPartOfWidth) {
+      if (overflow.maxHeight && !overflow.maxWidth) {
+        // this is used to not create a horizontal scroll
         overflowContainer.style.paddingRight = `${OverflowUtils.SCROLLBAR_WIDTH}px`;
       }
     }
@@ -66,6 +65,7 @@ export class OverflowUtils {
     // if heightResult is 0 for a %, the likelyhood is that the parent element does not have height set
     const heightResult = StringDimensionUtils.generateNumberDimensionFromClientString(
       'maxHeight', etc.parentElement as HTMLElement, overflow, false) || {number: 0, isPercentage: false};
+    heightResult.number -= TableElement.BORDER_DIMENSIONS.topWidth + TableElement.BORDER_DIMENSIONS.bottomWidth;
     if (heightResult.isPercentage) overflowInternal.isHeightPercentage = true;
     return {width: widthResult.number, height: heightResult.number};
   }
@@ -74,7 +74,7 @@ export class OverflowUtils {
     if (!etc.overflow || !etc.overflowInternal) return;
     const dimensions = OverflowUtils.getDimensions(etc, etc.overflow, etc.overflowInternal);
     OverflowUtils.setDimensions(etc.overflowInternal.overflowContainer, dimensions);
-    OverflowUtils.adjustForScrollbarWidth(etc.overflowInternal.overflowContainer, etc.overflow);
+    OverflowUtils.adjustStyleForScrollbarWidth(etc.overflowInternal.overflowContainer, etc.overflow);
   }
 
   public static setupContainer(etc: EditableTableComponent, tableElement: HTMLElement) {

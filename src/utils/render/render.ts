@@ -16,7 +16,7 @@ export class Render {
     etc.addColumnCellsElementsRef.splice(0, etc.addColumnCellsElementsRef.length);
     if (etc.overflowInternal) {
       TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtils.generateUsingElement(
-        etc.overflowInternal.overflowContainer);
+        etc.overflowInternal.overflowContainer); // unsetBorderDimensions unsets dimensions so need this every render
     }
   }
 
@@ -24,10 +24,10 @@ export class Render {
     etc.tableDimensionsInternal.recordedParentWidth = (etc.parentElement as HTMLElement).offsetWidth;
     etc.tableDimensionsInternal.recordedParentHeight = (etc.parentElement as HTMLElement).offsetHeight;
     Render.refreshTableState(etc);
+    if (etc.overflowInternal) OverflowUtils.applyDimensions(etc);
     TableElement.setStaticWidthContentTotal(etc);
     // needs to be in render trigger as user props are not set in the connectedCallback function in Firefox
     TableDimensionsUtils.setInternalTableDimensions(etc);
     TableElement.populateBody(etc);
-    if (etc.overflowInternal) OverflowUtils.applyDimensions(etc);
   }
 }
