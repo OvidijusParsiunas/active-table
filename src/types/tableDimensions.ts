@@ -1,6 +1,6 @@
 import {MaxStructureDimensions} from './maxStructureDimensions';
+import {FullStringDimension} from './dimensions';
 import {InterfacesUnion} from './utilityTypes';
-import {StringDimension} from './dimensions';
 
 // This is to be used by the client exclusively
 
@@ -34,12 +34,12 @@ type AllowedByDefault = {
 } & MaxStructureDimensions;
 
 interface Width extends AllowedByDefault {
-  width: StringDimension;
+  width: FullStringDimension;
   preserveNarrowColumns?: boolean; // true by default
 }
 
 interface MaxWidth extends AllowedByDefault {
-  maxWidth: StringDimension;
+  maxWidth: FullStringDimension;
   preserveNarrowColumns?: boolean; // true by default
 }
 

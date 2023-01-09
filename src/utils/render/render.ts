@@ -21,8 +21,7 @@ export class Render {
   }
 
   public static renderTable(etc: EditableTableComponent) {
-    etc.tableDimensionsInternal.recordedParentWidth = (etc.parentElement as HTMLElement).offsetWidth;
-    etc.tableDimensionsInternal.recordedParentHeight = (etc.parentElement as HTMLElement).offsetHeight;
+    TableDimensionsUtils.record(etc);
     Render.refreshTableState(etc);
     if (etc.overflowInternal) OverflowUtils.applyDimensions(etc);
     TableElement.setStaticWidthContentTotal(etc);

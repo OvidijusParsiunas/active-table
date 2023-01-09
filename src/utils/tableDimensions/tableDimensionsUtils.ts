@@ -102,4 +102,15 @@ export class TableDimensionsUtils {
     }
     return false;
   }
+
+  public static record(etc: EditableTableComponent) {
+    etc.tableDimensionsInternal.recordedParentWidth = (etc.parentElement as HTMLElement).offsetWidth;
+    etc.tableDimensionsInternal.recordedParentHeight = (etc.parentElement as HTMLElement).offsetHeight;
+    etc.tableDimensionsInternal.recordedWindowWidth = window.innerWidth;
+    etc.tableDimensionsInternal.recordedWindowHeight = window.innerHeight;
+  }
+
+  public static getDefault() {
+    return {recordedParentWidth: 0, recordedParentHeight: 0, recordedWindowWidth: 0, recordedWindowHeight: 0};
+  }
 }

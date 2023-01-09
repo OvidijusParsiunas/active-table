@@ -8,6 +8,7 @@ import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentIntern
 import {DynamicCellTextUpdate} from './utils/dynamicUpdates/dynamicCellTextUpdate';
 import {PaginationInternalUtils} from './utils/pagination/paginationInternalUtils';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
+import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {PaginationElements} from './elements/pagination/paginationElements';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
@@ -39,9 +40,9 @@ import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {StripedRows} from './utils/rows/stripedRows';
 import {Browser} from './utils/browser/browser';
-import {Overflow} from './types/overflow';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
+import {Overflow} from './types/overflow';
 import {RowHover} from './types/rowHover';
 import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
@@ -159,7 +160,7 @@ export class EditableTableComponent extends LitElement {
   tableDimensions: TableDimensions = {};
 
   @state()
-  tableDimensionsInternal: TableDimensionsInternal = {recordedParentWidth: 0, recordedParentHeight: 0};
+  tableDimensionsInternal: TableDimensionsInternal = TableDimensionsUtils.getDefault();
 
   @state()
   categoryDropdownContainer: HTMLElement | null = null;

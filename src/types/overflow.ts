@@ -1,6 +1,6 @@
-import {StringDimension} from './dimensions';
+import {FullStringDimension} from './dimensions';
 
 export interface Overflow {
-  maxWidth?: StringDimension;
-  maxHeight?: StringDimension;
+  maxWidth?: FullStringDimension;
+  maxHeight?: FullStringDimension;
 }

@@ -6,14 +6,15 @@ import {InterfacesUnion} from './utilityTypes';
 
 type Parent = {
   preserveNarrowColumns?: boolean;
-  recordedParentWidth: number;
-  recordedParentHeight: number;
   isColumnIndexCellTextWrapped?: boolean; // REF-19
-} & MaxStructureDimensions;
+} & Initial &
+  MaxStructureDimensions;
 
 interface Initial {
   recordedParentWidth: number;
   recordedParentHeight: number;
+  recordedWindowWidth: number;
+  recordedWindowHeight: number;
 }
 
 interface Width extends Parent {

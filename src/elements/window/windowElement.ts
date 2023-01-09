@@ -1,5 +1,6 @@
 import {EditableTableComponent} from '../../editable-table-component';
 import {WindowEvents} from './windowEvents';
+import {WindowResize} from './windowResize';
 
 export class WindowElement {
   public static setEvents(etc: EditableTableComponent) {
@@ -8,5 +9,6 @@ export class WindowElement {
     window.onmousedown = WindowEvents.onMouseDown.bind(etc);
     window.onmouseup = WindowEvents.onMouseUp.bind(etc);
     window.onmousemove = WindowEvents.onMouseMove.bind(etc);
+    WindowResize.observeIfRequired(etc);
   }
 }
