@@ -106,7 +106,7 @@ export class ColumnDropdown {
       ColumnDropdown.displayAndSetPositionForOverflow(etc, cellElement, dropdownElement);
     } else {
       ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement,
-        etc.columnDropdownDisplaySettings.openMethod, etc.isHeaderSticky); 
+        etc.columnDropdownDisplaySettings.openMethod, etc.stickyProps.header); 
     }
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItemNavigation.focusInputElement(inputElement as HTMLElement);

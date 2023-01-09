@@ -13,6 +13,7 @@ import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {PaginationElements} from './elements/pagination/paginationElements';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
+import {StickyProcessUtils} from './utils/stickyProps/stickyPropsUtils';
 import {TableDimensionsInternal} from './types/tableDimensionsInternal';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {DropdownDisplaySettings} from './types/dropdownDisplaySettings';
@@ -39,6 +40,7 @@ import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {StripedRows} from './utils/rows/stripedRows';
+import {StickyProps} from './types/stickyProps';
 import {Browser} from './utils/browser/browser';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
@@ -104,7 +106,12 @@ export class EditableTableComponent extends LitElement {
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  isHeaderSticky = true;
+  isHeaderSticky: boolean | undefined;
+
+  // setting header to true if above is undefined and vertical overflow is present
+  // (using object to be able to set values without re-rendering the component)
+  @state()
+  stickyProps: StickyProps = {header: false};
 
   // set as boolean to not update on initial render
   @property({
@@ -227,6 +234,7 @@ export class EditableTableComponent extends LitElement {
   private onConnect() {
     // REF-14
     super.connectedCallback();
+    StickyProcessUtils.process(this);
     AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
     RowDropdownSettingsUtil.process(this.rowDropdownSettings, this.auxiliaryTableContentInternal.displayIndexColumn);
     DropdownDisplaySettingsUtil.process(this.columnDropdownDisplaySettings);

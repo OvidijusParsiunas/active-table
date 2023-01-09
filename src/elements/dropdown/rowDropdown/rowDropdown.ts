@@ -77,9 +77,9 @@ export class RowDropdown {
   // prettier-ignore
   private static displayAndSetPositionOverflow(etc: EditableTableComponent, cellElement: HTMLElement,
       dropdown: HTMLElement, cellClick: boolean) {
-    const {tableElementRef, overflowInternal, isHeaderSticky} = etc;
+    const {tableElementRef, overflowInternal, stickyProps} = etc;
     if (!tableElementRef || !overflowInternal?.overflowContainer) return;
-    const isStickyCell = isHeaderSticky && cellElement.tagName === CellElement.HEADER_TAG;
+    const isStickyCell = stickyProps.header && cellElement.tagName === CellElement.HEADER_TAG;
     dropdown.style.top = isStickyCell ?
       `${overflowInternal.overflowContainer.scrollTop}px` : `${ElementOffset.processTop(cellElement.offsetTop)}px`;
     dropdown.style.left = RowDropdown.getLeft(cellElement, cellClick);
@@ -97,7 +97,7 @@ export class RowDropdown {
     if (this.overflowInternal?.overflowContainer) {
       RowDropdown.displayAndSetPositionOverflow(this, cellElement, dropdownElement, cellClick);
     } else {
-      RowDropdown.displayAndSetPosition(cellElement, dropdownElement, cellClick, this.isHeaderSticky);
+      RowDropdown.displayAndSetPosition(cellElement, dropdownElement, cellClick, this.stickyProps.header);
     }
     FullTableOverlayElement.display(this);
     setTimeout(() => RowDropdown.focusCell(this, rowIndex, cellElement));

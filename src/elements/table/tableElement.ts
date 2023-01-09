@@ -112,7 +112,7 @@ export class TableElement {
       etc.columnGroupRef = ColumnGroupElement.create();
       etc.tableElementRef.appendChild(etc.columnGroupRef);
     }
-    etc.tableBodyElementRef = TableElement.createTableBody(etc.isHeaderSticky);
+    etc.tableBodyElementRef = TableElement.createTableBody(etc.stickyProps.header);
     etc.addRowCellElementRef = AddNewRowElement.create(etc); // REF-18
     etc.tableElementRef.appendChild(etc.tableBodyElementRef);
     etc.categoryDropdownContainer = CategoryDropdown.createContainerElement();
