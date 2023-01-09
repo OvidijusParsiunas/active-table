@@ -1,4 +1,4 @@
-import {CategoryDropdownItem} from '../../../dropdown/categoryDropdown/categoryDropdownItem';
+import {SelectDropdownItem} from '../../../dropdown/selectDropdown/selectDropdownItem';
 import {CellStructureUtils} from '../../../../utils/columnType/cellStructureUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {CellTextElement} from '../text/cellTextElement';
@@ -23,9 +23,9 @@ export class SelectCellElement {
   }
 
   public static finaliseEditedText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number) {
-    const {categoryDropdown, activeType} = etc.columnsDetails[columnIndex];
-    if (!activeType.categories?.options) {
-      CategoryDropdownItem.addNewCategory(etc, textElement, categoryDropdown, textElement.style.backgroundColor);
+    const {selectDropdown, activeType} = etc.columnsDetails[columnIndex];
+    if (!activeType.select?.options) {
+      SelectDropdownItem.addNewSelectItem(etc, textElement, selectDropdown, textElement.style.backgroundColor);
     }
   }
 }

@@ -1,15 +1,15 @@
 import {PX} from './dimensions';
 
 // if backgroundColor is not provided - a random one is generated
-export type CategoriesOptions = {name: string; backgroundColor?: string}[];
+export type LabelOptions = {name: string; backgroundColor?: string}[];
 
 export type SelectOptions = {name: string}[];
 
-export interface CategoriesDropdownOptionStyle {
+export interface SelectDropdownOptionStyle {
   textColor: CSSStyleDeclaration['color'];
 }
 
-export interface CategoriesDropdownStyle {
+export interface SelectDropdownStyle {
   width?: PX;
   paddingTop?: PX;
   paddingBottom?: PX;
@@ -18,7 +18,7 @@ export interface CategoriesDropdownStyle {
 }
 
 export interface SelectProperties<T = SelectOptions> {
-  dropdownStyle?: CategoriesDropdownStyle;
-  optionStyle?: CategoriesDropdownOptionStyle;
-  options?: T;
+  dropdownStyle?: SelectDropdownStyle;
+  optionStyle?: SelectDropdownOptionStyle; // WORK - should not be set for non label
+  options?: T; // WORK - cursor should be pointer if set and potentially change color
 }

@@ -4,11 +4,11 @@ import {ConvertToSelectCell} from '../../../elements/cell/cellsWithTextDiv/selec
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
-import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
 import {CheckboxCellElement} from '../../../elements/cell/checkboxCell/checkboxCellElement';
 import {UpdateIndexColumnWidth} from '../../../elements/indexColumn/updateIndexColumnWidth';
 import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
+import {SelectDropdown} from '../../../elements/dropdown/selectDropdown/selectDropdown';
 import {ColumnDetailsInitial, ColumnDetailsT} from '../../../types/columnDetails';
 import {ProcessedDataTextStyle} from '../../columnType/processedDataTextStyle';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
@@ -70,9 +70,9 @@ export class InsertNewCell {
       HeaderIconCellElement.setHeaderIconStructure(etc, newCellElement, columnIndex);
     }
     if (!columnDetails.activeType) return;
-    if (columnDetails.activeType.categories) {
+    if (columnDetails.activeType.select) {
       if (rowIndex === 0) {
-        CategoryDropdown.setUpDropdown(etc, columnIndex);
+        SelectDropdown.setUpDropdown(etc, columnIndex);
       } else {
         ConvertToSelectCell.convertCell(etc, rowIndex, columnIndex, newCellElement);
       }
@@ -88,10 +88,10 @@ export class InsertNewCell {
   // REF-13
   // prettier-ignore
   private static insertInitialColumnDetails(etc: EditableTableComponent, cellText: CellText, columnIndex: number) {
-    const {columnsDetails, customColumnsSettingsInternal, categoryDropdownContainer, defaultColumnsSettings} = etc;
-    const categoryDropdown = CategoryDropdown.createAndAppend(categoryDropdownContainer as HTMLElement);
+    const {columnsDetails, customColumnsSettingsInternal, selectDropdownContainer, defaultColumnsSettings} = etc;
+    const selectDropdown = SelectDropdown.createAndAppend(selectDropdownContainer as HTMLElement);
     const columnDetails = ColumnDetails.createInitial(defaultColumnsSettings,
-      categoryDropdown, customColumnsSettingsInternal[cellText]);
+      selectDropdown, customColumnsSettingsInternal[cellText]);
     columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
   }
 

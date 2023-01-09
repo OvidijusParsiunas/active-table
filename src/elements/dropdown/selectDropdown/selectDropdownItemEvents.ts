@@ -1,13 +1,13 @@
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
-import {CategoryDropdownHorizontalScrollFix} from './categoryDropdownHorizontalScrollFix';
-import {ActiveCategoryItems, CategoryDropdownT} from '../../../types/columnDetails';
+import {SelectDropdownHorizontalScrollFix} from './selectDropdownHorizontalScrollFix';
+import {ActiveSelectItems, SelectDropdownT} from '../../../types/columnDetails';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
-import {CategoryDeleteButton} from './categoryDeleteButton';
+import {SelectDeleteButton} from './selectDeleteButton';
 import {SIDE} from '../../../types/side';
 
-export class CategoryDropdownItemEvents {
+export class SelectDropdownItemEvents {
   // prettier-ignore
-  public static blurItem(dropdown: CategoryDropdownT, typeOfItem: keyof ActiveCategoryItems, event?: MouseEvent) {
+  public static blurItem(dropdown: SelectDropdownT, typeOfItem: keyof ActiveSelectItems, event?: MouseEvent) {
     const {activeItems, scrollbarPresence, oneActiveColor} = dropdown;
     const itemElement = activeItems[typeOfItem] as HTMLElement;
     if (itemElement !== undefined) {
@@ -18,7 +18,7 @@ export class CategoryDropdownItemEvents {
         delete activeItems[typeOfItem];
       }
     }
-    if (event && !dropdown.staticItems) CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical);
+    if (event && !dropdown.staticItems) SelectDeleteButton.changeVisibility(event, scrollbarPresence.vertical);
   }
 
   // prettier-ignore
@@ -31,12 +31,12 @@ export class CategoryDropdownItemEvents {
       itemElement.scrollIntoView({block: 'nearest'});
       // REF-4
       if (isHorizontalScrollPresent && visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
-        CategoryDropdownHorizontalScrollFix.scrollDownFurther(dropdownElement)
+        SelectDropdownHorizontalScrollFix.scrollDownFurther(dropdownElement)
       }
     }
   }
 
-  private static highlightItem(this: Document, color: string, dropdown: CategoryDropdownT, event: MouseEvent) {
+  private static highlightItem(this: Document, color: string, dropdown: SelectDropdownT, event: MouseEvent) {
     const {scrollbarPresence, activeItems, oneActiveColor, staticItems, element} = dropdown;
     // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
     if (activeItems.hovered) {
@@ -46,7 +46,7 @@ export class CategoryDropdownItemEvents {
     const itemElement = event.target as HTMLElement;
     itemElement.style.backgroundColor = color;
     const dropdownElement = itemElement.parentElement as HTMLElement;
-    CategoryDropdownItemEvents.scrollToItem(this, itemElement, scrollbarPresence.horizontal, dropdownElement, event);
+    SelectDropdownItemEvents.scrollToItem(this, itemElement, scrollbarPresence.horizontal, dropdownElement, event);
     if (itemElement === activeItems.matchingWithCellText) {
       if (oneActiveColor) itemElement.style.color = 'white';
       delete activeItems.hovered;
@@ -54,11 +54,11 @@ export class CategoryDropdownItemEvents {
       if (oneActiveColor) itemElement.style.backgroundColor = DropdownItemHighlightUtils.HOVER_BACKGROUND_COLOR;
       activeItems.hovered = itemElement;
     }
-    if (!staticItems) CategoryDeleteButton.changeVisibility(event, scrollbarPresence.vertical, element);
+    if (!staticItems) SelectDeleteButton.changeVisibility(event, scrollbarPresence.vertical, element);
   }
 
-  public static set(shadow: Document, itemElement: HTMLElement, color: string, dropdown: CategoryDropdownT) {
-    itemElement.onmouseenter = CategoryDropdownItemEvents.highlightItem.bind(shadow, color, dropdown);
-    itemElement.onmouseleave = CategoryDropdownItemEvents.blurItem.bind(this, dropdown, 'hovered');
+  public static set(shadow: Document, itemElement: HTMLElement, color: string, dropdown: SelectDropdownT) {
+    itemElement.onmouseenter = SelectDropdownItemEvents.highlightItem.bind(shadow, color, dropdown);
+    itemElement.onmouseleave = SelectDropdownItemEvents.blurItem.bind(this, dropdown, 'hovered');
   }
 }

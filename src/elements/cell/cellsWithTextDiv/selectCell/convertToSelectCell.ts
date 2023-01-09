@@ -12,7 +12,7 @@ export class ConvertToSelectCell {
       SelectCellElement.setCellSelectStructure(etc, newCellElement, rowIndex, columnIndex);
       SelectCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex);
     } else {
-      LabelCellElement.setCellCategoryStructure(etc, newCellElement, rowIndex, columnIndex);
+      LabelCellElement.setCellLabelStructure(etc, newCellElement, rowIndex, columnIndex);
       LabelCellElement.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
     }
   }
@@ -21,7 +21,7 @@ export class ConvertToSelectCell {
     if (newType.isSelect) {
       SelectCellElement.setColumnSelectStructure(etc, columnIndex);
     } else {
-      LabelCellElement.setColumnCategoryStructure(etc, columnIndex);
+      LabelCellElement.setColumnLabelStructure(etc, columnIndex);
     }
   }
 }

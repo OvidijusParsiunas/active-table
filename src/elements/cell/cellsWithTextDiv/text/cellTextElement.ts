@@ -3,7 +3,7 @@ import {CellElement} from '../../cellElement';
 
 export class CellTextElement {
   // used for encapsulating text within a nested element
-  // category - used to color the text
+  // select label - used to color the text
   // date - used to display a calendar beside the text
   public static readonly CELL_TEXT_DIV_CLASS = 'cell-text-div';
 

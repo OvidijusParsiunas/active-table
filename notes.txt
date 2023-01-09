@@ -34,11 +34,11 @@ determine if it needs to be set back to default and additionally overwrite the c
 REF-4
 Identified an issue where the scrollIntoView does not scroll down far enough to an element for it to be fully visible when
 there is a horizontal scroll bar as it is partially covered by it. This appears to only happen when the parent element
-(category dropdown) is displayed and we immediately proceed to scroll to an element.
+(select dropdown) is displayed and we immediately proceed to scroll to an element.
 The workaround for this is to identify that there is a horizontal scroll bar and programmatically scroll further down
 
 REF-5
-Category cells are the only ones that contain div text elements as they are needed to set the background color. The reason
+Select cells are the only ones that contain div text elements as they are needed to set the background color. The reason
 why all cells do not contain a text element instead of a text node - which would tramendously simplify the complexity of
 the text set/get logic in the app is because a text element within a cell has a drawback:
 If one cell contains a lot of text and is resultantly very high, the text elements in the same row which do not contain that
@@ -47,10 +47,10 @@ If the user would click on that whitespace, the text editor caret would focus on
 Fortunately this can be fixed by shadowRoot.getSelection, however this is not available to all browsers. Hence, because
 the UX cannot be good for all browsers, the table will continue to use plane text within its data cells to have as much
 of a better user experience as possible. It is true that in those instances the limitation will still be there when
-category/date cells are used, but at least it will only be problematic in those specific cells.
+select/date cells are used, but at least it will only be problematic in those specific cells.
 
 REF-6
-Knowing that data cell elements contain a text node and category cells contain a text element with a text node inside,
+Knowing that data cell elements contain a text node and select cells contain a text element with a text node inside,
 the .innerText grabs the text when used on the cell or the text element for all cases (CAUTION-1 when not to trim it)
 
 REF-7
@@ -58,7 +58,7 @@ Because there is no way in firefox to distinguish if element focus was fired by 
 to hold temporary state to indicate this. Primarily used to decide whether move caret via the setToEndOfText method
 
 REF-8
-The reason why there is one category dropdown per column is because each one contains unique items for it. Hence it
+The reason why there is one select dropdown per column is because each one contains unique items for it. Hence it
 is inefficient to repopulate the dropdown every time it is clicked on a different column cell.
 
 REF-9

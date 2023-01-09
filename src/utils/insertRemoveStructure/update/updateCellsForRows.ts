@@ -16,8 +16,8 @@ export class UpdateCellsForRows {
       columnIndex: number) {
     CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
     if (rowIndex > 0) {
-      const {categories, calendar, checkbox} = etc.columnsDetails[columnIndex].activeType;
-      if (categories) {
+      const {select, calendar, checkbox} = etc.columnsDetails[columnIndex].activeType;
+      if (select) {
         SelectCellEvents.setEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
       } else if (calendar) {
         DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);

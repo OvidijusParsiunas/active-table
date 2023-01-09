@@ -24,9 +24,9 @@ export class TableEvents {
   // or delete cateogory buttons are clicked, hence once that happens and the user clicks elsewhere on the table,
   // the dropdown is closed programmatically as follows
   // prettier-ignore
-  private static closeCategoryDropdown(etc: EditableTableComponent, targetElement: HTMLElement) {
+  private static closeSelectDropdown(etc: EditableTableComponent, targetElement: HTMLElement) {
     const {focusedElements} = etc;
-    if (focusedElements.categoryDropdown && !Dropdown.isPartOfDropdownElement(targetElement)
+    if (focusedElements.selectDropdown && !Dropdown.isPartOfDropdownElement(targetElement)
         && focusedElements.cell.element !== CellElement.getCellElement(targetElement)) {
       CellWithTextEvents.programmaticBlur(etc);
     }
@@ -35,7 +35,7 @@ export class TableEvents {
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
     UserKeyEventsStateUtils.temporarilyIndicateEvent(this.userKeyEventsState, MOUSE_EVENT.DOWN);
-    TableEvents.closeCategoryDropdown(this, targetElement);
+    TableEvents.closeSelectDropdown(this, targetElement);
     TableEvents.closeDatePicker(this.activeOverlayElements, event.target as HTMLElement);
   }
 

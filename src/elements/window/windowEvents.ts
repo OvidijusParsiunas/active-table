@@ -34,8 +34,8 @@ export class WindowEvents {
       ColumnDropdownEvents.onKeyDown.bind(this)(this.activeOverlayElements.columnDropdown as HTMLElement, event);
       return;
     }
-    const {activeType, categoryDropdown} = this.columnsDetails[columnIndex];
-    if ((activeType.categories || activeType.isSelect) && Dropdown.isDisplayed(categoryDropdown.element)) {
+    const {activeType, selectDropdown} = this.columnsDetails[columnIndex];
+    if ((activeType.select || activeType.isSelect) && Dropdown.isDisplayed(selectDropdown.element)) {
       SelectCellEvents.keyDownText(this, rowIndex, columnIndex, event);
     }
   }
@@ -65,7 +65,7 @@ export class WindowEvents {
       ColumnDropdown.processTextAndHide(this);
     // cell blur will not activate when the dropdown has been clicked and will not close if its scrollbar or padding are
     // clicked, hence once that happens, we close the dropdown programmatically as follows
-    } else if (focusedElements.categoryDropdown) {
+    } else if (focusedElements.selectDropdown) {
       CellWithTextEvents.programmaticBlur(this);
     } else if (this.activeOverlayElements.datePickerCell) {
       DateCellInputElement.toggle(this.activeOverlayElements.datePickerCell, false);

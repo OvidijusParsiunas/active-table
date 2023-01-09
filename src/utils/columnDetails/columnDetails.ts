@@ -1,5 +1,5 @@
-import {CategoryDropdown} from '../../elements/dropdown/categoryDropdown/categoryDropdown';
 import {ColumnSettingsInternal, DefaultColumnsSettings} from '../../types/columnsSettings';
+import {SelectDropdown} from '../../elements/dropdown/selectDropdown/selectDropdown';
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
 import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
 import {CellStateColorProperties} from '../../types/cellStateColors';
@@ -43,7 +43,7 @@ export class ColumnDetails {
   }
 
   // prettier-ignore
-  public static createInitial(defaultColumnsSettings: DefaultColumnsSettings, categoryDropdown: HTMLElement,
+  public static createInitial(defaultColumnsSettings: DefaultColumnsSettings, selectDropdown: HTMLElement,
       settings: ColumnSettingsInternal): ColumnDetailsInitial {
     const columnSettings = settings || defaultColumnsSettings as ColumnSettingsInternal;
     const {types, activeType} = ColumnTypesUtils.getProcessedTypes(columnSettings);
@@ -55,7 +55,7 @@ export class ColumnDetails {
       bordersOverwrittenBySiblings: {},
       types,
       activeType,
-      categoryDropdown: CategoryDropdown.getDefaultObj(categoryDropdown),
+      selectDropdown: SelectDropdown.getDefaultObj(selectDropdown),
     };
   }
 

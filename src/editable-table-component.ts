@@ -170,7 +170,7 @@ export class EditableTableComponent extends LitElement {
   tableDimensionsInternal: TableDimensionsInternal = TableDimensionsUtils.getDefault();
 
   @state()
-  categoryDropdownContainer: HTMLElement | null = null;
+  selectDropdownContainer: HTMLElement | null = null;
 
   @property({type: Object})
   tableStyle: CSSStyle = {};

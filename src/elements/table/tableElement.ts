@@ -7,9 +7,9 @@ import {InsertRemoveColumnSizer} from '../columnSizer/utils/insertRemoveColumnSi
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {AddNewColumnElement} from './addNewElements/column/addNewColumnElement';
-import {CategoryDropdown} from '../dropdown/categoryDropdown/categoryDropdown';
 import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
 import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
+import {SelectDropdown} from '../dropdown/selectDropdown/selectDropdown';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {CustomRowProperties} from '../../utils/rows/customRowProperties';
 import {TableBorderDimensions} from '../../types/tableBorderDimensions';
@@ -115,8 +115,8 @@ export class TableElement {
     etc.tableBodyElementRef = TableElement.createTableBody(etc.stickyProps.header);
     etc.addRowCellElementRef = AddNewRowElement.create(etc); // REF-18
     etc.tableElementRef.appendChild(etc.tableBodyElementRef);
-    etc.categoryDropdownContainer = CategoryDropdown.createContainerElement();
-    etc.tableElementRef.appendChild(etc.categoryDropdownContainer);
+    etc.selectDropdownContainer = SelectDropdown.createContainerElement();
+    etc.tableElementRef.appendChild(etc.selectDropdownContainer);
     TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtils.generateUsingElement(etc.tableElementRef as HTMLElement);
     return etc.tableElementRef;
   }

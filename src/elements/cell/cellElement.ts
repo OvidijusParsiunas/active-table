@@ -85,9 +85,9 @@ export class CellElement {
   }
 
   // prettier-ignore
-  // this is used for cases where element could be the cell element or the text inside a category cell
+  // this is used for cases where element could be the cell element or the text inside a select cell
   public static getCellElement(element: HTMLElement) {
-    // if category cell text or date cell text/input container
+    // if select cell text or date cell text/input container
     if (element.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS) ||
         element.classList.contains(DateCellInputElement.DATE_INPUT_CONTAINER_CLASS)) {
       return element.parentElement as HTMLElement;
@@ -101,7 +101,7 @@ export class CellElement {
   }
 
   public static getTextElement(element: HTMLElement): HTMLElement {
-    // if category or date cell
+    // if select or date cell
     if (element.children[0]?.classList.contains(CellTextElement.CELL_TEXT_DIV_CLASS)) {
       return element.children[0] as HTMLElement;
       // if header with icon
@@ -142,7 +142,7 @@ export class CellElement {
     if (setText) CellElement.setText(textContainerElement, text as string);
     // whilst it is primarily used for firefox - we use it consistently for all browsers
     if (isCellBeingBuilt) {
-      // in a timeout as text elements may not be populated upfront (data or category)
+      // in a timeout as text elements may not be populated upfront (data or select)
       setTimeout(() => CaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo));
     } else {
       CaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo);

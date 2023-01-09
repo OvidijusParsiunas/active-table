@@ -1,6 +1,6 @@
-import {FocusNextCellFromCategoryCell} from '../../../../utils/focusedElements/focusNextCellFromCategoryCell';
-import {CategoryDropdownItem} from '../../../dropdown/categoryDropdown/categoryDropdownItem';
-import {CategoryDropdown} from '../../../dropdown/categoryDropdown/categoryDropdown';
+import {FocusNextCellFromSelectCell} from '../../../../utils/focusedElements/focusNextCellFromSelectCell';
+import {SelectDropdownItem} from '../../../dropdown/selectDropdown/selectDropdownItem';
+import {SelectDropdown} from '../../../dropdown/selectDropdown/selectDropdown';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {KEYBOARD_KEY} from '../../../../consts/keyboardKeys';
 import {DataCellEvents} from '../../dataCell/dataCellEvents';
@@ -16,43 +16,43 @@ export class SelectCellEvents {
   // keydown events will no longer be fired through the cell text - however we need to maintain the same behaviour
   // prettier-ignore
   public static keyDownText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
-    const {categoryDropdown: {activeItems}, elements} = etc.columnsDetails[columnIndex];
+    const {selectDropdown: {activeItems}, elements} = etc.columnsDetails[columnIndex];
     if (event.key === KEYBOARD_KEY.ESCAPE) {
       CellWithTextEvents.programmaticBlur(etc);
     } else if (event.key === KEYBOARD_KEY.TAB) {
       CellTextEvents.tabOutOfCell(etc, rowIndex, columnIndex, event);
     } else if (event.key === KEYBOARD_KEY.ENTER) {
       event.preventDefault();
-      FocusNextCellFromCategoryCell.focusOrBlurColumnNextCell(elements, rowIndex);
+      FocusNextCellFromSelectCell.focusOrBlurSelectNextCell(elements, rowIndex);
     } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
       event.preventDefault();
-      CategoryDropdownItem.setSiblingItemOnCell(etc, activeItems, 'previousSibling');
+      SelectDropdownItem.setSiblingItemOnCell(etc, activeItems, 'previousSibling');
     } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
       event.preventDefault();
-      CategoryDropdownItem.setSiblingItemOnCell(etc, activeItems, 'nextSibling');
+      SelectDropdownItem.setSiblingItemOnCell(etc, activeItems, 'nextSibling');
     }
   }
 
   public static blurring(etc: EditableTableComponent, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
-    const {element, categoryToItem} = etc.columnsDetails[columnIndex].categoryDropdown;
+    const {element, selectItem} = etc.columnsDetails[columnIndex].selectDropdown;
     Dropdown.hide(element);
-    if (!categoryToItem[CellElement.getText(textElement)]) {
+    if (!selectItem[CellElement.getText(textElement)]) {
       SelectCellElement.finaliseEditedText(etc, textElement, columnIndex);
     }
     DataCellEvents.blur(etc, rowIndex, columnIndex, textElement);
   }
 
   private static blurText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
-    if (!this.focusedElements.categoryDropdown) {
+    if (!this.focusedElements.selectDropdown) {
       SelectCellEvents.blurring(this, rowIndex, columnIndex, event.target as HTMLElement);
     }
   }
 
   private static blurIfDropdownFocused(etc: EditableTableComponent) {
     // text blur will not activate when the dropdown has been clicked and will not close if its scrollbar, padding
-    // or delete category buttons are clicked, hence once that happens and the user clicks on another category
-    // cell, the dropdown is closed programmatically as follows
-    if (etc.focusedElements.categoryDropdown) {
+    // or delete select buttons are clicked, hence once that happens and the user clicks on another select cell,
+    // the dropdown is closed programmatically as follows
+    if (etc.focusedElements.selectDropdown) {
       CellWithTextEvents.programmaticBlur(etc);
     }
   }
@@ -69,6 +69,6 @@ export class SelectCellEvents {
     cellElement.onmousedown = CellWithTextEvents.mouseDownCell.bind(etc, SelectCellEvents.blurIfDropdownFocused);
     const textElement = cellElement.children[0] as HTMLElement;
     textElement.onblur = SelectCellEvents.blurText.bind(etc, rowIndex, columnIndex);
-    textElement.onfocus = CellWithTextEvents.focusText.bind(etc, rowIndex, columnIndex, CategoryDropdown.display);
+    textElement.onfocus = CellWithTextEvents.focusText.bind(etc, rowIndex, columnIndex, SelectDropdown.display);
   }
 }

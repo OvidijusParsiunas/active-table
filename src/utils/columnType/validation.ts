@@ -30,9 +30,9 @@ export class Validation {
       Validation.DEFAULT_TYPES_REGEX[DEFAULT_COLUMN_TYPES.DATE_MDY].test(cellText as string),
   };
 
-  public static setCategoriesValidation(type: ColumnTypeInternal, isDefaultTextRemovable: boolean, defaultText: CellText) {
-    if (!type.categories?.options) return;
-    const optionsMap = new Set<CellText>(type.categories.options.map((option) => option.name));
+  public static setSelectValidation(type: ColumnTypeInternal, isDefaultTextRemovable: boolean, defaultText: CellText) {
+    if (!type.select?.options) return;
+    const optionsMap = new Set<CellText>(type.select.options.map((option) => option.name));
     type.textValidation ??= {};
     type.textValidation.func = (cellText: string) => {
       return !!optionsMap.has(cellText) || (!isDefaultTextRemovable && cellText === defaultText);

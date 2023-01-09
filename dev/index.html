@@ -60,13 +60,12 @@
               },
             })
           );
-          element.setAttribute('tableDimensions', JSON.stringify({width: '1000px'}));
           // element.setAttribute('auxiliaryTableContent', JSON.stringify({displayIndexColumn: false}));
           // element.setAttribute('tableDimensions', JSON.stringify({maxRows: 7}));
           // element.setAttribute('tableDimensions', JSON.stringify({maxColumns: 5}));
           // element.setAttribute('tableDimensions', JSON.stringify({unlimitedSize: false}));
           // element.setAttribute('tableDimensions', JSON.stringify({width: 300, maxColumns: 7}));
-          element.setAttribute('tableDimensions', JSON.stringify({width: '1000px'}));
+          element.setAttribute('tableDimensions', JSON.stringify({maxWidth: '1000px'}));
           element.setAttribute(
             'customColumnsSettings',
             JSON.stringify([
@@ -110,7 +109,7 @@
                       }`,
                     },
                     dropdownIconSettings: {
-                      reusableIconName: `Category`,
+                      reusableIconName: `Select`,
                       // WORK - this does not work propely when property misspelled
                     },
                   },
@@ -147,7 +146,7 @@
                       failedStyle: {color: 'yellow'},
                     },
                     dropdownIconSettings: {
-                      reusableIconName: `Category`,
+                      reusableIconName: `Select`,
                     },
                   },
                 ],

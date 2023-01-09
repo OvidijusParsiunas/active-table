@@ -1,4 +1,4 @@
-import {CategoriesOptions, SelectOptions, SelectProperties} from './categoriesProperties';
+import {LabelOptions, SelectOptions, SelectProperties} from './selectProperties';
 import {CalendarFunctionality} from './calendarFunctionality';
 import {CustomTextProcessing} from './customTextProcessing';
 import {DEFAULT_COLUMN_TYPES} from '../enums/columnType';
@@ -35,15 +35,15 @@ interface Checkbox extends Omit<Parent, 'sorting'> {
   checkbox: true;
 }
 
-interface Categories extends Omit<Parent, 'validation'> {
-  categories: SelectProperties<CategoriesOptions> | true;
+interface SelectLabel extends Omit<Parent, 'validation'> {
+  select: SelectProperties<LabelOptions> | true;
 }
 
 interface Select extends Omit<Parent, 'validation'> {
-  categories: SelectProperties<SelectOptions> | true;
-  isSelect: boolean; // this will be replaced by categories getting renamed to labelSelect
+  select: SelectProperties<SelectOptions> | true;
+  isSelect: boolean; // WORK - this will be replaced by select getting renamed to labelSelect
 }
 
-export type ColumnType = InterfacesUnion<Calendar | Checkbox | Select | Categories | Parent>;
+export type ColumnType = InterfacesUnion<Calendar | Checkbox | Select | SelectLabel | Parent>;
 
 export type ColumnTypes = ColumnType[];

@@ -16,7 +16,7 @@ export class FocusNextColumnCellFromTextDiv {
     ) {
       return FocusNextColumnCellFromTextDiv.focusOrBlurNext(etc, columnIndex, rowIndex);
     }
-    if (activeType.categories) {
+    if (activeType.select) {
       // needs to be mousedown in order to set focusedCell
       cellElement.dispatchEvent(new Event('mousedown'));
     } else {

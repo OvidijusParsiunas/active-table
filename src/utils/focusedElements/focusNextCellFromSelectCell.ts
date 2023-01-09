@@ -1,5 +1,5 @@
-export class FocusNextCellFromCategoryCell {
-  public static focusOrBlurColumnNextCell(elements: HTMLElement[], rowIndex: number) {
+export class FocusNextCellFromSelectCell {
+  public static focusOrBlurSelectNextCell(elements: HTMLElement[], rowIndex: number) {
     const nextColumnCell = elements[rowIndex + 1];
     if (nextColumnCell) {
       // needs to be mousedown in order to set focusedCell

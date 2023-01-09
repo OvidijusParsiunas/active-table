@@ -10,7 +10,7 @@ export class Render {
   // CAUTION-4 overwriting properties causes the whole table to refresh and subsequently - an infinite render loop
   // prettier-ignore
   private static refreshTableState(etc: EditableTableComponent) {
-    etc.categoryDropdownContainer?.replaceChildren();
+    etc.selectDropdownContainer?.replaceChildren();
     etc.columnsDetails.splice(0, etc.columnsDetails.length);
     UpdateIndexColumnWidth.WIDTH = IndexColumn.DEFAULT_WIDTH;
     etc.addColumnCellsElementsRef.splice(0, etc.addColumnCellsElementsRef.length);

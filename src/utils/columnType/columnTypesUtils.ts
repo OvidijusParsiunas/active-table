@@ -14,17 +14,17 @@ export class ColumnTypesUtils {
   public static get(settings: ColumnSettingsInternal): ColumnTypes {
     let columnTypes = [
       ...DefaultColumnTypes.DEFAULT_STATIC_TYPES,
-      // the reason why select and category are not with the default static types is because their validation
-      // is not generic and get set by on column settings - setCategoriesValidation
+      // the reason why select and label are not with the default static types is because their validation
+      // is not generic and get set by on column settings - setSelectValidation
       {
         name: DEFAULT_COLUMN_TYPES.SELECT,
-        categories: {},
+        select: {},
         dropdownItem: DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM,
         isSelect: true,
       },
       {
-        name: DEFAULT_COLUMN_TYPES.CATEGORY,
-        categories: {},
+        name: DEFAULT_COLUMN_TYPES.SELECT_LABEL,
+        select: {},
         dropdownItem: DefaultColumnTypes.SELECT_LABEL_TYPE_DROPDOWN_ITEM,
       },
     ];
@@ -79,7 +79,7 @@ export class ColumnTypesUtils {
   private static getReusableDefaultIcon(iconSettings: DropdownIconSettings) {
     const targetIconName = iconSettings.reusableIconName?.toLocaleLowerCase();
     if (targetIconName === DEFAULT_COLUMN_TYPES.SELECT.toLocaleLowerCase()
-      || targetIconName === DEFAULT_COLUMN_TYPES.CATEGORY.toLocaleLowerCase()) {
+      || targetIconName === DEFAULT_COLUMN_TYPES.SELECT_LABEL.toLocaleLowerCase()) {
       return DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM?.settings.iconSettings as DropdownIconSettings;
     }
     const defaultSettings = DefaultColumnTypes.DEFAULT_STATIC_TYPES.find((type) => {
@@ -120,11 +120,11 @@ export class ColumnTypesUtils {
     type.textValidation.setTextToDefaultOnFail ??= true;
   }
 
-  private static processCategories(type: ColumnType, isDefaultTextRemovable: boolean, defaultText: CellText) {
-    if (typeof type.categories === 'boolean') {
-      type.categories = {};
-    } else if (typeof type.categories === 'object') {
-      Validation.setCategoriesValidation(type as ColumnTypeInternal, isDefaultTextRemovable, defaultText);
+  private static processSelect(type: ColumnType, isDefaultTextRemovable: boolean, defaultText: CellText) {
+    if (typeof type.select === 'boolean') {
+      type.select = {};
+    } else if (typeof type.select === 'object') {
+      Validation.setSelectValidation(type as ColumnTypeInternal, isDefaultTextRemovable, defaultText);
     }
   }
 
@@ -145,7 +145,7 @@ export class ColumnTypesUtils {
   private static process(types: ColumnTypes, isDefaultTextRemovable: boolean, defaultText: CellText) {
     types.forEach((type) => {
       ColumnTypesUtils.convertStringFunctionsToRealFunctions(type);
-      ColumnTypesUtils.processCategories(type, isDefaultTextRemovable, defaultText);
+      ColumnTypesUtils.processSelect(type, isDefaultTextRemovable, defaultText);
       ColumnTypesUtils.processTextValidationProps(type);
       ColumnTypesUtils.processDropdownItemSettings(type);
     });

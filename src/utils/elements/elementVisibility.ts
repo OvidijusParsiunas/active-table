@@ -46,8 +46,8 @@ export class ElementVisibility {
 
   // no real need to take care of multiple blockages for now
   public static isVerticallyVisibleInsideParent(element: HTMLElement, shadowRoot?: Document): VisibilityDetails {
-    // it has been identified that when a column setting is reset where the previous and new active types are category
-    // and category dropdown is then opened up that element.parentElement returns null
+    // it has been identified that when a column setting is reset where the previous and new active types are select
+    // and select dropdown is then opened up that element.parentElement returns null
     const parentContainer = (element.parentElement as HTMLElement) || shadowRoot;
     const containerScrollTop = parentContainer.scrollTop;
     const containerScrollBottom = containerScrollTop + parentContainer.clientHeight;

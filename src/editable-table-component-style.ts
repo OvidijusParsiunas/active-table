@@ -65,7 +65,7 @@ export const ediTableStyle = css`
     padding-left: 1px;
   }
 
-  .category-text-div {
+  .label-text-div {
     padding-left: 6px;
     padding-right: 6px;
     padding-top: 2px;
@@ -173,7 +173,7 @@ export const ediTableStyle = css`
     z-index: 1;
   }
 
-  .category-dropdown {
+  .select-dropdown {
     overflow: auto;
     white-space: nowrap;
   }
@@ -244,7 +244,7 @@ export const ediTableStyle = css`
     color: #9e9e9e8a;
   }
 
-  .category-delete-button-container {
+  .select-delete-button-container {
     position: absolute;
     width: 100%;
     height: 0px;
@@ -253,7 +253,7 @@ export const ediTableStyle = css`
     display: none;
   }
 
-  .category-delete-button {
+  .select-delete-button {
     height: 13px;
     width: 13px;
     position: sticky;
@@ -264,11 +264,11 @@ export const ediTableStyle = css`
     background-color: white;
   }
 
-  .category-delete-button:hover {
+  .select-delete-button:hover {
     opacity: 1;
   }
 
-  .category-delete-button-icon {
+  .select-delete-button-icon {
     position: absolute;
     color: grey;
     left: 2px;

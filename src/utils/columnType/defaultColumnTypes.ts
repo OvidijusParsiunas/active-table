@@ -1,9 +1,9 @@
 import {CheckboxCellElement} from '../../elements/cell/checkboxCell/checkboxCellElement';
 import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItemConf';
-import {CATEGORY_ICON_SVG_STRING} from '../../consts/icons/categoryIconSVGString';
 import {CURRENCY_ICON_SVG_STRING} from '../../consts/icons/currencyIconSVGString';
 import {CALENDAR_ICON_SVG_STRING} from '../../consts/icons/calendarIconSVGString';
 import {CHECKBOX_ICON_SVG_STRING} from '../../consts/icons/checkboxIconSVGString';
+import {SELECT_ICON_SVG_STRING} from '../../consts/icons/selectIconSVGString';
 import {NUMBER_ICON_SVG_STRING} from '../../consts/icons/numberIconSVGString';
 import {ColumnTypeDropdownItem} from '../../types/columnTypeDropdownItem';
 import {TEXT_ICON_SVG_STRING} from '../../consts/icons/textIconSVGString';
@@ -92,11 +92,11 @@ export class DefaultColumnTypes {
 
   public static SELECT_LABEL_TYPE_DROPDOWN_ITEM: ColumnTypeDropdownItem | null = null;
 
-  // the reason why select and category are not with the default static types is because their validation
-  // is not generic and get set by column settings - setCategoriesValidation
+  // the reason why select and label select are not with the default static types is because their validation
+  // is not generic and get set by column settings - setSelectValidation
   private static createDropdownItemForSelectTypes() {
     const iconSettings = {
-      svgString: CATEGORY_ICON_SVG_STRING,
+      svgString: SELECT_ICON_SVG_STRING,
       containerStyles: {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}},
     };
     const selectSettings: DropdownButtonItemSettings = {
@@ -108,7 +108,7 @@ export class DefaultColumnTypes {
       settings: selectSettings,
     };
     const selectLabelSettings: DropdownButtonItemSettings = {
-      text: DEFAULT_COLUMN_TYPES.CATEGORY,
+      text: DEFAULT_COLUMN_TYPES.SELECT_LABEL,
       iconSettings,
     };
     DefaultColumnTypes.SELECT_LABEL_TYPE_DROPDOWN_ITEM = {

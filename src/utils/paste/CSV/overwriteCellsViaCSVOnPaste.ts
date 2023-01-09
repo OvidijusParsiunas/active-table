@@ -1,6 +1,6 @@
 import {DateCellInputElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {LabelCellElement} from '../../../elements/cell/cellsWithTextDiv/selectCell/labelCellElement';
-import {CategoryDropdown} from '../../../elements/dropdown/categoryDropdown/categoryDropdown';
+import {SelectDropdown} from '../../../elements/dropdown/selectDropdown/selectDropdown';
 import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {ColumnSettingsUtils} from '../../columnSettings/columnSettingsUtils';
@@ -89,7 +89,7 @@ export class OverwriteCellsViaCSVOnPaste {
     const oldType = CellTypeTotalsUtils.parseTypeName(CellElement.getText(cellElement), columnDetails.types);
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
-    if (columnDetails.activeType.categories) {
+    if (columnDetails.activeType.select) {
       LabelCellElement.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (Browser.IS_INPUT_DATE_SUPPORTED && columnDetails.activeType.calendar) {
       DateCellInputElement.updateInputBasedOnTextDiv(cellElement, columnDetails.activeType);
@@ -112,12 +112,12 @@ export class OverwriteCellsViaCSVOnPaste {
   }
 
   // prettier-ignore
-  private static setCaretToEndAndHighlightIfCategory(etc: EditableTableComponent, cellElement: HTMLElement,
+  private static setCaretToEndAndHighlightIfSelect(etc: EditableTableComponent, cellElement: HTMLElement,
       columnIndex: number) {
-    const {activeType, categoryDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
+    const {activeType, selectDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
     CaretPosition.setToEndOfText(etc, cellElement);
-    if (activeType.categories) {
-      CategoryDropdown.updateCategoryDropdown(cellElement, categoryDropdown, defaultText, true);
+    if (activeType.select) {
+      SelectDropdown.updateSelectDropdown(cellElement, selectDropdown, defaultText, true);
     }
   }
 
@@ -126,7 +126,7 @@ export class OverwriteCellsViaCSVOnPaste {
     const cellElement = etc.focusedElements.cell.element as HTMLElement;
     const text = CellElement.getText(cellElement);
     etc.focusedElements.cell.typeName = CellTypeTotalsUtils.parseTypeName(text, etc.columnsDetails[columnIndex].types);
-    OverwriteCellsViaCSVOnPaste.setCaretToEndAndHighlightIfCategory(etc, cellElement, columnIndex);
+    OverwriteCellsViaCSVOnPaste.setCaretToEndAndHighlightIfSelect(etc, cellElement, columnIndex);
   }
 
   // prettier-ignore
