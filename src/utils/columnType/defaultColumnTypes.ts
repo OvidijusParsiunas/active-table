@@ -96,10 +96,15 @@ export class DefaultColumnTypes {
   // the reason why select and label select are not with the default static types is because their validation
   // is not generic and get set by column settings - setSelectValidation
   private static createDropdownItemForSelectTypes() {
-    const containerStyles = {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}};
     const selectSettings: DropdownButtonItemSettings = {
       text: DEFAULT_COLUMN_TYPES.SELECT,
-      iconSettings: {svgString: SELECT_ICON_SVG_STRING, containerStyles},
+      iconSettings: {
+        svgString: SELECT_ICON_SVG_STRING,
+        containerStyles: {
+          dropdown: {marginTop: '0.25px', marginRight: '2px', marginLeft: '-3px'},
+          headerCorrections: {marginTop: '1px'},
+        },
+      },
     };
     DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM = {
       element: DropdownItem.createButtonItemNoEvents(undefined, selectSettings),
@@ -107,7 +112,10 @@ export class DefaultColumnTypes {
     };
     const labelSettings: DropdownButtonItemSettings = {
       text: DEFAULT_COLUMN_TYPES.LABEL,
-      iconSettings: {svgString: LABEL_ICON_SVG_STRING, containerStyles},
+      iconSettings: {
+        svgString: LABEL_ICON_SVG_STRING,
+        containerStyles: {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}},
+      },
     };
     DefaultColumnTypes.SELECT_LABEL_TYPE_DROPDOWN_ITEM = {
       element: DropdownItem.createButtonItemNoEvents(undefined, labelSettings),
