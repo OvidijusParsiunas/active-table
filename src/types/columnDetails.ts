@@ -47,6 +47,7 @@ export interface SelectDropdownT {
   customDropdownStyle?: SelectDropdownStyle;
   customItemStyle?: SelectDropdownOptionStyle;
   staticItems?: LabelOptions;
+  displayedCellElement?: HTMLElement;
 }
 
 export interface ColumnDetailsT {

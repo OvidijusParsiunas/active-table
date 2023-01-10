@@ -65,7 +65,22 @@ export const ediTableStyle = css`
     padding-left: 1px;
   }
 
-  .label-text-div {
+  .select-cell-text {
+    float: left;
+  }
+
+  .arrow-down-icon-container {
+    position: relative;
+  }
+
+  .arrow-down-icon {
+    position: absolute;
+    right: 2px;
+    top: 5px;
+    text-align: center;
+  }
+
+  .label-cell-text {
     padding-left: 6px;
     padding-right: 6px;
     padding-top: 2px;

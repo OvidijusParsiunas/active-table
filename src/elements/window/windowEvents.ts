@@ -1,7 +1,7 @@
 import {NumberOfRowsDropdownEvents} from '../pagination/numberOfRowsOptions/optionsButton/numberOfRowsDropdownEvents';
+import {SelectCellTextBaseEvents} from '../cell/cellsWithTextDiv/selectCell/baseEvents/selectCellTextBaseEvents';
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
-import {SelectCellEvents} from '../cell/cellsWithTextDiv/selectCell/selectCellEvents';
 import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
 import {ColumnDropdownEvents} from '../dropdown/columnDropdown/columnDropdownEvents';
 import {ColumnSettingsUtils} from '../../utils/columnSettings/columnSettingsUtils';
@@ -36,7 +36,7 @@ export class WindowEvents {
     }
     const {activeType, selectDropdown} = this.columnsDetails[columnIndex];
     if ((activeType.select || activeType.isSelect) && Dropdown.isDisplayed(selectDropdown.element)) {
-      SelectCellEvents.keyDownText(this, rowIndex, columnIndex, event);
+      SelectCellTextBaseEvents.keyDownText(this, rowIndex, columnIndex, event);
     }
   }
 

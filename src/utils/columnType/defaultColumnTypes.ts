@@ -108,7 +108,7 @@ export class DefaultColumnTypes {
       settings: selectSettings,
     };
     const selectLabelSettings: DropdownButtonItemSettings = {
-      text: DEFAULT_COLUMN_TYPES.SELECT_LABEL,
+      text: DEFAULT_COLUMN_TYPES.LABEL,
       iconSettings,
     };
     DefaultColumnTypes.SELECT_LABEL_TYPE_DROPDOWN_ITEM = {

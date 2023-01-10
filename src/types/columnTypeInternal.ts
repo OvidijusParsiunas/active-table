@@ -26,7 +26,7 @@ interface Checkbox extends Omit<Parent, 'sorting'> {
 }
 
 interface Select extends Omit<Parent, 'validation'> {
-  isSelect: boolean; // this will be replaced by select getting renamed to labelSelect
+  isSelect: boolean; // WORK - this will be replaced by select getting renamed to labelSelect
 }
 
 export type ColumnTypeInternal = InterfacesUnion<Calendar | Checkbox | Select | Parent>;

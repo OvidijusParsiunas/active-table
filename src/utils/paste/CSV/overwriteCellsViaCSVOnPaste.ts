@@ -1,5 +1,5 @@
 import {DateCellInputElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellInputElement';
-import {LabelCellElement} from '../../../elements/cell/cellsWithTextDiv/selectCell/labelCellElement';
+import {SelectCell} from '../../../elements/cell/cellsWithTextDiv/selectCell/selectCell';
 import {SelectDropdown} from '../../../elements/dropdown/selectDropdown/selectDropdown';
 import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
@@ -90,7 +90,7 @@ export class OverwriteCellsViaCSVOnPaste {
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
     if (columnDetails.activeType.select) {
-      LabelCellElement.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
+      SelectCell.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (Browser.IS_INPUT_DATE_SUPPORTED && columnDetails.activeType.calendar) {
       DateCellInputElement.updateInputBasedOnTextDiv(cellElement, columnDetails.activeType);
     }

@@ -6,5 +6,5 @@ export enum DEFAULT_COLUMN_TYPES {
   DATE_MDY = 'Date m-d-y',
   CHECKBOX = 'Checkbox',
   SELECT = 'Select',
-  SELECT_LABEL = 'Select Label',
+  LABEL = 'Label',
 }

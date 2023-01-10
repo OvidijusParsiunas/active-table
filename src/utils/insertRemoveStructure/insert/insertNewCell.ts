@@ -1,12 +1,12 @@
 import {ColumnDropdownCellOverlay} from '../../../elements/dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlay';
 import {HeaderIconCellElement} from '../../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
-import {ConvertToSelectCell} from '../../../elements/cell/cellsWithTextDiv/selectCell/convertToSelectCell';
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
 import {CheckboxCellElement} from '../../../elements/cell/checkboxCell/checkboxCellElement';
 import {UpdateIndexColumnWidth} from '../../../elements/indexColumn/updateIndexColumnWidth';
+import {SelectCell} from '../../../elements/cell/cellsWithTextDiv/selectCell/selectCell';
 import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
 import {SelectDropdown} from '../../../elements/dropdown/selectDropdown/selectDropdown';
 import {ColumnDetailsInitial, ColumnDetailsT} from '../../../types/columnDetails';
@@ -74,7 +74,8 @@ export class InsertNewCell {
       if (rowIndex === 0) {
         SelectDropdown.setUpDropdown(etc, columnIndex);
       } else {
-        ConvertToSelectCell.convertCell(etc, rowIndex, columnIndex, newCellElement);
+        SelectCell.convertCell(etc, rowIndex, columnIndex, newCellElement);
+        SelectCell.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
       }
     } else if (rowIndex > 0) {
       if (columnDetails.activeType.checkbox) {

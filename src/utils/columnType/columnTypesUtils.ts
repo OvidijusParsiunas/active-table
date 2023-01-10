@@ -23,7 +23,7 @@ export class ColumnTypesUtils {
         isSelect: true,
       },
       {
-        name: DEFAULT_COLUMN_TYPES.SELECT_LABEL,
+        name: DEFAULT_COLUMN_TYPES.LABEL,
         select: {},
         dropdownItem: DefaultColumnTypes.SELECT_LABEL_TYPE_DROPDOWN_ITEM,
       },
@@ -79,7 +79,7 @@ export class ColumnTypesUtils {
   private static getReusableDefaultIcon(iconSettings: DropdownIconSettings) {
     const targetIconName = iconSettings.reusableIconName?.toLocaleLowerCase();
     if (targetIconName === DEFAULT_COLUMN_TYPES.SELECT.toLocaleLowerCase()
-      || targetIconName === DEFAULT_COLUMN_TYPES.SELECT_LABEL.toLocaleLowerCase()) {
+      || targetIconName === DEFAULT_COLUMN_TYPES.LABEL.toLocaleLowerCase()) {
       return DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM?.settings.iconSettings as DropdownIconSettings;
     }
     const defaultSettings = DefaultColumnTypes.DEFAULT_STATIC_TYPES.find((type) => {

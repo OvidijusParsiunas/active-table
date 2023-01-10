@@ -1,4 +1,4 @@
-import {LabelCellElement} from '../../cell/cellsWithTextDiv/selectCell/labelCellElement';
+import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
 import {ActiveSelectItems, SelectDropdownT} from '../../../types/columnDetails';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -31,7 +31,7 @@ export class SelectDropdownItem {
       activeItemElement: HTMLElement, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const newText = CellElement.getText(activeItemElement.children[0] as HTMLElement);
     SelectDropdownItem.updateCellElementIfNotUpdated(etc, newText, rowIndex, columnIndex, textElement);
-    if (LabelCellElement.isLabelText(textElement)) {
+    if (LabelCellTextElement.isLabelText(textElement)) {
       textElement.style.backgroundColor = etc.columnsDetails[columnIndex].selectDropdown.selectItem[newText]?.color;
     }
   }

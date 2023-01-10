@@ -1,4 +1,4 @@
-import {LabelCellElement} from '../../cell/cellsWithTextDiv/selectCell/labelCellElement';
+import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
 import {SelectProperties, SelectDropdownStyle} from '../../../types/selectProperties';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
@@ -34,14 +34,14 @@ export class SelectDropdown {
   }
 
   private static generateTopPosition(cellElement: HTMLElement, textContainerElement: HTMLElement) {
-    const topPadding = LabelCellElement.isLabelText(textContainerElement)
+    const topPadding = LabelCellTextElement.isLabelText(textContainerElement)
       ? textContainerElement.offsetTop + textContainerElement.offsetHeight + 2
       : cellElement.offsetHeight - 8;
     return `${ElementOffset.processTop(cellElement.offsetTop + topPadding)}px`;
   }
 
   private static generateLeftPosition(cellElement: HTMLElement, textContainerElement: HTMLElement): PX {
-    const leftPadding = LabelCellElement.isLabelText(textContainerElement) ? textContainerElement.offsetLeft : 1;
+    const leftPadding = LabelCellTextElement.isLabelText(textContainerElement) ? textContainerElement.offsetLeft : 1;
     return `${ElementOffset.processLeft(cellElement.offsetLeft + leftPadding)}px`;
   }
 
