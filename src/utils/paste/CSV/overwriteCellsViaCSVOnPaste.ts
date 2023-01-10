@@ -89,7 +89,7 @@ export class OverwriteCellsViaCSVOnPaste {
     const oldType = CellTypeTotalsUtils.parseTypeName(CellElement.getText(cellElement), columnDetails.types);
     const processedNewCellText = CellEvents.updateCell(
       etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
-    if (columnDetails.activeType.select) {
+    if (columnDetails.activeType.selectProps) {
       SelectCell.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (Browser.IS_INPUT_DATE_SUPPORTED && columnDetails.activeType.calendar) {
       DateCellInputElement.updateInputBasedOnTextDiv(cellElement, columnDetails.activeType);
@@ -116,7 +116,7 @@ export class OverwriteCellsViaCSVOnPaste {
       columnIndex: number) {
     const {activeType, selectDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
     CaretPosition.setToEndOfText(etc, cellElement);
-    if (activeType.select) {
+    if (activeType.selectProps) {
       SelectDropdown.updateSelectDropdown(cellElement, selectDropdown, defaultText, true);
     }
   }

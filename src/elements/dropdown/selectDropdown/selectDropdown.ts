@@ -123,13 +123,13 @@ export class SelectDropdown {
 
   // prettier-ignore
   public static display(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
-    const {selectDropdown, settings: {defaultText}, activeType: {select}} = etc.columnsDetails[columnIndex];
+    const {selectDropdown, settings: {defaultText}, activeType: {selectProps}} = etc.columnsDetails[columnIndex];
     const {element: dropdownEl, selectItem} = selectDropdown;
-    if (Object.keys(selectItem).length > 0 && select) {
+    if (Object.keys(selectItem).length > 0 && selectProps) {
       SelectDropdownEvents.set(etc, dropdownEl);
       SelectDropdownItemEvents.blurItem(selectDropdown, 'hovered');
       SelectDropdownItemEvents.blurItem(selectDropdown, 'matchingWithCellText');
-      dropdownEl.style.width = `${SelectDropdown.getWidth(cellElement, selectDropdown, select.dropdownStyle)}px`
+      dropdownEl.style.width = `${SelectDropdown.getWidth(cellElement, selectDropdown, selectProps.dropdownStyle)}px`
       Dropdown.display(dropdownEl);
       dropdownEl.scrollLeft = 0;
       SelectDropdown.correctWidthForOverflow(dropdownEl);
@@ -137,7 +137,9 @@ export class SelectDropdown {
       SelectDropdown.setPosition(dropdownEl, cellElement);
       const textElement = cellElement.children[0] as HTMLElement;
       SelectDropdown.focusItemOnDropdownOpen(textElement, selectDropdown, defaultText);
+      return true;
     }
+    return false;
   }
 
   private static setCustomStyle(selectDropdown: SelectDropdownT, dropdownStyle: SelectDropdownStyle) {
@@ -156,13 +158,13 @@ export class SelectDropdown {
 
   // prettier-ignore
   public static setUpDropdown(etc: EditableTableComponent, columnIndex: number) {
-    const {activeType: {select}, selectDropdown} = etc.columnsDetails[columnIndex];
-    if (!select) return;
-    selectDropdown.oneActiveColor = etc.columnsDetails[columnIndex].activeType.isSelect ?
+    const {activeType: {selectProps}, selectDropdown} = etc.columnsDetails[columnIndex];
+    if (!selectProps) return;
+    selectDropdown.oneActiveColor = etc.columnsDetails[columnIndex].activeType.selectProps?.isBasicSelect ?
       SelectDropdown.ONE_ACTIVE_COLOR_BACKGROUND_COLOR : undefined;
-    SelectDropdown.setCustomState(selectDropdown, select)
+    SelectDropdown.setCustomState(selectDropdown, selectProps)
     SelectDropdownItem.populateItems(etc, columnIndex);
-    if (select.dropdownStyle) SelectDropdown.setCustomStyle(selectDropdown, select.dropdownStyle);
+    if (selectProps.dropdownStyle) SelectDropdown.setCustomStyle(selectDropdown, selectProps.dropdownStyle);
   }
 
   // REF-8 - Created for every column

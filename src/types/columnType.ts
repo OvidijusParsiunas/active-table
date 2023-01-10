@@ -35,15 +35,14 @@ interface Checkbox extends Omit<Parent, 'sorting'> {
   checkbox: true;
 }
 
-interface SelectLabel extends Omit<Parent, 'validation'> {
-  select: SelectProperties<LabelOptions> | true;
+interface Label extends Omit<Parent, 'validation'> {
+  label: SelectProperties<LabelOptions> | true;
 }
 
 interface Select extends Omit<Parent, 'validation'> {
   select: SelectProperties<SelectOptions> | true;
-  isSelect: boolean; // WORK - this will be replaced by select getting renamed to labelSelect
 }
 
-export type ColumnType = InterfacesUnion<Calendar | Checkbox | Select | SelectLabel | Parent>;
+export type ColumnType = InterfacesUnion<Calendar | Checkbox | Select | Label | Parent>;
 
 export type ColumnTypes = ColumnType[];

@@ -31,8 +31,8 @@ export class Validation {
   };
 
   public static setSelectValidation(type: ColumnTypeInternal, isDefaultTextRemovable: boolean, defaultText: CellText) {
-    if (!type.select?.options) return;
-    const optionsMap = new Set<CellText>(type.select.options.map((option) => option.name));
+    if (!type.selectProps?.options) return;
+    const optionsMap = new Set<CellText>(type.selectProps.options.map((option) => option.name));
     type.textValidation ??= {};
     type.textValidation.func = (cellText: string) => {
       return !!optionsMap.has(cellText) || (!isDefaultTextRemovable && cellText === defaultText);

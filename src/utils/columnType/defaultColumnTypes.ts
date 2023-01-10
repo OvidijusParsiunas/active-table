@@ -5,6 +5,7 @@ import {CALENDAR_ICON_SVG_STRING} from '../../consts/icons/calendarIconSVGString
 import {CHECKBOX_ICON_SVG_STRING} from '../../consts/icons/checkboxIconSVGString';
 import {SELECT_ICON_SVG_STRING} from '../../consts/icons/selectIconSVGString';
 import {NUMBER_ICON_SVG_STRING} from '../../consts/icons/numberIconSVGString';
+import {LABEL_ICON_SVG_STRING} from '../../consts/icons/labelIconSVGString';
 import {ColumnTypeDropdownItem} from '../../types/columnTypeDropdownItem';
 import {TEXT_ICON_SVG_STRING} from '../../consts/icons/textIconSVGString';
 import {DropdownButtonItemSettings} from '../../types/dropdownButtonItem';
@@ -95,25 +96,22 @@ export class DefaultColumnTypes {
   // the reason why select and label select are not with the default static types is because their validation
   // is not generic and get set by column settings - setSelectValidation
   private static createDropdownItemForSelectTypes() {
-    const iconSettings = {
-      svgString: SELECT_ICON_SVG_STRING,
-      containerStyles: {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}},
-    };
+    const containerStyles = {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}};
     const selectSettings: DropdownButtonItemSettings = {
       text: DEFAULT_COLUMN_TYPES.SELECT,
-      iconSettings,
+      iconSettings: {svgString: SELECT_ICON_SVG_STRING, containerStyles},
     };
     DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM = {
       element: DropdownItem.createButtonItemNoEvents(undefined, selectSettings),
       settings: selectSettings,
     };
-    const selectLabelSettings: DropdownButtonItemSettings = {
+    const labelSettings: DropdownButtonItemSettings = {
       text: DEFAULT_COLUMN_TYPES.LABEL,
-      iconSettings,
+      iconSettings: {svgString: LABEL_ICON_SVG_STRING, containerStyles},
     };
     DefaultColumnTypes.SELECT_LABEL_TYPE_DROPDOWN_ITEM = {
-      element: DropdownItem.createButtonItemNoEvents(undefined, selectLabelSettings),
-      settings: selectLabelSettings,
+      element: DropdownItem.createButtonItemNoEvents(undefined, labelSettings),
+      settings: labelSettings,
     };
   }
 

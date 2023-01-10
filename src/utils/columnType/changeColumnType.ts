@@ -34,7 +34,7 @@ export class ChangeColumnType {
   }
 
   public static setNewStructureBasedOnType(etc: EditableTableComponent, columnIndex: number, newType: ColumnTypeInternal) {
-    if (newType.select) {
+    if (newType.selectProps) {
       SelectDropdown.setUpDropdown(etc, columnIndex);
       SelectCell.convertColumn(etc, columnIndex, newType);
     } else if (newType.calendar) {

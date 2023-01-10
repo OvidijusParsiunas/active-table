@@ -21,7 +21,7 @@ export class LabelCellTextElement {
   public static finaliseEditedText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number,
     processMatching = false) {
   const {selectDropdown,
-    activeType: {select}, settings: {defaultText, isDefaultTextRemovable}} = etc.columnsDetails[columnIndex];
+    activeType: {selectProps}, settings: {defaultText, isDefaultTextRemovable}} = etc.columnsDetails[columnIndex];
   const color = selectDropdown.selectItem[CellElement.getText(textElement)]?.color;
   if (CellElement.getText(textElement) === EMPTY_STRING
       || (isDefaultTextRemovable && CellElement.getText(textElement) === defaultText)) {
@@ -29,7 +29,7 @@ export class LabelCellTextElement {
   } else if (processMatching && color) {
     textElement.style.backgroundColor = color;
      // not using staticItems state as this method may be called before it is available, if not, then refactor
-  } else if (!select?.options) {
+  } else if (!selectProps?.options) {
     // if a label is deleted and then added with an already existing text element, use its current background
     SelectDropdownItem.addNewSelectItem(etc, textElement, selectDropdown, textElement.style.backgroundColor);
   }

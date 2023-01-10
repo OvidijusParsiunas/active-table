@@ -37,7 +37,7 @@ export class DataCellEvents {
       const isUndo = inputEvent.inputType === UNDO_INPUT_TYPE;
       CellElement.setNewText(this, textContainerElement, text, false, isUndo, false);
       const columnDetails = this.columnsDetails[columnIndex];
-      if (columnDetails.activeType.select) {
+      if (columnDetails.activeType.selectProps) {
         SelectDropdown.updateSelectDropdown(textContainerElement,
           columnDetails.selectDropdown, columnDetails.settings.defaultText, true);
       }
@@ -55,11 +55,11 @@ export class DataCellEvents {
     } else {
       const targetElement = event.target as HTMLElement;
       const {selectDropdown, settings: {defaultText}, activeType} = this.columnsDetails[columnIndex];
-      const {calendar, select} = activeType;
+      const {calendar, selectProps} = activeType;
       // if the user has deleted all text in calendar/select cell - targetElement can be the <br> tag
-      const containerElement = calendar || select ? (targetElement.parentElement as HTMLElement) : targetElement;
+      const containerElement = calendar || selectProps ? (targetElement.parentElement as HTMLElement) : targetElement;
       setTimeout(() => {
-        if (select) SelectDropdown.updateSelectDropdown(containerElement, selectDropdown, defaultText, true);
+        if (selectProps) SelectDropdown.updateSelectDropdown(containerElement, selectDropdown, defaultText, true);
         CellEvents.updateCell(this, CellElement.getText(containerElement), rowIndex, columnIndex, {processText: false});
       });
     }

@@ -1,10 +1,15 @@
+import {LabelOptions, SelectProperties} from './selectProperties';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
 import {CalendarFunctionality} from './calendarFunctionality';
 import {CustomTextProcessing} from './customTextProcessing';
-import {SelectProperties} from './selectProperties';
 import {TextValidation} from './textValidation';
 import {InterfacesUnion} from './utilityTypes';
 import {SortingFuncs} from './sortingFuncs';
+
+// this object encompasses properties for either select or label
+// the reason why LabelOptions is used is to capture all props
+// using isBasicSelect instead of isLabel to minimise the if statemnt logic complexity
+export type SelectPropertiesInternal = SelectProperties<LabelOptions> & {isBasicSelect: boolean};
 
 // to be used internally
 export interface Parent {
@@ -13,7 +18,7 @@ export interface Parent {
   textValidation: TextValidation; // this is a genuine form of custom text validation and its resulting style
   customTextProcessing?: CustomTextProcessing; // this is used to allow explicit processing of text and its resulting style
   sorting?: SortingFuncs; // By default the elements will be sorted in ascending ASCII character order
-  select?: SelectProperties;
+  selectProps?: SelectPropertiesInternal;
   dropdownItem: ColumnTypeDropdownItem;
 }
 
@@ -25,10 +30,6 @@ interface Checkbox extends Omit<Parent, 'sorting'> {
   checkbox: true;
 }
 
-interface Select extends Omit<Parent, 'validation'> {
-  isSelect: boolean; // WORK - this will be replaced by select getting renamed to labelSelect
-}
-
-export type ColumnTypeInternal = InterfacesUnion<Calendar | Checkbox | Select | Parent>;
+export type ColumnTypeInternal = InterfacesUnion<Calendar | Checkbox | Parent>;
 
 export type ColumnTypesInternal = ColumnTypeInternal[];

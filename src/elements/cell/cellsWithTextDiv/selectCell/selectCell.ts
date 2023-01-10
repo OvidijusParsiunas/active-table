@@ -10,7 +10,7 @@ import {LabelCellEvents} from './label/labelCellEvents';
 export class SelectCell {
   public static convertCell(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
     const columnDetails = etc.columnsDetails[columnIndex];
-    if (columnDetails.activeType.isSelect) {
+    if (columnDetails.activeType.selectProps?.isBasicSelect) {
       SelectCellElement.setCellSelectStructure(etc, cellElement, rowIndex, columnIndex);
     } else {
       LabelCellElement.setCellLabelStructure(etc, cellElement, rowIndex, columnIndex);
@@ -18,7 +18,7 @@ export class SelectCell {
   }
 
   public static convertColumn(etc: EditableTableComponent, columnIndex: number, newType: ColumnTypeInternal) {
-    if (newType.isSelect) {
+    if (newType.selectProps?.isBasicSelect) {
       SelectCellElement.setColumnSelectStructure(etc, columnIndex);
     } else {
       LabelCellElement.setColumnLabelStructure(etc, columnIndex);
@@ -27,7 +27,7 @@ export class SelectCell {
 
   public static resetEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     const {activeType} = etc.columnsDetails[columnIndex];
-    if (activeType.isSelect) {
+    if (activeType.selectProps?.isBasicSelect) {
       SelectCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
     } else {
       LabelCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
@@ -38,7 +38,7 @@ export class SelectCell {
   public static finaliseEditedText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number,
       processMatching = false) {
     const {activeType} = etc.columnsDetails[columnIndex];
-    if (activeType.isSelect) {
+    if (activeType.selectProps?.isBasicSelect) {
       SelectCellTextElement.finaliseEditedText(etc, textElement, columnIndex);
     } else {
       LabelCellTextElement.finaliseEditedText(etc, textElement, columnIndex, processMatching);

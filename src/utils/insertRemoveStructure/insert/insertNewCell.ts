@@ -70,7 +70,7 @@ export class InsertNewCell {
       HeaderIconCellElement.setHeaderIconStructure(etc, newCellElement, columnIndex);
     }
     if (!columnDetails.activeType) return;
-    if (columnDetails.activeType.select) {
+    if (columnDetails.activeType.selectProps) {
       if (rowIndex === 0) {
         SelectDropdown.setUpDropdown(etc, columnIndex);
       } else {

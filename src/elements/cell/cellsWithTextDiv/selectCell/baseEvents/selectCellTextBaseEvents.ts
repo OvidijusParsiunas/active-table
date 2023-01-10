@@ -35,9 +35,9 @@ export class SelectCellTextBaseEvents {
   }
 
   private static displayDropdown(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
-    SelectDropdown.display(etc, columnIndex, cellElement);
+    const isDisplayed = SelectDropdown.display(etc, columnIndex, cellElement);
     const {activeType, selectDropdown} = etc.columnsDetails[columnIndex];
-    if (activeType.isSelect && Object.keys(selectDropdown.selectItem).length > 0) {
+    if (activeType.selectProps?.isBasicSelect && isDisplayed) {
       selectDropdown.displayedCellElement = cellElement;
       ArrowDownIconElement.toggle(cellElement, true);
     }
@@ -49,7 +49,7 @@ export class SelectCellTextBaseEvents {
     if (!selectDropdown.selectItem[CellElement.getText(textElement)]) {
       SelectCell.finaliseEditedText(etc, textElement, columnIndex);
     }
-    if (activeType.isSelect) {
+    if (activeType.selectProps?.isBasicSelect) {
       ArrowDownIconElement.toggle(selectDropdown.displayedCellElement, false);
       delete selectDropdown.displayedCellElement;
     }

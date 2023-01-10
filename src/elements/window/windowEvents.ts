@@ -35,7 +35,7 @@ export class WindowEvents {
       return;
     }
     const {activeType, selectDropdown} = this.columnsDetails[columnIndex];
-    if ((activeType.select || activeType.isSelect) && Dropdown.isDisplayed(selectDropdown.element)) {
+    if (activeType.selectProps && Dropdown.isDisplayed(selectDropdown.element)) {
       SelectCellTextBaseEvents.keyDownText(this, rowIndex, columnIndex, event);
     }
   }
