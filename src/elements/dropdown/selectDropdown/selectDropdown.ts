@@ -19,6 +19,8 @@ import {Dropdown} from '../dropdown';
 export class SelectDropdown {
   private static readonly SELECT_DROPDOWN_CLASS = 'select-dropdown';
   private static readonly MAX_HEIGHT_PX = '150px';
+  private static readonly MIN_WIDTH = 70;
+  private static readonly MAX_WIDTH = 200;
   private static readonly ONE_ACTIVE_COLOR_BACKGROUND_COLOR = '#4a69d4';
 
   private static generateRightPosition() {
@@ -106,15 +108,17 @@ export class SelectDropdown {
     SelectDropdownItem.attemptHighlightMatchingItemWithCell(textElement, dropdown, defaultText, false);
   }
 
+  private static correctWidthForOverflow(dropdownElement: HTMLElement) {
+    if (dropdownElement.offsetWidth !== dropdownElement.scrollWidth) {
+      dropdownElement.style.width = `${Math.min(dropdownElement.scrollWidth, SelectDropdown.MAX_WIDTH)}px`;
+    }
+  }
+
   private static getWidth(cellElement: HTMLElement, dropdown: SelectDropdownT, dropdownStyle?: SelectDropdownStyle) {
-    if (dropdownStyle?.width) {
-      return dropdownStyle.width;
-    }
-    if (dropdown.oneActiveColor) {
-      return cellElement.offsetWidth - 2;
-    }
+    if (dropdownStyle?.width) return dropdownStyle.width;
+    if (dropdown.oneActiveColor) return Math.max(cellElement.offsetWidth - 2, SelectDropdown.MIN_WIDTH);
     const textContainerElement = cellElement.children[0] as HTMLElement;
-    return Dropdown.DROPDOWN_WIDTH - textContainerElement.offsetLeft;
+    return Math.max(cellElement.offsetWidth - textContainerElement.offsetLeft * 2, SelectDropdown.MIN_WIDTH);
   }
 
   // prettier-ignore
@@ -128,6 +132,7 @@ export class SelectDropdown {
       dropdownEl.style.width = `${SelectDropdown.getWidth(cellElement, selectDropdown, select.dropdownStyle)}px`
       Dropdown.display(dropdownEl);
       dropdownEl.scrollLeft = 0;
+      SelectDropdown.correctWidthForOverflow(dropdownEl);
       SelectDropdownScrollbar.setProperties(selectDropdown);
       SelectDropdown.setPosition(dropdownEl, cellElement);
       const textElement = cellElement.children[0] as HTMLElement;
