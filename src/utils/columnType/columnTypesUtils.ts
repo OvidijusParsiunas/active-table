@@ -13,7 +13,7 @@ import {Validation} from './validation';
 export class ColumnTypesUtils {
   public static get(settings: ColumnSettingsInternal): ColumnTypes {
     let columnTypes = [
-      ...DefaultColumnTypes.DEFAULT_STATIC_TYPES,
+      ...DefaultColumnTypes.DEFAULT_STATIC_TYPES.slice(0, 3),
       // the reason why select and label are not with the default static types is because their validation
       // is not generic and get set by on column settings - setSelectValidation
       {
@@ -26,6 +26,7 @@ export class ColumnTypesUtils {
         label: {},
         dropdownItem: DefaultColumnTypes.SELECT_LABEL_TYPE_DROPDOWN_ITEM,
       },
+      ...DefaultColumnTypes.DEFAULT_STATIC_TYPES.slice(3),
     ];
     const {defaultColumnTypes, customColumnTypes} = settings;
     if (defaultColumnTypes) {

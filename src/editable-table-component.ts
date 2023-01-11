@@ -58,7 +58,6 @@ import {
 // TO-DO
 // rename file name from using hyphen case to camel
 
-// new row or column buttons can be made optional
 @customElement('editable-table-component')
 export class EditableTableComponent extends LitElement {
   static override styles = [ediTableStyle];

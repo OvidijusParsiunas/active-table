@@ -56,6 +56,20 @@ export class DefaultColumnTypes {
       },
     },
     {
+      name: DEFAULT_COLUMN_TYPES.CHECKBOX,
+      dropdownIconSettings: {
+        svgString: CHECKBOX_ICON_SVG_STRING,
+        containerStyles: {
+          dropdown: {marginTop: '1.5px', marginRight: '6px'},
+          headerCorrections: {marginTop: '3px', marginRight: '6px', marginLeft: '3px'},
+        },
+      },
+      checkbox: true,
+      customTextProcessing: {
+        changeText: CheckboxCellElement.defaultChangeTextFunc,
+      },
+    },
+    {
       name: DEFAULT_COLUMN_TYPES.DATE_DMY,
       textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_DMY]},
       calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_DMY],
@@ -73,20 +87,6 @@ export class DefaultColumnTypes {
         containerStyles: {dropdown: {marginLeft: '1px', marginRight: '8px'}},
       },
     },
-    {
-      name: DEFAULT_COLUMN_TYPES.CHECKBOX,
-      dropdownIconSettings: {
-        svgString: CHECKBOX_ICON_SVG_STRING,
-        containerStyles: {
-          dropdown: {marginTop: '1.5px', marginRight: '6px'},
-          headerCorrections: {marginTop: '3px', marginRight: '6px', marginLeft: '3px'},
-        },
-      },
-      checkbox: true,
-      customTextProcessing: {
-        changeText: CheckboxCellElement.defaultChangeTextFunc,
-      },
-    },
   ];
 
   public static SELECT_TYPE_DROPDOWN_ITEM: ColumnTypeDropdownItem | null = null;
@@ -101,8 +101,8 @@ export class DefaultColumnTypes {
       iconSettings: {
         svgString: SELECT_ICON_SVG_STRING,
         containerStyles: {
-          dropdown: {marginTop: '0.25px', marginRight: '2px', marginLeft: '-3px'},
-          headerCorrections: {marginTop: '1px'},
+          dropdown: {marginTop: '0.5px', marginRight: '2.75px', marginLeft: '-2.75px'},
+          headerCorrections: {marginTop: '1.5px'},
         },
       },
     };
