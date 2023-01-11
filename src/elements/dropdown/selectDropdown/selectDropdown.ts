@@ -153,7 +153,7 @@ export class SelectDropdown {
   private static setCustomState(selectDropdown: SelectDropdownT, select: SelectProperties) {
     selectDropdown.customDropdownStyle = select.dropdownStyle;
     selectDropdown.customItemStyle = select.optionStyle;
-    selectDropdown.staticItems = select.options;
+    selectDropdown.canAddMoreOptions = !!select.canAddMoreOptions;
   }
 
   // prettier-ignore
@@ -181,6 +181,7 @@ export class SelectDropdown {
       selectItem: {},
       activeItems: {},
       element: dropdownElement,
+      canAddMoreOptions: true,
       scrollbarPresence: {
         horizontal: false,
         vertical: false,

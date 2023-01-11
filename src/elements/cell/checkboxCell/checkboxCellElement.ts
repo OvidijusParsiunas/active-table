@@ -1,3 +1,4 @@
+import {ConvertCellTypeUtils} from '../../../utils/columnType/convertCellTypeUtils';
 import {CellStructureUtils} from '../../../utils/columnType/cellStructureUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CheckboxCellEvents} from './checkboxCellEvents';
@@ -54,6 +55,7 @@ export class CheckboxCellElement {
   // prettier-ignore
   public static setCellCheckboxStructure(etc: EditableTableComponent,
       cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    ConvertCellTypeUtils.preprocessCell(cellElement);
     CheckboxCellElement.setCellTextAsAnElement(etc, cellElement, rowIndex, columnIndex);
     CheckboxCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
   }

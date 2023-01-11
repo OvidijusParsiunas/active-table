@@ -21,7 +21,7 @@ interface Parent {
   headerIconStyle?: HeaderIconStyle;
   defaultColumnTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
   customColumnTypes?: ColumnTypes; // additional custom column types
-  // if not provided the following property will default to first of the following:
+  // If not provided activeTypeName will default to first of the following:
   // First type to not have validation/First available type/'Text'
   activeTypeName?: string;
   isSortAvailable?: boolean; // true by default

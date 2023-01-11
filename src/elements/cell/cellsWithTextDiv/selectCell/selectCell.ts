@@ -44,4 +44,13 @@ export class SelectCell {
       LabelCellTextElement.finaliseEditedText(etc, textElement, columnIndex, processMatching);
     }
   }
+
+  public static setPointerCursorIfCantAdd(cellElement: HTMLElement, activeType: ColumnTypeInternal) {
+    cellElement.style.cursor = 'pointer';
+    if (!activeType.selectProps?.canAddMoreOptions) {
+      const textElement = cellElement.children[0] as HTMLElement;
+      textElement.style.caretColor = 'transparent';
+      textElement.style.cursor = 'pointer';
+    }
+  }
 }

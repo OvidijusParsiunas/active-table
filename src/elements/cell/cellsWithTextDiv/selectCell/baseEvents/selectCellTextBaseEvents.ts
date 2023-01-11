@@ -17,7 +17,7 @@ export class SelectCellTextBaseEvents {
   // keydown events will no longer be fired through the cell text - however we need to maintain the same behaviour
   // prettier-ignore
   public static keyDownText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
-    const {selectDropdown: {activeItems}, elements} = etc.columnsDetails[columnIndex];
+    const {selectDropdown: {activeItems, canAddMoreOptions}, elements} = etc.columnsDetails[columnIndex];
     if (event.key === KEYBOARD_KEY.ESCAPE) {
       CellWithTextEvents.programmaticBlur(etc);
     } else if (event.key === KEYBOARD_KEY.TAB) {
@@ -31,6 +31,8 @@ export class SelectCellTextBaseEvents {
     } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
       event.preventDefault();
       SelectDropdownItem.setSiblingItemOnCell(etc, activeItems, 'nextSibling');
+    } else if (!canAddMoreOptions) {
+      event.preventDefault();
     }
   }
 

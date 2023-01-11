@@ -132,13 +132,16 @@ export class ColumnTypesUtils {
 
   private static processSelect(type: ColumnType, isDefaultTextRemovable: boolean, defaultText: CellText) {
     const internalType = type as ColumnTypeInternal;
-    if (typeof type.select === 'boolean' || typeof type.label === 'boolean') {
+    if (type.select === true || type.label === true) {
       internalType.selectProps = {isBasicSelect: !type.label};
     } else if (typeof type.select === 'object' || typeof type.label === 'object') {
       internalType.selectProps = (type.select || type.label) as SelectPropertiesInternal;
       if (type.select) ColumnTypesUtils.processSelectOptions(type.select);
       internalType.selectProps.isBasicSelect = !type.label;
       Validation.setSelectValidation(internalType, isDefaultTextRemovable, defaultText);
+    }
+    if (internalType.selectProps && internalType.selectProps.canAddMoreOptions === undefined) {
+      internalType.selectProps.canAddMoreOptions = !internalType.selectProps?.options;
     }
   }
 

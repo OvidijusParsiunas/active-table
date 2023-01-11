@@ -52,7 +52,7 @@ export class SelectDropdownItem {
     const cellText = CellElement.getText(textElement);
     if (itemElement) {
       textElement.style.backgroundColor = dropdown.selectItem[cellText].color;
-    } else if (dropdown.staticItems || cellText === EMPTY_STRING || cellText === defaultText) {
+    } else if (!dropdown.canAddMoreOptions || cellText === EMPTY_STRING || cellText === defaultText) {
       textElement.style.backgroundColor = '';
     } else {
       textElement.style.backgroundColor = Color.getLatestPasteleColor();
@@ -129,7 +129,7 @@ export class SelectDropdownItem {
       text: string, color: string, dropdown: SelectDropdownT, atStart = false) {
     const itemElement = DropdownItem.addPlaneButtonItem(dropdown.element, text, atStart ? 0 : undefined);
     if (dropdown.customItemStyle) itemElement.style.color = dropdown.customItemStyle.textColor;
-    if (!dropdown.staticItems) {
+    if (dropdown.canAddMoreOptions) {
       const deleteButtonElement = SelectDeleteButton.create(etc, dropdown);
       itemElement.appendChild(deleteButtonElement); 
     }
@@ -175,10 +175,10 @@ export class SelectDropdownItem {
   // prettier-ignore
   public static populateItems(etc: EditableTableComponent, columnIndex: number) {
     const {contents, columnsDetails} = etc;
-    const {selectDropdown, settings: {defaultText, isDefaultTextRemovable}} = columnsDetails[columnIndex];
+    const {selectDropdown, settings: {defaultText, isDefaultTextRemovable}, activeType} = columnsDetails[columnIndex];
     const {oneActiveColor} = selectDropdown;
-    const itemToColor = selectDropdown.staticItems
-      ? SelectDropdownItem.changeUserOptionsToItemToColor(selectDropdown.staticItems, oneActiveColor)
+    const itemToColor = activeType.selectProps?.options
+      ? SelectDropdownItem.changeUserOptionsToItemToColor(activeType.selectProps?.options, oneActiveColor)
       : SelectDropdownItem.aggregateItemToColor(contents, columnIndex, oneActiveColor);
     SelectDropdownItem.postProcessItemToColor(isDefaultTextRemovable, itemToColor, defaultText);
     SelectDropdownItem.addItems(etc, itemToColor, selectDropdown);

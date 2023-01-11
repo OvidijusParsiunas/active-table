@@ -1,3 +1,4 @@
+import {ConvertCellTypeUtils} from '../../../../utils/columnType/convertCellTypeUtils';
 import {CellStructureUtils} from '../../../../utils/columnType/cellStructureUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {DateCellInputElement} from './dateCellInputElement';
@@ -10,6 +11,7 @@ export class DateCellElement {
   // prettier-ignore
   public static setCellDateStructure(etc: EditableTableComponent,
       cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    ConvertCellTypeUtils.preprocessCell(cellElement);
     const {isCellTextEditable} = etc.columnsDetails[columnIndex].settings
     const textElement = DateCellTextElement.setCellTextAsAnElement(cellElement, isCellTextEditable);
     if (Browser.IS_INPUT_DATE_SUPPORTED) DateCellInputElement.addDateInputElement(

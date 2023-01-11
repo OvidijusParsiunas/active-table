@@ -68,20 +68,20 @@ export class CellElement {
     return cellElement;
   }
 
-  public static setCursor(cellElement: HTMLElement, isCellTextEditable: boolean) {
-    cellElement.style.cursor = isCellTextEditable ? 'text' : 'default';
+  public static setCursor(textContainerElement: HTMLElement, isCellTextEditable: boolean) {
+    textContainerElement.style.cursor = isCellTextEditable ? 'text' : 'default';
   }
 
-  public static prepContentEditable(cellElement: HTMLElement, isEditable: boolean, isUsedAsAButton = false) {
+  public static prepContentEditable(textContainerElement: HTMLElement, isEditable: boolean, isUsedAsAButton = false) {
     if (CaretDisplayFix.isIssueBrowser()) {
-      if (isEditable) CaretDisplayFix.setTabIndex(cellElement);
-      CaretDisplayFix.removeContentEditable(cellElement);
+      if (isEditable) CaretDisplayFix.setTabIndex(textContainerElement);
+      CaretDisplayFix.removeContentEditable(textContainerElement);
     } else {
       // the reason why this is in a timeout is because when contentEditable is changed it fires blur on a text element
       // which is problematic when column settings are changed after header text is changed during multi row data paste
-      setTimeout(() => (cellElement.contentEditable = String(isEditable)));
+      setTimeout(() => (textContainerElement.contentEditable = String(isEditable)));
     }
-    if (!isUsedAsAButton) CellElement.setCursor(cellElement, isEditable);
+    if (!isUsedAsAButton) CellElement.setCursor(textContainerElement, isEditable);
   }
 
   // prettier-ignore

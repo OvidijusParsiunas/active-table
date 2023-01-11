@@ -1,4 +1,4 @@
-import {LabelOptions, SelectDropdownStyle, SelectDropdownOptionStyle} from './selectProperties';
+import {SelectDropdownStyle, SelectDropdownOptionStyle} from './selectProperties';
 import {ColumnTypeInternal, ColumnTypesInternal} from './columnTypeInternal';
 import {ColProcessedTextStyle} from './processedTextStyle';
 import {ColumnSettingsInternal} from './columnsSettings';
@@ -46,7 +46,7 @@ export interface SelectDropdownT {
   scrollbarPresence: ScrollbarPresence;
   customDropdownStyle?: SelectDropdownStyle;
   customItemStyle?: SelectDropdownOptionStyle;
-  staticItems?: LabelOptions;
+  canAddMoreOptions: boolean;
   displayedCellElement?: HTMLElement;
 }
 

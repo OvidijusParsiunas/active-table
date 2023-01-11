@@ -20,5 +20,6 @@ export interface SelectDropdownStyle {
 export interface SelectProperties<T = LabelOptions> {
   dropdownStyle?: SelectDropdownStyle;
   optionStyle?: SelectDropdownOptionStyle;
-  options?: T; // WORK - cursor should be pointer if set and potentially change color
+  options?: T;
+  canAddMoreOptions?: boolean; // by default this is true or if options is set it is false
 }
