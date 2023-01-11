@@ -39,19 +39,25 @@ export class CellWithTextEvents {
     }
   }
 
+  // prettier-ignore
+  public static programmaticMouseDown(etc: EditableTableComponent, blurCallback: BlurCallback | null,
+      cellElement: HTMLElement, event: MouseEvent) {
+    const textElement = CellElement.getTextElement(cellElement);
+    // needed to set cursor at the end
+    event.preventDefault();
+    blurCallback?.(etc);
+    // Firefox and Safari do not fire the focus event for CaretPosition.setToEndOfText
+    if (CaretDisplayFix.isIssueBrowser()) textElement.focus();
+    // in non firefox browsers this focuses
+    CaretPosition.setToEndOfText(etc, textElement);
+  }
+
   public static mouseDownCell(this: EditableTableComponent, blurCallback: BlurCallback | null, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
-    // this is also triggered by text, but we only want when cell to focus
+    // this is also triggered by text, but we only want on cell focus
     if (targetElement.classList.contains(CellElement.CELL_CLASS)) {
       const cellElement = event.target as HTMLElement;
-      const textElement = CellElement.getTextElement(cellElement);
-      // needed to set cursor at the end
-      event.preventDefault();
-      blurCallback?.(this);
-      // Firefox and Safari do not fire the focus event for CaretPosition.setToEndOfText
-      if (CaretDisplayFix.isIssueBrowser()) textElement.focus();
-      // in non firefox browsers this focuses
-      CaretPosition.setToEndOfText(this, textElement);
+      CellWithTextEvents.programmaticMouseDown(this, blurCallback, cellElement, event);
     }
   }
 }

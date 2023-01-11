@@ -78,6 +78,7 @@ export const ediTableStyle = css`
     right: 2px;
     top: 5px;
     text-align: center;
+    cursor: pointer;
   }
 
   .label-cell-text {

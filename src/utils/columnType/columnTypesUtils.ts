@@ -1,6 +1,7 @@
 import {ColumnTypeInternal, ColumnTypesInternal, SelectPropertiesInternal} from '../../types/columnTypeInternal';
 import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItemConf';
 import {ColumnType, ColumnTypes, DropdownIconSettings} from '../../types/columnType';
+import {SelectOptions, SelectProperties} from '../../types/selectProperties';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
@@ -120,12 +121,22 @@ export class ColumnTypesUtils {
     type.textValidation.setTextToDefaultOnFail ??= true;
   }
 
+  private static processSelectOptions(selectProps: SelectProperties<SelectOptions>) {
+    const internalSelectProps = selectProps as SelectPropertiesInternal;
+    if (selectProps.options) {
+      internalSelectProps.options = selectProps.options.map((option) => {
+        return {name: option};
+      });
+    }
+  }
+
   private static processSelect(type: ColumnType, isDefaultTextRemovable: boolean, defaultText: CellText) {
     const internalType = type as ColumnTypeInternal;
     if (typeof type.select === 'boolean' || typeof type.label === 'boolean') {
       internalType.selectProps = {isBasicSelect: !type.label};
     } else if (typeof type.select === 'object' || typeof type.label === 'object') {
       internalType.selectProps = (type.select || type.label) as SelectPropertiesInternal;
+      if (type.select) ColumnTypesUtils.processSelectOptions(type.select);
       internalType.selectProps.isBasicSelect = !type.label;
       Validation.setSelectValidation(internalType, isDefaultTextRemovable, defaultText);
     }

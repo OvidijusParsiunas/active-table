@@ -20,6 +20,14 @@ export class SelectCellEvents {
     ArrowDownIconElement.toggle(this.hoveredElements.selectCell, true);
   }
 
+  // prettier-ignore
+  private static mouseDownCell(this: EditableTableComponent, event: MouseEvent) {
+    const targetElement = event.target as HTMLElement;
+    const cellElement = (targetElement.classList.contains(ArrowDownIconElement.ARROW_ICON_CLASS)
+      ? targetElement.parentElement?.parentElement : targetElement) as HTMLElement;
+    CellWithTextEvents.programmaticMouseDown(this, SelectCellBaseEvents.blurIfDropdownFocused, cellElement, event);
+  }
+
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     if (!etc.columnsDetails[columnIndex].settings.isCellTextEditable) return;
     // important to note that this is still using data events that have not be overwritten here
@@ -28,7 +36,7 @@ export class SelectCellEvents {
     cellElement.onfocus = () => {};
     cellElement.onmouseenter = SelectCellEvents.mouseEnterCell.bind(etc);
     cellElement.onmouseleave = SelectCellEvents.mouseLeaveCell.bind(etc, columnIndex);
-    cellElement.onmousedown = CellWithTextEvents.mouseDownCell.bind(etc, SelectCellBaseEvents.blurIfDropdownFocused);
+    cellElement.onmousedown = SelectCellEvents.mouseDownCell.bind(etc);
     const textElement = cellElement.children[0] as HTMLElement;
     SelectCellTextBaseEvents.setEvents(etc, textElement, rowIndex, columnIndex);
   }

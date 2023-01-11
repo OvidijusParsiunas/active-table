@@ -2,7 +2,7 @@ import {ARROW_DOWN_ICON_SVG_STRING} from '../../../../../consts/icons/arrowDownS
 import {SVGIconUtils} from '../../../../../utils/svgIcons/svgIconUtils';
 
 export class ArrowDownIconElement {
-  private static readonly ARROW_ICON_CLASS = 'arrow-down-icon';
+  public static readonly ARROW_ICON_CLASS = 'arrow-down-icon';
   private static readonly ARROW_ICON_CONTAINER_CLASS = 'arrow-down-icon-container';
   private static readonly ARROW_ICON_ELEMENT = ArrowDownIconElement.createSVG();
 
@@ -25,7 +25,6 @@ export class ArrowDownIconElement {
     const svgIconElement = SVGIconUtils.createSVGElement(ARROW_DOWN_ICON_SVG_STRING);
     svgIconElement.classList.add(ArrowDownIconElement.ARROW_ICON_CLASS);
     // using style as the class has no effect on svg
-    svgIconElement.style.pointerEvents = 'none';
     return svgIconElement;
   }
 
