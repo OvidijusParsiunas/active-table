@@ -29,7 +29,7 @@ export class LabelCellTextElement {
   } else if (processMatching && color) {
     textElement.style.backgroundColor = color;
      // not using staticItems state as this method may be called before it is available, if not, then refactor
-  } else if (!selectProps?.options) {
+  } else if (selectProps?.canAddMoreOptions) {
     // if a label is deleted and then added with an already existing text element, use its current background
     SelectDropdownItem.addNewSelectItem(etc, textElement, selectDropdown, textElement.style.backgroundColor);
   }

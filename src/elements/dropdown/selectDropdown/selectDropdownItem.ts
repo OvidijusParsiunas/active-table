@@ -40,6 +40,7 @@ export class SelectDropdownItem {
   public static addNewSelectItem(etc: EditableTableComponent, textElement: HTMLElement, dropdown: SelectDropdownT,
       color?: string) {
     const newItemName = CellElement.getText(textElement);
+    if (newItemName === EMPTY_STRING) return;
     const newColor = dropdown.oneActiveColor || color || Color.getLatestPasteleColorAndSetNew();
     if (!dropdown.oneActiveColor) textElement.style.backgroundColor = newColor;
     SelectDropdownItem.addItem(etc, newItemName, newColor, dropdown);

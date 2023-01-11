@@ -13,7 +13,7 @@ export class SelectCellTextElement {
 
   public static finaliseEditedText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number) {
     const {selectDropdown, activeType} = etc.columnsDetails[columnIndex];
-    if (!activeType.selectProps?.options) {
+    if (activeType.selectProps?.canAddMoreOptions) {
       SelectDropdownItem.addNewSelectItem(etc, textElement, selectDropdown, textElement.style.backgroundColor);
     }
   }
