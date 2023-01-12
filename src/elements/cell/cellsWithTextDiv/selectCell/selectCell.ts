@@ -25,7 +25,7 @@ export class SelectCell {
     }
   }
 
-  public static resetEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+  public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     const {activeType} = etc.columnsDetails[columnIndex];
     if (activeType.selectProps?.isBasicSelect) {
       SelectCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);

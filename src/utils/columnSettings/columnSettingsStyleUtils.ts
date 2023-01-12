@@ -49,7 +49,7 @@ export class ColumnSettingsStyleUtils {
     ColumnSettingsStyleUtils.resetHeaderStyleToDefault(elements, oldSettings, this.defaultColumnsSettings);
     ColumnSettingsStyleUtils.setNewHeaderStyle(this.defaultColumnsSettings, columnDetails);
     const isEditable = !this.columnDropdownDisplaySettings.openMethod?.cellClick && isHeaderTextEditable;
-    CellElement.prepContentEditable(elements[0],
+    CellElement.prepContentEditable(CellElement.getTextElement(elements[0]),
       Boolean(isEditable), this.columnDropdownDisplaySettings.openMethod?.cellClick);
   }
 

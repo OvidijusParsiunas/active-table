@@ -77,9 +77,7 @@ export class CellElement {
       if (isEditable) CaretDisplayFix.setTabIndex(textContainerElement);
       CaretDisplayFix.removeContentEditable(textContainerElement);
     } else {
-      // the reason why this is in a timeout is because when contentEditable is changed it fires blur on a text element
-      // which is problematic when column settings are changed after header text is changed during multi row data paste
-      setTimeout(() => (textContainerElement.contentEditable = String(isEditable)));
+      textContainerElement.contentEditable = String(isEditable); // REF-15
     }
     if (!isUsedAsAButton) CellElement.setCursor(textContainerElement, isEditable);
   }

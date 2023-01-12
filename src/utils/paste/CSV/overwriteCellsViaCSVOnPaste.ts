@@ -121,9 +121,7 @@ export class OverwriteCellsViaCSVOnPaste {
     }
   }
 
-  // prettier-ignore
-  private static processFocusedCell(etc: EditableTableComponent, columnIndex: number) {
-    const cellElement = etc.focusedElements.cell.element as HTMLElement;
+  private static processFocusedCell(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
     const text = CellElement.getText(cellElement);
     etc.focusedElements.cell.typeName = CellTypeTotalsUtils.parseTypeName(text, etc.columnsDetails[columnIndex].types);
     OverwriteCellsViaCSVOnPaste.setCaretToEndAndHighlightIfSelect(etc, cellElement, columnIndex);
@@ -142,7 +140,8 @@ export class OverwriteCellsViaCSVOnPaste {
       const overflowData = dataToOverwriteRow.slice(numberOfCellsToOverwrite);
       dataForNewColumns.push(overflowData);
     });
-    setTimeout(() => OverwriteCellsViaCSVOnPaste.processFocusedCell(etc, startColumnIndex));
+    const focusedElement = etc.focusedElements.cell.element as HTMLElement; // REF-15
+    setTimeout(() => OverwriteCellsViaCSVOnPaste.processFocusedCell(etc, startColumnIndex, focusedElement));
     return dataForNewColumns;
   }
 

@@ -117,7 +117,14 @@ the 'override render' twice - where the first render did not have the popylated 
 This has been prevented by calling super.connectedCallback() inside a timeout.
 
 REF-15
-
+It has been identified that when contentEditable is changed, chrome can fire a blur event on text. This was problematic for
+a situation when column settings were changed after a header text change during multi row data paste, so when prepContentEditable
+was being called and blur was fired, the focusedElements object would lose the cell reference. I have edited the code to
+work around this use case, however if there are problems in the future, will need to set the chrome contentEditable change
+in the prepContentEditable method into a timeout. Additionally all other contentEditable changes will also need to be
+placed inside timeouts as their changes need to take affect after that method's timeout execution because when a new
+cell is created, all cell elements are immediately assumed to be text type (pre-conversion) and are set with contentEditable
+as true via prepContentEditable.
 
 REF-16
 In Chrome/Firefox: it has been identified that when there is no width set on the table - the default html does not allow the table

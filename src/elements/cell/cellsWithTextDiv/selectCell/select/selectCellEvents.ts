@@ -4,6 +4,7 @@ import {SelectCellBaseEvents} from '../baseEvents/selectCellBaseEvents';
 import {ArrowDownIconElement} from './arrowDownIconElement';
 import {CellWithTextEvents} from '../../cellWithTextEvents';
 import {Dropdown} from '../../../../dropdown/dropdown';
+import {CellElement} from '../../../cellElement';
 
 export class SelectCellEvents {
   private static mouseLeaveCell(this: EditableTableComponent, columnIndex: number, event: MouseEvent) {
@@ -20,12 +21,14 @@ export class SelectCellEvents {
     ArrowDownIconElement.toggle(this.hoveredElements.selectCell, true);
   }
 
-  // prettier-ignore
   private static mouseDownCell(this: EditableTableComponent, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
-    const cellElement = (targetElement.classList.contains(ArrowDownIconElement.ARROW_ICON_CLASS)
-      ? targetElement.parentElement?.parentElement : targetElement) as HTMLElement;
-    CellWithTextEvents.programmaticMouseDown(this, SelectCellBaseEvents.blurIfDropdownFocused, cellElement, event);
+    if (targetElement.classList.contains(CellElement.CELL_CLASS)) {
+      CellWithTextEvents.mouseDownCell(this, SelectCellBaseEvents.blurIfDropdownFocused, targetElement, event);
+    } else if (targetElement.classList.contains(ArrowDownIconElement.ARROW_ICON_CLASS)) {
+      const cellElement = targetElement.parentElement?.parentElement as HTMLElement;
+      CellWithTextEvents.mouseDownCell(this, SelectCellBaseEvents.blurIfDropdownFocused, cellElement, event);
+    }
   }
 
   public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {

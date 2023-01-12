@@ -40,7 +40,7 @@ export class CellWithTextEvents {
   }
 
   // prettier-ignore
-  public static programmaticMouseDown(etc: EditableTableComponent, blurCallback: BlurCallback | null,
+  public static mouseDownCell(etc: EditableTableComponent, blurCallback: BlurCallback | null,
       cellElement: HTMLElement, event: MouseEvent) {
     const textElement = CellElement.getTextElement(cellElement);
     // needed to set cursor at the end
@@ -52,12 +52,12 @@ export class CellWithTextEvents {
     CaretPosition.setToEndOfText(etc, textElement);
   }
 
-  public static mouseDownCell(this: EditableTableComponent, blurCallback: BlurCallback | null, event: MouseEvent) {
+  public static mouseDown(this: EditableTableComponent, blurCallback: BlurCallback | null, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
     // this is also triggered by text, but we only want on cell focus
     if (targetElement.classList.contains(CellElement.CELL_CLASS)) {
       const cellElement = event.target as HTMLElement;
-      CellWithTextEvents.programmaticMouseDown(this, blurCallback, cellElement, event);
+      CellWithTextEvents.mouseDownCell(this, blurCallback, cellElement, event);
     }
   }
 }

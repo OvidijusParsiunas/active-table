@@ -17,7 +17,9 @@ export class EditableHeaderCellEvents {
     cellElement.onmouseleave = HeaderCellEvents.mouseLeaveCell.bind(etc, columnIndex);
     const textElement = CellElement.getTextElement(cellElement);
     if (etc.areIconsDisplayedInHeaders) {
-      cellElement.onmousedown = CellWithTextEvents.mouseDownCell.bind(etc, null);
+      cellElement.onfocus = () => {};
+      cellElement.onblur = () => {};
+      cellElement.onmousedown = CellWithTextEvents.mouseDown.bind(etc, null);
       cellElement.onclick = EditableHeaderCellEvents.mouseClickCell.bind(etc, columnIndex);
       EditableHeaderIconTextEvents.setEvents(etc, textElement, rowIndex, columnIndex);
     } else {

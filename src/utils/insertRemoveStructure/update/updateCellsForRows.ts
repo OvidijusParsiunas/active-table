@@ -18,7 +18,7 @@ export class UpdateCellsForRows {
     if (rowIndex > 0) {
       const {selectProps, calendar, checkbox} = etc.columnsDetails[columnIndex].activeType;
       if (selectProps) {
-        SelectCell.resetEvents(etc, cellElement, rowIndex, columnIndex);
+        SelectCell.setEvents(etc, cellElement, rowIndex, columnIndex);
       } else if (calendar) {
         DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
       } else if (checkbox) {

@@ -12,7 +12,7 @@ export class LabelCellEvents {
     cellElement.onfocus = () => {};
     cellElement.onmouseenter = () => {};
     cellElement.onmouseleave = () => {};
-    cellElement.onmousedown = CellWithTextEvents.mouseDownCell.bind(etc, SelectCellBaseEvents.blurIfDropdownFocused);
+    cellElement.onmousedown = CellWithTextEvents.mouseDown.bind(etc, SelectCellBaseEvents.blurIfDropdownFocused);
     const textElement = cellElement.children[0] as HTMLElement;
     SelectCellTextBaseEvents.setEvents(etc, textElement, rowIndex, columnIndex);
   }

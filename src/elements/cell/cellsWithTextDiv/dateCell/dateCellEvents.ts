@@ -33,7 +33,7 @@ export class DateCellEvents {
     cellElement.onfocus = () => {};
     cellElement.onmouseenter = DateCellEvents.mouseEnterCell.bind(etc);
     cellElement.onmouseleave = DateCellEvents.mouseLeaveCell.bind(etc);
-    cellElement.onmousedown = CellWithTextEvents.mouseDownCell.bind(etc, null);
+    cellElement.onmousedown = CellWithTextEvents.mouseDown.bind(etc, null);
     const textElement = cellElement.children[0] as HTMLElement;
     DateCellTextEvents.setEvents(etc, textElement, rowIndex, columnIndex);
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
