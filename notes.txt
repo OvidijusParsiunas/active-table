@@ -257,6 +257,11 @@ in the current page (due to rows being hidden). To fix this we set the add new r
 this issue also affects the header element when there is an odd number of visible rows allowed, we change the allowed row number
 to be even to make sure that no sibling rows are same.
 
+REF-33
+Cell event setters have been optimized to only be called when a column type is set or when a new cell is being inserted - instead of
+setting events on the conversion of each cell. The reason for that is after a cell is created, the events are set again in
+CellEventsReset method, hence remvoving redundant call.
+
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
 does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()

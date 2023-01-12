@@ -158,6 +158,10 @@ export class ColumnTypesUtils {
       ObjectUtils.convertStringToFunction(type.sorting, 'ascending');
       ObjectUtils.convertStringToFunction(type.sorting, 'descending');
     }
+    if (type.calendar) {
+      ObjectUtils.convertStringToFunction(type.calendar, 'toYMD');
+      ObjectUtils.convertStringToFunction(type.calendar, 'fromYMD');
+    }
   }
 
   private static process(types: ColumnTypes, isDefaultTextRemovable: boolean, defaultText: CellText) {

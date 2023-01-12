@@ -1,4 +1,5 @@
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CellEventsReset} from '../../../elements/cell/cellEventsReset';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ExtractElements} from '../../elements/extractElements';
@@ -9,7 +10,7 @@ export class UpdateCellsForColumns {
   private static updateColumn(etc: EditableTableComponent,
       rowIndex: number, cellElement: Node, columnIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
     if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
-      CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
+      CellEventsReset.reset(etc, cellElement as HTMLElement, rowIndex, columnIndex); // REF-33
     }
     etc.onCellUpdate(CellElement.getText(cellElement as HTMLElement), rowIndex, columnIndex, cellUpdateType);
   }

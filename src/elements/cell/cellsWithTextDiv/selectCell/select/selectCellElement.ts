@@ -7,17 +7,14 @@ import {SelectCellEvents} from './selectCellEvents';
 import {SelectCell} from '../selectCell';
 
 export class SelectCellElement {
-  // prettier-ignore
-  public static setCellSelectStructure(etc: EditableTableComponent,
-      cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+  public static setCellSelectStructure(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
     ConvertCellTypeUtils.preprocessCell(cellElement);
     SelectCellTextElement.setCellTextAsAnElement(etc, cellElement, columnIndex);
     cellElement.appendChild(ArrowDownIconElement.get());
-    SelectCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
     SelectCell.setPointerCursorIfCantAdd(cellElement, etc.columnsDetails[columnIndex].activeType);
   }
 
   public static setColumnSelectStructure(etc: EditableTableComponent, columnIndex: number) {
-    CellStructureUtils.setColumn(etc, columnIndex, SelectCellElement.setCellSelectStructure);
+    CellStructureUtils.setColumn(etc, columnIndex, SelectCellElement.setCellSelectStructure, SelectCellEvents.setEvents);
   }
 }

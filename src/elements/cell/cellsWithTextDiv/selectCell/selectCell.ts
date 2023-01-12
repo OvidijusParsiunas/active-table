@@ -8,12 +8,12 @@ import {LabelCellElement} from './label/labelCellElement';
 import {LabelCellEvents} from './label/labelCellEvents';
 
 export class SelectCell {
-  public static convertCell(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
+  public static convertCell(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
     const columnDetails = etc.columnsDetails[columnIndex];
     if (columnDetails.activeType.selectProps?.isBasicSelect) {
-      SelectCellElement.setCellSelectStructure(etc, cellElement, rowIndex, columnIndex);
+      SelectCellElement.setCellSelectStructure(etc, cellElement, columnIndex);
     } else {
-      LabelCellElement.setCellLabelStructure(etc, cellElement, rowIndex, columnIndex);
+      LabelCellElement.setCellLabelStructure(etc, cellElement, columnIndex);
     }
   }
 

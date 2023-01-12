@@ -74,14 +74,14 @@ export class InsertNewCell {
       if (rowIndex === 0) {
         SelectDropdown.setUpDropdown(etc, columnIndex);
       } else {
-        SelectCell.convertCell(etc, rowIndex, columnIndex, newCellElement);
+        SelectCell.convertCell(etc, columnIndex, newCellElement);
         SelectCell.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
       }
     } else if (rowIndex > 0) {
       if (columnDetails.activeType.checkbox) {
-        CheckboxCellElement.setCellCheckboxStructure(etc, newCellElement, rowIndex, columnIndex);
+        CheckboxCellElement.setCellCheckboxStructure(etc, newCellElement, columnIndex, rowIndex);
       } if (columnDetails.activeType.calendar) {
-        DateCellElement.setCellDateStructure(etc, newCellElement, rowIndex, columnIndex);
+        DateCellElement.setCellDateStructure(etc, newCellElement, columnIndex);
       }
     }
   }

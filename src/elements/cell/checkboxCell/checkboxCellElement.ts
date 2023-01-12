@@ -54,14 +54,15 @@ export class CheckboxCellElement {
 
   // prettier-ignore
   public static setCellCheckboxStructure(etc: EditableTableComponent,
-      cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+      cellElement: HTMLElement, columnIndex: number, rowIndex: number) {
     ConvertCellTypeUtils.preprocessCell(cellElement);
     CheckboxCellElement.setCellTextAsAnElement(etc, cellElement, rowIndex, columnIndex);
-    CheckboxCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
   }
 
+  // prettier-ignore
   public static setColumnCheckboxStructure(etc: EditableTableComponent, columnIndex: number) {
-    CellStructureUtils.setColumn(etc, columnIndex, CheckboxCellElement.setCellCheckboxStructure);
+    CellStructureUtils.setColumn(etc, columnIndex, CheckboxCellElement.setCellCheckboxStructure,
+      CheckboxCellEvents.setEvents);
   }
 
   public static defaultChangeTextFunc(text: CellText) {

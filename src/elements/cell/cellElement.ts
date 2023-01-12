@@ -1,10 +1,7 @@
-import {ColumnDropdownCellOverlayEvents} from '../dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlayEvents';
-import {RowDropdownCellOverlayEvents} from '../dropdown/rowDropdown/cellOverlay/rowDropdownCellOverlayEvents';
 import {DateCellCalendarIconElement} from './cellsWithTextDiv/dateCell/dateCellCalendarIconElement';
 import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsBorderUtils';
 import {ColumnSettingsStyleUtils} from '../../utils/columnSettings/columnSettingsStyleUtils';
 import {ColumnSettingsWidthUtils} from '../../utils/columnSettings/columnSettingsWidthUtils';
-import {EditableHeaderCellEvents} from './headerCell/editable/editableHeaderCellEvents';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
@@ -13,8 +10,6 @@ import {ColumnDetails} from '../../utils/columnDetails/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CaretDisplayFix} from '../../utils/browser/caretDisplayFix';
 import {ColumnSettingsInternal} from '../../types/columnsSettings';
-import {HeaderCellEvents} from './headerCell/headerCellEvents';
-import {DataCellEvents} from './dataCell/dataCellEvents';
 import {CellText} from '../../types/tableContents';
 import {CellCSSStyle} from '../../types/cssStyle';
 
@@ -23,25 +18,6 @@ export class CellElement {
   private static readonly HEADER_CELL_CLASS = 'header-cell';
   public static readonly HEADER_TAG = 'TH';
   public static readonly DATA_TAG = 'TD';
-
-  // prettier-ignore
-  public static setCellEvents(etc: EditableTableComponent,
-      cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (rowIndex === 0) {
-      if (etc.columnDropdownDisplaySettings.openMethod?.cellClick) {
-        HeaderCellEvents.setEvents(etc, cellElement, columnIndex)
-      } else {
-        DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
-        EditableHeaderCellEvents.setEvents(etc, cellElement, 0, columnIndex);
-        ColumnDropdownCellOverlayEvents.setEvents(etc, columnIndex);
-      }
-    } else if (etc.columnsDetails[columnIndex].settings.isCellTextEditable) {
-      DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
-    }
-    if (!etc.auxiliaryTableContentInternal.displayIndexColumn && columnIndex === 0) {
-      RowDropdownCellOverlayEvents.addCellEvents(etc, rowIndex, cellElement);
-    }
-  }
 
   public static setDefaultCellStyle(cellElement: HTMLElement, cellStyle?: CellCSSStyle, customStyle?: CellCSSStyle) {
     Object.assign(cellElement.style, cellStyle, customStyle);

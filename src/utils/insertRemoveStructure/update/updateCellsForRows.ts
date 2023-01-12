@@ -1,10 +1,8 @@
 // eslint-disable-next-line max-len
 import {RowDropdownCellOverlayEvents} from '../../../elements/dropdown/rowDropdown/cellOverlay/rowDropdownCellOverlayEvents';
-import {DateCellEvents} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellEvents';
-import {CheckboxCellEvents} from '../../../elements/cell/checkboxCell/checkboxCellEvents';
-import {SelectCell} from '../../../elements/cell/cellsWithTextDiv/selectCell/selectCell';
 import {IndexColumnEvents} from '../../../elements/indexColumn/indexColumnEvents';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {CellEventsReset} from '../../../elements/cell/cellEventsReset';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ExtractElements} from '../../elements/extractElements';
@@ -12,28 +10,12 @@ import {ElementDetails} from '../../../types/elementDetails';
 
 export class UpdateCellsForRows {
   // prettier-ignore
-  private static resetCellEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number,
-      columnIndex: number) {
-    CellElement.setCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
-    if (rowIndex > 0) {
-      const {selectProps, calendar, checkbox} = etc.columnsDetails[columnIndex].activeType;
-      if (selectProps) {
-        SelectCell.setEvents(etc, cellElement, rowIndex, columnIndex);
-      } else if (calendar) {
-        DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
-      } else if (checkbox) {
-        CheckboxCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
-      }
-    }
-  }
-
-  // prettier-ignore
   private static updateRowCells(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
     const dataCellElements = ExtractElements.textCellsArrFromRow(rowElement);
     dataCellElements.forEach((cellElement: Node, columnIndex: number) => {
       if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
-        UpdateCellsForRows.resetCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
+        CellEventsReset.reset(etc, cellElement as HTMLElement, rowIndex, columnIndex); // REF-33
       }
       etc.onCellUpdate(CellElement.getText(cellElement as HTMLElement), rowIndex, columnIndex, cellUpdateType);
     });
