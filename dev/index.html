@@ -148,6 +148,17 @@
                       reusableIconName: `Select`,
                     },
                   },
+                  {
+                    name: 'Custom type Calendar',
+                    calendar: {
+                      toYMD: `(cellText) => {
+                        return ['2012', '4', '8'];
+                      }`,
+                      fromYMD: `(YMD) => {
+                        return '2012, 2, 2';
+                      }`,
+                    },
+                  },
                 ],
                 isMoveAvailable: true,
                 activeTypeName: 'Custom type 2',

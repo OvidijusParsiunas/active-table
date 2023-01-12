@@ -211,7 +211,8 @@ export const ediTableStyle = css`
     display: flex;
     float: left;
     height: 90%;
-    align-items: center;
+    align-items: initial;
+    padding-top: 2px;
   }
 
   .dropdown-title-item {

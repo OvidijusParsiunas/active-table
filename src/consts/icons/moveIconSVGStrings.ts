@@ -4,7 +4,7 @@
 function buildIcon(transform: string) {
   return `<?xml version="1.0" standalone="no"?>
     <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="body_1" width="9" height="9" transform="${transform}">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="body_1" width="9" height="9" style="transform: ${transform}">
       <g transform="matrix(0.47368425 0 0 0.47368425 0 0)">
         <g transform="matrix(0.027142858 0 0 0.027142858 0 0)">
           <g>
@@ -17,8 +17,8 @@ function buildIcon(transform: string) {
 
 export const MOVE_LEFT_ICON_SVG_STRING = buildIcon('');
 
-export const MOVE_RIGHT_ICON_SVG_STRING = buildIcon('rotate(180)');
+export const MOVE_RIGHT_ICON_SVG_STRING = buildIcon('rotate(180deg)');
 
-export const MOVE_UP_ICON_SVG_STRING = buildIcon('rotate(90)');
+export const MOVE_UP_ICON_SVG_STRING = buildIcon('rotate(90deg)');
 
-export const MOVE_DOWN_ICON_SVG_STRING = buildIcon('rotate(-90)');
+export const MOVE_DOWN_ICON_SVG_STRING = buildIcon('rotate(-90deg)');

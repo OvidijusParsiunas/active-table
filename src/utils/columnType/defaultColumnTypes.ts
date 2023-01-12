@@ -23,7 +23,7 @@ export class DefaultColumnTypes {
     dropdownIconSettings: {
       svgString: TEXT_ICON_SVG_STRING,
       containerStyles: {
-        dropdown: {marginLeft: '-0.25px', marginRight: '6px', marginTop: '1.5px'},
+        dropdown: {marginLeft: '-0.25px', marginRight: '6px', marginTop: '2.5px'},
         headerCorrections: {marginTop: '2.5px'},
       },
     },
@@ -50,7 +50,7 @@ export class DefaultColumnTypes {
       dropdownIconSettings: {
         svgString: CURRENCY_ICON_SVG_STRING,
         containerStyles: {
-          dropdown: {marginLeft: '-2px', marginRight: '4px', marginTop: '2px'},
+          dropdown: {marginLeft: '-2px', marginRight: '4px', marginTop: '1px'},
           headerCorrections: {marginRight: '3px'},
         },
       },
@@ -60,8 +60,8 @@ export class DefaultColumnTypes {
       dropdownIconSettings: {
         svgString: CHECKBOX_ICON_SVG_STRING,
         containerStyles: {
-          dropdown: {marginTop: '1.5px', marginRight: '6px'},
-          headerCorrections: {marginTop: '3px', marginRight: '5px', marginLeft: '1px'},
+          dropdown: {marginRight: '6px', marginTop: '2.5px'},
+          headerCorrections: {marginRight: '5px', marginLeft: '1px', marginTop: '3px'},
         },
       },
       checkbox: true,
@@ -75,7 +75,7 @@ export class DefaultColumnTypes {
       calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_DMY],
       dropdownIconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
-        containerStyles: {dropdown: {marginLeft: '1px', marginRight: '8px'}},
+        containerStyles: {dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-2px'}},
       },
     },
     {
@@ -84,7 +84,7 @@ export class DefaultColumnTypes {
       calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_MDY],
       dropdownIconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
-        containerStyles: {dropdown: {marginLeft: '1px', marginRight: '8px'}},
+        containerStyles: {dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-2px'}},
       },
     },
   ];
@@ -101,7 +101,7 @@ export class DefaultColumnTypes {
       iconSettings: {
         svgString: SELECT_ICON_SVG_STRING,
         containerStyles: {
-          dropdown: {marginTop: '0.5px', marginRight: '2.75px', marginLeft: '-2.75px'},
+          dropdown: {marginTop: '0.5px', marginRight: '3px', marginLeft: '-2.75px'},
           headerCorrections: {marginTop: '1.5px'},
         },
       },
