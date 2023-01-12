@@ -37,7 +37,7 @@ export class DataCellEvents {
       const isUndo = inputEvent.inputType === UNDO_INPUT_TYPE;
       CellElement.setNewText(this, textContainerElement, text, false, isUndo, false);
       const columnDetails = this.columnsDetails[columnIndex];
-      if (columnDetails.activeType.selectProps) {
+      if (columnDetails.activeType.selectProps && rowIndex > 0) {
         SelectDropdown.updateSelectDropdown(textContainerElement,
           columnDetails.selectDropdown, columnDetails.settings.defaultText, true);
       }

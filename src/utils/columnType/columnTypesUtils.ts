@@ -100,8 +100,9 @@ export class ColumnTypesUtils {
         iconSettings = dropdownIconSettings;
         if (Object.keys(dropdownIconSettings).length === 0) {
           iconSettings = DropdownButtonItemConf.DEFAULT_ITEM.iconSettings;
-        } else {
+        } else if (!iconSettings.svgString) {
           iconSettings.svgString ??= DropdownButtonItemConf.DEFAULT_ITEM.iconSettings.svgString;
+          iconSettings.containerStyles ??= DropdownButtonItemConf.DEFAULT_ITEM.iconSettings.containerStyles;
         }
       }
     } else {
