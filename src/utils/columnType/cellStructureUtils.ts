@@ -13,10 +13,10 @@ export class CellStructureUtils {
     elements.slice(1).forEach((cellElement: HTMLElement, dataRowIndex: number) => {
       const relativeRowIndex = dataRowIndex + 1;
       setStructure(etc, cellElement, columnIndex, relativeRowIndex);
-      setTimeout(() => {
-        const {isCellTextEditable} = etc.columnsDetails[columnIndex].settings
-        if (isCellTextEditable) setEvents(etc, cellElement, relativeRowIndex, columnIndex);
-      });
+      // event setter should not be in a timeout because if column width is wide and column type dropdown is closed
+      // after the user selected a new type, if mouse is on the same column - mouse enter event will be fired
+      const {isCellTextEditable} = etc.columnsDetails[columnIndex].settings
+      if (isCellTextEditable) setEvents(etc, cellElement, relativeRowIndex, columnIndex);
     });
   }
 }

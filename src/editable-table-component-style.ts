@@ -213,6 +213,8 @@ export const ediTableStyle = css`
     height: 90%;
     align-items: initial;
     padding-top: 2px;
+    /* if items are not aligned in center - change align-items to center and revert changes
+      in 0805a911cd5c7921aa05b13ffb9387d3d996c133 */
   }
 
   .dropdown-title-item {

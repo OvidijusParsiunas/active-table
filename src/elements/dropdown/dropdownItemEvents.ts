@@ -61,8 +61,15 @@ export class DropdownItemEvents {
     }
   }
 
+  // prettier-ignore
   public static addNestedItemEvents(etc: EditableTableComponent, element: HTMLElement) {
     element.addEventListener('mouseenter', DropdownItemEvents.displayAndSetNestedDropdownPosition.bind(etc));
     element.addEventListener('mouseleave', DropdownItemEvents.hideNestedDropdown);
+    // this is required because when the user hovers over the item with mouse and then hovers over the nested dropdown,
+    // upon hovering the item again - the above would not fire mouse enter as the dropdown is within the item element
+    const itemContents = element.children[1] as HTMLElement;
+    itemContents.addEventListener('mouseenter',
+      DropdownItemHighlightUtils.highlightNew.bind(this, etc.activeOverlayElements, element)
+    );
   }
 }
