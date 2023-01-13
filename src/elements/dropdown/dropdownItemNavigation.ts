@@ -1,3 +1,4 @@
+import {NestedDropdownItem} from './nestedDropdown/nestedDropdownItem';
 import {DropdownItem} from './dropdownItem';
 import {Dropdown} from './dropdown';
 
@@ -27,7 +28,7 @@ export class DropdownItemNavigation {
   // prettier-ignore
   public static focusSiblingItem(focusedItem: HTMLElement,
       dropdownElement: HTMLElement, isNext: boolean, isEdgeItem = false): void {
-    if (focusedItem.classList.contains(DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM)) {
+    if (focusedItem.classList.contains(NestedDropdownItem.NESTED_DROPDOWN_ITEM)) {
       const nestedDropdownElement = focusedItem.children[2] as HTMLElement;
       // when on item that has open nested dropdown
       if (Dropdown.isDisplayed(nestedDropdownElement)) Dropdown.hide(nestedDropdownElement);
@@ -49,7 +50,7 @@ export class DropdownItemNavigation {
   }
 
   public static focusFirstNestedDropdownItem(focusedItem: HTMLElement) {
-    if (focusedItem.classList.contains(DropdownItem.DROPDOWN_NESTED_DROPDOWN_ITEM)) {
+    if (focusedItem.classList.contains(NestedDropdownItem.NESTED_DROPDOWN_ITEM)) {
       const nestedDropdownElement = focusedItem.children[2] as HTMLElement;
       // when on item that has open nested dropdown
       if (Dropdown.isDisplayed(nestedDropdownElement)) {

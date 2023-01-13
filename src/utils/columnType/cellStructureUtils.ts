@@ -15,8 +15,9 @@ export class CellStructureUtils {
       setStructure(etc, cellElement, columnIndex, relativeRowIndex);
       // event setter should not be in a timeout because if column width is wide and column type dropdown is closed
       // after the user selected a new type, if mouse is on the same column - mouse enter event will be fired
-      const {isCellTextEditable} = etc.columnsDetails[columnIndex].settings
-      if (isCellTextEditable) setEvents(etc, cellElement, relativeRowIndex, columnIndex);
+      if (etc.columnsDetails[columnIndex].settings.isCellTextEditable) {
+        setEvents(etc, cellElement, relativeRowIndex, columnIndex);
+      }
     });
   }
 }

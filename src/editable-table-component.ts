@@ -100,7 +100,9 @@ export class EditableTableComponent extends LitElement {
   })
   spellCheck = false;
 
-  // WORK - header row events do not work in Firefox when row in not initial position
+  // Bug - header row events do not work in Firefox when there are 21 rows or more
+  // A question has been raised in the following link:
+  // https://stackoverflow.com/questions/75103886/firefox-table-sticky-header-row-events-not-firing
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
@@ -161,7 +163,6 @@ export class EditableTableComponent extends LitElement {
   @state()
   userKeyEventsState: UserKeyEventsState = UserKeyEventsStateUtils.createNew();
 
-  // TO-DO height - keep in mind that by resizing columns - the height can change
   @property({type: Object})
   tableDimensions: TableDimensions = {};
 
@@ -195,7 +196,6 @@ export class EditableTableComponent extends LitElement {
   @property({type: Object})
   columnDropdownDisplaySettings: DropdownDisplaySettings = {isAvailable: true, openMethod: {overlayClick: true}};
 
-  // WORK - cell click should be the default one when nothing is set by the user and index is available
   @property({type: Object})
   rowDropdownSettings: RowDropdownSettings = {displaySettings: {isAvailable: true, openMethod: {overlayClick: true}}};
 
@@ -235,7 +235,7 @@ export class EditableTableComponent extends LitElement {
     super.connectedCallback();
     StickyProcessUtils.process(this);
     AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
-    RowDropdownSettingsUtil.process(this.rowDropdownSettings, this.auxiliaryTableContentInternal.displayIndexColumn);
+    RowDropdownSettingsUtil.process(this);
     DropdownDisplaySettingsUtil.process(this.columnDropdownDisplaySettings);
     if (this.pagination) PaginationInternalUtils.process(this);
     if (this.stripedRows) StripedRows.process(this);

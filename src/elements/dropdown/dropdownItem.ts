@@ -4,7 +4,6 @@ import {EditableTableComponent} from '../../editable-table-component';
 import {SVGIconUtils} from '../../utils/svgIcons/svgIconUtils';
 import {DropdownItemEvents} from './dropdownItemEvents';
 import {Optional} from '../../types/utilityTypes';
-import {Dropdown} from './dropdown';
 
 export class DropdownItem {
   public static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
@@ -14,7 +13,6 @@ export class DropdownItem {
   private static readonly DROPDOWN_ITEM_ICON_CONTAINER_CLASS = 'dropdown-item-icon-container';
   public static readonly DROPDOWN_INPUT_ITEM_CLASS = 'dropdown-input-item';
   public static readonly DROPDOWN_TITLE_ITEM_CLASS = 'dropdown-title-item';
-  public static readonly DROPDOWN_NESTED_DROPDOWN_ITEM = 'dropdown-nested-dropdown-item';
   public static readonly DROPDOWN_ITEM_DIVIDER_CLASS = 'dropdown-item-divider';
   // this is used to identify if a mouse event is currently on a dropdown item
   public static readonly DROPDOWN_ITEM_IDENTIFIER = 'dropdown-item-identifier';
@@ -127,25 +125,8 @@ export class DropdownItem {
     });
   }
 
-  public static createNestedDropdown(etc: EditableTableComponent, itemSettings: DropdownButtonItemSettings[]): HTMLElement;
-  public static createNestedDropdown(): HTMLElement;
-  public static createNestedDropdown(etc?: EditableTableComponent, itemSettings?: DropdownButtonItemSettings[]) {
-    const dropdownElement = Dropdown.createBase();
-    dropdownElement.style.top = `-${Number.parseInt(dropdownElement.style.paddingTop) + 22}px`;
-    if (etc && itemSettings) DropdownItem.addNewButtonItems(etc, dropdownElement, itemSettings);
-    return dropdownElement;
-  }
-
-  public static resetNestedDropdownItemStyle(nestedDropdown: HTMLElement) {
-    Array.from(nestedDropdown.children).forEach((item) => {
-      const itemElement = item as HTMLElement;
-      itemElement.style.backgroundColor = '';
-      itemElement.style.color = '';
-    });
-  }
-
-  public static removeItems(nestedDropdown: HTMLElement) {
-    Array.from(nestedDropdown.children).forEach((item) => item.remove());
+  public static removeItems(dropdown: HTMLElement) {
+    Array.from(dropdown.children).forEach((item) => item.remove());
   }
 
   public static doesElementContainItemClass(element: HTMLElement) {
