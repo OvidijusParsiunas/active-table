@@ -18,6 +18,8 @@ interface ItemToColor {
 }
 
 export class SelectDropdownItem {
+  private static readonly SELECT_ACTIVE_ITEM_BACKGROUND_COLOR = '#4a69d4';
+
   // prettier-ignore
   private static updateCellElementIfNotUpdated(etc: EditableTableComponent,
       newText: string, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
@@ -38,13 +40,13 @@ export class SelectDropdownItem {
 
   // prettier-ignore
   public static addNewSelectItem(etc: EditableTableComponent, textElement: HTMLElement, dropdown: SelectDropdownT,
-      color?: string) {
+      color: string) {
     const newItemName = CellElement.getText(textElement);
     if (newItemName === EMPTY_STRING) return;
-    const newColor = dropdown.oneActiveColor || color || Color.getLatestPasteleColorAndSetNew();
-    if (!dropdown.oneActiveColor) textElement.style.backgroundColor = newColor;
+    const newColor = dropdown.newItemColors ? color : SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
+    if (dropdown.newItemColors) textElement.style.backgroundColor = newColor;
     SelectDropdownItem.addItem(etc, newItemName, newColor, dropdown);
-    Color.setNewLatestPasteleColor();
+    dropdown.newItemColors?.pop() || Color.setNewLatestPasteleColor();
   }
 
   // prettier-ignore
@@ -56,7 +58,8 @@ export class SelectDropdownItem {
     } else if (!dropdown.canAddMoreOptions || cellText === EMPTY_STRING || cellText === defaultText) {
       textElement.style.backgroundColor = '';
     } else {
-      textElement.style.backgroundColor = Color.getLatestPasteleColor();
+      textElement.style.backgroundColor = dropdown.newItemColors?.[dropdown.newItemColors.length - 1]
+        || Color.getLatestPasteleColor();
     }
   }
 
@@ -88,7 +91,7 @@ export class SelectDropdownItem {
       SelectDropdownItemEvents.blurItem(dropdown, 'matchingWithCellText');
     }
     SelectDropdownItem.updateItemColor(itemElement, activeItems);
-    if (updateCellText && !dropdown.oneActiveColor) {
+    if (updateCellText && dropdown.newItemColors) {
       SelectDropdownItem.updateCellTextBgColor(itemElement, textElement, dropdown, defaultText);
     }
   }
@@ -157,18 +160,28 @@ export class SelectDropdownItem {
     if (isDefaultTextRemovable) delete itemToColor[defaultText];
   }
 
-  private static changeUserOptionsToItemToColor(select: LabelOptions, color?: string): ItemToColor {
+  private static changeUserOptionsToItemToColor(select: LabelOptions, newItemColors?: string[]): ItemToColor {
     return select.reduce<ItemToColor>((itemToColor, option) => {
-      itemToColor[option.name] = color || option.backgroundColor || Color.getLatestPasteleColorAndSetNew();
+      if (newItemColors) {
+        itemToColor[option.name] = option.backgroundColor || newItemColors.pop() || Color.getLatestPasteleColorAndSetNew();
+      } else {
+        itemToColor[option.name] = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
+      }
       return itemToColor;
     }, {});
   }
 
-  private static aggregateItemToColor(contents: TableContents, columnIndex: number, color?: string) {
+  private static aggregateItemToColor(contents: TableContents, columnIndex: number, newItemColors?: string[]) {
     const itemToColor: ItemToColor = {};
     contents.slice(1).forEach((row) => {
       const cellText = row[columnIndex];
-      if (cellText !== EMPTY_STRING) itemToColor[cellText] = color || Color.getLatestPasteleColorAndSetNew();
+      if (cellText !== EMPTY_STRING && !itemToColor[cellText]) {
+        if (newItemColors) {
+          itemToColor[cellText] = newItemColors.pop() || Color.getLatestPasteleColorAndSetNew();
+        } else {
+          itemToColor[cellText] = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
+        }
+      }
     });
     return itemToColor;
   }
@@ -177,10 +190,10 @@ export class SelectDropdownItem {
   public static populateItems(etc: EditableTableComponent, columnIndex: number) {
     const {contents, columnsDetails} = etc;
     const {selectDropdown, settings: {defaultText, isDefaultTextRemovable}, activeType} = columnsDetails[columnIndex];
-    const {oneActiveColor} = selectDropdown;
+    const {newItemColors} = selectDropdown;
     const itemToColor = activeType.selectProps?.options
-      ? SelectDropdownItem.changeUserOptionsToItemToColor(activeType.selectProps?.options, oneActiveColor)
-      : SelectDropdownItem.aggregateItemToColor(contents, columnIndex, oneActiveColor);
+      ? SelectDropdownItem.changeUserOptionsToItemToColor(activeType.selectProps?.options, newItemColors)
+      : SelectDropdownItem.aggregateItemToColor(contents, columnIndex, newItemColors);
     SelectDropdownItem.postProcessItemToColor(isDefaultTextRemovable, itemToColor, defaultText);
     SelectDropdownItem.addItems(etc, itemToColor, selectDropdown);
   }

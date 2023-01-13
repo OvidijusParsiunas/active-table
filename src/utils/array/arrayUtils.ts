@@ -18,4 +18,8 @@ export class ArrayUtils {
     }
     return newArray;
   }
+
+  public static shuffle<T>(array: T[]) {
+    return array.sort(() => Math.random() - 0.5);
+  }
 }

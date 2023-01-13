@@ -12,6 +12,7 @@ import {SelectDropdownItem} from './selectDropdownItem';
 import {TableElement} from '../../table/tableElement';
 import {CellText} from '../../../types/tableContents';
 import {CellElement} from '../../cell/cellElement';
+import {Color} from '../../../utils/color/color';
 import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
@@ -21,7 +22,6 @@ export class SelectDropdown {
   private static readonly MAX_HEIGHT_PX = '150px';
   private static readonly MIN_WIDTH = 70;
   private static readonly MAX_WIDTH = 200;
-  private static readonly ONE_ACTIVE_COLOR_BACKGROUND_COLOR = '#4a69d4';
 
   private static generateRightPosition() {
     return `4px`;
@@ -123,7 +123,7 @@ export class SelectDropdown {
 
   private static getWidth(cellElement: HTMLElement, dropdown: SelectDropdownT, dropdownStyle?: SelectDropdownStyle) {
     if (dropdownStyle?.width) return dropdownStyle.width;
-    if (dropdown.oneActiveColor) return Math.max(cellElement.offsetWidth - 2, SelectDropdown.MIN_WIDTH);
+    if (!dropdown.newItemColors) return Math.max(cellElement.offsetWidth - 2, SelectDropdown.MIN_WIDTH);
     const textContainerElement = cellElement.children[0] as HTMLElement;
     return Math.max(cellElement.offsetWidth - textContainerElement.offsetLeft * 2, SelectDropdown.MIN_WIDTH);
   }
@@ -167,8 +167,8 @@ export class SelectDropdown {
   public static setUpDropdown(etc: EditableTableComponent, columnIndex: number) {
     const {activeType: {selectProps}, selectDropdown} = etc.columnsDetails[columnIndex];
     if (!selectProps) return;
-    selectDropdown.oneActiveColor = etc.columnsDetails[columnIndex].activeType.selectProps?.isBasicSelect ?
-      SelectDropdown.ONE_ACTIVE_COLOR_BACKGROUND_COLOR : undefined;
+    selectDropdown.newItemColors = etc.columnsDetails[columnIndex].activeType.selectProps?.isBasicSelect ?
+      undefined : Color.getDefaultColors(); // REF-34
     SelectDropdown.setCustomState(selectDropdown, selectProps)
     SelectDropdownItem.populateItems(etc, columnIndex);
     if (selectProps.dropdownStyle) SelectDropdown.setCustomStyle(selectDropdown, selectProps.dropdownStyle);

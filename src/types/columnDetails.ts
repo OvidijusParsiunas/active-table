@@ -40,7 +40,6 @@ interface SelectItem {
 
 export interface SelectDropdownT {
   selectItem: SelectItem; // dropdown item
-  oneActiveColor?: string; // used for none label
   activeItems: ActiveSelectItems; // items that exhibit certain behaviours
   element: HTMLElement; // REF-8
   scrollbarPresence: ScrollbarPresence;
@@ -48,6 +47,7 @@ export interface SelectDropdownT {
   customItemStyle?: SelectDropdownOptionStyle;
   canAddMoreOptions: boolean;
   displayedCellElement?: HTMLElement;
+  newItemColors?: string[]; // this property serves 2 purposers: 1. indicates if label type 2. eplained in notes at REF-34
 }
 
 export interface ColumnDetailsT {

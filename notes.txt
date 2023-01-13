@@ -262,6 +262,10 @@ Cell event setters have been optimized to only be called when a column type is s
 setting events on the conversion of each cell. The reason for that is after a cell is created, the events are set again in
 CellEventsReset method, hence remvoving redundant call.
 
+REF-34
+To make sure that label colors are varied instead of trusting the random number generator to generate unique colors, each label type
+contains an array of predefined colors which will be used before the randomly generated colos.
+
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
 does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()

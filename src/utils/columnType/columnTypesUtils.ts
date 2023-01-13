@@ -137,8 +137,8 @@ export class ColumnTypesUtils {
       internalType.selectProps = {isBasicSelect: !type.label};
     } else if (typeof type.select === 'object' || typeof type.label === 'object') {
       internalType.selectProps = (type.select || type.label) as SelectPropertiesInternal;
-      if (type.select) ColumnTypesUtils.processSelectOptions(type.select);
       internalType.selectProps.isBasicSelect = !type.label;
+      if (type.select) ColumnTypesUtils.processSelectOptions(type.select);
       Validation.setSelectValidation(internalType, isDefaultTextRemovable, defaultText);
     }
     if (internalType.selectProps && internalType.selectProps.canAddMoreOptions === undefined) {
