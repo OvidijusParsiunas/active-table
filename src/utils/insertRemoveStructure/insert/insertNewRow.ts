@@ -99,7 +99,7 @@ export class InsertNewRow {
 
   public static insertEvent(this: EditableTableComponent) {
     let newRowIndex = this.contents.length;
-    if (this.paginationInternal) {
+    if (this.pagination) {
       const {maxVisibleRowIndex} = PaginationUtils.getRelativeRowIndexes(this);
       if (maxVisibleRowIndex < newRowIndex) newRowIndex = maxVisibleRowIndex;
     }

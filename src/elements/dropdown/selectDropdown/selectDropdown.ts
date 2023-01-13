@@ -111,7 +111,9 @@ export class SelectDropdown {
   // prettier-ignore
   private static correctWidthForOverflow(dropdownElement: HTMLElement) {
     if (dropdownElement.clientWidth !== dropdownElement.scrollWidth) {
-      dropdownElement.style.width = `${Math.min(dropdownElement.scrollWidth, SelectDropdown.MAX_WIDTH)}px`;
+      const scrollbarPadding = dropdownElement.clientHeight !== dropdownElement.scrollHeight ? 16 : 0;
+      const newWidth = dropdownElement.scrollWidth + scrollbarPadding;
+      dropdownElement.style.width = `${Math.min(newWidth, SelectDropdown.MAX_WIDTH)}px`;
     }
     // the following is a bug fix where display 'grid' property on the dropdown can set the item lengths
     // a couple of decimal places higher than clientWidth, causing an overflow when there shouldn't be

@@ -43,10 +43,15 @@ export class SelectDropdownItem {
       color: string) {
     const newItemName = CellElement.getText(textElement);
     if (newItemName === EMPTY_STRING) return;
-    const newColor = dropdown.newItemColors ? color : SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
-    if (dropdown.newItemColors) textElement.style.backgroundColor = newColor;
+    let newColor = '';
+    if (dropdown.newItemColors) {
+      newColor = color || dropdown.newItemColors[dropdown.newItemColors.length - 1] || Color.getLatestPasteleColor();
+      textElement.style.backgroundColor = newColor;
+      dropdown.newItemColors?.pop() || Color.setNewLatestPasteleColor();
+    } else {
+      newColor = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
+    }
     SelectDropdownItem.addItem(etc, newItemName, newColor, dropdown);
-    dropdown.newItemColors?.pop() || Color.setNewLatestPasteleColor();
   }
 
   // prettier-ignore
@@ -160,8 +165,8 @@ export class SelectDropdownItem {
     if (isDefaultTextRemovable) delete itemToColor[defaultText];
   }
 
-  private static changeUserOptionsToItemToColor(select: LabelOptions, newItemColors?: string[]): ItemToColor {
-    return select.reduce<ItemToColor>((itemToColor, option) => {
+  private static changeUserOptionsToItemToColor(userOptions: LabelOptions, newItemColors?: string[]): ItemToColor {
+    return userOptions.reduce<ItemToColor>((itemToColor, option) => {
       if (newItemColors) {
         itemToColor[option.name] = option.backgroundColor || newItemColors.pop() || Color.getLatestPasteleColorAndSetNew();
       } else {
@@ -171,9 +176,10 @@ export class SelectDropdownItem {
     }, {});
   }
 
-  private static aggregateItemToColor(contents: TableContents, columnIndex: number, newItemColors?: string[]) {
-    const itemToColor: ItemToColor = {};
-    contents.slice(1).forEach((row) => {
+  // prettier-ignore
+  private static aggregateItemToColor(contents: TableContents, columnIndex: number, itemToColor: ItemToColor,
+      newItemColors?: string[]) {
+    return contents.slice(1).reduce<ItemToColor>((itemToColor, row) => {
       const cellText = row[columnIndex];
       if (cellText !== EMPTY_STRING && !itemToColor[cellText]) {
         if (newItemColors) {
@@ -182,18 +188,23 @@ export class SelectDropdownItem {
           itemToColor[cellText] = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
         }
       }
-    });
-    return itemToColor;
+      return itemToColor;
+    }, itemToColor);
   }
 
   // prettier-ignore
   public static populateItems(etc: EditableTableComponent, columnIndex: number) {
     const {contents, columnsDetails} = etc;
     const {selectDropdown, settings: {defaultText, isDefaultTextRemovable}, activeType} = columnsDetails[columnIndex];
+    if (!activeType.selectProps) return;
     const {newItemColors} = selectDropdown;
-    const itemToColor = activeType.selectProps?.options
-      ? SelectDropdownItem.changeUserOptionsToItemToColor(activeType.selectProps?.options, newItemColors)
-      : SelectDropdownItem.aggregateItemToColor(contents, columnIndex, newItemColors);
+    let itemToColor: ItemToColor = {}
+    if (activeType.selectProps.options) {
+      itemToColor = SelectDropdownItem.changeUserOptionsToItemToColor(activeType.selectProps.options, newItemColors)
+    }
+    if (activeType.selectProps.canAddMoreOptions) {
+      SelectDropdownItem.aggregateItemToColor(contents, columnIndex, itemToColor, newItemColors);
+    }
     SelectDropdownItem.postProcessItemToColor(isDefaultTextRemovable, itemToColor, defaultText);
     SelectDropdownItem.addItems(etc, itemToColor, selectDropdown);
   }
