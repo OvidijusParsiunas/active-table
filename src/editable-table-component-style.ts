@@ -263,7 +263,31 @@ export const ediTableStyle = css`
     color: #9e9e9e8a;
   }
 
-  .select-delete-button-container {
+  .select-button {
+    height: 13px;
+    width: 13px;
+    position: sticky;
+    z-index: 1;
+    border-radius: 12px;
+    opacity: 0.3;
+    background-color: white;
+  }
+
+  .select-button:hover {
+    opacity: 1;
+  }
+
+  .select-button-icon {
+    position: absolute;
+    color: grey;
+    left: 2px;
+    top: -3px;
+    font-size: 14px;
+    pointer-events: none;
+    color: black;
+  }
+
+  .select-button-container {
     position: absolute;
     width: 100%;
     height: 0px;
@@ -272,29 +296,24 @@ export const ediTableStyle = css`
     display: none;
   }
 
-  .select-delete-button {
-    height: 13px;
-    width: 13px;
-    position: sticky;
-    background-color: #ffffff70;
-    z-index: 1;
-    border-radius: 12px;
-    opacity: 0.3;
-    background-color: white;
-  }
-
-  .select-delete-button:hover {
-    opacity: 1;
-  }
-
-  .select-delete-button-icon {
+  .select-color-button-icon {
     position: absolute;
-    color: grey;
-    left: 2px;
-    top: -3px;
-    font-size: 14px;
+    font-size: 13px;
+    top: -3.2px;
+    left: 3px;
     pointer-events: none;
     color: black;
+  }
+
+  .color-input {
+    width: 0px;
+    height: 0px;
+    padding: 0px;
+    position: absolute;
+    outline: none;
+    pointer-events: none;
+    opacity: 0;
+    /* border unset stops color picker panel from appearing in safari */
   }
 
   .date-input-container {

@@ -2,13 +2,13 @@ import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighl
 import {SelectDropdownHorizontalScrollFix} from './selectDropdownHorizontalScrollFix';
 import {ActiveSelectItems, SelectDropdownT} from '../../../types/columnDetails';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
-import {SelectDeleteButton} from './selectDeleteButton';
+import {SelectButton} from './selectButton';
 import {SIDE} from '../../../types/side';
 
 export class SelectDropdownItemEvents {
   // prettier-ignore
   public static blurItem(dropdown: SelectDropdownT, typeOfItem: keyof ActiveSelectItems, event?: MouseEvent) {
-    const {activeItems, scrollbarPresence, newItemColors} = dropdown;
+    const {activeItems, newItemColors} = dropdown;
     const itemElement = activeItems[typeOfItem] as HTMLElement;
     if (itemElement !== undefined) {
       if (typeOfItem === 'matchingWithCellText'
@@ -18,7 +18,7 @@ export class SelectDropdownItemEvents {
         delete activeItems[typeOfItem];
       }
     }
-    if (event && dropdown.canAddMoreOptions) SelectDeleteButton.changeVisibility(event, scrollbarPresence.vertical);
+    if (event && dropdown.canAddMoreOptions) SelectButton.changeVisibility(event, dropdown);
   }
 
   // prettier-ignore
@@ -54,7 +54,7 @@ export class SelectDropdownItemEvents {
       if (!newItemColors) itemElement.style.backgroundColor = DropdownItemHighlightUtils.HOVER_BACKGROUND_COLOR;
       activeItems.hovered = itemElement;
     }
-    if (canAddMoreOptions) SelectDeleteButton.changeVisibility(event, scrollbarPresence.vertical, element);
+    if (canAddMoreOptions) SelectButton.changeVisibility(event, dropdown, element);
   }
 
   public static set(shadow: Document, itemElement: HTMLElement, color: string, dropdown: SelectDropdownT) {

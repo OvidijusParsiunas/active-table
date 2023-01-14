@@ -1,8 +1,10 @@
 import {FocusNextCellFromSelectCell} from '../../../../../utils/focusedElements/focusNextCellFromSelectCell';
 import {SelectDropdownItem} from '../../../../dropdown/selectDropdown/selectDropdownItem';
 import {SelectDropdown} from '../../../../dropdown/selectDropdown/selectDropdown';
+import {SelectPropertiesInternal} from '../../../../../types/columnTypeInternal';
 import {EditableTableComponent} from '../../../../../editable-table-component';
 import {ArrowDownIconElement} from '../select/arrowDownIconElement';
+import {SelectDropdownT} from '../../../../../types/columnDetails';
 import {KEYBOARD_KEY} from '../../../../../consts/keyboardKeys';
 import {DataCellEvents} from '../../../dataCell/dataCellEvents';
 import {CellWithTextEvents} from '../../cellWithTextEvents';
@@ -45,16 +47,22 @@ export class SelectCellTextBaseEvents {
     }
   }
 
+  private static clearTypeSpecificProps(selectDropdown: SelectDropdownT, selectProps: SelectPropertiesInternal) {
+    if (selectProps.isBasicSelect) {
+      ArrowDownIconElement.toggle(selectDropdown.displayedCellElement, false);
+      delete selectDropdown.displayedCellElement;
+    } else {
+      delete selectDropdown.overlays.colorPickerInput;
+    }
+  }
+
   public static blurring(etc: EditableTableComponent, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const {selectDropdown, activeType} = etc.columnsDetails[columnIndex];
     Dropdown.hide(selectDropdown.element);
     if (!selectDropdown.selectItem[CellElement.getText(textElement)]) {
       SelectCell.finaliseEditedText(etc, textElement, columnIndex);
     }
-    if (activeType.selectProps?.isBasicSelect) {
-      ArrowDownIconElement.toggle(selectDropdown.displayedCellElement, false);
-      delete selectDropdown.displayedCellElement;
-    }
+    if (activeType.selectProps) SelectCellTextBaseEvents.clearTypeSpecificProps(selectDropdown, activeType.selectProps);
     DataCellEvents.blur(etc, rowIndex, columnIndex, textElement);
   }
 

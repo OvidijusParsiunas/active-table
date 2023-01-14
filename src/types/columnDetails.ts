@@ -15,6 +15,10 @@ export interface BordersOverwrittenBySiblings {
   right?: boolean;
 }
 
+export interface DropdownOverlays {
+  colorPickerInput?: HTMLElement; // cannot get the reference to the overlay element, hence using input instead
+}
+
 export type CellTypeTotals = {
   [key in string]: number;
 } & {[AUXILIARY_CELL_TYPE.Undefined]: number};
@@ -48,6 +52,7 @@ export interface SelectDropdownT {
   canAddMoreOptions: boolean;
   displayedCellElement?: HTMLElement;
   newItemColors?: string[]; // this property serves 2 purposers: 1. indicates if label type 2. eplained in notes at REF-34
+  overlays: DropdownOverlays;
 }
 
 export interface ColumnDetailsT {

@@ -2,6 +2,7 @@ import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellIn
 import {UserKeyEventsStateUtils} from '../../utils/userEventsState/userEventsStateUtils';
 import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
+import {SelectColorButton} from '../dropdown/selectDropdown/selectColorButton';
 import {ActiveOverlayElements} from '../../types/activeOverlayElements';
 import {EditableTableComponent} from '../../editable-table-component';
 import {MOUSE_EVENT} from '../../consts/mouseEvents';
@@ -21,12 +22,13 @@ export class TableEvents {
     }
   }
   // text blur will not activate when the dropdown has been clicked and will not close if its scrollbar, padding
-  // or delete cateogory buttons are clicked, hence once that happens and the user clicks elsewhere on the table,
-  // the dropdown is closed programmatically as follows
+  // or delete cateogory buttons are clicked. If the user clicks elsewhere on the table, the dropdown is closed
+  // programmatically as follows
   // prettier-ignore
   private static closeSelectDropdown(etc: EditableTableComponent, targetElement: HTMLElement) {
     const {focusedElements} = etc;
     if (focusedElements.selectDropdown && !Dropdown.isPartOfDropdownElement(targetElement)
+        && !targetElement.classList.contains(SelectColorButton.COLOR_BUTTON_CLASS)
         && focusedElements.cell.element !== CellElement.getCellElement(targetElement)) {
       CellWithTextEvents.programmaticBlur(etc);
     }

@@ -1,12 +1,8 @@
 import {FocusedCellUtils} from '../../../../utils/focusedElements/focusedCellUtils';
 import {EditableTableComponent} from '../../../../editable-table-component';
+import {PickerInputElement} from '../../../../types/pickerInputElement';
 import {Browser} from '../../../../utils/browser/browser';
 import {CellElement} from '../../cellElement';
-
-// stops tsc from complaining
-interface HTMLInputDateElement extends HTMLInputElement {
-  showPicker: () => void;
-}
 
 // the actual calendar and date pocker are on the input element and this is a standin replacement icon to standardize
 // how the calendars look across browsers as the date input tends to vary their look
@@ -18,7 +14,7 @@ export class DateCellCalendarIconEvents {
   private static mouseDownIcon(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
     const {focusedElements, columnsDetails, activeOverlayElements} = this;
     const svgImage = event.target as HTMLElement;
-    const inputElement = svgImage.previousSibling as HTMLInputDateElement;
+    const inputElement = svgImage.previousSibling as PickerInputElement;
     const cellElement = CellElement.getCellElement(inputElement);
     setTimeout(() => {
       // this is in a timeout as upon selecting text, then clicking on the icon causes the text blur to activate

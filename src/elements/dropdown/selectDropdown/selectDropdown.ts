@@ -195,6 +195,7 @@ export class SelectDropdown {
         horizontal: false,
         vertical: false,
       },
+      overlays: {},
     };
   }
 

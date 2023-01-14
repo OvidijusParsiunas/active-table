@@ -1,6 +1,7 @@
 import {NumberOfRowsDropdownEvents} from '../pagination/numberOfRowsOptions/optionsButton/numberOfRowsDropdownEvents';
 import {SelectCellTextBaseEvents} from '../cell/cellsWithTextDiv/selectCell/baseEvents/selectCellTextBaseEvents';
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
+import {SelectColorButtonEvents} from '../dropdown/selectDropdown/selectColorButtonEvents';
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
 import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
 import {ColumnDropdownEvents} from '../dropdown/columnDropdown/columnDropdownEvents';
@@ -41,12 +42,14 @@ export class WindowEvents {
 
   public static onKeyUp(this: EditableTableComponent, event: KeyboardEvent) {
     if (event.key === KEYBOARD_KEY.ESCAPE) {
+      SelectColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements); // picker stops key down
       DateCellInputEvents.escapeKeyInput(this);
     }
   }
 
   // prettier-ignore
   public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
+    SelectColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements);
     if (Dropdown.isDisplayed(this.paginationInternal.numberOfRowsDropdown)) {
       NumberOfRowsDropdownEvents.windowOnMouseDown.bind(this)(this);
     }
@@ -63,7 +66,7 @@ export class WindowEvents {
     if (Dropdown.isDisplayed(columnDropdown)) {
       ColumnDropdown.processTextAndHide(this);
     // cell blur will not activate when the dropdown has been clicked and will not close if its scrollbar or padding are
-    // clicked, hence once that happens, we close the dropdown programmatically as follows
+    // clicked, if clicked elsewhere on the window we close the dropdown programmatically as follows
     } else if (focusedElements.selectDropdown) {
       CellWithTextEvents.programmaticBlur(this);
     } else if (this.activeOverlayElements.datePickerCell) {

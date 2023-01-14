@@ -1,10 +1,10 @@
 import {CellWithTextEvents} from '../../cell/cellsWithTextDiv/cellWithTextEvents';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {FocusedElements} from '../../../types/focusedElements';
-import {SelectDeleteButton} from './selectDeleteButton';
 import {SelectDropdownItem} from './selectDropdownItem';
 import {CellDetails} from '../../../types/focusedCell';
 import {DropdownItem} from '../dropdownItem';
+import {SelectButton} from './selectButton';
 import {Dropdown} from '../dropdown';
 
 export class SelectDropdownEvents {
@@ -16,7 +16,7 @@ export class SelectDropdownEvents {
     const targetElement = event.target as HTMLElement;
     // target is dropdown when clicked on top/bottom paddding
     if (targetElement.classList.contains(Dropdown.DROPDOWN_CLASS)
-      || targetElement.classList.contains(SelectDeleteButton.SELECT_DELETE_BUTTON_CLASS)) return;
+      || targetElement.classList.contains(SelectButton.SELECT_BUTTON_CLASS)) return;
     const {rowIndex, columnIndex, element: cellElement} = this.focusedElements.cell as CellDetails;
     const itemElement = targetElement.classList.contains(DropdownItem.DROPDOWN_ITEM_CLASS)
       ? targetElement : targetElement.parentElement;

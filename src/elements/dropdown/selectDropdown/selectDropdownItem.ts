@@ -7,6 +7,7 @@ import {SelectDropdownItemEvents} from './selectDropdownItemEvents';
 import {LabelOptions} from '../../../types/selectProperties';
 import {SelectDeleteButton} from './selectDeleteButton';
 import {CellDetails} from '../../../types/focusedCell';
+import {SelectColorButton} from './selectColorButton';
 import {CellElement} from '../../cell/cellElement';
 import {EMPTY_STRING} from '../../../consts/text';
 import {CellEvents} from '../../cell/cellEvents';
@@ -139,8 +140,10 @@ export class SelectDropdownItem {
     const itemElement = DropdownItem.addPlaneButtonItem(dropdown.element, text, atStart ? 0 : undefined);
     if (dropdown.customItemStyle) itemElement.style.color = dropdown.customItemStyle.textColor;
     if (dropdown.canAddMoreOptions) {
+      const colorInputElement = SelectColorButton.create(etc, dropdown);
+      itemElement.appendChild(colorInputElement);
       const deleteButtonElement = SelectDeleteButton.create(etc, dropdown);
-      itemElement.appendChild(deleteButtonElement); 
+      itemElement.appendChild(deleteButtonElement);
     }
     SelectDropdownItemEvents.set(etc.shadowRoot as unknown as Document, itemElement, color, dropdown);
     return itemElement;
