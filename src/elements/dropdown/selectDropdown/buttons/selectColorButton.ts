@@ -50,7 +50,7 @@ export class SelectColorButton {
   }
 
   public static changeVisibility(itemElement: HTMLElement, rightSideDelta: number, displayOnDropdown?: HTMLElement) {
-    const buttonContainerElement = itemElement.children[1] as HTMLElement;
+    const buttonContainerElement = itemElement.children[2] as HTMLElement;
     buttonContainerElement.style.display = displayOnDropdown ? 'block' : 'none';
     if (displayOnDropdown) {
       const colorInputElement = buttonContainerElement.children[0] as HTMLElement;

@@ -38,7 +38,7 @@ export class SelectDeleteButton {
   }
 
   public static changeVisibility(itemElement: HTMLElement, rightSideDelta: number, displayOnDropdown?: HTMLElement) {
-    const buttonContainerElement = itemElement.children[2] as HTMLElement;
+    const buttonContainerElement = itemElement.children[1] as HTMLElement;
     buttonContainerElement.style.display = displayOnDropdown ? 'block' : 'none';
     if (displayOnDropdown) {
       const buttonElement = buttonContainerElement.children[0] as HTMLElement;

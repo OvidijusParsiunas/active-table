@@ -11,7 +11,7 @@ export class SelectButton {
       const itemElement = event.target as HTMLElement;
       const rightSideDelta = dropdown.scrollbarPresence.vertical ? 31 : 16;
       SelectDeleteButton.changeVisibility(itemElement, rightSideDelta, displayOnDropdown);
-      if (!dropdown.overlays.colorPickerInput) {
+      if (dropdown.newItemColors && !dropdown.overlays.colorPickerInput) {
         SelectColorButton.changeVisibility(itemElement, rightSideDelta + 18, displayOnDropdown);
       }
     }
