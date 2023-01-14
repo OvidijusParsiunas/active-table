@@ -1,7 +1,7 @@
-import {EditableTableComponent} from '../../../editable-table-component';
+import {EditableTableComponent} from '../../../../editable-table-component';
 import {SelectDeleteButtonEvents} from './selectDeleteButtonEvents';
-import {SelectDropdownT} from '../../../types/columnDetails';
-import {DropdownItem} from '../dropdownItem';
+import {SelectDropdownT} from '../../../../types/columnDetails';
+import {DropdownItem} from '../../dropdownItem';
 import {SelectButton} from './selectButton';
 
 export class SelectDeleteButton {

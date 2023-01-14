@@ -3,8 +3,8 @@ import {EditableTableComponent} from '../../../editable-table-component';
 import {FocusedElements} from '../../../types/focusedElements';
 import {SelectDropdownItem} from './selectDropdownItem';
 import {CellDetails} from '../../../types/focusedCell';
+import {SelectButton} from './buttons/selectButton';
 import {DropdownItem} from '../dropdownItem';
-import {SelectButton} from './selectButton';
 import {Dropdown} from '../dropdown';
 
 export class SelectDropdownEvents {

@@ -1,4 +1,4 @@
-import {SelectDropdownT} from '../../../types/columnDetails';
+import {SelectDropdownT} from '../../../../types/columnDetails';
 import {SelectDeleteButton} from './selectDeleteButton';
 import {SelectColorButton} from './selectColorButton';
 

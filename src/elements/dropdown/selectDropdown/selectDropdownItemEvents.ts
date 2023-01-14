@@ -2,7 +2,7 @@ import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighl
 import {SelectDropdownHorizontalScrollFix} from './selectDropdownHorizontalScrollFix';
 import {ActiveSelectItems, SelectDropdownT} from '../../../types/columnDetails';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
-import {SelectButton} from './selectButton';
+import {SelectButton} from './buttons/selectButton';
 import {SIDE} from '../../../types/side';
 
 export class SelectDropdownItemEvents {

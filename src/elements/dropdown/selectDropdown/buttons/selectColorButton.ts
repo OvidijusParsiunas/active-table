@@ -1,7 +1,7 @@
-import {EditableTableComponent} from '../../../editable-table-component';
+import {EditableTableComponent} from '../../../../editable-table-component';
 import {SelectColorButtonEvents} from './selectColorButtonEvents';
-import {SelectDropdownT} from '../../../types/columnDetails';
-import {Browser} from '../../../utils/browser/browser';
+import {SelectDropdownT} from '../../../../types/columnDetails';
+import {Browser} from '../../../../utils/browser/browser';
 import {SelectButton} from './selectButton';
 
 export class SelectColorButton {

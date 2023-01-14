@@ -1,8 +1,8 @@
-import {CellWithTextEvents} from '../../cell/cellsWithTextDiv/cellWithTextEvents';
-import {EditableTableComponent} from '../../../editable-table-component';
-import {SelectDropdownScrollbar} from './selectDropdownScrollbar';
-import {SelectDropdownT} from '../../../types/columnDetails';
-import {CellElement} from '../../cell/cellElement';
+import {CellWithTextEvents} from '../../../cell/cellsWithTextDiv/cellWithTextEvents';
+import {EditableTableComponent} from '../../../../editable-table-component';
+import {SelectDropdownScrollbar} from '../selectDropdownScrollbar';
+import {SelectDropdownT} from '../../../../types/columnDetails';
+import {CellElement} from '../../../cell/cellElement';
 
 export class SelectDeleteButtonEvents {
   private static delete(this: EditableTableComponent, selectDropdown: SelectDropdownT, event: MouseEvent) {

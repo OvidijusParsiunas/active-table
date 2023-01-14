@@ -1,6 +1,6 @@
-import {ColumnsDetailsT, DropdownOverlays} from '../../../types/columnDetails';
-import {PickerInputElement} from '../../../types/pickerInputElement';
-import {FocusedElements} from '../../../types/focusedElements';
+import {ColumnsDetailsT, DropdownOverlays} from '../../../../types/columnDetails';
+import {PickerInputElement} from '../../../../types/pickerInputElement';
+import {FocusedElements} from '../../../../types/focusedElements';
 
 export class SelectColorButtonEvents {
   public static windowEventClosePicker(columnsDetails: ColumnsDetailsT, focusedElements: FocusedElements) {
