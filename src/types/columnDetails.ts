@@ -15,17 +15,14 @@ export interface BordersOverwrittenBySiblings {
   right?: boolean;
 }
 
-export interface DropdownOverlays {
+export interface LabelDetails {
+  newItemColors: string[]; // REF-34
+  colorPickerContainer?: HTMLElement; // set when picker is opened
   colorPickerNewValue?: {
     color: string;
     text: string;
   };
-  colorPickerContainer?: HTMLElement; // cannot get the reference to the overlay element, hence using container instead
 }
-
-export type CellTypeTotals = {
-  [key in string]: number;
-} & {[AUXILIARY_CELL_TYPE.Undefined]: number};
 
 interface ScrollbarPresence {
   horizontal: boolean;
@@ -42,12 +39,12 @@ interface SelectItemDetails {
   element: HTMLElement;
 }
 
-interface SelectItem {
+interface SelectItems {
   [cellText: string]: SelectItemDetails;
 }
 
 export interface SelectDropdownT {
-  selectItem: SelectItem; // dropdown item
+  selectItems: SelectItems; // dropdown items
   activeItems: ActiveSelectItems; // items that exhibit certain behaviours
   element: HTMLElement; // REF-8
   scrollbarPresence: ScrollbarPresence;
@@ -55,9 +52,12 @@ export interface SelectDropdownT {
   customItemStyle?: SelectDropdownOptionStyle;
   canAddMoreOptions: boolean;
   displayedCellElement?: HTMLElement;
-  newItemColors?: string[]; // this property serves 2 purposers: 1. indicates if label type 2. eplained in notes at REF-34
-  overlays: DropdownOverlays;
+  labelDetails?: LabelDetails; // extra properties that are used for the label type that are not by the basic select type
 }
+
+export type CellTypeTotals = {
+  [key in string]: number;
+} & {[AUXILIARY_CELL_TYPE.Undefined]: number};
 
 export interface ColumnDetailsT {
   elements: HTMLElement[];

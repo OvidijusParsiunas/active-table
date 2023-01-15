@@ -125,7 +125,7 @@ export class SelectDropdown {
 
   private static getWidth(cellElement: HTMLElement, dropdown: SelectDropdownT, dropdownStyle?: SelectDropdownStyle) {
     if (dropdownStyle?.width) return dropdownStyle.width;
-    if (!dropdown.newItemColors) return Math.max(cellElement.offsetWidth - 2, SelectDropdown.MIN_WIDTH);
+    if (!dropdown.labelDetails) return Math.max(cellElement.offsetWidth - 2, SelectDropdown.MIN_WIDTH);
     const textContainerElement = cellElement.children[0] as HTMLElement;
     return Math.max(cellElement.offsetWidth - textContainerElement.offsetLeft * 2, SelectDropdown.MIN_WIDTH);
   }
@@ -133,8 +133,8 @@ export class SelectDropdown {
   // prettier-ignore
   public static display(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
     const {selectDropdown, settings: {defaultText}, activeType: {selectProps}} = etc.columnsDetails[columnIndex];
-    const {element: dropdownEl, selectItem} = selectDropdown;
-    if (Object.keys(selectItem).length > 0 && selectProps) {
+    const {element: dropdownEl, selectItems} = selectDropdown;
+    if (Object.keys(selectItems).length > 0 && selectProps) {
       SelectDropdownEvents.set(etc, dropdownEl);
       SelectDropdownItemEvents.blurItem(selectDropdown, 'hovered');
       SelectDropdownItemEvents.blurItem(selectDropdown, 'matchingWithCellText');
@@ -169,8 +169,8 @@ export class SelectDropdown {
   public static setUpDropdown(etc: EditableTableComponent, columnIndex: number) {
     const {activeType: {selectProps}, selectDropdown} = etc.columnsDetails[columnIndex];
     if (!selectProps) return;
-    selectDropdown.newItemColors = etc.columnsDetails[columnIndex].activeType.selectProps?.isBasicSelect
-      ? undefined : LabelColorUtils.generateDefaultColors(); // REF-34
+    selectDropdown.labelDetails = selectProps.isBasicSelect ?
+      undefined : {newItemColors: LabelColorUtils.generateDefaultColors()}; // REF-34
     SelectDropdown.setCustomState(selectDropdown, selectProps)
     SelectDropdownItem.populateItems(etc, columnIndex);
     if (selectProps.dropdownStyle) SelectDropdown.setCustomStyle(selectDropdown, selectProps.dropdownStyle);
@@ -187,7 +187,7 @@ export class SelectDropdown {
 
   public static getDefaultObj(dropdownElement: HTMLElement): SelectDropdownT {
     return {
-      selectItem: {},
+      selectItems: {},
       activeItems: {},
       element: dropdownElement,
       canAddMoreOptions: true,
@@ -195,7 +195,6 @@ export class SelectDropdown {
         horizontal: false,
         vertical: false,
       },
-      overlays: {},
     };
   }
 

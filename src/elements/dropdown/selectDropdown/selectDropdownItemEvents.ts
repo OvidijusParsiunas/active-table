@@ -8,14 +8,14 @@ import {SIDE} from '../../../types/side';
 export class SelectDropdownItemEvents {
   // prettier-ignore
   public static blurItem(dropdown: SelectDropdownT, typeOfItem: keyof ActiveSelectItems, event?: MouseEvent) {
-    const {activeItems, newItemColors, overlays} = dropdown;
-    if (overlays.colorPickerContainer) return;
+    const {activeItems, labelDetails} = dropdown;
+    if (labelDetails?.colorPickerContainer) return; // do not blur if color picker open
     const itemElement = activeItems[typeOfItem] as HTMLElement;
     if (itemElement !== undefined) {
       if (typeOfItem === 'matchingWithCellText'
           || (typeOfItem === 'hovered' && itemElement !== activeItems.matchingWithCellText)) {
         itemElement.style.backgroundColor = '';
-        if (!newItemColors) itemElement.style.color = '';
+        if (!labelDetails) itemElement.style.color = '';
         delete activeItems[typeOfItem];
       }
     }
@@ -38,23 +38,23 @@ export class SelectDropdownItemEvents {
   }
 
   private static highlightItem(this: Document, dropdown: SelectDropdownT, event: MouseEvent) {
-    const {scrollbarPresence, activeItems, newItemColors, canAddMoreOptions, element, overlays, selectItem} = dropdown;
-    if (overlays.colorPickerContainer) return;
+    const {scrollbarPresence, activeItems, labelDetails, canAddMoreOptions, element, selectItems} = dropdown;
+    if (labelDetails?.colorPickerContainer) return; // do not highlight new if color picker open
     // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
     if (activeItems.hovered) {
       activeItems.hovered.style.backgroundColor = '';
-      if (!newItemColors) activeItems.hovered.style.color = '';
+      if (!labelDetails) activeItems.hovered.style.color = '';
     }
     const itemElement = event.target as HTMLElement;
     const text = (itemElement.children[0] as HTMLElement).innerText;
-    itemElement.style.backgroundColor = selectItem[text].color;
+    itemElement.style.backgroundColor = selectItems[text].color;
     const dropdownElement = itemElement.parentElement as HTMLElement;
     SelectDropdownItemEvents.scrollToItem(this, itemElement, scrollbarPresence.horizontal, dropdownElement, event);
     if (itemElement === activeItems.matchingWithCellText) {
-      if (!newItemColors) itemElement.style.color = 'white';
+      if (!labelDetails) itemElement.style.color = 'white';
       delete activeItems.hovered;
     } else {
-      if (!newItemColors) itemElement.style.backgroundColor = DropdownItemHighlightUtils.HOVER_BACKGROUND_COLOR;
+      if (!labelDetails) itemElement.style.backgroundColor = DropdownItemHighlightUtils.HOVER_BACKGROUND_COLOR;
       activeItems.hovered = itemElement;
     }
     if (canAddMoreOptions) SelectButton.changeVisibility(event, dropdown, element);

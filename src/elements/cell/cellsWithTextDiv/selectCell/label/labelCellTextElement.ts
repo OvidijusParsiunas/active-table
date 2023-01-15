@@ -22,7 +22,7 @@ export class LabelCellTextElement {
     processMatching = false) {
   const columnDetails = etc.columnsDetails[columnIndex];
   const {selectDropdown, activeType: {selectProps}, settings: {defaultText, isDefaultTextRemovable}} = columnDetails;
-  const color = selectDropdown.selectItem[CellElement.getText(textElement)]?.color;
+  const color = selectDropdown.selectItems[CellElement.getText(textElement)]?.color;
   if (CellElement.getText(textElement) === EMPTY_STRING
       || (isDefaultTextRemovable && CellElement.getText(textElement) === defaultText)) {
     textElement.style.backgroundColor = '';

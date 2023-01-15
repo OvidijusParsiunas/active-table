@@ -1,4 +1,4 @@
-import {ColumnDetailsT, ColumnsDetailsT, DropdownOverlays, SelectDropdownT} from '../../../../types/columnDetails';
+import {ColumnDetailsT, ColumnsDetailsT, LabelDetails, SelectDropdownT} from '../../../../types/columnDetails';
 import {PickerInputElement} from '../../../../types/pickerInputElement';
 import {FocusedElements} from '../../../../types/focusedElements';
 import {RGBAToHex} from '../../../../utils/color/rgbaToHex';
@@ -6,15 +6,15 @@ import {SelectColorButton} from './selectColorButton';
 import {SelectButton} from './selectButton';
 
 export class SelectColorButtonEvents {
-  public static updateColumnLabelColors(overlays: DropdownOverlays, cellElements: HTMLElement[]) {
-    if (!overlays.colorPickerNewValue) return;
+  public static updateColumnLabelColors(labelDetails: LabelDetails, cellElements: HTMLElement[]) {
+    if (!labelDetails.colorPickerNewValue) return;
     cellElements.forEach((cellElement) => {
       const textElement = cellElement.children[0] as HTMLElement;
-      if (textElement.innerText === overlays.colorPickerNewValue?.text) {
-        textElement.style.backgroundColor = overlays.colorPickerNewValue.color;
+      if (textElement.innerText === labelDetails.colorPickerNewValue?.text) {
+        textElement.style.backgroundColor = labelDetails.colorPickerNewValue.color;
       }
     });
-    delete overlays.colorPickerNewValue;
+    delete labelDetails.colorPickerNewValue;
   }
 
   // important to note that mouse/key down events are not fired when clicked on picker
@@ -31,19 +31,20 @@ export class SelectColorButtonEvents {
     const text = textElement.textContent as string;
     const color = inputElement.value;
     dropdownItemElement.style.backgroundColor = color;
-    const selectItemDetails = dropdown.selectItem[text];
+    const selectItemDetails = dropdown.selectItems[text];
     if (selectItemDetails.color !== color) {
       selectItemDetails.color = color;
-      dropdown.overlays.colorPickerNewValue = {color, text};
+      (dropdown.labelDetails as LabelDetails).colorPickerNewValue = {color, text};
     }
   }
 
   // prettier-ignore
   private static mouseDownContainer(columnDetails: ColumnDetailsT, event: MouseEvent) {
-    const {selectDropdown: {overlays}, elements} = columnDetails;
-    if (overlays.colorPickerContainer) {
-      delete overlays.colorPickerContainer;
-      SelectColorButtonEvents.updateColumnLabelColors(overlays, elements);
+    const {selectDropdown: {labelDetails}, elements} = columnDetails;
+    if (!labelDetails) return;
+    if (labelDetails.colorPickerContainer) {
+      delete labelDetails.colorPickerContainer;
+      SelectColorButtonEvents.updateColumnLabelColors(labelDetails, elements);
       return;
     }
     const buttonElement = event.target as HTMLElement;
@@ -51,7 +52,7 @@ export class SelectColorButtonEvents {
     const inputElement = buttonElement.previousSibling as PickerInputElement;
     inputElement.value = RGBAToHex.convert(dropdownItemElement.style.backgroundColor);
     inputElement.showPicker();
-    setTimeout(() => (overlays.colorPickerContainer = containerElement));
+    setTimeout(() => (labelDetails.colorPickerContainer = containerElement));
   }
 
   public static setEvents(container: HTMLElement, colorInput: HTMLElement, columnDetails: ColumnDetailsT) {

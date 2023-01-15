@@ -10,8 +10,8 @@ export class LabelCellElement {
   // prettier-ignore
   public static setCellLabelStructure(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
     ConvertCellTypeUtils.preprocessCell(cellElement);
-    const {selectDropdown: {selectItem}, settings: {isCellTextEditable}} = etc.columnsDetails[columnIndex];
-    const backgroundColor = selectItem[CellElement.getText(cellElement)]?.color || '';
+    const {selectDropdown: {selectItems}, settings: {isCellTextEditable}} = etc.columnsDetails[columnIndex];
+    const backgroundColor = selectItems[CellElement.getText(cellElement)]?.color || '';
     LabelCellTextElement.setCellTextAsAnElement(cellElement, backgroundColor, isCellTextEditable as boolean);
     SelectCell.setPointerCursorIfCantAdd(cellElement, etc.columnsDetails[columnIndex].activeType)
   }

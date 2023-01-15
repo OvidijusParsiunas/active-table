@@ -35,22 +35,22 @@ export class SelectDropdownItem {
     const newText = CellElement.getText(activeItemElement.children[0] as HTMLElement);
     SelectDropdownItem.updateCellElementIfNotUpdated(etc, newText, rowIndex, columnIndex, textElement);
     if (LabelCellTextElement.isLabelText(textElement)) {
-      textElement.style.backgroundColor = etc.columnsDetails[columnIndex].selectDropdown.selectItem[newText]?.color;
+      textElement.style.backgroundColor = etc.columnsDetails[columnIndex].selectDropdown.selectItems[newText]?.color;
     }
   }
 
   // prettier-ignore
   public static addNewSelectItem(etc: EditableTableComponent, textElement: HTMLElement, columnDetails: ColumnDetailsT,
       color: string) {
-    const {selectDropdown} = columnDetails;
+    const {selectDropdown: {labelDetails}} = columnDetails;
     const newItemName = CellElement.getText(textElement);
     if (newItemName === EMPTY_STRING) return;
     let newColor = '';
-    if (selectDropdown.newItemColors) {
-      newColor = color || selectDropdown.newItemColors[selectDropdown.newItemColors.length - 1]
+    if (labelDetails?.newItemColors) {
+      newColor = color || labelDetails.newItemColors[labelDetails.newItemColors.length - 1]
         || LabelColorUtils.getLatestPasteleColor();
       textElement.style.backgroundColor = newColor;
-      selectDropdown.newItemColors?.pop() || LabelColorUtils.setNewLatestPasteleColor();
+      labelDetails.newItemColors?.pop() || LabelColorUtils.setNewLatestPasteleColor();
     } else {
       newColor = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
     }
@@ -62,11 +62,12 @@ export class SelectDropdownItem {
       dropdown: SelectDropdownT, defaultText: CellText) {
     const cellText = CellElement.getText(textElement);
     if (itemElement) {
-      textElement.style.backgroundColor = dropdown.selectItem[cellText].color;
+      textElement.style.backgroundColor = dropdown.selectItems[cellText].color;
     } else if (!dropdown.canAddMoreOptions || cellText === EMPTY_STRING || cellText === defaultText) {
       textElement.style.backgroundColor = '';
     } else {
-      textElement.style.backgroundColor = dropdown.newItemColors?.[dropdown.newItemColors.length - 1]
+      const newItemColors = dropdown.labelDetails?.newItemColors; 
+      textElement.style.backgroundColor = newItemColors?.[newItemColors.length - 1]
         || LabelColorUtils.getLatestPasteleColor();
     }
   }
@@ -90,16 +91,16 @@ export class SelectDropdownItem {
   // prettier-ignore
   public static attemptHighlightMatchingItemWithCell(textElement: HTMLElement, dropdown: SelectDropdownT,
       defaultText: CellText, updateCellText: boolean, matchingCellElement?: HTMLElement) {
-    const {activeItems, selectItem} = dropdown;
+    const {activeItems, selectItems} = dropdown;
     const targetText = CellElement.getText(textElement);
-    const itemElement = matchingCellElement || selectItem[targetText]?.element;
+    const itemElement = matchingCellElement || selectItems[targetText]?.element;
     if (!itemElement || activeItems.matchingWithCellText !== itemElement) {
       // this is used to preserve the ability for the user to still allow the use of arrow keys to traverse the dropdown
       SelectDropdownItem.hideHoveredItemHighlight(activeItems);
       SelectDropdownItemEvents.blurItem(dropdown, 'matchingWithCellText');
     }
     SelectDropdownItem.updateItemColor(itemElement, activeItems);
-    if (updateCellText && dropdown.newItemColors) {
+    if (updateCellText && dropdown.labelDetails?.newItemColors) {
       SelectDropdownItem.updateCellTextBgColor(itemElement, textElement, dropdown, defaultText);
     }
   }
@@ -143,7 +144,7 @@ export class SelectDropdownItem {
     if (selectDropdown.canAddMoreOptions) {
       const deleteButtonElement = SelectDeleteButton.create(etc, selectDropdown);
       itemElement.appendChild(deleteButtonElement);
-      if (selectDropdown.newItemColors) {
+      if (selectDropdown.labelDetails?.newItemColors) {
         const colorInputElement = SelectColorButton.create(columnDetail);
         itemElement.appendChild(colorInputElement);
       }
@@ -153,7 +154,7 @@ export class SelectDropdownItem {
   }
 
   private static addItem(etc: EditableTableComponent, itemName: string, color: string, columnDetails: ColumnDetailsT) {
-    columnDetails.selectDropdown.selectItem[itemName] = {
+    columnDetails.selectDropdown.selectItems[itemName] = {
       color,
       element: SelectDropdownItem.addItemElement(etc, itemName, columnDetails),
     };
@@ -161,7 +162,7 @@ export class SelectDropdownItem {
 
   private static addItems(etc: EditableTableComponent, itemToColor: ItemToColor, columnDetails: ColumnDetailsT) {
     columnDetails.selectDropdown.element.replaceChildren();
-    columnDetails.selectDropdown.selectItem = {};
+    columnDetails.selectDropdown.selectItems = {};
     Object.keys(itemToColor).forEach((itemName) => {
       SelectDropdownItem.addItem(etc, itemName, itemToColor[itemName], columnDetails);
     });
@@ -203,14 +204,15 @@ export class SelectDropdownItem {
   public static populateItems(etc: EditableTableComponent, columnIndex: number) {
     const {contents, columnsDetails} = etc;
     const columnDetails = columnsDetails[columnIndex];
-    const {selectDropdown: {newItemColors}, settings: {defaultText, isDefaultTextRemovable}, activeType} = columnDetails;
-    if (!activeType.selectProps) return;
+    const {selectDropdown: {labelDetails}, settings: {defaultText, isDefaultTextRemovable}, activeType: {selectProps}
+      } = columnDetails;
+    if (!selectProps) return;
     let itemToColor: ItemToColor = {}
-    if (activeType.selectProps.options) {
-      itemToColor = SelectDropdownItem.changeUserOptionsToItemToColor(activeType.selectProps.options, newItemColors)
+    if (selectProps.options) {
+      itemToColor = SelectDropdownItem.changeUserOptionsToItemToColor(selectProps.options, labelDetails?.newItemColors)
     }
-    if (activeType.selectProps.canAddMoreOptions) {
-      SelectDropdownItem.aggregateItemToColor(contents, columnIndex, itemToColor, newItemColors);
+    if (selectProps.canAddMoreOptions) {
+      SelectDropdownItem.aggregateItemToColor(contents, columnIndex, itemToColor, labelDetails?.newItemColors);
     }
     SelectDropdownItem.postProcessItemToColor(isDefaultTextRemovable, itemToColor, defaultText);
     SelectDropdownItem.addItems(etc, itemToColor, columnDetails);
