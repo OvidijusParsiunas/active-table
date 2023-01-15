@@ -3,6 +3,7 @@ import {ActiveSelectItems, SelectDropdownT} from '../../../types/columnDetails';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellText, TableContents} from '../../../types/tableContents';
+import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
 import {SelectDropdownItemEvents} from './selectDropdownItemEvents';
 import {SelectDeleteButton} from './buttons/selectDeleteButton';
 import {SelectColorButton} from './buttons/selectColorButton';
@@ -11,7 +12,6 @@ import {CellDetails} from '../../../types/focusedCell';
 import {CellElement} from '../../cell/cellElement';
 import {EMPTY_STRING} from '../../../consts/text';
 import {CellEvents} from '../../cell/cellEvents';
-import {Color} from '../../../utils/color/color';
 import {DropdownItem} from '../dropdownItem';
 
 interface ItemToColor {
@@ -46,9 +46,10 @@ export class SelectDropdownItem {
     if (newItemName === EMPTY_STRING) return;
     let newColor = '';
     if (dropdown.newItemColors) {
-      newColor = color || dropdown.newItemColors[dropdown.newItemColors.length - 1] || Color.getLatestPasteleColor();
+      newColor = color || dropdown.newItemColors[dropdown.newItemColors.length - 1]
+        || LabelColorUtils.getLatestPasteleColor();
       textElement.style.backgroundColor = newColor;
-      dropdown.newItemColors?.pop() || Color.setNewLatestPasteleColor();
+      dropdown.newItemColors?.pop() || LabelColorUtils.setNewLatestPasteleColor();
     } else {
       newColor = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
     }
@@ -65,7 +66,7 @@ export class SelectDropdownItem {
       textElement.style.backgroundColor = '';
     } else {
       textElement.style.backgroundColor = dropdown.newItemColors?.[dropdown.newItemColors.length - 1]
-        || Color.getLatestPasteleColor();
+        || LabelColorUtils.getLatestPasteleColor();
     }
   }
 
@@ -173,7 +174,8 @@ export class SelectDropdownItem {
   private static changeUserOptionsToItemToColor(userOptions: LabelOptions, newItemColors?: string[]): ItemToColor {
     return userOptions.reduce<ItemToColor>((itemToColor, option) => {
       if (newItemColors) {
-        itemToColor[option.name] = option.backgroundColor || newItemColors.pop() || Color.getLatestPasteleColorAndSetNew();
+        itemToColor[option.name] =
+          option.backgroundColor || newItemColors.pop() || LabelColorUtils.getLatestPasteleColorAndSetNew();
       } else {
         itemToColor[option.name] = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
       }
@@ -188,7 +190,7 @@ export class SelectDropdownItem {
       const cellText = row[columnIndex];
       if (cellText !== EMPTY_STRING && !itemToColor[cellText]) {
         if (newItemColors) {
-          itemToColor[cellText] = newItemColors.pop() || Color.getLatestPasteleColorAndSetNew();
+          itemToColor[cellText] = newItemColors.pop() || LabelColorUtils.getLatestPasteleColorAndSetNew();
         } else {
           itemToColor[cellText] = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
         }

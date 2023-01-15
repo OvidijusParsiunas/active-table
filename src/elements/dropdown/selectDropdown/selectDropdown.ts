@@ -2,6 +2,7 @@ import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label
 import {SelectProperties, SelectDropdownStyle} from '../../../types/selectProperties';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {EditableTableComponent} from '../../../editable-table-component';
+import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
 import {SelectDropdownItemEvents} from './selectDropdownItemEvents';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {OverflowUtils} from '../../../utils/overflow/overflowUtils';
@@ -12,7 +13,6 @@ import {SelectDropdownItem} from './selectDropdownItem';
 import {TableElement} from '../../table/tableElement';
 import {CellText} from '../../../types/tableContents';
 import {CellElement} from '../../cell/cellElement';
-import {Color} from '../../../utils/color/color';
 import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
@@ -170,7 +170,7 @@ export class SelectDropdown {
     const {activeType: {selectProps}, selectDropdown} = etc.columnsDetails[columnIndex];
     if (!selectProps) return;
     selectDropdown.newItemColors = etc.columnsDetails[columnIndex].activeType.selectProps?.isBasicSelect ?
-      undefined : Color.getDefaultColors(); // REF-34
+      undefined : LabelColorUtils.generateDefaultColors(); // REF-34
     SelectDropdown.setCustomState(selectDropdown, selectProps)
     SelectDropdownItem.populateItems(etc, columnIndex);
     if (selectProps.dropdownStyle) SelectDropdown.setCustomStyle(selectDropdown, selectProps.dropdownStyle);

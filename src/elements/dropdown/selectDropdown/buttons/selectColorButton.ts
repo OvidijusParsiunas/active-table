@@ -54,8 +54,8 @@ export class SelectColorButton {
     buttonContainerElement.style.display = displayOnDropdown ? 'block' : 'none';
     if (displayOnDropdown) {
       const colorInputElement = buttonContainerElement.children[0] as HTMLElement;
-      const leftDelta = Browser.IS_SAFARI ? 9 : 5;
-      colorInputElement.style.left = `${displayOnDropdown.offsetWidth - rightSideDelta + leftDelta}px`;
+      const leftInputDelta = Browser.IS_SAFARI ? 9 : 5;
+      colorInputElement.style.left = `${displayOnDropdown.offsetWidth - rightSideDelta + leftInputDelta}px`;
       const buttonElement = buttonContainerElement.children[1] as HTMLElement;
       buttonElement.style.left = `${displayOnDropdown.offsetWidth - rightSideDelta}px`;
     }

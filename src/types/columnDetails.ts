@@ -16,7 +16,7 @@ export interface BordersOverwrittenBySiblings {
 }
 
 export interface DropdownOverlays {
-  colorPickerInput?: HTMLElement; // cannot get the reference to the overlay element, hence using input instead
+  colorPickerContainer?: HTMLElement; // cannot get the reference to the overlay element, hence using container instead
 }
 
 export type CellTypeTotals = {

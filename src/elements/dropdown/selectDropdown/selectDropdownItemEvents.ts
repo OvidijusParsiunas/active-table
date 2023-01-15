@@ -8,7 +8,8 @@ import {SIDE} from '../../../types/side';
 export class SelectDropdownItemEvents {
   // prettier-ignore
   public static blurItem(dropdown: SelectDropdownT, typeOfItem: keyof ActiveSelectItems, event?: MouseEvent) {
-    const {activeItems, newItemColors} = dropdown;
+    const {activeItems, newItemColors, overlays} = dropdown;
+    if (overlays.colorPickerContainer) return;
     const itemElement = activeItems[typeOfItem] as HTMLElement;
     if (itemElement !== undefined) {
       if (typeOfItem === 'matchingWithCellText'
@@ -37,7 +38,8 @@ export class SelectDropdownItemEvents {
   }
 
   private static highlightItem(this: Document, color: string, dropdown: SelectDropdownT, event: MouseEvent) {
-    const {scrollbarPresence, activeItems, newItemColors, canAddMoreOptions, element} = dropdown;
+    const {scrollbarPresence, activeItems, newItemColors, canAddMoreOptions, element, overlays} = dropdown;
+    if (overlays.colorPickerContainer) return;
     // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
     if (activeItems.hovered) {
       activeItems.hovered.style.backgroundColor = '';

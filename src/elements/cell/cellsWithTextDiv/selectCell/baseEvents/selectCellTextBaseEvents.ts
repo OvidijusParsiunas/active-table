@@ -1,5 +1,6 @@
 import {FocusNextCellFromSelectCell} from '../../../../../utils/focusedElements/focusNextCellFromSelectCell';
 import {SelectDropdownItem} from '../../../../dropdown/selectDropdown/selectDropdownItem';
+import {SelectButton} from '../../../../dropdown/selectDropdown/buttons/selectButton';
 import {SelectDropdown} from '../../../../dropdown/selectDropdown/selectDropdown';
 import {SelectPropertiesInternal} from '../../../../../types/columnTypeInternal';
 import {EditableTableComponent} from '../../../../../editable-table-component';
@@ -52,7 +53,7 @@ export class SelectCellTextBaseEvents {
       ArrowDownIconElement.toggle(selectDropdown.displayedCellElement, false);
       delete selectDropdown.displayedCellElement;
     } else {
-      delete selectDropdown.overlays.colorPickerInput;
+      SelectButton.hideAfterColorPickerContainerClose(selectDropdown.overlays);
     }
   }
 
