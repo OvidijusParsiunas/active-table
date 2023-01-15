@@ -1,4 +1,5 @@
-import {DropdownOverlays, SelectDropdownT} from '../../../../types/columnDetails';
+import {ColumnDetailsT, SelectDropdownT} from '../../../../types/columnDetails';
+import {SelectColorButtonEvents} from './selectColorButtonEvents';
 import {SelectDeleteButton} from './selectDeleteButton';
 import {SelectColorButton} from './selectColorButton';
 
@@ -17,12 +18,15 @@ export class SelectButton {
     }
   }
 
-  public static hideAfterColorPickerContainerClose(overlays: DropdownOverlays) {
+  // prettier-ignore
+  public static hideAfterColorPickerContainerClose(columnDetails: ColumnDetailsT) {
+    const {selectDropdown: {overlays}, elements} = columnDetails;
     if (overlays.colorPickerContainer) {
       overlays.colorPickerContainer.style.display = 'none';
       const deleteButtonContainer = overlays.colorPickerContainer.previousElementSibling as HTMLElement;
       deleteButtonContainer.style.display = 'none';
       delete overlays.colorPickerContainer;
+      SelectColorButtonEvents.updateColumnLabelColors(overlays, elements);
     }
   }
 }

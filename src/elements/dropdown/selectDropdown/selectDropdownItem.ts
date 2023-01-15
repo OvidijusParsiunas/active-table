@@ -1,5 +1,5 @@
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
-import {ActiveSelectItems, SelectDropdownT} from '../../../types/columnDetails';
+import {ActiveSelectItems, ColumnDetailsT, SelectDropdownT} from '../../../types/columnDetails';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {CellText, TableContents} from '../../../types/tableContents';
@@ -40,20 +40,21 @@ export class SelectDropdownItem {
   }
 
   // prettier-ignore
-  public static addNewSelectItem(etc: EditableTableComponent, textElement: HTMLElement, dropdown: SelectDropdownT,
+  public static addNewSelectItem(etc: EditableTableComponent, textElement: HTMLElement, columnDetails: ColumnDetailsT,
       color: string) {
+    const {selectDropdown} = columnDetails;
     const newItemName = CellElement.getText(textElement);
     if (newItemName === EMPTY_STRING) return;
     let newColor = '';
-    if (dropdown.newItemColors) {
-      newColor = color || dropdown.newItemColors[dropdown.newItemColors.length - 1]
+    if (selectDropdown.newItemColors) {
+      newColor = color || selectDropdown.newItemColors[selectDropdown.newItemColors.length - 1]
         || LabelColorUtils.getLatestPasteleColor();
       textElement.style.backgroundColor = newColor;
-      dropdown.newItemColors?.pop() || LabelColorUtils.setNewLatestPasteleColor();
+      selectDropdown.newItemColors?.pop() || LabelColorUtils.setNewLatestPasteleColor();
     } else {
       newColor = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
     }
-    SelectDropdownItem.addItem(etc, newItemName, newColor, dropdown);
+    SelectDropdownItem.addItem(etc, newItemName, newColor, columnDetails);
   }
 
   // prettier-ignore
@@ -135,35 +136,34 @@ export class SelectDropdownItem {
     }
   }
 
-  // prettier-ignore
-  private static addItemElement(etc: EditableTableComponent,
-      text: string, color: string, dropdown: SelectDropdownT, atStart = false) {
-    const itemElement = DropdownItem.addPlaneButtonItem(dropdown.element, text, atStart ? 0 : undefined);
-    if (dropdown.customItemStyle) itemElement.style.color = dropdown.customItemStyle.textColor;
-    if (dropdown.canAddMoreOptions) {
-      const deleteButtonElement = SelectDeleteButton.create(etc, dropdown);
+  private static addItemElement(etc: EditableTableComponent, text: string, columnDetail: ColumnDetailsT, atStart = false) {
+    const {selectDropdown} = columnDetail;
+    const itemElement = DropdownItem.addPlaneButtonItem(selectDropdown.element, text, atStart ? 0 : undefined);
+    if (selectDropdown.customItemStyle) itemElement.style.color = selectDropdown.customItemStyle.textColor;
+    if (selectDropdown.canAddMoreOptions) {
+      const deleteButtonElement = SelectDeleteButton.create(etc, selectDropdown);
       itemElement.appendChild(deleteButtonElement);
-      if (dropdown.newItemColors) {
-        const colorInputElement = SelectColorButton.create(etc, dropdown);
-        itemElement.appendChild(colorInputElement);  
+      if (selectDropdown.newItemColors) {
+        const colorInputElement = SelectColorButton.create(columnDetail);
+        itemElement.appendChild(colorInputElement);
       }
     }
-    SelectDropdownItemEvents.set(etc.shadowRoot as unknown as Document, itemElement, color, dropdown);
+    SelectDropdownItemEvents.set(etc.shadowRoot as unknown as Document, itemElement, selectDropdown);
     return itemElement;
   }
 
-  private static addItem(etc: EditableTableComponent, itemName: string, color: string, dropdown: SelectDropdownT) {
-    dropdown.selectItem[itemName] = {
+  private static addItem(etc: EditableTableComponent, itemName: string, color: string, columnDetails: ColumnDetailsT) {
+    columnDetails.selectDropdown.selectItem[itemName] = {
       color,
-      element: SelectDropdownItem.addItemElement(etc, itemName, color, dropdown),
+      element: SelectDropdownItem.addItemElement(etc, itemName, columnDetails),
     };
   }
 
-  private static addItems(etc: EditableTableComponent, itemToColor: ItemToColor, dropdown: SelectDropdownT) {
-    dropdown.element.replaceChildren();
-    dropdown.selectItem = {};
+  private static addItems(etc: EditableTableComponent, itemToColor: ItemToColor, columnDetails: ColumnDetailsT) {
+    columnDetails.selectDropdown.element.replaceChildren();
+    columnDetails.selectDropdown.selectItem = {};
     Object.keys(itemToColor).forEach((itemName) => {
-      SelectDropdownItem.addItem(etc, itemName, itemToColor[itemName], dropdown);
+      SelectDropdownItem.addItem(etc, itemName, itemToColor[itemName], columnDetails);
     });
   }
 
@@ -202,9 +202,9 @@ export class SelectDropdownItem {
   // prettier-ignore
   public static populateItems(etc: EditableTableComponent, columnIndex: number) {
     const {contents, columnsDetails} = etc;
-    const {selectDropdown, settings: {defaultText, isDefaultTextRemovable}, activeType} = columnsDetails[columnIndex];
+    const columnDetails = columnsDetails[columnIndex];
+    const {selectDropdown: {newItemColors}, settings: {defaultText, isDefaultTextRemovable}, activeType} = columnDetails;
     if (!activeType.selectProps) return;
-    const {newItemColors} = selectDropdown;
     let itemToColor: ItemToColor = {}
     if (activeType.selectProps.options) {
       itemToColor = SelectDropdownItem.changeUserOptionsToItemToColor(activeType.selectProps.options, newItemColors)
@@ -213,6 +213,6 @@ export class SelectDropdownItem {
       SelectDropdownItem.aggregateItemToColor(contents, columnIndex, itemToColor, newItemColors);
     }
     SelectDropdownItem.postProcessItemToColor(isDefaultTextRemovable, itemToColor, defaultText);
-    SelectDropdownItem.addItems(etc, itemToColor, selectDropdown);
+    SelectDropdownItem.addItems(etc, itemToColor, columnDetails);
   }
 }

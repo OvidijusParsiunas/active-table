@@ -44,6 +44,8 @@ export class WindowEvents {
     if (event.key === KEYBOARD_KEY.ESCAPE) {
       SelectColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements); // picker stops key down
       DateCellInputEvents.escapeKeyInput(this);
+    } else if (event.key === KEYBOARD_KEY.ENTER) {
+      SelectColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements); // picker stops key down
     }
   }
 

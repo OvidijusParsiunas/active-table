@@ -15,12 +15,13 @@ export class SelectCellTextElement {
 
   // prettier-ignore
   public static finaliseEditedText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number) {
-    const {selectDropdown, activeType, settings} = etc.columnsDetails[columnIndex];
+    const columnDetails = etc.columnsDetails[columnIndex];
+    const {selectDropdown, activeType, settings} = columnDetails;
     const text = CellElement.getText(textElement);
     const isPresent = !!selectDropdown.selectItem[text]?.color;
     if (activeType.selectProps?.canAddMoreOptions && text !== EMPTY_STRING && !isPresent
         && (!settings.isDefaultTextRemovable || text !== settings.defaultText)) {
-      SelectDropdownItem.addNewSelectItem(etc, textElement, selectDropdown, textElement.style.backgroundColor);
+      SelectDropdownItem.addNewSelectItem(etc, textElement, columnDetails, textElement.style.backgroundColor);
     }
   }
 }

@@ -1,6 +1,5 @@
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {SelectColorButtonEvents} from './selectColorButtonEvents';
-import {SelectDropdownT} from '../../../../types/columnDetails';
+import {ColumnDetailsT} from '../../../../types/columnDetails';
 import {Browser} from '../../../../utils/browser/browser';
 import {SelectButton} from './selectButton';
 
@@ -9,6 +8,26 @@ export class SelectColorButton {
   public static readonly COLOR_BUTTON_CLASS = 'select-color-button';
   private static readonly COLOR_BUTTON_ICON_CLASS = 'select-color-button-icon';
   private static readonly COLOR_ICON_TEXT = 'c';
+
+  // buttonLevelElement is either input or button
+  public static extractRelativeParentElements(buttonLevelElement: HTMLElement) {
+    const containerElement = buttonLevelElement.parentElement as HTMLElement;
+    const textElement = containerElement.previousSibling?.previousSibling as HTMLElement;
+    const dropdownItemElement = containerElement.parentElement as HTMLElement;
+    return {containerElement, textElement, dropdownItemElement};
+  }
+
+  public static changeVisibility(itemElement: HTMLElement, rightSideDelta: number, displayOnDropdown?: HTMLElement) {
+    const buttonContainerElement = itemElement.children[2] as HTMLElement;
+    buttonContainerElement.style.display = displayOnDropdown ? 'block' : 'none';
+    if (displayOnDropdown) {
+      const colorInputElement = buttonContainerElement.children[0] as HTMLElement;
+      const leftInputDelta = Browser.IS_SAFARI ? 9 : 5;
+      colorInputElement.style.left = `${displayOnDropdown.offsetWidth - rightSideDelta + leftInputDelta}px`;
+      const buttonElement = buttonContainerElement.children[1] as HTMLElement;
+      buttonElement.style.left = `${displayOnDropdown.offsetWidth - rightSideDelta}px`;
+    }
+  }
 
   private static createIcon() {
     const iconElement = document.createElement('div');
@@ -39,25 +58,13 @@ export class SelectColorButton {
     return container;
   }
 
-  public static create(etc: EditableTableComponent, dropdown: SelectDropdownT) {
+  public static create(columnDetails: ColumnDetailsT) {
     const containerElement = SelectColorButton.createContainer();
     const colorInputElement = SelectColorButton.createInput();
     containerElement.appendChild(colorInputElement);
     const iconElement = SelectColorButton.createButton();
     containerElement.appendChild(iconElement);
-    SelectColorButtonEvents.setEvents(containerElement, colorInputElement, dropdown.overlays);
+    SelectColorButtonEvents.setEvents(containerElement, colorInputElement, columnDetails);
     return containerElement;
-  }
-
-  public static changeVisibility(itemElement: HTMLElement, rightSideDelta: number, displayOnDropdown?: HTMLElement) {
-    const buttonContainerElement = itemElement.children[2] as HTMLElement;
-    buttonContainerElement.style.display = displayOnDropdown ? 'block' : 'none';
-    if (displayOnDropdown) {
-      const colorInputElement = buttonContainerElement.children[0] as HTMLElement;
-      const leftInputDelta = Browser.IS_SAFARI ? 9 : 5;
-      colorInputElement.style.left = `${displayOnDropdown.offsetWidth - rightSideDelta + leftInputDelta}px`;
-      const buttonElement = buttonContainerElement.children[1] as HTMLElement;
-      buttonElement.style.left = `${displayOnDropdown.offsetWidth - rightSideDelta}px`;
-    }
   }
 }

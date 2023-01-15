@@ -16,6 +16,10 @@ export interface BordersOverwrittenBySiblings {
 }
 
 export interface DropdownOverlays {
+  colorPickerNewValue?: {
+    color: string;
+    text: string;
+  };
   colorPickerContainer?: HTMLElement; // cannot get the reference to the overlay element, hence using container instead
 }
 

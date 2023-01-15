@@ -169,8 +169,8 @@ export class SelectDropdown {
   public static setUpDropdown(etc: EditableTableComponent, columnIndex: number) {
     const {activeType: {selectProps}, selectDropdown} = etc.columnsDetails[columnIndex];
     if (!selectProps) return;
-    selectDropdown.newItemColors = etc.columnsDetails[columnIndex].activeType.selectProps?.isBasicSelect ?
-      undefined : LabelColorUtils.generateDefaultColors(); // REF-34
+    selectDropdown.newItemColors = etc.columnsDetails[columnIndex].activeType.selectProps?.isBasicSelect
+      ? undefined : LabelColorUtils.generateDefaultColors(); // REF-34
     SelectDropdown.setCustomState(selectDropdown, selectProps)
     SelectDropdownItem.populateItems(etc, columnIndex);
     if (selectProps.dropdownStyle) SelectDropdown.setCustomStyle(selectDropdown, selectProps.dropdownStyle);

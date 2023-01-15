@@ -37,8 +37,8 @@ export class SelectDropdownItemEvents {
     }
   }
 
-  private static highlightItem(this: Document, color: string, dropdown: SelectDropdownT, event: MouseEvent) {
-    const {scrollbarPresence, activeItems, newItemColors, canAddMoreOptions, element, overlays} = dropdown;
+  private static highlightItem(this: Document, dropdown: SelectDropdownT, event: MouseEvent) {
+    const {scrollbarPresence, activeItems, newItemColors, canAddMoreOptions, element, overlays, selectItem} = dropdown;
     if (overlays.colorPickerContainer) return;
     // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
     if (activeItems.hovered) {
@@ -46,7 +46,8 @@ export class SelectDropdownItemEvents {
       if (!newItemColors) activeItems.hovered.style.color = '';
     }
     const itemElement = event.target as HTMLElement;
-    itemElement.style.backgroundColor = color;
+    const text = (itemElement.children[0] as HTMLElement).innerText;
+    itemElement.style.backgroundColor = selectItem[text].color;
     const dropdownElement = itemElement.parentElement as HTMLElement;
     SelectDropdownItemEvents.scrollToItem(this, itemElement, scrollbarPresence.horizontal, dropdownElement, event);
     if (itemElement === activeItems.matchingWithCellText) {
@@ -59,8 +60,8 @@ export class SelectDropdownItemEvents {
     if (canAddMoreOptions) SelectButton.changeVisibility(event, dropdown, element);
   }
 
-  public static set(shadow: Document, itemElement: HTMLElement, color: string, dropdown: SelectDropdownT) {
-    itemElement.onmouseenter = SelectDropdownItemEvents.highlightItem.bind(shadow, color, dropdown);
+  public static set(shadow: Document, itemElement: HTMLElement, dropdown: SelectDropdownT) {
+    itemElement.onmouseenter = SelectDropdownItemEvents.highlightItem.bind(shadow, dropdown);
     itemElement.onmouseleave = SelectDropdownItemEvents.blurItem.bind(this, dropdown, 'hovered');
   }
 }

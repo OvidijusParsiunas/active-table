@@ -2,10 +2,9 @@ import {FocusNextCellFromSelectCell} from '../../../../../utils/focusedElements/
 import {SelectDropdownItem} from '../../../../dropdown/selectDropdown/selectDropdownItem';
 import {SelectButton} from '../../../../dropdown/selectDropdown/buttons/selectButton';
 import {SelectDropdown} from '../../../../dropdown/selectDropdown/selectDropdown';
-import {SelectPropertiesInternal} from '../../../../../types/columnTypeInternal';
 import {EditableTableComponent} from '../../../../../editable-table-component';
 import {ArrowDownIconElement} from '../select/arrowDownIconElement';
-import {SelectDropdownT} from '../../../../../types/columnDetails';
+import {ColumnDetailsT} from '../../../../../types/columnDetails';
 import {KEYBOARD_KEY} from '../../../../../consts/keyboardKeys';
 import {DataCellEvents} from '../../../dataCell/dataCellEvents';
 import {CellWithTextEvents} from '../../cellWithTextEvents';
@@ -48,22 +47,24 @@ export class SelectCellTextBaseEvents {
     }
   }
 
-  private static clearTypeSpecificProps(selectDropdown: SelectDropdownT, selectProps: SelectPropertiesInternal) {
-    if (selectProps.isBasicSelect) {
+  private static clearTypeSpecificProps(columnDetails: ColumnDetailsT) {
+    const {selectDropdown, activeType} = columnDetails;
+    if (!activeType.selectProps) return;
+    if (activeType.selectProps.isBasicSelect) {
       ArrowDownIconElement.toggle(selectDropdown.displayedCellElement, false);
       delete selectDropdown.displayedCellElement;
     } else {
-      SelectButton.hideAfterColorPickerContainerClose(selectDropdown.overlays);
+      SelectButton.hideAfterColorPickerContainerClose(columnDetails);
     }
   }
 
   public static blurring(etc: EditableTableComponent, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
-    const {selectDropdown, activeType} = etc.columnsDetails[columnIndex];
-    Dropdown.hide(selectDropdown.element);
-    if (!selectDropdown.selectItem[CellElement.getText(textElement)]) {
+    const columnDetails = etc.columnsDetails[columnIndex];
+    Dropdown.hide(columnDetails.selectDropdown.element);
+    if (!columnDetails.selectDropdown.selectItem[CellElement.getText(textElement)]) {
       SelectCell.finaliseEditedText(etc, textElement, columnIndex);
     }
-    if (activeType.selectProps) SelectCellTextBaseEvents.clearTypeSpecificProps(selectDropdown, activeType.selectProps);
+    SelectCellTextBaseEvents.clearTypeSpecificProps(columnDetails);
     DataCellEvents.blur(etc, rowIndex, columnIndex, textElement);
   }
 
