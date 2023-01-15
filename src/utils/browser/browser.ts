@@ -14,4 +14,13 @@ export class Browser {
 
   public static readonly IS_INPUT_DATE_SUPPORTED =
     Browser.createDateInput().type === 'date' && 'showPicker' in HTMLInputElement.prototype;
+
+  private static createColorInput() {
+    const dateInput = document.createElement('input');
+    dateInput.type = 'color';
+    return dateInput;
+  }
+
+  public static readonly IS_COLOR_PICKER_SUPPORTED =
+    Browser.createColorInput().type === 'color' && 'showPicker' in HTMLInputElement.prototype;
 }

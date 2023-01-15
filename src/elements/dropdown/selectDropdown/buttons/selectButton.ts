@@ -1,5 +1,6 @@
 import {ColumnDetailsT, SelectDropdownT} from '../../../../types/columnDetails';
 import {SelectColorButtonEvents} from './selectColorButtonEvents';
+import {Browser} from '../../../../utils/browser/browser';
 import {SelectDeleteButton} from './selectDeleteButton';
 import {SelectColorButton} from './selectColorButton';
 
@@ -12,7 +13,7 @@ export class SelectButton {
       const itemElement = event.target as HTMLElement;
       const rightSideDelta = dropdown.scrollbarPresence.vertical ? 31 : 16;
       SelectDeleteButton.changeVisibility(itemElement, rightSideDelta, displayOnDropdown);
-      if (dropdown.labelDetails && !dropdown.labelDetails.colorPickerContainer) {
+      if (Browser.IS_COLOR_PICKER_SUPPORTED && dropdown.labelDetails && !dropdown.labelDetails.colorPickerContainer) {
         SelectColorButton.changeVisibility(itemElement, rightSideDelta + 18, displayOnDropdown);
       }
     }

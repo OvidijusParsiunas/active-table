@@ -9,6 +9,7 @@ import {SelectDeleteButton} from './buttons/selectDeleteButton';
 import {SelectColorButton} from './buttons/selectColorButton';
 import {LabelOptions} from '../../../types/selectProperties';
 import {CellDetails} from '../../../types/focusedCell';
+import {Browser} from '../../../utils/browser/browser';
 import {CellElement} from '../../cell/cellElement';
 import {EMPTY_STRING} from '../../../consts/text';
 import {CellEvents} from '../../cell/cellEvents';
@@ -144,7 +145,7 @@ export class SelectDropdownItem {
     if (selectDropdown.canAddMoreOptions) {
       const deleteButtonElement = SelectDeleteButton.create(etc, selectDropdown);
       itemElement.appendChild(deleteButtonElement);
-      if (selectDropdown.labelDetails?.newItemColors) {
+      if (Browser.IS_COLOR_PICKER_SUPPORTED && selectDropdown.labelDetails?.newItemColors) {
         const colorInputElement = SelectColorButton.create(columnDetail);
         itemElement.appendChild(colorInputElement);
       }
