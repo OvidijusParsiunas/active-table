@@ -10,11 +10,11 @@ import {CellCSSStyle} from './cssStyle';
 // difference between column settings and details is that details is more about the values that are set throughout
 // the component runtime duration and settings are values that can be set by the user which control its behaviour
 
-interface Parent {
+interface Parent<CellStyle = CellCSSStyle> {
   columnName: string;
   defaultText?: CellText;
   isDefaultTextRemovable?: boolean; // true by default
-  cellStyle?: CellCSSStyle;
+  cellStyle?: CellStyle;
   isCellTextEditable?: boolean; // true by default
   headerStyleProps?: HoverableElementStyleClient;
   isHeaderTextEditable?: boolean; // uses isCellTextEditable by default
@@ -34,28 +34,33 @@ interface Parent {
   isMoveAvailable?: boolean; // false by default
 }
 
-// TO-DO - can probably make width part of the cellStyle - take note that CellCSSStyle is currently not using width as
-// it should not be used for processed cell style
+// REF-24
+// if dimension is a percentage - will use the table width
+// if total custom columns width is higher than the width in tableStyle, they will breach that width
+export type CustomColumnWidth = InterfacesUnion<{width: StringDimension} | {minWidth: StringDimension} | {}>;
+
+type DimensionalCSSStyle = CellCSSStyle & CustomColumnWidth;
+
+// exposed to the client
+// if the user proceeds to set width and minWidth properties - minWidth will take precedence
+export type CustomColumnSettings = Parent<DimensionalCSSStyle>;
+
+// exposed to the client
+export type CustomColumnsSettings = Array<CustomColumnSettings>;
+
 interface Width extends Parent {
   // REF-24
-  // if percentage - will use the table width
-  // if the accummulated custom column widths are higher than the width in tableDimensions, they will breach that width
+  // if dimension is a percentage - will use the table width
+  // if total custom columns width is higher than the width in tableStyle, they will breach that width
   width: StringDimension;
 }
 
 interface MinWidth extends Parent {
   // REF-24
-  // if percentage - will use the table width
-  // if the accummulated custom column widths are higher than the width in tableDimensions, they will breach that width
+  // if dimension is a percentage - will use the table width
+  // if total custom columns width is higher than the width in tableStyle, they will breach that width
   minWidth: StringDimension;
 }
-
-// exposed to the client
-// if the user proceeds to set width and minWidth properties - minWidth will take precedence
-export type CustomColumnSettings = InterfacesUnion<Width | MinWidth | Parent>;
-
-// exposed to the client
-export type CustomColumnsSettings = Array<CustomColumnSettings>;
 
 // The following was in a SEPARATE FILE but it needs access to the Width, MinWidth and Parent in order to omit
 // the columnName property, hence instead of exposing these publicly and polluting the intellisense suggested

@@ -22,4 +22,10 @@ export class ObjectUtils {
     const undefinedValue = values.findIndex((value) => value === undefined || value === null);
     return undefinedValue === -1;
   }
+
+  public static removeProperties<T>(object: T, ...keys: (keyof T)[]) {
+    keys.forEach((key) => {
+      delete object[key as unknown as keyof T];
+    });
+  }
 }

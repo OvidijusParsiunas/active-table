@@ -11,11 +11,11 @@ import {PaginationUtils} from '../../pagination/paginationUtils';
 import {CellText, TableRow} from '../../../types/tableContents';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {ElementDetails} from '../../../types/elementDetails';
+import {MaximumColumns} from './maximum/maximumColumns';
 import {MoveRow} from '../../moveStructure/moveRow';
-import {MaximumColumns} from './maximumColumns';
+import {MaximumRows} from './maximum/maximumRows';
 import {InsertNewCell} from './insertNewCell';
 import {DataUtils} from '../shared/dataUtils';
-import {MaximumRows} from './maximumRows';
 
 export class InsertNewRow {
   // CAUTION-2 if the addition or removal of row causes the parent div to change width, this is indeed run after rerender,

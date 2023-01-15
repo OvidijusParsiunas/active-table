@@ -13,7 +13,7 @@ export class ColumnGroupElement {
     const firstCols = columnGroupRef.children[0] as HTMLElement;
     // cannot simply overwrite span and need to instead replace the element
     const newFirstCols = document.createElement('col');
-    newFirstCols.span = CellElementIndex.getViaColumnIndex(columnsDetails.length, displayIndexColumn);
+    newFirstCols.span = CellElementIndex.getViaColumnIndex(columnsDetails.length, !!displayIndexColumn);
     columnGroupRef.replaceChild(newFirstCols, firstCols);
   }
 

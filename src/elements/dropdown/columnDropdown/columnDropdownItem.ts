@@ -1,4 +1,4 @@
-import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximumColumns';
+import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximum/maximumColumns';
 import {ColumnDropdownButtonItemConf} from './columnDropdownButtonItemConf';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnSettingsInternal} from '../../../types/columnsSettings';

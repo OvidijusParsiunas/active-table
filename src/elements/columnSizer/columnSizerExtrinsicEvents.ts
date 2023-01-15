@@ -1,10 +1,10 @@
 import {UpdateRowElement} from '../../utils/insertRemoveStructure/update/updateRowElement';
-import {TableDimensionsInternal} from '../../types/tableDimensionsInternal';
 import {ColumnSizerT, SelectedColumnSizerT} from '../../types/columnSizer';
 import {ColumnSizerGenericUtils} from './utils/columnSizerGenericUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {MovableColumnSizerElement} from './movableColumnSizerElement';
 import {ColumnSizerSetWidth} from './utils/columnSizerSetWidth';
+import {TableDimensions} from '../../types/tableDimensions';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {ColumnsDetailsT} from '../../types/columnDetails';
 import {ColumnSizerElement} from './columnSizerElement';
@@ -30,18 +30,18 @@ export class ColumnSizerExtrinsicEvents {
 
   // prettier-ignore
   private static setWidth(selectedColumnSizer: SelectedColumnSizerT, tableElement: HTMLElement,
-      tableDimensions: TableDimensionsInternal, leftHeader: HTMLElement, rightHeader?: HTMLElement) {
+      tableDimensions: TableDimensions, leftHeader: HTMLElement, rightHeader?: HTMLElement) {
     ColumnSizerElement.unsetTransitionTime(selectedColumnSizer.element);
     ColumnSizerSetWidth.set(selectedColumnSizer, tableElement, tableDimensions, leftHeader, rightHeader);
   }
 
   // prettier-ignore
   private static mouseUp(etc: EditableTableComponent) {
-    const {activeOverlayElements, columnsDetails, tableDimensionsInternal, tableElementRef} = etc;
+    const {activeOverlayElements, columnsDetails, tableDimensions, tableElementRef} = etc;
     const selectedColumnSizer = activeOverlayElements.selectedColumnSizer as SelectedColumnSizerT;
     const {columnSizer, headerCell, sizerNumber} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(
       selectedColumnSizer.element.id, columnsDetails);
-    ColumnSizerExtrinsicEvents.setWidth(selectedColumnSizer, tableElementRef as HTMLElement, tableDimensionsInternal,
+    ColumnSizerExtrinsicEvents.setWidth(selectedColumnSizer, tableElementRef as HTMLElement, tableDimensions,
       headerCell, ColumnSizerGenericUtils.findNextResizableColumnHeader(columnsDetails, sizerNumber));
     MovableColumnSizerElement.hide(columnSizer.movableElement);
     UpdateRowElement.updateHeaderRowHeight(columnSizer.element.parentElement?.parentElement as HTMLElement);

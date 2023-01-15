@@ -1,8 +1,8 @@
-import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
-import {StaticTable} from '../../tableDimensions/staticTable/staticTable';
-import {EditableTableComponent} from '../../../editable-table-component';
-import {TableElement} from '../../../elements/table/tableElement';
-import {ColumnDetails} from '../../columnDetails/columnDetails';
+import {StaticTable} from '../../../tableDimensions/staticTable/staticTable';
+import {EditableTableComponent} from '../../../../editable-table-component';
+import {TableElement} from '../../../../elements/table/tableElement';
+import {ColumnDetails} from '../../../columnDetails/columnDetails';
+import {TableDimensions} from '../../../../types/tableDimensions';
 
 export class MaximumColumns {
   // the motivation behind minimal column length came from the fact that when we have set a table width and all the columns
@@ -16,27 +16,27 @@ export class MaximumColumns {
   // REF-24
   // this is a small effort to toggle off the add new column button when columns with set widths breach the table
   // please note that this will not allow any more columns to be added even if preserveNarrowColumns is true
-  private static isStaticContentBreachingSetTableWidth(tableDimensions: TableDimensionsInternal) {
+  private static isStaticContentBreachingSetTableWidth(tableDimensions: TableDimensions) {
     const width = tableDimensions.width || tableDimensions.maxWidth;
     return width !== undefined && TableElement.STATIC_WIDTH_CONTENT_TOTAL > width;
   }
 
   // prettier-ignore
-  private static ignoreMinimalColumnWidthCheck(tableDimensionsInternal: TableDimensionsInternal,
+  private static ignoreMinimalColumnWidthCheck(tableDimensions: TableDimensions,
       tableElement: HTMLElement, numberOfColumns: number) {
-    return tableDimensionsInternal.preserveNarrowColumns ||
-      !StaticTable.isStaticTableWidth(tableElement, tableDimensionsInternal) ||
+    return tableDimensions.preserveNarrowColumns ||
+      !StaticTable.isStaticTableWidth(tableElement, tableDimensions) ||
       numberOfColumns === 0;
   }
 
   // prettier-ignore
   public static canAddMore(etc: EditableTableComponent) {
-    const {tableElementRef, columnsDetails, tableDimensionsInternal} = etc;
+    const {tableElementRef, columnsDetails, tableDimensions, maxColumns} = etc;
     const numberOfColumns = columnsDetails.length;
-    if (tableDimensionsInternal.maxColumns === numberOfColumns
-      || MaximumColumns.isStaticContentBreachingSetTableWidth(tableDimensionsInternal)) return false;
+    if (maxColumns === numberOfColumns
+      || MaximumColumns.isStaticContentBreachingSetTableWidth(tableDimensions)) return false;
     const tableElement = tableElementRef as HTMLElement;
-    if (MaximumColumns.ignoreMinimalColumnWidthCheck(tableDimensionsInternal, tableElement, numberOfColumns)) return true;
+    if (MaximumColumns.ignoreMinimalColumnWidthCheck(tableDimensions, tableElement, numberOfColumns)) return true;
     const totalColumnsWidth = tableElement.offsetWidth - TableElement.STATIC_WIDTH_CONTENT_TOTAL;
     return totalColumnsWidth / (numberOfColumns + 1) >= ColumnDetails.MINIMAL_COLUMN_WIDTH;
   }

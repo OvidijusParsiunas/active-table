@@ -7,8 +7,8 @@ export class ParentResize {
     if (!etc.overflowInternal) return false;
     const {isHeightPercentage, isWidthPercentage} = etc.overflowInternal;
     return (
-      (isHeightPercentage && etc.tableDimensionsInternal.recordedParentHeight !== parentElement.offsetHeight) ||
-      (isWidthPercentage && etc.tableDimensionsInternal.recordedParentWidth !== parentElement.offsetWidth)
+      (isHeightPercentage && etc.tableDimensions.recordedParentHeight !== parentElement.offsetHeight) ||
+      (isWidthPercentage && etc.tableDimensions.recordedParentWidth !== parentElement.offsetWidth)
     );
   }
 
@@ -16,13 +16,13 @@ export class ParentResize {
     const parentElement = etc.parentElement as HTMLElement;
     if (ParentResize.doesOverflowNeedRerender(etc, parentElement)) return true;
     return (
-      etc.tableDimensionsInternal.isPercentage &&
+      etc.tableDimensions.isPercentage &&
       // resize callback gets triggered on multiple occassions when the parent width has not changed:
       // on startup, after table has been resized, when parent height is changed and when column height is changed
       // this condition prevents the table from re-rendering itself when the above occurs
-      etc.tableDimensionsInternal.recordedParentWidth !== parentElement.offsetWidth &&
+      etc.tableDimensions.recordedParentWidth !== parentElement.offsetWidth &&
       // if the parent is resized to a width that does not impact the table width, do not bother re-rendering it
-      (etc.tableDimensionsInternal.maxWidth === undefined || etc.offsetWidth > parentElement.offsetWidth)
+      (etc.tableDimensions.maxWidth === undefined || etc.offsetWidth > parentElement.offsetWidth)
     );
   }
 
@@ -30,9 +30,9 @@ export class ParentResize {
     const etc = this as unknown as EditableTableComponent;
     if (!ParentResize.shouldRerenderTable(etc)) return;
     // preventing the removal of columns that are too narrow
-    if (!etc.tableDimensionsInternal.preserveNarrowColumns) {
-      etc.tableDimensionsInternal.preserveNarrowColumns = true;
-      setTimeout(() => (etc.tableDimensionsInternal.preserveNarrowColumns = false));
+    if (!etc.tableDimensions.preserveNarrowColumns) {
+      etc.tableDimensions.preserveNarrowColumns = true;
+      setTimeout(() => (etc.tableDimensions.preserveNarrowColumns = false));
     }
     Render.renderTable(etc);
   }

@@ -26,7 +26,7 @@ export class Render {
     if (etc.overflowInternal) OverflowUtils.applyDimensions(etc);
     TableElement.setStaticWidthContentTotal(etc);
     // needs to be in render trigger as user props are not set in the connectedCallback function in Firefox
-    TableDimensionsUtils.setInternalTableDimensions(etc);
+    TableDimensionsUtils.setTableDimensions(etc);
     TableElement.populateBody(etc);
   }
 }

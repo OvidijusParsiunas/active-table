@@ -1,18 +1,4 @@
-import {MaxStructureDimensions} from './maxStructureDimensions';
-import {FullStringDimension} from './dimensions';
 import {InterfacesUnion} from './utilityTypes';
-
-// This is to be used by the client exclusively
-
-// REF-19
-// wrapIndexCellText:
-// By default, index column width is updated by analyzing the number of digits present in the highest index number.
-// When wrapIndexCellText is set to true, the default behaviour can be turned off to instead wrap the number within each
-// cell. This would cause the cell's width to always remain as default (30px).
-// set to false by default
-
-// width/maxWidth:
-// width and maxWidth are mutually exclusive and if both are present width is the only one that will be used
 
 // preserveNarrowColumns:
 // When width or maxWidth properties are set (or default - maxWidth 100%), the insertion of a new column does not
@@ -29,38 +15,28 @@ import {InterfacesUnion} from './utilityTypes';
 // (Please note that upon resizing the window when width is a % value - columns that are too narrow will not be removed
 // to preserve their data and the table size then has a chance of increasing beyond the set value)
 
-type AllowedByDefault = {
-  wrapIndexCellText?: boolean;
-} & MaxStructureDimensions;
+type Parent = {
+  // the reason why preserNarrowColumns is stored inside this object is because we temporarily need to overwrite it
+  // when resizing the table and we do not want to re-render
+  preserveNarrowColumns?: boolean;
+  isColumnIndexCellTextWrapped?: boolean; // REF-19
+} & Initial;
 
-interface Width extends AllowedByDefault {
-  width: FullStringDimension;
-  preserveNarrowColumns?: boolean; // true by default
+interface Initial {
+  recordedParentWidth: number;
+  recordedParentHeight: number;
+  recordedWindowWidth: number;
+  recordedWindowHeight: number;
 }
 
-interface MaxWidth extends AllowedByDefault {
-  maxWidth: FullStringDimension;
-  preserveNarrowColumns?: boolean; // true by default
+interface Width extends Parent {
+  width: number;
+  isPercentage: boolean; // used to resize the table if the parent width has changed
 }
 
-interface NarrowColumns extends AllowedByDefault {
-  preserveNarrowColumns: boolean; // true by default
+interface MaxWidth extends Parent {
+  maxWidth: number;
+  isPercentage: boolean; // used to resize the table if the parent width has changed
 }
 
-interface UnlimitedSize extends AllowedByDefault {
-  unlimitedSize: boolean; // false by default
-}
-
-type Empty = {} & AllowedByDefault;
-
-// CAUTION-3
-// These exclusive type combinations may not be respected by the user, hence the handling logic needs to exercise caution
-export type TableDimensions = InterfacesUnion<Width | MaxWidth | NarrowColumns | UnlimitedSize | Empty>;
-
-// Replacement for the following
-// exporty type TableDimensions =
-// | AssignNever<AllDimensionProps, Width>
-// | AssignNever<AllDimensionProps, MaxWidth>
-// | AssignNever<AllDimensionProps, NarrowColumns>
-// | AssignNever<AllDimensionProps, UnlimitedSize>
-// | AssignNever<AllDimensionProps, Empty>;
+export type TableDimensions = InterfacesUnion<Width | MaxWidth | Initial>;

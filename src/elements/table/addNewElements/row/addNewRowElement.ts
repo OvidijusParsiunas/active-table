@@ -1,4 +1,4 @@
-import {MaximumRows} from '../../../../utils/insertRemoveStructure/insert/maximumRows';
+import {MaximumRows} from '../../../../utils/insertRemoveStructure/insert/maximum/maximumRows';
 import {EditableTableComponent} from '../../../../editable-table-component';
 import {NoContentStubElement} from '../shared/noContentStubElement';
 import {CellElement} from '../../../cell/cellElement';

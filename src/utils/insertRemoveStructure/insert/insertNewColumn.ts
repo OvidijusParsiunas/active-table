@@ -6,10 +6,10 @@ import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
+import {MaximumColumns} from './maximum/maximumColumns';
 import {TableRow} from '../../../types/tableContents';
 import {EMPTY_STRING} from '../../../consts/text';
 import {LastColumn} from '../shared/lastColumn';
-import {MaximumColumns} from './maximumColumns';
 import {InsertNewCell} from './insertNewCell';
 
 export class InsertNewColumn {

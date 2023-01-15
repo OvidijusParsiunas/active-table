@@ -14,7 +14,6 @@ import {PaginationElements} from './elements/pagination/paginationElements';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {StickyProcessUtils} from './utils/stickyProps/stickyPropsUtils';
-import {TableDimensionsInternal} from './types/tableDimensionsInternal';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {DropdownDisplaySettings} from './types/dropdownDisplaySettings';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
@@ -42,11 +41,11 @@ import {ColumnsDetailsT} from './types/columnDetails';
 import {StripedRows} from './utils/rows/stripedRows';
 import {StickyProps} from './types/stickyProps';
 import {Browser} from './utils/browser/browser';
+import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
 import {RowHover} from './types/rowHover';
-import {CSSStyle} from './types/cssStyle';
 import {LitElement} from 'lit';
 import {
   DefaultColumnsSettings,
@@ -163,20 +162,32 @@ export class EditableTableComponent extends LitElement {
   @state()
   userKeyEventsState: UserKeyEventsState = UserKeyEventsStateUtils.createNew();
 
-  @property({type: Object})
-  tableDimensions: TableDimensions = {};
-
   @state()
-  tableDimensionsInternal: TableDimensionsInternal = TableDimensionsUtils.getDefault();
+  tableDimensions: TableDimensions = TableDimensionsUtils.getDefault();
 
   @state()
   selectDropdownContainer: HTMLElement | null = null;
 
   @property({type: Object})
-  tableStyle: CSSStyle = {};
+  tableStyle: TableStyle = {};
 
   @property({type: Object})
   rowHover: RowHover | null = null;
+
+  // if set to false - the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
+  // this property is not used internally and is being set/used in tableDimensions as it is overriden when resizing
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  preserveNarrowColumns = true;
+
+  @property({type: Number})
+  maxColumns?: number;
+
+  // TO-DO this may need to be changed to maxDataRows as the index column will not display anything for the header row
+  @property({type: Number})
+  maxRows?: number;
 
   // REF-22 - to be used by the client
   // auxiliary content is comprised of index column, add new column column and add new row row

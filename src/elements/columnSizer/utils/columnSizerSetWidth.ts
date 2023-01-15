@@ -1,6 +1,6 @@
 import {StaticTable} from '../../../utils/tableDimensions/staticTable/staticTable';
 import {SizerMoveLimits, SelectedColumnSizerT} from '../../../types/columnSizer';
-import {TableDimensionsInternal} from '../../../types/tableDimensionsInternal';
+import {TableDimensions} from '../../../types/tableDimensions';
 
 // Try not use offsetWidth for cells as it rounds the width number up, whereas some columns can have widths with
 // decimal places, thus this would cause a column width to be changed when no movement was made or cause the new
@@ -68,7 +68,7 @@ export class ColumnSizerSetWidth {
   // left or right header in respect to the position of the sizer element
   // prettier-ignore
   public static set(selectedColumnSizer: SelectedColumnSizerT, tableElement: HTMLElement,
-      tableDimensions: TableDimensionsInternal, leftHeader: HTMLElement, rightHeader?: HTMLElement) {
+      tableDimensions: TableDimensions, leftHeader: HTMLElement, rightHeader?: HTMLElement) {
     if (rightHeader && StaticTable.isStaticTableWidth(tableElement, tableDimensions)) {
       // when the table width is static - control the width of two columns
       ColumnSizerSetWidth.setColumnsWidths(selectedColumnSizer, leftHeader, rightHeader);

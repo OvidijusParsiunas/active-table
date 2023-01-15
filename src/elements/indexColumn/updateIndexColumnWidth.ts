@@ -15,12 +15,12 @@ export class UpdateIndexColumnWidth {
   public static WIDTH = DEFAULT_COLUMN_WIDTH;
 
   private static wrapColumnTextAndGetDefaultWidth(etc: EditableTableComponent) {
-    const {tableBodyElementRef, contents, tableDimensionsInternal} = etc;
+    const {tableBodyElementRef, contents, tableDimensions} = etc;
     ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, contents).forEach((row) => {
       const indexCell = row.children[0] as HTMLElement;
       indexCell.classList.remove(IndexColumn.INDEX_CELL_OVERFLOW_CLASS);
     });
-    tableDimensionsInternal.isColumnIndexCellTextWrapped = true;
+    tableDimensions.isColumnIndexCellTextWrapped = true;
     ToggleAdditionElements.update(etc, true, AddNewColumnElement.toggle);
     return IndexColumn.DEFAULT_WIDTH;
   }
@@ -45,9 +45,7 @@ export class UpdateIndexColumnWidth {
   }
 
   private static shouldTextBeWrapped(etc: EditableTableComponent) {
-    return (
-      !etc.tableDimensionsInternal.isColumnIndexCellTextWrapped && TableDimensionsUtils.hasSetTableWidthBeenBreached(etc)
-    );
+    return !etc.tableDimensions.isColumnIndexCellTextWrapped && TableDimensionsUtils.hasSetTableWidthBeenBreached(etc);
   }
 
   private static changeWidth(etc: EditableTableComponent, firstRow: HTMLElement, newWidth: number) {
@@ -111,9 +109,9 @@ export class UpdateIndexColumnWidth {
     if (forceWrap) {
       UpdateIndexColumnWidth.forceWrap(etc, firstRow);
       // when 'block' display style is not set on the table
-    } else if (etc.tableDimensionsInternal.preserveNarrowColumns || etc.tableDimensionsInternal.maxWidth !== undefined) {
+    } else if (etc.tableDimensions.preserveNarrowColumns || etc.tableDimensions.maxWidth !== undefined) {
       UpdateIndexColumnWidth.updateColumnWidthWhenOverflow(etc, firstRow, lastCell);
-    } else if (etc.tableDimensionsInternal.width !== undefined) {
+    } else if (etc.tableDimensions.width !== undefined) {
       UpdateIndexColumnWidth.checkAutoColumnWidthUpdate(etc, lastCell);
     }
   }
@@ -121,7 +119,7 @@ export class UpdateIndexColumnWidth {
   // used when a new row is added
   // forceWrap - REF-19
   public static update(etc: EditableTableComponent, textRowsArr?: Element[], forceWrap = false) {
-    if (etc.tableDimensionsInternal.isColumnIndexCellTextWrapped) return;
+    if (etc.tableDimensions.isColumnIndexCellTextWrapped) return;
     if (!textRowsArr) {
       const {tableBodyElementRef, contents} = etc;
       textRowsArr = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, contents);

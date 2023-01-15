@@ -54,7 +54,7 @@ export class RemoveColumn {
 
   private static removeCell(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
     const lastColumn: ElementDetails = LastColumn.getDetails(etc.columnsDetails, rowIndex);
-    RemoveColumn.removeElements(rowElement, columnIndex, etc.auxiliaryTableContentInternal.displayIndexColumn);
+    RemoveColumn.removeElements(rowElement, columnIndex, !!etc.auxiliaryTableContentInternal.displayIndexColumn);
     etc.contents[rowIndex].splice(columnIndex, 1);
     setTimeout(() => {
       const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};

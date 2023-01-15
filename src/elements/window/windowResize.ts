@@ -11,9 +11,9 @@ interface DimensionsToObserve {
 export class WindowResize {
   // prettier-ignore
   private static resize(this: EditableTableComponent, observe: DimensionsToObserve) {
-    const {tableDimensionsInternal} = this;
-    if ((observe.width && window.innerWidth !== tableDimensionsInternal.recordedWindowWidth)
-        || (observe.height && window.innerHeight !== tableDimensionsInternal.recordedWindowHeight)) {
+    const {tableDimensions} = this;
+    if ((observe.width && window.innerWidth !== tableDimensions.recordedWindowWidth)
+        || (observe.height && window.innerHeight !== tableDimensions.recordedWindowHeight)) {
       Render.renderTable(this);
     }
   }
@@ -29,7 +29,7 @@ export class WindowResize {
   // prettier-ignore
   private static extractDimensionsToObserve(etc: EditableTableComponent) {
     const postfixes = [
-      etc.tableDimensions.width, etc.tableDimensions.maxWidth, etc.overflow?.maxHeight, etc.overflow?.maxWidth
+      etc.tableStyle.width, etc.tableStyle.maxWidth, etc.overflow?.maxHeight, etc.overflow?.maxWidth
     ].map((dimension) => WindowResize.extractPostfix(dimension))
     return {
       width: !!postfixes.find((entry) => entry === VW),

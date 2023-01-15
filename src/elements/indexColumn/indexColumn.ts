@@ -29,13 +29,13 @@ export class IndexColumn {
 
   // prettier-ignore
   private static createCell(etc: EditableTableComponent, isHeader: boolean) {
-    const {tableDimensionsInternal, defaultColumnsSettings, auxiliaryTableContentInternal} = etc;
+    const {tableDimensions, defaultColumnsSettings, auxiliaryTableContentInternal} = etc;
     const cell = CellElement.createBaseCell(isHeader);
     cell.classList.add(IndexColumn.INDEX_CELL_CLASS, GenericElementUtils.NOT_SELECTABLE_CLASS);
     const {displaySettings, isHeaderRowEditable} = etc.rowDropdownSettings;
     cell.style.cursor = displaySettings.openMethod?.cellClick && (!isHeader || isHeaderRowEditable)
       ? 'pointer' : 'default';
-    if (!tableDimensionsInternal.isColumnIndexCellTextWrapped) {
+    if (!tableDimensions.isColumnIndexCellTextWrapped) {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }
     Object.assign(cell.style, defaultColumnsSettings.cellStyle, auxiliaryTableContentInternal.styleProps?.default || {});

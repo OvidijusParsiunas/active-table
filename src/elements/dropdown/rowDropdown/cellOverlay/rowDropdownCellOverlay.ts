@@ -66,7 +66,7 @@ export class RowDropdownCellOverlay {
   public static add(etc: EditableTableComponent, rowIndex: number, leftMostCell: HTMLElement) {
     const rowDropdownCellOverlay = RowDropdownCellOverlay.create(etc.rowDropdownSettings.displaySettings.overlayStyle);
     const {displayIndexColumn} = etc.auxiliaryTableContentInternal;
-    const cellDividerElement = RowDropdownCellOverlay.getCellDividerElement(leftMostCell, displayIndexColumn);
+    const cellDividerElement = RowDropdownCellOverlay.getCellDividerElement(leftMostCell, !!displayIndexColumn);
     cellDividerElement.appendChild(rowDropdownCellOverlay);
     etc.rowDropdownCellOverlays.splice(rowIndex, 0, {
       element: rowDropdownCellOverlay,

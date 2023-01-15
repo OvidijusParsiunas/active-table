@@ -57,7 +57,7 @@ export class InsertNewCell {
     const columnDetails = columnsDetails[columnIndex];
     columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
     columnDetails.processedStyle.splice(rowIndex, 0, ProcessedDataTextStyle.getDefaultProcessedTextStyle());
-    InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, displayIndexColumn);
+    InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, !!displayIndexColumn);
     // cannot place in a timeout as etc.contents length is used to get last row index
     contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
   }

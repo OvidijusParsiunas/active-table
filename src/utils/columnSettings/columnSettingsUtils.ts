@@ -1,6 +1,6 @@
+import {ColumnDropdownCellOverlay} from '../../elements/dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlay';
 import {HeaderIconCellElement} from '../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
-import {ColumnDropdownCellOverlay} from '../../elements/dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlay';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {ColumnSettingsDefaultTextUtils} from './columnSettingsDefaultTextUtils';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
@@ -11,7 +11,9 @@ import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 import {ResetColumnStructure} from './resetColumnStructure';
 import {CellElement} from '../../elements/cell/cellElement';
 import {GenericObject} from '../../types/genericObject';
+import {ObjectUtils} from '../object/objectUtils';
 import {EMPTY_STRING} from '../../consts/text';
+import {CSSStyle} from '../../types/cssStyle';
 import {
   ColumnSettingsInternal,
   DefaultColumnsSettings,
@@ -74,11 +76,22 @@ export class ColumnSettingsUtils {
     if (areSettingsDifferent) ColumnSettingsUtils.change(etc, cellElement, columnIndex, oldSettings, newSettings);
   }
 
+  // prettier-ignore
+  private static processCellDimensions(settings: CustomColumnSettings) {
+    const internalSettings = settings as ColumnSettingsInternal;
+    if (!settings.cellStyle) return;
+    if (settings.cellStyle.width) internalSettings.width = settings.cellStyle.width;
+    if (settings.cellStyle.minWidth) internalSettings.width = settings.cellStyle.minWidth;
+    ObjectUtils.removeProperties(internalSettings.cellStyle as CSSStyle,
+      'width', 'maxHeight', 'minWidth', 'height', 'minHeight', 'maxHeight');
+  }
+
   private static createInternalSettings(settings: CustomColumnSettings, defSettings: DefaultColumnsSettings) {
     const internalSettings = settings as ColumnSettingsInternal;
     if (ColumnSettingsStyleUtils.doesSettingHaveSideBorderStyle(internalSettings)) {
       internalSettings.stylePrecedence = true; // REF-23
     }
+    ColumnSettingsUtils.processCellDimensions(settings);
     Object.keys(defSettings).forEach((key: string) => {
       (internalSettings as unknown as GenericObject)[key] ??= defSettings[key as keyof DefaultColumnsSettings] as string;
     });

@@ -69,7 +69,7 @@ export class InsertRemoveColumnSizer {
   public static insert(etc: EditableTableComponent, columnIndex: number) {
     const {columnsDetails} = etc;
     if (columnsDetails[columnIndex].settings.width !== undefined) return;
-    if (etc.tableDimensionsInternal.width !== undefined) {
+    if (etc.tableDimensions.width !== undefined) {
       columnIndex = InsertRemoveColumnSizer.getNewColumnIndexIfWidthSet(etc.columnsDetails, columnIndex);
       if (columnIndex === -1 || columnsDetails[columnIndex].settings.width !== undefined) return;
     } else {
@@ -99,8 +99,8 @@ export class InsertRemoveColumnSizer {
   }
 
   public static remove(etc: EditableTableComponent, columnIndex: number) {
-    const {tableDimensionsInternal, columnsDetails, tableElementRef} = etc;
-    if (tableDimensionsInternal.width !== undefined) {
+    const {tableDimensions, columnsDetails, tableElementRef} = etc;
+    if (tableDimensions.width !== undefined) {
       columnIndex = InsertRemoveColumnSizer.removeIfLastColumn(columnsDetails, columnIndex);
     }
     InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex, tableElementRef as HTMLElement);
@@ -111,8 +111,8 @@ export class InsertRemoveColumnSizer {
   // columns that have settings width do not have a sizer, additionally the last column that does not have any setting
   // width does not have a sizer. Columns with a setting for minWidth do have sizers.
   public static cleanUpCustomColumnSizers(etc: EditableTableComponent, changedColumnIndex: number) {
-    const {tableDimensionsInternal, columnsDetails} = etc;
-    if (tableDimensionsInternal.width === undefined) return;
+    const {tableDimensions, columnsDetails} = etc;
+    if (tableDimensions.width === undefined) return;
     let isLastDynamicColumnFound = false;
     // traversing backwards
     for (let i = columnsDetails.length - 1; i >= 0; i -= 1) {

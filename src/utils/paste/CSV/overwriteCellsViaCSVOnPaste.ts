@@ -79,7 +79,7 @@ export class OverwriteCellsViaCSVOnPaste {
   private static overwriteCell(etc: EditableTableComponent,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, newCellText: string) {
     const {auxiliaryTableContentInternal: {displayIndexColumn}, columnsDetails} = etc;
-    const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, displayIndexColumn);
+    const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, !!displayIndexColumn);
     const cellElement = rowElement.children[elementIndex] as HTMLElement;
     const columnDetails = columnsDetails[columnIndex];
     if ((rowIndex === 0 && !columnDetails.settings.isHeaderTextEditable)
