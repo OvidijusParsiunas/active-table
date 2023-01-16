@@ -1,9 +1,9 @@
 import {ColumnSettingsBorderUtils} from '../columnSettings/columnSettingsBorderUtils';
+import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CustomTextProcessing} from '../../types/customTextProcessing';
 import {CellProcessedTextStyle} from '../../types/processedTextStyle';
 import {ResetColumnStyles} from '../columnSettings/resetColumnStyles';
-import {DefaultColumnsSettings} from '../../types/columnsSettings';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
 import {CellText} from '../../types/tableContents';
@@ -17,7 +17,7 @@ export class ProcessedDataTextStyle {
   // prettier-ignore
   private static setCustomStyle(changeStyle: CustomTextProcessing['changeStyle'], text: CellText,
       columnDetails: ColumnDetailsT, processedStyle: CellProcessedTextStyle,
-      textContainerElement: HTMLElement, defaultColumnsSettings: DefaultColumnsSettings) {
+      textContainerElement: HTMLElement, defaultColumnsSettings: ColumnsSettingsDefault) {
     if (changeStyle) {
       ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, textContainerElement, defaultColumnsSettings);
       const newStyle = changeStyle(String(text));
@@ -39,7 +39,7 @@ export class ProcessedDataTextStyle {
   // prettier-ignore
   private static setStyle(isValid: boolean, columnDetails: ColumnDetailsT, processedStyle: CellProcessedTextStyle,
       customTextProcessing: CustomTextProcessing | undefined, textContainerElement: HTMLElement,
-      defaultColumnsSettings: DefaultColumnsSettings): boolean {
+      defaultColumnsSettings: ColumnsSettingsDefault): boolean {
     let wasValidationStyleSet = false; // REF-3
     if (!isValid) {
       if (customTextProcessing?.changeStyle) {

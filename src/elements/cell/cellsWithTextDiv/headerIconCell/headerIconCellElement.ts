@@ -1,5 +1,5 @@
+import {ColumnSettingsInternal} from '../../../../types/columnsSettingsInternal';
 import {EditableTableComponent} from '../../../../editable-table-component';
-import {ColumnSettingsInternal} from '../../../../types/columnsSettings';
 import {SVGIconUtils} from '../../../../utils/svgIcons/svgIconUtils';
 import {IconSettings} from '../../../../types/dropdownButtonItem';
 import {ColumnDetailsT} from '../../../../types/columnDetails';

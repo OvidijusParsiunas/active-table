@@ -1,7 +1,7 @@
 import {BordersOverwrittenBySiblings, ColumnDetailsT} from '../../types/columnDetails';
+import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
-import {DefaultColumnsSettings} from '../../types/columnsSettings';
 import {ExtractElements} from '../elements/extractElements';
 import {ResetColumnStyles} from './resetColumnStyles';
 
@@ -9,7 +9,7 @@ import {ResetColumnStyles} from './resetColumnStyles';
 export class ColumnSettingsAuxBorderUtils {
   // prettier-ignore
   private static toggleAuxiliaryBorder(auxElements: HTMLElement[], columnElements: HTMLElement[],
-      subjectBorder: keyof BordersOverwrittenBySiblings, defaultColumnsSettings: DefaultColumnsSettings) {
+      subjectBorder: keyof BordersOverwrittenBySiblings, defaultColumnsSettings: ColumnsSettingsDefault) {
     if (auxElements.length > 0) {
       // subject is the auxiliary column and sibling is the data column
       const {subjectBorderStyle, siblingBorderStyle} = ColumnSettingsBorderUtils.getColumnBorderStyles(subjectBorder);

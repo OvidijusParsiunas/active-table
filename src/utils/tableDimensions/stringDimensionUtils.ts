@@ -2,7 +2,9 @@ import {GenericElementUtils} from '../elements/genericElementUtils';
 import {VH, VW} from '../../consts/windowDimensionPostfixes';
 import {FullStringDimension} from '../../types/dimensions';
 import {PropertiesOfType} from '../../types/utilityTypes';
+import {ObjectUtils} from '../object/objectUtils';
 import {RegexUtils} from '../regex/regexUtils';
+import {CSSStyle} from '../../types/cssStyle';
 
 export type PossibleStringDimensions<T> = PropertiesOfType<T, FullStringDimension>;
 export type SuccessResult = {number: number; isPercentage: boolean};
@@ -44,5 +46,10 @@ export class StringDimensionUtils {
       }
     }
     return { number: StringDimensionUtils.processDimension(extractedNumber, minimalDimension), isPercentage: false };
+  }
+
+  public static removeAllDimensions(style: CSSStyle) {
+    ObjectUtils.removeProperties(style, 'width', 'maxHeight', 'minWidth', 'height', 'minHeight', 'maxHeight');
+    return style;
   }
 }

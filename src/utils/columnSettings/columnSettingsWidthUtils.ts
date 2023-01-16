@@ -1,7 +1,7 @@
 import {StringDimensionUtils, SuccessResult} from '../tableDimensions/stringDimensionUtils';
 import {StaticTableWidthUtils} from '../tableDimensions/staticTable/staticTableWidthUtils';
+import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {EditableTableComponent} from '../../editable-table-component';
-import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {TableElement} from '../../elements/table/tableElement';
 import {ColumnDetails} from '../columnDetails/columnDetails';
 

@@ -61,11 +61,6 @@
             })
           );
           // element.setAttribute('auxiliaryTableContent', JSON.stringify({displayIndexColumn: false}));
-          // element.setAttribute('tableDimensions', JSON.stringify({maxRows: 7}));
-          // element.setAttribute('tableDimensions', JSON.stringify({maxColumns: 5}));
-          // element.setAttribute('tableDimensions', JSON.stringify({unlimitedSize: false}));
-          // element.setAttribute('tableDimensions', JSON.stringify({width: 300, maxColumns: 7}));
-          element.setAttribute('tableDimensions', JSON.stringify({maxWidth: '1000px'}));
           element.setAttribute(
             'customColumnsSettings',
             JSON.stringify([
@@ -120,12 +115,12 @@
               {
                 columnName: 'G',
                 defaultText: 'A',
-                minWidth: '500px',
                 cellStyle: {
                   borderLeft: '1px solid red',
                   borderRight: '1px solid red',
                   borderBottom: '1px solid red',
                   backgroundColor: 'orange',
+                  minWidth: '500px',
                 },
                 headerStyleProps: {
                   default: {
@@ -159,6 +154,12 @@
                       }`,
                     },
                   },
+                  // {
+                  //   name: 'Custom Label',
+                  //   label: {
+                  //     options: [{name: 'bb', backgroundColor: 'red'}],
+                  //   },
+                  // },
                 ],
                 isMoveAvailable: true,
                 activeTypeName: 'Custom type 2',
@@ -174,11 +175,11 @@
               },
               {
                 columnName: 'C',
-                width: '1000px',
                 cellStyle: {
                   borderLeft: '1px solid red',
                   borderRight: '1px solid red',
                   borderBottom: '1px solid red',
+                  width: '1000px',
                   // backgroundColor: 'orange',
                 },
                 customColumnTypes: [

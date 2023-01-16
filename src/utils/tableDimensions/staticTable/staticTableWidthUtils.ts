@@ -1,8 +1,8 @@
 import {ColumnSettingsWidthUtils} from '../../columnSettings/columnSettingsWidthUtils';
+import {ColumnSettingsInternal} from '../../../types/columnsSettingsInternal';
 import {ColumnDetailsT, ColumnsDetailsT} from '../../../types/columnDetails';
 import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
 import {EditableTableComponent} from '../../../editable-table-component';
-import {ColumnSettingsInternal} from '../../../types/columnsSettings';
 import {TableElement} from '../../../elements/table/tableElement';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {FilteredColumns} from '../../../types/filteredColumns';

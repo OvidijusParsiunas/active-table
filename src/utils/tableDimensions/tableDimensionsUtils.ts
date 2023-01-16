@@ -6,7 +6,6 @@ import {TableDimensions} from '../../types/tableDimensions';
 import {ColumnsDetailsT} from '../../types/columnDetails';
 import {TableContents} from '../../types/tableContents';
 import {OverflowUtils} from '../overflow/overflowUtils';
-import {ObjectUtils} from '../object/objectUtils';
 import {TableStyle} from '../../types/tableStyle';
 
 export class TableDimensionsUtils {
@@ -63,7 +62,7 @@ export class TableDimensionsUtils {
     ) {
       TableDimensionsUtils.setDefaultDimension(tableDimensions, parentElement);
     }
-    ObjectUtils.removeProperties(tableStyle, 'width', 'maxHeight', 'minWidth', 'height', 'minHeight', 'maxHeight');
+    StringDimensionUtils.removeAllDimensions(tableStyle);
     // else the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
     TableDimensionsUtils.setPreserveNarrowColumnsProp(etc, tableDimensions);
     TableDimensionsUtils.setIsColumnIndexCellTextWrapped(tableDimensions, displayIndexColumn);

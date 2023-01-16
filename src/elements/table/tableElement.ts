@@ -3,6 +3,7 @@ import {AuxiliaryTableContentColors} from '../../utils/auxiliaryTableContent/aux
 import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
 import {InitialContentsProcessing} from '../../utils/contents/initialContentsProcessing';
 import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElements';
+import {StringDimensionUtils} from '../../utils/tableDimensions/stringDimensionUtils';
 import {InsertRemoveColumnSizer} from '../columnSizer/utils/insertRemoveColumnSizer';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
@@ -97,7 +98,9 @@ export class TableElement {
   private static createTableElement(etc: EditableTableComponent) {
     const tableElement = document.createElement('table');
     tableElement.classList.add('table-controlled-width');
-    Object.assign(tableElement.style, etc.tableStyle);
+    // no dimension copy is used because dimensions will be used removed during the component render (renderTable)
+    const noDimensionsStyleCopy = StringDimensionUtils.removeAllDimensions(JSON.parse(JSON.stringify(etc.tableStyle)));
+    Object.assign(tableElement.style, noDimensionsStyleCopy);
     tableElement.onmousedown = TableEvents.onMouseDown.bind(etc);
     tableElement.onmouseup = TableEvents.onMouseUp.bind(etc);
     return tableElement;

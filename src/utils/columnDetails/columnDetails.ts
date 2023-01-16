@@ -1,6 +1,7 @@
-import {ColumnSettingsInternal, DefaultColumnsSettings} from '../../types/columnsSettings';
 import {SelectDropdown} from '../../elements/dropdown/selectDropdown/selectDropdown';
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
+import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
+import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
 import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
 import {CellStateColorProperties} from '../../types/cellStateColors';
 import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
@@ -12,21 +13,21 @@ export class ColumnDetails {
   public static NEW_COLUMN_WIDTH = 100;
 
   // prettier-ignore
-  private static getHeaderDefaultColor(defaultColumnsSettings: DefaultColumnsSettings,
+  private static getHeaderDefaultColor(defaultColumnsSettings: ColumnsSettingsDefault,
       key: keyof CellStateColorProperties, defaultColor: string, settings?: ColumnSettingsInternal) {
     return settings?.headerStyleProps?.default?.[key] || settings?.cellStyle?.[key] ||
       defaultColumnsSettings.headerStyleProps?.default?.[key] || defaultColumnsSettings.cellStyle?.[key] || defaultColor;
   }
 
   // prettier-ignore
-  private static getHeaderHoverColor(defaultColumnsSettings: DefaultColumnsSettings,
+  private static getHeaderHoverColor(defaultColumnsSettings: ColumnsSettingsDefault,
       key: keyof CellStateColorProperties, defaultColor: string, settings?: ColumnSettingsInternal) {
     return settings?.headerStyleProps?.hoverColors?.[key] || defaultColumnsSettings.headerStyleProps?.hoverColors?.[key] ||
       ColumnDetails.getHeaderDefaultColor(defaultColumnsSettings, key, defaultColor, settings);
   }
 
   // prettier-ignore
-  public static createHeaderStateColors(defaultColumnsSettings: DefaultColumnsSettings,
+  public static createHeaderStateColors(defaultColumnsSettings: ColumnsSettingsDefault,
       settings?: ColumnSettingsInternal) {
     return {
       hover: {
@@ -43,7 +44,7 @@ export class ColumnDetails {
   }
 
   // prettier-ignore
-  public static createInitial(defaultColumnsSettings: DefaultColumnsSettings, selectDropdown: HTMLElement,
+  public static createInitial(defaultColumnsSettings: ColumnsSettingsDefault, selectDropdown: HTMLElement,
       settings: ColumnSettingsInternal): ColumnDetailsInitial {
     const columnSettings = settings || defaultColumnsSettings as ColumnSettingsInternal;
     const {types, activeType} = ColumnTypesUtils.getProcessedTypes(columnSettings);

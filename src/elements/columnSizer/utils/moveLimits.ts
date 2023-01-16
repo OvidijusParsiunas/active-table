@@ -1,9 +1,9 @@
 import {ColumnSettingsWidthUtils} from '../../../utils/columnSettings/columnSettingsWidthUtils';
 import {StaticTable} from '../../../utils/tableDimensions/staticTable/staticTable';
 import {ColumnDetailsUtils} from '../../../utils/columnDetails/columnDetailsUtils';
+import {ColumnSettingsInternal} from '../../../types/columnsSettingsInternal';
 import {EditableTableComponent} from '../../../editable-table-component';
 import {ExtractElements} from '../../../utils/elements/extractElements';
-import {ColumnSettingsInternal} from '../../../types/columnsSettings';
 import {TableDimensions} from '../../../types/tableDimensions';
 import {SizerMoveLimits} from '../../../types/columnSizer';
 

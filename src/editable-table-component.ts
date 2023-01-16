@@ -4,6 +4,7 @@ import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdo
 import {DropdownDisplaySettingsUtil} from './elements/dropdown/dropdownDisplaySettingsUtil';
 import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
+import {CustomColumnsSettings, CustomColumnSettings} from './types/columnsSettings';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
 import {DynamicCellTextUpdate} from './utils/dynamicUpdates/dynamicCellTextUpdate';
 import {PaginationInternalUtils} from './utils/pagination/paginationInternalUtils';
@@ -16,6 +17,8 @@ import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {StickyProcessUtils} from './utils/stickyProps/stickyPropsUtils';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {DropdownDisplaySettings} from './types/dropdownDisplaySettings';
+import {ColumnsSettingsDefault} from './types/columnsSettingsDefault';
+import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {StripedRows as StripedRowsType} from './types/stripedRows';
@@ -47,12 +50,6 @@ import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
 import {RowHover} from './types/rowHover';
 import {LitElement} from 'lit';
-import {
-  DefaultColumnsSettings,
-  CustomColumnsSettings,
-  CustomColumnSettings,
-  ColumnsSettingsMap,
-} from './types/columnsSettings';
 
 // TO-DO
 // rename file name from using hyphen case to camel
@@ -120,7 +117,7 @@ export class EditableTableComponent extends LitElement {
   updateCellText = true;
 
   @property({type: Object})
-  defaultColumnsSettings: DefaultColumnsSettings = {};
+  defaultColumnsSettings: ColumnsSettingsDefault = {};
 
   @property({type: Array<CustomColumnSettings>})
   customColumnsSettings: CustomColumnsSettings = [];
@@ -185,7 +182,6 @@ export class EditableTableComponent extends LitElement {
   @property({type: Number})
   maxColumns?: number;
 
-  // TO-DO this may need to be changed to maxDataRows as the index column will not display anything for the header row
   @property({type: Number})
   maxRows?: number;
 
@@ -256,7 +252,7 @@ export class EditableTableComponent extends LitElement {
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
     this.shadowRoot?.appendChild(this.overflowInternal?.overflowContainer || tableElement);
     if (this.pagination) PaginationElements.create(this);
-    InitialContentsProcessing.preProcess(this.contents);
+    InitialContentsProcessing.preProcess(this.contents, this.maxRows);
     WindowElement.setEvents(this);
     ColumnSettingsUtils.setUpInternalSettings(this);
     DefaultColumnTypes.createDropdownItemsForDefaultTypes();

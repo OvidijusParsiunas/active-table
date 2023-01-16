@@ -2,7 +2,11 @@ import {ColumnDropdownCellOverlay} from '../../elements/dropdown/columnDropdown/
 import {HeaderIconCellElement} from '../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
+import {ColumnSettingsInternal, ColumnsSettingsMap} from '../../types/columnsSettingsInternal';
+import {CustomColumnsSettings, CustomColumnSettings} from '../../types/columnsSettings';
 import {ColumnSettingsDefaultTextUtils} from './columnSettingsDefaultTextUtils';
+import {StringDimensionUtils} from '../tableDimensions/stringDimensionUtils';
+import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
@@ -11,16 +15,8 @@ import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 import {ResetColumnStructure} from './resetColumnStructure';
 import {CellElement} from '../../elements/cell/cellElement';
 import {GenericObject} from '../../types/genericObject';
-import {ObjectUtils} from '../object/objectUtils';
 import {EMPTY_STRING} from '../../consts/text';
 import {CSSStyle} from '../../types/cssStyle';
-import {
-  ColumnSettingsInternal,
-  DefaultColumnsSettings,
-  CustomColumnsSettings,
-  CustomColumnSettings,
-  ColumnsSettingsMap,
-} from '../../types/columnsSettings';
 
 export class ColumnSettingsUtils {
   private static updateSizer(etc: EditableTableComponent, columnIndex: number) {
@@ -77,35 +73,46 @@ export class ColumnSettingsUtils {
   }
 
   // prettier-ignore
-  private static processCellDimensions(settings: CustomColumnSettings) {
+  private static setDimension(settings: CustomColumnSettings, defSettings: ColumnsSettingsDefault, 
+      dimension: 'width'|'minWidth') {
     const internalSettings = settings as ColumnSettingsInternal;
-    if (!settings.cellStyle) return;
-    if (settings.cellStyle.width) internalSettings.width = settings.cellStyle.width;
-    if (settings.cellStyle.minWidth) internalSettings.width = settings.cellStyle.minWidth;
-    ObjectUtils.removeProperties(internalSettings.cellStyle as CSSStyle,
-      'width', 'maxHeight', 'minWidth', 'height', 'minHeight', 'maxHeight');
+    if (settings.cellStyle?.[dimension]) {
+      internalSettings[dimension] = settings.cellStyle[dimension]
+    } else if (defSettings.cellStyle?.[dimension]) {
+      internalSettings[dimension] = defSettings.cellStyle[dimension]      
+    }
   }
 
-  private static createInternalSettings(settings: CustomColumnSettings, defSettings: DefaultColumnsSettings) {
+  // prettier-ignore
+  private static processCellDimensions(settings: CustomColumnSettings, defSettings: ColumnsSettingsDefault) {
+    const internalSettings = settings as ColumnSettingsInternal;
+    if (!settings.cellStyle) return;
+    ColumnSettingsUtils.setDimension(settings, defSettings, 'minWidth');
+    ColumnSettingsUtils.setDimension(settings, defSettings, 'width');
+    StringDimensionUtils.removeAllDimensions(internalSettings.cellStyle as CSSStyle)
+    StringDimensionUtils.removeAllDimensions(defSettings.cellStyle as CSSStyle)
+  }
+
+  private static createInternalSettings(settings: CustomColumnSettings, defSettings: ColumnsSettingsDefault) {
     const internalSettings = settings as ColumnSettingsInternal;
     if (ColumnSettingsStyleUtils.doesSettingHaveSideBorderStyle(internalSettings)) {
       internalSettings.stylePrecedence = true; // REF-23
     }
-    ColumnSettingsUtils.processCellDimensions(settings);
+    ColumnSettingsUtils.processCellDimensions(settings, defSettings);
     Object.keys(defSettings).forEach((key: string) => {
-      (internalSettings as unknown as GenericObject)[key] ??= defSettings[key as keyof DefaultColumnsSettings] as string;
+      (internalSettings as unknown as GenericObject)[key] ??= defSettings[key as keyof ColumnsSettingsDefault] as string;
     });
     return internalSettings;
   }
 
-  private static createInternalMap(clientSettings: CustomColumnsSettings, defaultSettings: DefaultColumnsSettings) {
+  private static createInternalMap(clientSettings: CustomColumnsSettings, defaultSettings: ColumnsSettingsDefault) {
     return clientSettings.reduce<ColumnsSettingsMap>((settingsMap, clientSettings) => {
       settingsMap[clientSettings.columnName] = ColumnSettingsUtils.createInternalSettings(clientSettings, defaultSettings);
       return settingsMap;
     }, {});
   }
 
-  private static processDefaultColumnsSettings(defaultColumnsSettings: DefaultColumnsSettings) {
+  private static processDefaultColumnsSettings(defaultColumnsSettings: ColumnsSettingsDefault) {
     defaultColumnsSettings.defaultText ??= EMPTY_STRING;
     defaultColumnsSettings.isDefaultTextRemovable ??= true;
     defaultColumnsSettings.isCellTextEditable ??= true;

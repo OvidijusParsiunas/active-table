@@ -27,7 +27,14 @@ export class InitialContentsProcessing {
     }, 0);
   }
 
-  public static preProcess(contents: TableContents) {
+  private static removeRowsExceedingLimit(contents: TableContents, maxRows?: number) {
+    if (maxRows !== undefined && maxRows > 0 && contents.length > maxRows) {
+      contents.splice(maxRows, contents.length - 1);
+    }
+  }
+
+  public static preProcess(contents: TableContents, maxRows?: number) {
+    InitialContentsProcessing.removeRowsExceedingLimit(contents, maxRows);
     const maxRowLength = InitialContentsProcessing.getMaxRowLength(contents);
     InitialContentsProcessing.makeAllContentRowsSameLength(contents, maxRowLength);
   }

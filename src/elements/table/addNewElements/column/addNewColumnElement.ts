@@ -71,7 +71,7 @@ export class AddNewColumnElement {
     // REF-23
     const columnDetails = columnsDetails[columnsDetails.length - 1];
     ColumnSettingsBorderUtils.unsetSubjectBorder(addColumnCellsElementsRef, columnDetails.elements, 'left', rowIndex);
-    if (isDisplay) row.appendChild(cell);
+    if (isDisplay && MaximumColumns.canAddMore(etc)) row.appendChild(cell);
   }
 
   // prettier-ignore

@@ -1,8 +1,7 @@
 import {ColumnTypeInternal, ColumnTypesInternal, SelectPropertiesInternal} from '../../types/columnTypeInternal';
 import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItemConf';
 import {ColumnType, ColumnTypes, DropdownIconSettings} from '../../types/columnType';
-import {SelectOptions, SelectProperties} from '../../types/selectProperties';
-import {ColumnSettingsInternal} from '../../types/columnsSettings';
+import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
 import {ColumnDetailsT} from '../../types/columnDetails';
@@ -122,12 +121,17 @@ export class ColumnTypesUtils {
     type.textValidation.setTextToDefaultOnFail ??= true;
   }
 
-  private static processSelectOptions(selectProps: SelectProperties<SelectOptions>) {
-    const internalSelectProps = selectProps as SelectPropertiesInternal;
-    if (selectProps.options) {
-      internalSelectProps.options = selectProps.options.map((option) => {
+  private static processSelectOptions(type: ColumnType) {
+    if (typeof type.select === 'object' && type.select.options) {
+      const internalSelectProps = type.select as SelectPropertiesInternal;
+      internalSelectProps.options = type.select.options.map((option) => {
         return {name: option};
       });
+    } else if (typeof type.label === 'object' && type.label.options) {
+      const internalSelectProps = type.label as SelectPropertiesInternal;
+      // the reason for deep copy is because if canAddMoreOptions is set - colors can be changed and if the user
+      // is reusing the same object for multiple columns a change in one can affect all others
+      internalSelectProps.options = JSON.parse(JSON.stringify(type.label.options));
     }
   }
 
@@ -138,7 +142,7 @@ export class ColumnTypesUtils {
     } else if (typeof type.select === 'object' || typeof type.label === 'object') {
       internalType.selectProps = (type.select || type.label) as SelectPropertiesInternal;
       internalType.selectProps.isBasicSelect = !type.label;
-      if (type.select) ColumnTypesUtils.processSelectOptions(type.select);
+      ColumnTypesUtils.processSelectOptions(type);
       Validation.setSelectValidation(internalType, isDefaultTextRemovable, defaultText);
     }
     if (internalType.selectProps && internalType.selectProps.canAddMoreOptions === undefined) {

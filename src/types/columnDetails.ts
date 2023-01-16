@@ -1,7 +1,7 @@
 import {SelectDropdownStyle, SelectDropdownOptionStyle} from './selectProperties';
 import {ColumnTypeInternal, ColumnTypesInternal} from './columnTypeInternal';
+import {ColumnSettingsInternal} from './columnsSettingsInternal';
 import {ColProcessedTextStyle} from './processedTextStyle';
-import {ColumnSettingsInternal} from './columnsSettings';
 import {AUXILIARY_CELL_TYPE} from '../enums/cellType';
 import {CellStateColors} from './cellStateColors';
 import {ColumnSizerT} from './columnSizer';

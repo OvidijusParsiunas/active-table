@@ -33,7 +33,7 @@ export class MaximumColumns {
   public static canAddMore(etc: EditableTableComponent) {
     const {tableElementRef, columnsDetails, tableDimensions, maxColumns} = etc;
     const numberOfColumns = columnsDetails.length;
-    if (maxColumns === numberOfColumns
+    if ((maxColumns !== undefined && maxColumns > 0 && maxColumns === numberOfColumns)
       || MaximumColumns.isStaticContentBreachingSetTableWidth(tableDimensions)) return false;
     const tableElement = tableElementRef as HTMLElement;
     if (MaximumColumns.ignoreMinimalColumnWidthCheck(tableDimensions, tableElement, numberOfColumns)) return true;

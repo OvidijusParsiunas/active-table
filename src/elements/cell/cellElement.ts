@@ -4,12 +4,12 @@ import {ColumnSettingsStyleUtils} from '../../utils/columnSettings/columnSetting
 import {ColumnSettingsWidthUtils} from '../../utils/columnSettings/columnSettingsWidthUtils';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
+import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {CheckboxCellElement} from './checkboxCell/checkboxCellElement';
 import {ColumnDetails} from '../../utils/columnDetails/columnDetails';
 import {EditableTableComponent} from '../../editable-table-component';
 import {CaretDisplayFix} from '../../utils/browser/caretDisplayFix';
-import {ColumnSettingsInternal} from '../../types/columnsSettings';
 import {CellText} from '../../types/tableContents';
 import {CellCSSStyle} from '../../types/cssStyle';
 
