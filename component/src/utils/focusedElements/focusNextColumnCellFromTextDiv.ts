@@ -1,12 +1,12 @@
 import {CellWithTextEvents} from '../../elements/cell/cellsWithTextDiv/cellWithTextEvents';
 import {CheckboxCellElement} from '../../elements/cell/checkboxCell/checkboxCellElement';
-import {EditableTableComponent} from '../../editable-table-component';
 import {CellElement} from '../../elements/cell/cellElement';
+import {ActiveTable} from '../../activeTable';
 import {Browser} from '../browser/browser';
 
 export class FocusNextColumnCellFromTextDiv {
-  private static focusDifferentColumnCell(etc: EditableTableComponent, columnIndex: number, rowIndex: number) {
-    const {elements, activeType, settings} = etc.columnsDetails[columnIndex];
+  private static focusDifferentColumnCell(at: ActiveTable, columnIndex: number, rowIndex: number) {
+    const {elements, activeType, settings} = at.columnsDetails[columnIndex];
     const cellElement = elements[rowIndex];
     if (
       !settings.isCellTextEditable ||
@@ -14,38 +14,38 @@ export class FocusNextColumnCellFromTextDiv {
       // REF-29
       (Browser.IS_SAFARI && CheckboxCellElement.isCheckboxCell(cellElement))
     ) {
-      return FocusNextColumnCellFromTextDiv.focusOrBlurNext(etc, columnIndex, rowIndex);
+      return FocusNextColumnCellFromTextDiv.focusOrBlurNext(at, columnIndex, rowIndex);
     }
     if (activeType.selectProps) {
       // needs to be mousedown in order to set focusedCell
       cellElement.dispatchEvent(new Event('mousedown'));
     } else {
-      CellWithTextEvents.programmaticBlur(etc);
+      CellWithTextEvents.programmaticBlur(at);
       // dispatchEvent(new Event('focus')); does not return a selection in firefox for window.document.getSelection()
       CellElement.getTextElement(cellElement).focus();
     }
     cellElement.scrollIntoView({block: 'nearest'});
   }
 
-  private static focusOrBlurNextRowFirstCell(etc: EditableTableComponent, rowIndex: number) {
-    const firstColumn = etc.columnsDetails[0];
+  private static focusOrBlurNextRowFirstCell(at: ActiveTable, rowIndex: number) {
+    const firstColumn = at.columnsDetails[0];
     const nextRowIndex = rowIndex + 1;
     const nextRowFirstCell = firstColumn.elements[nextRowIndex];
     if (nextRowFirstCell) {
-      FocusNextColumnCellFromTextDiv.focusDifferentColumnCell(etc, 0, nextRowIndex);
+      FocusNextColumnCellFromTextDiv.focusDifferentColumnCell(at, 0, nextRowIndex);
     } else {
-      const focusedCell = etc.focusedElements.cell.element as HTMLElement;
+      const focusedCell = at.focusedElements.cell.element as HTMLElement;
       // if no next cell - blur current as the dropdown will be closed but the cursor would otherwise stay
       (focusedCell.children[0] as HTMLElement).blur();
     }
   }
 
-  public static focusOrBlurNext(etc: EditableTableComponent, columnIndex: number, rowIndex: number) {
-    const nextColumn = etc.columnsDetails[columnIndex + 1];
+  public static focusOrBlurNext(at: ActiveTable, columnIndex: number, rowIndex: number) {
+    const nextColumn = at.columnsDetails[columnIndex + 1];
     if (nextColumn) {
-      FocusNextColumnCellFromTextDiv.focusDifferentColumnCell(etc, columnIndex + 1, rowIndex);
+      FocusNextColumnCellFromTextDiv.focusDifferentColumnCell(at, columnIndex + 1, rowIndex);
     } else {
-      FocusNextColumnCellFromTextDiv.focusOrBlurNextRowFirstCell(etc, rowIndex);
+      FocusNextColumnCellFromTextDiv.focusOrBlurNextRowFirstCell(at, rowIndex);
     }
   }
 }

@@ -5,7 +5,6 @@ import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {DropdownDisplaySettings} from '../../../types/dropdownDisplaySettings';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {DropdownItemNavigation} from '../dropdownItemNavigation';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
@@ -13,6 +12,7 @@ import {ColumnDropdownEvents} from './columnDropdownEvents';
 import {ColumnDropdownItem} from './columnDropdownItem';
 import {Browser} from '../../../utils/browser/browser';
 import {TableElement} from '../../table/tableElement';
+import {ActiveTable} from '../../../activeTable';
 import {DropdownItem} from '../dropdownItem';
 import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
@@ -24,12 +24,12 @@ export class ColumnDropdown {
   }
 
   // prettier-ignore
-  public static processTextAndHide(etc: EditableTableComponent) {
-    const {activeOverlayElements, columnsDetails, focusedElements: {cell: {element: cellElement, columnIndex}}} = etc;
+  public static processTextAndHide(at: ActiveTable) {
+    const {activeOverlayElements, columnsDetails, focusedElements: {cell: {element: cellElement, columnIndex}}} = at;
     const {columnDropdown, columnTypeDropdown, fullTableOverlay} = activeOverlayElements;
     if (!columnDropdown || !fullTableOverlay || !columnTypeDropdown || !cellElement) return;
     if (GenericElementUtils.doesElementExistInDom(cellElement)) {
-      ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(etc, cellElement, columnIndex as number);
+      ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, cellElement, columnIndex as number);
     }
     CellHighlightUtils.fade(cellElement, columnsDetails[columnIndex as number]?.headerStateColors.default);
     Dropdown.hide(columnDropdown, fullTableOverlay, columnTypeDropdown);
@@ -39,11 +39,11 @@ export class ColumnDropdown {
     DropdownItemHighlightUtils.fadeCurrentlyHighlighted(activeOverlayElements);
   }
 
-  public static create(etc: EditableTableComponent) {
+  public static create(at: ActiveTable) {
     const dropdownElement = Dropdown.createBase();
-    ColumnDropdownEvents.set(etc, dropdownElement);
-    DropdownItem.addInputItem(etc, dropdownElement);
-    ColumnDropdownItem.addItems(etc, dropdownElement);
+    ColumnDropdownEvents.set(at, dropdownElement);
+    DropdownItem.addInputItem(at, dropdownElement);
+    ColumnDropdownItem.addItems(at, dropdownElement);
     return dropdownElement;
   }
 
@@ -80,13 +80,13 @@ export class ColumnDropdown {
   }
 
   // prettier-ignore
-  private static displayAndSetPositionForOverflow(etc: EditableTableComponent, cellElement: HTMLElement,
+  private static displayAndSetPositionForOverflow(at: ActiveTable, cellElement: HTMLElement,
       dropdownElement: HTMLElement) {
-    const {tableElementRef, overflowInternal} = etc;
+    const {tableElementRef, overflowInternal} = at;
     if (!tableElementRef || !overflowInternal?.overflowContainer) return;
     const overflowElement = overflowInternal.overflowContainer;
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
-    dropdownElement.style.top = `${etc.columnDropdownDisplaySettings.openMethod?.overlayClick
+    dropdownElement.style.top = `${at.columnDropdownDisplaySettings.openMethod?.overlayClick
       ? overflowElement.scrollTop + 1 : overflowElement.scrollTop + cellElement.offsetHeight}px`;
     // needs to be displayed here to evalute if scrollwidth has appeared
     Dropdown.display(dropdownElement);
@@ -98,18 +98,18 @@ export class ColumnDropdown {
   }
 
   // prettier-ignore
-  public static display(etc: EditableTableComponent, columnIndex: number) {
-    const dropdownElement = etc.activeOverlayElements.columnDropdown as HTMLElement;
-    const cellElement = etc.columnsDetails[columnIndex].elements[0];
-    ColumnDropdownItem.setUp(etc, dropdownElement, columnIndex, cellElement);
-    if (etc.overflowInternal) {
-      ColumnDropdown.displayAndSetPositionForOverflow(etc, cellElement, dropdownElement);
+  public static display(at: ActiveTable, columnIndex: number) {
+    const dropdownElement = at.activeOverlayElements.columnDropdown as HTMLElement;
+    const cellElement = at.columnsDetails[columnIndex].elements[0];
+    ColumnDropdownItem.setUp(at, dropdownElement, columnIndex, cellElement);
+    if (at.overflowInternal) {
+      ColumnDropdown.displayAndSetPositionForOverflow(at, cellElement, dropdownElement);
     } else {
       ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement,
-        etc.columnDropdownDisplaySettings.openMethod, etc.stickyProps.header); 
+        at.columnDropdownDisplaySettings.openMethod, at.stickyProps.header); 
     }
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItemNavigation.focusInputElement(inputElement as HTMLElement);
-    FullTableOverlayElement.display(etc);
+    FullTableOverlayElement.display(at);
   }
 }

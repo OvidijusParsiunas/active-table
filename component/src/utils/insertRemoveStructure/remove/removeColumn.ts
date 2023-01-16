@@ -6,7 +6,6 @@ import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
 import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
 import {ColumnSettingsWidthUtils} from '../../columnSettings/columnSettingsWidthUtils';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {TableElement} from '../../../elements/table/tableElement';
 import {CellElementIndex} from '../../elements/cellElementIndex';
@@ -15,26 +14,27 @@ import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
 import {ColumnDetailsT} from '../../../types/columnDetails';
 import {TableContents} from '../../../types/tableContents';
+import {ActiveTable} from '../../../activeTable';
 import {LastColumn} from '../shared/lastColumn';
 
 export class RemoveColumn {
-  private static updateAdditionElements(etc: EditableTableComponent) {
-    if (etc.auxiliaryTableContentInternal.displayAddColumnCell) ColumnGroupElement.update(etc);
-    ToggleAdditionElements.update(etc, false, AddNewColumnElement.toggle);
+  private static updateAdditionElements(at: ActiveTable) {
+    if (at.auxiliaryTableContentInternal.displayAddColumnCell) ColumnGroupElement.update(at);
+    ToggleAdditionElements.update(at, false, AddNewColumnElement.toggle);
   }
 
   // prettier-ignore
-  public static reduceStaticWidthTotal(etc: EditableTableComponent, columnDetails: ColumnDetailsT) {
+  public static reduceStaticWidthTotal(at: ActiveTable, columnDetails: ColumnDetailsT) {
     if (columnDetails.settings && ColumnSettingsWidthUtils.isWidthDefined(columnDetails.settings)) {
       const {number} = ColumnSettingsWidthUtils.getSettingsWidthNumber(
-        etc.tableElementRef as HTMLElement, columnDetails.settings);
+        at.tableElementRef as HTMLElement, columnDetails.settings);
       TableElement.changeStaticWidthTotal(-number);
     }
   }
 
-  private static updateTableDimensions(etc: EditableTableComponent, columnDetails: ColumnDetailsT) {
-    RemoveColumn.reduceStaticWidthTotal(etc, columnDetails);
-    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, false);
+  private static updateTableDimensions(at: ActiveTable, columnDetails: ColumnDetailsT) {
+    RemoveColumn.reduceStaticWidthTotal(at, columnDetails);
+    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, false);
   }
 
   private static cleanUpContent(contents: TableContents) {
@@ -52,43 +52,43 @@ export class RemoveColumn {
     rowElement.children[elementColumnIndex].remove();
   }
 
-  private static removeCell(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    const lastColumn: ElementDetails = LastColumn.getDetails(etc.columnsDetails, rowIndex);
-    RemoveColumn.removeElements(rowElement, columnIndex, !!etc.auxiliaryTableContentInternal.displayIndexColumn);
-    etc.contents[rowIndex].splice(columnIndex, 1);
+  private static removeCell(at: ActiveTable, rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    const lastColumn: ElementDetails = LastColumn.getDetails(at.columnsDetails, rowIndex);
+    RemoveColumn.removeElements(rowElement, columnIndex, !!at.auxiliaryTableContentInternal.displayIndexColumn);
+    at.contents[rowIndex].splice(columnIndex, 1);
     setTimeout(() => {
       const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};
-      UpdateCellsForColumns.rebindAndFireUpdates(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.REMOVED, lastColumn);
+      UpdateCellsForColumns.rebindAndFireUpdates(at, rowDetails, columnIndex, CELL_UPDATE_TYPE.REMOVED, lastColumn);
     });
   }
 
-  private static removeCellFromAllRows(etc: EditableTableComponent, columnIndex: number) {
-    const rowElements = ExtractElements.textRowsArrFromTBody(etc.tableBodyElementRef as HTMLElement, etc.contents);
+  private static removeCellFromAllRows(at: ActiveTable, columnIndex: number) {
+    const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.contents);
     rowElements.forEach((rowElement: Node, rowIndex: number) => {
-      RemoveColumn.removeCell(etc, rowElement as HTMLElement, rowIndex, columnIndex);
+      RemoveColumn.removeCell(at, rowElement as HTMLElement, rowIndex, columnIndex);
     });
-    RemoveColumn.cleanUpContent(etc.contents);
+    RemoveColumn.cleanUpContent(at.contents);
     // needs to be after getDetails but before changeWidthsBasedOnColumnInsertRemove
-    const removedColumnDetails = etc.columnsDetails.splice(columnIndex, 1)[0];
-    RemoveColumn.updateTableDimensions(etc, removedColumnDetails);
+    const removedColumnDetails = at.columnsDetails.splice(columnIndex, 1)[0];
+    RemoveColumn.updateTableDimensions(at, removedColumnDetails);
     return removedColumnDetails;
   }
 
-  public static remove(etc: EditableTableComponent, columnIndex: number) {
-    const removedColumnDetails = RemoveColumn.removeCellFromAllRows(etc, columnIndex);
-    RemoveColumn.updateAdditionElements(etc);
-    ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
+  public static remove(at: ActiveTable, columnIndex: number) {
+    const removedColumnDetails = RemoveColumn.removeCellFromAllRows(at, columnIndex);
+    RemoveColumn.updateAdditionElements(at);
+    ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
     setTimeout(() => {
       // CAUTION-2
       removedColumnDetails.selectDropdown.element.remove();
-      InsertRemoveColumnSizer.remove(etc, columnIndex);
-      InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
-      if (columnIndex === 0 && etc.columnsDetails.length > 0) RowDropdownCellOverlay.resetOverlays(etc);
-      etc.onTableUpdate(etc.contents);
+      InsertRemoveColumnSizer.remove(at, columnIndex);
+      InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, columnIndex);
+      if (columnIndex === 0 && at.columnsDetails.length > 0) RowDropdownCellOverlay.resetOverlays(at);
+      at.onTableUpdate(at.contents);
     });
   }
 
-  public static removeEvent(this: EditableTableComponent, columnIndex: number) {
+  public static removeEvent(this: ActiveTable, columnIndex: number) {
     RemoveColumn.remove(this, columnIndex);
   }
 }

@@ -1,10 +1,10 @@
 import {MaximumColumns} from '../../../utils/insertRemoveStructure/insert/maximum/maximumColumns';
 import {ColumnSettingsInternal} from '../../../types/columnsSettingsInternal';
 import {ColumnDropdownButtonItemConf} from './columnDropdownButtonItemConf';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {ColumnDropdownItemEvents} from './columnDropdownItemEvents';
 import {ObjectUtils} from '../../../utils/object/objectUtils';
 import {ColumnTypeDropdown} from './columnTypeDropdown';
+import {ActiveTable} from '../../../activeTable';
 import {DropdownItem} from '../dropdownItem';
 
 export class ColumnDropdownItem {
@@ -15,17 +15,17 @@ export class ColumnDropdownItem {
     items.forEach((item) => DropdownItem.toggleItem(item, true));
   }
 
-  public static addItems(etc: EditableTableComponent, dropdownElement: HTMLElement) {
+  public static addItems(at: ActiveTable, dropdownElement: HTMLElement) {
     // creating icons is expensive and they are not needed on initial render
     setTimeout(() => {
       DropdownItem.addTitle(dropdownElement, 'Property type');
-      ColumnTypeDropdown.create(etc, dropdownElement);
+      ColumnTypeDropdown.create(at, dropdownElement);
       DropdownItem.addDivider(dropdownElement);
       ColumnDropdownButtonItemConf.ITEMS.slice(0, 2).forEach((item) => {
-        DropdownItem.addButtonItem(etc, dropdownElement, item, ColumnDropdownItem.SORT_ITEM_CLASS);
+        DropdownItem.addButtonItem(at, dropdownElement, item, ColumnDropdownItem.SORT_ITEM_CLASS);
       });
       ColumnDropdownButtonItemConf.ITEMS.slice(2).forEach((item) => {
-        DropdownItem.addButtonItem(etc, dropdownElement, item);
+        DropdownItem.addButtonItem(at, dropdownElement, item);
       });
     });
   }
@@ -47,45 +47,43 @@ export class ColumnDropdownItem {
   }
 
   // prettier-ignore
-  private static setUpInputElement(etc: EditableTableComponent,
+  private static setUpInputElement(at: ActiveTable,
       columnIndex: number, cellElement: HTMLElement, inputItem: HTMLElement, dropdownElement: HTMLElement) {
-    const {isCellTextEditable, isHeaderTextEditable} = etc.columnsDetails[columnIndex].settings;
-    if (etc.columnDropdownDisplaySettings.openMethod?.overlayClick ||
+    const {isCellTextEditable, isHeaderTextEditable} = at.columnsDetails[columnIndex].settings;
+    if (at.columnDropdownDisplaySettings.openMethod?.overlayClick ||
         (ObjectUtils.areValuesFullyDefined(isHeaderTextEditable) ? !isHeaderTextEditable : !isCellTextEditable)) {
       DropdownItem.toggleItem(inputItem, false);
     } else {
       const inputElement = inputItem.children[0] as HTMLInputElement;
-      inputElement.value = etc.contents[0][columnIndex] as string;
-      ColumnDropdownItemEvents.setInputItemEvent(etc, columnIndex, cellElement, inputElement, dropdownElement);
+      inputElement.value = at.contents[0][columnIndex] as string;
+      ColumnDropdownItemEvents.setInputItemEvent(at, columnIndex, cellElement, inputElement, dropdownElement);
     }
   }
 
-  // prettier-ignore
-  public static setUp(etc: EditableTableComponent,
-      dropdownElement: HTMLElement, columnIndex: number, cellElement: HTMLElement) {
-    ColumnTypeDropdown.setUp(etc, dropdownElement, columnIndex);
+  public static setUp(at: ActiveTable, dropdownElement: HTMLElement, columnIndex: number, cellElement: HTMLElement) {
+    ColumnTypeDropdown.setUp(at, dropdownElement, columnIndex);
     const items = Array.from(dropdownElement.children) as HTMLElement[];
-    ColumnDropdownItem.setUpInputElement(etc, columnIndex, cellElement, items[0], dropdownElement);
-    ColumnDropdownItem.toggleItems(etc.columnsDetails[columnIndex].settings, items);
-    ColumnDropdownItem.updateItemsStyle(etc, columnIndex, dropdownElement);
-    ColumnDropdownItemEvents.setItemEvents(etc, columnIndex, dropdownElement);
+    ColumnDropdownItem.setUpInputElement(at, columnIndex, cellElement, items[0], dropdownElement);
+    ColumnDropdownItem.toggleItems(at.columnsDetails[columnIndex].settings, items);
+    ColumnDropdownItem.updateItemsStyle(at, columnIndex, dropdownElement);
+    ColumnDropdownItemEvents.setItemEvents(at, columnIndex, dropdownElement);
   }
 
-  private static updateMoveColumnItemsStyle(etc: EditableTableComponent, colIndex: number, items: HTMLElement[]) {
-    const {isMoveAvailable} = etc.columnsDetails[colIndex].settings;
+  private static updateMoveColumnItemsStyle(at: ActiveTable, colIndex: number, items: HTMLElement[]) {
+    const {isMoveAvailable} = at.columnsDetails[colIndex].settings;
     if (!isMoveAvailable) return;
     DropdownItem.toggleUsability(items[8], true);
     DropdownItem.toggleUsability(items[9], true);
     if (colIndex === 0) {
       DropdownItem.toggleUsability(items[8], false);
     }
-    if (colIndex === etc.columnsDetails.length - 1) {
+    if (colIndex === at.columnsDetails.length - 1) {
       DropdownItem.toggleUsability(items[9], false);
     }
   }
 
-  private static updateInsertColumnItemsStyle(etc: EditableTableComponent, items: HTMLElement[]) {
-    const canAddMoreColumns = MaximumColumns.canAddMore(etc);
+  private static updateInsertColumnItemsStyle(at: ActiveTable, items: HTMLElement[]) {
+    const canAddMoreColumns = MaximumColumns.canAddMore(at);
     if (canAddMoreColumns) {
       DropdownItem.toggleUsability(items[6], true);
       DropdownItem.toggleUsability(items[7], true);
@@ -95,9 +93,9 @@ export class ColumnDropdownItem {
     }
   }
 
-  public static updateItemsStyle(etc: EditableTableComponent, columnIndex: number, dropdownElement: HTMLElement) {
+  public static updateItemsStyle(at: ActiveTable, columnIndex: number, dropdownElement: HTMLElement) {
     const items = Array.from(dropdownElement.children) as HTMLElement[];
-    ColumnDropdownItem.updateInsertColumnItemsStyle(etc, items);
-    ColumnDropdownItem.updateMoveColumnItemsStyle(etc, columnIndex, items);
+    ColumnDropdownItem.updateInsertColumnItemsStyle(at, items);
+    ColumnDropdownItem.updateMoveColumnItemsStyle(at, columnIndex, items);
   }
 }

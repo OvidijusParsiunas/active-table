@@ -1,7 +1,7 @@
 import {ElementVisibility} from '../../../../utils/elements/elementVisibility';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {NumberOfRowsDropdownEvents} from './numberOfRowsDropdownEvents';
 import {NumberOfRowsDropdownItem} from './numberOfRowsDropdownItem';
+import {ActiveTable} from '../../../../activeTable';
 import {Dropdown} from '../../../dropdown/dropdown';
 import {PX} from '../../../../types/dimensions';
 import {SIDE} from '../../../../types/side';
@@ -50,11 +50,11 @@ export class NumberOfRowsDropdown {
     dropdownElement.style.width = `${NumberOfRowsDropdown.DROPDOWN_WIDTH}px`;
   }
 
-  public static create(etc: EditableTableComponent, optionsButton: HTMLElement) {
+  public static create(at: ActiveTable, optionsButton: HTMLElement) {
     const dropdownElement = Dropdown.createBase();
-    NumberOfRowsDropdown.setWidth(dropdownElement, etc.paginationInternal.numberOfRowsOptionsItemText);
-    NumberOfRowsDropdownItem.populate(etc, dropdownElement, optionsButton);
-    NumberOfRowsDropdownEvents.set(etc, dropdownElement);
+    NumberOfRowsDropdown.setWidth(dropdownElement, at.paginationInternal.numberOfRowsOptionsItemText);
+    NumberOfRowsDropdownItem.populate(at, dropdownElement, optionsButton);
+    NumberOfRowsDropdownEvents.set(at, dropdownElement);
     return dropdownElement;
   }
 }

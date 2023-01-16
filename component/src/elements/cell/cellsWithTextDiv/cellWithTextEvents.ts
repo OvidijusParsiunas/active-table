@@ -1,19 +1,19 @@
 import {SelectCellTextBaseEvents} from './selectCell/baseEvents/selectCellTextBaseEvents';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {CaretDisplayFix} from '../../../utils/browser/caretDisplayFix';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
 import {DataCellEvents} from '../dataCell/dataCellEvents';
 import {CellDetails} from '../../../types/focusedCell';
+import {ActiveTable} from '../../../activeTable';
 import {CellElement} from '../cellElement';
 
-type FocusCallback = (etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) => void;
-type BlurCallback = (etc: EditableTableComponent) => void;
+type FocusCallback = (at: ActiveTable, columnIndex: number, cellElement: HTMLElement) => void;
+type BlurCallback = (at: ActiveTable) => void;
 
 export class CellWithTextEvents {
   // prettier-ignore
-  public static focusText(this: EditableTableComponent, rowIndex: number, columnIndex: number,
+  public static focusText(this: ActiveTable, rowIndex: number, columnIndex: number,
       focusCallback: FocusCallback | null, event: FocusEvent) {
     const {focusedElements: {cell}, columnsDetails} = this;
     const textElement = event.target as HTMLElement;
@@ -27,32 +27,32 @@ export class CellWithTextEvents {
     }
   }
 
-  public static programmaticBlur(etc: EditableTableComponent) {
-    const {rowIndex, columnIndex, element} = etc.focusedElements.cell as CellDetails;
+  public static programmaticBlur(at: ActiveTable) {
+    const {rowIndex, columnIndex, element} = at.focusedElements.cell as CellDetails;
     const textElement = CellElement.getTextElement(element);
     textElement.blur();
     // the above will not trigger the SelectCellEvents.blur functionality if dropdown has been focused, but will blur
     // the element in the dom, the following will trigger the required programmatic functionality
-    if (etc.focusedElements.selectDropdown) {
-      SelectCellTextBaseEvents.blurring(etc, rowIndex, columnIndex, textElement);
-      delete etc.focusedElements.selectDropdown;
+    if (at.focusedElements.selectDropdown) {
+      SelectCellTextBaseEvents.blurring(at, rowIndex, columnIndex, textElement);
+      delete at.focusedElements.selectDropdown;
     }
   }
 
   // prettier-ignore
-  public static mouseDownCell(etc: EditableTableComponent, blurCallback: BlurCallback | null,
+  public static mouseDownCell(at: ActiveTable, blurCallback: BlurCallback | null,
       cellElement: HTMLElement, event: MouseEvent) {
     const textElement = CellElement.getTextElement(cellElement);
     // needed to set cursor at the end
     event.preventDefault();
-    blurCallback?.(etc);
+    blurCallback?.(at);
     // Firefox and Safari do not fire the focus event for CaretPosition.setToEndOfText
     if (CaretDisplayFix.isIssueBrowser()) textElement.focus();
     // in non firefox browsers this focuses
-    CaretPosition.setToEndOfText(etc, textElement);
+    CaretPosition.setToEndOfText(at, textElement);
   }
 
-  public static mouseDown(this: EditableTableComponent, blurCallback: BlurCallback | null, event: MouseEvent) {
+  public static mouseDown(this: ActiveTable, blurCallback: BlurCallback | null, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
     // this is also triggered by text, but we only want on cell focus
     if (targetElement.classList.contains(CellElement.CELL_CLASS)) {

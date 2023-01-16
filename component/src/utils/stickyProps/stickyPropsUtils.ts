@@ -1,11 +1,11 @@
-import {EditableTableComponent} from '../../editable-table-component';
+import {ActiveTable} from '../../activeTable';
 
 export class StickyProcessUtils {
-  public static process(etc: EditableTableComponent) {
-    if (typeof etc.isHeaderSticky === 'boolean') {
-      etc.stickyProps.header = etc.isHeaderSticky;
-    } else if (etc.overflow?.maxHeight) {
-      etc.stickyProps.header = true;
+  public static process(at: ActiveTable) {
+    if (typeof at.isHeaderSticky === 'boolean') {
+      at.stickyProps.header = at.isHeaderSticky;
+    } else if (at.overflow?.maxHeight) {
+      at.stickyProps.header = true;
     }
   }
 }

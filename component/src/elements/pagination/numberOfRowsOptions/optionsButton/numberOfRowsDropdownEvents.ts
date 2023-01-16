@@ -1,13 +1,13 @@
 import {DropdownItemNavigation} from '../../../dropdown/dropdownItemNavigation';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {DropdownEvents} from '../../../dropdown/dropdownEvents';
 import {KEYBOARD_KEY} from '../../../../consts/keyboardKeys';
 import {NumberOfRowsDropdown} from './numberOfRowsDropdown';
+import {ActiveTable} from '../../../../activeTable';
 
 export class NumberOfRowsDropdownEvents {
-  public static windowOnMouseDown(etc: EditableTableComponent) {
-    if (!etc.paginationInternal.mouseDownOnNumberOfRowsButton) {
-      NumberOfRowsDropdown.hide(etc.paginationInternal.numberOfRowsDropdown as HTMLElement);
+  public static windowOnMouseDown(at: ActiveTable) {
+    if (!at.paginationInternal.mouseDownOnNumberOfRowsButton) {
+      NumberOfRowsDropdown.hide(at.paginationInternal.numberOfRowsDropdown as HTMLElement);
     }
   }
 
@@ -15,8 +15,8 @@ export class NumberOfRowsDropdownEvents {
   // (unlike column dropdown which has an input), hence initially clicking tab does not focus the dropdown and
   // instead we need to focus it programmatically here. Once focused, the actual dropdown events can take over.
   // prettier-ignore
-  public static windowOnKeyDown(etc: EditableTableComponent, event: KeyboardEvent) {
-    const {shadowRoot, paginationInternal} = etc;
+  public static windowOnKeyDown(at: ActiveTable, event: KeyboardEvent) {
+    const {shadowRoot, paginationInternal} = at;
     const dropdownElement = paginationInternal.numberOfRowsDropdown as HTMLElement;
     if (event.key === KEYBOARD_KEY.ESCAPE || event.key === KEYBOARD_KEY.ENTER) {
       NumberOfRowsDropdown.hide(dropdownElement);
@@ -31,7 +31,7 @@ export class NumberOfRowsDropdownEvents {
     }
   }
 
-  private static dropdownOnKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
+  private static dropdownOnKeyDown(this: ActiveTable, dropdownElement: HTMLElement, event: KeyboardEvent) {
     event.preventDefault();
     if (event.key === KEYBOARD_KEY.ENTER) {
       const itemElement = event.target as HTMLElement;
@@ -42,7 +42,7 @@ export class NumberOfRowsDropdownEvents {
     DropdownEvents.itemKeyNavigation(this.shadowRoot as ShadowRoot, dropdownElement, event);
   }
 
-  public static set(etc: EditableTableComponent, dropdownElement: HTMLElement) {
-    dropdownElement.onkeydown = NumberOfRowsDropdownEvents.dropdownOnKeyDown.bind(etc, dropdownElement);
+  public static set(at: ActiveTable, dropdownElement: HTMLElement) {
+    dropdownElement.onkeydown = NumberOfRowsDropdownEvents.dropdownOnKeyDown.bind(at, dropdownElement);
   }
 }

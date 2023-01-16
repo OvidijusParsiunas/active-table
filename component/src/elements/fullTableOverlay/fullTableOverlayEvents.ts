@@ -1,11 +1,11 @@
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
-import {EditableTableComponent} from '../../editable-table-component';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
+import {ActiveTable} from '../../activeTable';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class FullTableOverlayEvents {
   // prettier-ignore
-  public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
+  public static onMouseDown(this: ActiveTable, event: MouseEvent) {
     const {activeOverlayElements: {columnDropdown, rowDropdown}} = this;
     // window events will instead handle user clicks outside of the shadow dom
     if (Dropdown.isDisplayed(columnDropdown) && !Dropdown.isPartOfDropdownElement(event.target as HTMLElement)) {

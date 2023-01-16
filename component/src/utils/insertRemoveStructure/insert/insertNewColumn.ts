@@ -1,6 +1,5 @@
 import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
@@ -9,38 +8,37 @@ import {ElementDetails} from '../../../types/elementDetails';
 import {MaximumColumns} from './maximum/maximumColumns';
 import {TableRow} from '../../../types/tableContents';
 import {EMPTY_STRING} from '../../../consts/text';
+import {ActiveTable} from '../../../activeTable';
 import {LastColumn} from '../shared/lastColumn';
 import {InsertNewCell} from './insertNewCell';
 
 export class InsertNewColumn {
-  // prettier-ignore
-  private static updateColumns(
-      etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    const rowDetails: ElementDetails = { element: rowElement, index: rowIndex };
-    const lastColumn: ElementDetails = LastColumn.getDetails(etc.columnsDetails, rowIndex);
-    UpdateCellsForColumns.rebindAndFireUpdates(etc, rowDetails, columnIndex, CELL_UPDATE_TYPE.ADD, lastColumn);
+  private static updateColumns(at: ActiveTable, rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};
+    const lastColumn: ElementDetails = LastColumn.getDetails(at.columnsDetails, rowIndex);
+    UpdateCellsForColumns.rebindAndFireUpdates(at, rowDetails, columnIndex, CELL_UPDATE_TYPE.ADD, lastColumn);
   }
 
-  private static insertToAllRows(etc: EditableTableComponent, columnIndex: number, columnData?: TableRow) {
-    const rowElements = ExtractElements.textRowsArrFromTBody(etc.tableBodyElementRef as HTMLElement, etc.contents);
+  private static insertToAllRows(at: ActiveTable, columnIndex: number, columnData?: TableRow) {
+    const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.contents);
     rowElements.forEach((rowElement: Node, rowIndex: number) => {
       const cellText = columnData ? columnData[rowIndex] : EMPTY_STRING;
-      InsertNewCell.insertToRow(etc, rowElement as HTMLElement, rowIndex, columnIndex, cellText as string, true);
-      setTimeout(() => InsertNewColumn.updateColumns(etc, rowElement as HTMLElement, rowIndex, columnIndex));
+      InsertNewCell.insertToRow(at, rowElement as HTMLElement, rowIndex, columnIndex, cellText as string, true);
+      setTimeout(() => InsertNewColumn.updateColumns(at, rowElement as HTMLElement, rowIndex, columnIndex));
     });
   }
 
   // columnData is in a row format to populate the column by iterating through each row
-  public static insert(etc: EditableTableComponent, columnIndex: number, columnData?: TableRow) {
-    if (MaximumColumns.canAddMore(etc)) {
-      FocusedCellUtils.incrementColumnIndex(etc.focusedElements.cell, columnIndex);
-      InsertNewColumn.insertToAllRows(etc, columnIndex, columnData);
-      ToggleAdditionElements.update(etc, true, AddNewColumnElement.toggle);
-      setTimeout(() => etc.onTableUpdate(etc.contents));
+  public static insert(at: ActiveTable, columnIndex: number, columnData?: TableRow) {
+    if (MaximumColumns.canAddMore(at)) {
+      FocusedCellUtils.incrementColumnIndex(at.focusedElements.cell, columnIndex);
+      InsertNewColumn.insertToAllRows(at, columnIndex, columnData);
+      ToggleAdditionElements.update(at, true, AddNewColumnElement.toggle);
+      setTimeout(() => at.onTableUpdate(at.contents));
     }
   }
 
-  public static insertEvent(this: EditableTableComponent) {
+  public static insertEvent(this: ActiveTable) {
     InsertNewColumn.insert(this, this.columnsDetails.length);
   }
 }

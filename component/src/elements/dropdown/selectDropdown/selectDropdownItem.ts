@@ -1,7 +1,6 @@
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
 import {ActiveSelectItems, ColumnDetailsT, SelectDropdownT} from '../../../types/columnDetails';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {CellText, TableContents} from '../../../types/tableContents';
 import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
 import {SelectDropdownItemEvents} from './selectDropdownItemEvents';
@@ -12,6 +11,7 @@ import {CellDetails} from '../../../types/focusedCell';
 import {Browser} from '../../../utils/browser/browser';
 import {CellElement} from '../../cell/cellElement';
 import {EMPTY_STRING} from '../../../consts/text';
+import {ActiveTable} from '../../../activeTable';
 import {CellEvents} from '../../cell/cellEvents';
 import {DropdownItem} from '../dropdownItem';
 
@@ -23,26 +23,25 @@ export class SelectDropdownItem {
   private static readonly SELECT_ACTIVE_ITEM_BACKGROUND_COLOR = '#4a69d4';
 
   // prettier-ignore
-  private static updateCellElementIfNotUpdated(etc: EditableTableComponent,
+  private static updateCellElementIfNotUpdated(at: ActiveTable,
       newText: string, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
-    if ((etc.contents[rowIndex][columnIndex]) !== newText) {
-      CellEvents.updateCell(etc, newText, rowIndex, columnIndex, {processText: false, element: textElement});
+    if ((at.contents[rowIndex][columnIndex]) !== newText) {
+      CellEvents.updateCell(at, newText, rowIndex, columnIndex, {processText: false, element: textElement});
     }
   }
 
   // prettier-ignore
-  public static selectExistingSelectItem(etc: EditableTableComponent,
+  public static selectExistingSelectItem(at: ActiveTable,
       activeItemElement: HTMLElement, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const newText = CellElement.getText(activeItemElement.children[0] as HTMLElement);
-    SelectDropdownItem.updateCellElementIfNotUpdated(etc, newText, rowIndex, columnIndex, textElement);
+    SelectDropdownItem.updateCellElementIfNotUpdated(at, newText, rowIndex, columnIndex, textElement);
     if (LabelCellTextElement.isLabelText(textElement)) {
-      textElement.style.backgroundColor = etc.columnsDetails[columnIndex].selectDropdown.selectItems[newText]?.color;
+      textElement.style.backgroundColor = at.columnsDetails[columnIndex].selectDropdown.selectItems[newText]?.color;
     }
   }
 
   // prettier-ignore
-  public static addNewSelectItem(etc: EditableTableComponent, textElement: HTMLElement, columnDetails: ColumnDetailsT,
-      color: string) {
+  public static addNewSelectItem(at: ActiveTable, textElement: HTMLElement, columnDetails: ColumnDetailsT, color: string) {
     const {selectDropdown: {labelDetails}} = columnDetails;
     const newItemName = CellElement.getText(textElement);
     if (newItemName === EMPTY_STRING) return;
@@ -55,7 +54,7 @@ export class SelectDropdownItem {
     } else {
       newColor = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
     }
-    SelectDropdownItem.addItem(etc, newItemName, newColor, columnDetails);
+    SelectDropdownItem.addItem(at, newItemName, newColor, columnDetails);
   }
 
   // prettier-ignore
@@ -107,65 +106,65 @@ export class SelectDropdownItem {
   }
 
   // prettier-ignore
-  private static setItemOnCell(etc: EditableTableComponent, item: HTMLElement) {
-    const {element, rowIndex, columnIndex} = etc.focusedElements.cell as CellDetails;
-    const {selectDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
+  private static setItemOnCell(at: ActiveTable, item: HTMLElement) {
+    const {element, rowIndex, columnIndex} = at.focusedElements.cell as CellDetails;
+    const {selectDropdown, settings: {defaultText}} = at.columnsDetails[columnIndex];
     const textElement = element.children[0] as HTMLElement;
     const itemText = CellElement.getText(item.children[0] as HTMLElement);
-    SelectDropdownItem.updateCellElementIfNotUpdated(etc, itemText, rowIndex, columnIndex, textElement);
+    SelectDropdownItem.updateCellElementIfNotUpdated(at, itemText, rowIndex, columnIndex, textElement);
     SelectDropdownItem.attemptHighlightMatchingItemWithCell(textElement, selectDropdown, defaultText, true, item);
-    CaretPosition.setToEndOfText(etc, textElement);
+    CaretPosition.setToEndOfText(at, textElement);
   }
 
   // prettier-ignore
-  public static setSiblingItemOnCell(etc: EditableTableComponent,
+  public static setSiblingItemOnCell(at: ActiveTable,
       activeItems: ActiveSelectItems, sibling: 'previousSibling' | 'nextSibling') {
     const {hovered, matchingWithCellText} = activeItems;
     const currentlyHighlightedItem = hovered || matchingWithCellText as HTMLElement;
     const siblingItem = currentlyHighlightedItem?.[sibling] as HTMLElement;
     if (siblingItem) {
-      SelectDropdownItem.setItemOnCell(etc, siblingItem);
+      SelectDropdownItem.setItemOnCell(at, siblingItem);
     } else {
-      const {columnIndex} = etc.focusedElements.cell as CellDetails;
-      const dropdownElement = etc.columnsDetails[columnIndex].selectDropdown.element as HTMLElement;
+      const {columnIndex} = at.focusedElements.cell as CellDetails;
+      const dropdownElement = at.columnsDetails[columnIndex].selectDropdown.element as HTMLElement;
       if (sibling === 'nextSibling') {
         const firstItem = dropdownElement.children[0] as HTMLElement;
-        if (firstItem) SelectDropdownItem.setItemOnCell(etc, firstItem);
+        if (firstItem) SelectDropdownItem.setItemOnCell(at, firstItem);
       } else {
         const lastItem = dropdownElement.children[dropdownElement.children.length - 1] as HTMLElement;
-        if (lastItem) SelectDropdownItem.setItemOnCell(etc, lastItem);
+        if (lastItem) SelectDropdownItem.setItemOnCell(at, lastItem);
       }
     }
   }
 
-  private static addItemElement(etc: EditableTableComponent, text: string, columnDetail: ColumnDetailsT, atStart = false) {
+  private static addItemElement(at: ActiveTable, text: string, columnDetail: ColumnDetailsT, atStart = false) {
     const {selectDropdown} = columnDetail;
     const itemElement = DropdownItem.addPlaneButtonItem(selectDropdown.element, text, atStart ? 0 : undefined);
     if (selectDropdown.customItemStyle) itemElement.style.color = selectDropdown.customItemStyle.textColor;
     if (selectDropdown.canAddMoreOptions) {
-      const deleteButtonElement = SelectDeleteButton.create(etc, selectDropdown);
+      const deleteButtonElement = SelectDeleteButton.create(at, selectDropdown);
       itemElement.appendChild(deleteButtonElement);
       if (Browser.IS_COLOR_PICKER_SUPPORTED && selectDropdown.labelDetails?.newItemColors) {
         const colorInputElement = SelectColorButton.create(columnDetail);
         itemElement.appendChild(colorInputElement);
       }
     }
-    SelectDropdownItemEvents.set(etc.shadowRoot as unknown as Document, itemElement, selectDropdown);
+    SelectDropdownItemEvents.set(at.shadowRoot as unknown as Document, itemElement, selectDropdown);
     return itemElement;
   }
 
-  private static addItem(etc: EditableTableComponent, itemName: string, color: string, columnDetails: ColumnDetailsT) {
+  private static addItem(at: ActiveTable, itemName: string, color: string, columnDetails: ColumnDetailsT) {
     columnDetails.selectDropdown.selectItems[itemName] = {
       color,
-      element: SelectDropdownItem.addItemElement(etc, itemName, columnDetails),
+      element: SelectDropdownItem.addItemElement(at, itemName, columnDetails),
     };
   }
 
-  private static addItems(etc: EditableTableComponent, itemToColor: ItemToColor, columnDetails: ColumnDetailsT) {
+  private static addItems(at: ActiveTable, itemToColor: ItemToColor, columnDetails: ColumnDetailsT) {
     columnDetails.selectDropdown.element.replaceChildren();
     columnDetails.selectDropdown.selectItems = {};
     Object.keys(itemToColor).forEach((itemName) => {
-      SelectDropdownItem.addItem(etc, itemName, itemToColor[itemName], columnDetails);
+      SelectDropdownItem.addItem(at, itemName, itemToColor[itemName], columnDetails);
     });
   }
 
@@ -202,8 +201,8 @@ export class SelectDropdownItem {
   }
 
   // prettier-ignore
-  public static populateItems(etc: EditableTableComponent, columnIndex: number) {
-    const {contents, columnsDetails} = etc;
+  public static populateItems(at: ActiveTable, columnIndex: number) {
+    const {contents, columnsDetails} = at;
     const columnDetails = columnsDetails[columnIndex];
     const {selectDropdown: {labelDetails}, settings: {defaultText, isDefaultTextRemovable}, activeType: {selectProps}
       } = columnDetails;
@@ -216,6 +215,6 @@ export class SelectDropdownItem {
       SelectDropdownItem.aggregateItemToColor(contents, columnIndex, itemToColor, labelDetails?.newItemColors);
     }
     SelectDropdownItem.postProcessItemToColor(isDefaultTextRemovable, itemToColor, defaultText);
-    SelectDropdownItem.addItems(etc, itemToColor, columnDetails);
+    SelectDropdownItem.addItems(at, itemToColor, columnDetails);
   }
 }

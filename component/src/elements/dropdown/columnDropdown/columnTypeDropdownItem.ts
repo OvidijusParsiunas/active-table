@@ -1,7 +1,7 @@
 import {ColumnTypeDropdownItemEvents} from './columnTypeDropdownItemEvents';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {SVGIconUtils} from '../../../utils/svgIcons/svgIconUtils';
 import {CellElement} from '../../cell/cellElement';
+import {ActiveTable} from '../../../activeTable';
 import {DropdownItem} from '../dropdownItem';
 
 export class ColumnTypeDropdownItem {
@@ -25,11 +25,11 @@ export class ColumnTypeDropdownItem {
   }
 
   // the items are repopulated every time column dropdown is opened
-  public static setUp(etc: EditableTableComponent, columnIndex: number) {
-    const {columnTypeDropdown} = etc.activeOverlayElements;
-    const elements = etc.columnsDetails[columnIndex].types.map((type) => type.dropdownItem.element) as HTMLElement[];
-    DropdownItem.addButtonItemElements(etc, columnTypeDropdown as HTMLElement, elements);
-    ColumnTypeDropdownItemEvents.set(etc, elements, columnIndex);
-    ColumnTypeDropdownItem.setActiveItem(elements, etc.columnsDetails[columnIndex].activeType.name);
+  public static setUp(at: ActiveTable, columnIndex: number) {
+    const {columnTypeDropdown} = at.activeOverlayElements;
+    const elements = at.columnsDetails[columnIndex].types.map((type) => type.dropdownItem.element) as HTMLElement[];
+    DropdownItem.addButtonItemElements(at, columnTypeDropdown as HTMLElement, elements);
+    ColumnTypeDropdownItemEvents.set(at, elements, columnIndex);
+    ColumnTypeDropdownItem.setActiveItem(elements, at.columnsDetails[columnIndex].activeType.name);
   }
 }

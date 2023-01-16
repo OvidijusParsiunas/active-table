@@ -1,7 +1,6 @@
 import {ProcessedDataTextStyle} from '../columnType/processedDataTextStyle';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
-import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {GenericElementUtils} from '../elements/genericElementUtils';
 import {ColumnDetails} from '../columnDetails/columnDetails';
@@ -10,6 +9,7 @@ import {CellCSSStyle, CSSStyle} from '../../types/cssStyle';
 import {ColumnDetailsT} from '../../types/columnDetails';
 import {ElementStyle} from '../elements/elementStyle';
 import {RegexUtils} from '../regex/regexUtils';
+import {ActiveTable} from '../../activeTable';
 
 export class ColumnSettingsStyleUtils {
   public static applySettingsStyleOnCell(settings: ColumnSettingsInternal, cellElement: HTMLElement, isHeader: boolean) {
@@ -43,8 +43,7 @@ export class ColumnSettingsStyleUtils {
   }
 
   // prettier-ignore
-  private static changeHeaderStyleFunc(this: EditableTableComponent, columnIndex: number,
-      oldSettings: ColumnSettingsInternal) {
+  private static changeHeaderStyleFunc(this: ActiveTable, columnIndex: number, oldSettings: ColumnSettingsInternal) {
     const columnDetails = this.columnsDetails[columnIndex];
     const {elements, settings: {isHeaderTextEditable}} = columnDetails;
     ColumnSettingsStyleUtils.resetHeaderStyleToDefault(elements, oldSettings, this.defaultColumnsSettings);
@@ -55,10 +54,10 @@ export class ColumnSettingsStyleUtils {
   }
 
   // prettier-ignore
-  public static changeStyle(etc: EditableTableComponent, columnIndex: number, oldSettings: ColumnSettingsInternal) {
+  public static changeStyle(at: ActiveTable, columnIndex: number, oldSettings: ColumnSettingsInternal) {
     // resetDataCellsStyle unsets and reapplies settings style hence we only need to set the header here
-    ProcessedDataTextStyle.resetDataCellsStyle(etc, columnIndex,
-      ColumnSettingsStyleUtils.changeHeaderStyleFunc.bind(etc, columnIndex, oldSettings), oldSettings.cellStyle)
+    ProcessedDataTextStyle.resetDataCellsStyle(at, columnIndex,
+      ColumnSettingsStyleUtils.changeHeaderStyleFunc.bind(at, columnIndex, oldSettings), oldSettings.cellStyle)
   }
 
   private static doStylesHaveVisibleDimension(style: CSSStyle, styleKeys: (keyof CSSStyle)[]) {

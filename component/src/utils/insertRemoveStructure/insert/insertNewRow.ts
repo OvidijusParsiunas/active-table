@@ -3,7 +3,6 @@ import {ToggleAdditionElements} from '../../../elements/table/addNewElements/sha
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
 import {RowElement} from '../../../elements/table/addNewElements/row/rowElement';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {IndexColumn} from '../../../elements/indexColumn/indexColumn';
 import {CustomRowProperties} from '../../rows/customRowProperties';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
@@ -14,6 +13,7 @@ import {ElementDetails} from '../../../types/elementDetails';
 import {MaximumColumns} from './maximum/maximumColumns';
 import {MoveRow} from '../../moveStructure/moveRow';
 import {MaximumRows} from './maximum/maximumRows';
+import {ActiveTable} from '../../../activeTable';
 import {InsertNewCell} from './insertNewCell';
 import {DataUtils} from '../shared/dataUtils';
 
@@ -21,83 +21,83 @@ export class InsertNewRow {
   // CAUTION-2 if the addition or removal of row causes the parent div to change width, this is indeed run after rerender,
   // however the notification messages are necessary and the rebinding does not seem to cause issues, nevertheless take
   // note of this if editing any of the logic below
-  private static bindAndfireCellUpdates(etc: EditableTableComponent, rowIndex: number) {
-    const lastRowIndex = etc.contents.length - 1;
-    const lastDataRowElement = etc.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
+  private static bindAndfireCellUpdates(at: ActiveTable, rowIndex: number) {
+    const lastRowIndex = at.contents.length - 1;
+    const lastDataRowElement = at.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const lastRowDetails: ElementDetails = {element: lastDataRowElement, index: lastRowIndex};
-    UpdateCellsForRows.rebindAndFireUpdates(etc, rowIndex, CELL_UPDATE_TYPE.ADD, lastRowDetails); // REF-20
-    etc.onTableUpdate(etc.contents);
+    UpdateCellsForRows.rebindAndFireUpdates(at, rowIndex, CELL_UPDATE_TYPE.ADD, lastRowDetails); // REF-20
+    at.onTableUpdate(at.contents);
   }
 
-  private static canStartRenderCellBeAdded(etc: EditableTableComponent, rowIndex: number, columnIndex: number) {
+  private static canStartRenderCellBeAdded(at: ActiveTable, rowIndex: number, columnIndex: number) {
     if (rowIndex === 0) {
-      return MaximumColumns.canAddMore(etc);
+      return MaximumColumns.canAddMore(at);
     }
-    return etc.columnsDetails[columnIndex];
+    return at.columnsDetails[columnIndex];
   }
 
   // prettier-ignore
-  private static addCells(etc: EditableTableComponent,
+  private static addCells(at: ActiveTable,
       newRowData: TableRow, newRowElement: HTMLElement, rowIndex: number, isNewText: boolean) {
-    const {auxiliaryTableContentInternal: {displayIndexColumn, displayAddColumnCell}} = etc;
-    if (displayIndexColumn) IndexColumn.createAndPrependToRow(etc, newRowElement, rowIndex);
+    const {auxiliaryTableContentInternal: {displayIndexColumn, displayAddColumnCell}} = at;
+    if (displayIndexColumn) IndexColumn.createAndPrependToRow(at, newRowElement, rowIndex);
     newRowData.forEach((cellText: CellText, columnIndex: number) => {
-      if (isNewText || InsertNewRow.canStartRenderCellBeAdded(etc, rowIndex, columnIndex)) {
-        InsertNewCell.insertToRow(etc, newRowElement, rowIndex, columnIndex, cellText as string, isNewText);
+      if (isNewText || InsertNewRow.canStartRenderCellBeAdded(at, rowIndex, columnIndex)) {
+        InsertNewCell.insertToRow(at, newRowElement, rowIndex, columnIndex, cellText as string, isNewText);
       }
     });
-    if (displayAddColumnCell) AddNewColumnElement.createAndAppendToRow(etc, newRowElement, rowIndex);
-    setTimeout(() => RowDropdownCellOverlay.add(etc, rowIndex, newRowElement.children[0] as HTMLElement));
+    if (displayAddColumnCell) AddNewColumnElement.createAndAppendToRow(at, newRowElement, rowIndex);
+    setTimeout(() => RowDropdownCellOverlay.add(at, rowIndex, newRowElement.children[0] as HTMLElement));
   }
 
   // prettier-ignore
-  private static updagePagination(etc: EditableTableComponent,
+  private static updagePagination(at: ActiveTable,
       rowIndex: number, isNewText: boolean, newRowElement: HTMLElement) {
     if (!isNewText) {
-      PaginationUtils.initialRowUpdates(etc, rowIndex, newRowElement);
+      PaginationUtils.initialRowUpdates(at, rowIndex, newRowElement);
     } else {
-      PaginationUtils.updateOnRowChange(etc, rowIndex, newRowElement);
+      PaginationUtils.updateOnRowChange(at, rowIndex, newRowElement);
     }
   }
 
-  private static insertNewRow(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
-    const newRowData = rowData || DataUtils.createEmptyStringDataArray(etc.contents[0]?.length || 1);
+  private static insertNewRow(at: ActiveTable, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
+    const newRowData = rowData || DataUtils.createEmptyStringDataArray(at.contents[0]?.length || 1);
     const newRowElement = RowElement.create();
-    if (etc.pagination) InsertNewRow.updagePagination(etc, rowIndex, isNewText, newRowElement);
-    etc.tableBodyElementRef?.insertBefore(newRowElement, etc.tableBodyElementRef.children[rowIndex]);
+    if (at.pagination) InsertNewRow.updagePagination(at, rowIndex, isNewText, newRowElement);
+    at.tableBodyElementRef?.insertBefore(newRowElement, at.tableBodyElementRef.children[rowIndex]);
     // don't need a timeout as addition of row with new text is not expensive
-    if (isNewText) etc.contents.splice(rowIndex, 0, []);
-    InsertNewRow.addCells(etc, newRowData, newRowElement, rowIndex, isNewText);
+    if (isNewText) at.contents.splice(rowIndex, 0, []);
+    InsertNewRow.addCells(at, newRowData, newRowElement, rowIndex, isNewText);
     return newRowElement;
   }
 
   // isNewText indicates whether rowData is already in the contents state or if it needs to be added
-  public static insert(etc: EditableTableComponent, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
-    if (!MaximumRows.canAddMore(etc)) return;
-    const isReplacingHeader = isNewText && rowIndex === 0 && etc.columnsDetails.length > 0;
+  public static insert(at: ActiveTable, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
+    if (!MaximumRows.canAddMore(at)) return;
+    const isReplacingHeader = isNewText && rowIndex === 0 && at.columnsDetails.length > 0;
     if (isReplacingHeader) rowIndex = 1; // REF-26
-    InsertNewRow.insertNewRow(etc, rowIndex, isNewText, rowData);
+    InsertNewRow.insertNewRow(at, rowIndex, isNewText, rowData);
     if (isNewText) {
-      ToggleAdditionElements.update(etc, true, AddNewRowElement.toggle);
-      if (etc.auxiliaryTableContentInternal.displayIndexColumn) IndexColumn.updateIndexes(etc, rowIndex + 1);
-      CustomRowProperties.update(etc, rowIndex);
+      ToggleAdditionElements.update(at, true, AddNewRowElement.toggle);
+      if (at.auxiliaryTableContentInternal.displayIndexColumn) IndexColumn.updateIndexes(at, rowIndex + 1);
+      CustomRowProperties.update(at, rowIndex);
     }
-    if (isReplacingHeader) MoveRow.move(etc, 0, true); // REF-26
+    if (isReplacingHeader) MoveRow.move(at, 0, true); // REF-26
     setTimeout(() => {
       // this is used to prevent multiple rebindings of same rows as upon the insertion of multiple via the initial
       // table render or after pasting, the contents array would be populated synchronously which would cause
       // the lastRowIndex to be high every time this is called and rows between rowIndex and lastRowIndex would
       // be rebinded multiple times
       if (!rowData) {
-        InsertNewRow.bindAndfireCellUpdates(etc, rowIndex);
-      } else if (rowIndex === etc.contents.length - 1) {
+        InsertNewRow.bindAndfireCellUpdates(at, rowIndex);
+      } else if (rowIndex === at.contents.length - 1) {
         // may not be best to start from 0 but this method has no concept of starting point
-        InsertNewRow.bindAndfireCellUpdates(etc, 0);
+        InsertNewRow.bindAndfireCellUpdates(at, 0);
       }
     });
   }
 
-  public static insertEvent(this: EditableTableComponent) {
+  public static insertEvent(this: ActiveTable) {
     let newRowIndex = this.contents.length;
     if (this.pagination) {
       const {maxVisibleRowIndex} = PaginationUtils.getRelativeRowIndexes(this);

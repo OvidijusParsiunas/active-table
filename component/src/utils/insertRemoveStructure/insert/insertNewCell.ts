@@ -12,12 +12,12 @@ import {SelectDropdown} from '../../../elements/dropdown/selectDropdown/selectDr
 import {ColumnDetailsInitial, ColumnDetailsT} from '../../../types/columnDetails';
 import {ProcessedDataTextStyle} from '../../columnType/processedDataTextStyle';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
 import {CellElementIndex} from '../../elements/cellElementIndex';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {CellText} from '../../../types/tableContents';
+import {ActiveTable} from '../../../activeTable';
 import {DataUtils} from '../shared/dataUtils';
 
 export class InsertNewCell {
@@ -34,16 +34,16 @@ export class InsertNewCell {
   // please note that this is run twice in firefox due to the render function being triggered twice
   // prettier-ignore
   private static updateColumnDetailsAndSizers(
-      etc: EditableTableComponent, rowIndex: number, columnIndex: number, text: CellText, isNewText: boolean) {
-    const columnDetails = etc.columnsDetails[columnIndex];
+      at: ActiveTable, rowIndex: number, columnIndex: number, text: CellText, isNewText: boolean) {
+    const columnDetails = at.columnsDetails[columnIndex];
     if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
     if (rowIndex === 0) {
-      const columnDropdownCellOverlay = ColumnDropdownCellOverlay.add(etc, columnIndex);
+      const columnDropdownCellOverlay = ColumnDropdownCellOverlay.add(at, columnIndex);
       ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsInitial, columnDropdownCellOverlay); // REF-13
-      InsertRemoveColumnSizer.insert(etc, columnIndex); // REF-13
+      InsertRemoveColumnSizer.insert(at, columnIndex); // REF-13
       if (isNewText) {
-        InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
-        UpdateIndexColumnWidth.wrapTextWhenNarrowColumnsBreached(etc); // REF-19
+        InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, columnIndex);
+        UpdateIndexColumnWidth.wrapTextWhenNarrowColumnsBreached(at); // REF-19
       }
     } else {
       CellTypeTotalsUtils.incrementCellType(columnDetails, text); // CAUTION-2
@@ -51,45 +51,44 @@ export class InsertNewCell {
   }
 
   // prettier-ignore
-  private static insert(etc: EditableTableComponent, rowElement: HTMLElement, newCellElement: HTMLElement,
+  private static insert(at: ActiveTable, rowElement: HTMLElement, newCellElement: HTMLElement,
       processedCellText: CellText, isNewText: boolean, rowIndex: number, columnIndex: number) {
-    const {auxiliaryTableContentInternal: {displayIndexColumn}, contents, columnsDetails} = etc;
+    const {auxiliaryTableContentInternal: {displayIndexColumn}, contents, columnsDetails} = at;
     const columnDetails = columnsDetails[columnIndex];
     columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
     columnDetails.processedStyle.splice(rowIndex, 0, ProcessedDataTextStyle.getDefaultProcessedTextStyle());
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, !!displayIndexColumn);
-    // cannot place in a timeout as etc.contents length is used to get last row index
+    // cannot place in a timeout as at.contents length is used to get last row index
     contents[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
   }
 
-  // prettier-ignore
-  private static convertCell(etc: EditableTableComponent,
-      rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
-    const columnDetails = etc.columnsDetails[columnIndex];
-    if (rowIndex === 0 && etc.areIconsDisplayedInHeaders) {
-      HeaderIconCellElement.setHeaderIconStructure(etc, newCellElement, columnIndex);
+  private static convertCell(at: ActiveTable, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
+    const columnDetails = at.columnsDetails[columnIndex];
+    if (rowIndex === 0 && at.areIconsDisplayedInHeaders) {
+      HeaderIconCellElement.setHeaderIconStructure(at, newCellElement, columnIndex);
     }
     if (!columnDetails.activeType) return;
     if (columnDetails.activeType.selectProps) {
       if (rowIndex === 0) {
-        SelectDropdown.setUpDropdown(etc, columnIndex);
+        SelectDropdown.setUpDropdown(at, columnIndex);
       } else {
-        SelectCell.convertCell(etc, columnIndex, newCellElement);
-        SelectCell.finaliseEditedText(etc, newCellElement.children[0] as HTMLElement, columnIndex, true);
+        SelectCell.convertCell(at, columnIndex, newCellElement);
+        SelectCell.finaliseEditedText(at, newCellElement.children[0] as HTMLElement, columnIndex, true);
       }
     } else if (rowIndex > 0) {
       if (columnDetails.activeType.checkbox) {
-        CheckboxCellElement.setCellCheckboxStructure(etc, newCellElement, columnIndex, rowIndex);
-      } if (columnDetails.activeType.calendar) {
-        DateCellElement.setCellDateStructure(etc, newCellElement, columnIndex);
+        CheckboxCellElement.setCellCheckboxStructure(at, newCellElement, columnIndex, rowIndex);
+      }
+      if (columnDetails.activeType.calendar) {
+        DateCellElement.setCellDateStructure(at, newCellElement, columnIndex);
       }
     }
   }
 
   // REF-13
   // prettier-ignore
-  private static insertInitialColumnDetails(etc: EditableTableComponent, cellText: CellText, columnIndex: number) {
-    const {columnsDetails, customColumnsSettingsInternal, selectDropdownContainer, defaultColumnsSettings} = etc;
+  private static insertInitialColumnDetails(at: ActiveTable, cellText: CellText, columnIndex: number) {
+    const {columnsDetails, customColumnsSettingsInternal, selectDropdownContainer, defaultColumnsSettings} = at;
     const selectDropdown = SelectDropdown.createAndAppend(selectDropdownContainer as HTMLElement);
     const columnDetails = ColumnDetails.createInitial(defaultColumnsSettings,
       selectDropdown, customColumnsSettingsInternal[cellText]);
@@ -98,20 +97,20 @@ export class InsertNewCell {
 
   // isNewText indicates whether rowData is already in the contents state or if it needs to be added
   // prettier-ignore
-  public static insertToRow(etc: EditableTableComponent,
+  public static insertToRow(at: ActiveTable,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: CellText, isNewText: boolean) {
-    if (rowIndex === 0) InsertNewCell.insertInitialColumnDetails(etc, cellText, columnIndex); // REF-13
-    const processedCellText = DataUtils.processCellText(etc, rowIndex, columnIndex, cellText);
-    const newCellElement = CellElement.createCellElement(etc, processedCellText, columnIndex, rowIndex === 0);
-    InsertNewCell.insert(etc, rowElement, newCellElement, processedCellText, isNewText, rowIndex, columnIndex);
-    InsertNewCell.convertCell(etc, rowIndex, columnIndex, newCellElement); // need text set before conversion (checkbox)
+    if (rowIndex === 0) InsertNewCell.insertInitialColumnDetails(at, cellText, columnIndex); // REF-13
+    const processedCellText = DataUtils.processCellText(at, rowIndex, columnIndex, cellText);
+    const newCellElement = CellElement.createCellElement(at, processedCellText, columnIndex, rowIndex === 0);
+    InsertNewCell.insert(at, rowElement, newCellElement, processedCellText, isNewText, rowIndex, columnIndex);
+    InsertNewCell.convertCell(at, rowIndex, columnIndex, newCellElement); // need text set before conversion (checkbox)
     if (rowIndex === 0) {
-      if (etc.auxiliaryTableContentInternal.displayAddColumnCell) ColumnGroupElement.update(etc);
-      if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
-      ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
+      if (at.auxiliaryTableContentInternal.displayAddColumnCell) ColumnGroupElement.update(at);
+      if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true); // REF-11
+      ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
     } else {
-      ProcessedDataTextStyle.setCellStyle(etc, rowIndex, columnIndex); // custom style will be applied in cellEvents
+      ProcessedDataTextStyle.setCellStyle(at, rowIndex, columnIndex); // custom style will be applied in cellEvents
     }
-    setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(etc, rowIndex, columnIndex, processedCellText, isNewText));
+    setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(at, rowIndex, columnIndex, processedCellText, isNewText));
   }
 }

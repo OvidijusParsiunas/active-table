@@ -1,6 +1,6 @@
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {SelectDeleteButtonEvents} from './selectDeleteButtonEvents';
 import {SelectDropdownT} from '../../../../types/columnDetails';
+import {ActiveTable} from '../../../../activeTable';
 import {DropdownItem} from '../../dropdownItem';
 import {SelectButton} from './selectButton';
 
@@ -15,10 +15,10 @@ export class SelectDeleteButton {
     return iconElement;
   }
 
-  private static createButton(etc: EditableTableComponent, selectDropdown: SelectDropdownT) {
+  private static createButton(at: ActiveTable, selectDropdown: SelectDropdownT) {
     const buttonElement = document.createElement('div');
     buttonElement.classList.add(DropdownItem.DROPDOWN_ITEM_IDENTIFIER, SelectButton.SELECT_BUTTON_CLASS);
-    SelectDeleteButtonEvents.addEvents(etc, selectDropdown, buttonElement);
+    SelectDeleteButtonEvents.addEvents(at, selectDropdown, buttonElement);
     return buttonElement;
   }
 
@@ -28,9 +28,9 @@ export class SelectDeleteButton {
     return containerElement;
   }
 
-  public static create(etc: EditableTableComponent, selectDropdown: SelectDropdownT) {
+  public static create(at: ActiveTable, selectDropdown: SelectDropdownT) {
     const containerElement = SelectDeleteButton.createContainer();
-    const buttonElement = SelectDeleteButton.createButton(etc, selectDropdown);
+    const buttonElement = SelectDeleteButton.createButton(at, selectDropdown);
     const iconElement = SelectDeleteButton.createIcon();
     buttonElement.appendChild(iconElement);
     containerElement.appendChild(buttonElement);

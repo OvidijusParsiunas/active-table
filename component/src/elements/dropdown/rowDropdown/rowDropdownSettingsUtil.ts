@@ -1,8 +1,8 @@
 import {DropdownDisplaySettings} from '../../../types/dropdownDisplaySettings';
 import {DropdownDisplaySettingsUtil} from '../dropdownDisplaySettingsUtil';
 import {AuxiliaryTableContent} from '../../../types/auxiliaryTableContent';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {RowDropdownSettings} from '../../../types/rowDropdownSettings';
+import {ActiveTable} from '../../../activeTable';
 
 export class RowDropdownSettingsUtil {
   private static postprocessOpenMethod(rowSettings: RowDropdownSettings, auxiliaryTableContent: AuxiliaryTableContent) {
@@ -22,8 +22,8 @@ export class RowDropdownSettingsUtil {
     }
   }
 
-  public static process(etc: EditableTableComponent) {
-    const {rowDropdownSettings, auxiliaryTableContentInternal, columnDropdownDisplaySettings} = etc;
+  public static process(at: ActiveTable) {
+    const {rowDropdownSettings, auxiliaryTableContentInternal, columnDropdownDisplaySettings} = at;
     rowDropdownSettings.isInsertUpAvailable ??= true;
     rowDropdownSettings.isInsertDownAvailable ??= true;
     rowDropdownSettings.isMoveAvailable ??= false;

@@ -1,6 +1,6 @@
 import {NumberOfRowsDropdownItemEvents} from './numberOfRowsDropdownItemEvents';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {DropdownItem} from '../../../dropdown/dropdownItem';
+import {ActiveTable} from '../../../../activeTable';
 
 export class NumberOfRowsDropdownItem {
   private static readonly ITEM_CLASS = 'number-of-rows-dropdown-item';
@@ -21,13 +21,13 @@ export class NumberOfRowsDropdownItem {
     activeItem?.classList.add(DropdownItem.ACTIVE_ITEM_CLASS);
   }
 
-  public static populate(etc: EditableTableComponent, dropdownElement: HTMLElement, optionsButton: HTMLElement) {
-    etc.paginationInternal.numberOfRowsOptionsItemText.forEach((itemText) => {
+  public static populate(at: ActiveTable, dropdownElement: HTMLElement, optionsButton: HTMLElement) {
+    at.paginationInternal.numberOfRowsOptionsItemText.forEach((itemText) => {
       const itemsSettings = {text: String(itemText)};
-      const item = DropdownItem.addButtonItem(etc, dropdownElement, itemsSettings, NumberOfRowsDropdownItem.ITEM_CLASS);
-      NumberOfRowsDropdownItemEvents.setEvents(etc, item, optionsButton);
+      const item = DropdownItem.addButtonItem(at, dropdownElement, itemsSettings, NumberOfRowsDropdownItem.ITEM_CLASS);
+      NumberOfRowsDropdownItemEvents.setEvents(at, item, optionsButton);
     });
-    const activeItemText = String(etc.paginationInternal.numberOfRows);
+    const activeItemText = String(at.paginationInternal.numberOfRows);
     NumberOfRowsDropdownItem.setActive(Array.from(dropdownElement.children) as HTMLElement[], activeItemText);
   }
 }

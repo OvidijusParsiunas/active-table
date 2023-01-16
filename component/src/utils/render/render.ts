@@ -1,32 +1,32 @@
 import {TableBorderDimensionsUtils} from '../../elements/table/tableBorderDimensionsUtils';
 import {UpdateIndexColumnWidth} from '../../elements/indexColumn/updateIndexColumnWidth';
 import {TableDimensionsUtils} from '../tableDimensions/tableDimensionsUtils';
-import {EditableTableComponent} from '../../editable-table-component';
 import {IndexColumn} from '../../elements/indexColumn/indexColumn';
 import {TableElement} from '../../elements/table/tableElement';
 import {OverflowUtils} from '../overflow/overflowUtils';
+import {ActiveTable} from '../../activeTable';
 
 export class Render {
   // CAUTION-4 overwriting properties causes the whole table to refresh and subsequently - an infinite render loop
   // prettier-ignore
-  private static refreshTableState(etc: EditableTableComponent) {
-    etc.selectDropdownContainer?.replaceChildren();
-    etc.columnsDetails.splice(0, etc.columnsDetails.length);
+  private static refreshTableState(at: ActiveTable) {
+    at.selectDropdownContainer?.replaceChildren();
+    at.columnsDetails.splice(0, at.columnsDetails.length);
     UpdateIndexColumnWidth.WIDTH = IndexColumn.DEFAULT_WIDTH;
-    etc.addColumnCellsElementsRef.splice(0, etc.addColumnCellsElementsRef.length);
-    if (etc.overflowInternal) {
+    at.addColumnCellsElementsRef.splice(0, at.addColumnCellsElementsRef.length);
+    if (at.overflowInternal) {
       TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtils.generateUsingElement(
-        etc.overflowInternal.overflowContainer); // unsetBorderDimensions unsets dimensions so need this every render
+        at.overflowInternal.overflowContainer); // unsetBorderDimensions unsets dimensions so need this every render
     }
   }
 
-  public static renderTable(etc: EditableTableComponent) {
-    TableDimensionsUtils.record(etc);
-    Render.refreshTableState(etc);
-    if (etc.overflowInternal) OverflowUtils.applyDimensions(etc);
-    TableElement.setStaticWidthContentTotal(etc);
+  public static renderTable(at: ActiveTable) {
+    TableDimensionsUtils.record(at);
+    Render.refreshTableState(at);
+    if (at.overflowInternal) OverflowUtils.applyDimensions(at);
+    TableElement.setStaticWidthContentTotal(at);
     // needs to be in render trigger as user props are not set in the connectedCallback function in Firefox
-    TableDimensionsUtils.setTableDimensions(etc);
-    TableElement.populateBody(etc);
+    TableDimensionsUtils.setTableDimensions(at);
+    TableElement.populateBody(at);
   }
 }

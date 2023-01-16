@@ -1,59 +1,58 @@
 import {PageNumberButtonElement} from '../../elements/pagination/pageButtons/buttons/number/pageNumberButtonElement';
 import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
-import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationUtils} from './paginationUtils';
+import {ActiveTable} from '../../activeTable';
 
 export class PaginationUpdatePageButtons {
-  private static removeLastNumberButton(etc: EditableTableComponent, numberButtons: HTMLElement[]) {
+  private static removeLastNumberButton(at: ActiveTable, numberButtons: HTMLElement[]) {
     numberButtons[numberButtons.length - 1].remove();
     const firstNumberButton = numberButtons[0];
     const firstNumber = Number(firstNumberButton.innerText);
     if (firstNumber > 1) {
-      const buttonElement = PageNumberButtonElement.create(etc, firstNumber - 1);
+      const buttonElement = PageNumberButtonElement.create(at, firstNumber - 1);
       firstNumberButton.insertAdjacentElement('beforebegin', buttonElement);
     }
   }
 
-  public static updateOnRowRemove(etc: EditableTableComponent) {
-    const {buttonContainer, style} = etc.paginationInternal;
+  public static updateOnRowRemove(at: ActiveTable) {
+    const {buttonContainer, style} = at.paginationInternal;
     const numberButtons = PaginationUtils.getPageNumberButtons(buttonContainer);
     const lastNumberButton = numberButtons[numberButtons.length - 1];
-    if (Number(lastNumberButton.innerText) > PaginationUtils.getLastPossiblePageNumber(etc)) {
+    if (Number(lastNumberButton.innerText) > PaginationUtils.getLastPossiblePageNumber(at)) {
       if (numberButtons.length > 1) {
-        PaginationUpdatePageButtons.removeLastNumberButton(etc, numberButtons);
+        PaginationUpdatePageButtons.removeLastNumberButton(at, numberButtons);
       } else {
         PageButtonElement.setDisabled(buttonContainer, style.pageButtons);
       }
     }
   }
 
-  private static addNewNumberButtonAtEndIfNeeded(etc: EditableTableComponent, numberButtons: HTMLElement[]) {
+  private static addNewNumberButtonAtEndIfNeeded(at: ActiveTable, numberButtons: HTMLElement[]) {
     const lastNumberButton = numberButtons[numberButtons.length - 1];
-    const lastPossibleNumber = PaginationUtils.getLastPossiblePageNumber(etc, true);
+    const lastPossibleNumber = PaginationUtils.getLastPossiblePageNumber(at, true);
     if (Number(lastNumberButton.innerText) < lastPossibleNumber) {
-      const buttonElement = PageNumberButtonElement.create(etc, lastPossibleNumber);
+      const buttonElement = PageNumberButtonElement.create(at, lastPossibleNumber);
       lastNumberButton.insertAdjacentElement('afterend', buttonElement);
     }
   }
 
-  public static updateOnRowInsert(etc: EditableTableComponent) {
-    const {buttonContainer, style, maxNumberOfVisiblePageButtons} = etc.paginationInternal;
-    const expectedItemsBeforeInsert = etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? 0 : 1;
-    if (etc.contents.length === expectedItemsBeforeInsert) {
+  public static updateOnRowInsert(at: ActiveTable) {
+    const {buttonContainer, style, maxNumberOfVisiblePageButtons} = at.paginationInternal;
+    const expectedItemsBeforeInsert = at.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? 0 : 1;
+    if (at.contents.length === expectedItemsBeforeInsert) {
       PageButtonElement.unsetDisabled(buttonContainer, style.pageButtons);
     } else {
       const numberButtons = PaginationUtils.getPageNumberButtons(buttonContainer);
       // if number of buttons is at limit - updateOnNewActive will handle it
       if (numberButtons.length < maxNumberOfVisiblePageButtons) {
-        PaginationUpdatePageButtons.addNewNumberButtonAtEndIfNeeded(etc, numberButtons);
+        PaginationUpdatePageButtons.addNewNumberButtonAtEndIfNeeded(at, numberButtons);
       }
     }
   }
 
   // prettier-ignore
-  private static shiftLeftwards(etc: EditableTableComponent, numberButtons: HTMLElement[],
-      firstNonLeftShiftNumber: number) {
-    const {activePageNumber} = etc.paginationInternal;
+  private static shiftLeftwards(at: ActiveTable, numberButtons: HTMLElement[], firstNonLeftShiftNumber: number) {
+    const {activePageNumber} = at.paginationInternal;
     const firstVisibleButton = numberButtons[0];
     const firstVisibleButtonNumber = Number(firstVisibleButton.innerText);
     // if buttons [1,2,3,4] - clicking 1,2,3 should not change anything
@@ -68,17 +67,17 @@ export class PaginationUpdatePageButtons {
       firstAddedButtonNumber = numberButtons.length + 1;
     }
     for (let i = numberOfButtonsToShift - 1; i >= 0; i -= 1) {
-      const buttonElement = PageNumberButtonElement.create(etc, firstAddedButtonNumber - i - 1);
+      const buttonElement = PageNumberButtonElement.create(at, firstAddedButtonNumber - i - 1);
       firstVisibleButton.insertAdjacentElement('beforebegin', buttonElement);
     }
     numberButtons.slice(numberButtons.length - numberOfButtonsToShift).forEach((button) => button.remove());
   }
 
   // prettier-ignore
-  private static shiftRightwards(etc: EditableTableComponent, numberButtons: HTMLElement[],
-      lastVisibleButtonNumber: number, lastNonRightShiftNumber: number) {
-    const {activePageNumber} = etc.paginationInternal;
-    const lastButtonNumber = PaginationUtils.getLastPossiblePageNumber(etc);
+  private static shiftRightwards(at: ActiveTable,
+      numberButtons: HTMLElement[], lastVisibleButtonNumber: number, lastNonRightShiftNumber: number) {
+    const {activePageNumber} = at.paginationInternal;
+    const lastButtonNumber = PaginationUtils.getLastPossiblePageNumber(at);
     // if buttons [3,4,5,6] when there are 6 possible buttons - clicking 5,6 should not change anything
     // however if [2,3,4,5] - clicking 5 shifts to the right
     // if active number higher than 4 - shift buttons needed to get to the last possible number (5),
@@ -92,26 +91,26 @@ export class PaginationUpdatePageButtons {
     }
     const lastVisibleButton = numberButtons[numberButtons.length - 1];
     for (let i = numberOfButtonsToShift - 1; i >= 0; i -= 1) {
-      const buttonElement = PageNumberButtonElement.create(etc, i + firstAddedButtonNumber + 1);
+      const buttonElement = PageNumberButtonElement.create(at, i + firstAddedButtonNumber + 1);
       lastVisibleButton.insertAdjacentElement('afterend', buttonElement);
     }
     numberButtons.slice(0, numberOfButtonsToShift).forEach((button) => button.remove());
   }
 
-  public static updateOnNewActive(etc: EditableTableComponent, buttonContainer: HTMLElement) {
-    const {activePageNumber, maxNumberOfVisiblePageButtons} = etc.paginationInternal;
+  public static updateOnNewActive(at: ActiveTable, buttonContainer: HTMLElement) {
+    const {activePageNumber, maxNumberOfVisiblePageButtons} = at.paginationInternal;
     const numberButtons = PaginationUtils.getPageNumberButtons(buttonContainer);
     if (numberButtons.length < maxNumberOfVisiblePageButtons) return;
     const lastVisibleButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
     // number that should not trigger shift to the right
     const lastNonRightShiftNumber = Math.floor(lastVisibleButtonNumber - numberButtons.length / 2) + 1;
     if (activePageNumber > lastNonRightShiftNumber) {
-      PaginationUpdatePageButtons.shiftRightwards(etc, numberButtons, lastVisibleButtonNumber, lastNonRightShiftNumber);
+      PaginationUpdatePageButtons.shiftRightwards(at, numberButtons, lastVisibleButtonNumber, lastNonRightShiftNumber);
     } else {
       // number that should not trigger shift to the left
       const firstNonLeftShiftNumber = Math.ceil(lastVisibleButtonNumber - numberButtons.length / 2);
       if (activePageNumber < firstNonLeftShiftNumber) {
-        PaginationUpdatePageButtons.shiftLeftwards(etc, numberButtons, firstNonLeftShiftNumber);
+        PaginationUpdatePageButtons.shiftLeftwards(at, numberButtons, firstNonLeftShiftNumber);
       }
     }
   }

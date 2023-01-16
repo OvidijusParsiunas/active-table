@@ -2,13 +2,13 @@ import {FocusNextCellFromSelectCell} from '../../../../../utils/focusedElements/
 import {SelectDropdownItem} from '../../../../dropdown/selectDropdown/selectDropdownItem';
 import {SelectButton} from '../../../../dropdown/selectDropdown/buttons/selectButton';
 import {SelectDropdown} from '../../../../dropdown/selectDropdown/selectDropdown';
-import {EditableTableComponent} from '../../../../../editable-table-component';
 import {ArrowDownIconElement} from '../select/arrowDownIconElement';
 import {ColumnDetailsT} from '../../../../../types/columnDetails';
 import {KEYBOARD_KEY} from '../../../../../consts/keyboardKeys';
 import {DataCellEvents} from '../../../dataCell/dataCellEvents';
 import {CellWithTextEvents} from '../../cellWithTextEvents';
 import {CellTextEvents} from '../../text/cellTextEvents';
+import {ActiveTable} from '../../../../../activeTable';
 import {Dropdown} from '../../../../dropdown/dropdown';
 import {CellElement} from '../../../cellElement';
 import {SelectCell} from '../selectCell';
@@ -18,29 +18,29 @@ export class SelectCellTextBaseEvents {
   // the reason why this is triggered by window is because when the user clicks on dropdown padding or delete button
   // keydown events will no longer be fired through the cell text - however we need to maintain the same behaviour
   // prettier-ignore
-  public static keyDownText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
-    const {selectDropdown: {activeItems, canAddMoreOptions}, elements} = etc.columnsDetails[columnIndex];
+  public static keyDownText(at: ActiveTable, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
+    const {selectDropdown: {activeItems, canAddMoreOptions}, elements} = at.columnsDetails[columnIndex];
     if (event.key === KEYBOARD_KEY.ESCAPE) {
-      CellWithTextEvents.programmaticBlur(etc);
+      CellWithTextEvents.programmaticBlur(at);
     } else if (event.key === KEYBOARD_KEY.TAB) {
-      CellTextEvents.tabOutOfCell(etc, rowIndex, columnIndex, event);
+      CellTextEvents.tabOutOfCell(at, rowIndex, columnIndex, event);
     } else if (event.key === KEYBOARD_KEY.ENTER) {
       event.preventDefault();
       FocusNextCellFromSelectCell.focusOrBlurSelectNextCell(elements, rowIndex);
     } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
       event.preventDefault();
-      SelectDropdownItem.setSiblingItemOnCell(etc, activeItems, 'previousSibling');
+      SelectDropdownItem.setSiblingItemOnCell(at, activeItems, 'previousSibling');
     } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
       event.preventDefault();
-      SelectDropdownItem.setSiblingItemOnCell(etc, activeItems, 'nextSibling');
+      SelectDropdownItem.setSiblingItemOnCell(at, activeItems, 'nextSibling');
     } else if (!canAddMoreOptions) {
       event.preventDefault();
     }
   }
 
-  private static displayDropdown(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
-    const isDisplayed = SelectDropdown.display(etc, columnIndex, cellElement);
-    const {activeType, selectDropdown} = etc.columnsDetails[columnIndex];
+  private static displayDropdown(at: ActiveTable, columnIndex: number, cellElement: HTMLElement) {
+    const isDisplayed = SelectDropdown.display(at, columnIndex, cellElement);
+    const {activeType, selectDropdown} = at.columnsDetails[columnIndex];
     if (activeType.selectProps?.isBasicSelect && isDisplayed) {
       selectDropdown.displayedCellElement = cellElement;
       ArrowDownIconElement.toggle(cellElement, true);
@@ -58,26 +58,26 @@ export class SelectCellTextBaseEvents {
     }
   }
 
-  public static blurring(etc: EditableTableComponent, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
-    const columnDetails = etc.columnsDetails[columnIndex];
+  public static blurring(at: ActiveTable, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
+    const columnDetails = at.columnsDetails[columnIndex];
     Dropdown.hide(columnDetails.selectDropdown.element);
     if (!columnDetails.selectDropdown.selectItems[CellElement.getText(textElement)]) {
-      SelectCell.finaliseEditedText(etc, textElement, columnIndex);
+      SelectCell.finaliseEditedText(at, textElement, columnIndex);
     }
     SelectCellTextBaseEvents.clearTypeSpecificProps(columnDetails);
-    DataCellEvents.blur(etc, rowIndex, columnIndex, textElement);
+    DataCellEvents.blur(at, rowIndex, columnIndex, textElement);
   }
 
-  public static blurText(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: Event) {
+  public static blurText(this: ActiveTable, rowIndex: number, columnIndex: number, event: Event) {
     if (!this.focusedElements.selectDropdown) {
       SelectCellTextBaseEvents.blurring(this, rowIndex, columnIndex, event.target as HTMLElement);
     }
   }
 
   // prettier-ignore
-  public static setEvents(etc: EditableTableComponent, textElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    textElement.onblur = SelectCellTextBaseEvents.blurText.bind(etc, rowIndex, columnIndex);
+  public static setEvents(at: ActiveTable, textElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    textElement.onblur = SelectCellTextBaseEvents.blurText.bind(at, rowIndex, columnIndex);
     textElement.onfocus = CellWithTextEvents.focusText.bind(
-      etc, rowIndex, columnIndex, SelectCellTextBaseEvents.displayDropdown);
+      at, rowIndex, columnIndex, SelectCellTextBaseEvents.displayDropdown);
   }
 }

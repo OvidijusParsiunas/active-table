@@ -9,14 +9,14 @@ import {ColumnSettingsUtils} from '../../utils/columnSettings/columnSettingsUtil
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {RowDropdownEvents} from '../dropdown/rowDropdown/rowDropdownEvents';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
-import {EditableTableComponent} from '../../editable-table-component';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
+import {ActiveTable} from '../../activeTable';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class WindowEvents {
   // prettier-ignore
-  public static onKeyDown(this: EditableTableComponent, event: KeyboardEvent) {
+  public static onKeyDown(this: ActiveTable, event: KeyboardEvent) {
     if (Dropdown.isDisplayed(this.paginationInternal.numberOfRowsDropdown)) {
       NumberOfRowsDropdownEvents.windowOnKeyDown.bind(this)(this, event);
     }
@@ -40,7 +40,7 @@ export class WindowEvents {
     }
   }
 
-  public static onKeyUp(this: EditableTableComponent, event: KeyboardEvent) {
+  public static onKeyUp(this: ActiveTable, event: KeyboardEvent) {
     if (event.key === KEYBOARD_KEY.ESCAPE) {
       SelectColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements); // picker stops key down
       DateCellInputEvents.escapeKeyInput(this);
@@ -50,7 +50,7 @@ export class WindowEvents {
   }
 
   // prettier-ignore
-  public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
+  public static onMouseDown(this: ActiveTable, event: MouseEvent) {
     SelectColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements);
     if (Dropdown.isDisplayed(this.paginationInternal.numberOfRowsDropdown)) {
       NumberOfRowsDropdownEvents.windowOnMouseDown.bind(this)(this);
@@ -59,7 +59,7 @@ export class WindowEvents {
     // inside it, hence if the user clicks inside the element, the elements inside will
     // handle the click event instead (full table overlay element for column dropdown)
     // and table element for the other closable elements  
-    if ((event.target as HTMLElement).tagName === EditableTableComponent.ELEMENT_TAG) return;
+    if ((event.target as HTMLElement).tagName === ActiveTable.ELEMENT_TAG) return;
     const {activeOverlayElements: {columnDropdown, rowDropdown}, focusedElements} = this
     // if the user clicks outside of the shadow dom and a dropdown is open, close it
     if (Dropdown.isDisplayed(rowDropdown)) {
@@ -77,11 +77,11 @@ export class WindowEvents {
     }
   }
 
-  public static onMouseUp(this: EditableTableComponent) {
+  public static onMouseUp(this: ActiveTable) {
     if (this.activeOverlayElements.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseUp(this);
   }
 
-  public static onMouseMove(this: EditableTableComponent, event: MouseEvent) {
+  public static onMouseMove(this: ActiveTable, event: MouseEvent) {
     if (this.activeOverlayElements.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseMove(this, event.movementX);
   }
 }

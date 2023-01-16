@@ -1,8 +1,8 @@
-import {EditableTableComponent} from '../../../editable-table-component';
 import {NumberOfIdenticalCells} from '../../numberOfIdenticalCells';
 import {TextValidation} from '../../../types/textValidation';
 import {CellText} from '../../../types/tableContents';
 import {EMPTY_STRING} from '../../../consts/text';
+import {ActiveTable} from '../../../activeTable';
 
 export class DataUtils {
   public static createEmptyStringDataArray(length: number): string[] {
@@ -17,25 +17,25 @@ export class DataUtils {
     return false;
   }
 
-  // note that NumberOfIdenticalCells.get uses the etc.contents top row, so it needs to be up-to-date
+  // note that NumberOfIdenticalCells.get uses the at.contents top row, so it needs to be up-to-date
   // prettier-ignore
-  private static shouldBeSetToDefault(etc: EditableTableComponent,
+  private static shouldBeSetToDefault(at: ActiveTable,
       text: CellText, defaultText: CellText, rowIndex: number, textValidation: TextValidation) {
-    const { duplicateHeadersAllowed, columnsDetails } = etc;
+    const { duplicateHeadersAllowed, columnsDetails } = at;
     return DataUtils.isTextEmpty(defaultText, text)
       || (rowIndex === 0 && (!duplicateHeadersAllowed && NumberOfIdenticalCells.get(text, columnsDetails) > 1))
       || (rowIndex > 0 && !(textValidation.func === undefined || textValidation.func(String(text))));
   }
 
   // prettier-ignore
-  public static processCellText(etc: EditableTableComponent, rowIndex: number, columnIndex: number, cellText: CellText) {
+  public static processCellText(at: ActiveTable, rowIndex: number, columnIndex: number, cellText: CellText) {
     let processedText = typeof cellText === 'string' ? cellText.trim() : cellText;
-    const {activeType: {textValidation, customTextProcessing}, settings: {defaultText}} = etc.columnsDetails[columnIndex];
+    const {activeType: {textValidation, customTextProcessing}, settings: {defaultText}} = at.columnsDetails[columnIndex];
     if (rowIndex > 0) {
       if (customTextProcessing?.changeText) processedText = customTextProcessing.changeText(String(processedText)); 
       if (!textValidation.setTextToDefaultOnFail && processedText !== EMPTY_STRING) return processedText;
     }
-    const shouldSetToDefault = DataUtils.shouldBeSetToDefault(etc, processedText, defaultText, rowIndex, textValidation);
+    const shouldSetToDefault = DataUtils.shouldBeSetToDefault(at, processedText, defaultText, rowIndex, textValidation);
     return shouldSetToDefault ? defaultText : processedText;
   }
 }

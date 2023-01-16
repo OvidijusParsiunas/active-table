@@ -1,16 +1,16 @@
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {NoContentStubElement} from './noContentStubElement';
+import {ActiveTable} from '../../../../activeTable';
 
-type ToggleWhenContent = (etc: EditableTableComponent, isInsert: boolean) => void;
+type ToggleWhenContent = (at: ActiveTable, isInsert: boolean) => void;
 
 // IMPORTANT - this should not be executed in a timeout as it would cause a stutter on the UI
 // REF-18
 export class ToggleAdditionElements {
-  public static update(etc: EditableTableComponent, isInsert: boolean, toggleWhenContent: ToggleWhenContent) {
-    if (etc.contents.length === 0) {
-      NoContentStubElement.display(etc);
+  public static update(at: ActiveTable, isInsert: boolean, toggleWhenContent: ToggleWhenContent) {
+    if (at.contents.length === 0) {
+      NoContentStubElement.display(at);
     } else {
-      toggleWhenContent(etc, isInsert);
+      toggleWhenContent(at, isInsert);
     }
   }
 }

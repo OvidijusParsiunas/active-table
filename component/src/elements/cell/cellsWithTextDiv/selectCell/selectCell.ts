@@ -1,4 +1,3 @@
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {ColumnTypeInternal} from '../../../../types/columnTypeInternal';
 import {SelectCellTextElement} from './select/selectCellTextElement';
 import {LabelCellTextElement} from './label/labelCellTextElement';
@@ -6,42 +5,43 @@ import {SelectCellElement} from './select/selectCellElement';
 import {SelectCellEvents} from './select/selectCellEvents';
 import {LabelCellElement} from './label/labelCellElement';
 import {LabelCellEvents} from './label/labelCellEvents';
+import {ActiveTable} from '../../../../activeTable';
 
 export class SelectCell {
-  public static convertCell(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
-    const columnDetails = etc.columnsDetails[columnIndex];
+  public static convertCell(at: ActiveTable, columnIndex: number, cellElement: HTMLElement) {
+    const columnDetails = at.columnsDetails[columnIndex];
     if (columnDetails.activeType.selectProps?.isBasicSelect) {
-      SelectCellElement.setCellSelectStructure(etc, cellElement, columnIndex);
+      SelectCellElement.setCellSelectStructure(at, cellElement, columnIndex);
     } else {
-      LabelCellElement.setCellLabelStructure(etc, cellElement, columnIndex);
+      LabelCellElement.setCellLabelStructure(at, cellElement, columnIndex);
     }
   }
 
-  public static convertColumn(etc: EditableTableComponent, columnIndex: number, newType: ColumnTypeInternal) {
+  public static convertColumn(at: ActiveTable, columnIndex: number, newType: ColumnTypeInternal) {
     if (newType.selectProps?.isBasicSelect) {
-      SelectCellElement.setColumnSelectStructure(etc, columnIndex);
+      SelectCellElement.setColumnSelectStructure(at, columnIndex);
     } else {
-      LabelCellElement.setColumnLabelStructure(etc, columnIndex);
+      LabelCellElement.setColumnLabelStructure(at, columnIndex);
     }
   }
 
-  public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    const {activeType} = etc.columnsDetails[columnIndex];
+  public static setEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    const {activeType} = at.columnsDetails[columnIndex];
     if (activeType.selectProps?.isBasicSelect) {
-      SelectCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
+      SelectCellEvents.setEvents(at, cellElement, rowIndex, columnIndex);
     } else {
-      LabelCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
+      LabelCellEvents.setEvents(at, cellElement, rowIndex, columnIndex);
     }
   }
 
   // prettier-ignore
-  public static finaliseEditedText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number,
+  public static finaliseEditedText(at: ActiveTable, textElement: HTMLElement, columnIndex: number,
       processMatching = false) {
-    const {activeType} = etc.columnsDetails[columnIndex];
+    const {activeType} = at.columnsDetails[columnIndex];
     if (activeType.selectProps?.isBasicSelect) {
-      SelectCellTextElement.finaliseEditedText(etc, textElement, columnIndex);
+      SelectCellTextElement.finaliseEditedText(at, textElement, columnIndex);
     } else {
-      LabelCellTextElement.finaliseEditedText(etc, textElement, columnIndex, processMatching);
+      LabelCellTextElement.finaliseEditedText(at, textElement, columnIndex, processMatching);
     }
   }
 

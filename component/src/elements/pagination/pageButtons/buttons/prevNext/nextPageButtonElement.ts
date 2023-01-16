@@ -1,14 +1,14 @@
-import {EditableTableComponent} from '../../../../../editable-table-component';
 import {NextPageButtonEvents} from './nextPageButtonEvents';
 import {PageButtonElement} from '../../pageButtonElement';
+import {ActiveTable} from '../../../../../activeTable';
 
 export class NextPageButtonElement {
   // prettier-ignore
-  public static create(etc: EditableTableComponent) {
-    const {pageButtons} = etc.paginationInternal.style;
+  public static create(at: ActiveTable) {
+    const {pageButtons} = at.paginationInternal.style;
     const previousButtonElement = PageButtonElement.create(pageButtons.actionButtons.nextText as string,
       pageButtons, true);
-    setTimeout(() => NextPageButtonEvents.setEvents(etc, previousButtonElement));
+    setTimeout(() => NextPageButtonEvents.setEvents(at, previousButtonElement));
     return previousButtonElement;
   }
 }

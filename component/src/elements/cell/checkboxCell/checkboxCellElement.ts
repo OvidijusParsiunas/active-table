@@ -1,9 +1,9 @@
 import {ConvertCellTypeUtils} from '../../../utils/columnType/convertCellTypeUtils';
 import {CellStructureUtils} from '../../../utils/columnType/cellStructureUtils';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {CheckboxCellEvents} from './checkboxCellEvents';
 import {CellText} from '../../../types/tableContents';
 import {CheckboxElement} from './checkboxElement';
+import {ActiveTable} from '../../../activeTable';
 import {CellElement} from '../cellElement';
 import {CellEvents} from '../cellEvents';
 
@@ -42,26 +42,25 @@ export class CheckboxCellElement {
   }
 
   // prettier-ignore
-  private static setCellTextAsAnElement(etc: EditableTableComponent,
-      cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    const {settings: {isCellTextEditable}} = etc.columnsDetails[columnIndex];
+  private static setCellTextAsAnElement(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    const {settings: {isCellTextEditable}} = at.columnsDetails[columnIndex];
     const text = CellElement.getText(cellElement);
     CheckboxElement.setCellTextAsCheckbox(cellElement, isCellTextEditable);
     cellElement.contentEditable = 'false';
     cellElement.style.cursor = isCellTextEditable ? 'pointer' : 'default';
-    CellEvents.updateCell(etc, text, rowIndex, columnIndex, {element: cellElement});
+    CellEvents.updateCell(at, text, rowIndex, columnIndex, {element: cellElement});
   }
 
   // prettier-ignore
-  public static setCellCheckboxStructure(etc: EditableTableComponent,
+  public static setCellCheckboxStructure(at: ActiveTable,
       cellElement: HTMLElement, columnIndex: number, rowIndex: number) {
     ConvertCellTypeUtils.preprocessCell(cellElement);
-    CheckboxCellElement.setCellTextAsAnElement(etc, cellElement, rowIndex, columnIndex);
+    CheckboxCellElement.setCellTextAsAnElement(at, cellElement, rowIndex, columnIndex);
   }
 
   // prettier-ignore
-  public static setColumnCheckboxStructure(etc: EditableTableComponent, columnIndex: number) {
-    CellStructureUtils.setColumn(etc, columnIndex, CheckboxCellElement.setCellCheckboxStructure,
+  public static setColumnCheckboxStructure(at: ActiveTable, columnIndex: number) {
+    CellStructureUtils.setColumn(at, columnIndex, CheckboxCellElement.setCellCheckboxStructure,
       CheckboxCellEvents.setEvents);
   }
 

@@ -1,4 +1,4 @@
-# editable-table-component
+# active-table
 
 A fully editable table
 

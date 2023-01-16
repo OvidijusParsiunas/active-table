@@ -1,9 +1,9 @@
 import {ColumnSettingsInternal} from '../../../../types/columnsSettingsInternal';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {SVGIconUtils} from '../../../../utils/svgIcons/svgIconUtils';
 import {IconSettings} from '../../../../types/dropdownButtonItem';
 import {ColumnDetailsT} from '../../../../types/columnDetails';
 import {CellTextElement} from '../text/cellTextElement';
+import {ActiveTable} from '../../../../activeTable';
 import {SVGScale} from '../../../../types/svgScale';
 
 export class HeaderIconCellElement {
@@ -55,10 +55,10 @@ export class HeaderIconCellElement {
     headerElement.replaceChild(svgIconElement, headerElement.children[0] as SVGGraphicsElement);
   }
 
-  public static setHeaderIconStructure(etc: EditableTableComponent, cellElement: HTMLElement, columnIndex: number) {
-    const {activeType, settings} = etc.columnsDetails[columnIndex];
+  public static setHeaderIconStructure(at: ActiveTable, cellElement: HTMLElement, columnIndex: number) {
+    const {activeType, settings} = at.columnsDetails[columnIndex];
     const svgIconElement = HeaderIconCellElement.createSVG(activeType.dropdownItem.settings.iconSettings, settings);
-    const isHeaderTextEditable = settings.isHeaderTextEditable && !etc.columnDropdownDisplaySettings.openMethod?.cellClick;
+    const isHeaderTextEditable = settings.isHeaderTextEditable && !at.columnDropdownDisplaySettings.openMethod?.cellClick;
     const textElement = HeaderIconCellElement.createTextElement(cellElement, isHeaderTextEditable);
     cellElement.insertBefore(svgIconElement, textElement);
   }

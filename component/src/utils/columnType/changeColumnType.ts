@@ -4,45 +4,45 @@ import {CheckboxCellElement} from '../../elements/cell/checkboxCell/checkboxCell
 import {SelectCell} from '../../elements/cell/cellsWithTextDiv/selectCell/selectCell';
 import {SelectDropdown} from '../../elements/dropdown/selectDropdown/selectDropdown';
 import {DataCellElement} from '../../elements/cell/dataCell/dataCellElement';
-import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {ProcessedDataTextStyle} from './processedDataTextStyle';
 import {CellElement} from '../../elements/cell/cellElement';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {ColumnDetailsT} from '../../types/columnDetails';
+import {ActiveTable} from '../../activeTable';
 
 export class ChangeColumnType {
-  private static setInvalidCellToDefault(etc: EditableTableComponent, rowIndex: number, columnIndex: number) {
+  private static setInvalidCellToDefault(at: ActiveTable, rowIndex: number, columnIndex: number) {
     const relativeRowIndex = rowIndex + 1;
-    const cellElement = etc.columnsDetails[columnIndex].elements[relativeRowIndex];
-    return CellEvents.setCellToDefaultIfNeeded(etc, relativeRowIndex, columnIndex, cellElement, false);
+    const cellElement = at.columnsDetails[columnIndex].elements[relativeRowIndex];
+    return CellEvents.setCellToDefaultIfNeeded(at, relativeRowIndex, columnIndex, cellElement, false);
   }
 
-  private static setInvalidCellsToDefault(etc: EditableTableComponent, columnIndex: number) {
+  private static setInvalidCellsToDefault(at: ActiveTable, columnIndex: number) {
     let updateTableEvent = false;
-    etc.contents.slice(1).forEach((_, rowIndex) => {
-      const isUpdated = ChangeColumnType.setInvalidCellToDefault(etc, rowIndex, columnIndex);
+    at.contents.slice(1).forEach((_, rowIndex) => {
+      const isUpdated = ChangeColumnType.setInvalidCellToDefault(at, rowIndex, columnIndex);
       if (isUpdated && !updateTableEvent) updateTableEvent = true;
     });
-    if (updateTableEvent) etc.onTableUpdate(etc.contents);
+    if (updateTableEvent) at.onTableUpdate(at.contents);
   }
 
-  private static setNew(etc: EditableTableComponent, newType: string, columnIndex: number) {
-    const columnDetails = etc.columnsDetails[columnIndex];
+  private static setNew(at: ActiveTable, newType: string, columnIndex: number) {
+    const columnDetails = at.columnsDetails[columnIndex];
     columnDetails.activeType = columnDetails.types.find((type) => type.name === newType) as ColumnTypeInternal;
     return columnDetails.activeType;
   }
 
-  public static setNewStructureBasedOnType(etc: EditableTableComponent, columnIndex: number, newType: ColumnTypeInternal) {
+  public static setNewStructureBasedOnType(at: ActiveTable, columnIndex: number, newType: ColumnTypeInternal) {
     if (newType.selectProps) {
-      SelectDropdown.setUpDropdown(etc, columnIndex);
-      SelectCell.convertColumn(etc, columnIndex, newType);
+      SelectDropdown.setUpDropdown(at, columnIndex);
+      SelectCell.convertColumn(at, columnIndex, newType);
     } else if (newType.calendar) {
-      DateCellElement.setColumnDateStructure(etc, columnIndex);
+      DateCellElement.setColumnDateStructure(at, columnIndex);
     } else if (newType.checkbox) {
-      CheckboxCellElement.setColumnCheckboxStructure(etc, columnIndex);
+      CheckboxCellElement.setColumnCheckboxStructure(at, columnIndex);
     } else {
-      DataCellElement.setColumnDataStructure(etc, columnIndex);
+      DataCellElement.setColumnDataStructure(at, columnIndex);
     }
   }
 
@@ -54,19 +54,19 @@ export class ChangeColumnType {
     });
   }
 
-  private static resetAndChangeFunc(etc: EditableTableComponent, newTypeName: string, columnIndex: number) {
-    const columnDetails = etc.columnsDetails[columnIndex];
+  private static resetAndChangeFunc(at: ActiveTable, newTypeName: string, columnIndex: number) {
+    const columnDetails = at.columnsDetails[columnIndex];
     if (columnDetails.activeType.checkbox) ChangeColumnType.resetCheckboxElements(columnDetails);
-    const newType = ChangeColumnType.setNew(etc, newTypeName, columnIndex);
+    const newType = ChangeColumnType.setNew(at, newTypeName, columnIndex);
     if (newType.textValidation.func && newType.textValidation.setTextToDefaultOnFail) {
-      ChangeColumnType.setInvalidCellsToDefault(etc, columnIndex);
+      ChangeColumnType.setInvalidCellsToDefault(at, columnIndex);
     }
-    ChangeColumnType.setNewStructureBasedOnType(etc, columnIndex, newType);
-    if (etc.areIconsDisplayedInHeaders) HeaderIconCellElement.changeHeaderIcon(etc.columnsDetails[columnIndex]);
+    ChangeColumnType.setNewStructureBasedOnType(at, columnIndex, newType);
+    if (at.areIconsDisplayedInHeaders) HeaderIconCellElement.changeHeaderIcon(at.columnsDetails[columnIndex]);
   }
 
   // prettier-ignore
-  public static change(this: EditableTableComponent, newTypeName: string, columnIndex: number) {
+  public static change(this: ActiveTable, newTypeName: string, columnIndex: number) {
     const previousType = this.columnsDetails[columnIndex].activeType;
     if (newTypeName !== previousType.name) {
       ProcessedDataTextStyle.resetDataCellsStyle(this, columnIndex,

@@ -1,7 +1,7 @@
 import {Containers, PaginationContainerElement} from '../paginationContainer/paginationContainerElement';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {PaginationInternal} from '../../../types/paginationInternal';
 import {PaginationElements} from '../paginationElements';
+import {ActiveTable} from '../../../activeTable';
 
 export class NumberOfVisibleRowsElement {
   private static readonly ID = 'pagination-number-of-visible-rows';
@@ -19,27 +19,27 @@ export class NumberOfVisibleRowsElement {
   }
 
   // prettier-ignore
-  public static update(etc: EditableTableComponent) {
-    const {paginationInternal, contents, auxiliaryTableContentInternal: {indexColumnCountStartsAtHeader}} = etc;
+  public static update(at: ActiveTable) {
+    const {paginationInternal, contents, auxiliaryTableContentInternal: {indexColumnCountStartsAtHeader}} = at;
     const {numberOfVisibleRowsElement, isAllRowsOptionSelected} = paginationInternal;
     if (!numberOfVisibleRowsElement) return;
     const dataRowsLength = indexColumnCountStartsAtHeader ? contents.length : contents.length - 1;
     if (isAllRowsOptionSelected) {
       NumberOfVisibleRowsElement.updateForAllRows(numberOfVisibleRowsElement, dataRowsLength);
     } else {
-      NumberOfVisibleRowsElement.updateForRelativeRowNumber(etc.paginationInternal, dataRowsLength);
+      NumberOfVisibleRowsElement.updateForRelativeRowNumber(at.paginationInternal, dataRowsLength);
     }
   }
 
-  public static create(etc: EditableTableComponent, containers: Containers) {
+  public static create(at: ActiveTable, containers: Containers) {
     const numberOfVisibleRowsElement = document.createElement('div');
     numberOfVisibleRowsElement.id = NumberOfVisibleRowsElement.ID;
     numberOfVisibleRowsElement.classList.add(PaginationElements.PAGINATION_TEXT_COMPONENT_CLASS);
-    const {style, positions} = etc.paginationInternal;
+    const {style, positions} = at.paginationInternal;
     numberOfVisibleRowsElement.style.order = String(positions.numberOfVisibleRows.order);
     Object.assign(numberOfVisibleRowsElement.style, style.numberOfVisibleRows);
     PaginationContainerElement.addToContainer(positions.numberOfVisibleRows.side, containers, numberOfVisibleRowsElement);
-    setTimeout(() => NumberOfVisibleRowsElement.update(etc));
+    setTimeout(() => NumberOfVisibleRowsElement.update(at));
     return numberOfVisibleRowsElement;
   }
 }

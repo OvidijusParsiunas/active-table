@@ -1,14 +1,14 @@
-import {EditableTableComponent} from '../../editable-table-component';
+import {ActiveTable} from '../../activeTable';
 import {WindowEvents} from './windowEvents';
 import {WindowResize} from './windowResize';
 
 export class WindowElement {
-  public static setEvents(etc: EditableTableComponent) {
-    window.onkeydown = WindowEvents.onKeyDown.bind(etc);
-    window.onkeyup = WindowEvents.onKeyUp.bind(etc);
-    window.onmousedown = WindowEvents.onMouseDown.bind(etc);
-    window.onmouseup = WindowEvents.onMouseUp.bind(etc);
-    window.onmousemove = WindowEvents.onMouseMove.bind(etc);
-    WindowResize.observeIfRequired(etc);
+  public static setEvents(at: ActiveTable) {
+    window.onkeydown = WindowEvents.onKeyDown.bind(at);
+    window.onkeyup = WindowEvents.onKeyUp.bind(at);
+    window.onmousedown = WindowEvents.onMouseDown.bind(at);
+    window.onmouseup = WindowEvents.onMouseUp.bind(at);
+    window.onmousemove = WindowEvents.onMouseMove.bind(at);
+    WindowResize.observeIfRequired(at);
   }
 }

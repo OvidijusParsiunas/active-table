@@ -1,9 +1,9 @@
 import {PaginationUtils} from '../../../../../utils/pagination/paginationUtils';
-import {EditableTableComponent} from '../../../../../editable-table-component';
+import {ActiveTable} from '../../../../../activeTable';
 import {PageButtonStyle} from '../../pageButtonStyle';
 
 export class LastPageButtonEvents {
-  private static buttonMouseUp(this: EditableTableComponent, event: MouseEvent) {
+  private static buttonMouseUp(this: ActiveTable, event: MouseEvent) {
     const buttonElement = event.target as HTMLElement;
     const {activePageNumber, style} = this.paginationInternal;
     PageButtonStyle.mouseEnter(buttonElement, style.pageButtons, true);
@@ -12,7 +12,7 @@ export class LastPageButtonEvents {
     PaginationUtils.displayRowsForDifferentButton(this, numberOfNumberButtons);
   }
 
-  public static setEvents(etc: EditableTableComponent, lastButtonElement: HTMLElement) {
-    lastButtonElement.onmouseup = LastPageButtonEvents.buttonMouseUp.bind(etc);
+  public static setEvents(at: ActiveTable, lastButtonElement: HTMLElement) {
+    lastButtonElement.onmouseup = LastPageButtonEvents.buttonMouseUp.bind(at);
   }
 }

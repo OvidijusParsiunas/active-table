@@ -1,5 +1,4 @@
 import {CalendarFunctionality} from '../../types/calendarFunctionality';
-import {EditableTableComponent} from '../../editable-table-component';
 import {TableContents, TableRow} from '../../types/tableContents';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {CellElementIndex} from '../elements/cellElementIndex';
@@ -8,6 +7,7 @@ import {CellEvents} from '../../elements/cell/cellEvents';
 import {TextValidation} from '../../types/textValidation';
 import {SortingFuncs} from '../../types/sortingFuncs';
 import {RegexUtils} from '../regex/regexUtils';
+import {ActiveTable} from '../../activeTable';
 
 export class Sort {
   private static extractNumberFromString(text: string) {
@@ -37,8 +37,8 @@ export class Sort {
 
   // cannot safely identify if nothing has been changed, hence need to send out an update for all cells
   // prettier-ignore
-  private static update(etc: EditableTableComponent, sortedDataContents: TableContents) {
-    const {tableBodyElementRef, auxiliaryTableContentInternal: {displayIndexColumn}, contents, onTableUpdate} = etc;
+  private static update(at: ActiveTable, sortedDataContents: TableContents) {
+    const {tableBodyElementRef, auxiliaryTableContentInternal: {displayIndexColumn}, contents, onTableUpdate} = at;
     const rowElements = (tableBodyElementRef as HTMLElement).children;
     sortedDataContents.forEach((row, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
@@ -50,7 +50,7 @@ export class Sort {
         // overwrite the contents array cells, sortedDataContents cells are also overwritten. This is problematic because
         // sortedDataContents rows are in a different order, hence the cells to be traversed can already be overwritten
         // by the earlier cells
-        CellEvents.updateCell(etc, cell as string, relativeRowIndex, columnIndex,
+        CellEvents.updateCell(at, cell as string, relativeRowIndex, columnIndex,
           { processText: false, element: rowChildren[elementColumnIndex] as HTMLElement,
             updateTableEvent: false, updateContents: false });
       });
@@ -136,9 +136,9 @@ export class Sort {
     });
   }
 
-  public static sortContentsColumn(etc: EditableTableComponent, columnIndex: number, isAsc: boolean) {
-    const dataContents = etc.contents.slice(1);
-    const {activeType} = etc.columnsDetails[columnIndex];
+  public static sortContentsColumn(at: ActiveTable, columnIndex: number, isAsc: boolean) {
+    const dataContents = at.contents.slice(1);
+    const {activeType} = at.columnsDetails[columnIndex];
     if (activeType.calendar) {
       Sort.sortDates(activeType, dataContents, columnIndex, isAsc);
     } else if (activeType.sorting) {
@@ -146,6 +146,6 @@ export class Sort {
     } else {
       Sort.sortStrings(dataContents, columnIndex, isAsc);
     }
-    Sort.update(etc, dataContents);
+    Sort.update(at, dataContents);
   }
 }

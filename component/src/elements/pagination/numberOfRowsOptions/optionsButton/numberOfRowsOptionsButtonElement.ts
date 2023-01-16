@@ -1,11 +1,11 @@
 import {GenericElementUtils} from '../../../../utils/elements/genericElementUtils';
 import {NumberOfRowsOptionsButtonEvents} from './numberOfRowsOptionsButtonEvents';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {PaginationInternal} from '../../../../types/paginationInternal';
 import {NumberOfRowsOptionsStyle} from '../../../../types/pagination';
 import {ElementStyle} from '../../../../utils/elements/elementStyle';
 import {Browser} from '../../../../utils/browser/browser';
 import {StatefulCSSS} from '../../../../types/cssStyle';
+import {ActiveTable} from '../../../../activeTable';
 
 export class NumberOfRowsOptionsButtonElement {
   private static readonly BUTTON_ID = 'pagination-of-rows-options-button';
@@ -78,11 +78,11 @@ export class NumberOfRowsOptionsButtonElement {
     return optionsButton;
   }
 
-  public static create(etc: EditableTableComponent) {
-    const optionsButton = NumberOfRowsOptionsButtonElement.createOptionsButton(etc.paginationInternal);
-    optionsButton.appendChild(NumberOfRowsOptionsButtonElement.createButtonText(etc.paginationInternal));
-    optionsButton.appendChild(NumberOfRowsOptionsButtonElement.createButtonArrow(etc.paginationInternal));
-    NumberOfRowsOptionsButtonEvents.setEvents(etc, optionsButton);
+  public static create(at: ActiveTable) {
+    const optionsButton = NumberOfRowsOptionsButtonElement.createOptionsButton(at.paginationInternal);
+    optionsButton.appendChild(NumberOfRowsOptionsButtonElement.createButtonText(at.paginationInternal));
+    optionsButton.appendChild(NumberOfRowsOptionsButtonElement.createButtonArrow(at.paginationInternal));
+    NumberOfRowsOptionsButtonEvents.setEvents(at, optionsButton);
     return optionsButton;
   }
 }

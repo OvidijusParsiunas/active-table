@@ -4,7 +4,6 @@ import {SelectDropdown} from '../../../elements/dropdown/selectDropdown/selectDr
 import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {ColumnSettingsUtils} from '../../columnSettings/columnSettingsUtils';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
 import {DataUtils} from '../../insertRemoveStructure/shared/dataUtils';
@@ -18,6 +17,7 @@ import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {FocusedCell} from '../../../types/focusedCell';
 import {ArrayUtils} from '../../array/arrayUtils';
 import {EMPTY_STRING} from '../../../consts/text';
+import {ActiveTable} from '../../../activeTable';
 import {CSVRow, CSV} from '../../../types/CSV';
 import {Browser} from '../../browser/browser';
 
@@ -42,59 +42,59 @@ export class OverwriteCellsViaCSVOnPaste {
   }
 
   // prettier-ignore
-  private static createNewRows(etc: EditableTableComponent, dataForNewRows: CSV, startColumnIndex: number) {
-    const processedDataForNewRows = OverwriteCellsViaCSVOnPaste.removeDataThatIsNotEditableFromNewRows(etc.columnsDetails,
+  private static createNewRows(at: ActiveTable, dataForNewRows: CSV, startColumnIndex: number) {
+    const processedDataForNewRows = OverwriteCellsViaCSVOnPaste.removeDataThatIsNotEditableFromNewRows(at.columnsDetails,
       dataForNewRows, startColumnIndex);
     processedDataForNewRows.forEach((rowData: CSVRow) => {
       const newRowData = OverwriteCellsViaCSVOnPaste.createRowDataArrayWithEmptyCells(
-        etc.contents[0].length, rowData, startColumnIndex);
-      InsertNewRow.insert(etc, etc.contents.length, true, newRowData);
+        at.contents[0].length, rowData, startColumnIndex);
+      InsertNewRow.insert(at, at.contents.length, true, newRowData);
     });
   }
 
-  private static changeColumnSettings(etc: EditableTableComponent, columnIndex: number) {
-    const {elements, types} = etc.columnsDetails[columnIndex];
-    FocusedCellUtils.set(etc.focusedElements.cell, elements[0], 0, columnIndex, types);
-    ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(etc, elements[0], columnIndex);
+  private static changeColumnSettings(at: ActiveTable, columnIndex: number) {
+    const {elements, types} = at.columnsDetails[columnIndex];
+    FocusedCellUtils.set(at.focusedElements.cell, elements[0], 0, columnIndex, types);
+    ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, elements[0], columnIndex);
   }
 
-  private static processNewColumn(etc: EditableTableComponent) {
-    const lastColumnIndex = etc.columnsDetails.length - 1;
-    CellEvents.setCellToDefaultIfNeeded(etc, 0, lastColumnIndex, etc.columnsDetails[lastColumnIndex].elements[0], false);
-    OverwriteCellsViaCSVOnPaste.changeColumnSettings(etc, lastColumnIndex);
+  private static processNewColumn(at: ActiveTable) {
+    const lastColumnIndex = at.columnsDetails.length - 1;
+    CellEvents.setCellToDefaultIfNeeded(at, 0, lastColumnIndex, at.columnsDetails[lastColumnIndex].elements[0], false);
+    OverwriteCellsViaCSVOnPaste.changeColumnSettings(at, lastColumnIndex);
   }
 
   // prettier-ignore
-  private static createNewColumns(etc: EditableTableComponent, dataForNewColumnsByRow: CSV, startRowIndex: number) {
+  private static createNewColumns(at: ActiveTable, dataForNewColumnsByRow: CSV, startRowIndex: number) {
     const dataForNewColumnsByColumn = ArrayUtils.transpose(dataForNewColumnsByRow);
     dataForNewColumnsByColumn.forEach((columnData: CSVRow) => {
       const newColumnData = OverwriteCellsViaCSVOnPaste.createRowDataArrayWithEmptyCells(
-        etc.contents.length, columnData, startRowIndex);
-      InsertNewColumn.insert(etc, etc.contents[0].length, newColumnData);
-      OverwriteCellsViaCSVOnPaste.processNewColumn(etc);
+        at.contents.length, columnData, startRowIndex);
+      InsertNewColumn.insert(at, at.contents[0].length, newColumnData);
+      OverwriteCellsViaCSVOnPaste.processNewColumn(at);
     });
   }
 
   // prettier-ignore
-  private static overwriteCell(etc: EditableTableComponent,
+  private static overwriteCell(at: ActiveTable,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, newCellText: string) {
-    const {auxiliaryTableContentInternal: {displayIndexColumn}, columnsDetails} = etc;
+    const {auxiliaryTableContentInternal: {displayIndexColumn}, columnsDetails} = at;
     const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, !!displayIndexColumn);
     const cellElement = rowElement.children[elementIndex] as HTMLElement;
     const columnDetails = columnsDetails[columnIndex];
     if ((rowIndex === 0 && !columnDetails.settings.isHeaderTextEditable)
       || rowIndex > 0 && !columnDetails.settings.isCellTextEditable) return;
      // this is to allow duplicate headers to be identified
-    if (rowIndex === 0) CellElement.setNewText(etc, cellElement, newCellText, false, false);
+    if (rowIndex === 0) CellElement.setNewText(at, cellElement, newCellText, false, false);
     const oldType = CellTypeTotalsUtils.parseTypeName(CellElement.getText(cellElement), columnDetails.types);
     const processedNewCellText = CellEvents.updateCell(
-      etc, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
+      at, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
     if (columnDetails.activeType.selectProps) {
-      SelectCell.finaliseEditedText(etc, cellElement.children[0] as HTMLElement, columnIndex, true);
+      SelectCell.finaliseEditedText(at, cellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (Browser.IS_INPUT_DATE_SUPPORTED && columnDetails.activeType.calendar) {
       DateCellInputElement.updateInputBasedOnTextDiv(cellElement, columnDetails.activeType);
     }
-    if (rowIndex === 0) OverwriteCellsViaCSVOnPaste.changeColumnSettings(etc, columnIndex);
+    if (rowIndex === 0) OverwriteCellsViaCSVOnPaste.changeColumnSettings(at, columnIndex);
     setTimeout(() => {
       // CAUTION-2
       const newType = CellTypeTotalsUtils.parseTypeName(processedNewCellText, columnDetails.types);
@@ -103,57 +103,57 @@ export class OverwriteCellsViaCSVOnPaste {
   }
 
   // prettier-ignore
-  private static overwriteRowData(etc: EditableTableComponent,
+  private static overwriteRowData(at: ActiveTable,
       row: TableRow, rowIndex: number, columnIndex: number, rowElement: HTMLElement) {
     row.forEach((cellText: CellText, CSVColumnIndex: number) => {
       const relativeColumnIndex = columnIndex + CSVColumnIndex;
-      OverwriteCellsViaCSVOnPaste.overwriteCell(etc, rowElement, rowIndex, relativeColumnIndex, cellText as string);
+      OverwriteCellsViaCSVOnPaste.overwriteCell(at, rowElement, rowIndex, relativeColumnIndex, cellText as string);
     });
   }
 
   // prettier-ignore
-  private static setCaretToEndAndHighlightIfSelect(etc: EditableTableComponent, cellElement: HTMLElement,
+  private static setCaretToEndAndHighlightIfSelect(at: ActiveTable, cellElement: HTMLElement,
       columnIndex: number) {
-    const {activeType, selectDropdown, settings: {defaultText}} = etc.columnsDetails[columnIndex];
-    CaretPosition.setToEndOfText(etc, cellElement);
+    const {activeType, selectDropdown, settings: {defaultText}} = at.columnsDetails[columnIndex];
+    CaretPosition.setToEndOfText(at, cellElement);
     if (activeType.selectProps) {
       SelectDropdown.updateSelectDropdown(cellElement, selectDropdown, defaultText, true);
     }
   }
 
-  private static processFocusedCell(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
+  private static processFocusedCell(at: ActiveTable, columnIndex: number, cellElement: HTMLElement) {
     const text = CellElement.getText(cellElement);
-    etc.focusedElements.cell.typeName = CellTypeTotalsUtils.parseTypeName(text, etc.columnsDetails[columnIndex].types);
-    OverwriteCellsViaCSVOnPaste.setCaretToEndAndHighlightIfSelect(etc, cellElement, columnIndex);
+    at.focusedElements.cell.typeName = CellTypeTotalsUtils.parseTypeName(text, at.columnsDetails[columnIndex].types);
+    OverwriteCellsViaCSVOnPaste.setCaretToEndAndHighlightIfSelect(at, cellElement, columnIndex);
   }
 
   // prettier-ignore
   private static overwriteExistingCells(
-      etc: EditableTableComponent, dataToOverwriteRows: CSV, startRowIndex: number, startColumnIndex: number) {
+      at: ActiveTable, dataToOverwriteRows: CSV, startRowIndex: number, startColumnIndex: number) {
     const dataForNewColumns: CSV = [];
     dataToOverwriteRows.forEach((dataToOverwriteRow: CSVRow, CSVRowIndex: number) => {
       const relativeRowIndex = startRowIndex + CSVRowIndex;
-      const rowElement = etc.tableBodyElementRef?.children[relativeRowIndex] as HTMLElement;
-      const numberOfCellsToOverwrite = etc.contents[0].length - startColumnIndex;
+      const rowElement = at.tableBodyElementRef?.children[relativeRowIndex] as HTMLElement;
+      const numberOfCellsToOverwrite = at.contents[0].length - startColumnIndex;
       const overwriteData = dataToOverwriteRow.slice(0, numberOfCellsToOverwrite);
-      OverwriteCellsViaCSVOnPaste.overwriteRowData(etc, overwriteData, relativeRowIndex, startColumnIndex, rowElement);
+      OverwriteCellsViaCSVOnPaste.overwriteRowData(at, overwriteData, relativeRowIndex, startColumnIndex, rowElement);
       const overflowData = dataToOverwriteRow.slice(numberOfCellsToOverwrite);
       dataForNewColumns.push(overflowData);
     });
-    const focusedElement = etc.focusedElements.cell.element as HTMLElement; // REF-15
-    setTimeout(() => OverwriteCellsViaCSVOnPaste.processFocusedCell(etc, startColumnIndex, focusedElement));
+    const focusedElement = at.focusedElements.cell.element as HTMLElement; // REF-15
+    setTimeout(() => OverwriteCellsViaCSVOnPaste.processFocusedCell(at, startColumnIndex, focusedElement));
     return dataForNewColumns;
   }
 
   // no new rows should be created if no columns that are to be overwritten/created allow text edit
-  private static canNewRowsBeCreated(etc: EditableTableComponent, CSV: CSV, startColumnIndex: number) {
-    return etc.columnsDetails
+  private static canNewRowsBeCreated(at: ActiveTable, CSV: CSV, startColumnIndex: number) {
+    return at.columnsDetails
       .slice(startColumnIndex, startColumnIndex + CSV[0].length)
       .find((columnDetails) => columnDetails.settings.isCellTextEditable);
   }
 
-  private static insertColumnsInsideIfCantInsertRight(etc: EditableTableComponent, CSV: CSV, startColumnIndex: number) {
-    const columnsToBeOverwritten = etc.columnsDetails.slice(startColumnIndex);
+  private static insertColumnsInsideIfCantInsertRight(at: ActiveTable, CSV: CSV, startColumnIndex: number) {
+    const columnsToBeOverwritten = at.columnsDetails.slice(startColumnIndex);
     const indexOfNoRightInsertionColumn = columnsToBeOverwritten.findIndex((columnDetails) => {
       return columnDetails.settings.isInsertRightAvailable === false;
     });
@@ -167,41 +167,40 @@ export class OverwriteCellsViaCSVOnPaste {
       // insert new columns before the column that has no right insertion and also overwrite that column's cells
       const numberOfColumnsToBeInserted = CSV[0].length - (indexOfNoRightInsertionColumn + 1);
       for (let i = 0; i < numberOfColumnsToBeInserted; i += 1) {
-        InsertNewColumn.insert(etc, startColumnIndex + indexOfNoRightInsertionColumn);
+        InsertNewColumn.insert(at, startColumnIndex + indexOfNoRightInsertionColumn);
       }
     }
   }
 
   // prettier-ignore
-  private static overwriteCellsTextUsingCSV(
-      etc: EditableTableComponent, CSV: CSV, startRowIndex: number, startColumnIndex: number) {
-    const numberOfRowsToOverwrite = etc.contents.length - startRowIndex;
-    OverwriteCellsViaCSVOnPaste.insertColumnsInsideIfCantInsertRight(etc, CSV, startColumnIndex);
+  private static overwriteCellsTextUsingCSV(at: ActiveTable, CSV: CSV, startRowIndex: number, startColumnIndex: number) {
+    const numberOfRowsToOverwrite = at.contents.length - startRowIndex;
+    OverwriteCellsViaCSVOnPaste.insertColumnsInsideIfCantInsertRight(at, CSV, startColumnIndex);
     const dataToOverwriteRows = CSV.slice(0, numberOfRowsToOverwrite);
     // the reason why new columns are not created when the existing cells are overwritten is because the creation of new
     // columns allows new column data to be defined - which is gathered after traversing all dataToOverwriteRows
     const dataForNewColumnsByRow = OverwriteCellsViaCSVOnPaste.overwriteExistingCells(
-      etc, dataToOverwriteRows, startRowIndex, startColumnIndex);
-    OverwriteCellsViaCSVOnPaste.createNewColumns(etc, dataForNewColumnsByRow, startRowIndex);
-    if (!OverwriteCellsViaCSVOnPaste.canNewRowsBeCreated(etc, CSV, startColumnIndex)) return;
+      at, dataToOverwriteRows, startRowIndex, startColumnIndex);
+    OverwriteCellsViaCSVOnPaste.createNewColumns(at, dataForNewColumnsByRow, startRowIndex);
+    if (!OverwriteCellsViaCSVOnPaste.canNewRowsBeCreated(at, CSV, startColumnIndex)) return;
     const dataForNewRows = CSV.slice(numberOfRowsToOverwrite);
-    OverwriteCellsViaCSVOnPaste.createNewRows(etc, dataForNewRows, startColumnIndex);
-    etc.onTableUpdate(etc.contents);
+    OverwriteCellsViaCSVOnPaste.createNewRows(at, dataForNewRows, startColumnIndex);
+    at.onTableUpdate(at.contents);
   }
 
-  private static focusOriginalCellAfterProcess(etc: EditableTableComponent, process: () => void) {
-    const {element, rowIndex, columnIndex} = etc.focusedElements.cell as Required<FocusedCell>;
+  private static focusOriginalCellAfterProcess(at: ActiveTable, process: () => void) {
+    const {element, rowIndex, columnIndex} = at.focusedElements.cell as Required<FocusedCell>;
     process();
-    FocusedCellUtils.set(etc.focusedElements.cell, element, rowIndex, columnIndex, etc.columnsDetails[columnIndex].types);
+    FocusedCellUtils.set(at.focusedElements.cell, element, rowIndex, columnIndex, at.columnsDetails[columnIndex].types);
   }
 
   // prettier-ignore
-  public static overwrite(etc: EditableTableComponent,
+  public static overwrite(at: ActiveTable,
       clipboardText: string, event: ClipboardEvent, rowIndex: number, columnIndex: number,) {
     event.preventDefault();
     const CSV = ParseCSVClipboardText.parse(clipboardText);
-    OverwriteCellsViaCSVOnPaste.focusOriginalCellAfterProcess(etc,
-      OverwriteCellsViaCSVOnPaste.overwriteCellsTextUsingCSV.bind(this, etc, CSV, rowIndex, columnIndex));
+    OverwriteCellsViaCSVOnPaste.focusOriginalCellAfterProcess(at,
+      OverwriteCellsViaCSVOnPaste.overwriteCellsTextUsingCSV.bind(this, at, CSV, rowIndex, columnIndex));
   }
 
   public static isCSVData(clipboardText: string): boolean {

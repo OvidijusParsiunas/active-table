@@ -1,7 +1,7 @@
 import {DropdownDisplaySettings, DropdownCellOverlayStyle} from '../../../../types/dropdownDisplaySettings';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {DropdownCellOverlay} from '../../cellOverlay/dropdownCellOverlay';
 import {ColumnDetailsT} from '../../../../types/columnDetails';
+import {ActiveTable} from '../../../../activeTable';
 
 export class ColumnDropdownCellOverlay {
   private static readonly COLUMN_DROPDOWN_CELL_OVERLAY_CLASS = 'column-dropdown-cell-overlay';
@@ -22,11 +22,11 @@ export class ColumnDropdownCellOverlay {
     if (hoverBackgroundColor) columnDetails.columnDropdownCellOverlay.style.backgroundColor = hoverBackgroundColor;
   }
 
-  public static hide(etc: EditableTableComponent, columnDetails: ColumnDetailsT) {
+  public static hide(at: ActiveTable, columnDetails: ColumnDetailsT) {
     const {columnDropdownCellOverlay} = columnDetails;
-    const currentHeader = etc.hoveredElements.headerCell;
+    const currentHeader = at.hoveredElements.headerCell;
     setTimeout(() => {
-      if (currentHeader !== etc.hoveredElements.headerCell) {
+      if (currentHeader !== at.hoveredElements.headerCell) {
         columnDropdownCellOverlay.style.height = DropdownCellOverlay.HIDDEN_PX;
       }
     });
@@ -63,9 +63,9 @@ export class ColumnDropdownCellOverlay {
     return columnDropdownCellOverlay;
   }
 
-  public static add(etc: EditableTableComponent, columnIndex: number) {
-    const columnDropdownCellOverlay = ColumnDropdownCellOverlay.create(etc.columnDropdownDisplaySettings.overlayStyle);
-    const headerCell = etc.columnsDetails[columnIndex].elements[0];
+  public static add(at: ActiveTable, columnIndex: number) {
+    const columnDropdownCellOverlay = ColumnDropdownCellOverlay.create(at.columnDropdownDisplaySettings.overlayStyle);
+    const headerCell = at.columnsDetails[columnIndex].elements[0];
     const cellDividerElement = headerCell.nextSibling as HTMLElement;
     cellDividerElement.appendChild(columnDropdownCellOverlay);
     return columnDropdownCellOverlay;

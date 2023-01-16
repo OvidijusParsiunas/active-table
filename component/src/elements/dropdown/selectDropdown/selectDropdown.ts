@@ -1,7 +1,6 @@
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
 import {SelectProperties, SelectDropdownStyle} from '../../../types/selectProperties';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
 import {SelectDropdownItemEvents} from './selectDropdownItemEvents';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
@@ -13,6 +12,7 @@ import {SelectDropdownItem} from './selectDropdownItem';
 import {TableElement} from '../../table/tableElement';
 import {CellText} from '../../../types/tableContents';
 import {CellElement} from '../../cell/cellElement';
+import {ActiveTable} from '../../../activeTable';
 import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
@@ -131,11 +131,11 @@ export class SelectDropdown {
   }
 
   // prettier-ignore
-  public static display(etc: EditableTableComponent, columnIndex: number, cellElement: HTMLElement) {
-    const {selectDropdown, settings: {defaultText}, activeType: {selectProps}} = etc.columnsDetails[columnIndex];
+  public static display(at: ActiveTable, columnIndex: number, cellElement: HTMLElement) {
+    const {selectDropdown, settings: {defaultText}, activeType: {selectProps}} = at.columnsDetails[columnIndex];
     const {element: dropdownEl, selectItems} = selectDropdown;
     if (Object.keys(selectItems).length > 0 && selectProps) {
-      SelectDropdownEvents.set(etc, dropdownEl);
+      SelectDropdownEvents.set(at, dropdownEl);
       SelectDropdownItemEvents.blurItem(selectDropdown, 'hovered');
       SelectDropdownItemEvents.blurItem(selectDropdown, 'matchingWithCellText');
       dropdownEl.style.width = `${SelectDropdown.getWidth(cellElement, selectDropdown, selectProps.dropdownStyle)}px`
@@ -166,13 +166,13 @@ export class SelectDropdown {
   }
 
   // prettier-ignore
-  public static setUpDropdown(etc: EditableTableComponent, columnIndex: number) {
-    const {activeType: {selectProps}, selectDropdown} = etc.columnsDetails[columnIndex];
+  public static setUpDropdown(at: ActiveTable, columnIndex: number) {
+    const {activeType: {selectProps}, selectDropdown} = at.columnsDetails[columnIndex];
     if (!selectProps) return;
     selectDropdown.labelDetails = selectProps.isBasicSelect ?
       undefined : {newItemColors: LabelColorUtils.generateDefaultColors()}; // REF-34
     SelectDropdown.setCustomState(selectDropdown, selectProps)
-    SelectDropdownItem.populateItems(etc, columnIndex);
+    SelectDropdownItem.populateItems(at, columnIndex);
     if (selectProps.dropdownStyle) SelectDropdown.setCustomStyle(selectDropdown, selectProps.dropdownStyle);
   }
 

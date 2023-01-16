@@ -1,15 +1,15 @@
 {
-  "name": "editable-table-component",
+  "name": "active-table",
   "version": "0.0.6",
   "description": "A fully editable table",
-  "main": "./dist/editable-table-component.js",
-  "module": "./dist/editable-table-component.js",
+  "main": "./dist/activeTable.js",
+  "module": "./dist/activeTable.js",
   "type": "module",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
     "build:element": "npm run build && rollup -c",
-    "clean": "rimraf dist/editable-table-component.{d.ts,d.ts.map,js,js.map} test/editable-table-component.{d.ts,d.ts.map,js,js.map} test/edi-table_test.{d.ts,d.ts.map,js,js.map}",
+    "clean": "rimraf dist/activeTable.{d.ts,d.ts.map,js,js.map} test/activeTable.{d.ts,d.ts.map,js,js.map} test/activeTable_test.{d.ts,d.ts.map,js,js.map}",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",
     "lint:lit-analyzer": "lit-analyzer",
@@ -45,12 +45,12 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OvidijusParsiunas/editable-table-component.git"
+    "url": "git+https://github.com/OvidijusParsiunas/active-table.git"
   },
   "bugs": {
-    "url": "https://github.com/OvidijusParsiunas/editable-table-component/issues"
+    "url": "https://github.com/OvidijusParsiunas/active-table/issues"
   },
-  "homepage": "https://github.com/OvidijusParsiunas/editable-table-component",
+  "homepage": "https://github.com/OvidijusParsiunas/active-table",
   "dependencies": {
     "@rollup/plugin-replace": "^4.0.0",
     "lit": "^2.2.4",

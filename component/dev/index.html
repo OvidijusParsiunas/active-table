@@ -3,10 +3,10 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>&lt;editable-table-component> Demo</title>
+    <title>&lt;active-table> Demo</title>
     <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../node_modules/lit/polyfill-support.js"></script>
-    <script type="module" src="../dist/editable-table-component.js"></script>
+    <script type="module" src="../dist/activeTable.js"></script>
     <style>
       p {
         border: solid 1px blue;
@@ -19,14 +19,14 @@
     <!-- <div style="width: 20px; height: 20px; float: left"></div> -->
     <!-- when the table reaches the parent limit it does a jump down because of the above :/ -->
     <div>
-      <editable-table-component id="etc-element"></editable-table-component>
+      <active-table id="active-element"></active-table>
     </div>
     <script>
       const myValue = [
         [1, 2, 3, 4],
         [1, 2, 3, 5],
       ];
-      const element = document.getElementById('etc-element');
+      const element = document.getElementById('active-element');
       const aa = (content, row, column, type) => {
         console.log(content, row, column, type);
       };

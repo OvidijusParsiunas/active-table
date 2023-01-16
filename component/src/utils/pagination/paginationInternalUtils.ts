@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-len
 import {NumberOfRowsDropdownItem} from '../../elements/pagination/numberOfRowsOptions/optionsButton/numberOfRowsDropdownItem';
 import {IPaginationStyle, PaginationInternal} from '../../types/paginationInternal';
-import {EditableTableComponent} from '../../editable-table-component';
+import {ActiveTable} from '../../activeTable';
 import {StatefulCSSS} from '../../types/cssStyle';
 import {
   PaginationPositionSide,
@@ -26,8 +26,8 @@ export class PaginationInternalUtils {
     'top-left', 'top-middle', 'top-right', 'bottom-left', 'bottom-middle', PaginationInternalUtils.DEFAULT_SIDE,
   ]);
 
-  private static setNumberOfRows(etc: EditableTableComponent) {
-    const {paginationInternal, contents, auxiliaryTableContent} = etc;
+  private static setNumberOfRows(at: ActiveTable) {
+    const {paginationInternal, contents, auxiliaryTableContent} = at;
     const firstItemText = paginationInternal.numberOfRowsOptionsItemText[0];
     if (firstItemText.toLocaleLowerCase() === NumberOfRowsDropdownItem.ALL_ITEM_TEXT) {
       paginationInternal.isAllRowsOptionSelected = true;
@@ -39,12 +39,12 @@ export class PaginationInternalUtils {
     }
   }
 
-  private static processNumberOfRows(etc: EditableTableComponent, pagination: Pagination) {
+  private static processNumberOfRows(at: ActiveTable, pagination: Pagination) {
     const {numberOfRowsOptions, numberOfRows} = pagination;
     if (numberOfRowsOptions || numberOfRowsOptions === undefined) {
-      const {numberOfRowsOptionsItemText: InumberOfRowsOptionsItemText} = etc.paginationInternal;
+      const {numberOfRowsOptionsItemText: InumberOfRowsOptionsItemText} = at.paginationInternal;
       if (!InumberOfRowsOptionsItemText.find((value) => value === String(numberOfRows))) {
-        PaginationInternalUtils.setNumberOfRows(etc);
+        PaginationInternalUtils.setNumberOfRows(at);
       }
     }
   }
@@ -65,27 +65,27 @@ export class PaginationInternalUtils {
   }
 
   // prettier-ignore
-  private static setNumberOfRowsOptionsText(etc: EditableTableComponent) {
-    const pagination = etc.pagination as Pagination;
+  private static setNumberOfRowsOptionsText(at: ActiveTable) {
+    const pagination = at.pagination as Pagination;
     const {numberOfRowsOptions} = pagination;
     if (numberOfRowsOptions || numberOfRowsOptions === undefined) {
-      const defaultOptions = (etc.paginationInternal.numberOfRowsOptions as NumberOfRowsOptions).options;
+      const defaultOptions = (at.paginationInternal.numberOfRowsOptions as NumberOfRowsOptions).options;
       let options = (numberOfRowsOptions === undefined || numberOfRowsOptions === true
         || !numberOfRowsOptions.options || numberOfRowsOptions.options.length === 0
           ? defaultOptions : numberOfRowsOptions.options) as (number|string)[];
-      if (etc.stripedRows) options = PaginationInternalUtils.changeOptionNumberToEven(options);
-      etc.paginationInternal.numberOfRowsOptionsItemText = options
+      if (at.stripedRows) options = PaginationInternalUtils.changeOptionNumberToEven(options);
+      at.paginationInternal.numberOfRowsOptionsItemText = options
         .map((option) => PaginationInternalUtils.processOptionsItemText(option));
     }
   }
 
-  private static processNumberOfRowsOptions(etc: EditableTableComponent) {
-    const pagination = etc.pagination as Pagination;
+  private static processNumberOfRowsOptions(at: ActiveTable) {
+    const pagination = at.pagination as Pagination;
     const {numberOfRowsOptions} = pagination;
     if (numberOfRowsOptions !== undefined && typeof numberOfRowsOptions !== 'boolean' && numberOfRowsOptions.prefixText) {
-      (etc.paginationInternal.numberOfRowsOptions as NumberOfRowsOptions).prefixText = numberOfRowsOptions.prefixText;
+      (at.paginationInternal.numberOfRowsOptions as NumberOfRowsOptions).prefixText = numberOfRowsOptions.prefixText;
     }
-    PaginationInternalUtils.setNumberOfRowsOptionsText(etc);
+    PaginationInternalUtils.setNumberOfRowsOptionsText(at);
     delete pagination.numberOfRowsOptions;
   }
 
@@ -164,8 +164,8 @@ export class PaginationInternalUtils {
     delete pagination.positions; // deleted so that Object.assign wouldn't apply it
   }
 
-  public static process(etc: EditableTableComponent) {
-    const {pagination, paginationInternal} = etc;
+  public static process(at: ActiveTable) {
+    const {pagination, paginationInternal} = at;
     if (!pagination) return;
     if (pagination.maxNumberOfVisiblePageButtons !== undefined && pagination.maxNumberOfVisiblePageButtons < 1) {
       pagination.maxNumberOfVisiblePageButtons = 1;
@@ -173,11 +173,11 @@ export class PaginationInternalUtils {
     PaginationInternalUtils.processPosition(pagination, paginationInternal);
     PaginationInternalUtils.processStyle(pagination, paginationInternal);
     if (pagination.numberOfRowsOptions !== false) {
-      PaginationInternalUtils.processNumberOfRowsOptions(etc);
+      PaginationInternalUtils.processNumberOfRowsOptions(at);
     }
     Object.assign(paginationInternal, pagination);
     if (pagination.displayNumberOfVisibleRows !== false) {
-      PaginationInternalUtils.processNumberOfRows(etc, pagination);
+      PaginationInternalUtils.processNumberOfRows(at, pagination);
     }
   }
 

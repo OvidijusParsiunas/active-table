@@ -1,7 +1,7 @@
-import {EditableTableComponent} from '../../editable-table-component';
 import {VW, VH} from '../../consts/windowDimensionPostfixes';
 import {FullStringDimension} from '../../types/dimensions';
 import {Render} from '../../utils/render/render';
+import {ActiveTable} from '../../activeTable';
 
 interface DimensionsToObserve {
   width: boolean;
@@ -10,7 +10,7 @@ interface DimensionsToObserve {
 
 export class WindowResize {
   // prettier-ignore
-  private static resize(this: EditableTableComponent, observe: DimensionsToObserve) {
+  private static resize(this: ActiveTable, observe: DimensionsToObserve) {
     const {tableDimensions} = this;
     if ((observe.width && window.innerWidth !== tableDimensions.recordedWindowWidth)
         || (observe.height && window.innerHeight !== tableDimensions.recordedWindowHeight)) {
@@ -26,21 +26,20 @@ export class WindowResize {
     return '';
   }
 
-  // prettier-ignore
-  private static extractDimensionsToObserve(etc: EditableTableComponent) {
-    const postfixes = [
-      etc.tableStyle.width, etc.tableStyle.maxWidth, etc.overflow?.maxHeight, etc.overflow?.maxWidth
-    ].map((dimension) => WindowResize.extractPostfix(dimension))
+  private static extractDimensionsToObserve(at: ActiveTable) {
+    const postfixes = [at.tableStyle.width, at.tableStyle.maxWidth, at.overflow?.maxHeight, at.overflow?.maxWidth].map(
+      (dimension) => WindowResize.extractPostfix(dimension)
+    );
     return {
       width: !!postfixes.find((entry) => entry === VW),
       height: !!postfixes.find((entry) => entry === VH),
     };
   }
 
-  public static observeIfRequired(etc: EditableTableComponent) {
-    const dimensionsToObserve = WindowResize.extractDimensionsToObserve(etc);
+  public static observeIfRequired(at: ActiveTable) {
+    const dimensionsToObserve = WindowResize.extractDimensionsToObserve(at);
     if (dimensionsToObserve.width || dimensionsToObserve.height) {
-      window.addEventListener('resize', WindowResize.resize.bind(etc, dimensionsToObserve));
+      window.addEventListener('resize', WindowResize.resize.bind(at, dimensionsToObserve));
     }
   }
 }

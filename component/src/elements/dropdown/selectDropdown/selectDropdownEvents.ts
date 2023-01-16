@@ -1,9 +1,9 @@
 import {CellWithTextEvents} from '../../cell/cellsWithTextDiv/cellWithTextEvents';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {FocusedElements} from '../../../types/focusedElements';
 import {SelectDropdownItem} from './selectDropdownItem';
 import {CellDetails} from '../../../types/focusedCell';
 import {SelectButton} from './buttons/selectButton';
+import {ActiveTable} from '../../../activeTable';
 import {DropdownItem} from '../dropdownItem';
 import {Dropdown} from '../dropdown';
 
@@ -12,7 +12,7 @@ export class SelectDropdownEvents {
   // time the dropdown is displayed, click events are handled on the dropdown instead, the reason for this is
   // because it can be expensive to rebind an arbitrary amount of items e.g. 10000+
   // prettier-ignore
-  private static click(this: EditableTableComponent, event: MouseEvent) {
+  private static click(this: ActiveTable, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
     // target is dropdown when clicked on top/bottom paddding
     if (targetElement.classList.contains(Dropdown.DROPDOWN_CLASS)
@@ -31,8 +31,8 @@ export class SelectDropdownEvents {
     focusedElements.selectDropdown = dropdownElement;
   }
 
-  public static set(etc: EditableTableComponent, dropdownElement: HTMLElement) {
-    dropdownElement.onmousedown = SelectDropdownEvents.mouseDown.bind(this, etc.focusedElements, dropdownElement);
-    dropdownElement.onclick = SelectDropdownEvents.click.bind(etc);
+  public static set(at: ActiveTable, dropdownElement: HTMLElement) {
+    dropdownElement.onmousedown = SelectDropdownEvents.mouseDown.bind(this, at.focusedElements, dropdownElement);
+    dropdownElement.onclick = SelectDropdownEvents.click.bind(at);
   }
 }

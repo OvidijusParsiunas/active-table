@@ -1,8 +1,8 @@
 import {DropdownCellOverlayStyle, DropdownDisplaySettings} from '../../../../types/dropdownDisplaySettings';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {RowDropdownCellOverlayEvents} from './rowDropdownCellOverlayEvents';
 import {ExtractElements} from '../../../../utils/elements/extractElements';
 import {DropdownCellOverlay} from '../../cellOverlay/dropdownCellOverlay';
+import {ActiveTable} from '../../../../activeTable';
 
 export class RowDropdownCellOverlay {
   private static readonly ROW_DROPDOWN_CELL_OVERLAY_CLASS = 'row-dropdown-cell-overlay';
@@ -23,22 +23,22 @@ export class RowDropdownCellOverlay {
     if (hoverBackgroundColor) rowDropdownCellOverlay.style.backgroundColor = hoverBackgroundColor;
   }
 
-  public static hide(etc: EditableTableComponent, rowIndex: number) {
-    const currentIndexCell = etc.hoveredElements.leftMostCell;
+  public static hide(at: ActiveTable, rowIndex: number) {
+    const currentIndexCell = at.hoveredElements.leftMostCell;
     setTimeout(() => {
-      if (currentIndexCell !== etc.hoveredElements.leftMostCell) {
-        const overlayElement = etc.rowDropdownCellOverlays[rowIndex].element;
+      if (currentIndexCell !== at.hoveredElements.leftMostCell) {
+        const overlayElement = at.rowDropdownCellOverlays[rowIndex].element;
         overlayElement.style.width = DropdownCellOverlay.HIDDEN_PX;
       }
     });
   }
 
-  public static display(etc: EditableTableComponent, rowIndex: number) {
-    const firstColumn = etc.columnsDetails[0];
-    const rowDropdownCellOverlay = etc.rowDropdownCellOverlays[rowIndex].element;
+  public static display(at: ActiveTable, rowIndex: number) {
+    const firstColumn = at.columnsDetails[0];
+    const rowDropdownCellOverlay = at.rowDropdownCellOverlays[rowIndex].element;
     rowDropdownCellOverlay.style.width = DropdownCellOverlay.VISIBLE_PX;
     const firstColElement = firstColumn.elements[rowIndex];
-    const {displayIndexColumn} = etc.auxiliaryTableContentInternal;
+    const {displayIndexColumn} = at.auxiliaryTableContentInternal;
     const leftMostElement = (displayIndexColumn ? firstColElement.previousSibling : firstColElement) as HTMLElement;
     const onePercentWidth = leftMostElement.offsetHeight / 100;
     rowDropdownCellOverlay.style.height = `${onePercentWidth * 60}px`;
@@ -63,12 +63,12 @@ export class RowDropdownCellOverlay {
     return cellDividerElement;
   }
 
-  public static add(etc: EditableTableComponent, rowIndex: number, leftMostCell: HTMLElement) {
-    const rowDropdownCellOverlay = RowDropdownCellOverlay.create(etc.rowDropdownSettings.displaySettings.overlayStyle);
-    const {displayIndexColumn} = etc.auxiliaryTableContentInternal;
+  public static add(at: ActiveTable, rowIndex: number, leftMostCell: HTMLElement) {
+    const rowDropdownCellOverlay = RowDropdownCellOverlay.create(at.rowDropdownSettings.displaySettings.overlayStyle);
+    const {displayIndexColumn} = at.auxiliaryTableContentInternal;
     const cellDividerElement = RowDropdownCellOverlay.getCellDividerElement(leftMostCell, !!displayIndexColumn);
     cellDividerElement.appendChild(rowDropdownCellOverlay);
-    etc.rowDropdownCellOverlays.splice(rowIndex, 0, {
+    at.rowDropdownCellOverlays.splice(rowIndex, 0, {
       element: rowDropdownCellOverlay,
       // these events are stubs and will be replaced by real ones in RowDropdownCellOverlayEvents.addCellEvents
       enter: () => {},
@@ -76,14 +76,14 @@ export class RowDropdownCellOverlay {
     });
   }
 
-  public static resetOverlays(etc: EditableTableComponent) {
-    if (!etc.rowDropdownSettings.displaySettings.openMethod?.overlayClick) return;
-    etc.rowDropdownCellOverlays.splice(0, etc.rowDropdownCellOverlays.length);
-    const rows = ExtractElements.textRowsArrFromTBody(etc.tableBodyElementRef as HTMLElement, etc.contents);
+  public static resetOverlays(at: ActiveTable) {
+    if (!at.rowDropdownSettings.displaySettings.openMethod?.overlayClick) return;
+    at.rowDropdownCellOverlays.splice(0, at.rowDropdownCellOverlays.length);
+    const rows = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.contents);
     rows.forEach((rowElement, rowIndex) => {
       const leftMostCell = rowElement.children[0] as HTMLElement;
-      RowDropdownCellOverlay.add(etc, rowIndex, leftMostCell);
-      RowDropdownCellOverlayEvents.setOverlayEvents(etc, rowIndex, leftMostCell);
+      RowDropdownCellOverlay.add(at, rowIndex, leftMostCell);
+      RowDropdownCellOverlayEvents.setOverlayEvents(at, rowIndex, leftMostCell);
     });
   }
 }

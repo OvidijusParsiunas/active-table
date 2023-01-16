@@ -4,9 +4,9 @@ import {SelectColorButton} from '../dropdown/selectDropdown/buttons/selectColorB
 import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {ActiveOverlayElements} from '../../types/activeOverlayElements';
-import {EditableTableComponent} from '../../editable-table-component';
 import {MOUSE_EVENT} from '../../consts/mouseEvents';
 import {CellElement} from '../cell/cellElement';
+import {ActiveTable} from '../../activeTable';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class TableEvents {
@@ -25,23 +25,23 @@ export class TableEvents {
   // or delete cateogory buttons are clicked. If the user clicks elsewhere on the table, the dropdown is closed
   // programmatically as follows
   // prettier-ignore
-  private static closeSelectDropdown(etc: EditableTableComponent, targetElement: HTMLElement) {
-    const {focusedElements} = etc;
+  private static closeSelectDropdown(at: ActiveTable, targetElement: HTMLElement) {
+    const {focusedElements} = at;
     if (focusedElements.selectDropdown && !Dropdown.isPartOfDropdownElement(targetElement)
         && !targetElement.classList.contains(SelectColorButton.COLOR_BUTTON_CLASS)
         && focusedElements.cell.element !== CellElement.getCellElement(targetElement)) {
-      CellWithTextEvents.programmaticBlur(etc);
+      CellWithTextEvents.programmaticBlur(at);
     }
   }
 
-  public static onMouseDown(this: EditableTableComponent, event: MouseEvent) {
+  public static onMouseDown(this: ActiveTable, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
     UserKeyEventsStateUtils.temporarilyIndicateEvent(this.userKeyEventsState, MOUSE_EVENT.DOWN);
     TableEvents.closeSelectDropdown(this, targetElement);
     TableEvents.closeDatePicker(this.activeOverlayElements, event.target as HTMLElement);
   }
 
-  public static onMouseUp(this: EditableTableComponent, event: MouseEvent) {
+  public static onMouseUp(this: ActiveTable, event: MouseEvent) {
     if (this.activeOverlayElements.selectedColumnSizer) {
       ColumnSizerExtrinsicEvents.tableMouseUp(this, event.target as HTMLElement);
     }

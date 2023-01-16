@@ -8,10 +8,10 @@ import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {CheckboxCellElement} from './checkboxCell/checkboxCellElement';
 import {ColumnDetails} from '../../utils/columnDetails/columnDetails';
-import {EditableTableComponent} from '../../editable-table-component';
 import {CaretDisplayFix} from '../../utils/browser/caretDisplayFix';
 import {CellText} from '../../types/tableContents';
 import {CellCSSStyle} from '../../types/cssStyle';
+import {ActiveTable} from '../../activeTable';
 
 export class CellElement {
   public static readonly CELL_CLASS = 'cell';
@@ -111,15 +111,15 @@ export class CellElement {
 
   // set text is optional as some elements may only need to toggle the BR padding
   // prettier-ignore
-  public static setNewText(etc: EditableTableComponent, textContainerElement: HTMLElement, text: CellText,
+  public static setNewText(at: ActiveTable, textContainerElement: HTMLElement, text: CellText,
       isCellBeingBuilt: boolean, isUndo: boolean, setText = true) {
     if (setText) CellElement.setText(textContainerElement, text as string);
     // whilst it is primarily used for firefox - we use it consistently for all browsers
     if (isCellBeingBuilt) {
       // in a timeout as text elements may not be populated upfront (data or select)
-      setTimeout(() => CaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo));
+      setTimeout(() => CaretDisplayFix.toggleCellTextBRPadding(at, textContainerElement, isUndo));
     } else {
-      CaretDisplayFix.toggleCellTextBRPadding(etc, textContainerElement, isUndo);
+      CaretDisplayFix.toggleCellTextBRPadding(at, textContainerElement, isUndo);
     }
   }
 
@@ -132,10 +132,10 @@ export class CellElement {
   }
 
   // prettier-ignore
-  public static createCellElement(etc: EditableTableComponent, text: CellText, colIndex: number, isHeader: boolean) {
-    const {defaultColumnsSettings: {cellStyle, headerStyleProps}, columnsDetails, tableElementRef} = etc;
+  public static createCellElement(at: ActiveTable, text: CellText, colIndex: number, isHeader: boolean) {
+    const {defaultColumnsSettings: {cellStyle, headerStyleProps}, columnsDetails, tableElementRef} = at;
     const columnDetails = columnsDetails[colIndex];
-    const isOpenViaCellClick = etc.columnDropdownDisplaySettings.openMethod?.cellClick;
+    const isOpenViaCellClick = at.columnDropdownDisplaySettings.openMethod?.cellClick;
     const cellElement = CellElement.createContentCell(isHeader, cellStyle,
       isHeader ? headerStyleProps?.default : {}, isOpenViaCellClick);
     const {settings} = columnDetails;
@@ -145,7 +145,7 @@ export class CellElement {
     CellElement.prepContentEditable(cellElement, Boolean(isEditable), isOpenViaCellClick);
     // overwritten again if static table
     if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
-    CellElement.setNewText(etc, cellElement, text, true, false);
+    CellElement.setNewText(at, cellElement, text, true, false);
     return cellElement;
   }
 }

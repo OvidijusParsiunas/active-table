@@ -1,7 +1,7 @@
 import {FocusedCellUtils} from '../../../../utils/focusedElements/focusedCellUtils';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {PickerInputElement} from '../../../../types/pickerInputElement';
 import {Browser} from '../../../../utils/browser/browser';
+import {ActiveTable} from '../../../../activeTable';
 import {CellElement} from '../../cellElement';
 
 // the actual calendar and date pocker are on the input element and this is a standin replacement icon to standardize
@@ -11,7 +11,7 @@ export class DateCellCalendarIconEvents {
   // while the current one is open, hence need to wait for animation to finish
   private static readonly PICKER_DISPLAY_DELAY_ML = Browser.IS_FIREFOX ? 190 : 0;
 
-  private static mouseDownIcon(this: EditableTableComponent, rowIndex: number, columnIndex: number, event: MouseEvent) {
+  private static mouseDownIcon(this: ActiveTable, rowIndex: number, columnIndex: number, event: MouseEvent) {
     const {focusedElements, columnsDetails, activeOverlayElements} = this;
     const svgImage = event.target as HTMLElement;
     const inputElement = svgImage.previousSibling as PickerInputElement;
@@ -37,9 +37,7 @@ export class DateCellCalendarIconEvents {
     }, DateCellCalendarIconEvents.PICKER_DISPLAY_DELAY_ML);
   }
 
-  // prettier-ignore
-  public static setEvents(etc: EditableTableComponent, calendarElement: HTMLElement, rowIndex: number,
-      columnIndex: number) {
-    calendarElement.onmousedown = DateCellCalendarIconEvents.mouseDownIcon.bind(etc, rowIndex, columnIndex);
+  public static setEvents(at: ActiveTable, calendarElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    calendarElement.onmousedown = DateCellCalendarIconEvents.mouseDownIcon.bind(at, rowIndex, columnIndex);
   }
 }

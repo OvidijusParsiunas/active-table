@@ -3,9 +3,9 @@ import {StaticTableWidthUtils} from '../../../../utils/tableDimensions/staticTab
 import {ColumnSettingsBorderUtils} from '../../../../utils/columnSettings/columnSettingsBorderUtils';
 import {MaximumColumns} from '../../../../utils/insertRemoveStructure/insert/maximum/maximumColumns';
 import {GenericElementUtils} from '../../../../utils/elements/genericElementUtils';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {AddNewColumnEvents} from './addNewColumnEvents';
 import {CellElement} from '../../../cell/cellElement';
+import {ActiveTable} from '../../../../activeTable';
 import {TableElement} from '../../tableElement';
 
 export class AddNewColumnElement {
@@ -29,7 +29,7 @@ export class AddNewColumnElement {
     }
   }
 
-  private static createCell(etc: EditableTableComponent, isHeader: boolean) {
+  private static createCell(at: ActiveTable, isHeader: boolean) {
     const cell = CellElement.createBaseCell(isHeader);
     cell.classList.add(
       CellElement.CELL_CLASS,
@@ -37,41 +37,41 @@ export class AddNewColumnElement {
       AddNewColumnElement.ADD_COLUMN_CELL_CLASS
     );
     // backgroundColor controlled by column group - REF-17
-    Object.assign(cell.style, etc.defaultColumnsSettings.cellStyle, {backgroundColor: ''});
-    AddNewColumnEvents.setEvents(etc, cell);
+    Object.assign(cell.style, at.defaultColumnsSettings.cellStyle, {backgroundColor: ''});
+    AddNewColumnEvents.setEvents(at, cell);
     return cell;
   }
 
-  private static createHeaderCell(etc: EditableTableComponent) {
-    const headerCell = AddNewColumnElement.createCell(etc, true);
+  private static createHeaderCell(at: ActiveTable) {
+    const headerCell = AddNewColumnElement.createCell(at, true);
     headerCell.style.width = AddNewColumnElement.DEFAULT_WIDTH_PX;
     headerCell.innerText = '+';
     Object.assign(
       headerCell.style,
-      etc.defaultColumnsSettings.headerStyleProps?.default,
+      at.defaultColumnsSettings.headerStyleProps?.default,
       AuxiliaryTableContentColors.CELL_COLORS.header.default
     );
     return headerCell;
   }
 
-  private static createDataCell(etc: EditableTableComponent) {
-    return AddNewColumnElement.createCell(etc, false);
+  private static createDataCell(at: ActiveTable) {
+    return AddNewColumnElement.createCell(at, false);
   }
 
   private static isDisplayed(addColumnCellsElementsRef: HTMLElement[]) {
     return GenericElementUtils.doesElementExistInDom(addColumnCellsElementsRef[0]);
   }
 
-  public static createAndAppendToRow(etc: EditableTableComponent, row: HTMLElement, rowIndex: number) {
-    const {addColumnCellsElementsRef, columnsDetails} = etc;
+  public static createAndAppendToRow(at: ActiveTable, row: HTMLElement, rowIndex: number) {
+    const {addColumnCellsElementsRef, columnsDetails} = at;
     // if statement needs to be before the addition of the new cell to addColumnCellsElementsRef
     const isDisplay = addColumnCellsElementsRef.length === 0 || AddNewColumnElement.isDisplayed(addColumnCellsElementsRef);
-    const cell = rowIndex === 0 ? AddNewColumnElement.createHeaderCell(etc) : AddNewColumnElement.createDataCell(etc);
+    const cell = rowIndex === 0 ? AddNewColumnElement.createHeaderCell(at) : AddNewColumnElement.createDataCell(at);
     addColumnCellsElementsRef.splice(rowIndex, 0, cell);
     // REF-23
     const columnDetails = columnsDetails[columnsDetails.length - 1];
     ColumnSettingsBorderUtils.unsetSubjectBorder(addColumnCellsElementsRef, columnDetails.elements, 'left', rowIndex);
-    if (isDisplay && MaximumColumns.canAddMore(etc)) row.appendChild(cell);
+    if (isDisplay && MaximumColumns.canAddMore(at)) row.appendChild(cell);
   }
 
   // prettier-ignore
@@ -86,27 +86,27 @@ export class AddNewColumnElement {
     }
   }
 
-  private static changeTableWidths(etc: EditableTableComponent, canAddMore: boolean, isInsert: boolean) {
+  private static changeTableWidths(at: ActiveTable, canAddMore: boolean, isInsert: boolean) {
     TableElement.changeStaticWidthTotal(
       canAddMore ? AddNewColumnElement.DEFAULT_WIDTH : -AddNewColumnElement.DEFAULT_WIDTH
     );
-    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, isInsert);
+    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, isInsert);
   }
 
   // prettier-ignore
-  public static toggle(etc: EditableTableComponent, isInsert: boolean) {
+  public static toggle(at: ActiveTable, isInsert: boolean) {
     const {addColumnCellsElementsRef, tableBodyElementRef, columnGroupRef,
-      auxiliaryTableContentInternal: {displayAddColumnCell}} = etc;
+      auxiliaryTableContentInternal: {displayAddColumnCell}} = at;
     if (!displayAddColumnCell || !tableBodyElementRef || !columnGroupRef) return;
-    const canAddMore = MaximumColumns.canAddMore(etc);
+    const canAddMore = MaximumColumns.canAddMore(at);
     // do not toggle if already in the intended state
     if (canAddMore === AddNewColumnElement.isDisplayed(addColumnCellsElementsRef)) return;
     // for isTableAtMaxWidth to be triggered correctly for maxWidth, add cells before it and remove after it
     if (canAddMore) {
       AddNewColumnElement.toggleEachCell(canAddMore, tableBodyElementRef, addColumnCellsElementsRef, columnGroupRef);
-      AddNewColumnElement.changeTableWidths(etc, canAddMore, isInsert);
+      AddNewColumnElement.changeTableWidths(at, canAddMore, isInsert);
     } else {
-      AddNewColumnElement.changeTableWidths(etc, canAddMore, isInsert);
+      AddNewColumnElement.changeTableWidths(at, canAddMore, isInsert);
       AddNewColumnElement.toggleEachCell(canAddMore, tableBodyElementRef, addColumnCellsElementsRef, columnGroupRef);
     }
   }

@@ -1,13 +1,13 @@
 import {AuxiliaryTableContentColors} from '../../../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {CellElementIndex} from '../../../../utils/elements/cellElementIndex';
-import {EditableTableComponent} from '../../../../editable-table-component';
+import {ActiveTable} from '../../../../activeTable';
 
 // this is exclusively used to toggle the add column button's cells' background colors
 // REF-17
 // prettier-ignore
 export class ColumnGroupElement {
-  public static update(etc: EditableTableComponent) {
-    const {columnGroupRef, columnsDetails, auxiliaryTableContentInternal: {displayIndexColumn}} = etc;
+  public static update(at: ActiveTable) {
+    const {columnGroupRef, columnsDetails, auxiliaryTableContentInternal: {displayIndexColumn}} = at;
     if (!columnGroupRef) return;
     // the first col needs to span all of the columns except the add new column
     const firstCols = columnGroupRef.children[0] as HTMLElement;

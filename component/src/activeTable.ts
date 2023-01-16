@@ -18,14 +18,13 @@ import {StickyProcessUtils} from './utils/stickyProps/stickyPropsUtils';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {DropdownDisplaySettings} from './types/dropdownDisplaySettings';
 import {ColumnsSettingsDefault} from './types/columnsSettingsDefault';
-import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
+import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
 import {StripedRows as StripedRowsType} from './types/stripedRows';
 import {customElement, property, state} from 'lit/decorators.js';
 import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {StripedRowsInternal} from './types/stripedRowsInternal';
-import {ediTableStyle} from './editable-table-component-style';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {CellText, TableContents} from './types/tableContents';
@@ -40,6 +39,7 @@ import {ParentResize} from './utils/render/parentResize';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
+import {activeTableStyle} from './activeTableStyle';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {StripedRows} from './utils/rows/stripedRows';
 import {StickyProps} from './types/stickyProps';
@@ -54,11 +54,11 @@ import {LitElement} from 'lit';
 // TO-DO
 // rename file name from using hyphen case to camel
 
-@customElement('editable-table-component')
-export class EditableTableComponent extends LitElement {
-  static override styles = [ediTableStyle];
+@customElement('active-table')
+export class ActiveTable extends LitElement {
+  static override styles = [activeTableStyle];
 
-  public static ELEMENT_TAG = 'EDITABLE-TABLE-COMPONENT';
+  public static ELEMENT_TAG = 'ACTIVE-TABLE';
 
   @property({type: Array})
   contents: TableContents = [
@@ -127,7 +127,7 @@ export class EditableTableComponent extends LitElement {
 
   // this contains all cell elements, if there is a need to access cell elements outside the context of columns
   // create an entirely new state object and access elements from there as we don't want to store all elements
-  // multiple times, and use this instead for data exclusively on columns, such as width etc.
+  // multiple times, and use this instead for data exclusively on columns, such as width at.
   @state()
   columnsDetails: ColumnsDetailsT = [];
 
@@ -281,7 +281,7 @@ export class EditableTableComponent extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'editable-table-component': EditableTableComponent;
+    'active-table': ActiveTable;
   }
 }
 

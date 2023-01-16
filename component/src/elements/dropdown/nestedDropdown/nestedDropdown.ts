@@ -1,17 +1,17 @@
 import {DropdownButtonItemSettings} from '../../../types/dropdownButtonItem';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {OverflowUtils} from '../../../utils/overflow/overflowUtils';
+import {ActiveTable} from '../../../activeTable';
 import {DropdownItem} from '../dropdownItem';
 import {Dropdown} from '../dropdown';
 
 export class NestedDropdown {
-  public static create(etc: EditableTableComponent, itemSettings: DropdownButtonItemSettings[]): HTMLElement;
+  public static create(at: ActiveTable, itemSettings: DropdownButtonItemSettings[]): HTMLElement;
   public static create(): HTMLElement;
-  public static create(etc?: EditableTableComponent, itemSettings?: DropdownButtonItemSettings[]) {
+  public static create(at?: ActiveTable, itemSettings?: DropdownButtonItemSettings[]) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.style.top = `-${Number.parseInt(dropdownElement.style.paddingTop) + 22}px`;
-    if (etc && itemSettings) DropdownItem.addNewButtonItems(etc, dropdownElement, itemSettings);
+    if (at && itemSettings) DropdownItem.addNewButtonItems(at, dropdownElement, itemSettings);
     return dropdownElement;
   }
 
@@ -37,9 +37,9 @@ export class NestedDropdown {
   }
 
   // prettier-ignore
-  private static correctPositionForOverflow(etc: EditableTableComponent,
+  private static correctPositionForOverflow(at: ActiveTable,
       nestedDropdownElement: HTMLElement, parentDropdownElement: HTMLElement) {
-    const {tableElementRef, overflowInternal} = etc;
+    const {tableElementRef, overflowInternal} = at;
     if (!tableElementRef || !overflowInternal) return;
     if (tableElementRef.offsetWidth !== overflowInternal.overflowContainer.scrollWidth) {
       nestedDropdownElement.style.left = `-${parentDropdownElement.style.width}`;
@@ -49,7 +49,7 @@ export class NestedDropdown {
     }
   }
 
-  public static displayAndSetDropdownPosition(this: EditableTableComponent, event: Event) {
+  public static displayAndSetDropdownPosition(this: ActiveTable, event: Event) {
     const nestedDropdownElement = (event.target as HTMLElement).children[2] as HTMLElement;
     const parentDropdownElement = (event.target as HTMLElement).parentElement as HTMLElement;
     nestedDropdownElement.style.left = parentDropdownElement.style.width;

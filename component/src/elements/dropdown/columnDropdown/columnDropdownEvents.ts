@@ -1,11 +1,11 @@
-import {EditableTableComponent} from '../../../editable-table-component';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
+import {ActiveTable} from '../../../activeTable';
 import {DropdownEvents} from '../dropdownEvents';
 import {ColumnDropdown} from './columnDropdown';
 import {DropdownItem} from '../dropdownItem';
 
 export class ColumnDropdownEvents {
-  public static onKeyDown(this: EditableTableComponent, dropdownElement: HTMLElement, event: KeyboardEvent) {
+  public static onKeyDown(this: ActiveTable, dropdownElement: HTMLElement, event: KeyboardEvent) {
     if (event.key === KEYBOARD_KEY.ENTER) {
       const itemElement = event.target as HTMLElement;
       if (DropdownItem.doesElementContainInputClass(itemElement)) {
@@ -20,7 +20,7 @@ export class ColumnDropdownEvents {
     DropdownEvents.itemKeyNavigation(this.shadowRoot as ShadowRoot, dropdownElement, event);
   }
 
-  public static set(etc: EditableTableComponent, dropdownElement: HTMLElement) {
-    dropdownElement.onkeydown = ColumnDropdownEvents.onKeyDown.bind(etc, dropdownElement);
+  public static set(at: ActiveTable, dropdownElement: HTMLElement) {
+    dropdownElement.onkeydown = ColumnDropdownEvents.onKeyDown.bind(at, dropdownElement);
   }
 }

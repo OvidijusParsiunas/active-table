@@ -1,11 +1,11 @@
 import {FocusNextColumnCellFromTextDiv} from '../../../../utils/focusedElements/focusNextColumnCellFromTextDiv';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {DataCellEvents} from '../../dataCell/dataCellEvents';
+import {ActiveTable} from '../../../../activeTable';
 
 export class CellTextEvents {
-  public static tabOutOfCell(etc: EditableTableComponent, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
+  public static tabOutOfCell(at: ActiveTable, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
     event.preventDefault();
-    DataCellEvents.keyDownCell.bind(etc)(event);
-    FocusNextColumnCellFromTextDiv.focusOrBlurNext(etc, columnIndex, rowIndex);
+    DataCellEvents.keyDownCell.bind(at)(event);
+    FocusNextColumnCellFromTextDiv.focusOrBlurNext(at, columnIndex, rowIndex);
   }
 }

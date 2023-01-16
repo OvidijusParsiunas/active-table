@@ -8,7 +8,6 @@ import {ColumnSettingsDefaultTextUtils} from './columnSettingsDefaultTextUtils';
 import {StringDimensionUtils} from '../tableDimensions/stringDimensionUtils';
 import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
-import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
 import {ColumnSettingsWidthUtils} from './columnSettingsWidthUtils';
 import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
@@ -16,16 +15,17 @@ import {ResetColumnStructure} from './resetColumnStructure';
 import {CellElement} from '../../elements/cell/cellElement';
 import {GenericObject} from '../../types/genericObject';
 import {EMPTY_STRING} from '../../consts/text';
+import {ActiveTable} from '../../activeTable';
 import {CSSStyle} from '../../types/cssStyle';
 
 export class ColumnSettingsUtils {
-  private static updateSizer(etc: EditableTableComponent, columnIndex: number) {
-    const {columnsDetails, tableElementRef} = etc;
+  private static updateSizer(at: ActiveTable, columnIndex: number) {
+    const {columnsDetails, tableElementRef} = at;
     if (!tableElementRef) return;
     const {columnSizer} = columnsDetails[columnIndex];
     // if not needed - cleanUpCustomColumnSizers will remove it (however it would not insert it otherwise)
-    if (!columnSizer) InsertRemoveColumnSizer.insert(etc, columnIndex);
-    InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, columnIndex);
+    if (!columnSizer) InsertRemoveColumnSizer.insert(at, columnIndex);
+    InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, columnIndex);
     if (columnSizer) {
       InsertRemoveColumnSizer.updateSizer(columnSizer, columnsDetails, columnIndex, tableElementRef);
     }
@@ -37,39 +37,37 @@ export class ColumnSettingsUtils {
   }
 
   // prettier-ignore
-  private static change(etc: EditableTableComponent, headerElement: HTMLElement, columnIndex: number,
+  private static change(at: ActiveTable, headerElement: HTMLElement, columnIndex: number,
       oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal) {
-    const columnDetails = etc.columnsDetails[columnIndex];
-    ColumnSettingsDefaultTextUtils.unsetDefaultText(etc, columnDetails, columnIndex);
+    const columnDetails = at.columnsDetails[columnIndex];
+    ColumnSettingsDefaultTextUtils.unsetDefaultText(at, columnDetails, columnIndex);
     columnDetails.settings = newSettings;
     Object.assign(columnDetails, ColumnTypesUtils.getProcessedTypes(newSettings, columnDetails.activeType.name));
-    ResetColumnStructure.reset(etc, columnDetails, columnIndex);
-    ColumnSettingsDefaultTextUtils.setDefaultText(etc, columnDetails, columnIndex);
-    ColumnSettingsWidthUtils.changeWidth(etc, headerElement, oldSettings, newSettings);
-    ColumnSettingsStyleUtils.changeStyle(etc, columnIndex, oldSettings);
-    ColumnSettingsBorderUtils.updateSiblingColumns(etc, columnIndex);
-    ColumnSettingsUtils.updateSizer(etc, columnIndex);
-    if (etc.areIconsDisplayedInHeaders) HeaderIconCellElement.changeHeaderIcon(etc.columnsDetails[columnIndex]);
+    ResetColumnStructure.reset(at, columnDetails, columnIndex);
+    ColumnSettingsDefaultTextUtils.setDefaultText(at, columnDetails, columnIndex);
+    ColumnSettingsWidthUtils.changeWidth(at, headerElement, oldSettings, newSettings);
+    ColumnSettingsStyleUtils.changeStyle(at, columnIndex, oldSettings);
+    ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
+    ColumnSettingsUtils.updateSizer(at, columnIndex);
+    if (at.areIconsDisplayedInHeaders) HeaderIconCellElement.changeHeaderIcon(at.columnsDetails[columnIndex]);
     ColumnDropdownCellOverlay.updateIfDisplayed(columnDetails);
-    AddNewColumnElement.toggle(etc, true);
+    AddNewColumnElement.toggle(at, true);
   }
 
   // prettier-ignore
-  public static parseSettingsChange(etc: EditableTableComponent) {
+  public static parseSettingsChange(at: ActiveTable) {
     const {customColumnsSettingsInternal, columnsDetails,
-      focusedElements: {cell: {element: cellElement, columnIndex}}} = etc;
+      focusedElements: {cell: {element: cellElement, columnIndex}}} = at;
     const columnDetails = columnsDetails[columnIndex as number];
     const oldSettings = columnDetails.settings;
     const newSettings = customColumnsSettingsInternal[CellElement.getText(cellElement as HTMLElement)]
-      || etc.defaultColumnsSettings;
+      || at.defaultColumnsSettings;
     return { oldSettings, newSettings, areSettingsDifferent: oldSettings !== newSettings }; 
   }
 
-  // prettier-ignore
-  public static changeColumnSettingsIfNameDifferent(etc: EditableTableComponent,
-      cellElement: HTMLElement, columnIndex: number) {
-    const {oldSettings, newSettings, areSettingsDifferent} = ColumnSettingsUtils.parseSettingsChange(etc);
-    if (areSettingsDifferent) ColumnSettingsUtils.change(etc, cellElement, columnIndex, oldSettings, newSettings);
+  public static changeColumnSettingsIfNameDifferent(at: ActiveTable, cellElement: HTMLElement, columnIndex: number) {
+    const {oldSettings, newSettings, areSettingsDifferent} = ColumnSettingsUtils.parseSettingsChange(at);
+    if (areSettingsDifferent) ColumnSettingsUtils.change(at, cellElement, columnIndex, oldSettings, newSettings);
   }
 
   // prettier-ignore
@@ -125,9 +123,9 @@ export class ColumnSettingsUtils {
   }
 
   // prettier-ignore
-  public static setUpInternalSettings(etc: EditableTableComponent) {
-    ColumnSettingsUtils.processDefaultColumnsSettings(etc.defaultColumnsSettings);
-    etc.customColumnsSettingsInternal = ColumnSettingsUtils.createInternalMap(
-      etc.customColumnsSettings, etc.defaultColumnsSettings);
+  public static setUpInternalSettings(at: ActiveTable) {
+    ColumnSettingsUtils.processDefaultColumnsSettings(at.defaultColumnsSettings);
+    at.customColumnsSettingsInternal = ColumnSettingsUtils.createInternalMap(
+      at.customColumnsSettings, at.defaultColumnsSettings);
   }
 }

@@ -35,7 +35,7 @@ if (!['dev', 'prod'].includes(mode)) {
 //   capabilities: {
 //     'browserstack.user': process.env.BROWSER_STACK_USERNAME,
 //     'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY,
-//     project: 'editable-table-component',
+//     project: 'active-table',
 //     name: 'unit tests',
 //     build: `${process.env.GITHUB_REF ?? 'local'} build ${
 //       process.env.GITHUB_RUN_NUMBER ?? ''

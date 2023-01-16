@@ -1,12 +1,12 @@
 import {AuxiliaryTableContentColors} from '../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsBorderUtils';
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
-import {EditableTableComponent} from '../../editable-table-component';
 import {DEFAULT_COLUMN_WIDTH} from '../../consts/defaultColumnWidth';
 import {ExtractElements} from '../../utils/elements/extractElements';
 import {UpdateIndexColumnWidth} from './updateIndexColumnWidth';
 import {Browser} from '../../utils/browser/browser';
 import {CellElement} from '../cell/cellElement';
+import {ActiveTable} from '../../activeTable';
 
 export class IndexColumn {
   public static readonly INDEX_CELL_CLASS = 'index-cell';
@@ -15,24 +15,24 @@ export class IndexColumn {
   public static readonly DEFAULT_WIDTH = DEFAULT_COLUMN_WIDTH;
   private static readonly DEFAULT_WIDTH_PX = `${IndexColumn.DEFAULT_WIDTH}px`;
 
-  public static updateIndexes(etc: EditableTableComponent, startIndex: number) {
-    const {tableBodyElementRef, contents} = etc;
+  public static updateIndexes(at: ActiveTable, startIndex: number) {
+    const {tableBodyElementRef, contents} = at;
     const textRowsArr = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, contents, startIndex);
-    const auxiliaryPaddingIndex = Number(etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader);
+    const auxiliaryPaddingIndex = Number(at.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader);
     textRowsArr.forEach((row, rowIndex) => {
       const indexCell = row.children[0] as HTMLElement;
       const relativeIndex = startIndex + rowIndex + auxiliaryPaddingIndex;
       indexCell.innerText = String(relativeIndex);
     });
-    UpdateIndexColumnWidth.update(etc, textRowsArr.length === 0 ? undefined : textRowsArr);
+    UpdateIndexColumnWidth.update(at, textRowsArr.length === 0 ? undefined : textRowsArr);
   }
 
   // prettier-ignore
-  private static createCell(etc: EditableTableComponent, isHeader: boolean) {
-    const {tableDimensions, defaultColumnsSettings, auxiliaryTableContentInternal} = etc;
+  private static createCell(at: ActiveTable, isHeader: boolean) {
+    const {tableDimensions, defaultColumnsSettings, auxiliaryTableContentInternal} = at;
     const cell = CellElement.createBaseCell(isHeader);
     cell.classList.add(IndexColumn.INDEX_CELL_CLASS, GenericElementUtils.NOT_SELECTABLE_CLASS);
-    const {displaySettings, isHeaderRowEditable} = etc.rowDropdownSettings;
+    const {displaySettings, isHeaderRowEditable} = at.rowDropdownSettings;
     cell.style.cursor = displaySettings.openMethod?.cellClick && (!isHeader || isHeaderRowEditable)
       ? 'pointer' : 'default';
     if (!tableDimensions.isColumnIndexCellTextWrapped) {
@@ -43,9 +43,9 @@ export class IndexColumn {
     return cell;
   }
 
-  private static createHeaderCell(etc: EditableTableComponent) {
-    const headerCell = IndexColumn.createCell(etc, true);
-    if (etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader) headerCell.innerText = '1';
+  private static createHeaderCell(at: ActiveTable) {
+    const headerCell = IndexColumn.createCell(at, true);
+    if (at.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader) headerCell.innerText = '1';
     headerCell.style.width = IndexColumn.DEFAULT_WIDTH_PX;
     // Safari does not always apply the width immediately, however do need the line above as it would otherwise cause
     // the table width to change when a row is removed
@@ -53,17 +53,17 @@ export class IndexColumn {
     return headerCell;
   }
 
-  private static createDataCell(etc: EditableTableComponent, rowIndex: number) {
-    const dataCell = IndexColumn.createCell(etc, false);
-    const indexNumber = etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? rowIndex + 1 : rowIndex;
+  private static createDataCell(at: ActiveTable, rowIndex: number) {
+    const dataCell = IndexColumn.createCell(at, false);
+    const indexNumber = at.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? rowIndex + 1 : rowIndex;
     dataCell.innerText = String(indexNumber);
     return dataCell;
   }
 
-  public static createAndPrependToRow(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number) {
-    const cell = rowIndex === 0 ? IndexColumn.createHeaderCell(etc) : IndexColumn.createDataCell(etc, rowIndex);
-    if (etc.columnsDetails[0]) {
-      ColumnSettingsBorderUtils.unsetSubjectBorder([cell], etc.columnsDetails[0].elements, 'right', 0); // REF-23
+  public static createAndPrependToRow(at: ActiveTable, rowElement: HTMLElement, rowIndex: number) {
+    const cell = rowIndex === 0 ? IndexColumn.createHeaderCell(at) : IndexColumn.createDataCell(at, rowIndex);
+    if (at.columnsDetails[0]) {
+      ColumnSettingsBorderUtils.unsetSubjectBorder([cell], at.columnsDetails[0].elements, 'right', 0); // REF-23
     }
     // events are added in updateRowCells method
     rowElement.appendChild(cell);

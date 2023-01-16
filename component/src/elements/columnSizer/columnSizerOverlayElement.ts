@@ -1,6 +1,6 @@
-import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSizerOverlayEvents} from './columnSizerOverlayEvents';
 import {ColumnSizerT} from '../../types/columnSizer';
+import {ActiveTable} from '../../activeTable';
 import {PX} from '../../types/dimensions';
 
 // REF-12
@@ -13,10 +13,10 @@ export class ColumnSizerOverlayElement {
     overlayElement.style.width = width;
   }
 
-  public static applyEvents(etc: EditableTableComponent, columnSizer: ColumnSizerT) {
-    columnSizer.overlayElement.onmouseenter = ColumnSizerOverlayEvents.overlayMouseEnter.bind(etc, columnSizer);
-    columnSizer.overlayElement.onmouseleave = ColumnSizerOverlayEvents.overlayMouseLeave.bind(etc, columnSizer);
-    columnSizer.overlayElement.onmousedown = ColumnSizerOverlayEvents.overlayMouseDown.bind(etc, columnSizer.element);
+  public static applyEvents(at: ActiveTable, columnSizer: ColumnSizerT) {
+    columnSizer.overlayElement.onmouseenter = ColumnSizerOverlayEvents.overlayMouseEnter.bind(at, columnSizer);
+    columnSizer.overlayElement.onmouseleave = ColumnSizerOverlayEvents.overlayMouseLeave.bind(at, columnSizer);
+    columnSizer.overlayElement.onmousedown = ColumnSizerOverlayEvents.overlayMouseDown.bind(at, columnSizer.element);
   }
 
   public static create() {

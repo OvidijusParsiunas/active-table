@@ -1,9 +1,9 @@
 import {BordersOverwrittenBySiblings, ColumnDetailsT} from '../../types/columnDetails';
 import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
-import {EditableTableComponent} from '../../editable-table-component';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {ExtractElements} from '../elements/extractElements';
 import {ResetColumnStyles} from './resetColumnStyles';
+import {ActiveTable} from '../../activeTable';
 
 // REF-23
 export class ColumnSettingsAuxBorderUtils {
@@ -28,18 +28,18 @@ export class ColumnSettingsAuxBorderUtils {
   }
 
   // prettier-ignore
-  public static updateAuxiliaryColumns(etc: EditableTableComponent, currentColumnDetails: ColumnDetailsT,
+  public static updateAuxiliaryColumns(at: ActiveTable, currentColumnDetails: ColumnDetailsT,
       leftColumnDetails: ColumnDetailsT, rightColumnDetails: ColumnDetailsT) {
     const currentColumn = currentColumnDetails || leftColumnDetails; // when last column removed - use the left one instead
     if (!currentColumn) return;
     const {defaultColumnsSettings, addColumnCellsElementsRef,
-      auxiliaryTableContentInternal: {displayAddColumnCell, displayIndexColumn}} = etc;
+      auxiliaryTableContentInternal: {displayAddColumnCell, displayIndexColumn}} = at;
     if (!rightColumnDetails && displayAddColumnCell) {
       ColumnSettingsAuxBorderUtils.toggleAuxiliaryBorder(
         addColumnCellsElementsRef, currentColumn.elements, 'left', defaultColumnsSettings);
     }
     if (!leftColumnDetails && displayIndexColumn) {
-      const rowElements = ExtractElements.textRowsArrFromTBody(etc.tableBodyElementRef as HTMLElement, etc.contents, 0);
+      const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.contents, 0);
       const indexCells = rowElements.map((row) => row.children[0]) as HTMLElement[];
       ColumnSettingsAuxBorderUtils.toggleAuxiliaryBorder(
         indexCells, currentColumn.elements, 'right', defaultColumnsSettings);

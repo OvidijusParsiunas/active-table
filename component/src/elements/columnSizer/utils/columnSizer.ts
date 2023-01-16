@@ -1,10 +1,10 @@
-import {EditableTableComponent} from '../../../editable-table-component';
 import {BorderWidths, ColumnSizerElement} from '../columnSizerElement';
 import {MovableColumnSizerElement} from '../movableColumnSizerElement';
 import {ColumnSizerOverlayElement} from '../columnSizerOverlayElement';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {ColumnSizerT} from '../../../types/columnSizer';
 import {Optional} from '../../../types/utilityTypes';
+import {ActiveTable} from '../../../activeTable';
 import {PX} from '../../../types/dimensions';
 
 export class ColumnSizer {
@@ -94,14 +94,14 @@ export class ColumnSizer {
   }
 
   // prettier-ignore
-  public static create(etc: EditableTableComponent, sizerIndex: number) {
-    const { columnsDetails, tableElementRef, columnResizerStyle: userSetColumnSizerStyle } = etc;
+  public static create(at: ActiveTable, sizerIndex: number) {
+    const { columnsDetails, tableElementRef, columnResizerStyle: userSetColumnSizerStyle } = at;
     const columnSizerElement = ColumnSizerElement.create(sizerIndex, userSetColumnSizerStyle);
     const movableColumnSizer = MovableColumnSizerElement.create(userSetColumnSizerStyle);
     const overlayElement = ColumnSizerOverlayElement.create();
     const columnSizer = ColumnSizer.createObject(columnSizerElement, columnsDetails, sizerIndex,
       tableElementRef as HTMLElement, overlayElement, movableColumnSizer);
-    ColumnSizerOverlayElement.applyEvents(etc, columnSizer);
+    ColumnSizerOverlayElement.applyEvents(at, columnSizer);
     return columnSizer;
   }
 }

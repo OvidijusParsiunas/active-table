@@ -1,8 +1,8 @@
 import {StaticTable} from '../../../tableDimensions/staticTable/staticTable';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {TableElement} from '../../../../elements/table/tableElement';
 import {ColumnDetails} from '../../../columnDetails/columnDetails';
 import {TableDimensions} from '../../../../types/tableDimensions';
+import {ActiveTable} from '../../../../activeTable';
 
 export class MaximumColumns {
   // the motivation behind minimal column length came from the fact that when we have set a table width and all the columns
@@ -30,8 +30,8 @@ export class MaximumColumns {
   }
 
   // prettier-ignore
-  public static canAddMore(etc: EditableTableComponent) {
-    const {tableElementRef, columnsDetails, tableDimensions, maxColumns} = etc;
+  public static canAddMore(at: ActiveTable) {
+    const {tableElementRef, columnsDetails, tableDimensions, maxColumns} = at;
     const numberOfColumns = columnsDetails.length;
     if ((maxColumns !== undefined && maxColumns > 0 && maxColumns === numberOfColumns)
       || MaximumColumns.isStaticContentBreachingSetTableWidth(tableDimensions)) return false;

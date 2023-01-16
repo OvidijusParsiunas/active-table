@@ -1,8 +1,8 @@
 import {AuxiliaryContentCellsColors} from '../../types/auxiliaryTableContentCellsColors';
 import {CellStateColorProperties, CellStateColorsR} from '../../types/cellStateColors';
 import {HoverableElementStyleClient} from '../../types/hoverableElementStyle';
-import {EditableTableComponent} from '../../editable-table-component';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
+import {ActiveTable} from '../../activeTable';
 
 // auxiliary content is comprised of index column, add new column column and add new row row
 export class AuxiliaryTableContentColors {
@@ -45,36 +45,36 @@ export class AuxiliaryTableContentColors {
   }
 
   // prettier-ignore
-  private static getHoverColorValue(etc: EditableTableComponent,
+  private static getHoverColorValue(at: ActiveTable,
       colorKey: keyof CellStateColorProperties, defaultColor: string): string {
-    const {styleProps} = etc.auxiliaryTableContentInternal;
+    const {styleProps} = at.auxiliaryTableContentInternal;
     return styleProps?.hoverColors?.[colorKey] || styleProps?.default?.[colorKey]
-      || etc.defaultColumnsSettings.cellStyle?.[colorKey] || defaultColor;
+      || at.defaultColumnsSettings.cellStyle?.[colorKey] || defaultColor;
   }
 
   // prettier-ignore
-  private static getDefaultColorValue(etc: EditableTableComponent, colorKey: keyof CellStateColorProperties) {
-    return etc.auxiliaryTableContentInternal.styleProps?.default?.[colorKey]
-      || etc.defaultColumnsSettings.cellStyle?.[colorKey] || '';
+  private static getDefaultColorValue(at: ActiveTable, colorKey: keyof CellStateColorProperties) {
+    return at.auxiliaryTableContentInternal.styleProps?.default?.[colorKey]
+      || at.defaultColumnsSettings.cellStyle?.[colorKey] || '';
   }
 
   // prettier-ignore
-  public static setEventColors(etc: EditableTableComponent) {
+  public static setEventColors(at: ActiveTable) {
     const cellColors = {
       default: {
-        backgroundColor: AuxiliaryTableContentColors.getDefaultColorValue(etc, 'backgroundColor'),
-        color: AuxiliaryTableContentColors.getDefaultColorValue(etc, 'color'),
+        backgroundColor: AuxiliaryTableContentColors.getDefaultColorValue(at, 'backgroundColor'),
+        color: AuxiliaryTableContentColors.getDefaultColorValue(at, 'color'),
       },
       hover: {
         backgroundColor: AuxiliaryTableContentColors.getHoverColorValue(
-          etc, 'backgroundColor', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES.backgroundColor),
+          at, 'backgroundColor', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES.backgroundColor),
         color: AuxiliaryTableContentColors.getHoverColorValue(
-          etc, 'color', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES.color),
+          at, 'color', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES.color),
       },
     };
     AuxiliaryTableContentColors.CELL_COLORS.data = cellColors;
     AuxiliaryTableContentColors.CELL_COLORS.header = cellColors;
-    const {auxiliaryTableContentInternal: {inheritHeaderStyle}, defaultColumnsSettings: {headerStyleProps}} = etc;
+    const {auxiliaryTableContentInternal: {inheritHeaderStyle}, defaultColumnsSettings: {headerStyleProps}} = at;
     if (inheritHeaderStyle === undefined || inheritHeaderStyle === true) {
       AuxiliaryTableContentColors.overwriteHeaderWithInheritedColors(headerStyleProps)
     } else {

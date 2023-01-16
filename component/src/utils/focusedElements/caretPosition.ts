@@ -1,6 +1,6 @@
 import {CheckboxCellElement} from '../../elements/cell/checkboxCell/checkboxCellElement';
-import {EditableTableComponent} from '../../editable-table-component';
 import {CellElement} from '../../elements/cell/cellElement';
+import {ActiveTable} from '../../activeTable';
 import {Browser} from '../browser/browser';
 
 export class CaretPosition {
@@ -13,8 +13,8 @@ export class CaretPosition {
     selection.addRange(range);
   }
 
-  private static getSelection(etc: EditableTableComponent): Selection | null {
-    const shadowRoot = etc.shadowRoot as unknown as Document;
+  private static getSelection(at: ActiveTable): Selection | null {
+    const shadowRoot = at.shadowRoot as unknown as Document;
     // chrome
     if (shadowRoot.getSelection) {
       return shadowRoot.getSelection();
@@ -28,12 +28,12 @@ export class CaretPosition {
     return null;
   }
 
-  public static setToEndOfText(etc: EditableTableComponent, textContainerElement: HTMLElement) {
+  public static setToEndOfText(at: ActiveTable, textContainerElement: HTMLElement) {
     if (CheckboxCellElement.isCheckboxCell(textContainerElement)) return;
-    let selection = CaretPosition.getSelection(etc);
+    let selection = CaretPosition.getSelection(at);
     if (Browser.IS_SAFARI && !selection) {
       textContainerElement.focus();
-      selection = CaretPosition.getSelection(etc);
+      selection = CaretPosition.getSelection(at);
     }
     if (selection) CaretPosition.setSelectionToEndOfText(textContainerElement, selection);
   }

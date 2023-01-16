@@ -1,7 +1,7 @@
 import {MaximumRows} from '../../../../utils/insertRemoveStructure/insert/maximum/maximumRows';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {NoContentStubElement} from '../shared/noContentStubElement';
 import {CellElement} from '../../../cell/cellElement';
+import {ActiveTable} from '../../../../activeTable';
 import {AddNewRowEvents} from './addNewRowEvents';
 import {RowElement} from './rowElement';
 
@@ -27,8 +27,8 @@ export class AddNewRowElement {
   }
 
   // prettier-ignore
-  private static createCell(etc: EditableTableComponent) {
-    const {defaultColumnsSettings: {cellStyle}, auxiliaryTableContentInternal: {displayAddRowCell, styleProps}} = etc;
+  private static createCell(at: ActiveTable) {
+    const {defaultColumnsSettings: {cellStyle}, auxiliaryTableContentInternal: {displayAddRowCell, styleProps}} = at;
     const addNewRowCell = CellElement.createContentCell(false, cellStyle, styleProps?.default);
     addNewRowCell.id = AddNewRowElement.ID;
     if (!displayAddRowCell) {
@@ -41,23 +41,23 @@ export class AddNewRowElement {
     AddNewRowElement.setDisplay(addNewRowCell, displayAddRowCell);
     // set to high number to always merge cells in this row
     addNewRowCell.colSpan = AddNewRowElement.DEFAULT_COL_SPAN;
-    AddNewRowEvents.setCellEvents(etc, addNewRowCell);
+    AddNewRowEvents.setCellEvents(at, addNewRowCell);
     return addNewRowCell;
   }
 
-  public static create(etc: EditableTableComponent) {
+  public static create(at: ActiveTable) {
     const addNewRowRow = RowElement.create();
-    const addNewRowCell = AddNewRowElement.createCell(etc);
+    const addNewRowCell = AddNewRowElement.createCell(at);
     addNewRowRow.appendChild(addNewRowCell);
     return addNewRowCell;
   }
 
   // prettier-ignore
-  public static toggle(etc: EditableTableComponent) {
-    const {tableBodyElementRef, addRowCellElementRef, auxiliaryTableContentInternal: {displayAddRowCell}} = etc;
+  public static toggle(at: ActiveTable) {
+    const {tableBodyElementRef, addRowCellElementRef, auxiliaryTableContentInternal: {displayAddRowCell}} = at;
     if (!addRowCellElementRef?.parentElement || !tableBodyElementRef) return;
-    if (displayAddRowCell) AddNewRowElement.setDisplay(addRowCellElementRef, MaximumRows.canAddMore(etc));
-    RowElement.toggleLastRowClass(etc.shadowRoot as ShadowRoot, addRowCellElementRef.parentElement)
+    if (displayAddRowCell) AddNewRowElement.setDisplay(addRowCellElementRef, MaximumRows.canAddMore(at));
+    RowElement.toggleLastRowClass(at.shadowRoot as ShadowRoot, addRowCellElementRef.parentElement)
   }
 
   public static isAddNewRowRow(rowElement: HTMLElement) {

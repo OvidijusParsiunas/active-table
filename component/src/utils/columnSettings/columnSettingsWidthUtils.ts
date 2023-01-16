@@ -1,9 +1,9 @@
 import {StringDimensionUtils, SuccessResult} from '../tableDimensions/stringDimensionUtils';
 import {StaticTableWidthUtils} from '../tableDimensions/staticTable/staticTableWidthUtils';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
-import {EditableTableComponent} from '../../editable-table-component';
 import {TableElement} from '../../elements/table/tableElement';
 import {ColumnDetails} from '../columnDetails/columnDetails';
+import {ActiveTable} from '../../activeTable';
 
 // REF-24
 export class ColumnSettingsWidthUtils {
@@ -31,17 +31,17 @@ export class ColumnSettingsWidthUtils {
   }
 
   // prettier-ignore
-  public static changeWidth(etc: EditableTableComponent, cellElement: HTMLElement, oldSettings?: ColumnSettingsInternal,
+  public static changeWidth(at: ActiveTable, cellElement: HTMLElement, oldSettings?: ColumnSettingsInternal,
       newSettings?: ColumnSettingsInternal) {
     let hasWidthChanged = false;
     if (oldSettings && ColumnSettingsWidthUtils.isWidthDefined(oldSettings)) {
-      ColumnSettingsWidthUtils.updateColumnWidth(etc.tableElementRef as HTMLElement, cellElement, oldSettings, false);
+      ColumnSettingsWidthUtils.updateColumnWidth(at.tableElementRef as HTMLElement, cellElement, oldSettings, false);
       hasWidthChanged = true;
     }
     if (newSettings && ColumnSettingsWidthUtils.isWidthDefined(newSettings)) {
-      ColumnSettingsWidthUtils.updateColumnWidth(etc.tableElementRef as HTMLElement, cellElement, newSettings, true);
+      ColumnSettingsWidthUtils.updateColumnWidth(at.tableElementRef as HTMLElement, cellElement, newSettings, true);
       hasWidthChanged = true;
     }
-    if (hasWidthChanged) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true);
+    if (hasWidthChanged) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true);
   }
 }

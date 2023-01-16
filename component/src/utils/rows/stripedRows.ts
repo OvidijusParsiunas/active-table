@@ -1,6 +1,6 @@
-import {EditableTableComponent} from '../../editable-table-component';
 import {StripedRowsInternal} from '../../types/stripedRowsInternal';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
+import {ActiveTable} from '../../activeTable';
 
 export class StripedRows {
   private static readonly DEFAULT_PROPERTIES: StripedRowsInternal = {
@@ -14,13 +14,13 @@ export class StripedRows {
     return style;
   }
 
-  public static process(etc: EditableTableComponent) {
-    const {stripedRows} = etc;
+  public static process(at: ActiveTable) {
+    const {stripedRows} = at;
     if (!stripedRows) return;
     if (typeof stripedRows === 'boolean') {
-      etc.stripedRowsInternal = StripedRows.DEFAULT_PROPERTIES;
+      at.stripedRowsInternal = StripedRows.DEFAULT_PROPERTIES;
     } else {
-      etc.stripedRowsInternal = {
+      at.stripedRowsInternal = {
         evenRow: stripedRows.evenRow || StripedRows.DEFAULT_PROPERTIES.evenRow,
         oddRow: stripedRows.oddRow || StripedRows.DEFAULT_PROPERTIES.oddRow,
       };

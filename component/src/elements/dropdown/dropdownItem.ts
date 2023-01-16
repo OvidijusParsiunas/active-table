@@ -1,9 +1,9 @@
 import {DropdownButtonItemSettings, IconSettings} from '../../types/dropdownButtonItem';
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
-import {EditableTableComponent} from '../../editable-table-component';
 import {SVGIconUtils} from '../../utils/svgIcons/svgIconUtils';
 import {DropdownItemEvents} from './dropdownItemEvents';
 import {Optional} from '../../types/utilityTypes';
+import {ActiveTable} from '../../activeTable';
 
 export class DropdownItem {
   public static readonly DROPDOWN_ITEM_CLASS = 'dropdown-item';
@@ -41,14 +41,14 @@ export class DropdownItem {
   }
 
   // no need to sanitize paste as input element already does it
-  public static addInputItem(etc: EditableTableComponent, dropdownElement: HTMLElement) {
+  public static addInputItem(at: ActiveTable, dropdownElement: HTMLElement) {
     const itemElement = DropdownItem.createItem(dropdownElement);
     itemElement.classList.add(DropdownItem.DROPDOWN_INPUT_ITEM_CLASS);
     const inputElement = DropdownItem.createDropdownItemBaseElement('input');
     inputElement.classList.add(DropdownItem.DROPDOWN_INPUT_CLASS);
     itemElement.appendChild(inputElement);
     dropdownElement.appendChild(itemElement);
-    DropdownItemEvents.addItemEvents(etc.activeOverlayElements, inputElement);
+    DropdownItemEvents.addItemEvents(at.activeOverlayElements, inputElement);
   }
 
   // REF-10
@@ -102,26 +102,26 @@ export class DropdownItem {
   }
 
   // prettier-ignore
-  public static addButtonItem(etc: EditableTableComponent, dropdown: HTMLElement,
+  public static addButtonItem(at: ActiveTable, dropdown: HTMLElement,
       itemSettings: Optional<DropdownButtonItemSettings, 'iconSettings'>, ...classNames: string[]) {
     const buttonElement = DropdownItem.createButtonItemNoEvents(dropdown, itemSettings, ...classNames);
-    DropdownItemEvents.addItemEvents(etc.activeOverlayElements, buttonElement);
+    DropdownItemEvents.addItemEvents(at.activeOverlayElements, buttonElement);
     return buttonElement;
   }
 
   // prettier-ignore
-  public static addNewButtonItems(etc: EditableTableComponent, dropdownElement: HTMLElement,
+  public static addNewButtonItems(at: ActiveTable, dropdownElement: HTMLElement,
       itemsSettings: DropdownButtonItemSettings[]): HTMLElement[] {
     return itemsSettings.map((item) => {
-      return DropdownItem.addButtonItem(etc, dropdownElement, item);
+      return DropdownItem.addButtonItem(at, dropdownElement, item);
     });
   }
 
-  public static addButtonItemElements(etc: EditableTableComponent, dropdownElement: HTMLElement, elements: HTMLElement[]) {
+  public static addButtonItemElements(at: ActiveTable, dropdownElement: HTMLElement, elements: HTMLElement[]) {
     elements.forEach((element) => {
       element.tabIndex = dropdownElement.children.length;
       dropdownElement.appendChild(element);
-      DropdownItemEvents.addItemEvents(etc.activeOverlayElements, element);
+      DropdownItemEvents.addItemEvents(at.activeOverlayElements, element);
     });
   }
 

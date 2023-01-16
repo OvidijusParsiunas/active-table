@@ -1,7 +1,7 @@
 import {SelectDropdownItem} from '../../../../dropdown/selectDropdown/selectDropdownItem';
-import {EditableTableComponent} from '../../../../../editable-table-component';
 import {CellTextElement} from '../../text/cellTextElement';
 import {EMPTY_STRING} from '../../../../../consts/text';
+import {ActiveTable} from '../../../../../activeTable';
 import {CellElement} from '../../../cellElement';
 
 export class LabelCellTextElement {
@@ -18,9 +18,9 @@ export class LabelCellTextElement {
   }
 
   // prettier-ignore
-  public static finaliseEditedText(etc: EditableTableComponent, textElement: HTMLElement, columnIndex: number,
+  public static finaliseEditedText(at: ActiveTable, textElement: HTMLElement, columnIndex: number,
     processMatching = false) {
-  const columnDetails = etc.columnsDetails[columnIndex];
+  const columnDetails = at.columnsDetails[columnIndex];
   const {selectDropdown, activeType: {selectProps}, settings: {defaultText, isDefaultTextRemovable}} = columnDetails;
   const color = selectDropdown.selectItems[CellElement.getText(textElement)]?.color;
   if (CellElement.getText(textElement) === EMPTY_STRING
@@ -31,7 +31,7 @@ export class LabelCellTextElement {
      // not using staticItems state as this method may be called before it is available, if not, then refactor
   } else if (selectProps?.canAddMoreOptions) {
     // if a label is deleted and then added with an already existing text element, use its current background
-    SelectDropdownItem.addNewSelectItem(etc, textElement, columnDetails, textElement.style.backgroundColor);
+    SelectDropdownItem.addNewSelectItem(at, textElement, columnDetails, textElement.style.backgroundColor);
   }
 }
 }

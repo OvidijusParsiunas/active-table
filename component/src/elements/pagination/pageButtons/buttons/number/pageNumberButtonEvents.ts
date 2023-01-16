@@ -1,6 +1,6 @@
 import {PaginationUtils} from '../../../../../utils/pagination/paginationUtils';
-import {EditableTableComponent} from '../../../../../editable-table-component';
 import {PaginationInternal} from '../../../../../types/paginationInternal';
+import {ActiveTable} from '../../../../../activeTable';
 import {PageButtonStyle} from '../../pageButtonStyle';
 
 export class PageNumberButtonEvents {
@@ -10,7 +10,7 @@ export class PageNumberButtonEvents {
     setTimeout(() => (paginationInternal.clickedPageNumberButton = false));
   }
 
-  private static buttonMouseUp(this: EditableTableComponent, buttonNumber: number, event: MouseEvent) {
+  private static buttonMouseUp(this: ActiveTable, buttonNumber: number, event: MouseEvent) {
     PageNumberButtonEvents.markClick(this.paginationInternal);
     const buttonElement = event.target as HTMLElement;
     const {pageButtons} = this.paginationInternal.style;
@@ -23,7 +23,7 @@ export class PageNumberButtonEvents {
     }
   }
 
-  public static setEvents(etc: EditableTableComponent, buttonNumber: number, buttonElement: HTMLElement) {
-    buttonElement.onmouseup = PageNumberButtonEvents.buttonMouseUp.bind(etc, buttonNumber);
+  public static setEvents(at: ActiveTable, buttonNumber: number, buttonElement: HTMLElement) {
+    buttonElement.onmouseup = PageNumberButtonEvents.buttonMouseUp.bind(at, buttonNumber);
   }
 }

@@ -1,12 +1,12 @@
-import {EditableTableComponent} from '../../../../../editable-table-component';
 import {FirstPageButtonEvents} from './firstPageButtonEvents';
 import {PageButtonElement} from '../../pageButtonElement';
+import {ActiveTable} from '../../../../../activeTable';
 
 export class FirstPageButtonElement {
-  public static create(etc: EditableTableComponent) {
-    const {pageButtons} = etc.paginationInternal.style;
+  public static create(at: ActiveTable) {
+    const {pageButtons} = at.paginationInternal.style;
     const firstButtonElement = PageButtonElement.create(pageButtons.actionButtons.firstText as string, pageButtons, true);
-    setTimeout(() => FirstPageButtonEvents.setEvents(etc, firstButtonElement));
+    setTimeout(() => FirstPageButtonEvents.setEvents(at, firstButtonElement));
     return firstButtonElement;
   }
 }

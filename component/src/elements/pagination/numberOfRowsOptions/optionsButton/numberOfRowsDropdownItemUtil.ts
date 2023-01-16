@@ -1,31 +1,29 @@
 import {PageButtonContainerElement} from '../../pageButtons/pageButtonContainerElement';
 import {NumberOfRowsOptionsButtonElement} from './numberOfRowsOptionsButtonElement';
 import {PaginationUtils} from '../../../../utils/pagination/paginationUtils';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {NumberOfRowsDropdownItem} from './numberOfRowsDropdownItem';
+import {ActiveTable} from '../../../../activeTable';
 
 export class NumberOfRowsDropdownItemUtil {
-  // prettier-ignore
-  private static updateRowsAndPaginationComponents(etc: EditableTableComponent, optionsButton: HTMLElement,
-      newNumberOfRows: string) {
-    const {buttonContainer} = etc.paginationInternal;
-    PageButtonContainerElement.repopulateButtons(etc, buttonContainer);
+  private static updateRowsAndPaginationComponents(at: ActiveTable, optionsButton: HTMLElement, newNumberOfRows: string) {
+    const {buttonContainer} = at.paginationInternal;
+    PageButtonContainerElement.repopulateButtons(at, buttonContainer);
     NumberOfRowsOptionsButtonElement.updateButtonText(optionsButton, newNumberOfRows);
-    PaginationUtils.displayRowsForDifferentButton(etc, 1);
+    PaginationUtils.displayRowsForDifferentButton(at, 1);
   }
 
-  private static getNewNumberOfRows(etc: EditableTableComponent, newNumberOfRows: string) {
-    const {paginationInternal, contents, auxiliaryTableContentInternal} = etc;
+  private static getNewNumberOfRows(at: ActiveTable, newNumberOfRows: string) {
+    const {paginationInternal, contents, auxiliaryTableContentInternal} = at;
     if (paginationInternal.isAllRowsOptionSelected) {
       return auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? contents.length : contents.length - 1;
     }
     return Number(newNumberOfRows);
   }
 
-  public static setNewNumberOfRows(etc: EditableTableComponent, optionsButton: HTMLElement, newNumberOfRows: string) {
-    etc.paginationInternal.isAllRowsOptionSelected =
+  public static setNewNumberOfRows(at: ActiveTable, optionsButton: HTMLElement, newNumberOfRows: string) {
+    at.paginationInternal.isAllRowsOptionSelected =
       newNumberOfRows.toLocaleLowerCase() === NumberOfRowsDropdownItem.ALL_ITEM_TEXT;
-    etc.paginationInternal.numberOfRows = NumberOfRowsDropdownItemUtil.getNewNumberOfRows(etc, newNumberOfRows);
-    NumberOfRowsDropdownItemUtil.updateRowsAndPaginationComponents(etc, optionsButton, newNumberOfRows);
+    at.paginationInternal.numberOfRows = NumberOfRowsDropdownItemUtil.getNewNumberOfRows(at, newNumberOfRows);
+    NumberOfRowsDropdownItemUtil.updateRowsAndPaginationComponents(at, optionsButton, newNumberOfRows);
   }
 }

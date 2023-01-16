@@ -1,8 +1,8 @@
 import {css} from 'lit';
 
 /* REF-9 */
-export const ediTableStyle = css`
-  /* this is used to shrink the width of the editable-table-component element to the shadow-root width */
+export const activeTableStyle = css`
+  /* this is used to shrink the width of the active-table element to the shadow-root width */
   :host {
     display: inline-block;
   }
@@ -181,7 +181,7 @@ export const ediTableStyle = css`
     padding: 0px !important;
   }
 
-  .editable-table-component-dropdown {
+  .active-table-dropdown {
     position: absolute;
     box-shadow: rgb(15 15 15 / 5%) 0px 0px 0px 1px, rgb(15 15 15 / 10%) 0px 3px 6px, rgb(15 15 15 / 20%) 0px 9px 24px;
     border-radius: 5px;

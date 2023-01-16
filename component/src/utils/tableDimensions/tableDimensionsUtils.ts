@@ -1,5 +1,4 @@
 import {PossibleStringDimensions, StringDimensionUtils} from './stringDimensionUtils';
-import {EditableTableComponent} from '../../editable-table-component';
 import {GenericElementUtils} from '../elements/genericElementUtils';
 import {IndexColumnT} from '../../types/auxiliaryTableContent';
 import {TableDimensions} from '../../types/tableDimensions';
@@ -7,6 +6,7 @@ import {ColumnsDetailsT} from '../../types/columnDetails';
 import {TableContents} from '../../types/tableContents';
 import {OverflowUtils} from '../overflow/overflowUtils';
 import {TableStyle} from '../../types/tableStyle';
+import {ActiveTable} from '../../activeTable';
 
 export class TableDimensionsUtils {
   public static readonly MINIMAL_TABLE_WIDTH = 70;
@@ -22,10 +22,10 @@ export class TableDimensionsUtils {
     }
   }
 
-  private static setPreserveNarrowColumnsProp(etc: EditableTableComponent, tableDimensions: TableDimensions) {
+  private static setPreserveNarrowColumnsProp(at: ActiveTable, tableDimensions: TableDimensions) {
     // the reason why preserNarrowColumns is stored inside an object is because we temporarily need to overwrite it
     // when resizing the table and we do not want to re-render
-    tableDimensions.preserveNarrowColumns = etc.preserveNarrowColumns;
+    tableDimensions.preserveNarrowColumns = at.preserveNarrowColumns;
   }
 
   private static setDefaultDimension(tableDimensions: TableDimensions, parentElement: HTMLElement) {
@@ -35,13 +35,13 @@ export class TableDimensionsUtils {
   }
 
   // prettier-ignore
-  private static setDimension(etc: EditableTableComponent, key: keyof PossibleStringDimensions<TableStyle>) {
-    const {tableStyle, tableDimensions, tableElementRef, parentElement} = etc;
+  private static setDimension(at: ActiveTable, key: keyof PossibleStringDimensions<TableStyle>) {
+    const {tableStyle, tableDimensions, tableElementRef, parentElement} = at;
     if (!tableElementRef || !parentElement) return;
     const numberDimension = StringDimensionUtils.generateNumberDimensionFromClientString(key,
       parentElement, tableStyle, true, TableDimensionsUtils.MINIMAL_TABLE_WIDTH);
     if (numberDimension !== undefined) {
-      if (etc.overflow) OverflowUtils.processNumberDimension(numberDimension);
+      if (at.overflow) OverflowUtils.processNumberDimension(numberDimension);
       tableDimensions[key] = numberDimension.number;
       tableDimensions.isPercentage = numberDimension.isPercentage;
     }
@@ -49,14 +49,14 @@ export class TableDimensionsUtils {
 
   // CAUTION-3
   // prettier-ignore
-  public static setTableDimensions(etc: EditableTableComponent) {
-    const {tableStyle, tableDimensions, auxiliaryTableContentInternal: {displayIndexColumn}} = etc;
-    const parentElement = etc.parentElement as HTMLElement;
+  public static setTableDimensions(at: ActiveTable) {
+    const {tableStyle, tableDimensions, auxiliaryTableContentInternal: {displayIndexColumn}} = at;
+    const parentElement = at.parentElement as HTMLElement;
     // width and maxWidth are mutually exclusive and if both are present width is the only one that is used
     if (tableStyle.width !== undefined) {
-      TableDimensionsUtils.setDimension(etc, 'width');
+      TableDimensionsUtils.setDimension(at, 'width');
     } else if (tableStyle.maxWidth !== undefined) {
-      TableDimensionsUtils.setDimension(etc, 'maxWidth');
+      TableDimensionsUtils.setDimension(at, 'maxWidth');
     } else if (
       !GenericElementUtils.isParentWidthUndetermined(parentElement.style.width)
     ) {
@@ -64,7 +64,7 @@ export class TableDimensionsUtils {
     }
     StringDimensionUtils.removeAllDimensions(tableStyle);
     // else the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
-    TableDimensionsUtils.setPreserveNarrowColumnsProp(etc, tableDimensions);
+    TableDimensionsUtils.setPreserveNarrowColumnsProp(at, tableDimensions);
     TableDimensionsUtils.setIsColumnIndexCellTextWrapped(tableDimensions, displayIndexColumn);
   }
 
@@ -73,9 +73,9 @@ export class TableDimensionsUtils {
     if (contents.length > columnsDetails[0]?.elements.length) contents.splice(columnsDetails[0].elements.length);
   }
 
-  public static hasSetTableWidthBeenBreached(etc: EditableTableComponent) {
-    const {width, maxWidth} = etc.tableDimensions;
-    const tableOffset = etc.offsetWidth;
+  public static hasSetTableWidthBeenBreached(at: ActiveTable) {
+    const {width, maxWidth} = at.tableDimensions;
+    const tableOffset = at.offsetWidth;
     const setWidth = width || maxWidth;
     if (setWidth) {
       // tableOffset is usually rounded, hence using Math.ceil on setWidth to correctly compare them
@@ -84,11 +84,11 @@ export class TableDimensionsUtils {
     return false;
   }
 
-  public static record(etc: EditableTableComponent) {
-    etc.tableDimensions.recordedParentWidth = (etc.parentElement as HTMLElement).offsetWidth;
-    etc.tableDimensions.recordedParentHeight = (etc.parentElement as HTMLElement).offsetHeight;
-    etc.tableDimensions.recordedWindowWidth = window.innerWidth;
-    etc.tableDimensions.recordedWindowHeight = window.innerHeight;
+  public static record(at: ActiveTable) {
+    at.tableDimensions.recordedParentWidth = (at.parentElement as HTMLElement).offsetWidth;
+    at.tableDimensions.recordedParentHeight = (at.parentElement as HTMLElement).offsetHeight;
+    at.tableDimensions.recordedWindowWidth = window.innerWidth;
+    at.tableDimensions.recordedWindowHeight = window.innerHeight;
   }
 
   public static getDefault() {

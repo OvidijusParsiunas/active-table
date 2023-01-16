@@ -2,19 +2,19 @@ import {NumberOfRowsOptionsContainerElement} from './numberOfRowsOptions/numberO
 import {NumberOfVisibleRowsElement} from './numberOfVisibleRows/numberOfVisibleRowsElement';
 import {PaginationContainerElement} from './paginationContainer/paginationContainerElement';
 import {PageButtonContainerElement} from './pageButtons/pageButtonContainerElement';
-import {EditableTableComponent} from '../../editable-table-component';
+import {ActiveTable} from '../../activeTable';
 
 export class PaginationElements {
   public static readonly PAGINATION_TEXT_COMPONENT_CLASS = 'pagination-text-component';
 
-  public static create(etc: EditableTableComponent) {
-    const containers = PaginationContainerElement.addPaginationContainers(etc);
-    etc.paginationInternal.buttonContainer = PageButtonContainerElement.create(etc, containers);
-    if (etc.paginationInternal.numberOfRowsOptionsItemText) {
-      NumberOfRowsOptionsContainerElement.create(etc, containers);
+  public static create(at: ActiveTable) {
+    const containers = PaginationContainerElement.addPaginationContainers(at);
+    at.paginationInternal.buttonContainer = PageButtonContainerElement.create(at, containers);
+    if (at.paginationInternal.numberOfRowsOptionsItemText) {
+      NumberOfRowsOptionsContainerElement.create(at, containers);
     }
-    if (etc.paginationInternal.displayNumberOfVisibleRows) {
-      etc.paginationInternal.numberOfVisibleRowsElement = NumberOfVisibleRowsElement.create(etc, containers);
+    if (at.paginationInternal.displayNumberOfVisibleRows) {
+      at.paginationInternal.numberOfVisibleRowsElement = NumberOfVisibleRowsElement.create(at, containers);
     }
   }
 }

@@ -2,11 +2,11 @@ import {ColumnDropdownCellOverlayEvents} from '../dropdown/columnDropdown/cellOv
 import {RowDropdownCellOverlayEvents} from '../dropdown/rowDropdown/cellOverlay/rowDropdownCellOverlayEvents';
 import {EditableHeaderCellEvents} from './headerCell/editable/editableHeaderCellEvents';
 import {DateCellEvents} from './cellsWithTextDiv/dateCell/dateCellEvents';
-import {EditableTableComponent} from '../../editable-table-component';
 import {CheckboxCellEvents} from './checkboxCell/checkboxCellEvents';
 import {SelectCell} from './cellsWithTextDiv/selectCell/selectCell';
 import {HeaderCellEvents} from './headerCell/headerCellEvents';
 import {DataCellEvents} from './dataCell/dataCellEvents';
+import {ActiveTable} from '../../activeTable';
 
 export class CellEventsReset {
   public static unset(cellElement: HTMLElement) {
@@ -20,45 +20,39 @@ export class CellEventsReset {
     cellElement.onkeydown = () => {};
   }
 
-  // prettier-ignore
-  private static setDataCellEvents(etc: EditableTableComponent,
-      cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    const {settings, activeType} = etc.columnsDetails[columnIndex];
+  private static setDataCellEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    const {settings, activeType} = at.columnsDetails[columnIndex];
     if (!settings.isCellTextEditable) return;
-    DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
+    DataCellEvents.setEvents(at, cellElement, rowIndex, columnIndex);
     const {selectProps, calendar, checkbox} = activeType;
     if (selectProps) {
-      SelectCell.setEvents(etc, cellElement, rowIndex, columnIndex);
+      SelectCell.setEvents(at, cellElement, rowIndex, columnIndex);
     } else if (calendar) {
-      DateCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
+      DateCellEvents.setEvents(at, cellElement, rowIndex, columnIndex);
     } else if (checkbox) {
-      CheckboxCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
+      CheckboxCellEvents.setEvents(at, cellElement, rowIndex, columnIndex);
     }
   }
 
-  // prettier-ignore
-  private static setHeaderCellEvents(etc: EditableTableComponent,
-      cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (etc.columnDropdownDisplaySettings.openMethod?.cellClick) {
-      HeaderCellEvents.setEvents(etc, cellElement, columnIndex)
+  private static setHeaderCellEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
+    if (at.columnDropdownDisplaySettings.openMethod?.cellClick) {
+      HeaderCellEvents.setEvents(at, cellElement, columnIndex);
     } else {
-      DataCellEvents.setEvents(etc, cellElement, rowIndex, columnIndex);
-      EditableHeaderCellEvents.setEvents(etc, cellElement, 0, columnIndex);
-      ColumnDropdownCellOverlayEvents.setEvents(etc, columnIndex);
+      DataCellEvents.setEvents(at, cellElement, rowIndex, columnIndex);
+      EditableHeaderCellEvents.setEvents(at, cellElement, 0, columnIndex);
+      ColumnDropdownCellOverlayEvents.setEvents(at, columnIndex);
     }
   }
 
   // REF-33
-  // prettier-ignore
-  public static reset(etc: EditableTableComponent, cellElement: HTMLElement, rowIndex: number,
-      columnIndex: number) {
+  public static reset(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     if (rowIndex === 0) {
-      CellEventsReset.setHeaderCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
+      CellEventsReset.setHeaderCellEvents(at, cellElement as HTMLElement, rowIndex, columnIndex);
     } else {
-      CellEventsReset.setDataCellEvents(etc, cellElement as HTMLElement, rowIndex, columnIndex);
+      CellEventsReset.setDataCellEvents(at, cellElement as HTMLElement, rowIndex, columnIndex);
     }
-    if (!etc.auxiliaryTableContentInternal.displayIndexColumn && columnIndex === 0) {
-      RowDropdownCellOverlayEvents.addCellEvents(etc, rowIndex, cellElement);
+    if (!at.auxiliaryTableContentInternal.displayIndexColumn && columnIndex === 0) {
+      RowDropdownCellOverlayEvents.addCellEvents(at, rowIndex, cellElement);
     }
   }
 }

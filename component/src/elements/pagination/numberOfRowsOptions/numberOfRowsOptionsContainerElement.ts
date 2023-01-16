@@ -1,10 +1,10 @@
 import {Containers, PaginationContainerElement} from '../paginationContainer/paginationContainerElement';
 import {NumberOfRowsOptionsButtonElement} from './optionsButton/numberOfRowsOptionsButtonElement';
 import {NumberOfRowsDropdown} from './optionsButton/numberOfRowsDropdown';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {PaginationInternal} from '../../../types/paginationInternal';
 import {NumberOfRowsOptions} from '../../../types/pagination';
 import {PaginationElements} from '../paginationElements';
+import {ActiveTable} from '../../../activeTable';
 
 export class NumberOfRowsOptionsContainerElement {
   private static readonly ID = 'pagination-of-rows-options';
@@ -29,14 +29,14 @@ export class NumberOfRowsOptionsContainerElement {
   }
 
   // prettier-ignore
-  public static create(etc: EditableTableComponent, containers: Containers) {
-    const numberOfRowsOptionsContainer = NumberOfRowsOptionsContainerElement.createContainer(etc.paginationInternal);
-    numberOfRowsOptionsContainer.appendChild(NumberOfRowsOptionsContainerElement.createText(etc.paginationInternal));
-    const optionsButton = NumberOfRowsOptionsButtonElement.create(etc);
+  public static create(at: ActiveTable, containers: Containers) {
+    const numberOfRowsOptionsContainer = NumberOfRowsOptionsContainerElement.createContainer(at.paginationInternal);
+    numberOfRowsOptionsContainer.appendChild(NumberOfRowsOptionsContainerElement.createText(at.paginationInternal));
+    const optionsButton = NumberOfRowsOptionsButtonElement.create(at);
     numberOfRowsOptionsContainer.appendChild(optionsButton);
-    etc.paginationInternal.numberOfRowsDropdown = NumberOfRowsDropdown.create(etc, optionsButton);
-    numberOfRowsOptionsContainer.appendChild(etc.paginationInternal.numberOfRowsDropdown);
-    PaginationContainerElement.addToContainer(etc.paginationInternal.positions.numberOfRowsOptions.side,
+    at.paginationInternal.numberOfRowsDropdown = NumberOfRowsDropdown.create(at, optionsButton);
+    numberOfRowsOptionsContainer.appendChild(at.paginationInternal.numberOfRowsDropdown);
+    PaginationContainerElement.addToContainer(at.paginationInternal.positions.numberOfRowsOptions.side,
       containers, numberOfRowsOptionsContainer);
     return numberOfRowsOptionsContainer;
   }

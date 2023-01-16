@@ -1,7 +1,7 @@
-import {EditableTableComponent} from '../../editable-table-component';
 import {CaretPosition} from '../focusedElements/caretPosition';
 import {CellElement} from '../../elements/cell/cellElement';
 import {EMPTY_STRING} from '../../consts/text';
+import {ActiveTable} from '../../activeTable';
 import {Browser} from './browser';
 
 // REF-2 - currently an issue in Firefox and Safari
@@ -30,12 +30,12 @@ export class CaretDisplayFix {
     textContainerElement.setAttribute(CaretDisplayFix.TAB_INDEX, '0');
   }
 
-  private static removeBRPadding(etc: EditableTableComponent, textContainerElement: HTMLElement) {
+  private static removeBRPadding(at: ActiveTable, textContainerElement: HTMLElement) {
     const textElement = CellElement.getTextElement(textContainerElement);
     const firstNode = textElement.childNodes[0] as HTMLElement;
     if (firstNode.tagName === CaretDisplayFix.BR_TAG_NAME) {
       firstNode.remove();
-      CaretPosition.setToEndOfText(etc, textContainerElement);
+      CaretPosition.setToEndOfText(at, textContainerElement);
     }
   }
 
@@ -50,11 +50,11 @@ export class CaretDisplayFix {
   // this happens when cell text is programmatically set to empty or when the user doubeclicks text and clicks backspace
   // natively firefox adds a 'br' element to replace the text when the user deletes it when clicking backspace for each
   // letter however it does not for the cases outlined previously, hence this is needed
-  public static toggleCellTextBRPadding(etc: EditableTableComponent, textContainerElement: HTMLElement, isUndo: boolean) {
+  public static toggleCellTextBRPadding(at: ActiveTable, textContainerElement: HTMLElement, isUndo: boolean) {
     const text = CellElement.getText(textContainerElement);
     if (isUndo && text !== EMPTY_STRING) {
       // if the user deletes all text then clicks undo, the <br> element would cause the text to be on a new line
-      CaretDisplayFix.removeBRPadding(etc, textContainerElement);
+      CaretDisplayFix.removeBRPadding(at, textContainerElement);
     } else {
       CaretDisplayFix.addBRPaddingToEmptyCell(textContainerElement, text);
     }

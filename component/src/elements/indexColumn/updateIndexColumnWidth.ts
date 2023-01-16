@@ -3,55 +3,55 @@ import {ToggleAdditionElements} from '../table/addNewElements/shared/toggleAddit
 import {AddNewColumnElement} from '../table/addNewElements/column/addNewColumnElement';
 import {TableDimensionsUtils} from '../../utils/tableDimensions/tableDimensionsUtils';
 import {AddNewRowElement} from '../table/addNewElements/row/addNewRowElement';
-import {EditableTableComponent} from '../../editable-table-component';
 import {ExtractElements} from '../../utils/elements/extractElements';
 import {DEFAULT_COLUMN_WIDTH} from '../../consts/defaultColumnWidth';
 import {Browser} from '../../utils/browser/browser';
 import {TableElement} from '../table/tableElement';
+import {ActiveTable} from '../../activeTable';
 import {IndexColumn} from './indexColumn';
 
 export class UpdateIndexColumnWidth {
   // acts as the recorded column offsetWidth
   public static WIDTH = DEFAULT_COLUMN_WIDTH;
 
-  private static wrapColumnTextAndGetDefaultWidth(etc: EditableTableComponent) {
-    const {tableBodyElementRef, contents, tableDimensions} = etc;
+  private static wrapColumnTextAndGetDefaultWidth(at: ActiveTable) {
+    const {tableBodyElementRef, contents, tableDimensions} = at;
     ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, contents).forEach((row) => {
       const indexCell = row.children[0] as HTMLElement;
       indexCell.classList.remove(IndexColumn.INDEX_CELL_OVERFLOW_CLASS);
     });
     tableDimensions.isColumnIndexCellTextWrapped = true;
-    ToggleAdditionElements.update(etc, true, AddNewColumnElement.toggle);
+    ToggleAdditionElements.update(at, true, AddNewColumnElement.toggle);
     return IndexColumn.DEFAULT_WIDTH;
   }
 
-  private static changeTableWidths(etc: EditableTableComponent, newWidth: number) {
+  private static changeTableWidths(at: ActiveTable, newWidth: number) {
     const difference = newWidth - UpdateIndexColumnWidth.WIDTH;
     UpdateIndexColumnWidth.WIDTH = newWidth;
     TableElement.changeStaticWidthTotal(difference);
-    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true);
+    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true);
   }
 
-  private static changeCellAndTableWidths(etc: EditableTableComponent, firstRow: HTMLElement, newWidth: number) {
+  private static changeCellAndTableWidths(at: ActiveTable, firstRow: HTMLElement, newWidth: number) {
     const headerCell = firstRow.children[0] as HTMLElement;
-    UpdateIndexColumnWidth.changeTableWidths(etc, newWidth);
+    UpdateIndexColumnWidth.changeTableWidths(at, newWidth);
     // needs to be done after changeTableWidths because isTableAtMaxWidth would not return true
     headerCell.style.width = `${newWidth}px`;
   }
 
-  private static forceWrap(etc: EditableTableComponent, firstRow: HTMLElement) {
-    const newWidth = UpdateIndexColumnWidth.wrapColumnTextAndGetDefaultWidth(etc);
-    UpdateIndexColumnWidth.changeCellAndTableWidths(etc, firstRow, newWidth);
+  private static forceWrap(at: ActiveTable, firstRow: HTMLElement) {
+    const newWidth = UpdateIndexColumnWidth.wrapColumnTextAndGetDefaultWidth(at);
+    UpdateIndexColumnWidth.changeCellAndTableWidths(at, firstRow, newWidth);
   }
 
-  private static shouldTextBeWrapped(etc: EditableTableComponent) {
-    return !etc.tableDimensions.isColumnIndexCellTextWrapped && TableDimensionsUtils.hasSetTableWidthBeenBreached(etc);
+  private static shouldTextBeWrapped(at: ActiveTable) {
+    return !at.tableDimensions.isColumnIndexCellTextWrapped && TableDimensionsUtils.hasSetTableWidthBeenBreached(at);
   }
 
-  private static changeWidth(etc: EditableTableComponent, firstRow: HTMLElement, newWidth: number) {
-    UpdateIndexColumnWidth.changeCellAndTableWidths(etc, firstRow, newWidth);
+  private static changeWidth(at: ActiveTable, firstRow: HTMLElement, newWidth: number) {
+    UpdateIndexColumnWidth.changeCellAndTableWidths(at, firstRow, newWidth);
     // if the above has set the width too high
-    if (UpdateIndexColumnWidth.shouldTextBeWrapped(etc)) UpdateIndexColumnWidth.forceWrap(etc, firstRow);
+    if (UpdateIndexColumnWidth.shouldTextBeWrapped(at)) UpdateIndexColumnWidth.forceWrap(at, firstRow);
   }
 
   private static getCellOverflow(cell: HTMLElement) {
@@ -77,16 +77,16 @@ export class UpdateIndexColumnWidth {
 
   // this works because the 'block' display style is not set on the table
   // checking if the cells width is overflown and if so - increase its width (cannot decrease the width)
-  private static updateColumnWidthWhenOverflow(etc: EditableTableComponent, firstRow: HTMLElement, lastCell: HTMLElement) {
+  private static updateColumnWidthWhenOverflow(at: ActiveTable, firstRow: HTMLElement, lastCell: HTMLElement) {
     // overflow width does not include the borderRightWidth - which the ChangeIndexColumnWidth.WIDTH does
     const overflowWidth = UpdateIndexColumnWidth.getIndexColumnOverflowWidth(firstRow, lastCell);
     if (UpdateIndexColumnWidth.WIDTH !== overflowWidth && overflowWidth !== 0) {
       // Firefox does not include lastCell paddingRight (4px) when setting the new width
       const newWidth = overflowWidth + (Browser.IS_FIREFOX ? 4 : 0);
       if (Browser.IS_SAFARI) {
-        setTimeout(() => UpdateIndexColumnWidth.changeWidth(etc, firstRow, newWidth));
+        setTimeout(() => UpdateIndexColumnWidth.changeWidth(at, firstRow, newWidth));
       } else {
-        UpdateIndexColumnWidth.changeWidth(etc, firstRow, newWidth);
+        UpdateIndexColumnWidth.changeWidth(at, firstRow, newWidth);
       }
     }
   }
@@ -94,45 +94,45 @@ export class UpdateIndexColumnWidth {
   // when the table element display property is 'block', the 'overflow: hidden;' property does not actually work
   // and instead the lastCell width is change automatically, all we do here is check if the expected width
   // (ChangeIndexColumnWidth.WIDTH) is different to the actual one and if so, we change it to actual
-  private static checkAutoColumnWidthUpdate(etc: EditableTableComponent, lastCell: HTMLElement) {
+  private static checkAutoColumnWidthUpdate(at: ActiveTable, lastCell: HTMLElement) {
     if (lastCell.offsetWidth !== UpdateIndexColumnWidth.WIDTH) {
       let newWidth = lastCell.offsetWidth;
-      if (etc.offsetWidth !== etc.scrollWidth) {
-        newWidth = UpdateIndexColumnWidth.wrapColumnTextAndGetDefaultWidth(etc);
+      if (at.offsetWidth !== at.scrollWidth) {
+        newWidth = UpdateIndexColumnWidth.wrapColumnTextAndGetDefaultWidth(at);
       }
-      UpdateIndexColumnWidth.changeTableWidths(etc, newWidth);
+      UpdateIndexColumnWidth.changeTableWidths(at, newWidth);
     }
   }
 
-  private static updatedBasedOnTableStyle(etc: EditableTableComponent, lastCell: HTMLElement, forceWrap = false) {
-    const firstRow = (etc.tableBodyElementRef as HTMLElement).children[0] as HTMLElement;
+  private static updatedBasedOnTableStyle(at: ActiveTable, lastCell: HTMLElement, forceWrap = false) {
+    const firstRow = (at.tableBodyElementRef as HTMLElement).children[0] as HTMLElement;
     if (forceWrap) {
-      UpdateIndexColumnWidth.forceWrap(etc, firstRow);
+      UpdateIndexColumnWidth.forceWrap(at, firstRow);
       // when 'block' display style is not set on the table
-    } else if (etc.tableDimensions.preserveNarrowColumns || etc.tableDimensions.maxWidth !== undefined) {
-      UpdateIndexColumnWidth.updateColumnWidthWhenOverflow(etc, firstRow, lastCell);
-    } else if (etc.tableDimensions.width !== undefined) {
-      UpdateIndexColumnWidth.checkAutoColumnWidthUpdate(etc, lastCell);
+    } else if (at.tableDimensions.preserveNarrowColumns || at.tableDimensions.maxWidth !== undefined) {
+      UpdateIndexColumnWidth.updateColumnWidthWhenOverflow(at, firstRow, lastCell);
+    } else if (at.tableDimensions.width !== undefined) {
+      UpdateIndexColumnWidth.checkAutoColumnWidthUpdate(at, lastCell);
     }
   }
 
   // used when a new row is added
   // forceWrap - REF-19
-  public static update(etc: EditableTableComponent, textRowsArr?: Element[], forceWrap = false) {
-    if (etc.tableDimensions.isColumnIndexCellTextWrapped) return;
+  public static update(at: ActiveTable, textRowsArr?: Element[], forceWrap = false) {
+    if (at.tableDimensions.isColumnIndexCellTextWrapped) return;
     if (!textRowsArr) {
-      const {tableBodyElementRef, contents} = etc;
+      const {tableBodyElementRef, contents} = at;
       textRowsArr = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, contents);
     }
     const lastCell = textRowsArr[textRowsArr.length - 1]?.children[0] as HTMLElement;
-    if (lastCell) UpdateIndexColumnWidth.updatedBasedOnTableStyle(etc, lastCell, forceWrap);
+    if (lastCell) UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, lastCell, forceWrap);
   }
 
   // used when a new column is added to see if wrapping is needed
   // CAUTION-2 - this runs before re-render but stay cautions
-  public static wrapTextWhenNarrowColumnsBreached(etc: EditableTableComponent) {
-    if (etc.auxiliaryTableContentInternal.displayIndexColumn && UpdateIndexColumnWidth.shouldTextBeWrapped(etc)) {
-      UpdateIndexColumnWidth.update(etc, undefined, true);
+  public static wrapTextWhenNarrowColumnsBreached(at: ActiveTable) {
+    if (at.auxiliaryTableContentInternal.displayIndexColumn && UpdateIndexColumnWidth.shouldTextBeWrapped(at)) {
+      UpdateIndexColumnWidth.update(at, undefined, true);
     }
   }
 }

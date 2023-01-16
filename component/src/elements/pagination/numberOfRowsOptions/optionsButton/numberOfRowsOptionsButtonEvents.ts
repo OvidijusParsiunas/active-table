@@ -1,13 +1,13 @@
 import {NumberOfRowsOptionsButtonElement} from './numberOfRowsOptionsButtonElement';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {PaginationInternal} from '../../../../types/paginationInternal';
 import {PaginationStyle} from '../../../../types/pagination';
 import {NumberOfRowsDropdown} from './numberOfRowsDropdown';
 import {StatefulCSSS} from '../../../../types/cssStyle';
+import {ActiveTable} from '../../../../activeTable';
 import {Dropdown} from '../../../dropdown/dropdown';
 
 export class NumberOfRowsOptionsButtonEvents {
-  private static buttonClick(this: EditableTableComponent, event: MouseEvent) {
+  private static buttonClick(this: ActiveTable, event: MouseEvent) {
     const dropdownElement = this.paginationInternal.numberOfRowsDropdown as HTMLElement;
     if (Dropdown.isDisplayed(dropdownElement)) {
       Dropdown.hide(dropdownElement);
@@ -38,11 +38,11 @@ export class NumberOfRowsOptionsButtonEvents {
     NumberOfRowsOptionsButtonElement.reapplyStylesOnElements(button, 'hover', paginationStyle.numberOfRowsOptions);
   }
 
-  public static setEvents(etc: EditableTableComponent, optionsButton: HTMLElement) {
-    optionsButton.onmouseenter = NumberOfRowsOptionsButtonEvents.buttonMouseEnter.bind(this, etc.paginationInternal.style);
-    optionsButton.onmouseleave = NumberOfRowsOptionsButtonEvents.buttonMouseLeave.bind(this, etc.paginationInternal.style);
-    optionsButton.onmousedown = NumberOfRowsOptionsButtonEvents.buttonMouseDown.bind(this, etc.paginationInternal);
-    optionsButton.onmouseup = NumberOfRowsOptionsButtonEvents.buttonMouseEnter.bind(this, etc.paginationInternal.style);
-    optionsButton.onclick = NumberOfRowsOptionsButtonEvents.buttonClick.bind(etc);
+  public static setEvents(at: ActiveTable, optionsButton: HTMLElement) {
+    optionsButton.onmouseenter = NumberOfRowsOptionsButtonEvents.buttonMouseEnter.bind(this, at.paginationInternal.style);
+    optionsButton.onmouseleave = NumberOfRowsOptionsButtonEvents.buttonMouseLeave.bind(this, at.paginationInternal.style);
+    optionsButton.onmousedown = NumberOfRowsOptionsButtonEvents.buttonMouseDown.bind(this, at.paginationInternal);
+    optionsButton.onmouseup = NumberOfRowsOptionsButtonEvents.buttonMouseEnter.bind(this, at.paginationInternal.style);
+    optionsButton.onclick = NumberOfRowsOptionsButtonEvents.buttonClick.bind(at);
   }
 }

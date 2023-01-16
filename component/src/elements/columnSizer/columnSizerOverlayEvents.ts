@@ -1,15 +1,15 @@
 import {ColumnSizerGenericUtils} from './utils/columnSizerGenericUtils';
-import {EditableTableComponent} from '../../editable-table-component';
 import {MovableColumnSizerElement} from './movableColumnSizerElement';
 import {SelectedColumnSizer} from './utils/selectedColumnSizer';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {ColumnSizerElement} from './columnSizerElement';
 import {ColumnSizerT} from '../../types/columnSizer';
+import {ActiveTable} from '../../activeTable';
 
 export class ColumnSizerOverlayEvents {
   public static readonly MOUSE_PASSTHROUGH_TIME_ML = 50;
 
-  public static overlayMouseEnter(this: EditableTableComponent, columnSizer: ColumnSizerT) {
+  public static overlayMouseEnter(this: ActiveTable, columnSizer: ColumnSizerT) {
     columnSizer.isSizerHovered = true;
     // mouse up on sizer triggers this event, but we do not want to execute it here as the animation will not be correct
     if (columnSizer.isMouseUpOnSizer || this.activeOverlayElements.selectedColumnSizer) return;
@@ -41,7 +41,7 @@ export class ColumnSizerOverlayEvents {
     }, ColumnSizerElement.HALF_TRANSITION_TIME_ML);
   }
 
-  public static overlayMouseLeave(this: EditableTableComponent, columnSizer: ColumnSizerT) {
+  public static overlayMouseLeave(this: ActiveTable, columnSizer: ColumnSizerT) {
     columnSizer.isSizerHovered = false;
     // in safari - mouse leave is fired after mouse up, hence we have thie columnSizer.isMouseUpOnSizer check
     if (this.activeOverlayElements.selectedColumnSizer || columnSizer.isMouseUpOnSizer) return;
@@ -61,7 +61,7 @@ export class ColumnSizerOverlayEvents {
 
   // we need to pass down the sizer element instead of the id as the id can change when columns are inserted/removed
   // prettier-ignore
-  public static overlayMouseDown(this: EditableTableComponent, sizer: HTMLElement) {
+  public static overlayMouseDown(this: ActiveTable, sizer: HTMLElement) {
     const {columnsDetails, tableBodyElementRef, auxiliaryTableContentInternal: {displayAddRowCell}} = this;
     const {columnSizer, sizerNumber} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(sizer.id, columnsDetails);
     const {element: sizerElement, styles: sizerStyles} = columnSizer;

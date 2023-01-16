@@ -17,11 +17,11 @@ import {TableBorderDimensions} from '../../types/tableBorderDimensions';
 import {TableBorderDimensionsUtils} from './tableBorderDimensionsUtils';
 import {ActiveOverlayElements} from '../../types/activeOverlayElements';
 import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
-import {EditableTableComponent} from '../../editable-table-component';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {IndexColumn} from '../indexColumn/indexColumn';
 import {TableRow} from '../../types/tableContents';
+import {ActiveTable} from '../../activeTable';
 import {TableEvents} from './tableEvents';
 
 export class TableElement {
@@ -34,8 +34,8 @@ export class TableElement {
   }
 
   // prettier-ignore
-  public static setStaticWidthContentTotal(etc: EditableTableComponent) {
-    const {auxiliaryTableContentInternal: {displayAddColumnCell, displayIndexColumn}} = etc;
+  public static setStaticWidthContentTotal(at: ActiveTable) {
+    const {auxiliaryTableContentInternal: {displayAddColumnCell, displayIndexColumn}} = at;
     TableElement.STATIC_WIDTH_CONTENT_TOTAL =
       TableElement.BORDER_DIMENSIONS.leftWidth + TableElement.BORDER_DIMENSIONS.rightWidth;
     if (displayAddColumnCell) TableElement.STATIC_WIDTH_CONTENT_TOTAL += AddNewColumnElement.DEFAULT_WIDTH;
@@ -43,50 +43,50 @@ export class TableElement {
   }
 
   // prettier-ignore
-  public static addOverlayElements(etc: EditableTableComponent,
+  public static addOverlayElements(at: ActiveTable,
       tableElement: HTMLElement, activeOverlayElements: ActiveOverlayElements) {
     // full table overlay for column dropdown
-    const fullTableOverlay = FullTableOverlayElement.create(etc);
+    const fullTableOverlay = FullTableOverlayElement.create(at);
     activeOverlayElements.fullTableOverlay = fullTableOverlay;
-    (etc.overflowInternal?.overflowContainer || tableElement).appendChild(fullTableOverlay);
+    (at.overflowInternal?.overflowContainer || tableElement).appendChild(fullTableOverlay);
     // column dropdown
-    const columnDropdownElement = ColumnDropdown.create(etc);
+    const columnDropdownElement = ColumnDropdown.create(at);
     tableElement.appendChild(columnDropdownElement);
     activeOverlayElements.columnDropdown = columnDropdownElement;
     // row dropdown
-    if (etc.rowDropdownSettings.displaySettings.isAvailable) {
-      const rowDropdownElement = RowDropdown.create(etc);
+    if (at.rowDropdownSettings.displaySettings.isAvailable) {
+      const rowDropdownElement = RowDropdown.create(at);
       tableElement.appendChild(rowDropdownElement);
       activeOverlayElements.rowDropdown = rowDropdownElement; 
     }
   }
 
-  private static addCells(etc: EditableTableComponent) {
-    StaticTableWidthUtils.toggleWidthUsingMaxWidth(etc, true);
-    etc.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(etc, rowIndex, false, row));
-    StaticTableWidthUtils.toggleWidthUsingMaxWidth(etc, false);
+  private static addCells(at: ActiveTable) {
+    StaticTableWidthUtils.toggleWidthUsingMaxWidth(at, true);
+    at.contents.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(at, rowIndex, false, row));
+    StaticTableWidthUtils.toggleWidthUsingMaxWidth(at, false);
   }
 
-  private static postProcessColumns(etc: EditableTableComponent) {
-    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(etc, true); // REF-11
-    InitialContentsProcessing.postProcess(etc.contents, etc.columnsDetails);
-    setTimeout(() => InsertRemoveColumnSizer.cleanUpCustomColumnSizers(etc, etc.columnsDetails.length - 1));
+  private static postProcessColumns(at: ActiveTable) {
+    StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true); // REF-11
+    InitialContentsProcessing.postProcess(at.contents, at.columnsDetails);
+    setTimeout(() => InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, at.columnsDetails.length - 1));
   }
 
-  public static populateBody(etc: EditableTableComponent) {
+  public static populateBody(at: ActiveTable) {
     // removes all the current children
-    etc.tableBodyElementRef?.replaceChildren();
+    at.tableBodyElementRef?.replaceChildren();
     // needs to be set before inserting the cells to prevent adding columns when too small
-    StaticTableWidthUtils.setTableWidth(etc);
+    StaticTableWidthUtils.setTableWidth(at);
     // header/data
-    TableElement.addCells(etc);
-    TableElement.postProcessColumns(etc);
+    TableElement.addCells(at);
+    TableElement.postProcessColumns(at);
     // new row row
-    AuxiliaryTableContentElements.addAuxiliaryBodyElements(etc);
-    if (etc.auxiliaryTableContentInternal.displayIndexColumn) UpdateIndexColumnWidth.update(etc);
+    AuxiliaryTableContentElements.addAuxiliaryBodyElements(at);
+    if (at.auxiliaryTableContentInternal.displayIndexColumn) UpdateIndexColumnWidth.update(at);
     // needs to be after UpdateIndexColumnWidth.update as the new index column width can impact the add new column display
-    ToggleAdditionElements.update(etc, true, AddNewColumnElement.toggle);
-    CustomRowProperties.update(etc);
+    ToggleAdditionElements.update(at, true, AddNewColumnElement.toggle);
+    CustomRowProperties.update(at);
   }
 
   private static createTableBody(isHeaderSticky: boolean) {
@@ -95,32 +95,32 @@ export class TableElement {
     return body;
   }
 
-  private static createTableElement(etc: EditableTableComponent) {
+  private static createTableElement(at: ActiveTable) {
     const tableElement = document.createElement('table');
     tableElement.classList.add('table-controlled-width');
     // no dimension copy is used because dimensions will be used removed during the component render (renderTable)
-    const noDimensionsStyleCopy = StringDimensionUtils.removeAllDimensions(JSON.parse(JSON.stringify(etc.tableStyle)));
+    const noDimensionsStyleCopy = StringDimensionUtils.removeAllDimensions(JSON.parse(JSON.stringify(at.tableStyle)));
     Object.assign(tableElement.style, noDimensionsStyleCopy);
-    tableElement.onmousedown = TableEvents.onMouseDown.bind(etc);
-    tableElement.onmouseup = TableEvents.onMouseUp.bind(etc);
+    tableElement.onmousedown = TableEvents.onMouseDown.bind(at);
+    tableElement.onmouseup = TableEvents.onMouseUp.bind(at);
     return tableElement;
   }
 
   // CAUTION-4 - add row cell is created and ref assigned here - then it is added post render in addAuxiliaryBodyElements
-  public static createInfrastructureElements(etc: EditableTableComponent) {
-    AuxiliaryTableContentColors.setEventColors(etc); // needs to be before the creation of column group element
-    etc.tableElementRef = TableElement.createTableElement(etc);
-    if (etc.auxiliaryTableContentInternal.displayAddColumnCell) {
+  public static createInfrastructureElements(at: ActiveTable) {
+    AuxiliaryTableContentColors.setEventColors(at); // needs to be before the creation of column group element
+    at.tableElementRef = TableElement.createTableElement(at);
+    if (at.auxiliaryTableContentInternal.displayAddColumnCell) {
       // needs to be appended before the body
-      etc.columnGroupRef = ColumnGroupElement.create();
-      etc.tableElementRef.appendChild(etc.columnGroupRef);
+      at.columnGroupRef = ColumnGroupElement.create();
+      at.tableElementRef.appendChild(at.columnGroupRef);
     }
-    etc.tableBodyElementRef = TableElement.createTableBody(etc.stickyProps.header);
-    etc.addRowCellElementRef = AddNewRowElement.create(etc); // REF-18
-    etc.tableElementRef.appendChild(etc.tableBodyElementRef);
-    etc.selectDropdownContainer = SelectDropdown.createContainerElement();
-    etc.tableElementRef.appendChild(etc.selectDropdownContainer);
-    TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtils.generateUsingElement(etc.tableElementRef as HTMLElement);
-    return etc.tableElementRef;
+    at.tableBodyElementRef = TableElement.createTableBody(at.stickyProps.header);
+    at.addRowCellElementRef = AddNewRowElement.create(at); // REF-18
+    at.tableElementRef.appendChild(at.tableBodyElementRef);
+    at.selectDropdownContainer = SelectDropdown.createContainerElement();
+    at.tableElementRef.appendChild(at.selectDropdownContainer);
+    TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtils.generateUsingElement(at.tableElementRef as HTMLElement);
+    return at.tableElementRef;
   }
 }

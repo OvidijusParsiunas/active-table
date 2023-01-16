@@ -1,5 +1,5 @@
 import {PaginationPositions, PaginationPositionSide} from '../../../types/pagination';
-import {EditableTableComponent} from '../../../editable-table-component';
+import {ActiveTable} from '../../../activeTable';
 
 export interface Containers {
   top?: HTMLElement;
@@ -65,12 +65,12 @@ export class PaginationContainerElement {
   }
 
   // we add a top and a bottom container if they are required
-  public static addPaginationContainers(etc: EditableTableComponent) {
+  public static addPaginationContainers(at: ActiveTable) {
     const containers: Containers = {};
-    const isTopRequired = PaginationContainerElement.isContainerRequired(etc.paginationInternal.positions, 'top');
-    const isBottomRequired = PaginationContainerElement.isContainerRequired(etc.paginationInternal.positions, 'bottom');
-    const {tableElementRef: table} = etc;
-    const parentEl = etc.overflowInternal?.overflowContainer || table;
+    const isTopRequired = PaginationContainerElement.isContainerRequired(at.paginationInternal.positions, 'top');
+    const isBottomRequired = PaginationContainerElement.isContainerRequired(at.paginationInternal.positions, 'bottom');
+    const {tableElementRef: table} = at;
+    const parentEl = at.overflowInternal?.overflowContainer || table;
     if (!parentEl) return containers;
     if (isTopRequired) {
       const container = PaginationContainerElement.addContainer(parentEl, PaginationContainerElement.TOP_CONTAINER_ID);

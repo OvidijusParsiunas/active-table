@@ -2,10 +2,10 @@ import {ColumnSettingsWidthUtils} from '../../columnSettings/columnSettingsWidth
 import {ColumnSettingsInternal} from '../../../types/columnsSettingsInternal';
 import {ColumnDetailsT, ColumnsDetailsT} from '../../../types/columnDetails';
 import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {TableElement} from '../../../elements/table/tableElement';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {FilteredColumns} from '../../../types/filteredColumns';
+import {ActiveTable} from '../../../activeTable';
 import {StaticTable} from './staticTable';
 
 // TO-DO when not at maximum length - have a setting option to resize all columns to the limit as resizing to small and
@@ -29,8 +29,8 @@ export class StaticTableWidthUtils {
   // when the client has not provided the 'width' value for the table, but a 'maxWidth' is present, need to
   // temporarily set the width at the start in order to help the MaximumColumns class to determine what columns fit
   // prettier-ignore
-  public static toggleWidthUsingMaxWidth(etc: EditableTableComponent, isSetValue: boolean) {
-    const {tableElementRef, tableDimensions: {maxWidth, preserveNarrowColumns}} = etc;
+  public static toggleWidthUsingMaxWidth(at: ActiveTable, isSetValue: boolean) {
+    const {tableElementRef, tableDimensions: {maxWidth, preserveNarrowColumns}} = at;
     if (tableElementRef && maxWidth !== undefined) {
       tableElementRef.style.width = isSetValue ? `${maxWidth}px` : ''; // '' defaults width back to min-content
       StaticTableWidthUtils.togglePreserveNarrowColumns(isSetValue, tableElementRef, preserveNarrowColumns); // REF-11
@@ -49,8 +49,8 @@ export class StaticTableWidthUtils {
   }
 
   // prettier-ignore
-  public static setTableWidth(etc: EditableTableComponent) {
-    const {tableDimensions: {preserveNarrowColumns, width}, tableElementRef} = etc;
+  public static setTableWidth(at: ActiveTable) {
+    const {tableDimensions: {preserveNarrowColumns, width}, tableElementRef} = at;
     if (tableElementRef && width !== undefined) {
       tableElementRef.style.width = `${width}px`;
       StaticTableWidthUtils.togglePreserveNarrowColumns(true, tableElementRef, preserveNarrowColumns); // REF-11
@@ -74,7 +74,7 @@ export class StaticTableWidthUtils {
         + setTableWidth - TableElement.STATIC_WIDTH_CONTENT_TOTAL}px`;
     } else {
       // if no minWidth columns, set table width to columns total
-      // please note that the width will no longer be the same as etc.tableDimensions.width
+      // please note that the width will no longer be the same as activeTable.tableDimensions.width
       tableElement.style.width = `${TableElement.STATIC_WIDTH_CONTENT_TOTAL}px`;
     }
   }
@@ -100,8 +100,8 @@ export class StaticTableWidthUtils {
     return filteredColumns;
   }
 
-  public static changeWidthsBasedOnColumnInsertRemove(etc: EditableTableComponent, isInsert: boolean) {
-    const {tableElementRef, tableDimensions, columnsDetails} = etc;
+  public static changeWidthsBasedOnColumnInsertRemove(at: ActiveTable, isInsert: boolean) {
+    const {tableElementRef, tableDimensions, columnsDetails} = at;
     if (!tableElementRef) return;
     const {width, maxWidth} = tableDimensions;
     if (width !== undefined) {

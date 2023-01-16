@@ -1,7 +1,7 @@
 import {AuxiliaryTableContentColors} from '../../../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {InsertNewColumn} from '../../../../utils/insertRemoveStructure/insert/insertNewColumn';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {CellStateColorsR} from '../../../../types/cellStateColors';
+import {ActiveTable} from '../../../../activeTable';
 
 export class AddNewColumnEvents {
   // REF-17
@@ -23,11 +23,11 @@ export class AddNewColumnEvents {
     if (headerCell) AddNewColumnEvents.setHeaderStyle(headerCell, header, isHighlight);
   }
 
-  public static setEvents(etc: EditableTableComponent, cellElement: HTMLElement): void {
-    const {columnGroupRef: columnGroup, addColumnCellsElementsRef} = etc;
+  public static setEvents(at: ActiveTable, cellElement: HTMLElement): void {
+    const {columnGroupRef: columnGroup, addColumnCellsElementsRef} = at;
     if (!columnGroup) return;
     cellElement.onmouseenter = AddNewColumnEvents.toggleColor.bind(this, columnGroup, true, addColumnCellsElementsRef);
     cellElement.onmouseleave = AddNewColumnEvents.toggleColor.bind(this, columnGroup, false, addColumnCellsElementsRef);
-    cellElement.onclick = InsertNewColumn.insertEvent.bind(etc);
+    cellElement.onclick = InsertNewColumn.insertEvent.bind(at);
   }
 }

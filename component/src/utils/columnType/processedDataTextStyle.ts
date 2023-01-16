@@ -1,6 +1,5 @@
 import {ColumnSettingsBorderUtils} from '../columnSettings/columnSettingsBorderUtils';
 import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
-import {EditableTableComponent} from '../../editable-table-component';
 import {CustomTextProcessing} from '../../types/customTextProcessing';
 import {CellProcessedTextStyle} from '../../types/processedTextStyle';
 import {ResetColumnStyles} from '../columnSettings/resetColumnStyles';
@@ -8,6 +7,7 @@ import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
 import {CellText} from '../../types/tableContents';
 import {CellCSSStyle} from '../../types/cssStyle';
+import {ActiveTable} from '../../activeTable';
 
 // this class only operates on data cells
 // REF-3
@@ -59,8 +59,8 @@ export class ProcessedDataTextStyle {
   }
 
   // prettier-ignore
-  public static setCellStyle(etc: EditableTableComponent, rowIndex: number, columnIndex: number, overwrite = false) {
-    const columnDetails = etc.columnsDetails[columnIndex];
+  public static setCellStyle(at: ActiveTable, rowIndex: number, columnIndex: number, overwrite = false) {
+    const columnDetails = at.columnsDetails[columnIndex];
     const textContainerElement = columnDetails.elements[rowIndex];
     const processedStyle = columnDetails.processedStyle[rowIndex];
     const text = CellElement.getText(textContainerElement);
@@ -70,49 +70,49 @@ export class ProcessedDataTextStyle {
       const isValid = validationFunc(text);
       if (overwrite || processedStyle.isValid !== isValid) {
         wasValidationStyleSet = ProcessedDataTextStyle.setStyle(isValid, columnDetails, processedStyle,
-          customTextProcessing, textContainerElement, etc.defaultColumnsSettings);
+          customTextProcessing, textContainerElement, at.defaultColumnsSettings);
         processedStyle.isValid = isValid;
       }
     }
     if (!wasValidationStyleSet && customTextProcessing?.changeStyle) { // REF-3
       ProcessedDataTextStyle.setCustomStyle(customTextProcessing.changeStyle, text, columnDetails, processedStyle,
-        textContainerElement, etc.defaultColumnsSettings);
+        textContainerElement, at.defaultColumnsSettings);
     }
   }
 
-  private static setStyleOnColumn(etc: EditableTableComponent, columnIndex: number) {
-    const columnDetails = etc.columnsDetails[columnIndex];
+  private static setStyleOnColumn(at: ActiveTable, columnIndex: number) {
+    const columnDetails = at.columnsDetails[columnIndex];
     columnDetails.elements.slice(1).forEach((element, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
-      ProcessedDataTextStyle.setCellStyle(etc, relativeRowIndex, columnIndex, true);
+      ProcessedDataTextStyle.setCellStyle(at, relativeRowIndex, columnIndex, true);
       ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [element]);
     });
   }
 
-  private static unsetStyleOnColumn(etc: EditableTableComponent, columnIndex: number, oldCellStyle?: CellCSSStyle) {
-    const columnDetails = etc.columnsDetails[columnIndex];
+  private static unsetStyleOnColumn(at: ActiveTable, columnIndex: number, oldCellStyle?: CellCSSStyle) {
+    const columnDetails = at.columnsDetails[columnIndex];
     columnDetails.elements.slice(1).forEach((element, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
       const processedStyle = columnDetails.processedStyle[relativeRowIndex];
-      ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, element, etc.defaultColumnsSettings, oldCellStyle);
+      ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, element, at.defaultColumnsSettings, oldCellStyle);
     });
   }
 
   // using this to first unset the previous processed style, allow new settings/type to be applied and then set
   // new style
   // prettier-ignore
-  public static resetDataCellsStyle(etc: EditableTableComponent, columnIndex: number, changeFunc: () => void,
+  public static resetDataCellsStyle(at: ActiveTable, columnIndex: number, changeFunc: () => void,
       oldCellStyle?: CellCSSStyle) {
-    ProcessedDataTextStyle.unsetStyleOnColumn(etc, columnIndex, oldCellStyle);
+    ProcessedDataTextStyle.unsetStyleOnColumn(at, columnIndex, oldCellStyle);
     changeFunc(); // arguments are expected to be binded
-    ProcessedDataTextStyle.setStyleOnColumn(etc, columnIndex);
+    ProcessedDataTextStyle.setStyleOnColumn(at, columnIndex);
   }
 
   // prettier-ignore
   // this is used for a case where the default style has been set and need to reapply the processed style
   // without having to rerun the validation/changeStyle functions
-  public static reapplyCellsStyle(etc: EditableTableComponent, columnIndex: number) {
-    const columnDetails = etc.columnsDetails[columnIndex];
+  public static reapplyCellsStyle(at: ActiveTable, columnIndex: number) {
+    const columnDetails = at.columnsDetails[columnIndex];
     const {textValidation: { func: validationFunc }, customTextProcessing} = columnDetails.activeType;
     if (validationFunc || customTextProcessing?.changeStyle) {
       columnDetails.elements.slice(1).forEach((element, rowIndex) => {

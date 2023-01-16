@@ -1,12 +1,12 @@
-import summary from 'rollup-plugin-summary';
-import {terser} from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
+import summary from 'rollup-plugin-summary';
+import {terser} from 'rollup-plugin-terser';
 
 export default {
-  input: 'dist/editable-table-component.js',
+  input: 'dist/activeTable.js',
   output: {
-    file: 'dist/editable-table-component.bundled.js',
+    file: 'dist/activeTable.bundled.js',
     format: 'esm',
   },
   onwarn(warning) {

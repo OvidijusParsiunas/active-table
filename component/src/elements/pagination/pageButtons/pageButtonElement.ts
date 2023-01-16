@@ -3,12 +3,12 @@ import {PaginationUpdatePageButtons} from '../../../utils/pagination/paginationU
 import {IPageButtonsStyle, PaginationInternal} from '../../../types/paginationInternal';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {PaginationUtils} from '../../../utils/pagination/paginationUtils';
-import {EditableTableComponent} from '../../../editable-table-component';
 import {PageButtonContainerElement} from './pageButtonContainerElement';
 import {PaginationElements} from '../paginationElements';
 import {CellText} from '../../../types/tableContents';
 import {PageButtonEvents} from './pageButtonEvents';
 import {PageButtonStyle} from './pageButtonStyle';
+import {ActiveTable} from '../../../activeTable';
 
 export class PageButtonElement {
   private static readonly PAGINATION_BUTTON_CLASS = 'pagination-button';
@@ -61,10 +61,10 @@ export class PageButtonElement {
     return {newActiveButton, numberButtons};
   }
 
-  private static unsetPreviousActive(etc: EditableTableComponent, buttonContainer: HTMLElement, buttonNumber: number) {
+  private static unsetPreviousActive(at: ActiveTable, buttonContainer: HTMLElement, buttonNumber: number) {
     const numberButtons = PaginationUtils.getPageNumberButtons(buttonContainer);
     const lastButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
-    const previousActiveIndex = numberButtons.length - (lastButtonNumber - etc.paginationInternal.activePageNumber) - 1;
+    const previousActiveIndex = numberButtons.length - (lastButtonNumber - at.paginationInternal.activePageNumber) - 1;
     const previousActiveButton = numberButtons[previousActiveIndex];
     const previousLocationOfNewIndex = numberButtons.length - (lastButtonNumber - buttonNumber) - 1;
     if (previousActiveButton) {
@@ -75,16 +75,16 @@ export class PageButtonElement {
   }
 
   // prettier-ignore
-  public static setActive(etc: EditableTableComponent, buttonContainer: HTMLElement, buttonNumber: number) {
+  public static setActive(at: ActiveTable, buttonContainer: HTMLElement, buttonNumber: number) {
     const {previousActiveButton, previousLocationOfNewIndex} = PageButtonElement.unsetPreviousActive(
-      etc, buttonContainer, buttonNumber);
-    const {paginationInternal} = etc;
+      at, buttonContainer, buttonNumber);
+    const {paginationInternal} = at;
     const {style: {pageButtons}, clickedPageNumberButton} = paginationInternal;
     paginationInternal.activePageNumber = buttonNumber;
-    PaginationUpdatePageButtons.updateOnNewActive(etc, buttonContainer);
+    PaginationUpdatePageButtons.updateOnNewActive(at, buttonContainer);
     const {newActiveButton, numberButtons} = PageButtonElement.setNewActive(buttonContainer, buttonNumber);
     PageButtonStyle.setActive(newActiveButton, pageButtons, previousActiveButton);
-    PaginationPageActionButtonUtils.toggleActionButtons(etc, buttonContainer);
+    PaginationPageActionButtonUtils.toggleActionButtons(at, buttonContainer);
     // REF-30
     if (clickedPageNumberButton) {
       PageButtonElement.programmaticMouseEnterTrigger(numberButtons, paginationInternal, previousLocationOfNewIndex);

@@ -1,7 +1,7 @@
 import {StringDimensionUtils, SuccessResult} from '../tableDimensions/stringDimensionUtils';
-import {EditableTableComponent} from '../../editable-table-component';
 import {TableElement} from '../../elements/table/tableElement';
 import {OverflowInternal} from '../../types/overflowInternal';
+import {ActiveTable} from '../../activeTable';
 import {CSSStyle} from '../../types/cssStyle';
 import {Overflow} from '../../types/overflow';
 import {Browser} from '../browser/browser';
@@ -57,31 +57,31 @@ export class OverflowUtils {
   }
 
   // prettier-ignore
-  private static getDimensions(etc: EditableTableComponent, overflow: Overflow, overflowInternal: OverflowInternal) {
+  private static getDimensions(at: ActiveTable, overflow: Overflow, overflowInternal: OverflowInternal) {
     const widthResult = StringDimensionUtils.generateNumberDimensionFromClientString(
-      'maxWidth', etc.parentElement as HTMLElement, overflow, true) || {number: 0, isPercentage: false};
+      'maxWidth', at.parentElement as HTMLElement, overflow, true) || {number: 0, isPercentage: false};
     widthResult.number -= TableElement.BORDER_DIMENSIONS.leftWidth + TableElement.BORDER_DIMENSIONS.rightWidth;
     if (widthResult.isPercentage) overflowInternal.isWidthPercentage = true;
     // if heightResult is 0 for a %, the likelyhood is that the parent element does not have height set
     const heightResult = StringDimensionUtils.generateNumberDimensionFromClientString(
-      'maxHeight', etc.parentElement as HTMLElement, overflow, false) || {number: 0, isPercentage: false};
+      'maxHeight', at.parentElement as HTMLElement, overflow, false) || {number: 0, isPercentage: false};
     heightResult.number -= TableElement.BORDER_DIMENSIONS.topWidth + TableElement.BORDER_DIMENSIONS.bottomWidth;
     if (heightResult.isPercentage) overflowInternal.isHeightPercentage = true;
     return {width: widthResult.number, height: heightResult.number};
   }
 
-  public static applyDimensions(etc: EditableTableComponent) {
-    if (!etc.overflow || !etc.overflowInternal) return;
-    const dimensions = OverflowUtils.getDimensions(etc, etc.overflow, etc.overflowInternal);
-    OverflowUtils.setDimensions(etc.overflowInternal.overflowContainer, dimensions);
-    OverflowUtils.adjustStyleForScrollbarWidth(etc.overflowInternal.overflowContainer, etc.overflow);
+  public static applyDimensions(at: ActiveTable) {
+    if (!at.overflow || !at.overflowInternal) return;
+    const dimensions = OverflowUtils.getDimensions(at, at.overflow, at.overflowInternal);
+    OverflowUtils.setDimensions(at.overflowInternal.overflowContainer, dimensions);
+    OverflowUtils.adjustStyleForScrollbarWidth(at.overflowInternal.overflowContainer, at.overflow);
   }
 
-  public static setupContainer(etc: EditableTableComponent, tableElement: HTMLElement) {
+  public static setupContainer(at: ActiveTable, tableElement: HTMLElement) {
     const overflowContainer = document.createElement('div');
-    etc.overflowInternal = {overflowContainer};
+    at.overflowInternal = {overflowContainer};
     overflowContainer.id = OverflowUtils.ID;
-    OverflowUtils.moveBorderToOverlay(etc.tableStyle, overflowContainer, tableElement);
+    OverflowUtils.moveBorderToOverlay(at.tableStyle, overflowContainer, tableElement);
     overflowContainer.appendChild(tableElement);
   }
 }

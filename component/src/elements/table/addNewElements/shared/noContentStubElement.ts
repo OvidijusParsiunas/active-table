@@ -1,6 +1,6 @@
 import {TableDimensionsUtils} from '../../../../utils/tableDimensions/tableDimensionsUtils';
-import {EditableTableComponent} from '../../../../editable-table-component';
 import {AddNewRowElement} from '../row/addNewRowElement';
+import {ActiveTable} from '../../../../activeTable';
 
 // REF-18
 export class NoContentStubElement {
@@ -27,9 +27,9 @@ export class NoContentStubElement {
   }
 
   // prettier-ignore
-  public static display(etc: EditableTableComponent) {
+  public static display(at: ActiveTable) {
     const {tableBodyElementRef, addColumnCellsElementsRef, addRowCellElementRef,
-      auxiliaryTableContentInternal: {displayAddColumnCell, displayAddRowCell}} = etc;
+      auxiliaryTableContentInternal: {displayAddColumnCell, displayAddRowCell}} = at;
     if (!addRowCellElementRef) return;
     const tableBodyElement = tableBodyElementRef as HTMLElement;
     if (displayAddColumnCell) addColumnCellsElementsRef.splice(0, addColumnCellsElementsRef.length);

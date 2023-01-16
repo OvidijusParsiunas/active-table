@@ -1,14 +1,14 @@
 import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
-import {EditableTableComponent} from '../../editable-table-component';
 import {PaginationUtils} from '../pagination/paginationUtils';
 import {RowHoverEvents} from './rowHoverEvents';
+import {ActiveTable} from '../../activeTable';
 import {CSSStyle} from '../../types/cssStyle';
 import {RowHover} from '../../types/rowHover';
 import {StripedRows} from './stripedRows';
 
 export class CustomRowProperties {
   // prettier-ignore
-  private static setHoverEvents(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number,
+  private static setHoverEvents(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number,
       lastRowIndex: number, defaultStyle?: CSSStyle) {
     // the reason why last row events are applied synchronously is because upon adding a new row via add new row element,
     // mouse leave is triggered on that element, hence need to add the event before it to use the correct default style
@@ -20,7 +20,7 @@ export class CustomRowProperties {
      });
     }
   }
-  private static setStyle(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number, isAddRowEven: boolean) {
+  private static setStyle(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, isAddRowEven: boolean) {
     if (etc.stripedRowsInternal) {
       if (isAddRowEven && AddNewRowElement.isAddNewRowRow(rowElement)) {
         rowIndex = Number(!etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader); // REF-32
@@ -31,14 +31,14 @@ export class CustomRowProperties {
   }
 
   // prettier-ignore
-  public static updateRow(etc: EditableTableComponent, rowElement: HTMLElement, rowIndex: number, lastRowIndex: number,
+  public static updateRow(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, lastRowIndex: number,
       isAddRowEven: boolean) {
     const defaultStyle: CSSStyle | undefined = CustomRowProperties.setStyle(etc, rowElement, rowIndex, isAddRowEven);
     if (etc.rowHover) CustomRowProperties.setHoverEvents(etc, rowElement, rowIndex, lastRowIndex, defaultStyle);
   }
 
   // REF-32
-  private static isAddRowRowSame(etc: EditableTableComponent) {
+  private static isAddRowRowSame(etc: ActiveTable) {
     return !!(
       etc.pagination &&
       etc.auxiliaryTableContentInternal.displayAddRowCell &&
@@ -48,7 +48,7 @@ export class CustomRowProperties {
 
   // this can be considered to be wasteful if no striped rows are used and we are resetting the same row events
   // every time this is called, however we are still traversing all rows from startIndex for code simplicity
-  public static update(etc: EditableTableComponent, startIndex = 0) {
+  public static update(etc: ActiveTable, startIndex = 0) {
     if (!etc.tableBodyElementRef) return;
     const rows = Array.from(etc.tableBodyElementRef.children) as HTMLElement[];
     const isAddRowEven = CustomRowProperties.isAddRowRowSame(etc);
