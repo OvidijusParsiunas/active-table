@@ -13,7 +13,7 @@ import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
 import {ColumnDetailsT} from '../../../types/columnDetails';
-import {TableContents} from '../../../types/tableContents';
+import {TableContent} from '../../../types/tableContent';
 import {ActiveTable} from '../../../activeTable';
 import {LastColumn} from '../shared/lastColumn';
 
@@ -37,10 +37,10 @@ export class RemoveColumn {
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, false);
   }
 
-  private static cleanUpContent(contents: TableContents) {
+  private static cleanUpContent(content: TableContent) {
     // when is no data inside rows - remove them
-    if (contents.length > 0 && contents[0].length === 0) {
-      contents.splice(0);
+    if (content.length > 0 && content[0].length === 0) {
+      content.splice(0);
     }
   }
 
@@ -55,7 +55,7 @@ export class RemoveColumn {
   private static removeCell(at: ActiveTable, rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
     const lastColumn: ElementDetails = LastColumn.getDetails(at.columnsDetails, rowIndex);
     RemoveColumn.removeElements(rowElement, columnIndex, !!at.auxiliaryTableContentInternal.displayIndexColumn);
-    at.contents[rowIndex].splice(columnIndex, 1);
+    at.content[rowIndex].splice(columnIndex, 1);
     setTimeout(() => {
       const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};
       UpdateCellsForColumns.rebindAndFireUpdates(at, rowDetails, columnIndex, CELL_UPDATE_TYPE.REMOVED, lastColumn);
@@ -63,11 +63,11 @@ export class RemoveColumn {
   }
 
   private static removeCellFromAllRows(at: ActiveTable, columnIndex: number) {
-    const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.contents);
+    const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.content);
     rowElements.forEach((rowElement: Node, rowIndex: number) => {
       RemoveColumn.removeCell(at, rowElement as HTMLElement, rowIndex, columnIndex);
     });
-    RemoveColumn.cleanUpContent(at.contents);
+    RemoveColumn.cleanUpContent(at.content);
     // needs to be after getDetails but before changeWidthsBasedOnColumnInsertRemove
     const removedColumnDetails = at.columnsDetails.splice(columnIndex, 1)[0];
     RemoveColumn.updateTableDimensions(at, removedColumnDetails);
@@ -84,7 +84,7 @@ export class RemoveColumn {
       InsertRemoveColumnSizer.remove(at, columnIndex);
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, columnIndex);
       if (columnIndex === 0 && at.columnsDetails.length > 0) RowDropdownCellOverlay.resetOverlays(at);
-      at.onTableUpdate(at.contents);
+      at.onTableUpdate(at.content);
     });
   }
 

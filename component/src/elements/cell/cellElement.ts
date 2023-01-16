@@ -9,7 +9,7 @@ import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {CheckboxCellElement} from './checkboxCell/checkboxCellElement';
 import {ColumnDetails} from '../../utils/columnDetails/columnDetails';
 import {CaretDisplayFix} from '../../utils/browser/caretDisplayFix';
-import {CellText} from '../../types/tableContents';
+import {CellText} from '../../types/tableContent';
 import {CellCSSStyle} from '../../types/cssStyle';
 import {ActiveTable} from '../../activeTable';
 

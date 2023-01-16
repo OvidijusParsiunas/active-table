@@ -4,7 +4,7 @@ import {HeaderIconStyle} from './headerIconStyle';
 import {InterfacesUnion} from './utilityTypes';
 import {StringDimension} from './dimensions';
 import {ColumnTypes} from './columnType';
-import {CellText} from './tableContents';
+import {CellText} from './tableContent';
 import {CellCSSStyle} from './cssStyle';
 
 // to be used by the client

@@ -55,7 +55,7 @@ export class ColumnDropdownItem {
       DropdownItem.toggleItem(inputItem, false);
     } else {
       const inputElement = inputItem.children[0] as HTMLInputElement;
-      inputElement.value = at.contents[0][columnIndex] as string;
+      inputElement.value = at.content[0][columnIndex] as string;
       ColumnDropdownItemEvents.setInputItemEvent(at, columnIndex, cellElement, inputElement, dropdownElement);
     }
   }

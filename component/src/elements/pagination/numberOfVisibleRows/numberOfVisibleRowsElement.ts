@@ -20,10 +20,10 @@ export class NumberOfVisibleRowsElement {
 
   // prettier-ignore
   public static update(at: ActiveTable) {
-    const {paginationInternal, contents, auxiliaryTableContentInternal: {indexColumnCountStartsAtHeader}} = at;
+    const {paginationInternal, content, auxiliaryTableContentInternal: {indexColumnCountStartsAtHeader}} = at;
     const {numberOfVisibleRowsElement, isAllRowsOptionSelected} = paginationInternal;
     if (!numberOfVisibleRowsElement) return;
-    const dataRowsLength = indexColumnCountStartsAtHeader ? contents.length : contents.length - 1;
+    const dataRowsLength = indexColumnCountStartsAtHeader ? content.length : content.length - 1;
     if (isAllRowsOptionSelected) {
       NumberOfVisibleRowsElement.updateForAllRows(numberOfVisibleRowsElement, dataRowsLength);
     } else {

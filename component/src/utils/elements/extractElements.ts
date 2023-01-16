@@ -1,7 +1,7 @@
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
 import {IndexColumn} from '../../elements/indexColumn/indexColumn';
 import {CellElement} from '../../elements/cell/cellElement';
-import {TableContents} from '../../types/tableContents';
+import {TableContent} from '../../types/tableContent';
 
 export class ExtractElements {
   public static textCellsArrFromRow(rowElement: HTMLElement) {
@@ -13,9 +13,9 @@ export class ExtractElements {
     );
   }
 
-  public static textRowsArrFromTBody(tableBodyElement: HTMLElement, contents: TableContents, startIndex = 0) {
+  public static textRowsArrFromTBody(tableBodyElement: HTMLElement, content: TableContent, startIndex = 0) {
     // not returning aux rows that contain other utils such as add new row
-    return Array.from(tableBodyElement.children).slice(startIndex, contents.length);
+    return Array.from(tableBodyElement.children).slice(startIndex, content.length);
   }
 
   public static getRightColumnSiblingCell(cellElement: HTMLElement) {

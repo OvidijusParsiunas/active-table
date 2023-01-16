@@ -1,7 +1,7 @@
 import {ConvertCellTypeUtils} from '../../../utils/columnType/convertCellTypeUtils';
 import {CellStructureUtils} from '../../../utils/columnType/cellStructureUtils';
 import {CheckboxCellEvents} from './checkboxCellEvents';
-import {CellText} from '../../../types/tableContents';
+import {CellText} from '../../../types/tableContent';
 import {CheckboxElement} from './checkboxElement';
 import {ActiveTable} from '../../../activeTable';
 import {CellElement} from '../cellElement';
@@ -62,13 +62,5 @@ export class CheckboxCellElement {
   public static setColumnCheckboxStructure(at: ActiveTable, columnIndex: number) {
     CellStructureUtils.setColumn(at, columnIndex, CheckboxCellElement.setCellCheckboxStructure,
       CheckboxCellEvents.setEvents);
-  }
-
-  public static defaultChangeTextFunc(text: CellText) {
-    const processedString = String(text).trim().toLocaleLowerCase();
-    if (processedString === '' || processedString === '0' || processedString === '00' || processedString === 'false') {
-      return 'false';
-    }
-    return 'true';
   }
 }

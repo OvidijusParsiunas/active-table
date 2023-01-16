@@ -11,7 +11,7 @@ export class ColumnTypeDropdown {
   // this item is used to denote the item used to open up type dropdown
   private static readonly COLUMN_TYPE_ITEM_CLASS = 'dropdown-column-type-item';
 
-  private static setupParentItemContents(itemElement: HTMLElement, activeType: ColumnTypeInternal) {
+  private static setupParentItemContent(itemElement: HTMLElement, activeType: ColumnTypeInternal) {
     const {name: activeName, dropdownItem: activeDropdownItem} = activeType;
     // setup icon
     const activeIconContainerElement = (activeDropdownItem.element?.children[0] as HTMLElement).cloneNode(true);
@@ -24,7 +24,7 @@ export class ColumnTypeDropdown {
   public static setUp(at: ActiveTable, dropdownEl: HTMLElement, columnIndex: number): string | void {
     const {activeType, types} = at.columnsDetails[columnIndex];
     const itemElement = dropdownEl.getElementsByClassName(ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS)[0] as HTMLElement;
-    ColumnTypeDropdown.setupParentItemContents(itemElement, activeType);
+    ColumnTypeDropdown.setupParentItemContent(itemElement, activeType);
     if (types.length < 2) return (itemElement.style.pointerEvents = 'none');
     itemElement.style.pointerEvents = '';
     setTimeout(() => ColumnTypeDropdownItem.setUp(at, columnIndex));

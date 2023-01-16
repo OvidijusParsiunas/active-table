@@ -5,8 +5,8 @@ import {IndexColumn} from '../../../elements/indexColumn/indexColumn';
 import {CustomRowProperties} from '../../rows/customRowProperties';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {PaginationUtils} from '../../pagination/paginationUtils';
-import {CellText, TableRow} from '../../../types/tableContents';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
+import {CellText, TableRow} from '../../../types/tableContent';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {HasRerendered} from '../../render/hasRerendered';
 import {MoveRow} from '../../moveStructure/moveRow';
@@ -32,9 +32,9 @@ export class RemoveRow {
       rowIndex: number, lastRowElement: HTMLElement, lastRowIndex: number, removedRowData: TableRow) {
     const lastRow = {element: lastRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(at, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow); // REF-20
-    at.onTableUpdate(at.contents);
+    at.onTableUpdate(at.content);
     if (HasRerendered.check(at.columnsDetails)) return; // CAUTION-2
-    if (at.contents.length === 0) {
+    if (at.content.length === 0) {
       RemoveRow.removeAllColumnsDetails(at);
     } else {
       RemoveRow.updateColumnDetails(removedRowData, at.columnsDetails);
@@ -45,7 +45,7 @@ export class RemoveRow {
   private static removeRow(at: ActiveTable, rowIndex: number) {
     at.tableBodyElementRef?.children[rowIndex].remove();
     at.rowDropdownCellOverlays.splice(rowIndex, 1);
-    const removedContentRow = at.contents.splice(rowIndex, 1);
+    const removedContentRow = at.content.splice(rowIndex, 1);
     // needs to be done synchronously as add new row toggle needs elements count when calling MaximumRows.canAddMore
     removedContentRow[0].forEach((_, columnIndex: number) => {
       at.columnsDetails[columnIndex].elements.splice(rowIndex, 1);
@@ -67,7 +67,7 @@ export class RemoveRow {
 
   public static remove(at: ActiveTable, rowIndex: number) {
     rowIndex = RemoveRow.changeRowIndexIfRemoveHeaderWithDataBelow(at, rowIndex);
-    const lastRowIndex = at.contents.length - 1;
+    const lastRowIndex = at.content.length - 1;
     const lastRowElement = at.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const removedRowData = RemoveRow.removeRow(at, rowIndex);
     ToggleAdditionElements.update(at, false, AddNewRowElement.toggle);

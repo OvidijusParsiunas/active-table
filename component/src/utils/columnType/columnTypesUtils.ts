@@ -6,7 +6,7 @@ import {DropdownItem} from '../../elements/dropdown/dropdownItem';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
 import {ColumnDetailsT} from '../../types/columnDetails';
 import {DefaultColumnTypes} from './defaultColumnTypes';
-import {CellText} from '../../types/tableContents';
+import {CellText} from '../../types/tableContent';
 import {ObjectUtils} from '../object/objectUtils';
 import {Validation} from './validation';
 

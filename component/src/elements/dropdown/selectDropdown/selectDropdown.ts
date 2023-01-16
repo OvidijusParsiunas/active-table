@@ -10,7 +10,7 @@ import {SelectDropdownT} from '../../../types/columnDetails';
 import {SelectDropdownEvents} from './selectDropdownEvents';
 import {SelectDropdownItem} from './selectDropdownItem';
 import {TableElement} from '../../table/tableElement';
-import {CellText} from '../../../types/tableContents';
+import {CellText} from '../../../types/tableContent';
 import {CellElement} from '../../cell/cellElement';
 import {ActiveTable} from '../../../activeTable';
 import {PX} from '../../../types/dimensions';

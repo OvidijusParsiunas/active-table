@@ -16,8 +16,8 @@ export class IndexColumn {
   private static readonly DEFAULT_WIDTH_PX = `${IndexColumn.DEFAULT_WIDTH}px`;
 
   public static updateIndexes(at: ActiveTable, startIndex: number) {
-    const {tableBodyElementRef, contents} = at;
-    const textRowsArr = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, contents, startIndex);
+    const {tableBodyElementRef, content} = at;
+    const textRowsArr = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, content, startIndex);
     const auxiliaryPaddingIndex = Number(at.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader);
     textRowsArr.forEach((row, rowIndex) => {
       const indexCell = row.children[0] as HTMLElement;

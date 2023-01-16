@@ -9,7 +9,7 @@ import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
 import {DataUtils} from '../../insertRemoveStructure/shared/dataUtils';
 import {CaretPosition} from '../../focusedElements/caretPosition';
 import {CellElementIndex} from '../../elements/cellElementIndex';
-import {TableRow, CellText} from '../../../types/tableContents';
+import {TableRow, CellText} from '../../../types/tableContent';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
 import {CellEvents} from '../../../elements/cell/cellEvents';
@@ -47,8 +47,8 @@ export class OverwriteCellsViaCSVOnPaste {
       dataForNewRows, startColumnIndex);
     processedDataForNewRows.forEach((rowData: CSVRow) => {
       const newRowData = OverwriteCellsViaCSVOnPaste.createRowDataArrayWithEmptyCells(
-        at.contents[0].length, rowData, startColumnIndex);
-      InsertNewRow.insert(at, at.contents.length, true, newRowData);
+        at.content[0].length, rowData, startColumnIndex);
+      InsertNewRow.insert(at, at.content.length, true, newRowData);
     });
   }
 
@@ -69,8 +69,8 @@ export class OverwriteCellsViaCSVOnPaste {
     const dataForNewColumnsByColumn = ArrayUtils.transpose(dataForNewColumnsByRow);
     dataForNewColumnsByColumn.forEach((columnData: CSVRow) => {
       const newColumnData = OverwriteCellsViaCSVOnPaste.createRowDataArrayWithEmptyCells(
-        at.contents.length, columnData, startRowIndex);
-      InsertNewColumn.insert(at, at.contents[0].length, newColumnData);
+        at.content.length, columnData, startRowIndex);
+      InsertNewColumn.insert(at, at.content[0].length, newColumnData);
       OverwriteCellsViaCSVOnPaste.processNewColumn(at);
     });
   }
@@ -134,7 +134,7 @@ export class OverwriteCellsViaCSVOnPaste {
     dataToOverwriteRows.forEach((dataToOverwriteRow: CSVRow, CSVRowIndex: number) => {
       const relativeRowIndex = startRowIndex + CSVRowIndex;
       const rowElement = at.tableBodyElementRef?.children[relativeRowIndex] as HTMLElement;
-      const numberOfCellsToOverwrite = at.contents[0].length - startColumnIndex;
+      const numberOfCellsToOverwrite = at.content[0].length - startColumnIndex;
       const overwriteData = dataToOverwriteRow.slice(0, numberOfCellsToOverwrite);
       OverwriteCellsViaCSVOnPaste.overwriteRowData(at, overwriteData, relativeRowIndex, startColumnIndex, rowElement);
       const overflowData = dataToOverwriteRow.slice(numberOfCellsToOverwrite);
@@ -174,7 +174,7 @@ export class OverwriteCellsViaCSVOnPaste {
 
   // prettier-ignore
   private static overwriteCellsTextUsingCSV(at: ActiveTable, CSV: CSV, startRowIndex: number, startColumnIndex: number) {
-    const numberOfRowsToOverwrite = at.contents.length - startRowIndex;
+    const numberOfRowsToOverwrite = at.content.length - startRowIndex;
     OverwriteCellsViaCSVOnPaste.insertColumnsInsideIfCantInsertRight(at, CSV, startColumnIndex);
     const dataToOverwriteRows = CSV.slice(0, numberOfRowsToOverwrite);
     // the reason why new columns are not created when the existing cells are overwritten is because the creation of new
@@ -185,7 +185,7 @@ export class OverwriteCellsViaCSVOnPaste {
     if (!OverwriteCellsViaCSVOnPaste.canNewRowsBeCreated(at, CSV, startColumnIndex)) return;
     const dataForNewRows = CSV.slice(numberOfRowsToOverwrite);
     OverwriteCellsViaCSVOnPaste.createNewRows(at, dataForNewRows, startColumnIndex);
-    at.onTableUpdate(at.contents);
+    at.onTableUpdate(at.content);
   }
 
   private static focusOriginalCellAfterProcess(at: ActiveTable, process: () => void) {

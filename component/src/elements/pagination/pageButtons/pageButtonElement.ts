@@ -5,7 +5,7 @@ import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {PaginationUtils} from '../../../utils/pagination/paginationUtils';
 import {PageButtonContainerElement} from './pageButtonContainerElement';
 import {PaginationElements} from '../paginationElements';
-import {CellText} from '../../../types/tableContents';
+import {CellText} from '../../../types/tableContent';
 import {PageButtonEvents} from './pageButtonEvents';
 import {PageButtonStyle} from './pageButtonStyle';
 import {ActiveTable} from '../../../activeTable';

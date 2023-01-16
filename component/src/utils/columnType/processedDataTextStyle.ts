@@ -5,7 +5,7 @@ import {CellProcessedTextStyle} from '../../types/processedTextStyle';
 import {ResetColumnStyles} from '../columnSettings/resetColumnStyles';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
-import {CellText} from '../../types/tableContents';
+import {CellText} from '../../types/tableContent';
 import {CellCSSStyle} from '../../types/cssStyle';
 import {ActiveTable} from '../../activeTable';
 

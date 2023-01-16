@@ -79,7 +79,7 @@ export class RowDropdownCellOverlay {
   public static resetOverlays(at: ActiveTable) {
     if (!at.rowDropdownSettings.displaySettings.openMethod?.overlayClick) return;
     at.rowDropdownCellOverlays.splice(0, at.rowDropdownCellOverlays.length);
-    const rows = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.contents);
+    const rows = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.content);
     rows.forEach((rowElement, rowIndex) => {
       const leftMostCell = rowElement.children[0] as HTMLElement;
       RowDropdownCellOverlay.add(at, rowIndex, leftMostCell);

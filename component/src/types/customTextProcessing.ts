@@ -1,4 +1,4 @@
-import {CellText} from './tableContents';
+import {CellText} from './tableContent';
 import {CellCSSStyle} from './cssStyle';
 
 export interface CustomTextProcessing {

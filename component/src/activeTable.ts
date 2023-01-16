@@ -2,11 +2,11 @@ import {AuxiliaryTableContentInternalUtils} from './utils/auxiliaryTableContent/
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {DropdownDisplaySettingsUtil} from './elements/dropdown/dropdownDisplaySettingsUtil';
-import {InitialContentsProcessing} from './utils/contents/initialContentsProcessing';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {CustomColumnsSettings, CustomColumnSettings} from './types/columnsSettings';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
 import {DynamicCellTextUpdate} from './utils/dynamicUpdates/dynamicCellTextUpdate';
+import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {PaginationInternalUtils} from './utils/pagination/paginationInternalUtils';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
@@ -27,9 +27,9 @@ import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {StripedRowsInternal} from './types/stripedRowsInternal';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
-import {CellText, TableContents} from './types/tableContents';
 import {PaginationInternal} from './types/paginationInternal';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
+import {CellText, TableContent} from './types/tableContent';
 import {UserSetColumnSizerStyle} from './types/columnSizer';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
@@ -39,9 +39,9 @@ import {ParentResize} from './utils/render/parentResize';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
-import {activeTableStyle} from './activeTableStyle';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {StripedRows} from './utils/rows/stripedRows';
+import {activeTableStyle} from './activeTableStyle';
 import {StickyProps} from './types/stickyProps';
 import {Browser} from './utils/browser/browser';
 import {TableStyle} from './types/tableStyle';
@@ -51,9 +51,6 @@ import {Overflow} from './types/overflow';
 import {RowHover} from './types/rowHover';
 import {LitElement} from 'lit';
 
-// TO-DO
-// rename file name from using hyphen case to camel
-
 @customElement('active-table')
 export class ActiveTable extends LitElement {
   static override styles = [activeTableStyle];
@@ -61,7 +58,7 @@ export class ActiveTable extends LitElement {
   public static ELEMENT_TAG = 'ACTIVE-TABLE';
 
   @property({type: Array})
-  contents: TableContents = [
+  content: TableContent = [
     ['R', 'G', 'B', 'Color'],
     [255, 0, 0, 'Red'],
     [254, 0, 0, 'Red'],
@@ -76,7 +73,7 @@ export class ActiveTable extends LitElement {
     () => {};
 
   @property({converter: LITElementTypeConverters.convertToFunction})
-  onTableUpdate: (newTableContents: TableContents) => void = () => {};
+  onTableUpdate: (newTableContent: TableContent) => void = () => {};
 
   @property({
     type: Boolean,
@@ -233,7 +230,7 @@ export class ActiveTable extends LitElement {
   // CAUTION-4
   override render() {
     Render.renderTable(this);
-    this.onTableUpdate(this.contents);
+    this.onTableUpdate(this.content);
     new ResizeObserver(ParentResize.resizeCallback.bind(this)).observe(this.parentElement as HTMLElement);
   }
 
@@ -252,7 +249,7 @@ export class ActiveTable extends LitElement {
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
     this.shadowRoot?.appendChild(this.overflowInternal?.overflowContainer || tableElement);
     if (this.pagination) PaginationElements.create(this);
-    InitialContentsProcessing.preProcess(this.contents, this.maxRows);
+    InitialContentProcessing.preProcess(this.content, this.maxRows);
     WindowElement.setEvents(this);
     ColumnSettingsUtils.setUpInternalSettings(this);
     DefaultColumnTypes.createDropdownItemsForDefaultTypes();
@@ -292,7 +289,7 @@ declare global {
 // @state()
 // observer = new MutationObserver(function (mutations) {
 //   mutations.forEach(function (mutation) {
-//     if (mutation.attributeName === 'contents') {
+//     if (mutation.attributeName === 'content') {
 //       console.log(mutation);
 //       console.log('attributes changed');
 //     }

@@ -1,6 +1,6 @@
 import {CalendarFunctionality, YMDFormat} from '../../../../types/calendarFunctionality';
 import {RegexUtils} from '../../../../utils/regex/regexUtils';
-import {CellText} from '../../../../types/tableContents';
+import {CellText} from '../../../../types/tableContent';
 import {CellTextElement} from '../text/cellTextElement';
 
 export class DateCellTextElement {

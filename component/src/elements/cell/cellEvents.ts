@@ -1,7 +1,7 @@
 import {ProcessedDataTextStyle} from '../../utils/columnType/processedDataTextStyle';
 import {DataUtils} from '../../utils/insertRemoveStructure/shared/dataUtils';
 import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
-import {CellText} from '../../types/tableContents';
+import {CellText} from '../../types/tableContent';
 import {EMPTY_STRING} from '../../consts/text';
 import {ActiveTable} from '../../activeTable';
 import {CellElement} from './cellElement';
@@ -13,7 +13,7 @@ interface UpdateCellOptions {
   // opt out
   updateTableEvent?: boolean;
   processText?: boolean;
-  updateContents?: boolean;
+  updateContent?: boolean;
 }
 
 export class CellEvents {
@@ -29,9 +29,9 @@ export class CellEvents {
     if (CellEvents.executeUpdateOperation('processText', options)) {
       cellText = DataUtils.processCellText(at, rowIndex, columnIndex, cellText);
     }
-    if (CellEvents.executeUpdateOperation('updateContents', options)) at.contents[rowIndex][columnIndex] = cellText; 
+    if (CellEvents.executeUpdateOperation('updateContent', options)) at.content[rowIndex][columnIndex] = cellText; 
     if (options?.element) CellElement.setNewText(at, options.element, cellText, false, false); // CAUTION-1
-    if (CellEvents.executeUpdateOperation('updateTableEvent', options)) at.onTableUpdate(at.contents);
+    if (CellEvents.executeUpdateOperation('updateTableEvent', options)) at.onTableUpdate(at.content);
     // slight inefficiency using this here as setCellToDefaultIfNeeded and removeTextIfDefault have already validated text,
     // however having it here minimizes complexity
     if (rowIndex > 0) ProcessedDataTextStyle.setCellStyle(at, rowIndex, columnIndex);

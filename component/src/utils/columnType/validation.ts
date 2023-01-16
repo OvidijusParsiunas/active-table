@@ -1,7 +1,7 @@
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
 import {TextValidation} from '../../types/textValidation';
-import {CellText} from '../../types/tableContents';
+import {CellText} from '../../types/tableContent';
 import {EMPTY_STRING} from '../../consts/text';
 
 export class Validation {

@@ -1,4 +1,4 @@
-import {CellText} from './tableContents';
+import {CellText} from './tableContent';
 
 export interface DynamicCellTextUpdateObj {
   newText: CellText;

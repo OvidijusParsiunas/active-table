@@ -7,7 +7,7 @@ type ToggleWhenContent = (at: ActiveTable, isInsert: boolean) => void;
 // REF-18
 export class ToggleAdditionElements {
   public static update(at: ActiveTable, isInsert: boolean, toggleWhenContent: ToggleWhenContent) {
-    if (at.contents.length === 0) {
+    if (at.content.length === 0) {
       NoContentStubElement.display(at);
     } else {
       toggleWhenContent(at, isInsert);

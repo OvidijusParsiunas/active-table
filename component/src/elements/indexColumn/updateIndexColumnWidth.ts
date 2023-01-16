@@ -15,8 +15,8 @@ export class UpdateIndexColumnWidth {
   public static WIDTH = DEFAULT_COLUMN_WIDTH;
 
   private static wrapColumnTextAndGetDefaultWidth(at: ActiveTable) {
-    const {tableBodyElementRef, contents, tableDimensions} = at;
-    ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, contents).forEach((row) => {
+    const {tableBodyElementRef, content, tableDimensions} = at;
+    ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, content).forEach((row) => {
       const indexCell = row.children[0] as HTMLElement;
       indexCell.classList.remove(IndexColumn.INDEX_CELL_OVERFLOW_CLASS);
     });
@@ -61,7 +61,7 @@ export class UpdateIndexColumnWidth {
   private static getIndexColumnOverflowWidth(firstRow: HTMLElement, lastCell: HTMLElement) {
     const overflowWidth = UpdateIndexColumnWidth.getCellOverflow(lastCell);
     // if using pagination and the last row is not visible, then overflowWidth will be 0 and we must temporarily add
-    // the last cell contents to the first data row cell to measure the overflow
+    // the last cell content to the first data row cell to measure the overflow
     if (overflowWidth === 0) {
       const firstDataRow = firstRow.nextSibling as HTMLElement;
       if (firstDataRow && !AddNewRowElement.isAddNewRowRow(firstDataRow)) {
@@ -121,8 +121,8 @@ export class UpdateIndexColumnWidth {
   public static update(at: ActiveTable, textRowsArr?: Element[], forceWrap = false) {
     if (at.tableDimensions.isColumnIndexCellTextWrapped) return;
     if (!textRowsArr) {
-      const {tableBodyElementRef, contents} = at;
-      textRowsArr = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, contents);
+      const {tableBodyElementRef, content} = at;
+      textRowsArr = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, content);
     }
     const lastCell = textRowsArr[textRowsArr.length - 1]?.children[0] as HTMLElement;
     if (lastCell) UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, lastCell, forceWrap);

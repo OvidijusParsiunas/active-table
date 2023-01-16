@@ -15,9 +15,9 @@ export class PaginationUtils {
 
   // prettier-ignore
   public static getLastPossiblePageNumber(at: ActiveTable, isBeforeInsert = false) {
-    const {contents, paginationInternal, auxiliaryTableContentInternal: {indexColumnCountStartsAtHeader}} = at;
+    const {content, paginationInternal, auxiliaryTableContentInternal: {indexColumnCountStartsAtHeader}} = at;
     if (paginationInternal.isAllRowsOptionSelected) return 1;
-    const contentLength = indexColumnCountStartsAtHeader ? contents.length + 1 : contents.length;
+    const contentLength = indexColumnCountStartsAtHeader ? content.length + 1 : content.length;
     const numberOfRows = isBeforeInsert ? contentLength : contentLength - 1;
     return Math.max(Math.ceil(numberOfRows / paginationInternal.numberOfRows), 1);
   }
@@ -30,7 +30,7 @@ export class PaginationUtils {
 
   public static getRelativeRowIndexes(at: ActiveTable, rowIndex = 0) {
     const {activePageNumber, numberOfRows, isAllRowsOptionSelected} = at.paginationInternal;
-    let maxVisibleRowIndex = isAllRowsOptionSelected ? at.contents.length + 1 : activePageNumber * numberOfRows;
+    let maxVisibleRowIndex = isAllRowsOptionSelected ? at.content.length + 1 : activePageNumber * numberOfRows;
     if (!at.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader) maxVisibleRowIndex += 1;
     const minVisibleRowIndex = maxVisibleRowIndex - numberOfRows;
     const visibleRowIndex = rowIndex - minVisibleRowIndex;
@@ -109,7 +109,7 @@ export class PaginationUtils {
   // prettier-ignore
   public static updateOnRowChange(at: ActiveTable, rowIndex: number, newRowElement?: HTMLElement) {
     if (!at.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader
-        && rowIndex === 0 && at.contents.length === 0) return;
+        && rowIndex === 0 && at.content.length === 0) return;
     // buttons need to be updated first as displayRowsForDifferentButton will use them to toggle the side buttons
     if (newRowElement) {
       PaginationUpdatePageButtons.updateOnRowInsert(at);
@@ -143,8 +143,8 @@ export class PaginationUtils {
 
   // prettier-ignore
   private static setCorrectRowsAsVisible(at: ActiveTable, buttonNumber: number) {
-    const {paginationInternal: {numberOfRows, visibleRows}, tableBodyElementRef, contents} = at;
-    const tableRows = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, contents);
+    const {paginationInternal: {numberOfRows, visibleRows}, tableBodyElementRef, content} = at;
+    const tableRows = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, content);
     let startingRowIndex = numberOfRows * (buttonNumber - 1);
     if (!at.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader) startingRowIndex += 1; 
     tableRows.slice(startingRowIndex, startingRowIndex + numberOfRows).forEach((rowElement) => {

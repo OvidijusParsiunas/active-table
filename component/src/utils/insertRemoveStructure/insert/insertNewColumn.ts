@@ -6,7 +6,7 @@ import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
 import {MaximumColumns} from './maximum/maximumColumns';
-import {TableRow} from '../../../types/tableContents';
+import {TableRow} from '../../../types/tableContent';
 import {EMPTY_STRING} from '../../../consts/text';
 import {ActiveTable} from '../../../activeTable';
 import {LastColumn} from '../shared/lastColumn';
@@ -20,7 +20,7 @@ export class InsertNewColumn {
   }
 
   private static insertToAllRows(at: ActiveTable, columnIndex: number, columnData?: TableRow) {
-    const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.contents);
+    const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.content);
     rowElements.forEach((rowElement: Node, rowIndex: number) => {
       const cellText = columnData ? columnData[rowIndex] : EMPTY_STRING;
       InsertNewCell.insertToRow(at, rowElement as HTMLElement, rowIndex, columnIndex, cellText as string, true);
@@ -34,7 +34,7 @@ export class InsertNewColumn {
       FocusedCellUtils.incrementColumnIndex(at.focusedElements.cell, columnIndex);
       InsertNewColumn.insertToAllRows(at, columnIndex, columnData);
       ToggleAdditionElements.update(at, true, AddNewColumnElement.toggle);
-      setTimeout(() => at.onTableUpdate(at.contents));
+      setTimeout(() => at.onTableUpdate(at.content));
     }
   }
 

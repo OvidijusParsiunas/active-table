@@ -2,7 +2,7 @@ import {CellTypeTotals, ColumnDetailsT} from '../../types/columnDetails';
 import {ColumnTypesInternal} from '../../types/columnTypeInternal';
 import {AUXILIARY_CELL_TYPE} from '../../enums/cellType';
 import {HasRerendered} from '../render/hasRerendered';
-import {CellText} from '../../types/tableContents';
+import {CellText} from '../../types/tableContent';
 import {EMPTY_STRING} from '../../consts/text';
 
 // TO-DO - may not need this class at all as the only use case for it is to help copy or export csv file correctly

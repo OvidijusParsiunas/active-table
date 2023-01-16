@@ -2,8 +2,6 @@ import {PossibleStringDimensions, StringDimensionUtils} from './stringDimensionU
 import {GenericElementUtils} from '../elements/genericElementUtils';
 import {IndexColumnT} from '../../types/auxiliaryTableContent';
 import {TableDimensions} from '../../types/tableDimensions';
-import {ColumnsDetailsT} from '../../types/columnDetails';
-import {TableContents} from '../../types/tableContents';
 import {OverflowUtils} from '../overflow/overflowUtils';
 import {TableStyle} from '../../types/tableStyle';
 import {ActiveTable} from '../../activeTable';
@@ -66,11 +64,6 @@ export class TableDimensionsUtils {
     // else the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
     TableDimensionsUtils.setPreserveNarrowColumnsProp(at, tableDimensions);
     TableDimensionsUtils.setIsColumnIndexCellTextWrapped(tableDimensions, displayIndexColumn);
-  }
-
-  public static cleanupContentsThatDidNotGetAdded(contents: TableContents, columnsDetails: ColumnsDetailsT) {
-    if (contents[0]?.length - columnsDetails.length > 0) contents.forEach((row) => row.splice(columnsDetails.length));
-    if (contents.length > columnsDetails[0]?.elements.length) contents.splice(columnsDetails[0].elements.length);
   }
 
   public static hasSetTableWidthBeenBreached(at: ActiveTable) {

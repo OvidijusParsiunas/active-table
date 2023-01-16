@@ -19,9 +19,9 @@ export class ColumnDropdownItemEvents {
     const ascSortItem = dropdownElement.getElementsByClassName(ColumnDropdownItem.SORT_ITEM_CLASS)[0] as HTMLElement;
     const siblingIterator = ElementSiblingIterator.create(ascSortItem);
     siblingIterator.currentElement().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
-      at, Sort.sortContentsColumn.bind(this, at, columnIndex, true));
+      at, Sort.sortColumn.bind(this, at, columnIndex, true));
     siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
-      at, Sort.sortContentsColumn.bind(this, at, columnIndex, false));
+      at, Sort.sortColumn.bind(this, at, columnIndex, false));
     siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(
       at, InsertNewColumn.insert.bind(this, at, columnIndex));
     siblingIterator.next().onclick = ColumnDropdownItemEvents.onClickMiddleware.bind(

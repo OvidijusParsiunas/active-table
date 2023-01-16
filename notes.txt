@@ -156,12 +156,12 @@ When there are no cells in the table, we display a stub element that the user ca
 The original idea was to have the column add cell act as the stub when it is set to be displayed or add new row cell to act when
 the column is not displayed etc. However this idea was dismissed due to the code complexity this required as we needed code to
 set and unset both of the cells' styles and have them work with the toggle logic for the max numbers. The second idea was to
-use a standalone cell button that would independently appear when the table had no contents and would hide when content was
+use a standalone cell button that would independently appear when the table had no content and would hide when content was
 added again. This originally worked, but the logic behind displaying it and keeping the other cells hidden grew in complexity.
 I then realised that this cell had an onclick event that would add a new row (a new column after no cells cannot be added)
 which was pretty much just like the add new row button, so why really have another standalone cell if we can just reuse
 the add new row button exclusively. Hence this is why the add row button is always present within the table body and all we do
-is convert its style to a stub when there are no contents and set it back to normal or hide it when the contents are added.
+is convert its style to a stub when there are no content and set it back to normal or hide it when the content are added.
 
 REF-19
 When the index column is too wide (and narrow columns are not preserved) - the table body will actually be increased over the size
@@ -177,7 +177,7 @@ REF-20
 onCellUpdate is specifically designed to help maintain a data object in the parent application and IS NOT meant to be used like
 an alert notification system to report what has been specifically removed or added. The reason for this is because the update
 messages that are sent don't actually describe the particular cells that have been removed/added are and instead describe what
-changes need to be made to the outside data object in order for it to be the same as the data object (contents) in this component.
+changes need to be made to the outside data object in order for it to be the same as the data object (content) in this component.
 Example:
 When there are 5 rows and 5 columns, and row number 3 gets removed - the messages that are sent out do not say that row 3 cells
 were removed and instead they will say that row 3 cells were updated, row 4 was updated ad row 5 was the one that was removed.
@@ -224,7 +224,7 @@ Given that the add new row button is not always visible and there is no css sele
 mark the last visible row with an id. This is done to not display bottom border if last row cells contain one in their style settings.
 
 REF-26
-To insert a header row when there is an existing one - we create a new row below it and move the contents of the header row to it.
+To insert a header row when there is an existing one - we create a new row below it and move the content of the header row to it.
 The reason for this approach is not to have to create a new row with <td> elements and sizers.
 
 REF-27

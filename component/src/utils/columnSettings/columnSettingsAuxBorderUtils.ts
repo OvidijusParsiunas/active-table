@@ -39,7 +39,7 @@ export class ColumnSettingsAuxBorderUtils {
         addColumnCellsElementsRef, currentColumn.elements, 'left', defaultColumnsSettings);
     }
     if (!leftColumnDetails && displayIndexColumn) {
-      const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.contents, 0);
+      const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.content, 0);
       const indexCells = rowElements.map((row) => row.children[0]) as HTMLElement[];
       ColumnSettingsAuxBorderUtils.toggleAuxiliaryBorder(
         indexCells, currentColumn.elements, 'right', defaultColumnsSettings);

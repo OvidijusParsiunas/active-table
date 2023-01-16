@@ -16,7 +16,7 @@ export class PageButtonContainerElement {
 
   private static setStyle(at: ActiveTable, buttonContainerElement: HTMLElement) {
     const minNumberOfButtonsToBeActive = at.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? 1 : 2;
-    if (at.contents.length < minNumberOfButtonsToBeActive) {
+    if (at.content.length < minNumberOfButtonsToBeActive) {
       const {style} = at.paginationInternal;
       PageButtonElement.setDisabled(buttonContainerElement, style.pageButtons);
     } else {

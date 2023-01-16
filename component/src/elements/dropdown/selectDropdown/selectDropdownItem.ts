@@ -1,9 +1,9 @@
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
 import {ActiveSelectItems, ColumnDetailsT, SelectDropdownT} from '../../../types/columnDetails';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
-import {CellText, TableContents} from '../../../types/tableContents';
 import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
 import {SelectDropdownItemEvents} from './selectDropdownItemEvents';
+import {CellText, TableContent} from '../../../types/tableContent';
 import {SelectDeleteButton} from './buttons/selectDeleteButton';
 import {SelectColorButton} from './buttons/selectColorButton';
 import {LabelOptions} from '../../../types/selectProperties';
@@ -25,7 +25,7 @@ export class SelectDropdownItem {
   // prettier-ignore
   private static updateCellElementIfNotUpdated(at: ActiveTable,
       newText: string, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
-    if ((at.contents[rowIndex][columnIndex]) !== newText) {
+    if ((at.content[rowIndex][columnIndex]) !== newText) {
       CellEvents.updateCell(at, newText, rowIndex, columnIndex, {processText: false, element: textElement});
     }
   }
@@ -185,9 +185,9 @@ export class SelectDropdownItem {
   }
 
   // prettier-ignore
-  private static aggregateItemToColor(contents: TableContents, columnIndex: number, itemToColor: ItemToColor,
+  private static aggregateItemToColor(content: TableContent, columnIndex: number, itemToColor: ItemToColor,
       newItemColors?: string[]) {
-    return contents.slice(1).reduce<ItemToColor>((itemToColor, row) => {
+    return content.slice(1).reduce<ItemToColor>((itemToColor, row) => {
       const cellText = row[columnIndex];
       if (cellText !== EMPTY_STRING && !itemToColor[cellText]) {
         if (newItemColors) {
@@ -202,7 +202,7 @@ export class SelectDropdownItem {
 
   // prettier-ignore
   public static populateItems(at: ActiveTable, columnIndex: number) {
-    const {contents, columnsDetails} = at;
+    const {content, columnsDetails} = at;
     const columnDetails = columnsDetails[columnIndex];
     const {selectDropdown: {labelDetails}, settings: {defaultText, isDefaultTextRemovable}, activeType: {selectProps}
       } = columnDetails;
@@ -212,7 +212,7 @@ export class SelectDropdownItem {
       itemToColor = SelectDropdownItem.changeUserOptionsToItemToColor(selectProps.options, labelDetails?.newItemColors)
     }
     if (selectProps.canAddMoreOptions) {
-      SelectDropdownItem.aggregateItemToColor(contents, columnIndex, itemToColor, labelDetails?.newItemColors);
+      SelectDropdownItem.aggregateItemToColor(content, columnIndex, itemToColor, labelDetails?.newItemColors);
     }
     SelectDropdownItem.postProcessItemToColor(isDefaultTextRemovable, itemToColor, defaultText);
     SelectDropdownItem.addItems(at, itemToColor, columnDetails);
