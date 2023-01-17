@@ -46,7 +46,8 @@ export class ColumnDetails {
 
   // prettier-ignore
   public static createInitial(defaultColumnsSettings: ColumnsSettingsDefault, selectDropdown: HTMLElement,
-      settings: ColumnSettingsInternal, index: number, onColumnUpdate: OnColumnUpdate): ColumnDetailsInitial {
+      settings: ColumnSettingsInternal, index: number,
+      onColumnUpdate: OnColumnUpdate): ColumnDetailsInitial {
     const columnSettings = settings || defaultColumnsSettings as ColumnSettingsInternal;
     const {types, activeType} = ColumnTypesUtils.getProcessedTypes(columnSettings);
     return {

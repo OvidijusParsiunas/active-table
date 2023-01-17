@@ -125,7 +125,7 @@ export class ColumnTypesUtils {
     if (typeof type.select === 'object' && type.select.options) {
       const internalSelectProps = type.select as SelectPropertiesInternal;
       internalSelectProps.options = type.select.options.map((option) => {
-        return {name: option};
+        return {text: option};
       });
     } else if (typeof type.label === 'object' && type.label.options) {
       const internalSelectProps = type.label as SelectPropertiesInternal;

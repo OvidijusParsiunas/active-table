@@ -13,9 +13,9 @@ export class NumberOfRowsDropdownItemUtil {
   }
 
   private static getNewNumberOfRows(at: ActiveTable, newNumberOfRows: string) {
-    const {paginationInternal, content, auxiliaryTableContentInternal} = at;
+    const {paginationInternal, content, dataBeginsAtHeader} = at;
     if (paginationInternal.isAllRowsOptionSelected) {
-      return auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? content.length : content.length - 1;
+      return dataBeginsAtHeader ? content.length : content.length - 1;
     }
     return Number(newNumberOfRows);
   }

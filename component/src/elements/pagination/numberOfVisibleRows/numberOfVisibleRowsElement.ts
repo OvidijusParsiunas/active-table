@@ -18,12 +18,11 @@ export class NumberOfVisibleRowsElement {
     numberOfVisibleRowsElement.innerText = `${Math.min(dataRowsLength, 1)}-${dataRowsLength} of ${dataRowsLength}`;
   }
 
-  // prettier-ignore
   public static update(at: ActiveTable) {
-    const {paginationInternal, content, auxiliaryTableContentInternal: {indexColumnCountStartsAtHeader}} = at;
+    const {paginationInternal, content, dataBeginsAtHeader} = at;
     const {numberOfVisibleRowsElement, isAllRowsOptionSelected} = paginationInternal;
     if (!numberOfVisibleRowsElement) return;
-    const dataRowsLength = indexColumnCountStartsAtHeader ? content.length : content.length - 1;
+    const dataRowsLength = dataBeginsAtHeader ? content.length : content.length - 1;
     if (isAllRowsOptionSelected) {
       NumberOfVisibleRowsElement.updateForAllRows(numberOfVisibleRowsElement, dataRowsLength);
     } else {

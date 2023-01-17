@@ -11,9 +11,9 @@ export class SelectDeleteButtonEvents {
     const buttonElement = event.target as HTMLElement;
     const containerElement = buttonElement.parentElement as HTMLElement;
     const itemElement = containerElement.parentElement as HTMLElement;
-    delete selectDropdown.selectItems[CellElement.getText(itemElement.children[0] as HTMLElement)];
+    delete selectDropdown.itemsDetails[CellElement.getText(itemElement.children[0] as HTMLElement)];
     itemElement.remove();
-    if (Object.keys(selectDropdown.selectItems).length === 0) {
+    if (Object.keys(selectDropdown.itemsDetails).length === 0) {
       CellWithTextEvents.programmaticBlur(this);
     } else {
       SelectDropdownScrollbar.setProperties(selectDropdown);

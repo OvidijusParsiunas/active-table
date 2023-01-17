@@ -38,7 +38,7 @@ export class SelectDropdownItemEvents {
   }
 
   private static highlightItem(this: Document, dropdown: SelectDropdownT, event: MouseEvent) {
-    const {scrollbarPresence, activeItems, labelDetails, canAddMoreOptions, element, selectItems} = dropdown;
+    const {scrollbarPresence, activeItems, labelDetails, canAddMoreOptions, element, itemsDetails} = dropdown;
     if (labelDetails?.colorPickerContainer) return; // do not highlight new if color picker open
     // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
     if (activeItems.hovered) {
@@ -47,7 +47,7 @@ export class SelectDropdownItemEvents {
     }
     const itemElement = event.target as HTMLElement;
     const text = (itemElement.children[0] as HTMLElement).innerText;
-    itemElement.style.backgroundColor = selectItems[text].color;
+    itemElement.style.backgroundColor = itemsDetails[text].backgroundColor;
     const dropdownElement = itemElement.parentElement as HTMLElement;
     SelectDropdownItemEvents.scrollToItem(this, itemElement, scrollbarPresence.horizontal, dropdownElement, event);
     if (itemElement === activeItems.matchingWithCellText) {

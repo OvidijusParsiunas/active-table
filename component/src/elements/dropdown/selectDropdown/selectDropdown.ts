@@ -133,8 +133,8 @@ export class SelectDropdown {
   // prettier-ignore
   public static display(at: ActiveTable, columnIndex: number, cellElement: HTMLElement) {
     const {selectDropdown, settings: {defaultText}, activeType: {selectProps}} = at.columnsDetails[columnIndex];
-    const {element: dropdownEl, selectItems} = selectDropdown;
-    if (Object.keys(selectItems).length > 0 && selectProps) {
+    const {element: dropdownEl, itemsDetails} = selectDropdown;
+    if (Object.keys(itemsDetails).length > 0 && selectProps) {
       SelectDropdownEvents.set(at, dropdownEl);
       SelectDropdownItemEvents.blurItem(selectDropdown, 'hovered');
       SelectDropdownItemEvents.blurItem(selectDropdown, 'matchingWithCellText');
@@ -187,7 +187,7 @@ export class SelectDropdown {
 
   public static getDefaultObj(dropdownElement: HTMLElement): SelectDropdownT {
     return {
-      selectItems: {},
+      itemsDetails: {},
       activeItems: {},
       element: dropdownElement,
       canAddMoreOptions: true,

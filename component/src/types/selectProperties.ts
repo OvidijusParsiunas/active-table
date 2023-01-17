@@ -3,7 +3,7 @@ import {PX} from './dimensions';
 export type SelectOptions = string[];
 
 // if backgroundColor is not provided - a random one is generated
-export type LabelOptions = {name: string; backgroundColor?: string}[];
+export type LabelOptions = {text: string; backgroundColor?: string}[];
 
 export interface SelectDropdownOptionStyle {
   textColor: CSSStyleDeclaration['color'];

@@ -251,7 +251,7 @@ When a pagination button style is programmatically set to hover, sometimes the p
 when a new row is inserted or older is removed, hence the mouse is no longer on a button and the style should not be applied.
 
 REF-32
-When pagination is enabled along with striped rows and add new row cell displayed - the row add new row element can sometimes have
+When pagination is enabled along with striped rows and add new row cell displayed - the add new row element can sometimes have
 the same style as the row above due to the fact that its style was set based on the position of all rows and not where it is
 in the current page (due to rows being hidden). To fix this we set the add new row element to have a consistent style. Because
 this issue also affects the header element when there is an odd number of visible rows allowed, we change the allowed row number

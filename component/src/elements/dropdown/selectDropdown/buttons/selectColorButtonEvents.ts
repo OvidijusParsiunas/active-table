@@ -13,8 +13,8 @@ export class SelectColorButtonEvents {
     if (!labelDetails || !labelDetails.colorPickerNewValue) return;
     cellElements.forEach((cellElement) => {
       const textElement = cellElement.children[0] as HTMLElement;
-      if (textElement.innerText === labelDetails.colorPickerNewValue?.text) {
-        textElement.style.backgroundColor = labelDetails.colorPickerNewValue.color;
+      if (textElement.innerText === labelDetails.colorPickerNewValue?.itemText) {
+        textElement.style.backgroundColor = labelDetails.colorPickerNewValue.backgroundColor;
       }
     });
     setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
@@ -32,13 +32,13 @@ export class SelectColorButtonEvents {
   private static inputEvent(dropdown: SelectDropdownT, event: Event) {
     const inputElement = event.target as HTMLInputElement;
     const {textElement, dropdownItemElement} = SelectColorButton.extractRelativeParentElements(inputElement);
-    const text = textElement.textContent as string;
-    const color = inputElement.value;
-    dropdownItemElement.style.backgroundColor = color;
-    const selectItemDetails = dropdown.selectItems[text];
-    if (selectItemDetails.color !== color) {
-      selectItemDetails.color = color;
-      (dropdown.labelDetails as LabelDetails).colorPickerNewValue = {color, text};
+    const itemText = textElement.textContent as string;
+    const backgroundColor = inputElement.value;
+    dropdownItemElement.style.backgroundColor = backgroundColor;
+    const selectItemDetails = dropdown.itemsDetails[itemText];
+    if (selectItemDetails.backgroundColor !== backgroundColor) {
+      selectItemDetails.backgroundColor = backgroundColor;
+      (dropdown.labelDetails as LabelDetails).colorPickerNewValue = {backgroundColor, itemText};
     }
   }
 

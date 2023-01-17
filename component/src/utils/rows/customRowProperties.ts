@@ -23,7 +23,7 @@ export class CustomRowProperties {
   private static setStyle(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, isAddRowEven: boolean) {
     if (etc.stripedRowsInternal) {
       if (isAddRowEven && AddNewRowElement.isAddNewRowRow(rowElement)) {
-        rowIndex = Number(!etc.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader); // REF-32
+        rowIndex = Number(!etc.dataBeginsAtHeader); // REF-32
       }
       return StripedRows.setRowStyle(rowElement, rowIndex, etc.stripedRowsInternal);
     }

@@ -16,9 +16,9 @@ export class IndexColumn {
   private static readonly DEFAULT_WIDTH_PX = `${IndexColumn.DEFAULT_WIDTH}px`;
 
   public static updateIndexes(at: ActiveTable, startIndex: number) {
-    const {tableBodyElementRef, content} = at;
+    const {tableBodyElementRef, content, dataBeginsAtHeader} = at;
     const textRowsArr = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, content, startIndex);
-    const auxiliaryPaddingIndex = Number(at.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader);
+    const auxiliaryPaddingIndex = Number(dataBeginsAtHeader);
     textRowsArr.forEach((row, rowIndex) => {
       const indexCell = row.children[0] as HTMLElement;
       const relativeIndex = startIndex + rowIndex + auxiliaryPaddingIndex;
@@ -45,7 +45,7 @@ export class IndexColumn {
 
   private static createHeaderCell(at: ActiveTable) {
     const headerCell = IndexColumn.createCell(at, true);
-    if (at.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader) headerCell.innerText = '1';
+    if (at.dataBeginsAtHeader) headerCell.innerText = '1';
     headerCell.style.width = IndexColumn.DEFAULT_WIDTH_PX;
     // Safari does not always apply the width immediately, however do need the line above as it would otherwise cause
     // the table width to change when a row is removed
@@ -55,7 +55,7 @@ export class IndexColumn {
 
   private static createDataCell(at: ActiveTable, rowIndex: number) {
     const dataCell = IndexColumn.createCell(at, false);
-    const indexNumber = at.auxiliaryTableContentInternal.indexColumnCountStartsAtHeader ? rowIndex + 1 : rowIndex;
+    const indexNumber = at.dataBeginsAtHeader ? rowIndex + 1 : rowIndex;
     dataCell.innerText = String(indexNumber);
     return dataCell;
   }

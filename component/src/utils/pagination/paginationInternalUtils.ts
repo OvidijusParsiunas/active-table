@@ -27,13 +27,11 @@ export class PaginationInternalUtils {
   ]);
 
   private static setNumberOfRows(at: ActiveTable) {
-    const {paginationInternal, content, auxiliaryTableContent} = at;
+    const {paginationInternal, content, dataBeginsAtHeader} = at;
     const firstItemText = paginationInternal.numberOfRowsOptionsItemText[0];
     if (firstItemText.toLocaleLowerCase() === NumberOfRowsDropdownItem.ALL_ITEM_TEXT) {
       paginationInternal.isAllRowsOptionSelected = true;
-      paginationInternal.numberOfRows = auxiliaryTableContent.indexColumnCountStartsAtHeader
-        ? content.length
-        : content.length - 1;
+      paginationInternal.numberOfRows = dataBeginsAtHeader ? content.length : content.length - 1;
     } else {
       paginationInternal.numberOfRows = Number(firstItemText);
     }

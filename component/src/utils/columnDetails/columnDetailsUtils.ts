@@ -22,10 +22,10 @@ export class ColumnDetailsUtils {
 
   private static aggregateItems(selectDropdown: SelectDropdownT): ColumUpdateItems {
     return selectDropdown.labelDetails
-      ? Object.keys(selectDropdown.selectItems).map((text) => {
-          return {name: text, backgroundColor: selectDropdown.selectItems[text].color};
+      ? Object.keys(selectDropdown.itemsDetails).map((text) => {
+          return {name: text, backgroundColor: selectDropdown.itemsDetails[text].backgroundColor};
         })
-      : Object.keys(selectDropdown.selectItems).map((text) => {
+      : Object.keys(selectDropdown.itemsDetails).map((text) => {
           return {name: text};
         });
   }

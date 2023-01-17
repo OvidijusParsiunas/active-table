@@ -16,7 +16,6 @@ export interface AuxiliaryTableContentDisplayProps {
   // called cells to the client, but cells internally as it is made up of multiple cells
   displayAddColumnCell?: boolean; // true by default
   displayIndexColumn?: IndexColumnT;
-  indexColumnCountStartsAtHeader?: boolean; // false by default
 }
 
 export interface AuxiliaryTableContentGenericProps {

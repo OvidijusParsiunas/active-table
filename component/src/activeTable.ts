@@ -194,6 +194,13 @@ export class ActiveTable extends LitElement {
   @state()
   auxiliaryTableContentInternal: AuxiliaryTableContentInternal = AuxiliaryTableContentInternalUtils.getDefault();
 
+  // this affects the column index and pagination
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  dataBeginsAtHeader = false;
+
   // called columnResizer for the client - columnSizer in the code
   @property({type: Object})
   columnResizerStyle: UserSetColumnSizerStyle = {};

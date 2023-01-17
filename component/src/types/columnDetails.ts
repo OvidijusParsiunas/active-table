@@ -20,8 +20,8 @@ export interface LabelDetails {
   newItemColors: string[]; // REF-34
   colorPickerContainer?: HTMLElement; // set when picker is opened
   colorPickerNewValue?: {
-    color: string;
-    text: string;
+    itemText: string;
+    backgroundColor: string;
   };
 }
 
@@ -36,16 +36,16 @@ export interface ActiveSelectItems {
 }
 
 interface SelectItemDetails {
-  color: string;
+  backgroundColor: string;
   element: HTMLElement;
 }
 
-interface SelectItems {
-  [cellText: string]: SelectItemDetails;
+interface SelectItemsDetails {
+  [itemText: string]: SelectItemDetails;
 }
 
 export interface SelectDropdownT {
-  selectItems: SelectItems; // dropdown items
+  itemsDetails: SelectItemsDetails;
   activeItems: ActiveSelectItems; // items that exhibit certain behaviours
   element: HTMLElement; // REF-8
   scrollbarPresence: ScrollbarPresence;

@@ -61,7 +61,7 @@ export class SelectCellTextBaseEvents {
   public static blurring(at: ActiveTable, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const columnDetails = at.columnsDetails[columnIndex];
     Dropdown.hide(columnDetails.selectDropdown.element);
-    if (!columnDetails.selectDropdown.selectItems[CellElement.getText(textElement)]) {
+    if (!columnDetails.selectDropdown.itemsDetails[CellElement.getText(textElement)]) {
       SelectCell.finaliseEditedText(at, textElement, columnIndex);
     }
     SelectCellTextBaseEvents.clearTypeSpecificProps(columnDetails);

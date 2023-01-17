@@ -12,7 +12,6 @@ export class AuxiliaryTableContentInternalUtils {
       displayAddColumnCell: true,
       displayAddRowCell: true,
       displayIndexColumn: true,
-      indexColumnCountStartsAtHeader: false,
     };
   }
 }
