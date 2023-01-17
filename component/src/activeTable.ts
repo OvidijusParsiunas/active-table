@@ -6,8 +6,8 @@ import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUt
 import {CustomColumnsSettings, CustomColumnSettings} from './types/columnsSettings';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
 import {DynamicCellTextUpdate} from './utils/dynamicUpdates/dynamicCellTextUpdate';
-import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {PaginationInternalUtils} from './utils/pagination/paginationInternalUtils';
+import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';

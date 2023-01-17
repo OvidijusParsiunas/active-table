@@ -11,6 +11,7 @@ export const activeTableStyle = css`
     border-spacing: 0px;
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     position: relative;
+    text-align: left;
   }
 
   /* REF-16 */
@@ -123,7 +124,8 @@ export const activeTableStyle = css`
   }
 
   .header-icon-side-text {
-    display: flex;
+    /* cannot use flex as pressing ENTER creates a new div */
+    display: inline-block;
   }
 
   .not-selectable {

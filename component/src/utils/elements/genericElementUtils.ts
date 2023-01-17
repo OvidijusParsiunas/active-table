@@ -16,7 +16,7 @@ export class GenericElementUtils {
   }
 
   public static isParentWidthUndetermined(width: string) {
-    return width === 'fit-content' || width === 'min-content' || width === 'max-content';
+    return width === '' || width === 'fit-content' || width === 'min-content' || width === 'max-content';
   }
 
   public static isFirstChildInParent(element: HTMLElement) {

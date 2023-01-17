@@ -24,7 +24,7 @@ export class MoveColumn {
   // prettier-ignore
   private static changeSettings(at: ActiveTable, targetColIndex: number, targetHeader: HTMLElement,
       targetColumnDetails: ColumnDetailsT, sourceType: ColumnTypeInternal) {
-    ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, targetHeader, targetColIndex);
+    ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, targetHeader, targetColIndex, true);
     if (sourceType !== targetColumnDetails.activeType) {
       ChangeColumnType.change.bind(at)(sourceType.name, targetColIndex);
     }
@@ -32,7 +32,7 @@ export class MoveColumn {
 
   // prettier-ignore
   private static overwrite(at: ActiveTable, targetColumnDetails: ColumnDetailsT,
-      targetColIndex: number, sourceCellText: string[], sourceType: ColumnTypeInternal) {
+      targetColIndex: number, sourceCellText: string[], sourceType: ColumnTypeInternal, sourceColWidth: string) {
     const overwrittenText: string[] = [];
     const {elements: targetElements, activeType: targetType} = targetColumnDetails;
     const oldHeaderText = MoveUtils.setNewElementText(at, sourceCellText[0], targetElements[0], targetColIndex, 0);
@@ -40,7 +40,9 @@ export class MoveColumn {
     MoveColumn.changeSettings(at, targetColIndex, targetElements[0], targetColumnDetails, sourceType);
     const overwrittenDataText = MoveColumn.overwriteDataElements(at, targetElements, targetColIndex, sourceCellText);
     overwrittenText.push(...overwrittenDataText);
-    return { overwrittenText, overwrittenType: targetType };
+    const overwrittenWidth = targetElements[0].style.width;
+    targetElements[0].style.width = sourceColWidth; // this needs to be done because column widths are not stored in state
+    return { overwrittenText, overwrittenType: targetType, overwrittenWidth };
   }
 
   private static firstChangeSettingsIfSettingsChanged(at: ActiveTable, columnIndex: number) {
@@ -51,16 +53,20 @@ export class MoveColumn {
     }
   }
 
+  // prettier-ignore
   public static move(at: ActiveTable, columnIndex: number, isToRight: boolean) {
     MoveColumn.firstChangeSettingsIfSettingsChanged(at, columnIndex);
     const currentColumn = at.columnsDetails[columnIndex];
     const siblingIndex = isToRight ? columnIndex + 1 : columnIndex - 1;
     const siblingColumn = at.columnsDetails[siblingIndex];
-    const siblingColumnText = at.columnsDetails[siblingIndex].elements.map((element) => CellElement.getText(element));
+    const siblingColumnText = siblingColumn.elements.map((element) => CellElement.getText(element));
+    const siblingColumnWidth = siblingColumn.elements[0].style.width;
     // overwrite current column using sibling column
-    const overwritten = MoveColumn.overwrite(at, currentColumn, columnIndex, siblingColumnText, siblingColumn.activeType);
+    const overwritten = MoveColumn.overwrite(at, currentColumn, columnIndex, siblingColumnText,
+      siblingColumn.activeType, siblingColumnWidth);
     FocusedCellUtils.set(at.focusedElements.cell, siblingColumn.elements[0], 0, siblingIndex, siblingColumn.types);
     // overwrite sibling column using overwritten content
-    MoveColumn.overwrite(at, siblingColumn, siblingIndex, overwritten.overwrittenText, overwritten.overwrittenType);
+    MoveColumn.overwrite(at, siblingColumn, siblingIndex, overwritten.overwrittenText,
+      overwritten.overwrittenType, overwritten.overwrittenWidth);
   }
 }

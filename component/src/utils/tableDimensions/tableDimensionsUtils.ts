@@ -26,12 +26,6 @@ export class TableDimensionsUtils {
     tableDimensions.preserveNarrowColumns = at.preserveNarrowColumns;
   }
 
-  private static setDefaultDimension(tableDimensions: TableDimensions, parentElement: HTMLElement) {
-    // 100% width of the parent element
-    tableDimensions.maxWidth = parentElement.offsetWidth;
-    tableDimensions.isPercentage = true;
-  }
-
   // prettier-ignore
   private static setDimension(at: ActiveTable, key: keyof PossibleStringDimensions<TableStyle>) {
     const {tableStyle, tableDimensions, tableElementRef, parentElement} = at;
@@ -57,9 +51,7 @@ export class TableDimensionsUtils {
       TableDimensionsUtils.setDimension(at, 'maxWidth');
     } else if (
       !GenericElementUtils.isParentWidthUndetermined(parentElement.style.width)
-    ) {
-      TableDimensionsUtils.setDefaultDimension(tableDimensions, parentElement);
-    }
+    )
     StringDimensionUtils.removeAllDimensions(tableStyle);
     // else the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
     TableDimensionsUtils.setPreserveNarrowColumnsProp(at, tableDimensions);

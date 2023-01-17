@@ -38,14 +38,14 @@ export class ColumnSettingsUtils {
 
   // prettier-ignore
   private static change(at: ActiveTable, headerElement: HTMLElement, columnIndex: number,
-      oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal) {
+      oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal, onColumnMove: boolean) {
     const columnDetails = at.columnsDetails[columnIndex];
     ColumnSettingsDefaultTextUtils.unsetDefaultText(at, columnDetails, columnIndex);
     columnDetails.settings = newSettings;
     Object.assign(columnDetails, ColumnTypesUtils.getProcessedTypes(newSettings, columnDetails.activeType.name));
     ResetColumnStructure.reset(at, columnDetails, columnIndex);
     ColumnSettingsDefaultTextUtils.setDefaultText(at, columnDetails, columnIndex);
-    ColumnSettingsWidthUtils.changeWidth(at, headerElement, oldSettings, newSettings);
+    if (!onColumnMove) ColumnSettingsWidthUtils.changeWidth(at, headerElement, oldSettings, newSettings);
     ColumnSettingsStyleUtils.changeStyle(at, columnIndex, oldSettings);
     ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
     ColumnSettingsUtils.updateSizer(at, columnIndex);
@@ -65,9 +65,11 @@ export class ColumnSettingsUtils {
     return { oldSettings, newSettings, areSettingsDifferent: oldSettings !== newSettings }; 
   }
 
-  public static changeColumnSettingsIfNameDifferent(at: ActiveTable, cellElement: HTMLElement, columnIndex: number) {
+  // prettier-ignore
+  public static changeColumnSettingsIfNameDifferent(at: ActiveTable, cellElement: HTMLElement, colIndex: number,
+      onColMove = false) {
     const {oldSettings, newSettings, areSettingsDifferent} = ColumnSettingsUtils.parseSettingsChange(at);
-    if (areSettingsDifferent) ColumnSettingsUtils.change(at, cellElement, columnIndex, oldSettings, newSettings);
+    if (areSettingsDifferent) ColumnSettingsUtils.change(at, cellElement, colIndex, oldSettings, newSettings, onColMove);
   }
 
   // prettier-ignore

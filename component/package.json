@@ -1,6 +1,6 @@
 {
   "name": "active-table",
-  "version": "0.0.6",
+  "version": "0.0.17",
   "description": "A fully editable table",
   "main": "./dist/activeTable.js",
   "module": "./dist/activeTable.js",
@@ -76,9 +76,7 @@
   },
   "customElements": "custom-elements.json",
   "files": [
-    "dist/*.d.*",
-    "dist/*.js",
-    "dist/*.js.*",
+    "dist/**/*",
     "custom-elements.json"
   ]
 }

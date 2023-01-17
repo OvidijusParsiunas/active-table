@@ -1,4 +1,5 @@
 import {TableElement} from '../../elements/table/tableElement';
+import {OverflowUtils} from '../overflow/overflowUtils';
 import {SIDE} from '../../types/side';
 
 interface FullyVisible {
@@ -31,13 +32,15 @@ export class ElementVisibility {
     if (top < window.pageYOffset) {
       blockingSides.add(SIDE.TOP);
     }
-    if (top + height + topBorderWidth > window.pageYOffset + window.innerHeight) {
+    const xScrollDelta = element.clientWidth < element.scrollWidth ? OverflowUtils.SCROLLBAR_WIDTH : 0;
+    if (top + height + topBorderWidth > window.pageYOffset + window.innerHeight - xScrollDelta) {
       blockingSides.add(SIDE.BOTTOM);
     }
     if (left < window.pageXOffset) {
       blockingSides.add(SIDE.LEFT);
     }
-    if (left + width + leftBorderWidth > window.pageXOffset + window.innerWidth) {
+    const yScrollDelta = element.clientHeight < element.scrollHeight ? OverflowUtils.SCROLLBAR_WIDTH : 0;
+    if (left + width + leftBorderWidth > window.pageXOffset + window.innerWidth - yScrollDelta) {
       blockingSides.add(SIDE.RIGHT);
     }
     if (blockingSides.size > 0) return {isFullyVisible: false, blockingSides};

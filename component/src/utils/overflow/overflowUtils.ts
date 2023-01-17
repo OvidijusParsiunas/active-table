@@ -8,7 +8,7 @@ import {Browser} from '../browser/browser';
 
 export class OverflowUtils {
   private static ID = 'overflow-container';
-  private static SCROLLBAR_WIDTH = 15;
+  public static SCROLLBAR_WIDTH = 15;
 
   public static isOverflowElement(element?: HTMLElement) {
     return element?.id === OverflowUtils.ID;

@@ -3,6 +3,7 @@ import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {OverflowUtils} from '../../../utils/overflow/overflowUtils';
 import {ActiveTable} from '../../../activeTable';
 import {DropdownItem} from '../dropdownItem';
+import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
 
 export class NestedDropdown {
@@ -27,10 +28,10 @@ export class NestedDropdown {
 
   private static correctPosition(nestedDropdownElement: HTMLElement, parentDropdownElement: HTMLElement) {
     const visibilityDetails = ElementVisibility.getDetailsInWindow(nestedDropdownElement);
-    if (!visibilityDetails.isFullyVisible) {
+    if (!visibilityDetails.isFullyVisible && visibilityDetails.blockingSides.has(SIDE.RIGHT)) {
       nestedDropdownElement.style.left = `-${parentDropdownElement.style.width}`;
       const visibilityDetails = ElementVisibility.getDetailsInWindow(nestedDropdownElement);
-      if (!visibilityDetails.isFullyVisible) {
+      if (!visibilityDetails.isFullyVisible && visibilityDetails.blockingSides.has(SIDE.LEFT)) {
         nestedDropdownElement.style.left = '';
       }
     }
