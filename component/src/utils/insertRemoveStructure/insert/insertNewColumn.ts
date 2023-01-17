@@ -34,7 +34,13 @@ export class InsertNewColumn {
       FocusedCellUtils.incrementColumnIndex(at.focusedElements.cell, columnIndex);
       InsertNewColumn.insertToAllRows(at, columnIndex, columnData);
       ToggleAdditionElements.update(at, true, AddNewColumnElement.toggle);
-      setTimeout(() => at.onTableUpdate(at.content));
+      setTimeout(() => {
+        at.onTableUpdate(at.content);
+        at.columnsDetails.slice(columnIndex).forEach((columnDetails, index) => {
+          const relativeIndex = columnIndex + index;
+          at.onColumnTypeUpdate({columnIndex: relativeIndex, typeName: columnDetails.activeType.name});
+        });
+      });
     }
   }
 

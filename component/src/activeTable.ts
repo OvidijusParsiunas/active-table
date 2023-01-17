@@ -67,10 +67,13 @@ export class ActiveTable extends LitElement {
   ];
 
   // REF-20
-  // check if types for this work
+  // WORK - check if types for this work
   @property({converter: LITElementTypeConverters.convertToFunction})
   onCellUpdate: (newText: CellText, cellRowIndex: number, cellColumnIndex: number, updateType: CELL_UPDATE_TYPE) => void =
     () => {};
+
+  @property({converter: LITElementTypeConverters.convertToFunction})
+  onColumnTypeUpdate: (newTypeDetails: {columnIndex: number; typeName: string}) => void = () => {};
 
   @property({converter: LITElementTypeConverters.convertToFunction})
   onTableUpdate: (newTableContent: TableContent) => void = () => {};

@@ -12,5 +12,8 @@ export class ResetColumnStructure {
     });
     ChangeColumnType.setNewStructureBasedOnType(at, columnIndex, activeType);
     ColumnSettingsBorderUtils.resetBorderOverwritingState(columnDetails);
+    setTimeout(() => {
+      at.onColumnTypeUpdate({columnIndex: columnIndex, typeName: columnDetails.activeType.name});
+    });
   }
 }

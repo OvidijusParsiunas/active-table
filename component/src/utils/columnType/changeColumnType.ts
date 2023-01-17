@@ -63,6 +63,9 @@ export class ChangeColumnType {
     }
     ChangeColumnType.setNewStructureBasedOnType(at, columnIndex, newType);
     if (at.areIconsDisplayedInHeaders) HeaderIconCellElement.changeHeaderIcon(at.columnsDetails[columnIndex]);
+    setTimeout(() => {
+      at.onColumnTypeUpdate({columnIndex: columnIndex, typeName: columnDetails.activeType.name});
+    });
   }
 
   // prettier-ignore

@@ -85,6 +85,10 @@ export class RemoveColumn {
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, columnIndex);
       if (columnIndex === 0 && at.columnsDetails.length > 0) RowDropdownCellOverlay.resetOverlays(at);
       at.onTableUpdate(at.content);
+      at.columnsDetails.slice(columnIndex).forEach((columnDetails, index) => {
+        const relativeIndex = columnIndex + index;
+        at.onColumnTypeUpdate({columnIndex: relativeIndex, typeName: columnDetails.activeType.name});
+      });
     });
   }
 

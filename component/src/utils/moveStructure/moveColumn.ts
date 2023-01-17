@@ -41,6 +41,7 @@ export class MoveColumn {
     const overwrittenDataText = MoveColumn.overwriteDataElements(at, targetElements, targetColIndex, sourceCellText);
     overwrittenText.push(...overwrittenDataText);
     const overwrittenWidth = targetElements[0].style.width;
+    // WORK - store widths in state and update client
     targetElements[0].style.width = sourceColWidth; // this needs to be done because column widths are not stored in state
     return { overwrittenText, overwrittenType: targetType, overwrittenWidth };
   }
