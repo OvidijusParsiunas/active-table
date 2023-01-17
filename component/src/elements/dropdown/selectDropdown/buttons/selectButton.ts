@@ -27,7 +27,7 @@ export class SelectButton {
       const deleteButtonContainer = labelDetails.colorPickerContainer.previousElementSibling as HTMLElement;
       deleteButtonContainer.style.display = 'none';
       delete labelDetails.colorPickerContainer;
-      SelectColorButtonEvents.updateColumnLabelColors(labelDetails, elements);
+      SelectColorButtonEvents.updateColumnLabelColors(columnDetails, elements);
     }
   }
 }

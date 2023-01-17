@@ -91,7 +91,7 @@ export class InsertNewCell {
     const {columnsDetails, customColumnsSettingsInternal, selectDropdownContainer, defaultColumnsSettings} = at;
     const selectDropdown = SelectDropdown.createAndAppend(selectDropdownContainer as HTMLElement);
     const columnDetails = ColumnDetails.createInitial(defaultColumnsSettings,
-      selectDropdown, customColumnsSettingsInternal[cellText]);
+      selectDropdown, customColumnsSettingsInternal[cellText], columnIndex, at.onColumnUpdate);
     columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
   }
 

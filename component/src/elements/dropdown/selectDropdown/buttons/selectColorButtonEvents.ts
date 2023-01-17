@@ -1,4 +1,5 @@
 import {ColumnDetailsT, ColumnsDetailsT, LabelDetails, SelectDropdownT} from '../../../../types/columnDetails';
+import {ColumnDetailsUtils} from '../../../../utils/columnDetails/columnDetailsUtils';
 import {PickerInputElement} from '../../../../types/pickerInputElement';
 import {FocusedElements} from '../../../../types/focusedElements';
 import {RGBAToHex} from '../../../../utils/color/rgbaToHex';
@@ -6,14 +7,17 @@ import {SelectColorButton} from './selectColorButton';
 import {SelectButton} from './selectButton';
 
 export class SelectColorButtonEvents {
-  public static updateColumnLabelColors(labelDetails: LabelDetails, cellElements: HTMLElement[]) {
-    if (!labelDetails.colorPickerNewValue) return;
+  // prettier-ignore
+  public static updateColumnLabelColors(columnDetails: ColumnDetailsT, cellElements: HTMLElement[]) {
+    const {selectDropdown: {labelDetails}} = columnDetails;
+    if (!labelDetails || !labelDetails.colorPickerNewValue) return;
     cellElements.forEach((cellElement) => {
       const textElement = cellElement.children[0] as HTMLElement;
       if (textElement.innerText === labelDetails.colorPickerNewValue?.text) {
         textElement.style.backgroundColor = labelDetails.colorPickerNewValue.color;
       }
     });
+    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
     delete labelDetails.colorPickerNewValue;
   }
 
@@ -44,7 +48,7 @@ export class SelectColorButtonEvents {
     if (!labelDetails) return;
     if (labelDetails.colorPickerContainer) {
       delete labelDetails.colorPickerContainer;
-      SelectColorButtonEvents.updateColumnLabelColors(labelDetails, elements);
+      SelectColorButtonEvents.updateColumnLabelColors(columnDetails, elements);
       return;
     }
     const buttonElement = event.target as HTMLElement;

@@ -5,6 +5,7 @@ import {ColProcessedTextStyle} from './processedTextStyle';
 import {AUXILIARY_CELL_TYPE} from '../enums/cellType';
 import {CellStateColors} from './cellStateColors';
 import {ColumnSizerT} from './columnSizer';
+import {OnColumnUpdate} from './onUpdate';
 import {Optional} from './utilityTypes';
 
 // difference between column details and settings is that details is more about the values that are set throughout
@@ -71,6 +72,8 @@ export interface ColumnDetailsT {
   settings: ColumnSettingsInternal;
   headerStateColors: CellStateColors;
   bordersOverwrittenBySiblings: BordersOverwrittenBySiblings;
+  index: number;
+  onColumnUpdate: OnColumnUpdate;
 }
 
 // REF-13
@@ -84,6 +87,8 @@ export type ColumnDetailsInitial = Pick<
   | 'settings'
   | 'headerStateColors'
   | 'bordersOverwrittenBySiblings'
+  | 'index'
+  | 'onColumnUpdate'
 >;
 
 // REF-13

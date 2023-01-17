@@ -1,5 +1,6 @@
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
 import {ActiveSelectItems, ColumnDetailsT, SelectDropdownT} from '../../../types/columnDetails';
+import {ColumnDetailsUtils} from '../../../utils/columnDetails/columnDetailsUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
 import {SelectDropdownItemEvents} from './selectDropdownItemEvents';
@@ -55,6 +56,7 @@ export class SelectDropdownItem {
       newColor = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
     }
     SelectDropdownItem.addItem(at, newItemName, newColor, columnDetails);
+    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
   }
 
   // prettier-ignore
@@ -137,15 +139,15 @@ export class SelectDropdownItem {
     }
   }
 
-  private static addItemElement(at: ActiveTable, text: string, columnDetail: ColumnDetailsT, atStart = false) {
-    const {selectDropdown} = columnDetail;
+  private static addItemElement(at: ActiveTable, text: string, columnDetails: ColumnDetailsT, atStart = false) {
+    const {selectDropdown} = columnDetails;
     const itemElement = DropdownItem.addPlaneButtonItem(selectDropdown.element, text, atStart ? 0 : undefined);
     if (selectDropdown.customItemStyle) itemElement.style.color = selectDropdown.customItemStyle.textColor;
     if (selectDropdown.canAddMoreOptions) {
-      const deleteButtonElement = SelectDeleteButton.create(at, selectDropdown);
+      const deleteButtonElement = SelectDeleteButton.create(at, columnDetails);
       itemElement.appendChild(deleteButtonElement);
       if (Browser.IS_COLOR_PICKER_SUPPORTED && selectDropdown.labelDetails?.newItemColors) {
-        const colorInputElement = SelectColorButton.create(columnDetail);
+        const colorInputElement = SelectColorButton.create(columnDetails);
         itemElement.appendChild(colorInputElement);
       }
     }

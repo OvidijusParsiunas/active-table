@@ -4,6 +4,7 @@ import {CheckboxCellElement} from '../../elements/cell/checkboxCell/checkboxCell
 import {SelectCell} from '../../elements/cell/cellsWithTextDiv/selectCell/selectCell';
 import {SelectDropdown} from '../../elements/dropdown/selectDropdown/selectDropdown';
 import {DataCellElement} from '../../elements/cell/dataCell/dataCellElement';
+import {ColumnDetailsUtils} from '../columnDetails/columnDetailsUtils';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {ProcessedDataTextStyle} from './processedDataTextStyle';
 import {CellElement} from '../../elements/cell/cellElement';
@@ -63,9 +64,7 @@ export class ChangeColumnType {
     }
     ChangeColumnType.setNewStructureBasedOnType(at, columnIndex, newType);
     if (at.areIconsDisplayedInHeaders) HeaderIconCellElement.changeHeaderIcon(at.columnsDetails[columnIndex]);
-    setTimeout(() => {
-      at.onColumnTypeUpdate({columnIndex: columnIndex, typeName: columnDetails.activeType.name});
-    });
+    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
   }
 
   // prettier-ignore

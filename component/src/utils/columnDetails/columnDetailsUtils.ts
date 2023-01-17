@@ -1,5 +1,6 @@
+import {ColumnDetailsT, ColumnsDetailsT, SelectDropdownT} from '../../types/columnDetails';
+import {ColumUpdateItems, ColumnUpdateDetails} from '../../types/onUpdate';
 import {FilteredColumns} from '../../types/filteredColumns';
-import {ColumnsDetailsT} from '../../types/columnDetails';
 
 export class ColumnDetailsUtils {
   public static getFilteredColumns(columnsDetails: ColumnsDetailsT): FilteredColumns {
@@ -17,5 +18,26 @@ export class ColumnDetailsUtils {
       }
     }
     return {dynamicWidthColumns, minWidthColumns, setWidthColumns};
+  }
+
+  private static aggregateItems(selectDropdown: SelectDropdownT): ColumUpdateItems {
+    return selectDropdown.labelDetails
+      ? Object.keys(selectDropdown.selectItems).map((text) => {
+          return {name: text, backgroundColor: selectDropdown.selectItems[text].color};
+        })
+      : Object.keys(selectDropdown.selectItems).map((text) => {
+          return {name: text};
+        });
+  }
+
+  public static fireUpdateEvent(columnDetails: ColumnDetailsT) {
+    const updateDetails: ColumnUpdateDetails = {
+      columnIndex: columnDetails.index,
+      typeName: columnDetails.activeType.name,
+    };
+    if (columnDetails.activeType.selectProps) {
+      updateDetails.items = ColumnDetailsUtils.aggregateItems(columnDetails.selectDropdown);
+    }
+    columnDetails.onColumnUpdate(updateDetails);
   }
 }

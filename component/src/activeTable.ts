@@ -11,6 +11,7 @@ import {InitialContentProcessing} from './utils/content/initialContentProcessing
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
+import {OnCellUpdate, OnColumnUpdate, OnTableUpdate} from './types/onUpdate';
 import {PaginationElements} from './elements/pagination/paginationElements';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
@@ -29,11 +30,9 @@ import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {PaginationInternal} from './types/paginationInternal';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
-import {CellText, TableContent} from './types/tableContent';
 import {UserSetColumnSizerStyle} from './types/columnSizer';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
-import {CELL_UPDATE_TYPE} from './enums/onUpdateCellType';
 import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
 import {TableDimensions} from './types/tableDimensions';
@@ -42,6 +41,7 @@ import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {StripedRows} from './utils/rows/stripedRows';
 import {activeTableStyle} from './activeTableStyle';
+import {TableContent} from './types/tableContent';
 import {StickyProps} from './types/stickyProps';
 import {Browser} from './utils/browser/browser';
 import {TableStyle} from './types/tableStyle';
@@ -69,14 +69,13 @@ export class ActiveTable extends LitElement {
   // REF-20
   // WORK - check if types for this work
   @property({converter: LITElementTypeConverters.convertToFunction})
-  onCellUpdate: (newText: CellText, cellRowIndex: number, cellColumnIndex: number, updateType: CELL_UPDATE_TYPE) => void =
-    () => {};
+  onCellUpdate: OnCellUpdate = () => {};
 
   @property({converter: LITElementTypeConverters.convertToFunction})
-  onColumnTypeUpdate: (newTypeDetails: {columnIndex: number; typeName: string}) => void = () => {};
+  onColumnUpdate: OnColumnUpdate = () => {};
 
   @property({converter: LITElementTypeConverters.convertToFunction})
-  onTableUpdate: (newTableContent: TableContent) => void = () => {};
+  onTableUpdate: OnTableUpdate = () => {};
 
   @property({
     type: Boolean,

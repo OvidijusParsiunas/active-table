@@ -6,6 +6,7 @@ import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
 import {CellStateColorProperties} from '../../types/cellStateColors';
 import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
+import {OnColumnUpdate} from '../../types/onUpdate';
 
 // REF-13
 export class ColumnDetails {
@@ -45,7 +46,7 @@ export class ColumnDetails {
 
   // prettier-ignore
   public static createInitial(defaultColumnsSettings: ColumnsSettingsDefault, selectDropdown: HTMLElement,
-      settings: ColumnSettingsInternal): ColumnDetailsInitial {
+      settings: ColumnSettingsInternal, index: number, onColumnUpdate: OnColumnUpdate): ColumnDetailsInitial {
     const columnSettings = settings || defaultColumnsSettings as ColumnSettingsInternal;
     const {types, activeType} = ColumnTypesUtils.getProcessedTypes(columnSettings);
     return {
@@ -57,6 +58,8 @@ export class ColumnDetails {
       types,
       activeType,
       selectDropdown: SelectDropdown.getDefaultObj(selectDropdown),
+      index,
+      onColumnUpdate,
     };
   }
 

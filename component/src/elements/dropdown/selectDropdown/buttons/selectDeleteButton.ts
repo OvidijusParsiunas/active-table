@@ -1,5 +1,5 @@
 import {SelectDeleteButtonEvents} from './selectDeleteButtonEvents';
-import {SelectDropdownT} from '../../../../types/columnDetails';
+import {ColumnDetailsT} from '../../../../types/columnDetails';
 import {ActiveTable} from '../../../../activeTable';
 import {DropdownItem} from '../../dropdownItem';
 import {SelectButton} from './selectButton';
@@ -15,10 +15,10 @@ export class SelectDeleteButton {
     return iconElement;
   }
 
-  private static createButton(at: ActiveTable, selectDropdown: SelectDropdownT) {
+  private static createButton(at: ActiveTable, columnDetails: ColumnDetailsT) {
     const buttonElement = document.createElement('div');
     buttonElement.classList.add(DropdownItem.DROPDOWN_ITEM_IDENTIFIER, SelectButton.SELECT_BUTTON_CLASS);
-    SelectDeleteButtonEvents.addEvents(at, selectDropdown, buttonElement);
+    SelectDeleteButtonEvents.addEvents(at, columnDetails, buttonElement);
     return buttonElement;
   }
 
@@ -28,9 +28,9 @@ export class SelectDeleteButton {
     return containerElement;
   }
 
-  public static create(at: ActiveTable, selectDropdown: SelectDropdownT) {
+  public static create(at: ActiveTable, columnDetails: ColumnDetailsT) {
     const containerElement = SelectDeleteButton.createContainer();
-    const buttonElement = SelectDeleteButton.createButton(at, selectDropdown);
+    const buttonElement = SelectDeleteButton.createButton(at, columnDetails);
     const iconElement = SelectDeleteButton.createIcon();
     buttonElement.appendChild(iconElement);
     containerElement.appendChild(buttonElement);

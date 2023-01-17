@@ -1,3 +1,4 @@
+import {ColumnDetailsUtils} from '../columnDetails/columnDetailsUtils';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {CellEventsReset} from '../../elements/cell/cellEventsReset';
 import {ChangeColumnType} from '../columnType/changeColumnType';
@@ -12,8 +13,6 @@ export class ResetColumnStructure {
     });
     ChangeColumnType.setNewStructureBasedOnType(at, columnIndex, activeType);
     ColumnSettingsBorderUtils.resetBorderOverwritingState(columnDetails);
-    setTimeout(() => {
-      at.onColumnTypeUpdate({columnIndex: columnIndex, typeName: columnDetails.activeType.name});
-    });
+    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
   }
 }

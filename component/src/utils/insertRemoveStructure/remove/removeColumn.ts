@@ -6,6 +6,7 @@ import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
 import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
 import {ColumnSettingsWidthUtils} from '../../columnSettings/columnSettingsWidthUtils';
+import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {TableElement} from '../../../elements/table/tableElement';
 import {CellElementIndex} from '../../elements/cellElementIndex';
@@ -86,8 +87,8 @@ export class RemoveColumn {
       if (columnIndex === 0 && at.columnsDetails.length > 0) RowDropdownCellOverlay.resetOverlays(at);
       at.onTableUpdate(at.content);
       at.columnsDetails.slice(columnIndex).forEach((columnDetails, index) => {
-        const relativeIndex = columnIndex + index;
-        at.onColumnTypeUpdate({columnIndex: relativeIndex, typeName: columnDetails.activeType.name});
+        columnDetails.index = columnIndex + index;
+        ColumnDetailsUtils.fireUpdateEvent(columnDetails);
       });
     });
   }

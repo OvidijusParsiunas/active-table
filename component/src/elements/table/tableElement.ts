@@ -8,6 +8,7 @@ import {InsertRemoveColumnSizer} from '../columnSizer/utils/insertRemoveColumnSi
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {AddNewColumnElement} from './addNewElements/column/addNewColumnElement';
+import {ColumnDetailsUtils} from '../../utils/columnDetails/columnDetailsUtils';
 import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
 import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
 import {SelectDropdown} from '../dropdown/selectDropdown/selectDropdown';
@@ -70,7 +71,10 @@ export class TableElement {
   private static postProcessColumns(at: ActiveTable) {
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true); // REF-11
     InitialContentProcessing.postProcess(at.content, at.columnsDetails);
-    setTimeout(() => InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, at.columnsDetails.length - 1));
+    setTimeout(() => {
+      at.columnsDetails.forEach((columnDetails) => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
+      InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, at.columnsDetails.length - 1);
+    });
   }
 
   public static populateBody(at: ActiveTable) {

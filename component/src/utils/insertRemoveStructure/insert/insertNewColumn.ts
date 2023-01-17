@@ -1,5 +1,6 @@
 import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
+import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
@@ -37,8 +38,8 @@ export class InsertNewColumn {
       setTimeout(() => {
         at.onTableUpdate(at.content);
         at.columnsDetails.slice(columnIndex).forEach((columnDetails, index) => {
-          const relativeIndex = columnIndex + index;
-          at.onColumnTypeUpdate({columnIndex: relativeIndex, typeName: columnDetails.activeType.name});
+          columnDetails.index = columnIndex + index;
+          ColumnDetailsUtils.fireUpdateEvent(columnDetails);
         });
       });
     }
