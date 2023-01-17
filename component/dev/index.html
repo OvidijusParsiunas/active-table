@@ -30,11 +30,14 @@
       const aa = (content, row, column, type) => {
         console.log(content, row, column, type);
       };
-      const columnUpdate = (typeUpdate) => {
-        console.log(typeUpdate);
+      const columnUpdate = (columnUpdate) => {
+        console.log(columnUpdate);
       };
-      const tableUpdate = (content) => {
-        console.log(content);
+      const tableUpdate = (tableUpdate) => {
+        console.log(tableUpdate);
+      };
+      const onColumnWidthsUpdate = (widthsUpdate) => {
+        console.log(widthsUpdate);
       };
       setTimeout(() => {
         if (element) {
@@ -292,6 +295,8 @@
           // element.setAttribute('onCellUpdate', aa);
           // element.setAttribute('onTableUpdate', tableUpdate);
           // element.setAttribute('onColumnUpdate', columnUpdate);
+          // element.setAttribute('onColumnWidthsUpdate', onColumnWidthsUpdate);
+          // element.setAttribute('overwriteColumnWidths', JSON.stringify({columns: [100, 200]}));
           // setTimeout(() => {
           //   element.setAttribute('updateCellText', JSON.stringify({newText: 'test', rowIndex: 3, columnIndex: 2}));
           // }, 1000);

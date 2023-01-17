@@ -1,5 +1,6 @@
 import {AuxiliaryTableContentInternalUtils} from './utils/auxiliaryTableContent/auxiliaryTableContentInternalUtils';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
+import {OnCellUpdate, OnColumnUpdate, OnTableUpdate, OnColumnWidthsUpdate} from './types/onUpdate';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {DropdownDisplaySettingsUtil} from './elements/dropdown/dropdownDisplaySettingsUtil';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
@@ -11,7 +12,6 @@ import {InitialContentProcessing} from './utils/content/initialContentProcessing
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
-import {OnCellUpdate, OnColumnUpdate, OnTableUpdate} from './types/onUpdate';
 import {PaginationElements} from './elements/pagination/paginationElements';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
@@ -35,6 +35,7 @@ import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
 import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
+import {ColumnsWidths} from './types/columnsWidths';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
@@ -76,6 +77,9 @@ export class ActiveTable extends LitElement {
 
   @property({converter: LITElementTypeConverters.convertToFunction})
   onTableUpdate: OnTableUpdate = () => {};
+
+  @property({converter: LITElementTypeConverters.convertToFunction})
+  onColumnWidthsUpdate: OnColumnWidthsUpdate = () => {};
 
   @property({
     type: Boolean,
@@ -226,6 +230,9 @@ export class ActiveTable extends LitElement {
 
   @property({type: Object})
   overflow: Overflow | null = null;
+
+  @property({type: Object})
+  overwriteColumnWidths: ColumnsWidths | null = null;
 
   @state()
   overflowInternal: OverflowInternal | null = null;

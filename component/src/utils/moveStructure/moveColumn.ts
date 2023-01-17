@@ -1,3 +1,4 @@
+import {ColumnWidthsState} from '../tableDimensions/staticTable/columnWidthsState';
 import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
 import {FocusedCellUtils} from '../focusedElements/focusedCellUtils';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
@@ -69,5 +70,6 @@ export class MoveColumn {
     // overwrite sibling column using overwritten content
     MoveColumn.overwrite(at, siblingColumn, siblingIndex, overwritten.overwrittenText,
       overwritten.overwrittenType, overwritten.overwrittenWidth);
+    setTimeout(() => ColumnWidthsState.fireUpdate(at));
   }
 }

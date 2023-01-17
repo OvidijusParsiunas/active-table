@@ -7,6 +7,7 @@ import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {FilteredColumns} from '../../../types/filteredColumns';
 import {ActiveTable} from '../../../activeTable';
 import {StaticTable} from './staticTable';
+import {ColumnWidthsState} from './columnWidthsState';
 
 // TO-DO when not at maximum length - have a setting option to resize all columns to the limit as resizing to small and
 // back does not preserve the original width. Alternatively go as far as checking that data has not been changed since
@@ -113,5 +114,6 @@ export class StaticTableWidthUtils {
     } else if (isInsert && StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensions)) {
       StaticTableWidthUtils.resetColumnSizes(tableElementRef, columnsDetails, maxWidth as number);
     }
+    setTimeout(() => ColumnWidthsState.fireUpdate(at));
   }
 }

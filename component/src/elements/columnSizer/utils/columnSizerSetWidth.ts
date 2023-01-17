@@ -21,9 +21,9 @@ export class ColumnSizerSetWidth {
     return Math.max(0, Number.parseFloat(columnElement.style.width) + delta);
   }
 
-  private static setColumnWidth(selectedColumnSizer: SelectedColumnSizerT, columnElement: HTMLElement) {
-    const newWidth = ColumnSizerSetWidth.getNewColumnWidth(selectedColumnSizer, columnElement);
-    columnElement.style.width = `${newWidth}px`;
+  private static setColumnWidth(selectedColumnSizer: SelectedColumnSizerT, headerCell: HTMLElement) {
+    const newWidth = ColumnSizerSetWidth.getNewColumnWidth(selectedColumnSizer, headerCell);
+    headerCell.style.width = `${newWidth}px`;
   }
 
   // when the user moves the sizer to the start/end of a column in an attempt to completely crush the column,

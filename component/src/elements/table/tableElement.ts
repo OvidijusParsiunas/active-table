@@ -1,6 +1,7 @@
 import {AuxiliaryTableContentElements} from '../../utils/auxiliaryTableContent/auxiliaryTableContentElements';
 import {AuxiliaryTableContentColors} from '../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
+import {ColumnWidthsState} from '../../utils/tableDimensions/staticTable/columnWidthsState';
 import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElements';
 import {StringDimensionUtils} from '../../utils/tableDimensions/stringDimensionUtils';
 import {InitialContentProcessing} from '../../utils/content/initialContentProcessing';
@@ -71,6 +72,7 @@ export class TableElement {
   private static postProcessColumns(at: ActiveTable) {
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true); // REF-11
     InitialContentProcessing.postProcess(at.content, at.columnsDetails);
+    if (at.overwriteColumnWidths) ColumnWidthsState.overwriteWidths(at.columnsDetails, at.overwriteColumnWidths);
     setTimeout(() => {
       at.columnsDetails.forEach((columnDetails) => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, at.columnsDetails.length - 1);
