@@ -2,12 +2,14 @@ import {CELL_UPDATE_TYPE} from '../enums/onUpdateCellType';
 import {CellText, TableContent} from './tableContent';
 import {ColumnsWidths} from './columnsWidths';
 
-export type OnCellUpdate = (
-  newText: CellText,
-  cellRowIndex: number,
-  cellColumnIndex: number,
-  updateType: CELL_UPDATE_TYPE
-) => void;
+interface CellUpdateDetails {
+  text: CellText;
+  rowIndex: number;
+  columnIndex: number;
+  updateType: CELL_UPDATE_TYPE;
+}
+
+export type OnCellUpdate = (cellUpdate: CellUpdateDetails) => void;
 
 export type ColumUpdateItems = {name: string; backgroundColor?: string}[];
 

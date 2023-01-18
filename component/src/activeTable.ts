@@ -78,6 +78,7 @@ export class ActiveTable extends LitElement {
   @property({converter: LITElementTypeConverters.convertToFunction})
   onTableUpdate: OnTableUpdate = () => {};
 
+  // REF-35
   @property({converter: LITElementTypeConverters.convertToFunction})
   onColumnWidthsUpdate: OnColumnWidthsUpdate = () => {};
 

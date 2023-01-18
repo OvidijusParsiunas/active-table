@@ -1,7 +1,6 @@
 import {AuxiliaryTableContentElements} from '../../utils/auxiliaryTableContent/auxiliaryTableContentElements';
 import {AuxiliaryTableContentColors} from '../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
-import {ColumnWidthsState} from '../../utils/tableDimensions/staticTable/columnWidthsState';
 import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElements';
 import {StringDimensionUtils} from '../../utils/tableDimensions/stringDimensionUtils';
 import {InitialContentProcessing} from '../../utils/content/initialContentProcessing';
@@ -10,6 +9,7 @@ import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayEleme
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {AddNewColumnElement} from './addNewElements/column/addNewColumnElement';
 import {ColumnDetailsUtils} from '../../utils/columnDetails/columnDetailsUtils';
+import {ColumnWidthsState} from '../../utils/columnDetails/columnWidthsState';
 import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
 import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
 import {SelectDropdown} from '../dropdown/selectDropdown/selectDropdown';

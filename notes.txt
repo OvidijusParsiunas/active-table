@@ -266,6 +266,12 @@ REF-34
 To make sure that label colors vary, each label type contains a starter array of predefined colors which will be used before random
 ones are going to be generated.
 
+REF-35
+The reason why we do not store column widths in the column details state is because there are multiple areas that affect them and
+they overwrite the elements by traversing the table or having a direct reference to the cell element instead, hence the logic
+would need a hard rewrite to track each and every column that has its width changed.
+This is also why we update the column widths separately in the onColumnWidthsUpdate method and display all columns instead.
+
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
 does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()

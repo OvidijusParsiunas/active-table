@@ -1,5 +1,5 @@
-import {ColumnWidthsState} from '../tableDimensions/staticTable/columnWidthsState';
 import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
+import {ColumnWidthsState} from '../columnDetails/columnWidthsState';
 import {FocusedCellUtils} from '../focusedElements/focusedCellUtils';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {ChangeColumnType} from '../columnType/changeColumnType';
@@ -42,8 +42,7 @@ export class MoveColumn {
     const overwrittenDataText = MoveColumn.overwriteDataElements(at, targetElements, targetColIndex, sourceCellText);
     overwrittenText.push(...overwrittenDataText);
     const overwrittenWidth = targetElements[0].style.width;
-    // WORK - store widths in state and update client
-    targetElements[0].style.width = sourceColWidth; // this needs to be done because column widths are not stored in state
+    targetElements[0].style.width = sourceColWidth; // this is done because column widths are not stored in state (REF-35)
     return { overwrittenText, overwrittenType: targetType, overwrittenWidth };
   }
 

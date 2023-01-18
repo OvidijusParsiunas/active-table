@@ -1,8 +1,9 @@
-import {ExtractElements} from '../../elements/extractElements';
-import {ColumnsDetailsT} from '../../../types/columnDetails';
-import {ColumnsWidths} from '../../../types/columnsWidths';
-import {ActiveTable} from '../../../activeTable';
+import {ExtractElements} from '../elements/extractElements';
+import {ColumnsDetailsT} from '../../types/columnDetails';
+import {ColumnsWidths} from '../../types/columnsWidths';
+import {ActiveTable} from '../../activeTable';
 
+// REF-35
 export class ColumnWidthsState {
   public static overwriteWidths(columnsDetails: ColumnsDetailsT, columnsWidths: ColumnsWidths) {
     columnsWidths.columns.forEach((column, index) => (columnsDetails[index].elements[0].style.width = `${column}px`));

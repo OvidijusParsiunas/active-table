@@ -125,7 +125,7 @@ export const activeTableStyle = css`
 
   .header-icon-side-text {
     /* cannot use flex as pressing ENTER creates a new div */
-    display: inline-block;
+    display: grid;
   }
 
   .not-selectable {

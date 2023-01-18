@@ -2,12 +2,12 @@ import {ColumnSettingsWidthUtils} from '../../columnSettings/columnSettingsWidth
 import {ColumnSettingsInternal} from '../../../types/columnsSettingsInternal';
 import {ColumnDetailsT, ColumnsDetailsT} from '../../../types/columnDetails';
 import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
+import {ColumnWidthsState} from '../../columnDetails/columnWidthsState';
 import {TableElement} from '../../../elements/table/tableElement';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {FilteredColumns} from '../../../types/filteredColumns';
 import {ActiveTable} from '../../../activeTable';
 import {StaticTable} from './staticTable';
-import {ColumnWidthsState} from './columnWidthsState';
 
 // TO-DO when not at maximum length - have a setting option to resize all columns to the limit as resizing to small and
 // back does not preserve the original width. Alternatively go as far as checking that data has not been changed since

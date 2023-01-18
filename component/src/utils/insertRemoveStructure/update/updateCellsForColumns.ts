@@ -8,11 +8,11 @@ import {ActiveTable} from '../../../activeTable';
 export class UpdateCellsForColumns {
   // prettier-ignore
   private static updateColumn(at: ActiveTable,
-      rowIndex: number, cellElement: Node, columnIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
-    if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
+      rowIndex: number, cellElement: Node, columnIndex: number, updateType: CELL_UPDATE_TYPE) {
+    if (updateType !== CELL_UPDATE_TYPE.REMOVED) {
       CellEventsReset.reset(at, cellElement as HTMLElement, rowIndex, columnIndex); // REF-33
     }
-    at.onCellUpdate(CellElement.getText(cellElement as HTMLElement), rowIndex, columnIndex, cellUpdateType);
+    at.onCellUpdate({text: CellElement.getText(cellElement as HTMLElement), rowIndex, columnIndex, updateType});
   }
 
   // prettier-ignore
@@ -30,8 +30,8 @@ export class UpdateCellsForColumns {
   // before these methods are executed
   // prettier-ignore
   public static rebindAndFireUpdates(at: ActiveTable, 
-      row: ElementDetails, startingColumnIndex: number, cellUpdateType: CELL_UPDATE_TYPE, lastColumn: ElementDetails) {
+      row: ElementDetails, startingColumnIndex: number, updateType: CELL_UPDATE_TYPE, lastColumn: ElementDetails) {
     UpdateCellsForColumns.updateNextBeforeLastColumns(at, row, startingColumnIndex, lastColumn.index);
-    UpdateCellsForColumns.updateColumn(at, row.index, lastColumn.element, lastColumn.index, cellUpdateType);
+    UpdateCellsForColumns.updateColumn(at, row.index, lastColumn.element, lastColumn.index, updateType);
   }
 }

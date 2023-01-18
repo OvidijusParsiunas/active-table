@@ -9,17 +9,15 @@ import {ElementDetails} from '../../../types/elementDetails';
 import {ActiveTable} from '../../../activeTable';
 
 export class UpdateCellsForRows {
-  // prettier-ignore
-  private static updateRowCells(at: ActiveTable,
-      rowElement: HTMLElement, rowIndex: number, cellUpdateType: CELL_UPDATE_TYPE) {
+  private static updateRowCells(at: ActiveTable, rowElement: HTMLElement, rowIndex: number, updateType: CELL_UPDATE_TYPE) {
     const dataCellElements = ExtractElements.textCellsArrFromRow(rowElement);
     dataCellElements.forEach((cellElement: Node, columnIndex: number) => {
-      if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
+      if (updateType !== CELL_UPDATE_TYPE.REMOVED) {
         CellEventsReset.reset(at, cellElement as HTMLElement, rowIndex, columnIndex); // REF-33
       }
-      at.onCellUpdate(CellElement.getText(cellElement as HTMLElement), rowIndex, columnIndex, cellUpdateType);
+      at.onCellUpdate({text: CellElement.getText(cellElement as HTMLElement), rowIndex, columnIndex, updateType});
     });
-    if (cellUpdateType !== CELL_UPDATE_TYPE.REMOVED) {
+    if (updateType !== CELL_UPDATE_TYPE.REMOVED) {
       const leftMostCell = rowElement.children[0] as HTMLElement;
       if (at.auxiliaryTableContentInternal.displayIndexColumn) IndexColumnEvents.setEvents(at, leftMostCell, rowIndex);
       if (at.rowDropdownSettings.displaySettings.openMethod?.overlayClick) {
@@ -28,9 +26,9 @@ export class UpdateCellsForRows {
     }
   }
 
-  private static updateLastRow(at: ActiveTable, cellUpdateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {
+  private static updateLastRow(at: ActiveTable, updateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {
     if (at.tableBodyElementRef?.children) {
-      UpdateCellsForRows.updateRowCells(at, lastRow.element, lastRow.index, cellUpdateType);
+      UpdateCellsForRows.updateRowCells(at, lastRow.element, lastRow.index, updateType);
     }
   }
 
