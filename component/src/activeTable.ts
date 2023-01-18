@@ -35,12 +35,12 @@ import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
 import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
-import {ColumnsWidths} from './types/columnsWidths';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {StripedRows} from './utils/rows/stripedRows';
+import {ColumnsWidths} from './types/columnsWidths';
 import {activeTableStyle} from './activeTableStyle';
 import {TableContent} from './types/tableContent';
 import {StickyProps} from './types/stickyProps';
@@ -290,12 +290,6 @@ export class ActiveTable extends LitElement {
       return false; // does not cause a re-render
     }
     return true;
-  }
-}
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'active-table': ActiveTable;
   }
 }
 

@@ -52,6 +52,7 @@ const config = {
   ],
   // Introduction
   // Installation
+  // Local setup
   // API
   // // table:
   // // // tableStyle: TableStyle;

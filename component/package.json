@@ -8,8 +8,8 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "build:element": "npm run build && rollup -c",
-    "clean": "rimraf dist/activeTable.{d.ts,d.ts.map,js,js.map} test/activeTable.{d.ts,d.ts.map,js,js.map} test/activeTable_test.{d.ts,d.ts.map,js,js.map}",
+    "build:element": "npm run clean && npm run build && rollup -c",
+    "clean": "rimraf dist test",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",
     "lint:lit-analyzer": "lit-analyzer",
