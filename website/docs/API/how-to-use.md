@@ -1,18 +1,29 @@
 ---
-sidebar_position: 1
+sidebar_position: 0
 ---
 
-# Tutorial Intro
+# How to use
 
-Let's discover **Docusaurus in less than 5 minutes**.
+<!-- Let's discover **Docusaurus in less than 5 minutes**. -->
 
-## Getting Started
+<!-- Get started by **creating a new site**. -->
 
-Get started by **creating a new site**.
+Values must be passed into the element as **attributes**, this is achieved by any of the following:
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+#### 1. Assign values directly into the DOM
 
-### What you'll need
+#### 2. Assign values via JavaScript
+
+\*Please note that all values must be assigned at the same time, otherwise any later assignments will cause the table to re-render or throw an errror.
+
+#### 3. Combination of both
+
+\*Please note that values via JavaScript must be assigned as soon as the element is available on the dom, otherwise any later assignments will cause the table
+to re-render or throw an errror.
+
+<!-- Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**. -->
+
+<!-- ### What you'll need
 
 - [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
   - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
@@ -44,4 +55,4 @@ The `cd` command changes the directory you're working with. In order to work wit
 
 The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+Open `docs/API/how-to-use.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes. -->

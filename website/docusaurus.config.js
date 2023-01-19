@@ -50,9 +50,28 @@ const config = {
       }),
     ],
   ],
-  // Introduction
+  plugins: [
+    () => ({
+      name: 'custom-webpack-config',
+      configureWebpack: () => {
+        return {
+          module: {
+            rules: [
+              {
+                test: /\.m?js/,
+                resolve: {
+                  fullySpecified: false,
+                },
+              },
+            ],
+          },
+        };
+      },
+    }),
+  ],
+
+  // Introduction - this should be the homepage
   // Installation
-  // Local setup
   // API
   // // table:
   // // // tableStyle: TableStyle;
@@ -102,9 +121,15 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'intro',
+            docId: 'Intro/getting-started',
             position: 'left',
-            label: 'Tutorial',
+            label: 'Intro',
+          },
+          {
+            type: 'doc',
+            docId: 'API/how-to-use',
+            position: 'left',
+            label: 'API',
           },
           // {to: '/blog', label: 'Blog', position: 'left'},
           {
@@ -121,8 +146,8 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
+                label: 'API',
+                to: '/docs/API/how-to-use',
               },
             ],
           },
