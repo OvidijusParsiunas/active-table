@@ -10,7 +10,7 @@ import {TableElement} from '../../tableElement';
 
 export class AddNewColumnElement {
   public static readonly ADD_COLUMN_CELL_CLASS = 'add-column-cell';
-  public static readonly DEFAULT_WIDTH = 20;
+  public static readonly DEFAULT_WIDTH = 25;
   private static readonly DEFAULT_WIDTH_PX = `${AddNewColumnElement.DEFAULT_WIDTH}px`;
 
   // the toggling of the add new column element is not a simple display style change because the following selector:

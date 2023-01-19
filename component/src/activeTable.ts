@@ -60,11 +60,11 @@ export class ActiveTable extends LitElement {
 
   @property({type: Array})
   content: TableContent = [
-    ['R', 'G', 'B', 'Color'],
-    [255, 0, 0, 'Red'],
-    [254, 0, 0, 'Red'],
-    [0, 255, 0, 'Green'],
-    [0, 254, 0, 'Green'],
+    ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+    ['Earth', 12756, 5.97, 1, 5514],
+    ['Mars', 6792, 0.642, 2, 3934],
+    ['Saturn', 120536, 568, 82, 687],
+    ['Neptune', 49528, 102, 14, 1638],
   ];
 
   // REF-20

@@ -4,7 +4,6 @@ import {AddNewColumnElement} from '../table/addNewElements/column/addNewColumnEl
 import {TableDimensionsUtils} from '../../utils/tableDimensions/tableDimensionsUtils';
 import {AddNewRowElement} from '../table/addNewElements/row/addNewRowElement';
 import {ExtractElements} from '../../utils/elements/extractElements';
-import {DEFAULT_COLUMN_WIDTH} from '../../consts/defaultColumnWidth';
 import {Browser} from '../../utils/browser/browser';
 import {TableElement} from '../table/tableElement';
 import {ActiveTable} from '../../activeTable';
@@ -12,7 +11,7 @@ import {IndexColumn} from './indexColumn';
 
 export class UpdateIndexColumnWidth {
   // acts as the recorded column offsetWidth
-  public static WIDTH = DEFAULT_COLUMN_WIDTH;
+  public static WIDTH = 30;
 
   private static wrapColumnTextAndGetDefaultWidth(at: ActiveTable) {
     const {tableBodyElementRef, content, tableDimensions} = at;

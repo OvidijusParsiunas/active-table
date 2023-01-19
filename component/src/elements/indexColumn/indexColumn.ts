@@ -1,7 +1,6 @@
 import {AuxiliaryTableContentColors} from '../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsBorderUtils';
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
-import {DEFAULT_COLUMN_WIDTH} from '../../consts/defaultColumnWidth';
 import {ExtractElements} from '../../utils/elements/extractElements';
 import {UpdateIndexColumnWidth} from './updateIndexColumnWidth';
 import {Browser} from '../../utils/browser/browser';
@@ -12,7 +11,7 @@ export class IndexColumn {
   public static readonly INDEX_CELL_CLASS = 'index-cell';
   // using overflow to detect a need for width update when display style 'block' property is not set
   public static readonly INDEX_CELL_OVERFLOW_CLASS = 'index-cell-overflow';
-  public static readonly DEFAULT_WIDTH = DEFAULT_COLUMN_WIDTH;
+  public static readonly DEFAULT_WIDTH = UpdateIndexColumnWidth.WIDTH;
   private static readonly DEFAULT_WIDTH_PX = `${IndexColumn.DEFAULT_WIDTH}px`;
 
   public static updateIndexes(at: ActiveTable, startIndex: number) {

@@ -12,6 +12,7 @@ export const activeTableStyle = css`
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     position: relative;
     text-align: left;
+    border: 1px solid #0000001f;
   }
 
   /* REF-16 */
@@ -55,6 +56,7 @@ export const activeTableStyle = css`
     border-bottom-color: rgba(0, 0, 0, 0.12);
     vertical-align: top;
     text-align: left;
+    border-right: 1px solid #0000001f;
   }
 
   .cell-text-div {
@@ -176,6 +178,7 @@ export const activeTableStyle = css`
 
   .add-column-cell {
     cursor: pointer;
+    text-align: center;
   }
 
   .no-content-stub {

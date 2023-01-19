@@ -11,7 +11,7 @@ import {OnColumnUpdate} from '../../types/onUpdate';
 // REF-13
 export class ColumnDetails {
   public static readonly MINIMAL_COLUMN_WIDTH = 34;
-  public static NEW_COLUMN_WIDTH = 100;
+  public static NEW_COLUMN_WIDTH = 140;
 
   // prettier-ignore
   private static getHeaderDefaultColor(defaultColumnsSettings: ColumnsSettingsDefault,

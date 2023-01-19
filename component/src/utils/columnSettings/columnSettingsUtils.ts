@@ -83,14 +83,13 @@ export class ColumnSettingsUtils {
     }
   }
 
-  // prettier-ignore
   private static processCellDimensions(settings: CustomColumnSettings, defSettings: ColumnsSettingsDefault) {
     const internalSettings = settings as ColumnSettingsInternal;
     if (!settings.cellStyle) return;
     ColumnSettingsUtils.setDimension(settings, defSettings, 'minWidth');
     ColumnSettingsUtils.setDimension(settings, defSettings, 'width');
-    StringDimensionUtils.removeAllDimensions(internalSettings.cellStyle as CSSStyle)
-    StringDimensionUtils.removeAllDimensions(defSettings.cellStyle as CSSStyle)
+    StringDimensionUtils.removeAllDimensions(internalSettings.cellStyle as CSSStyle);
+    StringDimensionUtils.removeAllDimensions(defSettings.cellStyle as CSSStyle);
   }
 
   private static createInternalSettings(settings: CustomColumnSettings, defSettings: ColumnsSettingsDefault) {
