@@ -8,7 +8,7 @@ sidebar_position: 0
 
 <!-- Get started by **creating a new site**. -->
 
-Values must be passed into the element as **attributes**, this is achieved by any of the following:
+Values must be passed into the element as **attributes**, this is achieved by one of the following approaches:
 
 #### 1. Assign values directly into the DOM
 

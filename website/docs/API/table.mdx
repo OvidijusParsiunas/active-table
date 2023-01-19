@@ -11,8 +11,48 @@ Properties related to the table:
 - Type: `object`
 <!-- CSSObject - min width not allowed -->
 
-CSS to style the table element.
+CSS that will affect the table element.
 
-Example:
+#### Example:
 
-<active-table></active-table>
+import {ActiveTable} from 'active-table';
+
+<active-table
+  tableStyle='{"border":"1px solid grey"}'
+  content='[
+  ["Planet", "Diameter", "Mass", "Moons","Density"],
+  ["Earth", 12756, 5.97, 1, 5514],
+  ["Mars", 6792, 0.642, 2, 3934],
+  ["Saturn", 120536, 568, 82, 687],
+  ["Neptune", 49528, 102, 14, 1638]]'>
+</active-table>
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+<TabItem value="js" label="Usage">
+
+```text
+<active-table
+  tableStyle='{"border":"1px solid black"}'>
+</active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full Code">
+
+```text
+<active-table
+  tableStyle='{"border":"1px solid black"}'>
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons","Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
