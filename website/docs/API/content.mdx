@@ -13,13 +13,12 @@ Properties related to the table:
 
 Header and data content that will be displayed within the table.
 
-#### Example:
-
+import TableContainer from '@site/src/components/table/table-container';
 import {ActiveTable} from 'active-table';
 
-<div style={{width: '100%'}}>
+<TableContainer>
   <active-table
-    tableStyle='{"width":"100%"}'
+    tableStyle='{"width":"100%", "backgroundColor": "white", "boxShadow": "0px 0.5px 1px 0px #acacac", "borderRadius":"2px"}'
     content='[
     ["Planet", "Diameter", "Mass", "Moons","Density"],
     ["Earth", 12756, 5.97, 1, 5514],
@@ -28,7 +27,7 @@ import {ActiveTable} from 'active-table';
     ["Saturn", 120536, 568, 82, 687],
     ["Neptune", 49528, 102, 14, 1638]]'
   ></active-table>
-</div>
+</TableContainer>
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
