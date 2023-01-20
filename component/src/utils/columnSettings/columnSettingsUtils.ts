@@ -120,7 +120,7 @@ export class ColumnSettingsUtils {
     defaultColumnsSettings.isDeleteAvailable ??= true;
     defaultColumnsSettings.isInsertLeftAvailable ??= true;
     defaultColumnsSettings.isInsertRightAvailable ??= true;
-    defaultColumnsSettings.isMoveAvailable ??= false;
+    defaultColumnsSettings.isMoveAvailable ??= true;
   }
 
   // prettier-ignore

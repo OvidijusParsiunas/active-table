@@ -4,6 +4,7 @@ import {css} from 'lit';
 export const activeTableStyle = css`
   /* this is used to shrink the width of the active-table element to the shadow-root width */
   :host {
+    all: initial;
     display: inline-block;
   }
 
@@ -11,7 +12,6 @@ export const activeTableStyle = css`
     border-spacing: 0px;
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     position: relative;
-    text-align: left;
     border: 1px solid #00000026;
   }
 
@@ -113,9 +113,10 @@ export const activeTableStyle = css`
   .header-cell {
     border-top: none !important;
     cursor: pointer;
-    color: grey;
+    color: #575757;
     padding-top: 12px;
     padding-bottom: 12px;
+    font-weight: 500;
   }
 
   .header-icon-container {

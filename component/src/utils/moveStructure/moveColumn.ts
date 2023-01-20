@@ -7,6 +7,7 @@ import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
 import {ActiveTable} from '../../activeTable';
 import {MoveUtils} from './moveUtils';
+import {CellHighlightUtils} from '../color/cellHighlightUtils';
 
 export class MoveColumn {
   // prettier-ignore
@@ -58,6 +59,7 @@ export class MoveColumn {
   public static move(at: ActiveTable, columnIndex: number, isToRight: boolean) {
     MoveColumn.firstChangeSettingsIfSettingsChanged(at, columnIndex);
     const currentColumn = at.columnsDetails[columnIndex];
+    CellHighlightUtils.fade(currentColumn.elements[0], currentColumn?.headerStateColors.default);
     const siblingIndex = isToRight ? columnIndex + 1 : columnIndex - 1;
     const siblingColumn = at.columnsDetails[siblingIndex];
     const siblingColumnText = siblingColumn.elements.map((element) => CellElement.getText(element));

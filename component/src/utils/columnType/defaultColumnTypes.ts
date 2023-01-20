@@ -84,7 +84,10 @@ export class DefaultColumnTypes {
       calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_DMY],
       dropdownIconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
-        containerStyles: {dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-2px'}},
+        containerStyles: {
+          dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-2px'},
+          headerCorrections: {marginTop: '0px'},
+        },
       },
     },
     {
@@ -93,7 +96,10 @@ export class DefaultColumnTypes {
       calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_MDY],
       dropdownIconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
-        containerStyles: {dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-2px'}},
+        containerStyles: {
+          dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-2px'},
+          headerCorrections: {marginTop: '0px'},
+        },
       },
     },
   ];

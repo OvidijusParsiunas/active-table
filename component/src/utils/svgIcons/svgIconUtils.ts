@@ -5,7 +5,10 @@ export class SVGIconUtils {
   public static readonly LIGHT_GREY_FILTER = `brightness(0) saturate(100%) invert(68%) sepia(0%) saturate(317%)
     hue-rotate(84deg) brightness(92%) contrast(93%)`;
 
-  public static readonly DARK_GREY_FILTER = `brightness(0) saturate(100%) invert(7%) sepia(23%) saturate(258%)
+  public static readonly HEADER_FILTER = `brightness(0) saturate(100%) invert(34%) sepia(0%) saturate(1075%)
+    hue-rotate(211deg) brightness(96%) contrast(90%)`;
+
+  public static readonly DROPDOWN_ITEM_FILTER = `brightness(0) saturate(100%) invert(7%) sepia(23%) saturate(258%)
     hue-rotate(63deg) brightness(99%) contrast(97%)`;
 
   // REF-10

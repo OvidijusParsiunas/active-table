@@ -33,7 +33,7 @@ interface Parent<CellStyle> {
   // columns - new ones will instead be inserted before the subject column, also if the user pastes data on it - no
   // proceeding columns will be overwritten and no new ones will be inserted
   isInsertRightAvailable?: boolean; // true by default
-  isMoveAvailable?: boolean; // false by default
+  isMoveAvailable?: boolean; // true by default
 }
 
 // REF-24

@@ -66,6 +66,7 @@ export class ActiveTable extends LitElement {
     // ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
     // ['Earth', 12756, 5.97, 1, 5514],
     // ['Mars', 6792, 0.642, 2, 3934],
+    // ['Jupiter', 142984, 1898, 79, 1326],
     // ['Saturn', 120536, 568, 82, 687],
     // ['Neptune', 49528, 102, 14, 1638],
   ];

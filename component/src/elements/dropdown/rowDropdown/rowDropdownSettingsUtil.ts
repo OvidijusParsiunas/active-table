@@ -26,7 +26,7 @@ export class RowDropdownSettingsUtil {
     const {rowDropdownSettings, auxiliaryTableContentInternal, columnDropdownDisplaySettings} = at;
     rowDropdownSettings.isInsertUpAvailable ??= true;
     rowDropdownSettings.isInsertDownAvailable ??= true;
-    rowDropdownSettings.isMoveAvailable ??= false;
+    rowDropdownSettings.isMoveAvailable ??= true;
     rowDropdownSettings.isHeaderRowEditable ??= true;
     rowDropdownSettings.isDeleteAvailable ??= true;
     rowDropdownSettings.displaySettings ??= {};

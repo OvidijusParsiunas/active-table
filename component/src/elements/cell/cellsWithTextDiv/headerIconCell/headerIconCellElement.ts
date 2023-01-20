@@ -28,7 +28,7 @@ export class HeaderIconCellElement {
   private static createSvgIcon(iconSettings: IconSettings, columnSettings: ColumnSettingsInternal) {
     const svgIconElement = SVGIconUtils.createSVGElement(iconSettings.svgString);
     HeaderIconCellElement.setScale(svgIconElement, columnSettings.headerIconStyle?.scale);
-    svgIconElement.style.filter = columnSettings.headerIconStyle?.iconFilterColor || SVGIconUtils.LIGHT_GREY_FILTER;
+    svgIconElement.style.filter = columnSettings.headerIconStyle?.iconFilterColor || SVGIconUtils.HEADER_FILTER;
     return svgIconElement;
   }
 

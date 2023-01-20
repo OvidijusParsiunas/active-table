@@ -59,7 +59,7 @@ export class DropdownItem {
     Object.assign(container.style, containerStyles?.dropdown);
     const svgIconElement = SVGIconUtils.createSVGElement(svgString);
     // using style as the class has no effect on svg
-    svgIconElement.style.filter = SVGIconUtils.DARK_GREY_FILTER;
+    svgIconElement.style.filter = SVGIconUtils.DROPDOWN_ITEM_FILTER;
     container.appendChild(svgIconElement);
     buttonElement.insertBefore(container, buttonElement.children[0]);
   }
