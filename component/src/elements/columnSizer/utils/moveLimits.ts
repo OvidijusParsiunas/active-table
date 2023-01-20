@@ -19,8 +19,8 @@ export class MoveLimits {
     // will actually be first dynamic header in the ones following the sizer. Hence the only reliably way
     // of obtaining the actual right header is by extracting it manually by traversing the DOM.
     const rightElement = ExtractElements.getRightColumnSiblingCell(leftElement) as HTMLElement;
-    const sideLimitDelta = (Number.parseFloat(leftElement.style.borderRightWidth) || 0)
-      - (Number.parseFloat(rightElement.style.borderLeftWidth) || 0);
+    const sideLimitDelta = (Number.parseFloat(getComputedStyle(leftElement).borderRightWidth) || 0)
+      - (Number.parseFloat(getComputedStyle(rightElement).borderLeftWidth) || 0);
     return sideLimitDelta / 2;
   }
 

@@ -23,7 +23,7 @@ export class ColumnSizer {
     // for first to second last column sizer
     // filled background if no border and empty if present
     if (isLastCell && tableElement) {
-      if (Number.parseInt(tableElement.style.borderRightWidth) > 0
+      if (Number.parseInt(getComputedStyle(tableElement).borderRightWidth) > 0
           && (leftCellLeft > 0 || (beforeLeftCellRight === undefined || beforeLeftCellRight > 0))) {
         return ColumnSizerElement.EMPTY_BACKGROUND_IMAGE;
       }
@@ -47,14 +47,17 @@ export class ColumnSizer {
     const borderWidths: BorderWidths = {
       rightCellLeft: 0, leftCellLeft: 0, leftCellRight: 0, beforeLeftCellRight: undefined};
     const beforeLeftCell = columnsDetails[sizerIndex - 1]?.elements[0];
-    if (beforeLeftCell) borderWidths.beforeLeftCellRight = Number.parseInt(beforeLeftCell.style.borderRightWidth) || 0;
+    if (beforeLeftCell) {
+      borderWidths.beforeLeftCellRight = Number.parseInt(getComputedStyle(beforeLeftCell).borderRightWidth) || 0;
+    }
     const leftCell = columnsDetails[sizerIndex]?.elements[0];
     if (leftCell) {
-      borderWidths.leftCellLeft = Number.parseInt(leftCell.style.borderLeftWidth) || 0;
-      borderWidths.leftCellRight = Number.parseInt(leftCell.style.borderRightWidth) || 0;
+      const leftCellStyle = getComputedStyle(leftCell);
+      borderWidths.leftCellLeft = Number.parseInt(leftCellStyle.borderLeftWidth) || 0;
+      borderWidths.leftCellRight = Number.parseInt(leftCellStyle.borderRightWidth) || 0;
     }
     const rightCell = columnsDetails[sizerIndex + 1]?.elements[0];
-    if (rightCell) borderWidths.rightCellLeft = Number.parseInt(rightCell.style.borderLeftWidth) || 0;
+    if (rightCell) borderWidths.rightCellLeft = Number.parseInt(getComputedStyle(rightCell).borderLeftWidth) || 0;
     return borderWidths;
   }
 

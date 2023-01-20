@@ -1,6 +1,5 @@
-import {ActiveTable} from '../activeTable.js';
-
 import {fixture, assert} from '@open-wc/testing';
+import {ActiveTable} from '../activeTable.js';
 import {html} from 'lit/static-html.js';
 
 suite('active-table tests', () => {

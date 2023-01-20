@@ -184,6 +184,7 @@ export const activeTableStyle = css`
   .no-content-stub {
     text-align: center;
     padding: 0px !important;
+    border: none !important;
   }
 
   .active-table-dropdown {

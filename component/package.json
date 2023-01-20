@@ -1,6 +1,6 @@
 {
   "name": "active-table",
-  "version": "0.0.17",
+  "version": "0.0.19",
   "description": "A fully editable table",
   "main": "./dist/activeTable.js",
   "module": "./dist/activeTable.js",
@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "build:element": "npm run clean && npm run build && rollup -c",
+    "build:element": "npm run clean && tsc --project tsconfig.element.json && rollup -c",
     "clean": "rimraf dist test",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",

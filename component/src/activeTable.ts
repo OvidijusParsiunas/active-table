@@ -63,11 +63,11 @@ export class ActiveTable extends LitElement {
 
   @property({type: Array})
   content: TableContent = [
-    ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
-    ['Earth', 12756, 5.97, 1, 5514],
-    ['Mars', 6792, 0.642, 2, 3934],
-    ['Saturn', 120536, 568, 82, 687],
-    ['Neptune', 49528, 102, 14, 1638],
+    // ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+    // ['Earth', 12756, 5.97, 1, 5514],
+    // ['Mars', 6792, 0.642, 2, 3934],
+    // ['Saturn', 120536, 568, 82, 687],
+    // ['Neptune', 49528, 102, 14, 1638],
   ];
 
   // REF-20
@@ -212,10 +212,10 @@ export class ActiveTable extends LitElement {
 
   // these properties are toggled for all columns for consistent UX
   @property({type: Object})
-  columnDropdownDisplaySettings: DropdownDisplaySettings = {isAvailable: true, openMethod: {overlayClick: true}};
+  columnDropdownDisplaySettings: DropdownDisplaySettings = {isAvailable: true, openMethod: {cellClick: true}};
 
   @property({type: Object})
-  rowDropdownSettings: RowDropdownSettings = {displaySettings: {isAvailable: true, openMethod: {overlayClick: true}}};
+  rowDropdownSettings: RowDropdownSettings = {displaySettings: {isAvailable: true, openMethod: {cellClick: true}}};
 
   // column dropdown overlays are stored inside ColumnDetailsT columnDropdownCellOverlay
   @state()

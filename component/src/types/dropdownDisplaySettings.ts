@@ -5,8 +5,8 @@ export type DropdownCellOverlayStyle = Omit<StatefulCSSS<Pick<CellCSSStyle, 'bac
 export interface DropdownDisplaySettings {
   isAvailable?: boolean; // true by default
   openMethod?: {
-    overlayClick?: boolean; // true by default
-    cellClick?: boolean; // false by default
+    overlayClick?: boolean; // false by default
+    cellClick?: boolean; // true by default
   };
   overlayStyle?: DropdownCellOverlayStyle; // use if overlayClick is set to true
 }
