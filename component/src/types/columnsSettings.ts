@@ -39,9 +39,9 @@ interface Parent<CellStyle> {
 // REF-24
 // if dimension is a percentage - will use the table width
 // if total custom columns width is higher than the width in tableStyle, they will breach that width
-export type CustomColumnWidth = InterfacesUnion<{width: StringDimension} | {minWidth: StringDimension} | {}>;
+export type ColumnWidth = InterfacesUnion<{width: StringDimension} | {minWidth: StringDimension} | {}>;
 
-type DimensionalCSSStyle = CellCSSStyle & CustomColumnWidth;
+type DimensionalCSSStyle = CellCSSStyle & ColumnWidth;
 
 // if the user proceeds to set width and minWidth properties - minWidth will take precedence
 export type CustomColumnSettings<T = DimensionalCSSStyle> = Parent<T>;

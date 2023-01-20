@@ -272,6 +272,11 @@ they overwrite the elements by traversing the table or having a direct reference
 would need a hard rewrite to track each and every column that has its width changed.
 This is also why we update the column widths separately in the onColumnWidthsUpdate method and display all columns instead.
 
+REF-36
+If custom column settings have not been defined (or is a fresh new column) and default cell minWidth is set, we add it to the internal
+settings minWidth property so it would be treated as part of static width and prevent the column from being resized to smaller width.
+If default column setting is instead just width, we simply set the column header width.
+
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
 does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()

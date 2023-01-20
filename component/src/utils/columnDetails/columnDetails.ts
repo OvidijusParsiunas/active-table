@@ -1,5 +1,6 @@
 import {SelectDropdown} from '../../elements/dropdown/selectDropdown/selectDropdown';
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
+import {ColumnSettingsWidthUtils} from '../columnSettings/columnSettingsWidthUtils';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
 import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
@@ -49,6 +50,7 @@ export class ColumnDetails {
       settings: ColumnSettingsInternal, index: number,
       onColumnUpdate: OnColumnUpdate): ColumnDetailsInitial {
     const columnSettings = settings || defaultColumnsSettings as ColumnSettingsInternal;
+    ColumnSettingsWidthUtils.setMinWidthOnSettings(columnSettings, defaultColumnsSettings.cellStyle); // REF-36
     const {types, activeType} = ColumnTypesUtils.getProcessedTypes(columnSettings);
     return {
       elements: [],

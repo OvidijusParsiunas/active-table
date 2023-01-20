@@ -71,7 +71,13 @@ export class AddNewColumnElement {
     // REF-23
     const columnDetails = columnsDetails[columnsDetails.length - 1];
     ColumnSettingsBorderUtils.unsetSubjectBorder(addColumnCellsElementsRef, columnDetails.elements, 'left', rowIndex);
-    if (isDisplay && MaximumColumns.canAddMore(at)) row.appendChild(cell);
+    if (isDisplay) {
+      if (MaximumColumns.canAddMore(at)) {
+        row.appendChild(cell);
+      } else if (rowIndex === 0) {
+        TableElement.changeStaticWidthTotal(-AddNewColumnElement.DEFAULT_WIDTH);
+      }
+    }
   }
 
   // prettier-ignore

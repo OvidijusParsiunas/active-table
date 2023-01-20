@@ -54,7 +54,7 @@ export class UpdateIndexColumnWidth {
   }
 
   private static getCellOverflow(cell: HTMLElement) {
-    return cell.scrollWidth + (Number.parseInt(cell.style.borderRightWidth) || 0);
+    return cell.scrollWidth + (Number.parseInt(getComputedStyle(cell).borderRightWidth) || 0);
   }
 
   private static getIndexColumnOverflowWidth(firstRow: HTMLElement, lastCell: HTMLElement) {

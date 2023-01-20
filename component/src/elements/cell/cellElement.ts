@@ -4,11 +4,11 @@ import {ColumnSettingsStyleUtils} from '../../utils/columnSettings/columnSetting
 import {ColumnSettingsWidthUtils} from '../../utils/columnSettings/columnSettingsWidthUtils';
 import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputElement';
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
-import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {CheckboxCellElement} from './checkboxCell/checkboxCellElement';
 import {ColumnDetails} from '../../utils/columnDetails/columnDetails';
 import {CaretDisplayFix} from '../../utils/browser/caretDisplayFix';
+import {ColumnWidth} from '../../types/columnsSettings';
 import {CellText} from '../../types/tableContent';
 import {CellCSSStyle} from '../../types/cssStyle';
 import {ActiveTable} from '../../activeTable';
@@ -123,11 +123,13 @@ export class CellElement {
     }
   }
 
-  private static setColumnWidth(tableElement: HTMLElement, cellElement: HTMLElement, settings?: ColumnSettingsInternal) {
+  // prettier-ignore
+  private static setColumnWidth(tableElement: HTMLElement, cellElement: HTMLElement,
+      defaultWidth?: ColumnWidth, settings?: ColumnWidth) {
     if (settings && ColumnSettingsWidthUtils.isWidthDefined(settings)) {
       ColumnSettingsWidthUtils.updateColumnWidth(tableElement, cellElement, settings, true);
     } else {
-      cellElement.style.width = `${ColumnDetails.NEW_COLUMN_WIDTH}px`;
+      cellElement.style.width = `${defaultWidth?.width || ColumnDetails.NEW_COLUMN_WIDTH}px`; // REF-36
     }
   }
 
@@ -144,7 +146,7 @@ export class CellElement {
     const isEditable = isHeader ? !isOpenViaCellClick && settings.isHeaderTextEditable : settings.isCellTextEditable;
     CellElement.prepContentEditable(cellElement, Boolean(isEditable), isOpenViaCellClick);
     // overwritten again if static table
-    if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, settings);
+    if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, cellStyle, settings);
     CellElement.setNewText(at, cellElement, text, true, false);
     return cellElement;
   }

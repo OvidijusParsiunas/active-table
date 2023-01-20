@@ -58,6 +58,9 @@ export class ActiveTable extends LitElement {
 
   public static ELEMENT_TAG = 'ACTIVE-TABLE';
 
+  @property({type: Object})
+  tableStyle: TableStyle = {};
+
   @property({type: Array})
   content: TableContent = [
     ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
@@ -168,9 +171,6 @@ export class ActiveTable extends LitElement {
 
   @state()
   selectDropdownContainer: HTMLElement | null = null;
-
-  @property({type: Object})
-  tableStyle: TableStyle = {};
 
   @property({type: Object})
   rowHover: RowHover | null = null;
