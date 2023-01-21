@@ -57,7 +57,7 @@ export class RowDropdown {
 
   // prettier-ignore
   private static displayAndSetPosition(cellElement: HTMLElement, dropdown: HTMLElement, cellClick: boolean,
-      isHeaderSticky: boolean) {
+      stickyHeader: boolean) {
     const initialTopValue: PX = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
     dropdown.style.top = initialTopValue;
     dropdown.style.left = RowDropdown.getLeft(cellElement, cellClick);
@@ -68,7 +68,7 @@ export class RowDropdown {
       if (visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
         RowDropdown.correctPositionWhenBottomOverflow(dropdown, initialTopValue);
       } else if (visibilityDetails.blockingSides.has(SIDE.TOP) && cellElement.tagName === CellElement.HEADER_TAG
-          && isHeaderSticky) {
+          && stickyHeader) {
         Dropdown.correctTopPositionForStickyHeader(cellElement, dropdown, false);
       }
     }

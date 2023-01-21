@@ -111,7 +111,7 @@ export class ActiveTable extends LitElement {
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  isHeaderSticky: boolean | undefined;
+  stickyHeader: boolean | undefined;
 
   // setting header to true if above is undefined and vertical overflow is present
   // (using object to be able to set values without re-rendering the component)

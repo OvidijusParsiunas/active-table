@@ -25,7 +25,7 @@ export interface ActiveTable extends LitElement {
   duplicateHeadersAllowed?: boolean;
   areIconsDisplayedInHeaders?: boolean;
   spellCheck?: boolean;
-  isHeaderSticky?: boolean | undefined;
+  stickyHeader?: boolean | undefined;
   updateCellText?: DynamicCellTextUpdateT;
   defaultColumnsSettings?: ColumnsSettingsDefault;
   customColumnsSettings?: CustomColumnsSettings;

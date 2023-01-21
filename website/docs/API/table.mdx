@@ -6,7 +6,7 @@ sidebar_position: 1
 
 Properties related to the table:
 
-### `tableStyle` {#tableStyle}
+### `tableStyle`
 
 - Type: `object`
 <!-- CSSObject - min width not allowed -->
@@ -15,28 +15,29 @@ CSS that will affect the table element.
 
 #### Example:
 
+import TableContainer from '@site/src/components/table/table-container';
 import {ActiveTable} from 'active-table';
-
-<active-table
-  tableStyle='{"border":"1px solid black", "borderRadius":"4px"}'
-  content='[
-  ["Planet", "Diameter", "Mass", "Moons","Density"],
-  ["Earth", 12756, 5.97, 1, 5514],
-  ["Mars", 6792, 0.642, 2, 3934],
-  ["Saturn", 120536, 568, 82, 687],
-  ["Neptune", 49528, 102, 14, 1638]]'>
-</active-table>
-
-import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs';
+
+<TableContainer>
+  <active-table
+    tableStyle='{"borderColor":"black", "width":"100%", "backgroundColor": "white", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px"}'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+  ></active-table>
+</TableContainer>
 
 <Tabs>
 <TabItem value="js" label="Sample">
 
 ```text
-<active-table
-  tableStyle='{"border":"1px solid black"}'>
-</active-table>
+<active-table tableStyle='{"borderColor":"black"}'</active-table>
 ```
 
 </TabItem>
@@ -44,7 +45,7 @@ import TabItem from '@theme/TabItem';
 
 ```text
 <active-table
-  tableStyle='{"border":"1px solid black", "borderRadius":"15px"}'
+  tableStyle='{"borderColor":"black"}'
   content='[
     ["Planet", "Diameter", "Mass", "Moons","Density"],
     ["Earth", 12756, 5.97, 1, 5514],

@@ -80,7 +80,7 @@ const config = {
   // // // spellCheck: boolean;
   // // // updateCellText: DynamicCellTextUpdateT;
   // // header:
-  // // // isHeaderSticky: boolean | undefined;
+  // // // stickyHeader: boolean;
   // // // dataBeginsAtHeader: boolean;
   // // // duplicateHeadersAllowed: boolean;
   // // // areIconsDisplayedInHeaders: boolean;
@@ -102,7 +102,7 @@ const config = {
   // // // onColumnUpdate: OnColumnUpdate;
   // // // onTableUpdate: OnTableUpdate;
   // // // onColumnWidthsUpdate: OnColumnWidthsUpdate;
-  // // overflow:
+  // // overflow: // could be in with table
   // // // overflow: Overflow | null;
   // // pagination:
   // // // pagination: Pagination | null;

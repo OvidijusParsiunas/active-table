@@ -95,9 +95,9 @@ export class TableElement {
     CustomRowProperties.update(at);
   }
 
-  private static createTableBody(isHeaderSticky: boolean) {
+  private static createTableBody(stickyHeader: boolean) {
     const body = document.createElement('tbody');
-    if (isHeaderSticky) body.classList.add('sticky-header-body');
+    if (stickyHeader) body.classList.add('sticky-header-body');
     return body;
   }
 

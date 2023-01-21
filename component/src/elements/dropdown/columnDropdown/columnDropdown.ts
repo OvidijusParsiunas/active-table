@@ -62,7 +62,7 @@ export class ColumnDropdown {
 
   // prettier-ignore
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement,
-      openMethod: DropdownDisplaySettings['openMethod'], isHeaderSticky: boolean) {
+      openMethod: DropdownDisplaySettings['openMethod'], stickyHeader: boolean) {
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
     dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement, openMethod?.overlayClick);
     // needs to be displayed here to evalute if in view port
@@ -73,7 +73,7 @@ export class ColumnDropdown {
         dropdownElement.style.left = '0px';
       } else if (visibilityDetails.blockingSides.has(SIDE.RIGHT)) {
         dropdownElement.style.left = `${cellElement.offsetLeft + cellElement.offsetWidth - Dropdown.DROPDOWN_WIDTH}px`;
-      } else if (visibilityDetails.blockingSides.has(SIDE.TOP) && isHeaderSticky) {
+      } else if (visibilityDetails.blockingSides.has(SIDE.TOP) && stickyHeader) {
         Dropdown.correctTopPositionForStickyHeader(cellElement, dropdownElement, !!openMethod?.cellClick);
       }
     }
