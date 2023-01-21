@@ -1,6 +1,6 @@
 import {CellText} from './tableContent';
 
-export interface DynamicCellTextUpdateObj {
+export interface DynamicCellTextUpdateT {
   newText: CellText;
   rowIndex: number;
   columnIndex: number;

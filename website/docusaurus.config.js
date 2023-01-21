@@ -78,7 +78,7 @@ const config = {
   // // content:
   // // // content: TableContent;
   // // // spellCheck: boolean;
-  // // // updateCellText: boolean;
+  // // // updateCellText: DynamicCellTextUpdateT;
   // // header:
   // // // isHeaderSticky: boolean | undefined;
   // // // dataBeginsAtHeader: boolean;

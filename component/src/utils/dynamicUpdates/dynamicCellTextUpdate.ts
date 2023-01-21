@@ -1,5 +1,5 @@
 import {ColumnDropdown} from '../../elements/dropdown/columnDropdown/columnDropdown';
-import {DynamicCellTextUpdateObj} from '../../types/dynamicCellTextUpdateObj';
+import {DynamicCellTextUpdateT} from '../../types/dynamicCellTextUpdateT';
 import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
 import {CellElement} from '../../elements/cell/cellElement';
 import {CellEvents} from '../../elements/cell/cellEvents';
@@ -8,8 +8,8 @@ import {ObjectUtils} from '../object/objectUtils';
 import {ActiveTable} from '../../activeTable';
 
 export class DynamicCellTextUpdate {
-  public static update(at: ActiveTable, dynamicCellTextUpdateObj: DynamicCellTextUpdateObj) {
-    const {newText, rowIndex, columnIndex} = dynamicCellTextUpdateObj;
+  public static update(at: ActiveTable, dynamicCellTextUpdate: DynamicCellTextUpdateT) {
+    const {newText, rowIndex, columnIndex} = dynamicCellTextUpdate;
     if (!ObjectUtils.areValuesFullyDefined(newText, rowIndex, columnIndex)) return;
     if (typeof newText !== 'string' && typeof newText !== 'number') return;
     const element = at.columnsDetails[columnIndex]?.elements[rowIndex];

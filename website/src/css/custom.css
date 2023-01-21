@@ -6,6 +6,8 @@
 
 /* You can override the default Infima variables here. */
 :root {
+  --ifm-table-container-background-color: #f6f8fa;
+  --ifm-table-container-border: '0.5px solid #eeeeee';
   --ifm-color-primary: #2e8555;
   --ifm-color-primary-dark: #29784c;
   --ifm-color-primary-darker: #277148;
@@ -19,6 +21,8 @@
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
+  --ifm-table-container-background-color: #282a36;
+  --ifm-table-container-border: 'unset';
   --ifm-color-primary: #25c2a0;
   --ifm-color-primary-dark: #21af90;
   --ifm-color-primary-darker: #1fa588;
@@ -30,14 +34,22 @@
 }
 
 .tabs {
-  background-color: #f6f8fa;
-  border-top-left-radius: 0.4rem;
-  border-top-right-radius: 0.4rem;
+  background-color: var(--ifm-table-container-background-color);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  border: var(--ifm-table-container-border);
+  border-bottom: 'unset';
+  border-top: 'unset';
 }
 
 .margin-top--md {
   margin-top: 0px !important;
+  border: var(--ifm-table-container-border);
   border-top: 1px solid #dadde1;
+}
+
+.theme-code-block {
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
 }
 
 :root {
