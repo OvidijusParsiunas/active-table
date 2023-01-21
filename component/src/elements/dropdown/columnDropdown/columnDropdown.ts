@@ -80,7 +80,7 @@ export class ColumnDropdown {
   }
 
   // prettier-ignore
-  private static setOverlayPosition(at: ActiveTable, overflowElement: HTMLElement,
+  private static setOverflowPosition(at: ActiveTable, overflowElement: HTMLElement,
       dropdownElement: HTMLElement, cellElement: HTMLElement) {
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
     dropdownElement.style.top = `${at.columnDropdownDisplaySettings.openMethod?.overlayClick
@@ -90,7 +90,7 @@ export class ColumnDropdown {
   // no active table based overflow - REF-37
   private static displayAndSetPositionForSticky(at: ActiveTable, cellElement: HTMLElement, dropdownElement: HTMLElement) {
     const overflowElement = at.parentElement as HTMLElement;
-    ColumnDropdown.setOverlayPosition(at, overflowElement, dropdownElement, cellElement);
+    ColumnDropdown.setOverflowPosition(at, overflowElement, dropdownElement, cellElement);
     Dropdown.display(dropdownElement);
   }
 
@@ -100,7 +100,7 @@ export class ColumnDropdown {
     const {tableElementRef, overflowInternal} = at;
     if (!tableElementRef || !overflowInternal?.overflowContainer) return;
     const overflowElement = overflowInternal.overflowContainer;
-    ColumnDropdown.setOverlayPosition(at, overflowElement, dropdownElement, cellElement);
+    ColumnDropdown.setOverflowPosition(at, overflowElement, dropdownElement, cellElement);
     // needs to be displayed here to evalute if scrollwidth has appeared
     Dropdown.display(dropdownElement);
     if (tableElementRef.offsetWidth !== overflowElement.scrollWidth) {

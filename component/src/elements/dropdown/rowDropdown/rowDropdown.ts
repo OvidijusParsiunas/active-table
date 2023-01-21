@@ -51,16 +51,17 @@ export class RowDropdown {
     }
   }
 
-  private static getLeft(cellElement: HTMLElement, cellClick: boolean) {
+  private static getLeft(at: ActiveTable, cellElement: HTMLElement) {
+    const cellClick = at.rowDropdownSettings.displaySettings.openMethod?.cellClick as boolean;
     return `${ElementOffset.processWidth(cellClick ? cellElement.offsetWidth : 5)}px`;
   }
 
   // prettier-ignore
-  private static displayAndSetPosition(cellElement: HTMLElement, dropdown: HTMLElement, cellClick: boolean,
+  private static displayAndSetPosition(at: ActiveTable, cellElement: HTMLElement, dropdown: HTMLElement,
       stickyHeader: boolean) {
     const initialTopValue: PX = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
     dropdown.style.top = initialTopValue;
-    dropdown.style.left = RowDropdown.getLeft(cellElement, cellClick);
+    dropdown.style.left = RowDropdown.getLeft(at, cellElement);
     // needs to be displayed here to evalute if in view port
     Dropdown.display(dropdown);
     const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdown);
@@ -75,14 +76,26 @@ export class RowDropdown {
   }
 
   // prettier-ignore
-  private static displayAndSetPositionOverflow(at: ActiveTable, cellElement: HTMLElement,
-      dropdown: HTMLElement, cellClick: boolean) {
+  private static setOverflowPosition(at: ActiveTable, cellElement: HTMLElement, dropdown: HTMLElement,
+      overflowElement: HTMLElement) {
+    const isStickyCell = at.stickyProps.header && cellElement.tagName === CellElement.HEADER_TAG;
+    dropdown.style.top = isStickyCell ?
+      `${overflowElement.scrollTop}px` : `${ElementOffset.processTop(cellElement.offsetTop)}px`;
+    dropdown.style.left = RowDropdown.getLeft(at, cellElement);
+  }
+
+  // no active table based overflow
+  private static displayAndSetPositionForSticky(at: ActiveTable, cellElement: HTMLElement, dropdown: HTMLElement) {
+    const overflowElement = at.parentElement as HTMLElement;
+    RowDropdown.setOverflowPosition(at, cellElement, dropdown, overflowElement);
+    Dropdown.display(dropdown);
+  }
+
+  private static displayAndSetPositionOverflow(at: ActiveTable, cellElement: HTMLElement, dropdown: HTMLElement) {
     const {tableElementRef, overflowInternal, stickyProps} = at;
     if (!tableElementRef || !overflowInternal?.overflowContainer) return;
     const isStickyCell = stickyProps.header && cellElement.tagName === CellElement.HEADER_TAG;
-    dropdown.style.top = isStickyCell ?
-      `${overflowInternal.overflowContainer.scrollTop}px` : `${ElementOffset.processTop(cellElement.offsetTop)}px`;
-    dropdown.style.left = RowDropdown.getLeft(cellElement, cellClick);
+    RowDropdown.setOverflowPosition(at, cellElement, dropdown, overflowInternal.overflowContainer);
     // needs to be displayed here to evalute if overflow
     Dropdown.display(dropdown);
     if (tableElementRef.offsetHeight !== overflowInternal.overflowContainer.scrollHeight && !isStickyCell) {
@@ -93,11 +106,12 @@ export class RowDropdown {
   public static display(this: ActiveTable, rowIndex: number, cellElement: HTMLElement) {
     const dropdownElement = this.activeOverlayElements.rowDropdown as HTMLElement;
     RowDropdownItem.update(this, dropdownElement, rowIndex);
-    const cellClick = this.rowDropdownSettings.displaySettings.openMethod?.cellClick as boolean;
     if (this.overflowInternal?.overflowContainer) {
-      RowDropdown.displayAndSetPositionOverflow(this, cellElement, dropdownElement, cellClick);
+      RowDropdown.displayAndSetPositionOverflow(this, cellElement, dropdownElement);
+    } else if (this.stickyHeader) {
+      RowDropdown.displayAndSetPositionForSticky(this, cellElement, dropdownElement);
     } else {
-      RowDropdown.displayAndSetPosition(cellElement, dropdownElement, cellClick, this.stickyProps.header);
+      RowDropdown.displayAndSetPosition(this, cellElement, dropdownElement, this.stickyProps.header);
     }
     FullTableOverlayElement.display(this);
     setTimeout(() => RowDropdown.focusCell(this, rowIndex, cellElement));
