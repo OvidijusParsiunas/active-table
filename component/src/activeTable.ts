@@ -15,9 +15,9 @@ import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {PaginationElements} from './elements/pagination/paginationElements';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
-import {StickyProcessUtils} from './utils/stickyProps/stickyPropsUtils';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {DropdownDisplaySettings} from './types/dropdownDisplaySettings';
+import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
 import {ColumnsSettingsDefault} from './types/columnsSettingsDefault';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
@@ -124,6 +124,7 @@ export class ActiveTable extends LitElement {
   })
   updateCellText = true;
 
+  // WORK - probably rename to columnsSettings
   @property({type: Object})
   defaultColumnsSettings: ColumnsSettingsDefault = {};
 
@@ -255,7 +256,7 @@ export class ActiveTable extends LitElement {
   private onConnect() {
     // REF-14
     super.connectedCallback();
-    StickyProcessUtils.process(this);
+    StickyPropsUtils.process(this);
     AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
     RowDropdownSettingsUtil.process(this);
     DropdownDisplaySettingsUtil.process(this.columnDropdownDisplaySettings);

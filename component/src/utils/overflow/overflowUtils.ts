@@ -1,8 +1,8 @@
 import {StringDimensionUtils, SuccessResult} from '../tableDimensions/stringDimensionUtils';
+import {GenericElementUtils} from '../elements/genericElementUtils';
 import {TableElement} from '../../elements/table/tableElement';
 import {OverflowInternal} from '../../types/overflowInternal';
 import {ActiveTable} from '../../activeTable';
-import {CSSStyle} from '../../types/cssStyle';
 import {Overflow} from '../../types/overflow';
 import {Browser} from '../browser/browser';
 
@@ -31,9 +31,19 @@ export class OverflowUtils {
     numberDimension.number -= OverflowUtils.SCROLLBAR_WIDTH;
   }
 
-  private static moveBorderToOverlay(tableStyle: CSSStyle, overflowContainer: HTMLElement, tableElement: HTMLElement) {
-    overflowContainer.style.border = tableStyle.border as string;
-    tableElement.style.border = '';
+  // prettier-ignore
+  private static moveStyle(overflowContainer: HTMLElement, tableElement: HTMLElement,
+      ...styles: (keyof CSSStyleDeclaration)[]) {
+    styles.forEach((style) => {
+      if (tableElement.style[style]) {
+        GenericElementUtils.setStyle(overflowContainer, style as string, tableElement.style[style] as string);
+      }
+    })
+  }
+
+  private static moveBorderToOverlay(overflowContainer: HTMLElement, tableElement: HTMLElement) {
+    OverflowUtils.moveStyle(overflowContainer, tableElement, 'borderRight', 'borderLeft', 'borderTop', 'borderBottom');
+    tableElement.style.border = 'unset';
   }
 
   private static adjustStyleForScrollbarWidth(overflowContainer: HTMLElement, overflow: Overflow) {
@@ -81,7 +91,7 @@ export class OverflowUtils {
     const overflowContainer = document.createElement('div');
     at.overflowInternal = {overflowContainer};
     overflowContainer.id = OverflowUtils.ID;
-    OverflowUtils.moveBorderToOverlay(at.tableStyle, overflowContainer, tableElement);
+    OverflowUtils.moveBorderToOverlay(overflowContainer, tableElement);
     overflowContainer.appendChild(tableElement);
   }
 }

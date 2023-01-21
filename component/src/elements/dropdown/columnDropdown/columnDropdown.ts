@@ -80,14 +80,27 @@ export class ColumnDropdown {
   }
 
   // prettier-ignore
+  private static setOverlayPosition(at: ActiveTable, overflowElement: HTMLElement,
+      dropdownElement: HTMLElement, cellElement: HTMLElement) {
+    dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
+    dropdownElement.style.top = `${at.columnDropdownDisplaySettings.openMethod?.overlayClick
+      ? overflowElement.scrollTop + 1 : overflowElement.scrollTop + cellElement.offsetHeight}px`;
+  }
+
+  // no active table based overflow - REF-37
+  private static displayAndSetPositionForSticky(at: ActiveTable, cellElement: HTMLElement, dropdownElement: HTMLElement) {
+    const overflowElement = at.parentElement as HTMLElement;
+    ColumnDropdown.setOverlayPosition(at, overflowElement, dropdownElement, cellElement);
+    Dropdown.display(dropdownElement);
+  }
+
+  // prettier-ignore
   private static displayAndSetPositionForOverflow(at: ActiveTable, cellElement: HTMLElement,
       dropdownElement: HTMLElement) {
     const {tableElementRef, overflowInternal} = at;
     if (!tableElementRef || !overflowInternal?.overflowContainer) return;
     const overflowElement = overflowInternal.overflowContainer;
-    dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
-    dropdownElement.style.top = `${at.columnDropdownDisplaySettings.openMethod?.overlayClick
-      ? overflowElement.scrollTop + 1 : overflowElement.scrollTop + cellElement.offsetHeight}px`;
+    ColumnDropdown.setOverlayPosition(at, overflowElement, dropdownElement, cellElement);
     // needs to be displayed here to evalute if scrollwidth has appeared
     Dropdown.display(dropdownElement);
     if (tableElementRef.offsetWidth !== overflowElement.scrollWidth) {
@@ -104,6 +117,8 @@ export class ColumnDropdown {
     ColumnDropdownItem.setUp(at, dropdownElement, columnIndex, cellElement);
     if (at.overflowInternal) {
       ColumnDropdown.displayAndSetPositionForOverflow(at, cellElement, dropdownElement);
+    } else if (at.stickyProps.header) {
+      ColumnDropdown.displayAndSetPositionForSticky(at, cellElement, dropdownElement);
     } else {
       ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement,
         at.columnDropdownDisplaySettings.openMethod, at.stickyProps.header); 

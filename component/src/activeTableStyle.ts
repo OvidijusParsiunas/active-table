@@ -510,4 +510,23 @@ export const activeTableStyle = css`
   .sticky-header-body > *:first-child > th {
     background-color: white;
   }
+
+  #overflow-container {
+    border: 1px solid #00000026;
+  }
+
+  /* REF-37 */
+  .no-overflow-sticky-header-body {
+    border-top: 1px solid #00000026;
+  }
+
+  /* REF-37 */
+  .no-overflow-sticky-header-body > *:first-child {
+    border-top: inherit;
+  }
+
+  /* REF-37 */
+  .no-overflow-sticky-header-body > *:first-child > th {
+    border-top: inherit !important;
+  }
 `;

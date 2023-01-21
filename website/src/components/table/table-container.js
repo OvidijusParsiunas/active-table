@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function TableContainer({children}) {
+export default function TableContainer({children, customStyle}) {
   return (
     <div
       style={{
@@ -15,7 +15,7 @@ export default function TableContainer({children}) {
         borderBottom: 'unset',
       }}
     >
-      <div style={{width: '100%'}}>{children}</div>
+      <div style={{width: '100%', ...customStyle}}>{children}</div>
     </div>
   );
 }

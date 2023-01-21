@@ -1,4 +1,3 @@
-import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {TableBorderDimensions} from '../../types/tableBorderDimensions';
 
 export class TableBorderDimensionsUtils {
@@ -11,12 +10,17 @@ export class TableBorderDimensionsUtils {
     };
   }
 
+  private static getWidth(element: HTMLElement, cssProperty: keyof CSSStyleDeclaration) {
+    if (element.style[cssProperty] === '') return 1;
+    return Number.parseFloat(element.style[cssProperty] as string) || 0;
+  }
+
   public static generateUsingElement(tableElement: HTMLElement) {
     return {
-      leftWidth: GenericElementUtils.getStyleWidth(tableElement, 'borderLeftWidth'),
-      rightWidth: GenericElementUtils.getStyleWidth(tableElement, 'borderRightWidth'),
-      topWidth: GenericElementUtils.getStyleWidth(tableElement, 'borderTopWidth'),
-      bottomWidth: GenericElementUtils.getStyleWidth(tableElement, 'borderBottomWidth'),
+      leftWidth: TableBorderDimensionsUtils.getWidth(tableElement, 'borderLeftWidth'),
+      rightWidth: TableBorderDimensionsUtils.getWidth(tableElement, 'borderRightWidth'),
+      topWidth: TableBorderDimensionsUtils.getWidth(tableElement, 'borderTopWidth'),
+      bottomWidth: TableBorderDimensionsUtils.getWidth(tableElement, 'borderBottomWidth'),
     };
   }
 }

@@ -12,6 +12,7 @@ import {ColumnDetailsUtils} from '../../utils/columnDetails/columnDetailsUtils';
 import {ColumnWidthsState} from '../../utils/columnDetails/columnWidthsState';
 import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
 import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
+import {StickyPropsUtils} from '../../utils/stickyProps/stickyPropsUtils';
 import {SelectDropdown} from '../dropdown/selectDropdown/selectDropdown';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {CustomRowProperties} from '../../utils/rows/customRowProperties';
@@ -126,6 +127,7 @@ export class TableElement {
     at.tableElementRef.appendChild(at.tableBodyElementRef);
     at.selectDropdownContainer = SelectDropdown.createContainerElement();
     at.tableElementRef.appendChild(at.selectDropdownContainer);
+    if (!at.overflow && at.stickyProps.header) StickyPropsUtils.moveTopBorderToHeaderCells(at);
     TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtils.generateUsingElement(at.tableElementRef as HTMLElement);
     return at.tableElementRef;
   }
