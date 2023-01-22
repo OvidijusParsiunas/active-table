@@ -32,17 +32,9 @@ export class OverflowUtils {
   }
 
   // prettier-ignore
-  private static moveStyle(overflowContainer: HTMLElement, tableElement: HTMLElement,
-      ...styles: (keyof CSSStyleDeclaration)[]) {
-    styles.forEach((style) => {
-      if (tableElement.style[style]) {
-        GenericElementUtils.setStyle(overflowContainer, style as string, tableElement.style[style] as string);
-      }
-    })
-  }
-
-  private static moveBorderToOverlay(overflowContainer: HTMLElement, tableElement: HTMLElement) {
-    OverflowUtils.moveStyle(overflowContainer, tableElement, 'borderRight', 'borderLeft', 'borderTop', 'borderBottom');
+  private static moveBorderToOverflowContainer(overflowContainer: HTMLElement, tableElement: HTMLElement) {
+    GenericElementUtils.moveStyles(tableElement, overflowContainer,
+      'borderRight', 'borderLeft', 'borderTop', 'borderBottom');
     tableElement.style.border = 'unset';
   }
 
@@ -91,7 +83,7 @@ export class OverflowUtils {
     const overflowContainer = document.createElement('div');
     at.overflowInternal = {overflowContainer};
     overflowContainer.id = OverflowUtils.ID;
-    OverflowUtils.moveBorderToOverlay(overflowContainer, tableElement);
+    OverflowUtils.moveBorderToOverflowContainer(overflowContainer, tableElement);
     overflowContainer.appendChild(tableElement);
   }
 }

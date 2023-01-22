@@ -1,5 +1,4 @@
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
-import {TableElement} from '../table/tableElement';
 import {DropdownItem} from './dropdownItem';
 
 export class Dropdown {
@@ -39,14 +38,5 @@ export class Dropdown {
 
   public static isPartOfDropdownElement(element: HTMLElement) {
     return element.classList.contains(Dropdown.DROPDOWN_CLASS) || DropdownItem.doesElementContainItemClass(element);
-  }
-
-  // prettier-ignore
-  public static correctTopPositionForStickyHeader(cellElement: HTMLElement, dropdownElement: HTMLElement,
-      isCellClick: boolean) {
-    const tableElement = dropdownElement.parentElement as HTMLElement;
-    let offsetTop = window.pageYOffset - tableElement.offsetTop - TableElement.BORDER_DIMENSIONS.topWidth;
-    if (isCellClick) offsetTop += cellElement.offsetHeight;
-    dropdownElement.style.top = `${offsetTop}px`;
   }
 }

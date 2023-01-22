@@ -13,6 +13,7 @@ import {ColumnDropdownItem} from './columnDropdownItem';
 import {Browser} from '../../../utils/browser/browser';
 import {TableElement} from '../../table/tableElement';
 import {ActiveTable} from '../../../activeTable';
+import {CellEvents} from '../../cell/cellEvents';
 import {DropdownItem} from '../dropdownItem';
 import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
@@ -29,6 +30,7 @@ export class ColumnDropdown {
     const {columnDropdown, columnTypeDropdown, fullTableOverlay} = activeOverlayElements;
     if (!columnDropdown || !fullTableOverlay || !columnTypeDropdown || !cellElement) return;
     if (GenericElementUtils.doesElementExistInDom(cellElement)) {
+      CellEvents.setCellToDefaultIfNeeded(at, 0, columnIndex as number, cellElement);
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, cellElement, columnIndex as number);
     }
     CellHighlightUtils.fade(cellElement, columnsDetails[columnIndex as number]?.headerStateColors.default);
@@ -62,7 +64,7 @@ export class ColumnDropdown {
 
   // prettier-ignore
   private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement,
-      openMethod: DropdownDisplaySettings['openMethod'], stickyHeader: boolean) {
+      openMethod: DropdownDisplaySettings['openMethod']) {
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
     dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement, openMethod?.overlayClick);
     // needs to be displayed here to evalute if in view port
@@ -73,8 +75,6 @@ export class ColumnDropdown {
         dropdownElement.style.left = '0px';
       } else if (visibilityDetails.blockingSides.has(SIDE.RIGHT)) {
         dropdownElement.style.left = `${cellElement.offsetLeft + cellElement.offsetWidth - Dropdown.DROPDOWN_WIDTH}px`;
-      } else if (visibilityDetails.blockingSides.has(SIDE.TOP) && stickyHeader) {
-        Dropdown.correctTopPositionForStickyHeader(cellElement, dropdownElement, !!openMethod?.cellClick);
       }
     }
   }
@@ -117,7 +117,7 @@ export class ColumnDropdown {
       ColumnDropdown.displayAndSetPositionForSticky(at, cellElement, dropdownElement);
     } else {
       ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement,
-        at.columnDropdownDisplaySettings.openMethod, at.stickyProps.header); 
+        at.columnDropdownDisplaySettings.openMethod); 
     }
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItemNavigation.focusInputElement(inputElement as HTMLElement);

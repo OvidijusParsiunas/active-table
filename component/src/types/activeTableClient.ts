@@ -1,10 +1,10 @@
 import {OnCellUpdate, OnColumnUpdate, OnTableUpdate, OnColumnWidthsUpdate} from './onUpdate';
 import {DropdownDisplaySettings} from './dropdownDisplaySettings';
-import {DynamicCellTextUpdateT} from './dynamicCellTextUpdateT';
 import {ColumnsSettingsDefault} from './columnsSettingsDefault';
 import {AuxiliaryTableContent} from './auxiliaryTableContent';
 import {StripedRows as StripedRowsType} from './stripedRows';
 import {RowDropdownSettings} from './rowDropdownSettings';
+import {DynamicCellUpdateT} from './dynamicCellUpdateT';
 import {CustomColumnsSettings} from './columnsSettings';
 import {UserSetColumnSizerStyle} from './columnSizer';
 import {ColumnsWidths} from './columnsWidths';
@@ -26,7 +26,7 @@ export interface ActiveTable extends LitElement {
   areIconsDisplayedInHeaders?: boolean;
   spellCheck?: boolean;
   stickyHeader?: boolean | undefined;
-  updateCellText?: DynamicCellTextUpdateT;
+  updateCell?: DynamicCellUpdateT;
   defaultColumnsSettings?: ColumnsSettingsDefault;
   customColumnsSettings?: CustomColumnsSettings;
   tableStyle?: TableStyle;
@@ -36,7 +36,7 @@ export interface ActiveTable extends LitElement {
   maxColumns?: number;
   maxRows?: number;
   auxiliaryTableContent?: AuxiliaryTableContent;
-  dataBeginsAtHeader?: boolean;
+  dataStartsAtHeader?: boolean;
   columnResizerStyle?: UserSetColumnSizerStyle;
   columnDropdownDisplaySettings?: DropdownDisplaySettings;
   rowDropdownSettings?: RowDropdownSettings;

@@ -38,7 +38,7 @@ export class PaginationUpdatePageButtons {
 
   public static updateOnRowInsert(at: ActiveTable) {
     const {buttonContainer, style, maxNumberOfVisiblePageButtons} = at.paginationInternal;
-    const expectedItemsBeforeInsert = at.dataBeginsAtHeader ? 0 : 1;
+    const expectedItemsBeforeInsert = at.dataStartsAtHeader ? 0 : 1;
     if (at.content.length === expectedItemsBeforeInsert) {
       PageButtonElement.unsetDisabled(buttonContainer, style.pageButtons);
     } else {

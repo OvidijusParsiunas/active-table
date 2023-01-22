@@ -15,7 +15,7 @@ function updateCell(tableElement) {
     } else {
       newText = `${Math.round(Math.random() * 1.5 * 10) / 10}Mbps`;
     }
-    tableElement.setAttribute('updateCellText', JSON.stringify({newText, rowIndex, columnIndex}));
+    tableElement.setAttribute('updateCell', JSON.stringify({newText, rowIndex, columnIndex}));
     updateCell(tableElement);
   }, 150);
 }

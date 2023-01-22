@@ -1,6 +1,7 @@
-import {TableContent, TableRow} from '../../types/tableContent';
+import {CellText, TableContent, TableRow} from '../../types/tableContent';
 import {ColumnsDetailsT} from '../../types/columnDetails';
 import {EMPTY_STRING} from '../../consts/text';
+import {ActiveTable} from '../../activeTable';
 
 export class InitialContentProcessing {
   private static cleanupContentThatDidNotGetAdded(contents: TableContent, columnsDetails: ColumnsDetailsT) {
@@ -37,9 +38,24 @@ export class InitialContentProcessing {
     }
   }
 
-  public static preProcess(content: TableContent, maxRows?: number) {
+  private static removeDuplicateHeaders(content: TableContent, defaultValue?: CellText) {
+    const headerRow = content[0];
+    headerRow.reduce((currentSet, newValue, columnIndex) => {
+      if (currentSet.has(newValue)) {
+        headerRow[columnIndex] = defaultValue || '';
+      } else {
+        currentSet.add(newValue);
+      }
+      return currentSet;
+    }, new Set());
+  }
+
+  public static preProcess(at: ActiveTable) {
+    const {content, maxRows, duplicateHeadersAllowed, defaultColumnsSettings} = at;
     InitialContentProcessing.removeRowsExceedingLimit(content, maxRows);
     const maxRowLength = InitialContentProcessing.getMaxRowLength(content);
     InitialContentProcessing.makeAllContentRowsSameLength(content, maxRowLength);
+    if (!duplicateHeadersAllowed && content.length > 0)
+      InitialContentProcessing.removeDuplicateHeaders(content, defaultColumnsSettings.defaultText);
   }
 }

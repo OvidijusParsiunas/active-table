@@ -6,13 +6,13 @@ import {DropdownDisplaySettingsUtil} from './elements/dropdown/dropdownDisplaySe
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {CustomColumnsSettings, CustomColumnSettings} from './types/columnsSettings';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
-import {DynamicCellTextUpdate} from './utils/dynamicUpdates/dynamicCellTextUpdate';
 import {PaginationInternalUtils} from './utils/pagination/paginationInternalUtils';
 import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {PaginationElements} from './elements/pagination/paginationElements';
+import {DynamicCellUpdate} from './utils/dynamicUpdates/dynamicCellUpdate';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
@@ -122,7 +122,7 @@ export class ActiveTable extends LitElement {
   @property({
     type: Object,
   })
-  updateCellText = true;
+  updateCell = true;
 
   // WORK - probably rename to columnsSettings
   @property({type: Object})
@@ -206,7 +206,7 @@ export class ActiveTable extends LitElement {
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  dataBeginsAtHeader = false;
+  dataStartsAtHeader = false;
 
   // called columnResizer for the client - columnSizer in the code
   @property({type: Object})
@@ -268,7 +268,7 @@ export class ActiveTable extends LitElement {
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
     this.shadowRoot?.appendChild(this.overflowInternal?.overflowContainer || tableElement);
     if (this.pagination) PaginationElements.create(this);
-    InitialContentProcessing.preProcess(this.content, this.maxRows);
+    InitialContentProcessing.preProcess(this);
     WindowElement.setEvents(this);
     ColumnSettingsUtils.setUpInternalSettings(this);
     DefaultColumnTypes.createDropdownItemsForDefaultTypes();
@@ -284,11 +284,11 @@ export class ActiveTable extends LitElement {
     }
   }
 
-  // using shouldUpdate instead of .hasChanged lifecycle property on the updateCellText property because it cannot access
+  // using shouldUpdate instead of .hasChanged lifecycle property on the updateCell property because it cannot access
   // 'this' variable - which we need to udpate the cell
   override shouldUpdate(dynamicUpdate: Map<string, unknown>): boolean {
-    if (dynamicUpdate.has('updateCellText') && typeof this.updateCellText === 'object') {
-      DynamicCellTextUpdate.update(this, this.updateCellText);
+    if (dynamicUpdate.has('updateCell') && typeof this.updateCell === 'object') {
+      DynamicCellUpdate.updateText(this, this.updateCell);
       return false; // does not cause a re-render
     }
     return true;

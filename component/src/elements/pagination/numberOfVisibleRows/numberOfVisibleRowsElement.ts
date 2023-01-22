@@ -19,10 +19,10 @@ export class NumberOfVisibleRowsElement {
   }
 
   public static update(at: ActiveTable) {
-    const {paginationInternal, content, dataBeginsAtHeader} = at;
+    const {paginationInternal, content, dataStartsAtHeader} = at;
     const {numberOfVisibleRowsElement, isAllRowsOptionSelected} = paginationInternal;
     if (!numberOfVisibleRowsElement) return;
-    const dataRowsLength = dataBeginsAtHeader ? content.length : content.length - 1;
+    const dataRowsLength = dataStartsAtHeader ? content.length : content.length - 1;
     if (isAllRowsOptionSelected) {
       NumberOfVisibleRowsElement.updateForAllRows(numberOfVisibleRowsElement, dataRowsLength);
     } else {

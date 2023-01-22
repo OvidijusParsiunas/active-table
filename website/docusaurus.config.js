@@ -78,10 +78,10 @@ const config = {
   // // content:
   // // // content: TableContent;
   // // // spellCheck: boolean;
-  // // // updateCellText: DynamicCellTextUpdateT;
+  // // // updateCell: DynamicCellUpdateT;
   // // header:
   // // // stickyHeader: boolean;
-  // // // dataBeginsAtHeader: boolean;
+  // // // dataStartsAtHeader: boolean;
   // // // duplicateHeadersAllowed: boolean;
   // // // areIconsDisplayedInHeaders: boolean;
   // // rows:

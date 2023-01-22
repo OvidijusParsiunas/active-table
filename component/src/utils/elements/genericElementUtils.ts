@@ -26,4 +26,14 @@ export class GenericElementUtils {
   public static setStyle(element: HTMLElement, style: string, value: string) {
     (element.style as unknown as GenericObject)[style] = value;
   }
+
+  // prettier-ignore
+  public static moveStyles(sourceElement: HTMLElement, destinationElement: HTMLElement,
+      ...styles: (keyof CSSStyleDeclaration)[]) {
+    styles.forEach((style) => {
+      if (sourceElement.style[style]) {
+        GenericElementUtils.setStyle(destinationElement, style as string, sourceElement.style[style] as string);
+      }
+    });
+  }
 }

@@ -1,3 +1,4 @@
+import {GenericElementUtils} from '../elements/genericElementUtils';
 import {ActiveTable} from '../../activeTable';
 
 export class StickyPropsUtils {
@@ -13,12 +14,18 @@ export class StickyPropsUtils {
   }
 
   // REF-37
+  // prettier-ignore
   public static moveTopBorderToHeaderCells(at: ActiveTable) {
     if (!at.tableElementRef || !at.tableBodyElementRef) return;
-    at.tableBodyElementRef?.classList.add(StickyPropsUtils.NO_OVERFLOW_STICKY_HEADER_BODY_CLASS);
-    if (at.tableElementRef?.style.borderTop) {
-      at.tableBodyElementRef.style.borderTop = at.tableElementRef?.style.borderTop;
+    at.tableBodyElementRef.classList.add(StickyPropsUtils.NO_OVERFLOW_STICKY_HEADER_BODY_CLASS);
+    if (at.tableElementRef.style.border) {
+      at.tableBodyElementRef.style.borderTop = at.tableElementRef.style.border;
     }
+    if (at.tableElementRef.style.borderColor) {
+      at.tableBodyElementRef.style.borderTopColor = at.tableElementRef.style.borderColor;
+    }
+    GenericElementUtils.moveStyles(at.tableElementRef, at.tableBodyElementRef,
+      'borderTop', 'borderTopColor', 'borderTopWidth', 'borderTopStyle');
     at.tableElementRef.style.borderTop = 'unset';
   }
 }

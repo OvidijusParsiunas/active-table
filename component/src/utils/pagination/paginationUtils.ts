@@ -15,9 +15,9 @@ export class PaginationUtils {
 
   // prettier-ignore
   public static getLastPossiblePageNumber(at: ActiveTable, isBeforeInsert = false) {
-    const {content, paginationInternal, dataBeginsAtHeader} = at;
+    const {content, paginationInternal, dataStartsAtHeader} = at;
     if (paginationInternal.isAllRowsOptionSelected) return 1;
-    const contentLength = dataBeginsAtHeader ? content.length + 1 : content.length;
+    const contentLength = dataStartsAtHeader ? content.length + 1 : content.length;
     const numberOfRows = isBeforeInsert ? contentLength : contentLength - 1;
     return Math.max(Math.ceil(numberOfRows / paginationInternal.numberOfRows), 1);
   }
@@ -31,7 +31,7 @@ export class PaginationUtils {
   public static getRelativeRowIndexes(at: ActiveTable, rowIndex = 0) {
     const {activePageNumber, numberOfRows, isAllRowsOptionSelected} = at.paginationInternal;
     let maxVisibleRowIndex = isAllRowsOptionSelected ? at.content.length + 1 : activePageNumber * numberOfRows;
-    if (!at.dataBeginsAtHeader) maxVisibleRowIndex += 1;
+    if (!at.dataStartsAtHeader) maxVisibleRowIndex += 1;
     const minVisibleRowIndex = maxVisibleRowIndex - numberOfRows;
     const visibleRowIndex = rowIndex - minVisibleRowIndex;
     return {maxVisibleRowIndex, minVisibleRowIndex, visibleRowIndex};
@@ -107,7 +107,7 @@ export class PaginationUtils {
   }
 
   public static updateOnRowChange(at: ActiveTable, rowIndex: number, newRowElement?: HTMLElement) {
-    if (!at.dataBeginsAtHeader && rowIndex === 0 && at.content.length === 0) return;
+    if (!at.dataStartsAtHeader && rowIndex === 0 && at.content.length === 0) return;
     // buttons need to be updated first as displayRowsForDifferentButton will use them to toggle the side buttons
     if (newRowElement) {
       PaginationUpdatePageButtons.updateOnRowInsert(at);
@@ -121,7 +121,7 @@ export class PaginationUtils {
   }
 
   public static initialRowUpdates(at: ActiveTable, rowIndex: number, newRowElement: HTMLElement) {
-    const dataRowIndex = at.dataBeginsAtHeader ? rowIndex + 1 : rowIndex;
+    const dataRowIndex = at.dataStartsAtHeader ? rowIndex + 1 : rowIndex;
     if (dataRowIndex > at.paginationInternal.numberOfRows) {
       PaginationUtils.hideRow(newRowElement);
     } else if (dataRowIndex > 0) {
@@ -144,7 +144,7 @@ export class PaginationUtils {
     const {paginationInternal: {numberOfRows, visibleRows}, tableBodyElementRef, content} = at;
     const tableRows = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, content);
     let startingRowIndex = numberOfRows * (buttonNumber - 1);
-    if (!at.dataBeginsAtHeader) startingRowIndex += 1; 
+    if (!at.dataStartsAtHeader) startingRowIndex += 1; 
     tableRows.slice(startingRowIndex, startingRowIndex + numberOfRows).forEach((rowElement) => {
       PaginationUtils.displayRow(rowElement as HTMLElement);
       visibleRows.push(rowElement as HTMLElement);

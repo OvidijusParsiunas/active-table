@@ -56,9 +56,7 @@ export class RowDropdown {
     return `${ElementOffset.processWidth(cellClick ? cellElement.offsetWidth : 5)}px`;
   }
 
-  // prettier-ignore
-  private static displayAndSetPosition(at: ActiveTable, cellElement: HTMLElement, dropdown: HTMLElement,
-      stickyHeader: boolean) {
+  private static displayAndSetPosition(at: ActiveTable, cellElement: HTMLElement, dropdown: HTMLElement) {
     const initialTopValue: PX = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
     dropdown.style.top = initialTopValue;
     dropdown.style.left = RowDropdown.getLeft(at, cellElement);
@@ -68,9 +66,6 @@ export class RowDropdown {
     if (!visibilityDetails.isFullyVisible) {
       if (visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
         RowDropdown.correctPositionWhenBottomOverflow(dropdown, initialTopValue);
-      } else if (visibilityDetails.blockingSides.has(SIDE.TOP) && cellElement.tagName === CellElement.HEADER_TAG
-          && stickyHeader) {
-        Dropdown.correctTopPositionForStickyHeader(cellElement, dropdown, false);
       }
     }
   }
@@ -116,10 +111,10 @@ export class RowDropdown {
     RowDropdownItem.update(this, dropdownElement, rowIndex);
     if (this.overflowInternal?.overflowContainer) {
       RowDropdown.displayAndSetPositionOverflow(this, cellElement, dropdownElement);
-    } else if (this.stickyHeader) {
+    } else if (this.stickyProps.header) {
       RowDropdown.displayAndSetPositionForSticky(this, cellElement, dropdownElement);
     } else {
-      RowDropdown.displayAndSetPosition(this, cellElement, dropdownElement, this.stickyProps.header);
+      RowDropdown.displayAndSetPosition(this, cellElement, dropdownElement);
     }
     FullTableOverlayElement.display(this);
     setTimeout(() => RowDropdown.focusCell(this, rowIndex, cellElement));

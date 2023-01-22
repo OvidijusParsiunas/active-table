@@ -4,18 +4,17 @@ sidebar_position: 3
 
 # Header
 
-Properties related to the data content.
+Properties related to the header row.
 
 ### `stickyHeader`
 
 - Type: `boolean`
 - Default value: _false_ or if WORK `overflow` property is defined set to _true_
 
-The header row will remain at the top of the table when there is overflow in the table or the direct parent element.
+Header row will remain at the top of the table when there is overflow in the table or a parent element.
 
 #### Example
 
-import TableContainerDynamicUpdates from '@site/src/components/table/table-container-dynamic-updates';
 import TableContainer from '@site/src/components/table/table-container';
 import LineBreak from '@site/src/components/markdown/line-break';
 import {ActiveTable} from 'active-table';
@@ -40,136 +39,52 @@ import Tabs from '@theme/Tabs';
 <TabItem value="js" label="Sample">
 
 ```text
-<active-table
-  content='[
-    ["Planet", "Diameter", "Mass", "Moons", "Density"],
-    ["Earth", 12756, 5.97, 1, 5514],
-    ["Mars", 6792, 0.642, 2, 3934],
-    ["Jupiter", 142984, 1898, 79, 1326],
-    ["Saturn", 120536, 568, 82, 687],
-    ["Neptune", 49528, 102, 14, 1638]]'
-></active-table>
+<active-table stickyHeader="true"></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
 ```text
-<active-table
-  content='[
-    ["Planet", "Diameter", "Mass", "Moons", "Density"],
-    ["Earth", 12756, 5.97, 1, 5514],
-    ["Mars", 6792, 0.642, 2, 3934],
-    ["Jupiter", 142984, 1898, 79, 1326],
-    ["Saturn", 120536, 568, 82, 687],
-    ["Neptune", 49528, 102, 14, 1638]]'
-  tableStyle='{"width":"100%", "borderRadius":"2px"}'
-></active-table>
-```
-
-</TabItem>
-</Tabs>
-
-<LineBreak></LineBreak>
-
-### `updateCellText`
-
-- Type: `{newText: string|number, rowIndex: number, columnIndex: number}`
-
-Update cell text programmatically after the table has been initially rendered without triggering another re-render.
-
-#### Example
-
-<TableContainerDynamicUpdates>
+<div style="maxHeight: 200px; overflow: auto">
   <active-table
+    stickyHeader="true"
     content='[
-      ["Name", "CPU", "Memory", "Disk", "Network"],
-      ["Chrome", "4.5%", "1400MB", "0.2MB/s", "1.2Mbps"],
-      ["Firefox", "2.5%", "800MB", "0.1MB/s", "0.5Mbps"],
-      ["Edge", "5.5%", "1000MB", "1.4MB/s", "0.7Mbps"],
-      ["Safari", "1.5%", "1200MB", "1.2MB/s", "0.2Mbps"],
-      ["Opera", "3.5%", "400MB", "0.8MB/s", "0.5Mbps"]]'
-    tableStyle='{"width":"100%", "backgroundColor": "white", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "borderRadius":"2px"}'
   ></active-table>
-</TableContainerDynamicUpdates>
-
-<Tabs>
-<TabItem value="js" label="Sample">
-
-```text
-<script>
-  ...
-  activeTableElementRef.setAttribute('updateCellText', JSON.stringify({'newText', 1, 1}));
-</script>
-```
-
-</TabItem>
-<TabItem value="py" label="Full code">
-
-```text
-<active-table id="active-table"
-  content='[
-    ["Name", "CPU", "Memory", "Disk", "Network"],
-    ["Chrome", "4.5%", "1400MB", "0.2MB/s", "1.2Mbps"],
-    ["Firefox", "2.5%", "800MB", "0.1MB/s", "0.5Mbps"],
-    ["Edge", "5.5%", "1000MB", "1.4MB/s", "0.7Mbps"],
-    ["Safari", "1.5%", "1200MB", "1.2MB/s", "0.2Mbps"],
-    ["Opera", "3.5%", "400MB", "0.8MB/s", "0.5Mbps"]]'
-  tableStyle='{"width":"100%", "borderRadius":"2px"}'
-></active-table>
-
-<script>
-  function updateCell(tableElement) {
-    setTimeout(() => {
-      const rowIndex = Math.floor(Math.random() * 5 + 1);
-      const columnIndex = Math.floor(Math.random() * 5 + 1);
-      let newText = '';
-      if (columnIndex === 1) {
-        newText = `${Math.round(Math.random() * 20 * 10) / 10}%`;
-      } else if (columnIndex === 2) {
-        newText = `${Math.round(Math.random() * 1500 * 10) / 10}MB`;
-      } else if (columnIndex === 3) {
-        newText = `${Math.round(Math.random() * 1.5 * 10) / 10}MB/s`;
-      } else {
-        newText = `${Math.round(Math.random() * 1.5 * 10) / 10}Mbps`;
-      }
-      tableElement.setAttribute('updateCellText', JSON.stringify({newText, rowIndex, columnIndex}));
-      updateCell(tableElement);
-    }, 150);
-  }
-  const activeTableElementRef = document.getElementById('active-table');
-  updateCell(activeTableElementRef);
-</script>
+</div>
 ```
 
 </TabItem>
 </Tabs>
 
-:::info
-This property should be set as an attribute via JavaScript - see WORK.
-:::
-
 <LineBreak></LineBreak>
 
-### `spellCheck`
+### `dataStartsAtHeader`
 
 - Type: `boolean`
 - Default value: _false_
 
-Checks table content for spelling mistakes (based on the browser's language) and if found displays a curly red line under the errors.
+Starts the WORK index column count at header row and if WORK pagination is used the header row is no longer displayed in pages after the first.
 
 #### Example
 
 <TableContainer>
   <active-table
-    spellCheck="true"
+    dataStartsAtHeader="true"
     content='[
-      ["Planetasdasd", "Diamasdasdeter", "Masssdfsdf", "Mooffns", "Denssdsdfdsfity"],
-      ["asdasdasd", 12756, 5.97, 1, 5514],
-      ["Msadasdars", 6792, 0.642, 2, 3934],
-      ["Jupitar", 142984, 1898, 79, 1326],
-      ["asudhasd", 120536, 568, 82, 687],
-      ["saiuhfjduidshfuis", 49528, 102, 14, 1638]]'
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
     tableStyle='{"width":"100%", "backgroundColor": "white", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
   ></active-table>
 </TableContainer>
@@ -178,7 +93,7 @@ Checks table content for spelling mistakes (based on the browser's language) and
 <TabItem value="js" label="Sample">
 
 ```text
-<active-table spellCheck="true"></active-table>
+<active-table dataStartsAtHeader="true"></active-table>
 ```
 
 </TabItem>
@@ -186,14 +101,14 @@ Checks table content for spelling mistakes (based on the browser's language) and
 
 ```text
 <active-table
-  spellCheck="true"
+  dataStartsAtHeader="true"
   content='[
-    ["Planetasdasd", "Diamasdasdeter", "Masssdfsdf", "Mooffns", "Denssdsdfdsfity"],
-    ["asdasdasd", 12756, 5.97, 1, 5514],
-    ["Msadasdars", 6792, 0.642, 2, 3934],
-    ["Jupitar", 142984, 1898, 79, 1326],
-    ["asudhasd", 120536, 568, 82, 687],
-    ["saiuhfjduidshfuis", 49528, 102, 14, 1638]]'
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
   tableStyle='{"width":"100%", "borderRadius":"2px"}'
 ></active-table>
 ```
@@ -201,6 +116,54 @@ Checks table content for spelling mistakes (based on the browser's language) and
 </TabItem>
 </Tabs>
 
-:::caution
-This is a browser dependent feature that may be handled differently depending on the browser you are using.
-:::
+<LineBreak></LineBreak>
+
+### `duplicateHeadersAllowed`
+
+- Type: `boolean`
+- Default value: _true_
+
+Allows multiple columns to have the same header text.
+
+#### Example for false
+
+<TableContainer>
+  <active-table
+    duplicateHeadersAllowed="false"
+    content='[
+      ["Planet", "Planet", "Moons", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "backgroundColor": "white", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table duplicateHeadersAllowed="false"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  duplicateHeadersAllowed="false"
+  content='[
+    ["Planet", "Planet", "Moons", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"width":"100%", "borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>

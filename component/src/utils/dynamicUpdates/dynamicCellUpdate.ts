@@ -1,15 +1,15 @@
 import {ColumnDropdown} from '../../elements/dropdown/columnDropdown/columnDropdown';
-import {DynamicCellTextUpdateT} from '../../types/dynamicCellTextUpdateT';
 import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
+import {DynamicCellUpdateT} from '../../types/dynamicCellUpdateT';
 import {CellElement} from '../../elements/cell/cellElement';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {Dropdown} from '../../elements/dropdown/dropdown';
 import {ObjectUtils} from '../object/objectUtils';
 import {ActiveTable} from '../../activeTable';
 
-export class DynamicCellTextUpdate {
-  public static update(at: ActiveTable, dynamicCellTextUpdate: DynamicCellTextUpdateT) {
-    const {newText, rowIndex, columnIndex} = dynamicCellTextUpdate;
+export class DynamicCellUpdate {
+  public static updateText(at: ActiveTable, dynamicCellUpdate: DynamicCellUpdateT) {
+    const {newText, rowIndex, columnIndex} = dynamicCellUpdate;
     if (!ObjectUtils.areValuesFullyDefined(newText, rowIndex, columnIndex)) return;
     if (typeof newText !== 'string' && typeof newText !== 'number') return;
     const element = at.columnsDetails[columnIndex]?.elements[rowIndex];

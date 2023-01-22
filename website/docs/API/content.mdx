@@ -71,7 +71,7 @@ import Tabs from '@theme/Tabs';
 
 <LineBreak></LineBreak>
 
-### `updateCellText`
+### `updateCell`
 
 - Type: `{newText: string|number, rowIndex: number, columnIndex: number}`
 
@@ -98,7 +98,7 @@ Update cell text programmatically after the table has been initially rendered wi
 ```text
 <script>
   ...
-  activeTableElementRef.setAttribute('updateCellText', JSON.stringify({'newText', 1, 1}));
+  activeTableElementRef.setAttribute('updateCell', JSON.stringify({'newText', 1, 1}));
 </script>
 ```
 
@@ -132,7 +132,7 @@ Update cell text programmatically after the table has been initially rendered wi
       } else {
         newText = `${Math.round(Math.random() * 1.5 * 10) / 10}Mbps`;
       }
-      tableElement.setAttribute('updateCellText', JSON.stringify({newText, rowIndex, columnIndex}));
+      tableElement.setAttribute('updateCell', JSON.stringify({newText, rowIndex, columnIndex}));
       updateCell(tableElement);
     }, 150);
   }
