@@ -87,7 +87,7 @@ const config = {
   // // rows:
   // // // rowHoverStyle: RowHoverStyle;
   // // // stripedRows: StripedRowsT | boolean;
-  // // // rowDropdownSettings: RowDropdownSettings;
+  // // // rowDropdown: RowDropdownSettings;
   // // // maxRows?: number;
   // // columns:
   // // // defaultColumnsSettings: ColumnsSettingsDefault;

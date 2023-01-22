@@ -217,7 +217,7 @@ export class ActiveTable extends LitElement {
   columnDropdownDisplaySettings: DropdownDisplaySettings = {isAvailable: true, openMethod: {cellClick: true}};
 
   @property({type: Object})
-  rowDropdownSettings: RowDropdownSettings = {displaySettings: {isAvailable: true, openMethod: {cellClick: true}}};
+  rowDropdown: RowDropdownSettings = {displaySettings: {isAvailable: true, openMethod: {cellClick: true}}};
 
   // column dropdown overlays are stored inside ColumnDetailsT columnDropdownCellOverlay
   @state()

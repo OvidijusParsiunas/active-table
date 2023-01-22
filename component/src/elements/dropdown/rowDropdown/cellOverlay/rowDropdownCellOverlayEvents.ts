@@ -6,12 +6,12 @@ export class RowDropdownCellOverlayEvents {
   private static mouseLeave(this: ActiveTable, rowIndex: number, rowDropdownCellOverlay: HTMLElement) {
     RowDropdownCellOverlay.hide(this, rowIndex);
     delete this.hoveredElements.leftMostCell;
-    RowDropdownCellOverlay.resetDefaultColor(this.rowDropdownSettings.displaySettings, rowDropdownCellOverlay);
+    RowDropdownCellOverlay.resetDefaultColor(this.rowDropdown.displaySettings, rowDropdownCellOverlay);
   }
 
   private static mouseEnter(this: ActiveTable, leftMostCell: HTMLElement, rowDropdownCellOverlay: HTMLElement) {
     this.hoveredElements.leftMostCell = leftMostCell;
-    RowDropdownCellOverlay.setHoverColor(this.rowDropdownSettings.displaySettings, rowDropdownCellOverlay);
+    RowDropdownCellOverlay.setHoverColor(this.rowDropdown.displaySettings, rowDropdownCellOverlay);
   }
 
   // prettier-ignore
@@ -40,8 +40,8 @@ export class RowDropdownCellOverlayEvents {
   // Interestingly using setting events like .onmousenter does not overwrite the events that have been added via
   // addEventListener, hence they need to be removed here before adding again
   public static addCellEvents(at: ActiveTable, rowIndex: number, leftMostCell: HTMLElement) {
-    const {displaySettings, isHeaderRowEditable} = at.rowDropdownSettings;
-    if (!displaySettings.isAvailable || (!isHeaderRowEditable && rowIndex === 0)) return;
+    const {displaySettings, canEditHeaderRow} = at.rowDropdown;
+    if (!displaySettings.isAvailable || (!canEditHeaderRow && rowIndex === 0)) return;
     const overlayProperties = at.rowDropdownCellOverlays[rowIndex];
     if (overlayProperties?.cellElement) {
       const {cellElement, enter, leave} = overlayProperties;

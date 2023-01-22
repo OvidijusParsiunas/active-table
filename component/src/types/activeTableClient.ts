@@ -39,7 +39,7 @@ export interface ActiveTable extends LitElement {
   dataStartsAtHeader?: boolean;
   columnResizerStyle?: UserSetColumnSizerStyle;
   columnDropdownDisplaySettings?: DropdownDisplaySettings;
-  rowDropdownSettings?: RowDropdownSettings;
+  rowDropdown?: RowDropdownSettings;
   stripedRows?: StripedRowsT | boolean;
   overflow?: Overflow;
   pagination?: Pagination;

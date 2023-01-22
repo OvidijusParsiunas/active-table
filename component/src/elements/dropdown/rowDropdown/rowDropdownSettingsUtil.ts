@@ -23,15 +23,15 @@ export class RowDropdownSettingsUtil {
   }
 
   public static process(at: ActiveTable) {
-    const {rowDropdownSettings, auxiliaryTableContentInternal, columnDropdownDisplaySettings} = at;
-    rowDropdownSettings.isInsertUpAvailable ??= true;
-    rowDropdownSettings.isInsertDownAvailable ??= true;
-    rowDropdownSettings.isMoveAvailable ??= true;
-    rowDropdownSettings.isHeaderRowEditable ??= true;
-    rowDropdownSettings.isDeleteAvailable ??= true;
-    rowDropdownSettings.displaySettings ??= {};
-    RowDropdownSettingsUtil.preprocessOpenMethod(rowDropdownSettings, columnDropdownDisplaySettings);
-    DropdownDisplaySettingsUtil.process(rowDropdownSettings.displaySettings);
-    RowDropdownSettingsUtil.postprocessOpenMethod(rowDropdownSettings, auxiliaryTableContentInternal);
+    const {rowDropdown, auxiliaryTableContentInternal, columnDropdownDisplaySettings} = at;
+    rowDropdown.isInsertUpAvailable ??= true;
+    rowDropdown.isInsertDownAvailable ??= true;
+    rowDropdown.isMoveAvailable ??= true;
+    rowDropdown.canEditHeaderRow ??= true;
+    rowDropdown.isDeleteAvailable ??= true;
+    rowDropdown.displaySettings ??= {};
+    RowDropdownSettingsUtil.preprocessOpenMethod(rowDropdown, columnDropdownDisplaySettings);
+    DropdownDisplaySettingsUtil.process(rowDropdown.displaySettings);
+    RowDropdownSettingsUtil.postprocessOpenMethod(rowDropdown, auxiliaryTableContentInternal);
   }
 }

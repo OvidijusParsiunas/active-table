@@ -31,8 +31,8 @@ export class IndexColumn {
     const {tableDimensions, defaultColumnsSettings, auxiliaryTableContentInternal} = at;
     const cell = CellElement.createBaseCell(isHeader);
     cell.classList.add(IndexColumn.INDEX_CELL_CLASS, GenericElementUtils.NOT_SELECTABLE_CLASS);
-    const {displaySettings, isHeaderRowEditable} = at.rowDropdownSettings;
-    cell.style.cursor = displaySettings.openMethod?.cellClick && (!isHeader || isHeaderRowEditable)
+    const {displaySettings, canEditHeaderRow} = at.rowDropdown;
+    cell.style.cursor = displaySettings.openMethod?.cellClick && (!isHeader || canEditHeaderRow)
       ? 'pointer' : 'default';
     if (!tableDimensions.isColumnIndexCellTextWrapped) {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19

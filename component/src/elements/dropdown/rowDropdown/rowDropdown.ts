@@ -52,7 +52,7 @@ export class RowDropdown {
   }
 
   private static getLeft(at: ActiveTable, cellElement: HTMLElement) {
-    const cellClick = at.rowDropdownSettings.displaySettings.openMethod?.cellClick as boolean;
+    const cellClick = at.rowDropdown.displaySettings.openMethod?.cellClick as boolean;
     return `${ElementOffset.processWidth(cellClick ? cellElement.offsetWidth : 5)}px`;
   }
 

@@ -64,7 +64,7 @@ export class RowDropdownCellOverlay {
   }
 
   public static add(at: ActiveTable, rowIndex: number, leftMostCell: HTMLElement) {
-    const rowDropdownCellOverlay = RowDropdownCellOverlay.create(at.rowDropdownSettings.displaySettings.overlayStyle);
+    const rowDropdownCellOverlay = RowDropdownCellOverlay.create(at.rowDropdown.displaySettings.overlayStyle);
     const {displayIndexColumn} = at.auxiliaryTableContentInternal;
     const cellDividerElement = RowDropdownCellOverlay.getCellDividerElement(leftMostCell, !!displayIndexColumn);
     cellDividerElement.appendChild(rowDropdownCellOverlay);
@@ -77,7 +77,7 @@ export class RowDropdownCellOverlay {
   }
 
   public static resetOverlays(at: ActiveTable) {
-    if (!at.rowDropdownSettings.displaySettings.openMethod?.overlayClick) return;
+    if (!at.rowDropdown.displaySettings.openMethod?.overlayClick) return;
     at.rowDropdownCellOverlays.splice(0, at.rowDropdownCellOverlays.length);
     const rows = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.content);
     rows.forEach((rowElement, rowIndex) => {

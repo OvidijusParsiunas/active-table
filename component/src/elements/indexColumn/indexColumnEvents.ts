@@ -22,8 +22,8 @@ export class IndexColumnEvents {
   public static setEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number) {
     cellElement.onmouseenter = IndexColumnEvents.mouseEnterCell.bind(at, rowIndex);
     cellElement.onmouseleave = IndexColumnEvents.mouseLeaveCell.bind(at, rowIndex);
-    const {displaySettings, isHeaderRowEditable} = at.rowDropdownSettings;
-    if (!isHeaderRowEditable && rowIndex === 0) return;
+    const {displaySettings, canEditHeaderRow} = at.rowDropdown;
+    if (!canEditHeaderRow && rowIndex === 0) return;
     if (displaySettings.isAvailable && displaySettings.openMethod?.cellClick) {
       cellElement.onclick = RowDropdown.display.bind(at, rowIndex, cellElement);
     } else {

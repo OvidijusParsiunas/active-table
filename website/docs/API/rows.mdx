@@ -9,7 +9,7 @@ Properties related to table rows.
 ### `rowHoverStyle`
 
 - Type: `{style: CSSStyle, header: boolean, addNewRowButton: boolean}`
-- Default value: _unset_, but if _style_ is set then _header_ and _addNewRowButton_ are _true_
+- Default: _unset_, but if _style_ is set then _header_ and _addNewRowButton_ are _true_
 
 Custom styling for rows when they are hovered with a mouse. `header` property denotes if `style` can be applied to the header row
 and `addNewRowButton` denotes if `style` can be applied to the WORK add new row button if it is displayed.
@@ -67,8 +67,8 @@ import Tabs from '@theme/Tabs';
 
 ### `stripedRows`
 
-- Type: `boolean|{odd: CSSStyle, even, CSSStyle}`
-- Default value: _false_, but if set to _true_ then _{even: {backgroundColor: ''}, odd: {backgroundColor: '#dcdcdc7a'}}_
+- Type: `boolean|{odd: CSSStyle, even: CSSStyle}`
+- Default: _false_, but if set to _true_ then _{even: {backgroundColor: ''}, odd: {backgroundColor: '#dcdcdc7a'}}_
 
 Stripe based styling for rows.
 
@@ -120,3 +120,72 @@ Stripe based styling for rows.
 </Tabs>
 
 <LineBreak></LineBreak>
+
+### `rowDropdown`
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`displaySettings: DropdownDisplaySettings`](https), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isInsertUpAvailable: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isInsertDownAvailable: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isMoveAvailable: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isDeleteAvailable: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `canEditHeaderRow: boolean`, <br />
+  }
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _displaySettings: {isAvailable: true, openMethod: {cellClick: true}}_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isInsertUpAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isInsertDownAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isMoveAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isDeleteAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isHeaderRowEditable: true_, <br />
+  }
+
+Row dropdown settings. If `openMethod` is set to `cellClick` - simply click on the left-most cell of the table which will open
+the dropdown, equally if `openMethod` is `overlayClick` - hover over the left-most cell and click on the overlay. The `canEditHeaderRow`
+property denotes whether this dropdown can be used to change the header row e.g. move or delete it, therefore it does not open on
+header row when set to `false`.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    rowDropdown='{"displaySettings":{"isAvailable": true, "openMethod": {"overlayClick": true}}, "canEditHeaderRow": false}'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "backgroundColor": "white", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  rowDropdown='{"displaySettings":{"isAvailable": true, "openMethod": {"overlayClick": true}}, "canEditHeaderRow": false}'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  rowDropdown='{"displaySettings":{"isAvailable": true, "openMethod": {"overlayClick": true}}, "canEditHeaderRow": false}'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>

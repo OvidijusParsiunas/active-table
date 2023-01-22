@@ -57,7 +57,7 @@ export class TableElement {
     tableElement.appendChild(columnDropdownElement);
     activeOverlayElements.columnDropdown = columnDropdownElement;
     // row dropdown
-    if (at.rowDropdownSettings.displaySettings.isAvailable) {
+    if (at.rowDropdown.displaySettings.isAvailable) {
       const rowDropdownElement = RowDropdown.create(at);
       tableElement.appendChild(rowDropdownElement);
       activeOverlayElements.rowDropdown = rowDropdownElement; 
