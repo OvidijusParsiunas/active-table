@@ -82,11 +82,11 @@ const config = {
   // // header:
   // // // stickyHeader: boolean;
   // // // dataStartsAtHeader: boolean;
-  // // // duplicateHeadersAllowed: boolean;
-  // // // areIconsDisplayedInHeaders: boolean;
+  // // // allowDuplicateHeaders: boolean;
+  // // // displayIconsInHeaders: boolean;
   // // rows:
-  // // // rowHover: RowHover | null;
-  // // // stripedRows: StripedRowsType | boolean | null;
+  // // // rowHoverStyle: RowHoverStyle;
+  // // // stripedRows: StripedRowsT | boolean;
   // // // rowDropdownSettings: RowDropdownSettings;
   // // // maxRows?: number;
   // // columns:

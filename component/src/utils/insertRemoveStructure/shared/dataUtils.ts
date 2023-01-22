@@ -21,9 +21,9 @@ export class DataUtils {
   // prettier-ignore
   private static shouldBeSetToDefault(at: ActiveTable,
       text: CellText, defaultText: CellText, rowIndex: number, textValidation: TextValidation) {
-    const {duplicateHeadersAllowed, columnsDetails} = at;
+    const {allowDuplicateHeaders, columnsDetails} = at;
     return DataUtils.isTextEmpty(defaultText, text)
-      || (rowIndex === 0 && (!duplicateHeadersAllowed && NumberOfIdenticalCells.get(text, columnsDetails) > 1))
+      || (rowIndex === 0 && (!allowDuplicateHeaders && NumberOfIdenticalCells.get(text, columnsDetails) > 1))
       || (rowIndex > 0 && !(textValidation.func === undefined || textValidation.func(String(text))));
   }
 

@@ -2,7 +2,6 @@ import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighl
 import {FullTableOverlayElement} from '../../fullTableOverlay/fullTableOverlayElement';
 import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
-import {DropdownDisplaySettings} from '../../../types/dropdownDisplaySettings';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
@@ -49,7 +48,7 @@ export class ColumnDropdown {
     return dropdownElement;
   }
 
-  public static getDropdownTopPosition(cellElement: HTMLElement, openedViaOverlayClick?: boolean): PX {
+  private static getDefaultDropdownTopPosition(cellElement: HTMLElement, openedViaOverlayClick?: boolean): PX {
     if (openedViaOverlayClick) {
       const offsetTop = 1;
       return `${Browser.IS_FIREFOX ? offsetTop + TableElement.BORDER_DIMENSIONS.topWidth : offsetTop}px`;
@@ -57,16 +56,27 @@ export class ColumnDropdown {
     return `${ElementOffset.processTop(cellElement.offsetTop + cellElement.offsetHeight)}px`;
   }
 
+  public static getTopPosition(at: ActiveTable, cellElement: HTMLElement) {
+    const isOverlayClick = at.columnDropdownDisplaySettings.openMethod?.overlayClick;
+    if (at.overflowInternal) {
+      const overflowElement = at.overflowInternal.overflowContainer;
+      return `${isOverlayClick ? overflowElement.scrollTop + 1 : overflowElement.scrollTop + cellElement.offsetHeight}px`;
+    } else if (at.stickyProps.header) {
+      const rowOffset = (cellElement.parentElement as HTMLElement).offsetTop;
+      const padding = isOverlayClick ? 1 : cellElement.offsetHeight;
+      return `${padding + rowOffset}px`;
+    }
+    return ColumnDropdown.getDefaultDropdownTopPosition(cellElement, isOverlayClick);
+  }
+
   private static getLeftPropertyToCenterDropdown(cellElement: HTMLElement) {
     const leftOffset = ElementOffset.processLeft(cellElement.offsetLeft + cellElement.offsetWidth / 2);
     return `${leftOffset - Dropdown.DROPDOWN_WIDTH / 2}px`;
   }
 
-  // prettier-ignore
-  private static displayAndSetDropdownPosition(cellElement: HTMLElement, dropdownElement: HTMLElement,
-      openMethod: DropdownDisplaySettings['openMethod']) {
+  private static displayAndSetDropdownPosition(at: ActiveTable, cellElement: HTMLElement, dropdownElement: HTMLElement) {
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
-    dropdownElement.style.top = ColumnDropdown.getDropdownTopPosition(cellElement, openMethod?.overlayClick);
+    dropdownElement.style.top = ColumnDropdown.getTopPosition(at, cellElement);
     // needs to be displayed here to evalute if in view port
     Dropdown.display(dropdownElement);
     const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement);
@@ -81,10 +91,8 @@ export class ColumnDropdown {
 
   // no active table based overflow - REF-37
   private static displayAndSetPositionForSticky(at: ActiveTable, cellElement: HTMLElement, dropdownElement: HTMLElement) {
-    const rowOffset = (cellElement.parentElement as HTMLElement).offsetTop;
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
-    const padding = at.columnDropdownDisplaySettings.openMethod?.overlayClick ? 1 : cellElement.offsetHeight;
-    dropdownElement.style.top = `${padding + rowOffset}px`;
+    dropdownElement.style.top = ColumnDropdown.getTopPosition(at, cellElement);
     Dropdown.display(dropdownElement);
   }
 
@@ -95,8 +103,7 @@ export class ColumnDropdown {
     if (!tableElementRef || !overflowInternal?.overflowContainer) return;
     const overflowElement = overflowInternal.overflowContainer;
     dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
-    dropdownElement.style.top = `${at.columnDropdownDisplaySettings.openMethod?.overlayClick
-      ? overflowElement.scrollTop + 1 : overflowElement.scrollTop + cellElement.offsetHeight}px`;
+    dropdownElement.style.top = ColumnDropdown.getTopPosition(at, cellElement);
     // needs to be displayed here to evalute if scrollwidth has appeared
     Dropdown.display(dropdownElement);
     if (tableElementRef.offsetWidth !== overflowElement.scrollWidth) {
@@ -106,7 +113,6 @@ export class ColumnDropdown {
     }
   }
 
-  // prettier-ignore
   public static display(at: ActiveTable, columnIndex: number) {
     const dropdownElement = at.activeOverlayElements.columnDropdown as HTMLElement;
     const cellElement = at.columnsDetails[columnIndex].elements[0];
@@ -116,8 +122,7 @@ export class ColumnDropdown {
     } else if (at.stickyProps.header) {
       ColumnDropdown.displayAndSetPositionForSticky(at, cellElement, dropdownElement);
     } else {
-      ColumnDropdown.displayAndSetDropdownPosition(cellElement, dropdownElement,
-        at.columnDropdownDisplaySettings.openMethod); 
+      ColumnDropdown.displayAndSetDropdownPosition(at, cellElement, dropdownElement);
     }
     const inputElement = DropdownItem.getInputElement(dropdownElement);
     if (inputElement) DropdownItemNavigation.focusInputElement(inputElement as HTMLElement);

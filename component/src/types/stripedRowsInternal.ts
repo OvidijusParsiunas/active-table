@@ -1,3 +1,3 @@
-import {StripedRows} from './stripedRows';
+import {StripedRowsT} from './stripedRows';
 
-export type StripedRowsInternal = Required<StripedRows>;
+export type StripedRowsInternal = Required<StripedRowsT>;

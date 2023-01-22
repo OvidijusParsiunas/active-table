@@ -49,7 +49,7 @@ export class ColumnSettingsUtils {
     ColumnSettingsStyleUtils.changeStyle(at, columnIndex, oldSettings);
     ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
     ColumnSettingsUtils.updateSizer(at, columnIndex);
-    if (at.areIconsDisplayedInHeaders) HeaderIconCellElement.changeHeaderIcon(at.columnsDetails[columnIndex]);
+    if (at.displayIconsInHeaders) HeaderIconCellElement.changeHeaderIcon(at.columnsDetails[columnIndex]);
     ColumnDropdownCellOverlay.updateIfDisplayed(columnDetails);
     AddNewColumnElement.toggle(at, true);
   }

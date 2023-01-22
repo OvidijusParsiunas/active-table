@@ -1,8 +1,8 @@
 import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
+import {RowHoverStyle} from '../../types/rowHoverStyle';
 import {ElementStyle} from '../elements/elementStyle';
 import {CSSStyle} from '../../types/cssStyle';
-import {RowHover} from '../../types/rowHover';
 
 export class RowHoverEvents {
   private static mouseLeaveRow(rowElement: HTMLElement, style: CSSStyle, defaultStyle?: CSSStyle) {
@@ -14,27 +14,27 @@ export class RowHoverEvents {
     Object.assign(rowElement.style, style);
   }
 
-  private static canStyleBeApplied(rowHover: RowHover, rowElement: HTMLElement, rowIndex: number) {
+  private static canStyleBeApplied(rowHoverStyle: RowHoverStyle, rowElement: HTMLElement, rowIndex: number) {
     return (
-      rowHover?.style &&
-      (rowIndex > 0 || rowHover.hoverHeader) &&
-      (!AddNewRowElement.isAddNewRowRow(rowElement) || rowHover.hoverAddNewRowButton)
+      rowHoverStyle?.style &&
+      (rowIndex > 0 || rowHoverStyle.header) &&
+      (!AddNewRowElement.isAddNewRowRow(rowElement) || rowHoverStyle.addNewRowButton)
     );
   }
 
   // prettier-ignore
-  public static addEvents(rowHover: RowHover, rowElement: HTMLElement, rowIndex: number,
+  public static addEvents(rowHoverStyle: RowHoverStyle, rowElement: HTMLElement, rowIndex: number,
       defaultStyle?: CSSStyle) {
-    if (RowHoverEvents.canStyleBeApplied(rowHover, rowElement, rowIndex)) {
-      rowElement.onmouseenter = RowHoverEvents.mouseEnterRow.bind(this, rowElement, rowHover.style);
-      rowElement.onmouseleave = RowHoverEvents.mouseLeaveRow.bind(this, rowElement, rowHover.style, defaultStyle);
+    if (RowHoverEvents.canStyleBeApplied(rowHoverStyle, rowElement, rowIndex)) {
+      rowElement.onmouseenter = RowHoverEvents.mouseEnterRow.bind(this, rowElement, rowHoverStyle.style);
+      rowElement.onmouseleave = RowHoverEvents.mouseLeaveRow.bind(this, rowElement, rowHoverStyle.style, defaultStyle);
     }
   }
 
-  public static process(rowHover: RowHover | null) {
-    if (rowHover?.style) {
-      rowHover.hoverHeader ??= true;
-      rowHover.hoverAddNewRowButton ??= true;
+  public static process(rowHoverStyle: RowHoverStyle | null) {
+    if (rowHoverStyle?.style) {
+      rowHoverStyle.header ??= true;
+      rowHoverStyle.addNewRowButton ??= true;
       CellHighlightUtils.unsetDefaultHoverProperties();
     }
   }

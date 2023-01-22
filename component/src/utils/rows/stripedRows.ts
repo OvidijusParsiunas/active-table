@@ -4,12 +4,12 @@ import {ActiveTable} from '../../activeTable';
 
 export class StripedRows {
   private static readonly DEFAULT_PROPERTIES: StripedRowsInternal = {
-    oddRow: {backgroundColor: ''},
-    evenRow: {backgroundColor: 'grey'},
+    odd: {backgroundColor: ''},
+    even: {backgroundColor: '#dcdcdc7a'},
   };
 
   public static setRowStyle(rowElement: HTMLElement, index: number, stripedRows: StripedRowsInternal) {
-    const style = index % 2 ? stripedRows.evenRow : stripedRows.oddRow;
+    const style = index % 2 ? stripedRows.even : stripedRows.odd;
     Object.assign(rowElement.style, style);
     return style;
   }
@@ -21,8 +21,8 @@ export class StripedRows {
       at.stripedRowsInternal = StripedRows.DEFAULT_PROPERTIES;
     } else {
       at.stripedRowsInternal = {
-        evenRow: stripedRows.evenRow || StripedRows.DEFAULT_PROPERTIES.evenRow,
-        oddRow: stripedRows.oddRow || StripedRows.DEFAULT_PROPERTIES.oddRow,
+        even: stripedRows.even || StripedRows.DEFAULT_PROPERTIES.even,
+        odd: stripedRows.odd || StripedRows.DEFAULT_PROPERTIES.odd,
       };
     }
     CellHighlightUtils.unsetDefaultHoverProperties();

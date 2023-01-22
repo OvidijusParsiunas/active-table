@@ -118,7 +118,7 @@ Starts the WORK index column count at header row and if WORK pagination is used 
 
 <LineBreak></LineBreak>
 
-### `duplicateHeadersAllowed`
+### `allowDuplicateHeaders`
 
 - Type: `boolean`
 - Default value: _true_
@@ -129,7 +129,7 @@ Allows multiple columns to have the same header text.
 
 <TableContainer>
   <active-table
-    duplicateHeadersAllowed="false"
+    allowDuplicateHeaders="false"
     content='[
       ["Planet", "Planet", "Moons", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
@@ -145,7 +145,7 @@ Allows multiple columns to have the same header text.
 <TabItem value="js" label="Sample">
 
 ```text
-<active-table duplicateHeadersAllowed="false"></active-table>
+<active-table allowDuplicateHeaders="false"></active-table>
 ```
 
 </TabItem>
@@ -153,7 +153,59 @@ Allows multiple columns to have the same header text.
 
 ```text
 <active-table
-  duplicateHeadersAllowed="false"
+  allowDuplicateHeaders="false"
+  content='[
+    ["Planet", "Planet", "Moons", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"width":"100%", "borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `displayIconsInHeaders`
+
+- Type: `boolean`
+- Default value: _true_
+
+Displays an icon beside header text that represents the column type.
+
+#### Example for false
+
+<TableContainer>
+  <active-table
+    displayIconsInHeaders="false"
+    content='[
+      ["Planet", "Planet", "Moons", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "backgroundColor": "white", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table displayIconsInHeaders="false"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  displayIconsInHeaders="false"
   content='[
     ["Planet", "Planet", "Moons", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],

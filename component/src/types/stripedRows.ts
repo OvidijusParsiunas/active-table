@@ -1,6 +1,6 @@
 import {CSSStyle} from './cssStyle';
 
-export interface StripedRows {
-  oddRow?: CSSStyle;
-  evenRow?: CSSStyle;
+export interface StripedRowsT {
+  odd?: CSSStyle;
+  even?: CSSStyle;
 }

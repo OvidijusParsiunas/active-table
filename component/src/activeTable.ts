@@ -22,7 +22,6 @@ import {ColumnsSettingsDefault} from './types/columnsSettingsDefault';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
-import {StripedRows as StripedRowsType} from './types/stripedRows';
 import {customElement, property, state} from 'lit/decorators.js';
 import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {StripedRowsInternal} from './types/stripedRowsInternal';
@@ -42,14 +41,15 @@ import {ColumnsDetailsT} from './types/columnDetails';
 import {StripedRows} from './utils/rows/stripedRows';
 import {ColumnsWidths} from './types/columnsWidths';
 import {activeTableStyle} from './activeTableStyle';
+import {RowHoverStyle} from './types/rowHoverStyle';
 import {TableContent} from './types/tableContent';
+import {StripedRowsT} from './types/stripedRows';
 import {StickyProps} from './types/stickyProps';
 import {Browser} from './utils/browser/browser';
 import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
-import {RowHover} from './types/rowHover';
 import {LitElement} from 'lit';
 
 @customElement('active-table')
@@ -90,13 +90,13 @@ export class ActiveTable extends LitElement {
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  duplicateHeadersAllowed = true;
+  allowDuplicateHeaders = true;
 
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  areIconsDisplayedInHeaders = true;
+  displayIconsInHeaders = true;
 
   @property({
     type: Boolean,
@@ -175,7 +175,7 @@ export class ActiveTable extends LitElement {
   selectDropdownContainer: HTMLElement | null = null;
 
   @property({type: Object})
-  rowHover: RowHover | null = null;
+  rowHoverStyle: RowHoverStyle | null = null;
 
   // if set to false - the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
   // this property is not used internally and is being set/used in tableDimensions as it is overriden when resizing
@@ -226,7 +226,7 @@ export class ActiveTable extends LitElement {
   // if using pagination with user defined numberOfRowsOptions, the options need to have an even number or otherwise
   // two rows could have same color (as rows are hidden and not removed)
   @property({type: Object})
-  stripedRows: StripedRowsType | boolean | null = null;
+  stripedRows: StripedRowsT | boolean | null = null;
 
   @state()
   stripedRowsInternal: StripedRowsInternal | null = null;
@@ -262,7 +262,7 @@ export class ActiveTable extends LitElement {
     DropdownDisplaySettingsUtil.process(this.columnDropdownDisplaySettings);
     if (this.pagination) PaginationInternalUtils.process(this);
     if (this.stripedRows) StripedRows.process(this);
-    if (this.rowHover) RowHoverEvents.process(this.rowHover);
+    if (this.rowHoverStyle) RowHoverEvents.process(this.rowHoverStyle);
     const tableElement = TableElement.createInfrastructureElements(this);
     if (this.overflow) OverflowUtils.setupContainer(this, tableElement); // must not be after BORDER_DIMENSIONS is set
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
