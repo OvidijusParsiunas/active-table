@@ -1,17 +1,17 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-# Content
+# Header
 
-Properties related to text displayed in the table.
+Properties related to the data content.
 
-### `content`
+### `stickyHeader`
 
-- Type: `(string|number)[][]`
-<!-- TableContent -->
+- Type: `boolean`
+- Default value: _false_ or if WORK `overflow` property is defined set to _true_
 
-Header and data text to be displayed in the table. First array represents the header row, following arrays represent data rows.
+The header row will remain at the top of the table when there is overflow in the table or the direct parent element.
 
 #### Example
 
@@ -22,8 +22,9 @@ import {ActiveTable} from 'active-table';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
 
-<TableContainer>
+<TableContainer customStyle={{maxHeight: '200px', overflow: 'auto'}}>
   <active-table
+    stickyHeader="true"
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
@@ -31,7 +32,7 @@ import Tabs from '@theme/Tabs';
       ["Jupiter", 142984, 1898, 79, 1326],
       ["Saturn", 120536, 568, 82, 687],
       ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "backgroundColor": "white", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+    tableStyle='{"width":"97%", "backgroundColor": "white", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
   ></active-table>
 </TableContainer>
 
@@ -62,7 +63,7 @@ import Tabs from '@theme/Tabs';
     ["Jupiter", 142984, 1898, 79, 1326],
     ["Saturn", 120536, 568, 82, 687],
     ["Neptune", 49528, 102, 14, 1638]]'
-  tableStyle='{"borderRadius":"2px"}'
+  tableStyle='{"width":"100%", "borderRadius":"2px"}'
 ></active-table>
 ```
 
@@ -114,7 +115,7 @@ Update cell text programmatically after the table has been initially rendered wi
     ["Edge", "5.5%", "1000MB", "1.4MB/s", "0.7Mbps"],
     ["Safari", "1.5%", "1200MB", "1.2MB/s", "0.2Mbps"],
     ["Opera", "3.5%", "400MB", "0.8MB/s", "0.5Mbps"]]'
-  tableStyle='{"borderRadius":"2px"}'
+  tableStyle='{"width":"100%", "borderRadius":"2px"}'
 ></active-table>
 
 <script>
@@ -155,7 +156,7 @@ This property should be set as an attribute via JavaScript - see WORK.
 - Type: `boolean`
 - Default value: _false_
 
-Checks table text for spelling mistakes (based on the browser's language settings) and if found displays a curly red line under the errors.
+Checks table content for spelling mistakes (based on the browser's language) and if found displays a curly red line under the errors.
 
 #### Example
 
@@ -193,7 +194,7 @@ Checks table text for spelling mistakes (based on the browser's language setting
     ["Jupitar", 142984, 1898, 79, 1326],
     ["asudhasd", 120536, 568, 82, 687],
     ["saiuhfjduidshfuis", 49528, 102, 14, 1638]]'
-  tableStyle='{"borderRadius":"2px"}'
+  tableStyle='{"width":"100%", "borderRadius":"2px"}'
 ></active-table>
 ```
 
@@ -201,5 +202,5 @@ Checks table text for spelling mistakes (based on the browser's language setting
 </Tabs>
 
 :::caution
-This is a browser dependent feature that may be handled differently depending on the browser being used.
+This is a browser dependent feature that may be handled differently depending on the browser you are using.
 :::

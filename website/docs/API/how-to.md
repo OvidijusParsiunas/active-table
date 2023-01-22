@@ -2,17 +2,15 @@
 sidebar_position: 0
 ---
 
-# How to use
+# How to
 
-<!-- Let's discover **Docusaurus in less than 5 minutes**. -->
+Values must be passed into the element as **attributes**, this is achieved by using one of the following approaches:
 
-<!-- Get started by **creating a new site**. -->
-
-Values must be passed into the element as **attributes**, this is achieved by one of the following approaches:
-
-#### 1. Assign values directly into the DOM
+#### 1. Assign values directly into the DOM element
 
 #### 2. Assign values via JavaScript
+
+https://stackoverflow.com/questions/58169882/call-litelement-method-from-outside-the-element/75202031#75202031
 
 \*Please note that all values must be assigned at the same time, otherwise any later assignments will cause the table to re-render or throw an errror.
 
@@ -55,4 +53,4 @@ The `cd` command changes the directory you're working with. In order to work wit
 
 The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
 
-Open `docs/API/how-to-use.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes. -->
+Open `docs/API/how-to.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes. -->
