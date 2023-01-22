@@ -4,6 +4,7 @@ import {css} from 'lit';
 export const activeTableStyle = css`
   /* this is used to shrink the width of the active-table element to the shadow-root width */
   :host {
+    /* the following property prevents outside styles from affecting this component */
     all: initial;
     display: inline-block;
   }

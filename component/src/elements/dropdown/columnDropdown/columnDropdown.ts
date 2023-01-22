@@ -79,18 +79,12 @@ export class ColumnDropdown {
     }
   }
 
-  // prettier-ignore
-  private static setOverflowPosition(at: ActiveTable, overflowElement: HTMLElement,
-      dropdownElement: HTMLElement, cellElement: HTMLElement) {
-    dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
-    dropdownElement.style.top = `${at.columnDropdownDisplaySettings.openMethod?.overlayClick
-      ? overflowElement.scrollTop + 1 : overflowElement.scrollTop + cellElement.offsetHeight}px`;
-  }
-
   // no active table based overflow - REF-37
   private static displayAndSetPositionForSticky(at: ActiveTable, cellElement: HTMLElement, dropdownElement: HTMLElement) {
-    const overflowElement = at.parentElement as HTMLElement;
-    ColumnDropdown.setOverflowPosition(at, overflowElement, dropdownElement, cellElement);
+    const rowOffset = (cellElement.parentElement as HTMLElement).offsetTop;
+    dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
+    const padding = at.columnDropdownDisplaySettings.openMethod?.overlayClick ? 1 : cellElement.offsetHeight;
+    dropdownElement.style.top = `${padding + rowOffset}px`;
     Dropdown.display(dropdownElement);
   }
 
@@ -100,7 +94,9 @@ export class ColumnDropdown {
     const {tableElementRef, overflowInternal} = at;
     if (!tableElementRef || !overflowInternal?.overflowContainer) return;
     const overflowElement = overflowInternal.overflowContainer;
-    ColumnDropdown.setOverflowPosition(at, overflowElement, dropdownElement, cellElement);
+    dropdownElement.style.left = ColumnDropdown.getLeftPropertyToCenterDropdown(cellElement);
+    dropdownElement.style.top = `${at.columnDropdownDisplaySettings.openMethod?.overlayClick
+      ? overflowElement.scrollTop + 1 : overflowElement.scrollTop + cellElement.offsetHeight}px`;
     // needs to be displayed here to evalute if scrollwidth has appeared
     Dropdown.display(dropdownElement);
     if (tableElementRef.offsetWidth !== overflowElement.scrollWidth) {

@@ -78,9 +78,17 @@ export class RowDropdown {
   // prettier-ignore
   private static setOverflowPosition(at: ActiveTable, cellElement: HTMLElement, dropdown: HTMLElement,
       overflowElement: HTMLElement) {
-    const isStickyCell = at.stickyProps.header && cellElement.tagName === CellElement.HEADER_TAG;
-    dropdown.style.top = isStickyCell ?
-      `${overflowElement.scrollTop}px` : `${ElementOffset.processTop(cellElement.offsetTop)}px`;
+    if (at.stickyProps.header && cellElement.tagName === CellElement.HEADER_TAG) {
+      if (at.overflowInternal) {
+        dropdown.style.top = `${overflowElement.scrollTop}px`;
+      } else {
+        const rowOffset = (cellElement.parentElement as HTMLElement).offsetTop;
+        const borderTopWidth = Number.parseInt(getComputedStyle(cellElement).borderTopWidth);
+        dropdown.style.top = `${rowOffset + borderTopWidth}px`; // REF-37
+      }
+    } else {
+      dropdown.style.top = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
+    }
     dropdown.style.left = RowDropdown.getLeft(at, cellElement);
   }
 
@@ -94,10 +102,10 @@ export class RowDropdown {
   private static displayAndSetPositionOverflow(at: ActiveTable, cellElement: HTMLElement, dropdown: HTMLElement) {
     const {tableElementRef, overflowInternal, stickyProps} = at;
     if (!tableElementRef || !overflowInternal?.overflowContainer) return;
-    const isStickyCell = stickyProps.header && cellElement.tagName === CellElement.HEADER_TAG;
     RowDropdown.setOverflowPosition(at, cellElement, dropdown, overflowInternal.overflowContainer);
     // needs to be displayed here to evalute if overflow
     Dropdown.display(dropdown);
+    const isStickyCell = stickyProps.header && cellElement.tagName === CellElement.HEADER_TAG;
     if (tableElementRef.offsetHeight !== overflowInternal.overflowContainer.scrollHeight && !isStickyCell) {
       dropdown.style.top = `${tableElementRef.offsetHeight - dropdown.offsetHeight}px`;
     }
