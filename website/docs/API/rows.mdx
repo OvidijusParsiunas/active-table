@@ -8,11 +8,7 @@ Properties related to table rows.
 
 ### `rowHoverStyle`
 
-- Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`style: CSSStyle`](https), WORK <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `header?: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `addNewRowButton?: boolean`, <br />
-  }
+- Type: {[`style: CSSStyle`](https), WORK `header?: boolean`, `addNewRowButton?: boolean`}
 - Default: _unset_, but if _style_ is set then _header_ and _addNewRowButton_ are _true_
 
 Custom styling for row mouse hover. `header` property denotes if `style` can be applied to the header row
@@ -75,11 +71,7 @@ Using this property unsets the default header and auxiliary hover color properti
 
 ### `stripedRows`
 
-- Type: `boolean` | <br />
-  {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`odd?: CSSStyle`](https), WORK <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`even?: CSSStyle`](https), WORK <br />
-  }
+- Type: `boolean` | { [`odd?: CSSStyle`](https), WORK [`even?: CSSStyle`](https), WORK}
 - Default: _false_, but if set to _true_ then _even_ is _{backgroundColor: ''}_ and _odd_ is _{backgroundColor: '#dcdcdc7a'}}_
 
 Stripe based styling for rows.

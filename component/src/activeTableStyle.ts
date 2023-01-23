@@ -130,7 +130,8 @@ export const activeTableStyle = css`
 
   .header-icon-side-text {
     /* cannot use flex as pressing ENTER creates a new div */
-    display: grid;
+    /* cannot use grid as it does not align in Safari */
+    display: table-cell;
   }
 
   .not-selectable {

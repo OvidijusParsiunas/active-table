@@ -1,6 +1,5 @@
 import {TableBorderDimensionsUtils} from '../../elements/table/tableBorderDimensionsUtils';
 import {PossibleStringDimensions, StringDimensionUtils} from './stringDimensionUtils';
-import {GenericElementUtils} from '../elements/genericElementUtils';
 import {IndexColumn} from '../../elements/indexColumn/indexColumn';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {IndexColumnT} from '../../types/auxiliaryTableContent';

@@ -1,19 +1,19 @@
 import {AuxiliaryContentCellsColors} from '../../types/auxiliaryTableContentCellsColors';
 import {CellStateColorProperties, CellStateColorsR} from '../../types/cellStateColors';
-import {HoverableElementStyleClient} from '../../types/hoverableElementStyle';
+import {HoverableElementStyle} from '../../types/hoverableElementStyle';
 import {ActiveTable} from '../../activeTable';
 
 // auxiliary content is comprised of index column, add new column column and add new row row
 export class AuxiliaryTableContentColors {
   // prettier-ignore
   private static getInheritedDefaultColr(key: keyof CellStateColorProperties,
-      dataColors: CellStateColorsR, headerStyle?: HoverableElementStyleClient) {
+      dataColors: CellStateColorsR, headerStyle?: HoverableElementStyle) {
     return headerStyle?.default?.[key] || dataColors.default?.[key];
   }
 
   // prettier-ignore
   private static getInheritedHoverColor(key: keyof CellStateColorProperties,
-      dataColors: CellStateColorsR, headerStyle?: HoverableElementStyleClient) {
+      dataColors: CellStateColorsR, headerStyle?: HoverableElementStyle) {
     return (
       headerStyle?.hoverColors?.[key] ||
       dataColors.hover?.[key] ||
@@ -23,7 +23,7 @@ export class AuxiliaryTableContentColors {
 
   // prettier-ignore
   private static overwriteHeaderWithInheritedColors(cellColors: AuxiliaryContentCellsColors,
-      headerStyleProps?: HoverableElementStyleClient) {
+      headerStyleProps?: HoverableElementStyle) {
     cellColors.header = {
       default: {
         backgroundColor: AuxiliaryTableContentColors.getInheritedDefaultColr(

@@ -1,5 +1,5 @@
-import {HoverableElementStyleClient} from './hoverableElementStyle';
 import {ColumnDropdownSettings} from './columnDropdownSettings';
+import {HoverableElementStyle} from './hoverableElementStyle';
 import {DEFAULT_COLUMN_TYPES} from '../enums/columnType';
 import {HeaderIconStyle} from './headerIconStyle';
 import {InterfacesUnion} from './utilityTypes';
@@ -19,7 +19,7 @@ interface Parent<CellStyle> {
   isDefaultTextRemovable?: boolean; // true by default
   cellStyle?: CellStyle;
   isCellTextEditable?: boolean; // true by default
-  headerStyleProps?: HoverableElementStyleClient;
+  headerStyleProps?: HoverableElementStyle;
   isHeaderTextEditable?: boolean; // uses isCellTextEditable by default
   headerIconStyle?: HeaderIconStyle;
   defaultColumnTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here

@@ -16,6 +16,7 @@ Maximum number of columns allowed (not including the index and add columns WORK)
 #### Example
 
 import TableContainer from '@site/src/components/table/table-container';
+import LineBreak from '@site/src/components/markdown/line-break';
 import {ActiveTable} from 'active-table';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
@@ -119,3 +120,214 @@ _\*Minimal column size for most browsers is 33px_
 Please note that when `tableStyle` contains a `width` or `maxWidth` property with a _%_ or _vw_ unit and the window width is changed - if columns
 cannot be reduced any further the excess ones will not be removed even if `preserveNarrowColumns` is set to `false` to prevent loss of data.
 :::
+
+<LineBreak></LineBreak>
+
+### `columnsSettings`
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`columnSettings`](#columnsettings),<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `dropdown?`: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[`ColumnDropdownSettings`](#columnsettings), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[`displaySettings?: DropdownDisplaySettings`](http) WORK<br />
+  }}
+
+Default settings for all columns.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    columnsSettings='{
+      "defaultText": "-",
+      "isHeaderTextEditable": false,
+      "dropdown": {
+        "isSortAvailable": false,
+        "displaySettings": {
+          "openMethod": {
+            "overlayClick": true
+            }}}}'
+    content='[
+      ["Planet", "Planet", "Moons", "Moons", "Density"],
+      ["", 12756, 5.97, 1, 5514],
+      ["", 6792, 0.642, 2, 3934],
+      ["", 142984, 1898, 79, 1326],
+      ["", 120536, 568, 82, 687],
+      ["", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnsSettings='{
+    "defaultText": "-",
+    "isHeaderTextEditable": false,
+    "dropdown": {
+      "isSortAvailable": false,
+      "displaySettings": {
+        "openMethod": {
+          "overlayClick": true
+  }}}}'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnsSettings='{
+    "defaultText": "-",
+    "isHeaderTextEditable": false,
+    "dropdown": {
+      "isSortAvailable": false,
+      "displaySettings": {
+        "openMethod": {
+          "overlayClick": true
+  }}}}'
+  content='[
+    ["Planet", "Planet", "Moons", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"width":"100%", "borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+## Types
+
+Object types that are shared between column properties:
+
+### `columnSettings`
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `defaultText?: string|number`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isDefaultTextRemovable?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isCellTextEditable?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isHeaderTextEditable?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`cellStyle?: CellStyle`](https), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`headerStyleProps?: HoverableElementStyle`](https), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`headerIconStyle?: HeaderIconStyle`](https), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`defaultColumnTypes?: DEFAULT_COLUMN_TYPES[]`](https), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`customColumnTypes?: ColumnTypes[]`](https), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `activeTypeName?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`dropdown?: ColumnDropdownSettingsDisplay`](https), WORK <br />
+  }
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _defaultText: ''_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isDefaultTextRemovable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isCellTextEditable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isHeaderTextEditable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _defaultColumnTypes: ['Text', 'Number', 'Currency', 'Date d-m-y', 'Date m-d-y', 'Checkbox', 'Select', 'Label']_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _activeTypeName: First type to not have validation -> First available type -> 'Text'_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _dropdown: {displaySettings: {isAvailable: true, openMethod: {cellClick: true}}_, <br />
+  }
+
+`defaultText` is text that is displayed when there is no text in the cell or if validation based on its type fails. <br />
+`isDefaultTextRemovable` removes default text when the user focuses on it. <br />
+`isCellTextEditable` applies to both data and header cells, but is superseded by `isHeaderTextEditable` for header cells. <br />
+`cellStyle` applies to both data and header cells, but is superseded by `headerStyleProps` for header cells which also
+controls the hover styling. <br />
+`headerIconStyle` controls the style of the icon if they are present within the header row WORK. <br />
+`defaultColumnTypes` array overwrites the types that are present by default. `customColumnTypes` allows additional custom
+column types to be defined. <br />
+`activeTypeName` is the starting type name. <br />
+
+<LineBreak></LineBreak>
+
+### `HoverableElementStyle`
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `default?: CellCSSStyle`, WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `hoverColors?`: {`backgroundColor?: string`, `color?: string`}<br />
+  }
+- Default: _unset_
+
+#### Example
+
+<TableContainer>
+  <active-table
+    columnsSettings='{
+      "headerStyleProps": {
+        "default": {
+          "backgroundColor": "#e7e7e7",
+          "borderBottom": "unset",
+          "fontWeight": "800",
+          "fontSize": "15px"
+        },
+        "hoverColors": {
+          "backgroundColor": "#d2d2d2"
+        }
+    }}'
+    content='[
+      ["Planet", "Planet", "Moons", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnsSettings='{
+    "headerStyleProps": {
+      "default": {
+        "backgroundColor": "#e7e7e7",
+        "borderBottom": "unset",
+        "fontWeight": "800",
+        "fontSize": "15px"
+      },
+      "hoverColors": {
+        "backgroundColor": "#d2d2d2"
+      }
+  }}'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnsSettings='{
+    "headerStyleProps": {
+      "default": {
+        "backgroundColor": "#e7e7e7",
+        "borderBottom": "unset",
+        "fontWeight": "800",
+        "fontSize": "15px"
+      },
+      "hoverColors": {
+        "backgroundColor": "#d2d2d2"
+      }
+  }}'
+  content='[
+    ["Planet", "Planet", "Moons", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
