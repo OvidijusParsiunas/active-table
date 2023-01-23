@@ -13,7 +13,7 @@ export class NumberOfRowsOptionsButtonEvents {
       Dropdown.hide(dropdownElement);
     } else {
       const buttonElement = event.target as HTMLElement;
-      NumberOfRowsDropdown.display(buttonElement, this.paginationInternal.numberOfRowsDropdown as HTMLElement);
+      NumberOfRowsDropdown.display(buttonElement, dropdownElement, this.tableDimensions.border);
     }
   }
 

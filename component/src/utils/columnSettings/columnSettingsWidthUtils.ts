@@ -23,22 +23,21 @@ export class ColumnSettingsWidthUtils {
     return result as SuccessResult;
   }
 
-  // prettier-ignore
-  public static updateColumnWidth(tableElement: HTMLElement,
-      cellElement: HTMLElement, width: ColumnWidth, isNewSetting: boolean) {
-    const {number: numberWidth} = ColumnSettingsWidthUtils.getSettingsWidthNumber(tableElement, width);
+  public static updateColumnWidth(at: ActiveTable, cellElement: HTMLElement, width: ColumnWidth, isNewSetting: boolean) {
+    const {tableDimensions, tableElementRef} = at;
+    const {number: numberWidth} = ColumnSettingsWidthUtils.getSettingsWidthNumber(tableElementRef as HTMLElement, width);
     cellElement.style.width = `${numberWidth}px`;
-    TableElement.changeStaticWidthTotal(isNewSetting ? numberWidth : -numberWidth); 
+    TableElement.changeStaticWidthTotal(tableDimensions, isNewSetting ? numberWidth : -numberWidth);
   }
 
   public static changeWidth(at: ActiveTable, cellElement: HTMLElement, oldWidth?: ColumnWidth, newWidth?: ColumnWidth) {
     let hasWidthChanged = false;
     if (oldWidth && ColumnSettingsWidthUtils.isWidthDefined(oldWidth)) {
-      ColumnSettingsWidthUtils.updateColumnWidth(at.tableElementRef as HTMLElement, cellElement, oldWidth, false);
+      ColumnSettingsWidthUtils.updateColumnWidth(at, cellElement, oldWidth, false);
       hasWidthChanged = true;
     }
     if (newWidth && ColumnSettingsWidthUtils.isWidthDefined(newWidth)) {
-      ColumnSettingsWidthUtils.updateColumnWidth(at.tableElementRef as HTMLElement, cellElement, newWidth, true);
+      ColumnSettingsWidthUtils.updateColumnWidth(at, cellElement, newWidth, true);
       hasWidthChanged = true;
     }
     if (hasWidthChanged) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true);

@@ -1,7 +1,7 @@
-import {AuxiliaryTableContentColors} from '../../../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {StaticTableWidthUtils} from '../../../../utils/tableDimensions/staticTable/staticTableWidthUtils';
 import {ColumnSettingsBorderUtils} from '../../../../utils/columnSettings/columnSettingsBorderUtils';
 import {MaximumColumns} from '../../../../utils/insertRemoveStructure/insert/maximum/maximumColumns';
+import {AuxiliaryContentCellsColors} from '../../../../types/auxiliaryTableContentCellsColors';
 import {GenericElementUtils} from '../../../../utils/elements/genericElementUtils';
 import {AddNewColumnEvents} from './addNewColumnEvents';
 import {CellElement} from '../../../cell/cellElement';
@@ -49,7 +49,7 @@ export class AddNewColumnElement {
     Object.assign(
       headerCell.style,
       at.columnsSettings.headerStyleProps?.default,
-      AuxiliaryTableContentColors.CELL_COLORS.header.default
+      at.auxiliaryTableContentInternal.cellColors.header.default
     );
     return headerCell;
   }
@@ -75,45 +75,44 @@ export class AddNewColumnElement {
       if (MaximumColumns.canAddMore(at)) {
         row.appendChild(cell);
       } else if (rowIndex === 0) {
-        TableElement.changeStaticWidthTotal(-AddNewColumnElement.DEFAULT_WIDTH);
+        TableElement.changeStaticWidthTotal(at.tableDimensions, -AddNewColumnElement.DEFAULT_WIDTH);
       }
     }
   }
 
   // prettier-ignore
-  private static toggleEachCell(canAddMore: boolean,
-      tableBodyElement: HTMLElement, addColumnCellsElementsRef: HTMLElement[], columnGroupElement: HTMLElement) {
+  private static toggleEachCell(canAddMore: boolean, tableBodyElement: HTMLElement,
+      addColumnCellsElementsRef: HTMLElement[], columnGroupElement: HTMLElement, cellColors: AuxiliaryContentCellsColors) {
     addColumnCellsElementsRef.forEach((cell, rowIndex) => {
       AddNewColumnElement.setDisplay(cell, canAddMore, tableBodyElement, rowIndex);
     });
     if (!canAddMore) {
       // remove does not trigger mouse leave event, hence need to trigger it manually
-      setTimeout(() => AddNewColumnEvents.toggleColor(columnGroupElement, false, addColumnCellsElementsRef))
+      setTimeout(() => AddNewColumnEvents.toggleColor(columnGroupElement, false, addColumnCellsElementsRef, cellColors))
     }
   }
 
   private static changeTableWidths(at: ActiveTable, canAddMore: boolean, isInsert: boolean) {
-    TableElement.changeStaticWidthTotal(
-      canAddMore ? AddNewColumnElement.DEFAULT_WIDTH : -AddNewColumnElement.DEFAULT_WIDTH
-    );
+    const delta = canAddMore ? AddNewColumnElement.DEFAULT_WIDTH : -AddNewColumnElement.DEFAULT_WIDTH;
+    TableElement.changeStaticWidthTotal(at.tableDimensions, delta);
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, isInsert);
   }
 
   // prettier-ignore
   public static toggle(at: ActiveTable, isInsert: boolean) {
-    const {addColumnCellsElementsRef, tableBodyElementRef, columnGroupRef,
-      auxiliaryTableContentInternal: {displayAddColumnCell}} = at;
-    if (!displayAddColumnCell || !tableBodyElementRef || !columnGroupRef) return;
+    const {addColumnCellsElementsRef, tableBodyElementRef, columnGroupRef: columnGroup,
+      auxiliaryTableContentInternal: {displayAddColumnCell, cellColors: colors}} = at;
+    if (!displayAddColumnCell || !tableBodyElementRef || !columnGroup) return;
     const canAddMore = MaximumColumns.canAddMore(at);
     // do not toggle if already in the intended state
     if (canAddMore === AddNewColumnElement.isDisplayed(addColumnCellsElementsRef)) return;
     // for isTableAtMaxWidth to be triggered correctly for maxWidth, add cells before it and remove after it
     if (canAddMore) {
-      AddNewColumnElement.toggleEachCell(canAddMore, tableBodyElementRef, addColumnCellsElementsRef, columnGroupRef);
+      AddNewColumnElement.toggleEachCell(canAddMore, tableBodyElementRef, addColumnCellsElementsRef, columnGroup, colors);
       AddNewColumnElement.changeTableWidths(at, canAddMore, isInsert);
     } else {
       AddNewColumnElement.changeTableWidths(at, canAddMore, isInsert);
-      AddNewColumnElement.toggleEachCell(canAddMore, tableBodyElementRef, addColumnCellsElementsRef, columnGroupRef);
+      AddNewColumnElement.toggleEachCell(canAddMore, tableBodyElementRef, addColumnCellsElementsRef, columnGroup, colors);
     }
   }
 }

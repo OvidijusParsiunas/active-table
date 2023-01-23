@@ -15,7 +15,7 @@ export class StripedRows {
   }
 
   public static process(at: ActiveTable) {
-    const {stripedRows} = at;
+    const {stripedRows, defaultCellHoverColors} = at;
     if (!stripedRows) return;
     if (typeof stripedRows === 'boolean') {
       at.stripedRowsInternal = StripedRows.DEFAULT_PROPERTIES;
@@ -25,6 +25,6 @@ export class StripedRows {
         odd: stripedRows.odd || StripedRows.DEFAULT_PROPERTIES.odd,
       };
     }
-    CellHighlightUtils.unsetDefaultHoverProperties();
+    CellHighlightUtils.unsetDefaultHoverProperties(defaultCellHoverColors);
   }
 }

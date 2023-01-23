@@ -1,7 +1,6 @@
 import {FullTableOverlayEvents} from './fullTableOverlayEvents';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
 import {Browser} from '../../utils/browser/browser';
-import {TableElement} from '../table/tableElement';
 import {ActiveTable} from '../../activeTable';
 import {Dropdown} from '../dropdown/dropdown';
 
@@ -16,8 +15,8 @@ export class FullTableOverlayElement {
       fullTableOverlay.style.top = `${at.offsetTop}px`;
       fullTableOverlay.style.left = `${at.offsetLeft}px`;
     } else {
-      fullTableOverlay.style.top = `-${Browser.IS_FIREFOX ? 0 : TableElement.BORDER_DIMENSIONS.topWidth}px`;
-      fullTableOverlay.style.left = `-${Browser.IS_FIREFOX ? 0 : TableElement.BORDER_DIMENSIONS.leftWidth}px`;
+      fullTableOverlay.style.top = `-${Browser.IS_FIREFOX ? 0 : at.tableDimensions.border.topWidth}px`;
+      fullTableOverlay.style.left = `-${Browser.IS_FIREFOX ? 0 : at.tableDimensions.border.leftWidth}px`;
     }
     Dropdown.display(fullTableOverlay);
   }

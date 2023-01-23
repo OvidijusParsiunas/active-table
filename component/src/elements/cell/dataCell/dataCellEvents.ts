@@ -39,7 +39,7 @@ export class DataCellEvents {
       const columnDetails = this.columnsDetails[columnIndex];
       if (columnDetails.activeType.selectProps && rowIndex > 0) {
         SelectDropdown.updateSelectDropdown(textContainerElement,
-          columnDetails.selectDropdown, columnDetails.settings.defaultText, true);
+          columnDetails.selectDropdown, this.tableDimensions.border, columnDetails.settings.defaultText, true);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
     }
@@ -59,7 +59,8 @@ export class DataCellEvents {
       // if the user has deleted all text in calendar/select cell - targetElement can be the <br> tag
       const containerElement = calendar || selectProps ? (targetElement.parentElement as HTMLElement) : targetElement;
       setTimeout(() => {
-        if (selectProps) SelectDropdown.updateSelectDropdown(containerElement, selectDropdown, defaultText, true);
+        if (selectProps) SelectDropdown.updateSelectDropdown(
+          containerElement, selectDropdown, this.tableDimensions.border, defaultText, true);
         CellEvents.updateCell(this, CellElement.getText(containerElement), rowIndex, columnIndex, {processText: false});
       });
     }

@@ -1,4 +1,4 @@
-import {TableElement} from '../../elements/table/tableElement';
+import {TableBorderDimensions} from '../../types/tableBorderDimensions';
 import {OverflowUtils} from '../overflow/overflowUtils';
 import {SIDE} from '../../types/side';
 
@@ -15,9 +15,10 @@ type VisibilityDetails = FullyVisible | PartiallyVisible;
 
 export class ElementVisibility {
   // prettier-ignore
-  public static getDetailsInWindow(element: HTMLElement, isInsideTable = true): VisibilityDetails {
+  public static getDetailsInWindow(element: HTMLElement, borderDimensions: TableBorderDimensions,
+      isInsideTable = true): VisibilityDetails {
     const {topWidth: topBorderWidth, leftWidth: leftBorderWidth} = isInsideTable
-      ? TableElement.BORDER_DIMENSIONS : {topWidth: 0, leftWidth: 0};
+      ? borderDimensions : {topWidth: 0, leftWidth: 0};
     let top = element.offsetTop;
     let left = element.offsetLeft;
     const width = element.offsetWidth;

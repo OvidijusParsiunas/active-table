@@ -1,4 +1,5 @@
 import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
+import {DefaultCellHoverColors} from '../../types/cellStateColors';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
 import {RowHoverStyle} from '../../types/rowHoverStyle';
 import {ElementStyle} from '../elements/elementStyle';
@@ -31,11 +32,11 @@ export class RowHoverEvents {
     }
   }
 
-  public static process(rowHoverStyle: RowHoverStyle | null) {
+  public static process(rowHoverStyle: RowHoverStyle | null, defaultCellHoverColors: DefaultCellHoverColors) {
     if (rowHoverStyle?.style) {
       rowHoverStyle.header ??= true;
       rowHoverStyle.addNewRowButton ??= true;
-      CellHighlightUtils.unsetDefaultHoverProperties();
+      CellHighlightUtils.unsetDefaultHoverProperties(defaultCellHoverColors);
     }
   }
 }

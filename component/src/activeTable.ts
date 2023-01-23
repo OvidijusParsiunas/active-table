@@ -19,10 +19,12 @@ import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
 import {ColumnsSettingsDefault} from './types/columnsSettingsDefault';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
+import {CellHighlightUtils} from './utils/color/cellHighlightUtils';
 import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
 import {customElement, property, state} from 'lit/decorators.js';
 import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {StripedRowsInternal} from './types/stripedRowsInternal';
+import {DefaultCellHoverColors} from './types/cellStateColors';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {PaginationInternal} from './types/paginationInternal';
@@ -182,6 +184,9 @@ export class ActiveTable extends LitElement {
   })
   preserveNarrowColumns = true;
 
+  @state()
+  defaultCellHoverColors: DefaultCellHoverColors = CellHighlightUtils.getDefaultHoverProperties();
+
   @property({type: Number})
   maxColumns?: number;
 
@@ -254,7 +259,7 @@ export class ActiveTable extends LitElement {
     RowDropdownSettingsUtil.process(this);
     if (this.pagination) PaginationInternalUtils.process(this);
     if (this.stripedRows) StripedRows.process(this);
-    if (this.rowHoverStyle) RowHoverEvents.process(this.rowHoverStyle);
+    if (this.rowHoverStyle) RowHoverEvents.process(this.rowHoverStyle, this.defaultCellHoverColors);
     const tableElement = TableElement.createInfrastructureElements(this);
     if (this.overflow) OverflowUtils.setupContainer(this, tableElement); // must not be after BORDER_DIMENSIONS is set
     TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);

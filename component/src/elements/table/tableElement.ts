@@ -16,33 +16,27 @@ import {StickyPropsUtils} from '../../utils/stickyProps/stickyPropsUtils';
 import {SelectDropdown} from '../dropdown/selectDropdown/selectDropdown';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {CustomRowProperties} from '../../utils/rows/customRowProperties';
-import {TableBorderDimensions} from '../../types/tableBorderDimensions';
 import {TableBorderDimensionsUtils} from './tableBorderDimensionsUtils';
 import {ActiveOverlayElements} from '../../types/activeOverlayElements';
 import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
-import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
+import {TableDimensions} from '../../types/tableDimensions';
 import {IndexColumn} from '../indexColumn/indexColumn';
 import {TableRow} from '../../types/tableContent';
 import {ActiveTable} from '../../activeTable';
 import {TableEvents} from './tableEvents';
 
 export class TableElement {
-  // this includes index column, add column and columns with a width in their settings
-  public static STATIC_WIDTH_CONTENT_TOTAL = UNSET_NUMBER_IDENTIFIER;
-  public static BORDER_DIMENSIONS: TableBorderDimensions = TableBorderDimensionsUtils.generateDefault();
-
-  public static changeStaticWidthTotal(delta: number) {
-    TableElement.STATIC_WIDTH_CONTENT_TOTAL += delta;
+  public static changeStaticWidthTotal(tableDimensions: TableDimensions, delta: number) {
+    tableDimensions.staticWidth += delta;
   }
 
   // prettier-ignore
   public static setStaticWidthContentTotal(at: ActiveTable) {
-    const {auxiliaryTableContentInternal: {displayAddColumnCell, displayIndexColumn}} = at;
-    TableElement.STATIC_WIDTH_CONTENT_TOTAL =
-      TableElement.BORDER_DIMENSIONS.leftWidth + TableElement.BORDER_DIMENSIONS.rightWidth;
-    if (displayAddColumnCell) TableElement.STATIC_WIDTH_CONTENT_TOTAL += AddNewColumnElement.DEFAULT_WIDTH;
-    if (displayIndexColumn) TableElement.STATIC_WIDTH_CONTENT_TOTAL += IndexColumn.DEFAULT_WIDTH;
+    const {auxiliaryTableContentInternal: {displayAddColumnCell, displayIndexColumn}, tableDimensions} = at;
+    tableDimensions.staticWidth = tableDimensions.border.leftWidth + tableDimensions.border.rightWidth;
+    if (displayAddColumnCell) tableDimensions.staticWidth += AddNewColumnElement.DEFAULT_WIDTH;
+    if (displayIndexColumn) tableDimensions.staticWidth += IndexColumn.DEFAULT_WIDTH;
   }
 
   // prettier-ignore
@@ -119,7 +113,7 @@ export class TableElement {
     at.tableElementRef = TableElement.createTableElement(at);
     if (at.auxiliaryTableContentInternal.displayAddColumnCell) {
       // needs to be appended before the body
-      at.columnGroupRef = ColumnGroupElement.create();
+      at.columnGroupRef = ColumnGroupElement.create(at.auxiliaryTableContentInternal.cellColors.data);
       at.tableElementRef.appendChild(at.columnGroupRef);
     }
     at.tableBodyElementRef = TableElement.createTableBody(at.stickyProps.header);
@@ -128,7 +122,7 @@ export class TableElement {
     at.selectDropdownContainer = SelectDropdown.createContainerElement();
     at.tableElementRef.appendChild(at.selectDropdownContainer);
     if (!at.overflow && at.stickyProps.header) StickyPropsUtils.moveTopBorderToHeaderCells(at);
-    TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtils.generateUsingElement(at.tableElementRef as HTMLElement);
+    at.tableDimensions.border = TableBorderDimensionsUtils.generateUsingElement(at.tableElementRef as HTMLElement);
     return at.tableElementRef;
   }
 }

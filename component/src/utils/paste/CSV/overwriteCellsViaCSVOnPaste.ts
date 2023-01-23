@@ -112,12 +112,11 @@ export class OverwriteCellsViaCSVOnPaste {
   }
 
   // prettier-ignore
-  private static setCaretToEndAndHighlightIfSelect(at: ActiveTable, cellElement: HTMLElement,
-      columnIndex: number) {
+  private static setCaretToEndAndHighlightIfSelect(at: ActiveTable, cellElement: HTMLElement, columnIndex: number) {
     const {activeType, selectDropdown, settings: {defaultText}} = at.columnsDetails[columnIndex];
     CaretPosition.setToEndOfText(at, cellElement);
     if (activeType.selectProps) {
-      SelectDropdown.updateSelectDropdown(cellElement, selectDropdown, defaultText, true);
+      SelectDropdown.updateSelectDropdown(cellElement, selectDropdown, at.tableDimensions.border, defaultText, true);
     }
   }
 

@@ -10,9 +10,6 @@ import {ActiveTable} from '../../activeTable';
 import {IndexColumn} from './indexColumn';
 
 export class UpdateIndexColumnWidth {
-  // acts as the recorded column offsetWidth
-  public static WIDTH = 30;
-
   private static wrapColumnTextAndGetDefaultWidth(at: ActiveTable) {
     const {tableBodyElementRef, content, tableDimensions} = at;
     ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, content).forEach((row) => {
@@ -25,9 +22,9 @@ export class UpdateIndexColumnWidth {
   }
 
   private static changeTableWidths(at: ActiveTable, newWidth: number) {
-    const difference = newWidth - UpdateIndexColumnWidth.WIDTH;
-    UpdateIndexColumnWidth.WIDTH = newWidth;
-    TableElement.changeStaticWidthTotal(difference);
+    const difference = newWidth - at.tableDimensions.indexColumnWidth;
+    at.tableDimensions.indexColumnWidth = newWidth;
+    TableElement.changeStaticWidthTotal(at.tableDimensions, difference);
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true);
   }
 
@@ -79,7 +76,7 @@ export class UpdateIndexColumnWidth {
   private static updateColumnWidthWhenOverflow(at: ActiveTable, firstRow: HTMLElement, lastCell: HTMLElement) {
     // overflow width does not include the borderRightWidth - which the ChangeIndexColumnWidth.WIDTH does
     const overflowWidth = UpdateIndexColumnWidth.getIndexColumnOverflowWidth(firstRow, lastCell);
-    if (UpdateIndexColumnWidth.WIDTH !== overflowWidth && overflowWidth !== 0) {
+    if (at.tableDimensions.indexColumnWidth !== overflowWidth && overflowWidth !== 0) {
       // Firefox does not include lastCell paddingRight (4px) when setting the new width
       const newWidth = overflowWidth + (Browser.IS_FIREFOX ? 4 : 0);
       if (Browser.IS_SAFARI) {
@@ -94,7 +91,7 @@ export class UpdateIndexColumnWidth {
   // and instead the lastCell width is change automatically, all we do here is check if the expected width
   // (ChangeIndexColumnWidth.WIDTH) is different to the actual one and if so, we change it to actual
   private static checkAutoColumnWidthUpdate(at: ActiveTable, lastCell: HTMLElement) {
-    if (lastCell.offsetWidth !== UpdateIndexColumnWidth.WIDTH) {
+    if (lastCell.offsetWidth !== at.tableDimensions.indexColumnWidth) {
       let newWidth = lastCell.offsetWidth;
       if (at.offsetWidth !== at.scrollWidth) {
         newWidth = UpdateIndexColumnWidth.wrapColumnTextAndGetDefaultWidth(at);

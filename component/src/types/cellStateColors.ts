@@ -5,3 +5,5 @@ export type CellStateColorProperties = Pick<CellCSSStyle, 'backgroundColor' | 'c
 export type CellStateColors = Required<Omit<StatefulCSSS<CellStateColorProperties>, 'click'>>;
 
 export type CellStateColorsR = Required<Omit<StatefulCSSS<Required<CellStateColorProperties>>, 'click'>>;
+
+export type DefaultCellHoverColors = Required<CellStateColorProperties>;

@@ -29,7 +29,7 @@ export class RemoveColumn {
     if (columnDetails.settings && ColumnSettingsWidthUtils.isWidthDefined(columnDetails.settings)) {
       const {number} = ColumnSettingsWidthUtils.getSettingsWidthNumber(
         at.tableElementRef as HTMLElement, columnDetails.settings);
-      TableElement.changeStaticWidthTotal(-number);
+      TableElement.changeStaticWidthTotal(at.tableDimensions, -number);
     }
   }
 

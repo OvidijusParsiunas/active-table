@@ -1,5 +1,6 @@
 import {DropdownButtonItemSettings} from '../../../types/dropdownButtonItem';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
+import {TableBorderDimensions} from '../../../types/tableBorderDimensions';
 import {OverflowUtils} from '../../../utils/overflow/overflowUtils';
 import {ActiveTable} from '../../../activeTable';
 import {DropdownItem} from '../dropdownItem';
@@ -26,11 +27,13 @@ export class NestedDropdown {
     NestedDropdown.resetPosition(nestedDropdownElement);
   }
 
-  private static correctPosition(nestedDropdownElement: HTMLElement, parentDropdownElement: HTMLElement) {
-    const visibilityDetails = ElementVisibility.getDetailsInWindow(nestedDropdownElement);
+  // prettier-ignore
+  private static correctPosition(nestedDropdownElement: HTMLElement, parentDropdownElement: HTMLElement,
+      borderDimensions: TableBorderDimensions) {
+    const visibilityDetails = ElementVisibility.getDetailsInWindow(nestedDropdownElement, borderDimensions);
     if (!visibilityDetails.isFullyVisible && visibilityDetails.blockingSides.has(SIDE.RIGHT)) {
       nestedDropdownElement.style.left = `-${parentDropdownElement.style.width}`;
-      const visibilityDetails = ElementVisibility.getDetailsInWindow(nestedDropdownElement);
+      const visibilityDetails = ElementVisibility.getDetailsInWindow(nestedDropdownElement, borderDimensions);
       if (!visibilityDetails.isFullyVisible && visibilityDetails.blockingSides.has(SIDE.LEFT)) {
         nestedDropdownElement.style.left = '';
       }
@@ -58,7 +61,7 @@ export class NestedDropdown {
     if (this.overflowInternal && OverflowUtils.isOverflowElement(this.overflowInternal.overflowContainer)) {
       NestedDropdown.correctPositionForOverflow(this, nestedDropdownElement, parentDropdownElement);
     } else {
-      NestedDropdown.correctPosition(nestedDropdownElement, parentDropdownElement);
+      NestedDropdown.correctPosition(nestedDropdownElement, parentDropdownElement, this.tableDimensions.border);
     }
   }
 }

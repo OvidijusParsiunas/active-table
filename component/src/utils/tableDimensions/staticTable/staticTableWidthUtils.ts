@@ -3,9 +3,8 @@ import {ColumnSettingsInternal} from '../../../types/columnsSettingsInternal';
 import {ColumnDetailsT, ColumnsDetailsT} from '../../../types/columnDetails';
 import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
 import {ColumnWidthsState} from '../../columnDetails/columnWidthsState';
-import {TableElement} from '../../../elements/table/tableElement';
-import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {FilteredColumns} from '../../../types/filteredColumns';
+import {TableDimensions} from '../../../types/tableDimensions';
 import {ActiveTable} from '../../../activeTable';
 import {StaticTable} from './staticTable';
 
@@ -62,7 +61,7 @@ export class StaticTableWidthUtils {
   // This only runs when the table width is set
   // prettier-ignore
   private static changeTableWidthForNonDynamicColumns(columnsDetails: ColumnsDetailsT,
-      filteredColumns: FilteredColumns, tableElement: HTMLElement, setTableWidth: number) {
+      filteredColumns: FilteredColumns, tableElement: HTMLElement, setTableWidth: number, staticWidth: number) {
     if (columnsDetails.length === 0 || filteredColumns.dynamicWidthColumns.length > 0) {
       // this would be triggered if there were only width setting columns and they got removed
       if (tableElement.offsetWidth !== setTableWidth) tableElement.style.width = `${setTableWidth}px`;
@@ -71,48 +70,49 @@ export class StaticTableWidthUtils {
       // fills the table element with the last minWidth column
       const lastMinWidthColumn = filteredColumns.minWidthColumns[filteredColumns.minWidthColumns.length - 1];
       const headerCell = lastMinWidthColumn.elements[0];
-      headerCell.style.width = `${Number.parseInt(headerCell.style.width)
-        + setTableWidth - TableElement.STATIC_WIDTH_CONTENT_TOTAL}px`;
+      headerCell.style.width = `${Number.parseInt(headerCell.style.width) + setTableWidth - staticWidth}px`;
     } else {
       // if no minWidth columns, set table width to columns total
       // please note that the width will no longer be the same as activeTable.tableDimensions.width
-      tableElement.style.width = `${TableElement.STATIC_WIDTH_CONTENT_TOTAL}px`;
+      tableElement.style.width = `${staticWidth}px`;
     }
   }
 
-  private static resetDynamicWidthColumns(dynamicWidthColumns: ColumnsDetailsT) {
+  private static resetDynamicWidthColumns(dynamicWidthColumns: ColumnsDetailsT, tableDimensions: TableDimensions) {
     dynamicWidthColumns.forEach((columnDetails) => {
-      columnDetails.elements[0].style.width = `${ColumnDetails.NEW_COLUMN_WIDTH}px`;
+      columnDetails.elements[0].style.width = `${tableDimensions.newColumnWidth}px`;
     });
   }
 
-  private static setNewColumnWidth(tableWidth: number, numberOfDynamicColumns: number) {
+  private static setNewColumnWidth(tableWidth: number, numberOfDynamicColumns: number, tableDimensions: TableDimensions) {
     if (numberOfDynamicColumns > 0) {
-      const totalColumnsWidth = tableWidth - TableElement.STATIC_WIDTH_CONTENT_TOTAL;
-      ColumnDetails.NEW_COLUMN_WIDTH = totalColumnsWidth / numberOfDynamicColumns;
+      const totalColumnsWidth = tableWidth - tableDimensions.staticWidth;
+      tableDimensions.newColumnWidth = totalColumnsWidth / numberOfDynamicColumns;
     }
   }
 
-  private static resetColumnSizes(tableElementRef: HTMLElement, columnsDetails: ColumnsDetailsT, tableWidth: number) {
+  // prettier-ignore
+  private static resetColumnSizes(tableElementRef: HTMLElement, columnsDetails: ColumnsDetailsT, tableWidth: number,
+      tableDimensions: TableDimensions) {
     const filteredColumns = ColumnDetailsUtils.getFilteredColumns(columnsDetails);
-    StaticTableWidthUtils.setNewColumnWidth(tableWidth, filteredColumns.dynamicWidthColumns.length);
-    StaticTableWidthUtils.resetDynamicWidthColumns(filteredColumns.dynamicWidthColumns);
+    StaticTableWidthUtils.setNewColumnWidth(tableWidth, filteredColumns.dynamicWidthColumns.length, tableDimensions);
+    StaticTableWidthUtils.resetDynamicWidthColumns(filteredColumns.dynamicWidthColumns, tableDimensions);
     StaticTableWidthUtils.resetMinWidthColumns(filteredColumns.minWidthColumns, tableElementRef);
     return filteredColumns;
   }
 
   public static changeWidthsBasedOnColumnInsertRemove(at: ActiveTable, isInsert: boolean) {
-    const {tableElementRef, tableDimensions, columnsDetails} = at;
-    if (!tableElementRef) return;
-    const {width, maxWidth} = tableDimensions;
+    const {tableElementRef: table, tableDimensions: td, columnsDetails} = at;
+    if (!table) return;
+    const {width, maxWidth, staticWidth} = td;
     if (width !== undefined) {
-      const filteredColumns = StaticTableWidthUtils.resetColumnSizes(tableElementRef, columnsDetails, width);
-      StaticTableWidthUtils.changeTableWidthForNonDynamicColumns(columnsDetails, filteredColumns, tableElementRef, width);
+      const filteredCols = StaticTableWidthUtils.resetColumnSizes(table, columnsDetails, width, td);
+      StaticTableWidthUtils.changeTableWidthForNonDynamicColumns(columnsDetails, filteredCols, table, width, staticWidth);
       // isInsert check was initially not needed as this was not getting called when a column had been removed, however
       // it has been identified that the table offsetWidth does not immediately update when the column widths are very
       // narrow (even above the minimal column limit set by the MINIMAL_COLUMN_WIDTH variable), hence it was added
-    } else if (isInsert && StaticTable.isTableAtMaxWidth(tableElementRef, tableDimensions)) {
-      StaticTableWidthUtils.resetColumnSizes(tableElementRef, columnsDetails, maxWidth as number);
+    } else if (isInsert && StaticTable.isTableAtMaxWidth(table, td)) {
+      StaticTableWidthUtils.resetColumnSizes(table, columnsDetails, maxWidth as number, td);
     }
     setTimeout(() => ColumnWidthsState.fireUpdate(at));
   }

@@ -33,12 +33,14 @@ export class ColumnSettingsStyleUtils {
     CellElement.setDefaultCellStyle(columnElements[0], cellStyle, headerStyleProps?.default);
   }
 
-  private static setNewHeaderStyle(columnsSettings: ColumnsSettingsDefault, columnDetails: ColumnDetailsT) {
+  // prettier-ignore
+  private static setNewHeaderStyle(at: ActiveTable, columnDetails: ColumnDetailsT) {
     const {settings, elements} = columnDetails;
     const newHeaderStyle = settings.cellStyle || settings.headerStyleProps?.default;
     if (newHeaderStyle) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, elements[0], true);
     const newStyleSettings = newHeaderStyle ? settings : undefined;
-    columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(columnsSettings, newStyleSettings);
+    columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(at.columnsSettings,
+      newStyleSettings, at.defaultCellHoverColors);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [elements[0]]);
   }
 
@@ -47,7 +49,7 @@ export class ColumnSettingsStyleUtils {
     const columnDetails = this.columnsDetails[columnIndex];
     const {elements, settings: {isHeaderTextEditable}} = columnDetails;
     ColumnSettingsStyleUtils.resetHeaderStyleToDefault(elements, oldSettings, this.columnsSettings);
-    ColumnSettingsStyleUtils.setNewHeaderStyle(this.columnsSettings, columnDetails);
+    ColumnSettingsStyleUtils.setNewHeaderStyle(this, columnDetails);
     const cellClickDropdownOpen = this.columnsSettings.dropdown?.displaySettings.openMethod?.cellClick;
     const isEditable = !cellClickDropdownOpen && isHeaderTextEditable;
     CellElement.prepContentEditable(CellElement.getTextElement(elements[0]),

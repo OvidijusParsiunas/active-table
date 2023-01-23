@@ -14,6 +14,7 @@ export const activeTableStyle = css`
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     position: relative;
     border: 1px solid #00000026;
+    background-color: white;
   }
 
   /* REF-16 */

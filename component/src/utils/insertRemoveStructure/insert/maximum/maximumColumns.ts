@@ -1,5 +1,4 @@
 import {StaticTable} from '../../../tableDimensions/staticTable/staticTable';
-import {TableElement} from '../../../../elements/table/tableElement';
 import {ColumnDetails} from '../../../columnDetails/columnDetails';
 import {TableDimensions} from '../../../../types/tableDimensions';
 import {ActiveTable} from '../../../../activeTable';
@@ -18,7 +17,7 @@ export class MaximumColumns {
   // please note that this will not allow any more columns to be added even if preserveNarrowColumns is true
   private static isStaticContentBreachingSetTableWidth(tableDimensions: TableDimensions) {
     const width = tableDimensions.width || tableDimensions.maxWidth;
-    return width !== undefined && TableElement.STATIC_WIDTH_CONTENT_TOTAL > width;
+    return width !== undefined && tableDimensions.staticWidth > width;
   }
 
   // prettier-ignore
@@ -37,7 +36,7 @@ export class MaximumColumns {
       || MaximumColumns.isStaticContentBreachingSetTableWidth(tableDimensions)) return false;
     const tableElement = tableElementRef as HTMLElement;
     if (MaximumColumns.ignoreMinimalColumnWidthCheck(tableDimensions, tableElement, numberOfColumns)) return true;
-    const totalColumnsWidth = tableElement.offsetWidth - TableElement.STATIC_WIDTH_CONTENT_TOTAL;
+    const totalColumnsWidth = tableElement.offsetWidth - tableDimensions.staticWidth;
     return totalColumnsWidth / (numberOfColumns + 1) >= ColumnDetails.MINIMAL_COLUMN_WIDTH;
   }
 }

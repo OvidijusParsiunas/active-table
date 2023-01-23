@@ -6,8 +6,8 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-table-container-background-color: #f6f8fa;
-  --ifm-table-container-border: '0.5px solid #eeeeee';
+  --ifm-table-container-background-color: #f9fcffd6;
+  --ifm-table-container-border: '0.5px solid #e5e5e5';
   --ifm-color-primary: #2e8555;
   --ifm-color-primary-dark: #29784c;
   --ifm-color-primary-darker: #277148;
@@ -50,6 +50,12 @@
 .theme-code-block {
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;
+}
+
+.language-text {
+  background-color: var(--ifm-table-container-background-color);
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
 }
 
 :root {

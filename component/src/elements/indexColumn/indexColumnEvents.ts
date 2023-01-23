@@ -7,15 +7,17 @@ import {Dropdown} from '../dropdown/dropdown';
 
 export class IndexColumnEvents {
   private static mouseEnterCell(this: ActiveTable, rowIndex: number, event: MouseEvent) {
-    const cellColors = AuxiliaryTableContentColors.getColorsBasedOnParam(rowIndex);
     const cellElement = event.target as HTMLElement;
-    CellHighlightUtils.highlight(cellElement, cellColors.hover);
+    const {cellColors} = this.auxiliaryTableContentInternal;
+    const colors = AuxiliaryTableContentColors.getColorsBasedOnParam(cellColors, rowIndex);
+    CellHighlightUtils.highlight(cellElement, colors.hover);
   }
 
   private static mouseLeaveCell(this: ActiveTable, rowIndex: number, event: MouseEvent) {
     if (!Dropdown.isDisplayed(this.activeOverlayElements.rowDropdown)) {
-      const cellColors = AuxiliaryTableContentColors.getColorsBasedOnParam(rowIndex);
-      CellHighlightUtils.fade(event.target as HTMLElement, cellColors.default);
+      const {cellColors} = this.auxiliaryTableContentInternal;
+      const colors = AuxiliaryTableContentColors.getColorsBasedOnParam(cellColors, rowIndex);
+      CellHighlightUtils.fade(event.target as HTMLElement, colors.default);
     }
   }
 

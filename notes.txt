@@ -38,11 +38,9 @@ there is a horizontal scroll bar as it is partially covered by it. This appears 
 The workaround for this is to identify that there is a horizontal scroll bar and programmatically scroll further down
 
 REF-5
-Select cells are the only ones that contain div text elements as they are needed to set the background color. The reason
-why all cells do not contain a text element instead of a text node - which would tramendously simplify the complexity of
-the text set/get logic in the app is because a text element within a cell has a drawback:
-If one cell contains a lot of text and is resultantly very high, the text elements in the same row which do not contain that
-much text and are inherently shorter, would have white space fill up the rest of their cell's height.
+Trying to limit column types that use cells with text because they carry padding and if one cell with text contains a lot of text
+and is resultantly very high, the text elements in the same row which do not contain that much text and are inherently shorter,
+would have white space fill up the rest of their cell's height.
 If the user would click on that whitespace, the text editor caret would focus on the left of the text which looks bad.
 Fortunately this can be fixed by shadowRoot.getSelection, however this is not available to all browsers. Hence, because
 the UX cannot be good for all browsers, the table will continue to use plane text within its data cells to have as much

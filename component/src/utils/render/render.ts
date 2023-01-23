@@ -1,5 +1,4 @@
 import {TableBorderDimensionsUtils} from '../../elements/table/tableBorderDimensionsUtils';
-import {UpdateIndexColumnWidth} from '../../elements/indexColumn/updateIndexColumnWidth';
 import {TableDimensionsUtils} from '../tableDimensions/tableDimensionsUtils';
 import {IndexColumn} from '../../elements/indexColumn/indexColumn';
 import {TableElement} from '../../elements/table/tableElement';
@@ -12,11 +11,11 @@ export class Render {
   private static refreshTableState(at: ActiveTable) {
     at.selectDropdownContainer?.replaceChildren();
     at.columnsDetails.splice(0, at.columnsDetails.length);
-    UpdateIndexColumnWidth.WIDTH = IndexColumn.DEFAULT_WIDTH;
+    at.tableDimensions.indexColumnWidth = IndexColumn.DEFAULT_WIDTH;
     at.addColumnCellsElementsRef.splice(0, at.addColumnCellsElementsRef.length);
     if (at.overflowInternal) {
-      TableElement.BORDER_DIMENSIONS = TableBorderDimensionsUtils.generateUsingElement(
-        at.overflowInternal.overflowContainer); // unsetBorderDimensions unsets dimensions so need this every render
+       // unsetBorderDimensions unsets dimensions so need this every render
+       at.tableDimensions.border = TableBorderDimensionsUtils.generateUsingElement(at.overflowInternal.overflowContainer);
     }
   }
 

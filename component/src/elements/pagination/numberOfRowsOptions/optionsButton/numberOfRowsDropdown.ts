@@ -1,4 +1,5 @@
 import {ElementVisibility} from '../../../../utils/elements/elementVisibility';
+import {TableBorderDimensions} from '../../../../types/tableBorderDimensions';
 import {NumberOfRowsDropdownEvents} from './numberOfRowsDropdownEvents';
 import {NumberOfRowsDropdownItem} from './numberOfRowsDropdownItem';
 import {ActiveTable} from '../../../../activeTable';
@@ -24,21 +25,23 @@ export class NumberOfRowsDropdown {
     return `${leftOffset - NumberOfRowsDropdown.DROPDOWN_WIDTH / 2}px`;
   }
 
-  private static displayAndSetDropdownPosition(buttonElement: HTMLElement, dropdownElement: HTMLElement) {
+  // prettier-ignore
+  private static displayAndSetDropdownPosition(buttonElement: HTMLElement, dropdownElement: HTMLElement,
+      borderDimensions: TableBorderDimensions) {
     dropdownElement.style.bottom = '';
     dropdownElement.style.left = NumberOfRowsDropdown.getLeftPropertyToCenterDropdown(buttonElement);
     dropdownElement.style.top = NumberOfRowsDropdown.getDropdownTopPosition(buttonElement);
     // needs to be displayed here to evalute if in view port
     Dropdown.display(dropdownElement);
-    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement, false);
+    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement, borderDimensions, false);
     if (!visibilityDetails.isFullyVisible && visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
       dropdownElement.style.bottom = '0px';
       dropdownElement.style.top = '';
     }
   }
 
-  public static display(buttonElement: HTMLElement, dropdownElement: HTMLElement) {
-    NumberOfRowsDropdown.displayAndSetDropdownPosition(buttonElement, dropdownElement);
+  public static display(buttonElement: HTMLElement, dropdown: HTMLElement, borderDimensions: TableBorderDimensions) {
+    NumberOfRowsDropdown.displayAndSetDropdownPosition(buttonElement, dropdown, borderDimensions);
   }
 
   private static setWidth(dropdownElement: HTMLElement, numberOfRowsOptionsItemText: string[]) {

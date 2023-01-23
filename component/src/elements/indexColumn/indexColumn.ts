@@ -1,4 +1,3 @@
-import {AuxiliaryTableContentColors} from '../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {ColumnSettingsBorderUtils} from '../../utils/columnSettings/columnSettingsBorderUtils';
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {ExtractElements} from '../../utils/elements/extractElements';
@@ -11,7 +10,7 @@ export class IndexColumn {
   public static readonly INDEX_CELL_CLASS = 'index-cell';
   // using overflow to detect a need for width update when display style 'block' property is not set
   public static readonly INDEX_CELL_OVERFLOW_CLASS = 'index-cell-overflow';
-  public static readonly DEFAULT_WIDTH = UpdateIndexColumnWidth.WIDTH;
+  public static readonly DEFAULT_WIDTH = 30;
   private static readonly DEFAULT_WIDTH_PX = `${IndexColumn.DEFAULT_WIDTH}px`;
 
   public static updateIndexes(at: ActiveTable, startIndex: number) {
@@ -38,7 +37,7 @@ export class IndexColumn {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }
     Object.assign(cell.style, columnsSettings.cellStyle, auxiliaryTableContentInternal.styleProps?.default || {});
-    if (isHeader) Object.assign(cell.style, AuxiliaryTableContentColors.CELL_COLORS.header.default);
+    if (isHeader) Object.assign(cell.style, at.auxiliaryTableContentInternal.cellColors.header.default);
     return cell;
   }
 

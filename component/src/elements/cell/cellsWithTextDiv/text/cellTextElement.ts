@@ -1,6 +1,7 @@
 import {CaretDisplayFix} from '../../../../utils/browser/caretDisplayFix';
 import {CellElement} from '../../cellElement';
 
+// REF-5
 export class CellTextElement {
   // used for encapsulating text within a nested element
   // select label - used to color the text

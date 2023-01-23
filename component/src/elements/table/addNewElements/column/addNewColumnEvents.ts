@@ -1,5 +1,5 @@
-import {AuxiliaryTableContentColors} from '../../../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {InsertNewColumn} from '../../../../utils/insertRemoveStructure/insert/insertNewColumn';
+import {AuxiliaryContentCellsColors} from '../../../../types/auxiliaryTableContentCellsColors';
 import {CellStateColorsR} from '../../../../types/cellStateColors';
 import {ActiveTable} from '../../../../activeTable';
 
@@ -15,19 +15,22 @@ export class AddNewColumnEvents {
   }
 
   // REF-17
-  public static toggleColor(columnGroup: HTMLElement, isHighlight: boolean, addColumnCellsElementsRef: HTMLElement[]) {
+  // prettier-ignore
+  public static toggleColor(columnGroup: HTMLElement, isHighlight: boolean, addColumnCellsElementsRef: HTMLElement[],
+      cellColors: AuxiliaryContentCellsColors) {
     const addColumnCol = columnGroup.children[columnGroup.children.length - 1] as HTMLElement;
-    const {data, header} = AuxiliaryTableContentColors.CELL_COLORS;
+    const {data, header} = cellColors;
     addColumnCol.style.backgroundColor = isHighlight ? data.hover.backgroundColor : data.default.backgroundColor;
     const headerCell = addColumnCellsElementsRef[0];
     if (headerCell) AddNewColumnEvents.setHeaderStyle(headerCell, header, isHighlight);
   }
 
+  // prettier-ignore
   public static setEvents(at: ActiveTable, cellElement: HTMLElement): void {
-    const {columnGroupRef: columnGroup, addColumnCellsElementsRef} = at;
+    const {columnGroupRef: columnGroup, addColumnCellsElementsRef: ref, auxiliaryTableContentInternal: {cellColors}} = at;
     if (!columnGroup) return;
-    cellElement.onmouseenter = AddNewColumnEvents.toggleColor.bind(this, columnGroup, true, addColumnCellsElementsRef);
-    cellElement.onmouseleave = AddNewColumnEvents.toggleColor.bind(this, columnGroup, false, addColumnCellsElementsRef);
+    cellElement.onmouseenter = AddNewColumnEvents.toggleColor.bind(this, columnGroup, true, ref, cellColors);
+    cellElement.onmouseleave = AddNewColumnEvents.toggleColor.bind(this, columnGroup, false, ref, cellColors);
     cellElement.onclick = InsertNewColumn.insertEvent.bind(at);
   }
 }

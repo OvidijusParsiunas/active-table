@@ -6,7 +6,6 @@ import {DateCellInputElement} from './cellsWithTextDiv/dateCell/dateCellInputEle
 import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {CheckboxCellElement} from './checkboxCell/checkboxCellElement';
-import {ColumnDetails} from '../../utils/columnDetails/columnDetails';
 import {CaretDisplayFix} from '../../utils/browser/caretDisplayFix';
 import {ColumnWidth} from '../../types/columnsSettings';
 import {CellText} from '../../types/tableContent';
@@ -124,18 +123,18 @@ export class CellElement {
   }
 
   // prettier-ignore
-  private static setColumnWidth(tableElement: HTMLElement, cellElement: HTMLElement,
-      defaultWidth?: ColumnWidth, settings?: ColumnWidth) {
+  private static setColumnWidth(at: ActiveTable,
+      cellElement: HTMLElement, defaultWidth?: ColumnWidth, settings?: ColumnWidth) {
     if (settings && ColumnSettingsWidthUtils.isWidthDefined(settings)) {
-      ColumnSettingsWidthUtils.updateColumnWidth(tableElement, cellElement, settings, true);
+      ColumnSettingsWidthUtils.updateColumnWidth(at, cellElement, settings, true);
     } else {
-      cellElement.style.width = `${defaultWidth?.width || ColumnDetails.NEW_COLUMN_WIDTH}px`; // REF-36
+      cellElement.style.width = `${defaultWidth?.width || at.tableDimensions.newColumnWidth}px`; // REF-36
     }
   }
 
   // prettier-ignore
   public static createCellElement(at: ActiveTable, text: CellText, colIndex: number, isHeader: boolean) {
-    const {columnsSettings: {cellStyle, headerStyleProps}, columnsDetails, tableElementRef} = at;
+    const {columnsSettings: {cellStyle, headerStyleProps}, columnsDetails} = at;
     const columnDetails = columnsDetails[colIndex];
     const isOpenViaCellClick = at.columnsSettings.dropdown?.displaySettings?.openMethod?.cellClick;
     const cellElement = CellElement.createContentCell(isHeader, cellStyle,
@@ -146,7 +145,7 @@ export class CellElement {
     const isEditable = isHeader ? !isOpenViaCellClick && settings.isHeaderTextEditable : settings.isCellTextEditable;
     CellElement.prepContentEditable(cellElement, Boolean(isEditable), isOpenViaCellClick);
     // overwritten again if static table
-    if (isHeader) CellElement.setColumnWidth(tableElementRef as HTMLElement, cellElement, cellStyle, settings);
+    if (isHeader) CellElement.setColumnWidth(at, cellElement, cellStyle, settings);
     CellElement.setNewText(at, cellElement, text, true, false);
     return cellElement;
   }

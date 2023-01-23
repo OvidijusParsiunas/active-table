@@ -1,5 +1,8 @@
+import {TableBorderDimensionsUtils} from '../../elements/table/tableBorderDimensionsUtils';
 import {PossibleStringDimensions, StringDimensionUtils} from './stringDimensionUtils';
 import {GenericElementUtils} from '../elements/genericElementUtils';
+import {IndexColumn} from '../../elements/indexColumn/indexColumn';
+import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
 import {IndexColumnT} from '../../types/auxiliaryTableContent';
 import {TableDimensions} from '../../types/tableDimensions';
 import {OverflowUtils} from '../overflow/overflowUtils';
@@ -33,7 +36,7 @@ export class TableDimensionsUtils {
     const numberDimension = StringDimensionUtils.generateNumberDimensionFromClientString(key,
       parentElement, tableStyle, true, TableDimensionsUtils.MINIMAL_TABLE_WIDTH);
     if (numberDimension !== undefined) {
-      if (at.overflow) OverflowUtils.processNumberDimension(numberDimension);
+      if (at.overflow) OverflowUtils.processNumberDimension(tableDimensions, numberDimension);
       tableDimensions[key] = numberDimension.number;
       tableDimensions.isPercentage = numberDimension.isPercentage;
     }
@@ -77,6 +80,15 @@ export class TableDimensionsUtils {
   }
 
   public static getDefault() {
-    return {recordedParentWidth: 0, recordedParentHeight: 0, recordedWindowWidth: 0, recordedWindowHeight: 0};
+    return {
+      recordedParentWidth: 0,
+      recordedParentHeight: 0,
+      recordedWindowWidth: 0,
+      recordedWindowHeight: 0,
+      border: TableBorderDimensionsUtils.generateDefault(),
+      staticWidth: UNSET_NUMBER_IDENTIFIER,
+      newColumnWidth: 140,
+      indexColumnWidth: IndexColumn.DEFAULT_WIDTH,
+    };
   }
 }

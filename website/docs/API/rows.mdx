@@ -63,6 +63,10 @@ import Tabs from '@theme/Tabs';
 </TabItem>
 </Tabs>
 
+:::info
+Using this property unsets the default header and auxiliary hover color properties WORK
+:::
+
 <LineBreak></LineBreak>
 
 ### `stripedRows`
@@ -119,6 +123,10 @@ Stripe based styling for rows.
 </TabItem>
 </Tabs>
 
+:::info
+Using this property unsets the default header and auxiliary hover color properties WORK
+:::
+
 <LineBreak></LineBreak>
 
 ### `rowDropdown`
@@ -150,6 +158,7 @@ header row when set to `false`.
 <TableContainer>
   <active-table
     rowDropdown='{"displaySettings":{"isAvailable": true, "openMethod": {"overlayClick": true}}, "canEditHeaderRow": false}'
+    columnsSettings='{"dropdown":{"displaySettings":{"isAvailable": true, "openMethod": {"overlayClick": true } } } }'
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],

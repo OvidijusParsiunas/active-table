@@ -1,3 +1,4 @@
+import {TableBorderDimensions} from './tableBorderDimensions';
 import {InterfacesUnion} from './utilityTypes';
 
 // preserveNarrowColumns:
@@ -15,19 +16,23 @@ import {InterfacesUnion} from './utilityTypes';
 // (Please note that upon resizing the window when width is a % value - columns that are too narrow will not be removed
 // to preserve their data and the table size then has a chance of increasing beyond the set value)
 
+interface Initial {
+  recordedParentWidth: number;
+  recordedParentHeight: number;
+  recordedWindowWidth: number;
+  recordedWindowHeight: number;
+  border: TableBorderDimensions;
+  staticWidth: number; // total width of static content - index, add column and columns with a width in their settings
+  newColumnWidth: number;
+  indexColumnWidth: number;
+}
+
 type Parent = {
   // the reason why preserNarrowColumns is stored inside this object is because we temporarily need to overwrite it
   // when resizing the table and we do not want to re-render
   preserveNarrowColumns?: boolean;
   isColumnIndexCellTextWrapped?: boolean; // REF-19
 } & Initial;
-
-interface Initial {
-  recordedParentWidth: number;
-  recordedParentHeight: number;
-  recordedWindowWidth: number;
-  recordedWindowHeight: number;
-}
 
 interface Width extends Parent {
   width: number;

@@ -1,6 +1,7 @@
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
 import {SelectProperties, SelectDropdownStyle} from '../../../types/selectProperties';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
+import {TableBorderDimensions} from '../../../types/tableBorderDimensions';
 import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
 import {SelectDropdownItemEvents} from './selectDropdownItemEvents';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
@@ -9,7 +10,6 @@ import {SelectDropdownScrollbar} from './selectDropdownScrollbar';
 import {SelectDropdownT} from '../../../types/columnDetails';
 import {SelectDropdownEvents} from './selectDropdownEvents';
 import {SelectDropdownItem} from './selectDropdownItem';
-import {TableElement} from '../../table/tableElement';
 import {CellText} from '../../../types/tableContent';
 import {CellElement} from '../../cell/cellElement';
 import {ActiveTable} from '../../../activeTable';
@@ -27,28 +27,36 @@ export class SelectDropdown {
     return `4px`;
   }
 
-  private static generateBottomPosition(cellElement: HTMLElement, textContainerElement: HTMLElement) {
+  // prettier-ignore
+  private static generateBottomPosition(cellElement: HTMLElement, textContainerElement: HTMLElement,
+      borderDimensions: TableBorderDimensions) {
     const tableElement = cellElement.offsetParent as HTMLElement;
-    const totalVerticalBorder = TableElement.BORDER_DIMENSIONS.bottomWidth + TableElement.BORDER_DIMENSIONS.topWidth;
+    const totalVerticalBorder = borderDimensions.bottomWidth + borderDimensions.topWidth;
     const cellTop = tableElement.offsetHeight - totalVerticalBorder - cellElement.offsetTop;
     const textContainerTop = cellTop - textContainerElement.offsetTop;
     return `${textContainerTop + 6}px`;
   }
 
-  private static generateTopPosition(cellElement: HTMLElement, textContainerElement: HTMLElement) {
+  // prettier-ignore
+  private static generateTopPosition(cellElement: HTMLElement, textContainerElement: HTMLElement,
+      borderDimensions: TableBorderDimensions) {
     const topPadding = LabelCellTextElement.isLabelText(textContainerElement)
       ? textContainerElement.offsetTop + textContainerElement.offsetHeight + 2
       : cellElement.offsetHeight - 8;
-    return `${ElementOffset.processTop(cellElement.offsetTop + topPadding)}px`;
+    return `${ElementOffset.processTop(cellElement.offsetTop + topPadding, borderDimensions)}px`;
   }
 
-  private static generateLeftPosition(cellElement: HTMLElement, textContainerElement: HTMLElement): PX {
+  // prettier-ignore
+  private static generateLeftPosition(cellElement: HTMLElement, textContainerElement: HTMLElement,
+      borderDimensions: TableBorderDimensions): PX {
     const leftPadding = LabelCellTextElement.isLabelText(textContainerElement) ? textContainerElement.offsetLeft : 1;
-    return `${ElementOffset.processLeft(cellElement.offsetLeft + leftPadding)}px`;
+    return `${ElementOffset.processLeft(cellElement.offsetLeft + leftPadding, borderDimensions)}px`;
   }
 
-  private static correctPosition(dropdown: HTMLElement, cellElement: HTMLElement, textContainerElement: HTMLElement) {
-    const details = ElementVisibility.getDetailsInWindow(dropdown);
+  // prettier-ignore
+  private static correctPosition(dropdown: HTMLElement, cellElement: HTMLElement, textContainerElement: HTMLElement,
+      borderDimensions: TableBorderDimensions) {
+    const details = ElementVisibility.getDetailsInWindow(dropdown, borderDimensions);
     if (!details.isFullyVisible) {
       if (details.blockingSides.has(SIDE.RIGHT)) {
         dropdown.style.left = '';
@@ -59,7 +67,8 @@ export class SelectDropdown {
         dropdown.style.top = '';
         // the reason why bottom property is used instead of top is because the removal of a select item
         // reduces the dropdown height and the bottom property keeps the dropdown position close to cell
-        dropdown.style.bottom = SelectDropdown.generateBottomPosition(cellElement, textContainerElement);
+        dropdown.style.bottom = SelectDropdown.generateBottomPosition(
+          cellElement, textContainerElement, borderDimensions);
       }
     }
   }
@@ -75,29 +84,30 @@ export class SelectDropdown {
     }
   }
 
-  private static setPosition(dropdown: HTMLElement, cellElement: HTMLElement) {
+  private static setPosition(dropdown: HTMLElement, cellElement: HTMLElement, borderDimensions: TableBorderDimensions) {
     const textContainerElement = cellElement.children[0] as HTMLElement;
     dropdown.style.bottom = '';
     dropdown.style.right = '';
-    dropdown.style.left = SelectDropdown.generateLeftPosition(cellElement, textContainerElement);
-    dropdown.style.top = SelectDropdown.generateTopPosition(cellElement, textContainerElement);
+    dropdown.style.left = SelectDropdown.generateLeftPosition(cellElement, textContainerElement, borderDimensions);
+    dropdown.style.top = SelectDropdown.generateTopPosition(cellElement, textContainerElement, borderDimensions);
     const tableElement = (dropdown.parentElement as HTMLElement).parentElement as HTMLElement;
     const overflowElement = tableElement.parentElement as HTMLElement;
     if (OverflowUtils.isOverflowElement(overflowElement)) {
       SelectDropdown.correctPositionForOverflow(dropdown, tableElement, overflowElement);
     } else {
-      SelectDropdown.correctPosition(dropdown, cellElement, textContainerElement);
+      SelectDropdown.correctPosition(dropdown, cellElement, textContainerElement, borderDimensions);
     }
   }
 
   // prettier-ignore
   public static updateSelectDropdown(textContainerElement: HTMLElement, dropdown: SelectDropdownT,
-      defaultText: CellText, updateCellText: boolean, matchingCellElement?: HTMLElement) {
+      borderDimensions: TableBorderDimensions, defaultText: CellText, updateCellText: boolean,
+      matchingCellElement?: HTMLElement) {
     const textElement = CellElement.getTextElement(textContainerElement);
     SelectDropdownItem.attemptHighlightMatchingItemWithCell(textElement,
       dropdown, defaultText, updateCellText, matchingCellElement)
     if (updateCellText) {
-      SelectDropdown.setPosition(dropdown.element, textElement.parentElement as HTMLElement);
+      SelectDropdown.setPosition(dropdown.element, textElement.parentElement as HTMLElement, borderDimensions);
     }
   }
 
@@ -143,7 +153,7 @@ export class SelectDropdown {
       dropdownEl.scrollLeft = 0;
       SelectDropdown.correctWidthForOverflow(dropdownEl);
       SelectDropdownScrollbar.setProperties(selectDropdown);
-      SelectDropdown.setPosition(dropdownEl, cellElement);
+      SelectDropdown.setPosition(dropdownEl, cellElement, at.tableDimensions.border);
       const textElement = cellElement.children[0] as HTMLElement;
       SelectDropdown.focusItemOnDropdownOpen(textElement, selectDropdown, defaultText);
       return true;

@@ -5,9 +5,9 @@ import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils'
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
+import {TableDimensions} from '../../../types/tableDimensions';
 import {Browser} from '../../../utils/browser/browser';
 import {RowDropdownEvents} from './rowDropdownEvents';
-import {TableElement} from '../../table/tableElement';
 import {CellElement} from '../../cell/cellElement';
 import {RowDropdownItem} from './rowDropdownItem';
 import {ActiveTable} from '../../../activeTable';
@@ -18,11 +18,12 @@ import {Dropdown} from '../dropdown';
 export class RowDropdown {
   // prettier-ignore
   public static hide(at: ActiveTable) {
-    const {activeOverlayElements: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element, rowIndex}}} = at;
+    const {activeOverlayElements: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element, rowIndex}},
+      auxiliaryTableContentInternal: {cellColors, displayIndexColumn}} = at;
     if (!rowDropdown || !fullTableOverlay || !element) return
     Dropdown.hide(rowDropdown, fullTableOverlay);
-    const cellColors = AuxiliaryTableContentColors.getColorsBasedOnParam(rowIndex as number);
-    if (at.auxiliaryTableContentInternal.displayIndexColumn) CellHighlightUtils.fade(element, cellColors.default);
+    const colors = AuxiliaryTableContentColors.getColorsBasedOnParam(cellColors, rowIndex as number);
+    if (displayIndexColumn) CellHighlightUtils.fade(element, colors.default);
     DropdownItemHighlightUtils.fadeCurrentlyHighlighted(at.activeOverlayElements);
     setTimeout(() => {
       // in a timeout because upon pressing esc/enter key on dropdown, the window event is fired after which checks it
@@ -40,12 +41,14 @@ export class RowDropdown {
     }
   }
 
-  private static correctPositionWhenBottomOverflow(dropdown: HTMLElement, initialTopValue: PX) {
-    const tableTopOffset = (dropdown.parentElement as HTMLElement).offsetTop + TableElement.BORDER_DIMENSIONS.topWidth;
+  // prettier-ignore
+  private static correctPositionWhenBottomOverflow(tableDimensions: TableDimensions, dropdown: HTMLElement,
+      initialTopValue: PX) {
+    const tableTopOffset = (dropdown.parentElement as HTMLElement).offsetTop + tableDimensions.border.topWidth;
     let newTopValue = window.pageYOffset + window.innerHeight - tableTopOffset - dropdown.offsetHeight;
-    if (Browser.IS_FIREFOX) newTopValue += TableElement.BORDER_DIMENSIONS.topWidth;
+    if (Browser.IS_FIREFOX) newTopValue += tableDimensions.border.topWidth;
     dropdown.style.top = `${newTopValue}px`;
-    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdown);
+    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdown, tableDimensions.border);
     if (!visibilityDetails.isFullyVisible && visibilityDetails.blockingSides.has(SIDE.TOP)) {
       dropdown.style.top = initialTopValue;
     }
@@ -53,19 +56,19 @@ export class RowDropdown {
 
   private static getLeft(at: ActiveTable, cellElement: HTMLElement) {
     const cellClick = at.rowDropdown.displaySettings.openMethod?.cellClick as boolean;
-    return `${ElementOffset.processWidth(cellClick ? cellElement.offsetWidth : 5)}px`;
+    return `${ElementOffset.processWidth(cellClick ? cellElement.offsetWidth : 5, at.tableDimensions.border)}px`;
   }
 
   private static displayAndSetPosition(at: ActiveTable, cellElement: HTMLElement, dropdown: HTMLElement) {
-    const initialTopValue: PX = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
+    const initialTopValue: PX = `${ElementOffset.processTop(cellElement.offsetTop, at.tableDimensions.border)}px`;
     dropdown.style.top = initialTopValue;
     dropdown.style.left = RowDropdown.getLeft(at, cellElement);
     // needs to be displayed here to evalute if in view port
     Dropdown.display(dropdown);
-    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdown);
+    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdown, at.tableDimensions.border);
     if (!visibilityDetails.isFullyVisible) {
       if (visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
-        RowDropdown.correctPositionWhenBottomOverflow(dropdown, initialTopValue);
+        RowDropdown.correctPositionWhenBottomOverflow(at.tableDimensions, dropdown, initialTopValue);
       }
     }
   }
@@ -82,7 +85,7 @@ export class RowDropdown {
         dropdown.style.top = `${rowOffset + borderTopWidth}px`; // REF-37
       }
     } else {
-      dropdown.style.top = `${ElementOffset.processTop(cellElement.offsetTop)}px`;
+      dropdown.style.top = `${ElementOffset.processTop(cellElement.offsetTop, at.tableDimensions.border)}px`;
     }
     dropdown.style.left = RowDropdown.getLeft(at, cellElement);
   }
