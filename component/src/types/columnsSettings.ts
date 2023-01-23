@@ -1,4 +1,5 @@
 import {HoverableElementStyleClient} from './hoverableElementStyle';
+import {ColumnDropdownSettings} from './columnDropdownSettings';
 import {DEFAULT_COLUMN_TYPES} from '../enums/columnType';
 import {HeaderIconStyle} from './headerIconStyle';
 import {InterfacesUnion} from './utilityTypes';
@@ -26,14 +27,7 @@ interface Parent<CellStyle> {
   // If not provided activeTypeName will default to first of the following:
   // First type to not have validation/First available type/'Text'
   activeTypeName?: string;
-  isSortAvailable?: boolean; // true by default
-  isDeleteAvailable?: boolean; // true by default
-  isInsertLeftAvailable?: boolean; // true by default
-  // please note that when this is true and the user pastes data before this column - instead of overwriting proceding
-  // columns - new ones will instead be inserted before the subject column, also if the user pastes data on it - no
-  // proceeding columns will be overwritten and no new ones will be inserted
-  isInsertRightAvailable?: boolean; // true by default
-  isMoveAvailable?: boolean; // true by default
+  dropdown?: ColumnDropdownSettings;
 }
 
 // REF-24

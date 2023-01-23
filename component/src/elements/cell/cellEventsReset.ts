@@ -35,7 +35,7 @@ export class CellEventsReset {
   }
 
   private static setHeaderCellEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (at.columnDropdownDisplaySettings.openMethod?.cellClick) {
+    if (at.columnsSettings.dropdown?.displaySettings?.openMethod?.cellClick) {
       HeaderCellEvents.setEvents(at, cellElement, columnIndex);
     } else {
       DataCellEvents.setEvents(at, cellElement, rowIndex, columnIndex);

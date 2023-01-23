@@ -9,7 +9,7 @@ import {ActiveTable} from '../../activeTable';
 export class ColumnSettingsAuxBorderUtils {
   // prettier-ignore
   private static toggleAuxiliaryBorder(auxElements: HTMLElement[], columnElements: HTMLElement[],
-      subjectBorder: keyof BordersOverwrittenBySiblings, defaultColumnsSettings: ColumnsSettingsDefault) {
+      subjectBorder: keyof BordersOverwrittenBySiblings, columnsSettings: ColumnsSettingsDefault) {
     if (auxElements.length > 0) {
       // subject is the auxiliary column and sibling is the data column
       const {subjectBorderStyle, siblingBorderStyle} = ColumnSettingsBorderUtils.getColumnBorderStyles(subjectBorder);
@@ -18,7 +18,7 @@ export class ColumnSettingsAuxBorderUtils {
       // if data column does not have a border, set the aux border (if we had unset it)
       if (!ColumnSettingsBorderUtils.isBorderDisplayed(columnHeaderElement, siblingBorderStyle)) {
         if (auxHeaderElement.style[subjectBorderStyle] === ColumnSettingsBorderUtils.UNSET_PX) {
-          ResetColumnStyles.applyDefaultStyles(auxElements, defaultColumnsSettings);          
+          ResetColumnStyles.applyDefaultStyles(auxElements, columnsSettings);          
         }
       // if data column does have a border - unset the aux border if it has one
       } else {
@@ -32,17 +32,16 @@ export class ColumnSettingsAuxBorderUtils {
       leftColumnDetails: ColumnDetailsT, rightColumnDetails: ColumnDetailsT) {
     const currentColumn = currentColumnDetails || leftColumnDetails; // when last column removed - use the left one instead
     if (!currentColumn) return;
-    const {defaultColumnsSettings, addColumnCellsElementsRef,
+    const {columnsSettings, addColumnCellsElementsRef,
       auxiliaryTableContentInternal: {displayAddColumnCell, displayIndexColumn}} = at;
     if (!rightColumnDetails && displayAddColumnCell) {
       ColumnSettingsAuxBorderUtils.toggleAuxiliaryBorder(
-        addColumnCellsElementsRef, currentColumn.elements, 'left', defaultColumnsSettings);
+        addColumnCellsElementsRef, currentColumn.elements, 'left', columnsSettings);
     }
     if (!leftColumnDetails && displayIndexColumn) {
       const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.content, 0);
       const indexCells = rowElements.map((row) => row.children[0]) as HTMLElement[];
-      ColumnSettingsAuxBorderUtils.toggleAuxiliaryBorder(
-        indexCells, currentColumn.elements, 'right', defaultColumnsSettings);
+      ColumnSettingsAuxBorderUtils.toggleAuxiliaryBorder(indexCells, currentColumn.elements, 'right', columnsSettings);
     }
   }
 }

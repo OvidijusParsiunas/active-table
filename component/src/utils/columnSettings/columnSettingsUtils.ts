@@ -2,10 +2,12 @@ import {ColumnDropdownCellOverlay} from '../../elements/dropdown/columnDropdown/
 import {HeaderIconCellElement} from '../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
+import {DropdownDisplaySettingsUtil} from '../../elements/dropdown/dropdownDisplaySettingsUtil';
 import {ColumnSettingsInternal, ColumnsSettingsMap} from '../../types/columnsSettingsInternal';
 import {CustomColumnsSettings, CustomColumnSettings} from '../../types/columnsSettings';
 import {ColumnSettingsDefaultTextUtils} from './columnSettingsDefaultTextUtils';
 import {StringDimensionUtils} from '../tableDimensions/stringDimensionUtils';
+import {ColumnDropdownSettings} from '../../types/columnDropdownSettings';
 import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
@@ -61,7 +63,7 @@ export class ColumnSettingsUtils {
     const columnDetails = columnsDetails[columnIndex as number];
     const oldSettings = columnDetails.settings;
     const newSettings = customColumnsSettingsInternal[CellElement.getText(cellElement as HTMLElement)]
-      || at.defaultColumnsSettings;
+      || at.columnsSettings;
     return { oldSettings, newSettings, areSettingsDifferent: oldSettings !== newSettings }; 
   }
 
@@ -70,6 +72,15 @@ export class ColumnSettingsUtils {
       onColMove = false) {
     const {oldSettings, newSettings, areSettingsDifferent} = ColumnSettingsUtils.parseSettingsChange(at);
     if (areSettingsDifferent) ColumnSettingsUtils.change(at, cellElement, colIndex, oldSettings, newSettings, onColMove);
+  }
+
+  private static setDropdownSettings(customDropdown?: ColumnDropdownSettings, defDropdown?: ColumnDropdownSettings) {
+    if (!customDropdown || !defDropdown) return;
+    customDropdown.isSortAvailable ??= defDropdown.isSortAvailable;
+    customDropdown.isDeleteAvailable ??= defDropdown.isDeleteAvailable;
+    customDropdown.isInsertLeftAvailable ??= defDropdown.isInsertLeftAvailable;
+    customDropdown.isInsertRightAvailable ??= defDropdown.isInsertRightAvailable;
+    customDropdown.isMoveAvailable ??= defDropdown.isMoveAvailable;
   }
 
   // prettier-ignore
@@ -98,6 +109,7 @@ export class ColumnSettingsUtils {
       internalSettings.stylePrecedence = true; // REF-23
     }
     ColumnSettingsUtils.processCellDimensions(settings, defSettings);
+    ColumnSettingsUtils.setDropdownSettings(settings.dropdown, defSettings.dropdown);
     Object.keys(defSettings).forEach((key: string) => {
       (internalSettings as unknown as GenericObject)[key] ??= defSettings[key as keyof ColumnsSettingsDefault] as string;
     });
@@ -111,22 +123,23 @@ export class ColumnSettingsUtils {
     }, {});
   }
 
-  private static processDefaultColumnsSettings(defaultColumnsSettings: ColumnsSettingsDefault) {
-    defaultColumnsSettings.defaultText ??= EMPTY_STRING;
-    defaultColumnsSettings.isDefaultTextRemovable ??= true;
-    defaultColumnsSettings.isCellTextEditable ??= true;
-    defaultColumnsSettings.isHeaderTextEditable ??= defaultColumnsSettings.isCellTextEditable;
-    defaultColumnsSettings.isSortAvailable ??= true;
-    defaultColumnsSettings.isDeleteAvailable ??= true;
-    defaultColumnsSettings.isInsertLeftAvailable ??= true;
-    defaultColumnsSettings.isInsertRightAvailable ??= true;
-    defaultColumnsSettings.isMoveAvailable ??= true;
+  private static processDefaultColumnsSettings(columnsSettings: ColumnsSettingsDefault) {
+    columnsSettings.defaultText ??= EMPTY_STRING;
+    columnsSettings.isDefaultTextRemovable ??= true;
+    columnsSettings.isCellTextEditable ??= true;
+    columnsSettings.isHeaderTextEditable ??= columnsSettings.isCellTextEditable;
+    // displaySettings is only available for the default columnsSettings
+    columnsSettings.dropdown ??= {displaySettings: {openMethod: {cellClick: true}}};
+    DropdownDisplaySettingsUtil.process(columnsSettings.dropdown.displaySettings);
+    columnsSettings.dropdown.isSortAvailable ??= true;
+    columnsSettings.dropdown.isDeleteAvailable ??= true;
+    columnsSettings.dropdown.isInsertLeftAvailable ??= true;
+    columnsSettings.dropdown.isInsertRightAvailable ??= true;
+    columnsSettings.dropdown.isMoveAvailable ??= true;
   }
 
-  // prettier-ignore
   public static setUpInternalSettings(at: ActiveTable) {
-    ColumnSettingsUtils.processDefaultColumnsSettings(at.defaultColumnsSettings);
-    at.customColumnsSettingsInternal = ColumnSettingsUtils.createInternalMap(
-      at.customColumnsSettings, at.defaultColumnsSettings);
+    ColumnSettingsUtils.processDefaultColumnsSettings(at.columnsSettings);
+    at.customColumnsSettingsInternal = ColumnSettingsUtils.createInternalMap(at.customColumnsSettings, at.columnsSettings);
   }
 }

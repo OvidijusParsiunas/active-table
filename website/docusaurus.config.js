@@ -90,12 +90,11 @@ const config = {
   // // // rowDropdown: RowDropdownSettings;
   // // // maxRows?: number;
   // // columns:
-  // // // defaultColumnsSettings: ColumnsSettingsDefault;
+  // // // columnsSettings: ColumnsSettingsDefault;
   // // // customColumnsSettings: CustomColumnsSettings;
   // // // preserveNarrowColumns: boolean;
   // // // maxColumns?: number;
   // // // columnResizerStyle: UserSetColumnSizerStyle;
-  // // // columnDropdownDisplaySettings: DropdownDisplaySettings;
   // // // overwriteColumnWidths: ColumnsWidths | null;
   // // events:
   // // // onCellUpdate: OnCellUpdate;

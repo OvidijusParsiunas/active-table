@@ -57,7 +57,7 @@ export class ColumnDropdown {
   }
 
   public static getTopPosition(at: ActiveTable, cellElement: HTMLElement) {
-    const isOverlayClick = at.columnDropdownDisplaySettings.openMethod?.overlayClick;
+    const isOverlayClick = at.columnsSettings.dropdown?.displaySettings.openMethod?.overlayClick;
     if (at.overflowInternal) {
       const overflowElement = at.overflowInternal.overflowContainer;
       return `${isOverlayClick ? overflowElement.scrollTop + 1 : overflowElement.scrollTop + cellElement.offsetHeight}px`;

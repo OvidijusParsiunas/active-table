@@ -49,13 +49,13 @@ export class AuxiliaryTableContentColors {
       colorKey: keyof CellStateColorProperties, defaultColor: string): string {
     const {styleProps} = at.auxiliaryTableContentInternal;
     return styleProps?.hoverColors?.[colorKey] || styleProps?.default?.[colorKey]
-      || at.defaultColumnsSettings.cellStyle?.[colorKey] || defaultColor;
+      || at.columnsSettings.cellStyle?.[colorKey] || defaultColor;
   }
 
   // prettier-ignore
   private static getDefaultColorValue(at: ActiveTable, colorKey: keyof CellStateColorProperties) {
     return at.auxiliaryTableContentInternal.styleProps?.default?.[colorKey]
-      || at.defaultColumnsSettings.cellStyle?.[colorKey] || '';
+      || at.columnsSettings.cellStyle?.[colorKey] || '';
   }
 
   // prettier-ignore
@@ -74,7 +74,7 @@ export class AuxiliaryTableContentColors {
     };
     AuxiliaryTableContentColors.CELL_COLORS.data = cellColors;
     AuxiliaryTableContentColors.CELL_COLORS.header = cellColors;
-    const {auxiliaryTableContentInternal: {inheritHeaderStyle}, defaultColumnsSettings: {headerStyleProps}} = at;
+    const {auxiliaryTableContentInternal: {inheritHeaderStyle}, columnsSettings: {headerStyleProps}} = at;
     if (inheritHeaderStyle === undefined || inheritHeaderStyle === true) {
       AuxiliaryTableContentColors.overwriteHeaderWithInheritedColors(headerStyleProps)
     } else {

@@ -14,23 +14,24 @@ export class RowDropdownSettingsUtil {
   }
 
   // prettier-ignore
-  private static preprocessOpenMethod(rowSettings: RowDropdownSettings, columnSettings: DropdownDisplaySettings) {
+  private static preprocessOpenMethod(rowSettings: RowDropdownSettings, displaySettings?: DropdownDisplaySettings) {
+    if (!displaySettings) return;
     // if no openMethod defined and column settings has one, use its approach for open instead
     if ((rowSettings.displaySettings.openMethod === undefined
-        || Object.keys(rowSettings.displaySettings.openMethod).length === 0) && columnSettings.openMethod) {
-      rowSettings.displaySettings.openMethod = JSON.parse(JSON.stringify(columnSettings.openMethod));
+        || Object.keys(rowSettings.displaySettings.openMethod).length === 0) && displaySettings.openMethod) {
+      rowSettings.displaySettings.openMethod = JSON.parse(JSON.stringify(displaySettings.openMethod));
     }
   }
 
   public static process(at: ActiveTable) {
-    const {rowDropdown, auxiliaryTableContentInternal, columnDropdownDisplaySettings} = at;
+    const {rowDropdown, auxiliaryTableContentInternal, columnsSettings} = at;
     rowDropdown.isInsertUpAvailable ??= true;
     rowDropdown.isInsertDownAvailable ??= true;
     rowDropdown.isMoveAvailable ??= true;
     rowDropdown.canEditHeaderRow ??= true;
     rowDropdown.isDeleteAvailable ??= true;
     rowDropdown.displaySettings ??= {};
-    RowDropdownSettingsUtil.preprocessOpenMethod(rowDropdown, columnDropdownDisplaySettings);
+    RowDropdownSettingsUtil.preprocessOpenMethod(rowDropdown, columnsSettings.dropdown?.displaySettings);
     DropdownDisplaySettingsUtil.process(rowDropdown.displaySettings);
     RowDropdownSettingsUtil.postprocessOpenMethod(rowDropdown, auxiliaryTableContentInternal);
   }

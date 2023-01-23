@@ -135,9 +135,9 @@ export class CellElement {
 
   // prettier-ignore
   public static createCellElement(at: ActiveTable, text: CellText, colIndex: number, isHeader: boolean) {
-    const {defaultColumnsSettings: {cellStyle, headerStyleProps}, columnsDetails, tableElementRef} = at;
+    const {columnsSettings: {cellStyle, headerStyleProps}, columnsDetails, tableElementRef} = at;
     const columnDetails = columnsDetails[colIndex];
-    const isOpenViaCellClick = at.columnDropdownDisplaySettings.openMethod?.cellClick;
+    const isOpenViaCellClick = at.columnsSettings.dropdown?.displaySettings?.openMethod?.cellClick;
     const cellElement = CellElement.createContentCell(isHeader, cellStyle,
       isHeader ? headerStyleProps?.default : {}, isOpenViaCellClick);
     const {settings} = columnDetails;

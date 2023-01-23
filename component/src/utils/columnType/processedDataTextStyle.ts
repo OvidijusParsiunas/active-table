@@ -17,9 +17,9 @@ export class ProcessedDataTextStyle {
   // prettier-ignore
   private static setCustomStyle(changeStyle: CustomTextProcessing['changeStyle'], text: CellText,
       columnDetails: ColumnDetailsT, processedStyle: CellProcessedTextStyle,
-      textContainerElement: HTMLElement, defaultColumnsSettings: ColumnsSettingsDefault) {
+      textContainerElement: HTMLElement, columnsSettings: ColumnsSettingsDefault) {
     if (changeStyle) {
-      ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, textContainerElement, defaultColumnsSettings);
+      ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, textContainerElement, columnsSettings);
       const newStyle = changeStyle(String(text));
       Object.assign(textContainerElement.style, newStyle);
       processedStyle.lastAppliedStyle = newStyle;
@@ -39,16 +39,16 @@ export class ProcessedDataTextStyle {
   // prettier-ignore
   private static setStyle(isValid: boolean, columnDetails: ColumnDetailsT, processedStyle: CellProcessedTextStyle,
       customTextProcessing: CustomTextProcessing | undefined, textContainerElement: HTMLElement,
-      defaultColumnsSettings: ColumnsSettingsDefault): boolean {
+      columnsSettings: ColumnsSettingsDefault): boolean {
     let wasValidationStyleSet = false; // REF-3
     if (!isValid) {
       if (customTextProcessing?.changeStyle) {
-        ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, textContainerElement, defaultColumnsSettings);
+        ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, textContainerElement, columnsSettings);
       }
       ProcessedDataTextStyle.setFailedValidationStyle(columnDetails, processedStyle, textContainerElement);
       wasValidationStyleSet = true;
     } else if (!customTextProcessing?.changeStyle) { // REF-3 - set to default if no custom processing will occur
-      ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, textContainerElement, defaultColumnsSettings);
+      ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, textContainerElement, columnsSettings);
       processedStyle.lastAppliedStyle = {};
       wasValidationStyleSet = true;
     }
@@ -70,13 +70,13 @@ export class ProcessedDataTextStyle {
       const isValid = validationFunc(text);
       if (overwrite || processedStyle.isValid !== isValid) {
         wasValidationStyleSet = ProcessedDataTextStyle.setStyle(isValid, columnDetails, processedStyle,
-          customTextProcessing, textContainerElement, at.defaultColumnsSettings);
+          customTextProcessing, textContainerElement, at.columnsSettings);
         processedStyle.isValid = isValid;
       }
     }
     if (!wasValidationStyleSet && customTextProcessing?.changeStyle) { // REF-3
       ProcessedDataTextStyle.setCustomStyle(customTextProcessing.changeStyle, text, columnDetails, processedStyle,
-        textContainerElement, at.defaultColumnsSettings);
+        textContainerElement, at.columnsSettings);
     }
   }
 
@@ -94,7 +94,7 @@ export class ProcessedDataTextStyle {
     columnDetails.elements.slice(1).forEach((element, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
       const processedStyle = columnDetails.processedStyle[relativeRowIndex];
-      ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, element, at.defaultColumnsSettings, oldCellStyle);
+      ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, element, at.columnsSettings, oldCellStyle);
     });
   }
 

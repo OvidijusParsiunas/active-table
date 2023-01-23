@@ -37,7 +37,7 @@ export class AddNewColumnElement {
       AddNewColumnElement.ADD_COLUMN_CELL_CLASS
     );
     // backgroundColor controlled by column group - REF-17
-    Object.assign(cell.style, at.defaultColumnsSettings.cellStyle, {backgroundColor: ''});
+    Object.assign(cell.style, at.columnsSettings.cellStyle, {backgroundColor: ''});
     AddNewColumnEvents.setEvents(at, cell);
     return cell;
   }
@@ -48,7 +48,7 @@ export class AddNewColumnElement {
     headerCell.innerText = '+';
     Object.assign(
       headerCell.style,
-      at.defaultColumnsSettings.headerStyleProps?.default,
+      at.columnsSettings.headerStyleProps?.default,
       AuxiliaryTableContentColors.CELL_COLORS.header.default
     );
     return headerCell;

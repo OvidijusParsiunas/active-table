@@ -79,7 +79,7 @@ export class DataCellEvents {
   }
 
   private static blurCell(this: ActiveTable, rowIndex: number, columnIndex: number, event: Event) {
-    if (rowIndex === 0 && !this.columnDropdownDisplaySettings.openMethod?.cellClick) {
+    if (rowIndex === 0 && !this.columnsSettings.dropdown?.displaySettings?.openMethod?.cellClick) {
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, event.target as HTMLElement, columnIndex);
     }
     DataCellEvents.blur(this, rowIndex, columnIndex, event.target as HTMLElement);
@@ -87,7 +87,8 @@ export class DataCellEvents {
 
   // textContainerElement can be cell element for data cell, text element for select and date cells
   public static prepareText(at: ActiveTable, rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
-    if (CaretDisplayFix.isIssueBrowser() && (rowIndex > 0 || !at.columnDropdownDisplaySettings.openMethod?.cellClick)) {
+    const openViaCellClick = at.columnsSettings.dropdown?.displaySettings?.openMethod?.cellClick;
+    if (CaretDisplayFix.isIssueBrowser() && (rowIndex > 0 || !openViaCellClick)) {
       // THIS HAS TO BE CALLED IN A FOCUS EVENT!!!!!!!!!!!!!!!!!
       CaretDisplayFix.setContentEditable(textContainerElement);
     }

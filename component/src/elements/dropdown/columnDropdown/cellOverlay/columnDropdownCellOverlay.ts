@@ -10,15 +10,15 @@ export class ColumnDropdownCellOverlay {
     columnDropdownCellOverlay.style.backgroundColor = overlayStyle?.default?.backgroundColor || '';
   }
 
-  public static resetDefaultColor(displaySettings: DropdownDisplaySettings, columnDropdownCellOverlay: HTMLElement) {
-    const overlayStyle = displaySettings.overlayStyle;
+  public static resetDefaultColor(columnDropdownCellOverlay: HTMLElement, displaySettings?: DropdownDisplaySettings) {
+    const overlayStyle = displaySettings?.overlayStyle;
     if (overlayStyle?.hover?.backgroundColor) {
       ColumnDropdownCellOverlay.setDefault(columnDropdownCellOverlay, overlayStyle);
     }
   }
 
-  public static setHoverColor(displaySettings: DropdownDisplaySettings, columnDetails: ColumnDetailsT) {
-    const hoverBackgroundColor = displaySettings.overlayStyle?.hover?.backgroundColor;
+  public static setHoverColor(columnDetails: ColumnDetailsT, displaySettings?: DropdownDisplaySettings) {
+    const hoverBackgroundColor = displaySettings?.overlayStyle?.hover?.backgroundColor;
     if (hoverBackgroundColor) columnDetails.columnDropdownCellOverlay.style.backgroundColor = hoverBackgroundColor;
   }
 
@@ -64,7 +64,8 @@ export class ColumnDropdownCellOverlay {
   }
 
   public static add(at: ActiveTable, columnIndex: number) {
-    const columnDropdownCellOverlay = ColumnDropdownCellOverlay.create(at.columnDropdownDisplaySettings.overlayStyle);
+    const overlayStyle = at.columnsSettings.dropdown?.displaySettings.overlayStyle;
+    const columnDropdownCellOverlay = ColumnDropdownCellOverlay.create(overlayStyle);
     const headerCell = at.columnsDetails[columnIndex].elements[0];
     const cellDividerElement = headerCell.nextSibling as HTMLElement;
     cellDividerElement.appendChild(columnDropdownCellOverlay);

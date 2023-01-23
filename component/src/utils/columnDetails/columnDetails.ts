@@ -15,48 +15,48 @@ export class ColumnDetails {
   public static NEW_COLUMN_WIDTH = 140;
 
   // prettier-ignore
-  private static getHeaderDefaultColor(defaultColumnsSettings: ColumnsSettingsDefault,
+  private static getHeaderDefaultColor(columnsSettings: ColumnsSettingsDefault,
       key: keyof CellStateColorProperties, defaultColor: string, settings?: ColumnSettingsInternal) {
     return settings?.headerStyleProps?.default?.[key] || settings?.cellStyle?.[key] ||
-      defaultColumnsSettings.headerStyleProps?.default?.[key] || defaultColumnsSettings.cellStyle?.[key] || defaultColor;
+      columnsSettings.headerStyleProps?.default?.[key] || columnsSettings.cellStyle?.[key] || defaultColor;
   }
 
   // prettier-ignore
-  private static getHeaderHoverColor(defaultColumnsSettings: ColumnsSettingsDefault,
+  private static getHeaderHoverColor(columnsSettings: ColumnsSettingsDefault,
       key: keyof CellStateColorProperties, defaultColor: string, settings?: ColumnSettingsInternal) {
-    return settings?.headerStyleProps?.hoverColors?.[key] || defaultColumnsSettings.headerStyleProps?.hoverColors?.[key] ||
-      ColumnDetails.getHeaderDefaultColor(defaultColumnsSettings, key, defaultColor, settings);
+    return settings?.headerStyleProps?.hoverColors?.[key] || columnsSettings.headerStyleProps?.hoverColors?.[key] ||
+      ColumnDetails.getHeaderDefaultColor(columnsSettings, key, defaultColor, settings);
   }
 
   // prettier-ignore
-  public static createHeaderStateColors(defaultColumnsSettings: ColumnsSettingsDefault,
+  public static createHeaderStateColors(columnsSettings: ColumnsSettingsDefault,
       settings?: ColumnSettingsInternal) {
     return {
       hover: {
-        color: ColumnDetails.getHeaderHoverColor(defaultColumnsSettings,
+        color: ColumnDetails.getHeaderHoverColor(columnsSettings,
           'color', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES['color'], settings),
-        backgroundColor: ColumnDetails.getHeaderHoverColor(defaultColumnsSettings,
+        backgroundColor: ColumnDetails.getHeaderHoverColor(columnsSettings,
           'backgroundColor', CellHighlightUtils.DEFAULT_HOVER_PROPERTIES['backgroundColor'], settings),
       },
       default: {
-        color: ColumnDetails.getHeaderDefaultColor(defaultColumnsSettings, 'color', '', settings),
-        backgroundColor: ColumnDetails.getHeaderDefaultColor(defaultColumnsSettings, 'backgroundColor', '', settings),
+        color: ColumnDetails.getHeaderDefaultColor(columnsSettings, 'color', '', settings),
+        backgroundColor: ColumnDetails.getHeaderDefaultColor(columnsSettings, 'backgroundColor', '', settings),
       }
     };
   }
 
   // prettier-ignore
-  public static createInitial(defaultColumnsSettings: ColumnsSettingsDefault, selectDropdown: HTMLElement,
+  public static createInitial(columnsSettings: ColumnsSettingsDefault, selectDropdown: HTMLElement,
       settings: ColumnSettingsInternal, index: number,
       onColumnUpdate: OnColumnUpdate): ColumnDetailsInitial {
-    const columnSettings = settings || defaultColumnsSettings as ColumnSettingsInternal;
-    ColumnSettingsWidthUtils.setMinWidthOnSettings(columnSettings, defaultColumnsSettings.cellStyle); // REF-36
+    const columnSettings = settings || columnsSettings as ColumnSettingsInternal;
+    ColumnSettingsWidthUtils.setMinWidthOnSettings(columnSettings, columnsSettings.cellStyle); // REF-36
     const {types, activeType} = ColumnTypesUtils.getProcessedTypes(columnSettings);
     return {
       elements: [],
       processedStyle: [],
       settings: columnSettings,
-      headerStateColors: ColumnDetails.createHeaderStateColors(defaultColumnsSettings, settings),
+      headerStateColors: ColumnDetails.createHeaderStateColors(columnsSettings, settings),
       bordersOverwrittenBySiblings: {},
       types,
       activeType,

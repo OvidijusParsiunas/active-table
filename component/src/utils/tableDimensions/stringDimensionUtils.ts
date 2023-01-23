@@ -49,6 +49,7 @@ export class StringDimensionUtils {
   }
 
   public static removeAllDimensions(style: CSSStyle) {
+    if (!style) return;
     ObjectUtils.removeProperties(style, 'width', 'maxHeight', 'minWidth', 'height', 'minHeight', 'maxHeight');
     return style;
   }

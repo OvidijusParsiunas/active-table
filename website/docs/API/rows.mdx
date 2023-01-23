@@ -8,7 +8,7 @@ Properties related to table rows.
 
 ### `rowHoverStyle`
 
-- Type: `{style: CSSStyle, header: boolean, addNewRowButton: boolean}`
+- Type: `{style: CSSStyle, header?: boolean, addNewRowButton?: boolean}`
 - Default: _unset_, but if _style_ is set then _header_ and _addNewRowButton_ are _true_
 
 Custom styling for rows when they are hovered with a mouse. `header` property denotes if `style` can be applied to the header row
@@ -67,7 +67,7 @@ import Tabs from '@theme/Tabs';
 
 ### `stripedRows`
 
-- Type: `boolean|{odd: CSSStyle, even: CSSStyle}`
+- Type: `boolean|{odd?: CSSStyle, even?: CSSStyle}`
 - Default: _false_, but if set to _true_ then _{even: {backgroundColor: ''}, odd: {backgroundColor: '#dcdcdc7a'}}_
 
 Stripe based styling for rows.
@@ -77,7 +77,7 @@ Stripe based styling for rows.
 <TableContainer>
   <active-table
     stripedRows='{"odd": {"backgroundColor": ""}, "even": {"backgroundColor": "#dcdcdc7a"}}'
-    defaultColumnsSettings='{"cellStyle": {"borderBottom": "unset"}}'
+    columnsSettings='{"cellStyle": {"borderBottom": "unset"}}'
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
@@ -104,7 +104,7 @@ Stripe based styling for rows.
 ```text
 <active-table
   stripedRows='{"odd": {"backgroundColor": ""}, "even": {"backgroundColor": "#dcdcdc7a"}}'
-  defaultColumnsSettings='{"cellStyle": {"borderBottom": "unset"}}'
+  columnsSettings='{"cellStyle": {"borderBottom": "unset"}}'
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
@@ -125,11 +125,11 @@ Stripe based styling for rows.
 
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`displaySettings: DropdownDisplaySettings`](https), WORK <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `isInsertUpAvailable: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `isInsertDownAvailable: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `isMoveAvailable: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `isDeleteAvailable: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `canEditHeaderRow: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isInsertUpAvailable?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isInsertDownAvailable?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isMoveAvailable?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isDeleteAvailable?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `canEditHeaderRow?: boolean`, <br />
   }
 - Default: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp; _displaySettings: {isAvailable: true, openMethod: {cellClick: true}}_, <br />

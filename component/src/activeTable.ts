@@ -2,7 +2,6 @@ import {AuxiliaryTableContentInternalUtils} from './utils/auxiliaryTableContent/
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
 import {OnCellUpdate, OnColumnUpdate, OnTableUpdate, OnColumnWidthsUpdate} from './types/onUpdate';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
-import {DropdownDisplaySettingsUtil} from './elements/dropdown/dropdownDisplaySettingsUtil';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {CustomColumnsSettings, CustomColumnSettings} from './types/columnsSettings';
 import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
@@ -16,7 +15,6 @@ import {DynamicCellUpdate} from './utils/dynamicUpdates/dynamicCellUpdate';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
-import {DropdownDisplaySettings} from './types/dropdownDisplaySettings';
 import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
 import {ColumnsSettingsDefault} from './types/columnsSettingsDefault';
 import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
@@ -124,9 +122,8 @@ export class ActiveTable extends LitElement {
   })
   updateCell = true;
 
-  // WORK - probably rename to columnsSettings
   @property({type: Object})
-  defaultColumnsSettings: ColumnsSettingsDefault = {};
+  columnsSettings: ColumnsSettingsDefault = {};
 
   @property({type: Array<CustomColumnSettings>})
   customColumnsSettings: CustomColumnsSettings = [];
@@ -212,10 +209,6 @@ export class ActiveTable extends LitElement {
   @property({type: Object})
   columnResizerStyle: UserSetColumnSizerStyle = {};
 
-  // these properties are toggled for all columns for consistent UX
-  @property({type: Object})
-  columnDropdownDisplaySettings: DropdownDisplaySettings = {isAvailable: true, openMethod: {cellClick: true}};
-
   @property({type: Object})
   rowDropdown: RowDropdownSettings = {displaySettings: {isAvailable: true, openMethod: {cellClick: true}}};
 
@@ -259,7 +252,6 @@ export class ActiveTable extends LitElement {
     StickyPropsUtils.process(this);
     AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
     RowDropdownSettingsUtil.process(this);
-    DropdownDisplaySettingsUtil.process(this.columnDropdownDisplaySettings);
     if (this.pagination) PaginationInternalUtils.process(this);
     if (this.stripedRows) StripedRows.process(this);
     if (this.rowHoverStyle) RowHoverEvents.process(this.rowHoverStyle);
