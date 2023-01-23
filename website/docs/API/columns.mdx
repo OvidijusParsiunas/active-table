@@ -1,0 +1,121 @@
+---
+sidebar_position: 4
+---
+
+# Columns
+
+Properties related to table rows.
+
+### `maxColumns`
+
+- Type: `number`
+- Default: _unset_
+
+Maximum number of columns allowed (not including the index and add columns WORK).
+
+#### Example
+
+import TableContainer from '@site/src/components/table/table-container';
+import {ActiveTable} from 'active-table';
+import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs';
+
+<TableContainer>
+  <active-table
+    maxColumns="4"
+    content='[
+      ["Planet", "Planet", "Moons", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table maxColumns="4"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  maxColumns="4"
+  content='[
+    ["Planet", "Planet", "Moons", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"width":"100%", "borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `preserveNarrowColumns`
+
+- Type: `boolean`
+- Default: _true_
+
+When `tableStyle` WORK is set with a `width` or `maxWidth` property to limit its size, the insertion of new columns will
+cause all existing column widths to automatically be reduced to make space for the new ones (except columns set with `width` or `minWidth` property inside `cellStyle` of the `customColumnSettings` object.
+WORK). This can however become problematic when existing column widths eventually become too narrow\* and their widths cannot be reduced any further. <br />
+When `preserveNarrowColumns` is `true` and column widths are too narrow\*, the table width will be increased allow new columns to be inserted. <br />
+When `preserveNarrowColumns` is `false` and column widths are too narow\*, no new columns will be allowed to be inserted.
+set to true by default.<br />
+_\*Minimal column size for most browsers is 33px_
+
+**Example where preset table width of 300px is exceeded**
+
+<TableContainer>
+  <active-table
+    content='[
+      ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"],
+      ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"]]'
+    tableStyle='{"width":"300px", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  preserveNarrowColumns="true"
+  tableStyle='{"width":"300px"}'
+  content='[
+    ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"],
+    ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"]]'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+    content='[
+      ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"],
+      ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"]]'
+    tableStyle='{"width":"300px", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+Please note that when `tableStyle` contains a `width` or `maxWidth` property with a _%_ or _vw_ unit and the window width is changed - if columns
+cannot be reduced any further the excess ones will not be removed even if `preserveNarrowColumns` is set to `false` to prevent loss of data.
+:::

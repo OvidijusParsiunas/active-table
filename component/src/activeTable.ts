@@ -176,7 +176,7 @@ export class ActiveTable extends LitElement {
   @property({type: Object})
   rowHoverStyle: RowHoverStyle | null = null;
 
-  // if set to false - the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
+  // when true - the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
   // this property is not used internally and is being set/used in tableDimensions as it is overriden when resizing
   @property({
     type: Boolean,

@@ -46,15 +46,12 @@ export class TableDimensionsUtils {
   // prettier-ignore
   public static setTableDimensions(at: ActiveTable) {
     const {tableStyle, tableDimensions, auxiliaryTableContentInternal: {displayIndexColumn}} = at;
-    const parentElement = at.parentElement as HTMLElement;
     // width and maxWidth are mutually exclusive and if both are present width is the only one that is used
     if (tableStyle.width !== undefined) {
       TableDimensionsUtils.setDimension(at, 'width');
     } else if (tableStyle.maxWidth !== undefined) {
       TableDimensionsUtils.setDimension(at, 'maxWidth');
-    } else if (
-      !GenericElementUtils.isParentWidthUndetermined(parentElement.style.width)
-    )
+    }
     StringDimensionUtils.removeAllDimensions(tableStyle);
     // else the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
     TableDimensionsUtils.setPreserveNarrowColumnsProp(at, tableDimensions);

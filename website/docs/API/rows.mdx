@@ -8,10 +8,14 @@ Properties related to table rows.
 
 ### `rowHoverStyle`
 
-- Type: `{style: CSSStyle, header?: boolean, addNewRowButton?: boolean}`
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`style: CSSStyle`](https), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `header?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `addNewRowButton?: boolean`, <br />
+  }
 - Default: _unset_, but if _style_ is set then _header_ and _addNewRowButton_ are _true_
 
-Custom styling for rows when they are hovered with a mouse. `header` property denotes if `style` can be applied to the header row
+Custom styling for row mouse hover. `header` property denotes if `style` can be applied to the header row
 and `addNewRowButton` denotes if `style` can be applied to the WORK add new row button if it is displayed.
 
 #### Example
@@ -32,7 +36,7 @@ import Tabs from '@theme/Tabs';
       ["Jupiter", 142984, 1898, 79, 1326],
       ["Saturn", 120536, 568, 82, 687],
       ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "backgroundColor": "white", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
   ></active-table>
 </TableContainer>
 
@@ -71,8 +75,12 @@ Using this property unsets the default header and auxiliary hover color properti
 
 ### `stripedRows`
 
-- Type: `boolean|{odd?: CSSStyle, even?: CSSStyle}`
-- Default: _false_, but if set to _true_ then _{even: {backgroundColor: ''}, odd: {backgroundColor: '#dcdcdc7a'}}_
+- Type: `boolean` | <br />
+  {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`odd?: CSSStyle`](https), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`even?: CSSStyle`](https), WORK <br />
+  }
+- Default: _false_, but if set to _true_ then _even_ is _{backgroundColor: ''}_ and _odd_ is _{backgroundColor: '#dcdcdc7a'}}_
 
 Stripe based styling for rows.
 
@@ -89,7 +97,7 @@ Stripe based styling for rows.
       ["Jupiter", 142984, 1898, 79, 1326],
       ["Saturn", 120536, 568, 82, 687],
       ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "backgroundColor": "white", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
   ></active-table>
 </TableContainer>
 
@@ -166,7 +174,7 @@ header row when set to `false`.
       ["Jupiter", 142984, 1898, 79, 1326],
       ["Saturn", 120536, 568, 82, 687],
       ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "backgroundColor": "white", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
   ></active-table>
 </TableContainer>
 
@@ -193,6 +201,58 @@ header row when set to `false`.
     ["Saturn", 120536, 568, 82, 687],
     ["Neptune", 49528, 102, 14, 1638]]'
   tableStyle='{"boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `maxRows`
+
+- Type: `number`
+- Default: _unset_
+
+Maximum number of rows allowed (including header row).
+
+#### Example
+
+<TableContainer>
+  <active-table
+    maxRows="4"
+    content='[
+      ["Planet", "Planet", "Moons", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table maxRows="4"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  maxRows="4"
+  content='[
+    ["Planet", "Planet", "Moons", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"width":"100%", "borderRadius":"2px"}'
 ></active-table>
 ```
 
