@@ -20,7 +20,7 @@ import {Sort} from './sort';
 export class DefaultColumnTypes {
   public static readonly DEFAULT_TYPE: ColumnType = {
     name: DEFAULT_COLUMN_TYPES.TEXT,
-    dropdownIconSettings: {
+    iconSettings: {
       svgString: TEXT_ICON_SVG_STRING,
       containerStyles: {
         dropdown: {marginLeft: '-0.25px', marginRight: '6px', marginTop: '2.5px'},
@@ -35,7 +35,7 @@ export class DefaultColumnTypes {
       name: DEFAULT_COLUMN_TYPES.NUMBER,
       textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.NUMBER]},
       sorting: Sort.DEFAULT_TYPES_SORT_FUNCS[DEFAULT_COLUMN_TYPES.NUMBER],
-      dropdownIconSettings: {
+      iconSettings: {
         svgString: NUMBER_ICON_SVG_STRING,
         containerStyles: {
           dropdown: {marginLeft: '-1px', marginRight: '4.5px', marginTop: '2px'},
@@ -47,7 +47,7 @@ export class DefaultColumnTypes {
       name: DEFAULT_COLUMN_TYPES.CURRENCY,
       textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.CURRENCY]},
       sorting: Sort.DEFAULT_TYPES_SORT_FUNCS[DEFAULT_COLUMN_TYPES.CURRENCY],
-      dropdownIconSettings: {
+      iconSettings: {
         svgString: CURRENCY_ICON_SVG_STRING,
         containerStyles: {
           dropdown: {marginLeft: '-2px', marginRight: '4px', marginTop: '1px'},
@@ -57,7 +57,7 @@ export class DefaultColumnTypes {
     },
     {
       name: DEFAULT_COLUMN_TYPES.CHECKBOX,
-      dropdownIconSettings: {
+      iconSettings: {
         svgString: CHECKBOX_ICON_SVG_STRING,
         containerStyles: {
           dropdown: {marginRight: '6px', marginTop: '2.5px'},
@@ -82,7 +82,7 @@ export class DefaultColumnTypes {
       name: DEFAULT_COLUMN_TYPES.DATE_DMY,
       textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_DMY]},
       calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_DMY],
-      dropdownIconSettings: {
+      iconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
         containerStyles: {
           dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-2px'},
@@ -94,7 +94,7 @@ export class DefaultColumnTypes {
       name: DEFAULT_COLUMN_TYPES.DATE_MDY,
       textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_MDY]},
       calendar: CalendarFunctionalityUtils.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.DATE_MDY],
-      dropdownIconSettings: {
+      iconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
         containerStyles: {
           dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-2px'},
@@ -142,7 +142,7 @@ export class DefaultColumnTypes {
     DefaultColumnTypes.DEFAULT_STATIC_TYPES.forEach((type) => {
       const settings = {
         text: type.name,
-        iconSettings: type.dropdownIconSettings || DropdownButtonItemConf.DEFAULT_ITEM.iconSettings,
+        iconSettings: type.iconSettings || DropdownButtonItemConf.DEFAULT_ITEM.iconSettings,
       };
       (type as ColumnTypeInternal).dropdownItem = {
         element: DropdownItem.createButtonItemNoEvents(undefined, settings),

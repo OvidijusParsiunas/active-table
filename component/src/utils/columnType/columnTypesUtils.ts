@@ -1,6 +1,6 @@
 import {ColumnTypeInternal, ColumnTypesInternal, SelectPropertiesInternal} from '../../types/columnTypeInternal';
 import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItemConf';
-import {ColumnType, ColumnTypes, DropdownIconSettings} from '../../types/columnType';
+import {ColumnType, ColumnTypes, ColumnIconSettings} from '../../types/columnType';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
@@ -76,40 +76,40 @@ export class ColumnTypesUtils {
   }
 
   // prettier-ignore
-  private static getReusableDefaultIcon(iconSettings: DropdownIconSettings) {
+  private static getReusableDefaultIcon(iconSettings: ColumnIconSettings) {
     const targetIconName = iconSettings.reusableIconName?.toLocaleLowerCase();
     if (targetIconName === DEFAULT_COLUMN_TYPES.SELECT.toLocaleLowerCase()
       || targetIconName === DEFAULT_COLUMN_TYPES.LABEL.toLocaleLowerCase()) {
-      return DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM?.settings.iconSettings as DropdownIconSettings;
+      return DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM?.settings.iconSettings as ColumnIconSettings;
     }
     const defaultSettings = DefaultColumnTypes.DEFAULT_STATIC_TYPES.find((type) => {
       return type.name.toLocaleLowerCase() === targetIconName;
     });
-    if (defaultSettings?.dropdownIconSettings) return defaultSettings.dropdownIconSettings;
+    if (defaultSettings?.iconSettings) return defaultSettings.iconSettings;
     return DropdownButtonItemConf.DEFAULT_ITEM.iconSettings;
   }
 
   private static processDropdownItemSettings(type: ColumnType) {
-    const {name, dropdownIconSettings} = type;
-    let iconSettings = null;
-    if (dropdownIconSettings) {
-      if (dropdownIconSettings.reusableIconName) {
-        iconSettings = ColumnTypesUtils.getReusableDefaultIcon(dropdownIconSettings);
+    const {name, iconSettings} = type;
+    let dropdownIconSettings = null;
+    if (iconSettings) {
+      if (iconSettings.reusableIconName) {
+        dropdownIconSettings = ColumnTypesUtils.getReusableDefaultIcon(iconSettings);
       } else {
-        iconSettings = dropdownIconSettings;
-        if (Object.keys(dropdownIconSettings).length === 0) {
-          iconSettings = DropdownButtonItemConf.DEFAULT_ITEM.iconSettings;
+        dropdownIconSettings = iconSettings;
+        if (Object.keys(iconSettings).length === 0) {
+          dropdownIconSettings = DropdownButtonItemConf.DEFAULT_ITEM.iconSettings;
         } else if (!iconSettings.svgString) {
-          iconSettings.svgString ??= DropdownButtonItemConf.DEFAULT_ITEM.iconSettings.svgString;
-          iconSettings.containerStyles ??= DropdownButtonItemConf.DEFAULT_ITEM.iconSettings.containerStyles;
+          dropdownIconSettings.svgString ??= DropdownButtonItemConf.DEFAULT_ITEM.iconSettings.svgString;
+          dropdownIconSettings.containerStyles ??= DropdownButtonItemConf.DEFAULT_ITEM.iconSettings.containerStyles;
         }
       }
     } else {
-      iconSettings = DropdownButtonItemConf.DEFAULT_ITEM.iconSettings;
+      dropdownIconSettings = DropdownButtonItemConf.DEFAULT_ITEM.iconSettings;
     }
-    const settings = {text: name, iconSettings};
+    const settings = {text: name, iconSettings: dropdownIconSettings};
     const internalType = type as ColumnTypeInternal;
-    internalType.dropdownItem ??= {element: null, settings: settings};
+    internalType.dropdownItem ??= {element: null, settings};
     // reason for using timeout - creating icons is expensive and they are not needed on initial render
     setTimeout(() => {
       internalType.dropdownItem.element ??= DropdownItem.createButtonItemNoEvents(undefined, settings);
@@ -159,8 +159,8 @@ export class ColumnTypesUtils {
       ObjectUtils.convertStringToFunction(type.customTextProcessing, 'changeStyleFunc');
     }
     if (type.sorting) {
-      ObjectUtils.convertStringToFunction(type.sorting, 'ascending');
-      ObjectUtils.convertStringToFunction(type.sorting, 'descending');
+      ObjectUtils.convertStringToFunction(type.sorting, 'ascendingFunc');
+      ObjectUtils.convertStringToFunction(type.sorting, 'descendingFunc');
     }
     if (type.calendar) {
       ObjectUtils.convertStringToFunction(type.calendar, 'toYMD');

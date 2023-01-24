@@ -412,25 +412,17 @@ tool (the reason for this is because the icon is an SVG element). Use `scale` to
 
 <LineBreak></LineBreak>
 
-### `DEFAULT_COLUMN_TYPES` {#DEFAULT_COLUMN_TYPES}
-
-- Type: `"Text"` | `"Number"` | `"Currency"` | `"Date d-m-y"` | `"Date m-d-y"` | `"Checkbox"` | `"Select"` | `"Label"`
-
-Default column type names.
-
-<LineBreak></LineBreak>
-
 ### `ColumnType` {#ColumnType}
 
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp; `name: string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`textValidation?: TextValidation`](#TextValidation), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`customTextProcessing?: CustomTextProcessing`](#CustomTextProcessing), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `sorting?: SortingFuncs`, WORK <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `dropdownIconSettings?: DropdownIconSettings` WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`sorting?: Sorting`](#Sorting), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`iconSettings?: IconSettings`](#IconSettings) <br />
   }
 - Default: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _sorting: using "Text" type sorting_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _sorting: in the ASCII character order ("Text" type)_, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; _dropdownIconSettings: using "Text" type icon _<br />
   }
 
@@ -495,8 +487,7 @@ if the function returns `false`. <br />
           "func": "(cellText) => Number(cellText) > 20",
           "setTextToDefaultOnFail":false,
           "failedStyle":{"color":"red"}
-    }}],
-    "activeTypeName": "Custom type"
+    }}]
   }'
 ></active-table>
 ```
@@ -561,7 +552,6 @@ need to be converted into strings as otherwise they will be removed when passed 
           "customTextProcessing": {
             "changeTextFunc": "(cellText) => `$${Number(String(cellText).replace(/[^0-9.-]+/g,\"\"))}`",
             "changeStyleFunc": "(cellText) => {
-              console.log(String(cellText));
               const moneyNumber = Number(String(cellText).replace(/[^0-9.-]+/g,\"\"));
               if (moneyNumber < 20) return {backgroundColor: `#ff3232`};
               if (moneyNumber < 100) return {backgroundColor: `#ffff00`};
@@ -593,14 +583,12 @@ need to be converted into strings as otherwise they will be removed when passed 
         "customTextProcessing": {
           "changeTextFunc": "(cellText) => `$${Number(String(cellText).replace(/[^0-9.-]+/g,\"\"))}`",
           "changeStyleFunc": "(cellText) => {
-            console.log(String(cellText));
             const moneyNumber = Number(String(cellText).replace(/[^0-9.-]+/g,\"\"));
             if (moneyNumber < 20) return {backgroundColor: `#ff3232`};
             if (moneyNumber < 100) return {backgroundColor: `#ffff00`};
             return {backgroundColor: `#00ac00`};
           }"
-      }}],
-    "activeTypeName": "Custom type"
+      }}]
   }'
 ></active-table>
 ```
@@ -617,7 +605,6 @@ need to be converted into strings as otherwise they will be removed when passed 
         "customTextProcessing": {
           "changeTextFunc": "(cellText) => `$${Number(String(cellText).replace(/[^0-9.-]+/g,\"\"))}`",
           "changeStyleFunc": "(cellText) => {
-            console.log(String(cellText));
             const moneyNumber = Number(String(cellText).replace(/[^0-9.-]+/g,\"\"));
             if (moneyNumber < 20) return {backgroundColor: `#ff3232`};
             if (moneyNumber < 100) return {backgroundColor: `#ffff00`};
@@ -644,6 +631,200 @@ need to be converted into strings as otherwise they will be removed when passed 
 If the function strings inside `changeTextFunc` or `changeStyleFunc` contain " or \ characters make sure to escape them by prefixing them with **\\** e.g. \" and \\\
 :::
 
+<LineBreak></LineBreak>
+
+### `Sorting` {#Sorting}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `ascendingFunc: ((cellText1: string, cellText2: string) => number) as string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `descendingFunc: ((cellText1: string, cellText2: string) => number) as string`, <br />
+  }
+- Default: _if this object is not provided, cells will be sorted in the ASCII character order using the "Text" type sorting functionality_
+
+Facilitates column cell sorting capabilities.
+The functions are executed using the standard JavaScript [.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
+method and are expected to return a negative value (< 0) if cellText1 is less than cellText2, zero (0) if both arguments
+are equal, or a positive value (> 0) if cellText1 is greater than cellText2.
+It is IMPORTANT to note that both functions need to be converted into strings as otherwise they will be removed when passed in with the parent object.
+
+#### Example sorting for numbers
+
+<TableContainer>
+  <active-table
+    columnsSettings='{
+      "customColumnTypes":[
+        {
+          "name": "Custom type",
+          "sorting": {
+            "ascendingFunc": "(cellText1, cellText2) => Number(cellText1) - Number(cellText2)",
+            "descendingFunc": "(cellText1, cellText2) => Number(cellText2) - Number(cellText1)"
+        }}],
+      "activeTypeName": "Custom type"
+    }'
+    content='[
+      ["Gravity", "Diameter", "Mass", "Moons", "Density"],
+      [9.8, 12756, 5.97, 1, 5514],
+      [3.7, 6792, 0.642, 2, 3934],
+      [23.1, 142984, 1898, 79, 1326],
+      [9, 120536, 568, 82, 687],
+      [11, 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnsSettings='{
+    "customColumnTypes":[
+      {
+        "name": "Custom type",
+        "sorting": {
+          "ascendingFunc": "(cellText1, cellText2) => Number(cellText1) - Number(cellText2)",
+          "descendingFunc": "(cellText1, cellText2) => Number(cellText2) - Number(cellText1)"
+      }}]
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnsSettings='{
+    "customColumnTypes":[
+      {
+        "name": "Custom type",
+        "sorting": {
+          "ascendingFunc": "(cellText1, cellText2) => Number(cellText1) - Number(cellText2)",
+          "descendingFunc": "(cellText1, cellText2) => Number(cellText2) - Number(cellText1)"
+      }}],
+    "activeTypeName": "Custom type"
+  }'
+  content='[
+    ["Gravity", "Diameter", "Mass", "Moons", "Density"],
+    [9.8, 12756, 5.97, 1, 5514],
+    [3.7, 6792, 0.642, 2, 3934],
+    [23.1, 142984, 1898, 79, 1326],
+    [9, 120536, 568, 82, 687],
+    [11, 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+If the function strings inside `ascendingFunc` or `descendingFunc` contain " or \ characters make sure to escape them by prefixing them with **\\** e.g. \" and \\\
+:::
+
+<LineBreak></LineBreak>
+
+### `IconSettings` {#IconSettings}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`reusableIconName?: DEFAULT_COLUMN_TYPES`](#DEFAULT_COLUMN_TYPES), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `svgString?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `containerStyles?`: { <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `dropdown?: CSSStyle` WORK, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `headerCorrections?: CSSStyle` WORK, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;}}
+- Default: _if this object is not provided, `reusableIconName` will be set to "Text"_
+
+Defines column type icon properties. <br />
+`reusableIconName` allows the icon to reuse of the existing default type icons. <br />
+`svgString` is the full svg element string containing all DOM tags. Make sure to escape the quotes - change " to \" (An easy way to do this is to
+stringify it using JSON.stringify()). If the string is defined directly in HTML, you will need to escape the first less than (<) character by replacing it with `&lt`. <br />
+`containerStyles`allows the icon dimensions to be customised when displayed in the`dropdown`and in the header. By default, the`dropdown`dimension
+properties are also used for the header however if they don't fit the`headerCorrections` object can be used to change them.
+
+#### Example calendar icon
+
+<TableContainer>
+  <active-table
+    columnsSettings='{
+      "customColumnTypes":[
+        {
+          "name": "Custom type",
+          "iconSettings": {
+            "svgString": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"10px\" viewBox=\"0 0 10 10\" version=\"1.1\">\n<g id=\"surface1\">\n<path style=\" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;\" d=\"M 1.070312 9.285156 L 8.929688 9.285156 L 8.929688 3.570312 L 1.070312 3.570312 Z M 3.214844 2.5 L 3.214844 0.894531 C 3.214844 0.839844 3.199219 0.796875 3.164062 0.765625 C 3.128906 0.730469 3.085938 0.714844 3.035156 0.714844 L 2.679688 0.714844 C 2.625 0.714844 2.582031 0.730469 2.550781 0.765625 C 2.515625 0.796875 2.5 0.839844 2.5 0.894531 L 2.5 2.5 C 2.5 2.550781 2.515625 2.59375 2.550781 2.628906 C 2.582031 2.660156 2.625 2.679688 2.679688 2.679688 L 3.035156 2.679688 C 3.085938 2.679688 3.128906 2.660156 3.164062 2.628906 C 3.199219 2.59375 3.214844 2.550781 3.214844 2.5 Z M 7.5 2.5 L 7.5 0.894531 C 7.5 0.839844 7.484375 0.796875 7.449219 0.765625 C 7.417969 0.730469 7.375 0.714844 7.320312 0.714844 L 6.964844 0.714844 C 6.914062 0.714844 6.871094 0.730469 6.835938 0.765625 C 6.800781 0.796875 6.785156 0.839844 6.785156 0.894531 L 6.785156 2.5 C 6.785156 2.550781 6.800781 2.59375 6.835938 2.628906 C 6.871094 2.660156 6.914062 2.679688 6.964844 2.679688 L 7.320312 2.679688 C 7.375 2.679688 7.417969 2.660156 7.449219 2.628906 C 7.484375 2.59375 7.5 2.550781 7.5 2.5 Z M 9.644531 2.144531 L 9.644531 9.285156 C 9.644531 9.480469 9.570312 9.648438 9.429688 9.789062 C 9.289062 9.929688 9.121094 10 8.929688 10 L 1.070312 10 C 0.878906 10 0.710938 9.929688 0.570312 9.789062 C 0.429688 9.648438 0.355469 9.480469 0.355469 9.285156 L 0.355469 2.144531 C 0.355469 1.949219 0.429688 1.78125 0.570312 1.640625 C 0.710938 1.5 0.878906 1.429688 1.070312 1.429688 L 1.785156 1.429688 L 1.785156 0.894531 C 1.785156 0.648438 1.875 0.4375 2.046875 0.261719 C 2.222656 0.0859375 2.433594 0 2.679688 0 L 3.035156 0 C 3.28125 0 3.492188 0.0859375 3.667969 0.261719 C 3.839844 0.4375 3.929688 0.648438 3.929688 0.894531 L 3.929688 1.429688 L 6.070312 1.429688 L 6.070312 0.894531 C 6.070312 0.648438 6.160156 0.4375 6.332031 0.261719 C 6.507812 0.0859375 6.71875 0 6.964844 0 L 7.320312 0 C 7.566406 0 7.777344 0.0859375 7.953125 0.261719 C 8.125 0.4375 8.214844 0.648438 8.214844 0.894531 L 8.214844 1.429688 L 8.929688 1.429688 C 9.121094 1.429688 9.289062 1.5 9.429688 1.640625 C 9.570312 1.78125 9.644531 1.949219 9.644531 2.144531 Z M 9.644531 2.144531 \"/>\n</g>\n</svg>",
+            "containerStyles": {
+              "dropdown": {"marginLeft": "1.25px", "marginRight": "8px", "marginTop": "-2px"},
+              "headerCorrections": {"marginTop": "0px"}
+        }}}],
+      "activeTypeName": "Custom type"
+    }'
+    content='[
+      ["Gravity", "Diameter", "Mass", "Moons", "Density"],
+      [9.8, 12756, 5.97, 1, 5514],
+      [3.7, 6792, 0.642, 2, 3934],
+      [23.1, 142984, 1898, 79, 1326],
+      [9, 120536, 568, 82, 687],
+      [11, 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  "customColumnTypes":[
+    {
+      "name": "Custom type",
+      "iconSettings": {
+        "svgString": "&lt?xml version=\"1.0\" encoding=\"UTF-8\"?>\n <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"10px\" viewBox=\"0 0 10 10\" version=\"1.1\">\n<g id=\"surface1\">\n<path style=\" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;\" d=\"M 1.070312 9.285156 L 8.929688 9.285156 L 8.929688 3.570312 L 1.070312 3.570312 Z M 3.214844 2.5 L 3.214844 0.894531 C 3.214844 0.839844 3.199219 0.796875 3.164062 0.765625 C 3.128906 0.730469 3.085938 0.714844 3.035156 0.714844 L 2.679688 0.714844 C 2.625 0.714844 2.582031 0.730469 2.550781 0.765625 C 2.515625 0.796875 2.5 0.839844 2.5 0.894531 L 2.5 2.5 C 2.5 2.550781 2.515625 2.59375 2.550781 2.628906 C 2.582031 2.660156 2.625 2.679688 2.679688 2.679688 L 3.035156 2.679688 C 3.085938 2.679688 3.128906 2.660156 3.164062 2.628906 C 3.199219 2.59375 3.214844 2.550781 3.214844 2.5 Z M 7.5 2.5 L 7.5 0.894531 C 7.5 0.839844 7.484375 0.796875 7.449219 0.765625 C 7.417969 0.730469 7.375 0.714844 7.320312 0.714844 L 6.964844 0.714844 C 6.914062 0.714844 6.871094 0.730469 6.835938 0.765625 C 6.800781 0.796875 6.785156 0.839844 6.785156 0.894531 L 6.785156 2.5 C 6.785156 2.550781 6.800781 2.59375 6.835938 2.628906 C 6.871094 2.660156 6.914062 2.679688 6.964844 2.679688 L 7.320312 2.679688 C 7.375 2.679688 7.417969 2.660156 7.449219 2.628906 C 7.484375 2.59375 7.5 2.550781 7.5 2.5 Z M 9.644531 2.144531 L 9.644531 9.285156 C 9.644531 9.480469 9.570312 9.648438 9.429688 9.789062 C 9.289062 9.929688 9.121094 10 8.929688 10 L 1.070312 10 C 0.878906 10 0.710938 9.929688 0.570312 9.789062 C 0.429688 9.648438 0.355469 9.480469 0.355469 9.285156 L 0.355469 2.144531 C 0.355469 1.949219 0.429688 1.78125 0.570312 1.640625 C 0.710938 1.5 0.878906 1.429688 1.070312 1.429688 L 1.785156 1.429688 L 1.785156 0.894531 C 1.785156 0.648438 1.875 0.4375 2.046875 0.261719 C 2.222656 0.0859375 2.433594 0 2.679688 0 L 3.035156 0 C 3.28125 0 3.492188 0.0859375 3.667969 0.261719 C 3.839844 0.4375 3.929688 0.648438 3.929688 0.894531 L 3.929688 1.429688 L 6.070312 1.429688 L 6.070312 0.894531 C 6.070312 0.648438 6.160156 0.4375 6.332031 0.261719 C 6.507812 0.0859375 6.71875 0 6.964844 0 L 7.320312 0 C 7.566406 0 7.777344 0.0859375 7.953125 0.261719 C 8.125 0.4375 8.214844 0.648438 8.214844 0.894531 L 8.214844 1.429688 L 8.929688 1.429688 C 9.121094 1.429688 9.289062 1.5 9.429688 1.640625 C 9.570312 1.78125 9.644531 1.949219 9.644531 2.144531 Z M 9.644531 2.144531 \"/>\n</g>\n</svg>",
+        "containerStyles": {
+          "dropdown": {"marginLeft": "1.25px", "marginRight": "8px", "marginTop": "-2px"},
+          "headerCorrections": {"marginTop": "0px"}
+    }}}]
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  "customColumnTypes":[
+    {
+      "name": "Custom type",
+      "iconSettings": {
+        "svgString": "&lt?xml version=\"1.0\" encoding=\"UTF-8\"?>\n <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"10px\" viewBox=\"0 0 10 10\" version=\"1.1\">\n<g id=\"surface1\">\n<path style=\" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;\" d=\"M 1.070312 9.285156 L 8.929688 9.285156 L 8.929688 3.570312 L 1.070312 3.570312 Z M 3.214844 2.5 L 3.214844 0.894531 C 3.214844 0.839844 3.199219 0.796875 3.164062 0.765625 C 3.128906 0.730469 3.085938 0.714844 3.035156 0.714844 L 2.679688 0.714844 C 2.625 0.714844 2.582031 0.730469 2.550781 0.765625 C 2.515625 0.796875 2.5 0.839844 2.5 0.894531 L 2.5 2.5 C 2.5 2.550781 2.515625 2.59375 2.550781 2.628906 C 2.582031 2.660156 2.625 2.679688 2.679688 2.679688 L 3.035156 2.679688 C 3.085938 2.679688 3.128906 2.660156 3.164062 2.628906 C 3.199219 2.59375 3.214844 2.550781 3.214844 2.5 Z M 7.5 2.5 L 7.5 0.894531 C 7.5 0.839844 7.484375 0.796875 7.449219 0.765625 C 7.417969 0.730469 7.375 0.714844 7.320312 0.714844 L 6.964844 0.714844 C 6.914062 0.714844 6.871094 0.730469 6.835938 0.765625 C 6.800781 0.796875 6.785156 0.839844 6.785156 0.894531 L 6.785156 2.5 C 6.785156 2.550781 6.800781 2.59375 6.835938 2.628906 C 6.871094 2.660156 6.914062 2.679688 6.964844 2.679688 L 7.320312 2.679688 C 7.375 2.679688 7.417969 2.660156 7.449219 2.628906 C 7.484375 2.59375 7.5 2.550781 7.5 2.5 Z M 9.644531 2.144531 L 9.644531 9.285156 C 9.644531 9.480469 9.570312 9.648438 9.429688 9.789062 C 9.289062 9.929688 9.121094 10 8.929688 10 L 1.070312 10 C 0.878906 10 0.710938 9.929688 0.570312 9.789062 C 0.429688 9.648438 0.355469 9.480469 0.355469 9.285156 L 0.355469 2.144531 C 0.355469 1.949219 0.429688 1.78125 0.570312 1.640625 C 0.710938 1.5 0.878906 1.429688 1.070312 1.429688 L 1.785156 1.429688 L 1.785156 0.894531 C 1.785156 0.648438 1.875 0.4375 2.046875 0.261719 C 2.222656 0.0859375 2.433594 0 2.679688 0 L 3.035156 0 C 3.28125 0 3.492188 0.0859375 3.667969 0.261719 C 3.839844 0.4375 3.929688 0.648438 3.929688 0.894531 L 3.929688 1.429688 L 6.070312 1.429688 L 6.070312 0.894531 C 6.070312 0.648438 6.160156 0.4375 6.332031 0.261719 C 6.507812 0.0859375 6.71875 0 6.964844 0 L 7.320312 0 C 7.566406 0 7.777344 0.0859375 7.953125 0.261719 C 8.125 0.4375 8.214844 0.648438 8.214844 0.894531 L 8.214844 1.429688 L 8.929688 1.429688 C 9.121094 1.429688 9.289062 1.5 9.429688 1.640625 C 9.570312 1.78125 9.644531 1.949219 9.644531 2.144531 Z M 9.644531 2.144531 \"/>\n</g>\n</svg>",
+        "containerStyles": {
+          "dropdown": {"marginLeft": "1.25px", "marginRight": "8px", "marginTop": "-2px"},
+          "headerCorrections": {"marginTop": "0px"}
+    }}}],
+    "activeTypeName": "Custom type"
+  }'
+  content='[
+    ["Gravity", "Diameter", "Mass", "Moons", "Density"],
+    [9.8, 12756, 5.97, 1, 5514],
+    [3.7, 6792, 0.642, 2, 3934],
+    [23.1, 142984, 1898, 79, 1326],
+    [9, 120536, 568, 82, 687],
+    [11, 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `DEFAULT_COLUMN_TYPES` {#DEFAULT_COLUMN_TYPES}
+
+- Type: `"Text"` | `"Number"` | `"Currency"` | `"Date d-m-y"` | `"Date m-d-y"` | `"Checkbox"` | `"Select"` | `"Label"`
+
+Default column type names.
+
 ---
 
 Saved for later
@@ -662,7 +843,7 @@ Saved for later
           "customTextProcessing": {
           "changeStyleFunc": "(cellText)=>{if(cellText===`green`){return{backgroundColor:`green`}}if(cellText===`purple`){return{color:`purple`}}return{color:`black`}}"
         },
-        "dropdownIconSettings": {
+        "iconSettings": {
           "reusableIconName": "Select"
         }
       }

@@ -4,7 +4,7 @@ import {CalendarFunctionality} from './calendarFunctionality';
 import {CustomTextProcessing} from './customTextProcessing';
 import {TextValidation} from './textValidation';
 import {InterfacesUnion} from './utilityTypes';
-import {SortingFuncs} from './sortingFuncs';
+import {Sorting} from './sorting';
 
 // this object encompasses properties for either select or label
 // the reason why LabelOptions is used is to capture all props
@@ -17,7 +17,7 @@ export interface Parent {
   // REF-3
   textValidation: TextValidation; // this is a genuine form of custom text validation and its resulting style
   customTextProcessing?: CustomTextProcessing; // this is used to allow explicit processing of text and its resulting style
-  sorting?: SortingFuncs; // By default the elements will be sorted in ascending ASCII character order
+  sorting?: Sorting; // By default the elements will be sorted in ascending ASCII character order
   selectProps?: SelectPropertiesInternal;
   dropdownItem: ColumnTypeDropdownItem;
 }

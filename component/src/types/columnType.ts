@@ -5,11 +5,11 @@ import {CustomTextProcessing} from './customTextProcessing';
 import {IconSettings} from './dropdownButtonItem';
 import {TextValidation} from './textValidation';
 import {InterfacesUnion} from './utilityTypes';
-import {SortingFuncs} from './sortingFuncs';
+import {Sorting} from './sorting';
 
 // This is to be used by the client exclusively
 
-export type DropdownIconSettings = {
+export type ColumnIconSettings = {
   reusableIconName?: DEFAULT_COLUMN_TYPES; // can reuse one of the existing icons
 } & IconSettings;
 
@@ -19,8 +19,8 @@ interface Parent {
   // REF-3
   textValidation?: TextValidation; // this is a genuine form of custom text validation and its resulting style
   customTextProcessing?: CustomTextProcessing; // this is used to allow explicit processing of text and its resulting style
-  sorting?: SortingFuncs; // by default the elements will be sorted in ascending ASCII character order
-  dropdownIconSettings?: DropdownIconSettings; // by default will be set to text icon
+  sorting?: Sorting; // by default the elements will be sorted in ascending ASCII character order
+  iconSettings?: ColumnIconSettings; // by default will be set to text icon
 }
 
 interface Calendar extends Omit<Parent, 'sorting'> {

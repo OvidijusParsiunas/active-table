@@ -1,7 +1,7 @@
 import {CSSStyle} from './cssStyle';
 
 // style the element which contains the icon, e.g. change the margin and padding
-export interface IconContainerStyles {
+interface IconContainerStyles {
   // icon container when displayed in column dropdown
   dropdown?: CSSStyle;
   // the above css is reused for header but margins can sometimes be off, hence can add any further corrections here

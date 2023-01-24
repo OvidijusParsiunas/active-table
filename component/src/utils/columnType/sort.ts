@@ -5,9 +5,9 @@ import {TableContent, TableRow} from '../../types/tableContent';
 import {CellElementIndex} from '../elements/cellElementIndex';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {TextValidation} from '../../types/textValidation';
-import {SortingFuncs} from '../../types/sortingFuncs';
 import {RegexUtils} from '../regex/regexUtils';
 import {ActiveTable} from '../../activeTable';
+import {Sorting} from '../../types/sorting';
 
 export class Sort {
   private static extractNumberFromString(text: string) {
@@ -18,18 +18,18 @@ export class Sort {
     return 0;
   }
 
-  public static readonly DEFAULT_TYPES_SORT_FUNCS: {[key in DEFAULT_COLUMN_TYPES]?: SortingFuncs} = {
+  public static readonly DEFAULT_TYPES_SORT_FUNCS: {[key in DEFAULT_COLUMN_TYPES]?: Sorting} = {
     [DEFAULT_COLUMN_TYPES.NUMBER]: {
-      ascending: (cellText1: string, cellText2: string) => {
+      ascendingFunc: (cellText1: string, cellText2: string) => {
         return Number(cellText1) - Number(cellText2);
       },
-      descending: (cellText1: string, cellText2: string) => Number(cellText2) - Number(cellText1),
+      descendingFunc: (cellText1: string, cellText2: string) => Number(cellText2) - Number(cellText1),
     },
     [DEFAULT_COLUMN_TYPES.CURRENCY]: {
-      ascending: (cellText1: string, cellText2: string) => {
+      ascendingFunc: (cellText1: string, cellText2: string) => {
         return Sort.extractNumberFromString(cellText1) - Sort.extractNumberFromString(cellText2);
       },
-      descending: (cellText1: string, cellText2: string) => {
+      descendingFunc: (cellText1: string, cellText2: string) => {
         return Sort.extractNumberFromString(cellText2) - Sort.extractNumberFromString(cellText1);
       },
     },
@@ -91,7 +91,7 @@ export class Sort {
   }
 
   // prettier-ignore
-  private static validateAndSort(cellText1: string, cellText2: string, sortFunc: SortingFuncs[keyof SortingFuncs],
+  private static validateAndSort(cellText1: string, cellText2: string, sortFunc: Sorting[keyof Sorting],
       validate: TextValidation['func'], isAsc: boolean) {
     const parseResult = Sort.parseComparedText(cellText1, cellText2, isAsc, Sort.validateType.bind(this, validate));
     if (typeof parseResult === 'number') return parseResult;
@@ -103,11 +103,23 @@ export class Sort {
     if (!sorting) return;
     if (isAsc) {
       dataContent.sort((a: TableRow, b: TableRow) =>
-        Sort.validateAndSort(a[colIndex] as string, b[colIndex] as string, sorting.ascending, textValidation.func, isAsc)
+        Sort.validateAndSort(
+          a[colIndex] as string,
+          b[colIndex] as string,
+          sorting.ascendingFunc,
+          textValidation.func,
+          isAsc
+        )
       );
     } else {
       dataContent.sort((a: TableRow, b: TableRow) =>
-        Sort.validateAndSort(b[colIndex] as string, a[colIndex] as string, sorting.descending, textValidation.func, isAsc)
+        Sort.validateAndSort(
+          b[colIndex] as string,
+          a[colIndex] as string,
+          sorting.descendingFunc,
+          textValidation.func,
+          isAsc
+        )
       );
     }
   }
