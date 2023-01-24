@@ -14,7 +14,7 @@ import {CellCSSStyle} from './cssStyle';
 // the component runtime duration and settings are values that can be set by the user which control its behaviour
 
 interface Parent<CellStyle> {
-  columnName: string;
+  headerName: string;
   defaultText?: CellText;
   isDefaultTextRemovable?: boolean; // true by default
   cellStyle?: CellStyle;

@@ -31,7 +31,7 @@ export type ColumnSettingsInternal = InterfacesUnion<
 type BuildInternalSettingsInterfacesUnion<Interfaces> = Interfaces extends InternalSettings
   ? Omit<
       SetRequired<Interfaces, 'defaultText' | 'isDefaultTextRemovable' | 'isCellTextEditable' | 'isHeaderTextEditable'>,
-      'columnName'
+      'headerName'
     > &
       StylePrecedence
   : never;

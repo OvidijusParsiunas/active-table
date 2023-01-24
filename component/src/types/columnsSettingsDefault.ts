@@ -7,4 +7,4 @@ export interface ColumnDropdownSettingsDisplay extends ColumnDropdownSettings {
   displaySettings: DropdownDisplaySettings;
 }
 
-export type ColumnsSettingsDefault = Omit<CustomColumnSettings, 'columnName'> & {dropdown?: ColumnDropdownSettingsDisplay};
+export type ColumnsSettingsDefault = Omit<CustomColumnSettings, 'headerName'> & {dropdown?: ColumnDropdownSettingsDisplay};

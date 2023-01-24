@@ -118,7 +118,7 @@ export class ColumnSettingsUtils {
 
   private static createInternalMap(clientSettings: CustomColumnsSettings, defaultSettings: ColumnsSettingsDefault) {
     return clientSettings.reduce<ColumnsSettingsMap>((settingsMap, clientSettings) => {
-      settingsMap[clientSettings.columnName] = ColumnSettingsUtils.createInternalSettings(clientSettings, defaultSettings);
+      settingsMap[clientSettings.headerName] = ColumnSettingsUtils.createInternalSettings(clientSettings, defaultSettings);
       return settingsMap;
     }, {});
   }

@@ -6,7 +6,7 @@ sidebar_position: 4
 
 Properties related to table rows.
 
-### `maxColumns`
+### `maxColumns` {#maxColumns}
 
 - Type: `number`
 - Default: _unset_
@@ -55,7 +55,7 @@ import Tabs from '@theme/Tabs';
     ["Jupiter", 142984, 1898, 79, 1326],
     ["Saturn", 120536, 568, 82, 687],
     ["Neptune", 49528, 102, 14, 1638]]'
-  tableStyle='{"width":"100%", "borderRadius":"2px"}'
+  tableStyle='{"borderRadius":"2px"}'
 ></active-table>
 ```
 
@@ -69,7 +69,7 @@ import Tabs from '@theme/Tabs';
 - Type: `boolean`
 - Default: _true_
 
-When `tableStyle` WORK is set with a `width` or `maxWidth` property to limit its size, the insertion of new columns will
+When [`tableStyle`](./table#tableStyle) is set with a `width` or `maxWidth` property to limit its size, the insertion of new columns will
 cause all existing column widths to automatically be reduced to make space for the new ones (except columns set with `width` or `minWidth` property inside `cellStyle` of the `customColumnSettings` object.
 WORK). This can however become problematic when existing column widths eventually become too narrow\* and their widths cannot be reduced any further. <br />
 When `preserveNarrowColumns` is `true` and column widths are too narrow\*, the table width will be increased allow new columns to be inserted. <br />
@@ -196,7 +196,79 @@ Default settings for all columns.
     ["", 142984, 1898, 79, 1326],
     ["", 120536, 568, 82, 687],
     ["", 49528, 102, 14, 1638]]'
-  tableStyle='{"width":"100%", "borderRadius":"2px"}'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `customColumnsSettings` {#customColumnsSettings}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`headerName: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`ColumnSettings`](#ColumnSettings),<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`dropdown?: ColumnDropdownSettings`](#ColumnSettings), WORK <br />
+  }[]
+
+Custom settings for columns that have a header text that matches the `headerName` string.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    customColumnsSettings='[
+      { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
+      { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "activeTypeName": "number", "isHeaderTextEditable": false },
+      { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "activeTypeName": "Select", "isHeaderTextEditable": false },
+      { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "activeTypeName": "Date d-m-y", "isHeaderTextEditable": false }
+    ]'
+    content='[
+      ["Planet", "Number", "Shape", "Date Created"],
+      ["", 12756, "Sphere", "01-02-2012"],
+      ["", 6792, "Dinosaur", "14-05-1990"],
+      ["", 142984, "Triangle", "04-12-2020"],
+      ["", 120536, "Square", "23-10-2008"],
+      ["", 49528, "Flat", "19-02-2006"]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  customColumnsSettings='[
+    { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
+    { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "activeTypeName": "number", "isHeaderTextEditable": false },
+    { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "activeTypeName": "Select", "isHeaderTextEditable": false },
+    { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "activeTypeName": "Date d-m-y", "isHeaderTextEditable": false }
+  ]'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  customColumnsSettings='[
+    { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
+    { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "activeTypeName": "number", "isHeaderTextEditable": false },
+    { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "activeTypeName": "Select", "isHeaderTextEditable": false },
+    { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "activeTypeName": "Date d-m-y", "isHeaderTextEditable": false }
+  ]'
+  content='[
+    ["Planet", "Number", "Shape", "Date Created"],
+    ["", 12756, "Sphere", "01-02-2012"],
+    ["", 6792, "Dinosaur", "14-05-1990"],
+    ["", 142984, "Triangle", "04-12-2020"],
+    ["", 120536, "Square", "23-10-2008"],
+    ["", 49528, "Flat", "19-02-2006"]]'
+  tableStyle='{"borderRadius":"2px"}'
 ></active-table>
 ```
 
@@ -534,7 +606,6 @@ If the function string inside `func` contains " or \ characters make sure to esc
   &nbsp;&nbsp;&nbsp;&nbsp; `changeTextFunc?: ((cellText: string) => string|number) as string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `changeStyleFunc?: ((cellText: string) => CellCSSStyle WORK) as string`, <br />
   }
-- Default: _unset_
 
 Augments cell after its text is changed. `changeTextFunc` is a function that processes cell text and
 returns same/new text depending on its contents. `changeStyleFunc` is a function that processes cell text and
@@ -639,7 +710,6 @@ If the function strings inside `changeTextFunc` or `changeStyleFunc` contain " o
   &nbsp;&nbsp;&nbsp;&nbsp; `ascendingFunc: ((cellText1: string, cellText2: string) => number) as string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `descendingFunc: ((cellText1: string, cellText2: string) => number) as string`, <br />
   }
-- Default: _if this object is not provided, cells will be sorted in the ASCII character order using the "Text" type sorting functionality_
 
 Facilitates column cell sorting capabilities.
 The functions are executed using the standard JavaScript [.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
@@ -733,7 +803,6 @@ If the function strings inside `ascendingFunc` or `descendingFunc` contain " or 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `dropdown?: CSSStyle` WORK, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `headerCorrections?: CSSStyle` WORK, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;}}
-- Default: _if this object is not provided, `reusableIconName` will be set to "Text"_
 
 Defines column type icon properties. <br />
 `reusableIconName` allows the icon to reuse of the existing default type icons. <br />
