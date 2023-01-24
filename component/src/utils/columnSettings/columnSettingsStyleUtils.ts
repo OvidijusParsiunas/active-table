@@ -13,7 +13,7 @@ import {ActiveTable} from '../../activeTable';
 
 export class ColumnSettingsStyleUtils {
   public static applySettingsStyleOnCell(settings: ColumnSettingsInternal, cellElement: HTMLElement, isHeader: boolean) {
-    Object.assign(cellElement.style, settings.cellStyle || {}, isHeader ? settings.headerStyleProps?.default || {} : {});
+    Object.assign(cellElement.style, settings.cellStyle || {}, isHeader ? settings.headerStyles?.default || {} : {});
   }
 
   private static unsetHeaderSettingStyle(headerElement: HTMLElement, style: CellCSSStyle) {
@@ -25,18 +25,18 @@ export class ColumnSettingsStyleUtils {
   // prettier-ignore
   private static resetHeaderStyleToDefault(columnElements: HTMLElement[],
       settings: ColumnSettingsInternal, columnsSettings: ColumnsSettingsDefault) {
-    if (settings.headerStyleProps?.default) {
-      ColumnSettingsStyleUtils.unsetHeaderSettingStyle(columnElements[0], settings.headerStyleProps.default);
+    if (settings.headerStyles?.default) {
+      ColumnSettingsStyleUtils.unsetHeaderSettingStyle(columnElements[0], settings.headerStyles.default);
     }
     if (settings.cellStyle) ElementStyle.unsetStyle(columnElements[0], settings.cellStyle);
-    const {cellStyle, headerStyleProps} = columnsSettings;
-    CellElement.setDefaultCellStyle(columnElements[0], cellStyle, headerStyleProps?.default);
+    const {cellStyle, headerStyles} = columnsSettings;
+    CellElement.setDefaultCellStyle(columnElements[0], cellStyle, headerStyles?.default);
   }
 
   // prettier-ignore
   private static setNewHeaderStyle(at: ActiveTable, columnDetails: ColumnDetailsT) {
     const {settings, elements} = columnDetails;
-    const newHeaderStyle = settings.cellStyle || settings.headerStyleProps?.default;
+    const newHeaderStyle = settings.cellStyle || settings.headerStyles?.default;
     if (newHeaderStyle) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, elements[0], true);
     const newStyleSettings = newHeaderStyle ? settings : undefined;
     columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(at.columnsSettings,
@@ -77,10 +77,10 @@ export class ColumnSettingsStyleUtils {
   // REF-23
   // prettier-ignore
   public static doesSettingHaveSideBorderStyle(settings: ColumnSettingsInternal) {
-    const settingsStyle = settings.cellStyle || settings.headerStyleProps?.default;
+    const settingsStyle = settings.cellStyle || settings.headerStyles?.default;
     if (settingsStyle) {
       const doesStyleHaveSideBorder = ColumnSettingsStyleUtils.doStylesHaveVisibleDimension(settingsStyle,
-        ['border', 'borderLeft', 'borderLeftWidth', 'borderRight', 'borderRightWidth'])
+        ['border', 'borderLeft', 'borderLeftWidth', 'borderRight', 'borderRightWidth']);
       return doesStyleHaveSideBorder;
     }
     return false;

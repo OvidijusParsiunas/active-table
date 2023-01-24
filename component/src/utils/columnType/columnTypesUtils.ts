@@ -2,8 +2,8 @@ import {ColumnTypeInternal, ColumnTypesInternal, SelectPropertiesInternal} from 
 import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItemConf';
 import {ColumnType, ColumnTypes, DropdownIconSettings} from '../../types/columnType';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
+import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
-import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
 import {ColumnDetailsT} from '../../types/columnDetails';
 import {DefaultColumnTypes} from './defaultColumnTypes';
 import {CellText} from '../../types/tableContent';

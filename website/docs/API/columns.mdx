@@ -126,9 +126,9 @@ cannot be reduced any further the excess ones will not be removed even if `prese
 ### `columnsSettings`
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`columnSettings`](#columnsettings),<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`ColumnSettings`](#ColumnSettings),<br />
   &nbsp;&nbsp;&nbsp;&nbsp; `dropdown?`: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[`ColumnDropdownSettings`](#columnsettings), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[`ColumnDropdownSettings`](#ColumnSettings), WORK <br />
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[`displaySettings?: DropdownDisplaySettings`](http) WORK<br />
   }}
 
@@ -209,7 +209,7 @@ Default settings for all columns.
 
 Object types that are shared between column properties:
 
-### `columnSettings`
+### `ColumnSettings` {#ColumnSettings}
 
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp; `defaultText?: string|number`, <br />
@@ -217,36 +217,37 @@ Object types that are shared between column properties:
   &nbsp;&nbsp;&nbsp;&nbsp; `isCellTextEditable?: boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `isHeaderTextEditable?: boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`cellStyle?: CellStyle`](https), WORK <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`headerStyleProps?: HoverableElementStyle`](https), WORK <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`headerIconStyle?: HeaderIconStyle`](https), WORK <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`defaultColumnTypes?: DEFAULT_COLUMN_TYPES[]`](https), WORK <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`customColumnTypes?: ColumnTypes[]`](https), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`headerStyles?: HoverableStyles`](#HoverableStyles), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`headerIconStyle?: HeaderIconStyle`](#HeaderIconStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`defaultColumnTypes?: DEFAULT_COLUMN_TYPES[]`](#DEFAULT_COLUMN_TYPES), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`customColumnTypes?: ColumnType[]`](#ColumnType), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `activeTypeName?: string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`dropdown?: ColumnDropdownSettingsDisplay`](https), WORK <br />
   }
 - Default: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _defaultText: ''_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _defaultText: ""_, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; _isDefaultTextRemovable: true_, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; _isCellTextEditable: true_, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; _isHeaderTextEditable: true_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _defaultColumnTypes: ['Text', 'Number', 'Currency', 'Date d-m-y', 'Date m-d-y', 'Checkbox', 'Select', 'Label']_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _activeTypeName: First type to not have validation -> First available type -> 'Text'_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _defaultColumnTypes: ["Text", "Number", "Currency", "Date d-m-y", "Date m-d-y", "Checkbox", "Select", "Label"]_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _activeTypeName: First type to not have validation -> First available type -> "Text"_, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; _dropdown: {displaySettings: {isAvailable: true, openMethod: {cellClick: true}}_, <br />
   }
 
-`defaultText` is text that is displayed when there is no text in the cell or if validation based on its type fails. <br />
-`isDefaultTextRemovable` removes default text when the user focuses on it. <br />
-`isCellTextEditable` applies to both data and header cells, but is superseded by `isHeaderTextEditable` for header cells. <br />
-`cellStyle` applies to both data and header cells, but is superseded by `headerStyleProps` for header cells which also
-controls the hover styling. <br />
-`headerIconStyle` controls the style of the icon if they are present within the header row WORK. <br />
-`defaultColumnTypes` array overwrites the types that are present by default. `customColumnTypes` allows additional custom
-column types to be defined. <br />
-`activeTypeName` is the starting type name. <br />
+`defaultText` is text that is displayed when there is the cell has no text or if its type validation fails. <br />
+`isDefaultTextRemovable` removes the default text when the cell is focused. <br />
+`isCellTextEditable` defines if cell text can be edited and applies to both data and header cells, but is superseded by
+`isHeaderTextEditable` for header cells. <br />
+`cellStyle` defines the cell style and applies to both data and header cells, but is superseded by `headerStyles` for
+header cells which defines styling for default and mouse hover states. <br />
+`headerIconStyle` controls the style of the header icon if present WORK. <br />
+`defaultColumnTypes` overwrites the available default column types (_use [] to remove all_) and `customColumnTypes` defines additional custom
+column types. <br />
+`activeTypeName` is the starting type name for the column. <br />
 
 <LineBreak></LineBreak>
 
-### `HoverableElementStyle`
+### `HoverableStyles` {#HoverableStyles}
 
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp; `default?: CellCSSStyle`, WORK <br />
@@ -254,12 +255,15 @@ column types to be defined. <br />
   }
 - Default: _unset_
 
+Styling details for when an element is in default state and when it is hovered with a mouse. `hoverColors` object only accepts
+`backgroundColor` and `color` properties.
+
 #### Example
 
 <TableContainer>
   <active-table
     columnsSettings='{
-      "headerStyleProps": {
+      "headerStyles": {
         "default": {
           "backgroundColor": "#e7e7e7",
           "borderBottom": "unset",
@@ -287,7 +291,7 @@ column types to be defined. <br />
 ```text
 <active-table
   columnsSettings='{
-    "headerStyleProps": {
+    "headerStyles": {
       "default": {
         "backgroundColor": "#e7e7e7",
         "borderBottom": "unset",
@@ -307,7 +311,7 @@ column types to be defined. <br />
 ```text
 <active-table
   columnsSettings='{
-    "headerStyleProps": {
+    "headerStyles": {
       "default": {
         "backgroundColor": "#e7e7e7",
         "borderBottom": "unset",
@@ -317,6 +321,258 @@ column types to be defined. <br />
       "hoverColors": {
         "backgroundColor": "#d2d2d2"
       }
+  }}'
+  content='[
+    ["Planet", "Planet", "Moons", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `HeaderIconStyle` {#HeaderIconStyle}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `filterColor?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `scale?`: {`x?: number`, `y?: number`}<br />
+  }
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _iconFilterColor: 'brightness(0) saturate(100%) invert(34%) sepia(0%) saturate(1075%) hue-rotate(211deg) brightness(96%) contrast(90%)'_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _scale: {x: 1.1, y: 1.1}_<br />
+  }
+
+Styling details for the column header icon. The color is set by using the `filterColor` property which requires
+a [filter](https://developer.mozilla.org/en-US/docs/Web/CSS/filter) string that can be retrieved using the [cssfilterconverter](https://cssfilterconverter.com/)
+tool (the reason for this is because the icon is an SVG element). Use `scale` to resize the icon dimensions.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    columnsSettings='{
+      "headerIconStyle": {
+        "filterColor": "brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)",
+        "scale": {"x": 1.5, "y": 1.5}
+    }}'
+    content='[
+      ["Planet", "Planet", "Moons", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnsSettings='{
+    "headerIconStyle": {
+      "filterColor": "brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)",
+      "scale": {"x": 1.5, "y": 1.5}
+  }}'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnsSettings='{
+    "headerIconStyle": {
+      "filterColor": "brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)",
+      "scale": {"x": 1.5, "y": 1.5}
+  }}'
+  content='[
+    ["Planet", "Planet", "Moons", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `DEFAULT_COLUMN_TYPES` {#DEFAULT_COLUMN_TYPES}
+
+- Type: `"Text"` | `"Number"` | `"Currency"` | `"Date d-m-y"` | `"Date m-d-y"` | `"Checkbox"` | `"Select"` | `"Label"`
+
+Default column type names.
+
+<LineBreak></LineBreak>
+
+### `ColumnType` {#ColumnType}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `name: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `textValidation?: TextValidation`, WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `customTextProcessing?: CustomTextProcessing`, WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `sorting?: SortingFuncs`, WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `dropdownIconSettings?: DropdownIconSettings` WORK <br />
+  }
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _sorting: using "Text" type sorting_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _dropdownIconSettings: using "Text" type icon _<br />
+  }
+
+Details for creating a column type.
+
+<LineBreak></LineBreak>
+
+### `TextValidation` {#TextValidation}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `func: ((cellText: string) => boolean) as string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `setTextToDefaultOnFail?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `failedStyle?: CellCSSStyle`, WORK <br />
+  }
+- Default: { _setTextToDefaultOnFail: true_ }
+
+Used to enforce cell text validation. This operates only in the data cells and not the header. <br />
+The `func` property takes a function that will be called when the text is initially placed in the cell and when
+it changes. The function must return `true` if the text is correct or `false` if it is incorrect. It is IMPORTANT
+to note that the function needs to be converted into a string, as otherwise it will disappear when passed in
+with the parent object.
+`setTextToDefaultOnFail` will reset the cell text to value defined inside `columnsSettings` -> `defaultText` WORK
+if the function returns `false`. <br />
+`failedStyle` is used to change the cell styling if the function returns `false`.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    columnsSettings='{
+      "customColumnTypes":[
+        {"name":"Custom type",
+        "textValidation": {
+          "func": "(cellText)=>{return cellText!==`red`}",
+          "setTextToDefaultOnFail":false,
+          "failedStyle":{"color":"red"}
+        },
+        "customTextProcessing": {
+          "changeStyle": "(cellText)=>{if(cellText===`green`){return{backgroundColor:`green`}}if(cellText===`purple`){return{color:`purple`}}return{color:`black`}}"
+        },
+        "dropdownIconSettings": {
+          "reusableIconName": "Select"
+        }
+      }
+    ]
+  }'
+    content='[
+      ["Planet", "Planet", "Moons", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnsSettings='{"customColumnTypes": [
+      {
+                columnName: 'Ga',
+                defaultText: 'A',
+                isDefaultTextRemovable: false,
+                isCellTextEditable: false,
+                customColumnTypes: [
+                  {
+                    name: 'Custom type 2',
+                    textValidation: {
+                      func: `(cellText) => {
+                        return cellText !== 'red'
+                      }`,
+                      setTextToDefaultOnFail: false,
+                      failedStyle: {color: 'red'},
+                    },
+                    customTextProcessing: {
+                      // changeText: `(cellText) => {
+                      //   return 'aa';
+                      // }`,
+                      changeStyle: `(cellText) => {
+                        if (cellText === 'green') {
+                          return {backgroundColor: 'green'}
+                        }
+                        if (cellText === 'purple') {
+                          return {color: 'purple'}
+                        }
+                        return {color: 'black'}
+                      }`,
+                    },
+                    dropdownIconSettings: {
+                      reusableIconName: `Select`,
+                    },
+                  },
+                ],
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnsSettings='{
+    "customColumnTypes": [
+      {
+                columnName: 'Ga',
+                defaultText: 'A',
+                isDefaultTextRemovable: false,
+                isCellTextEditable: false,
+                customColumnTypes: [
+                  {
+                    name: 'Custom type 2',
+                    textValidation: {
+                      func: `(cellText) => {
+                        return cellText !== 'red'
+                      }`,
+                      setTextToDefaultOnFail: false,
+                      failedStyle: {color: 'red'},
+                    },
+                    customTextProcessing: {
+                      // changeText: `(cellText) => {
+                      //   return 'aa';
+                      // }`,
+                      changeStyle: `(cellText) => {
+                        if (cellText === 'green') {
+                          return {backgroundColor: 'green'}
+                        }
+                        if (cellText === 'purple') {
+                          return {color: 'purple'}
+                        }
+                        return {color: 'black'}
+                      }`,
+                    },
+                    dropdownIconSettings: {
+                      reusableIconName: `Select`,
+                    },
+                  },
+                ],
   }}'
   content='[
     ["Planet", "Planet", "Moons", "Moons", "Density"],

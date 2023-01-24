@@ -9,8 +9,8 @@ import {CellCSSStyle} from '../../types/cssStyle';
 
 export class ResetColumnStyles {
   public static applyDefaultStyles(columnElements: HTMLElement[], columnsSettings: ColumnsSettingsDefault) {
-    const {cellStyle, headerStyleProps: header} = columnsSettings;
-    CellElement.setDefaultCellStyle(columnElements[0], cellStyle, header?.default);
+    const {cellStyle, headerStyles} = columnsSettings;
+    CellElement.setDefaultCellStyle(columnElements[0], cellStyle, headerStyles?.default);
     columnElements.slice(1).forEach((element) => {
       CellElement.setDefaultCellStyle(element, cellStyle);
     });

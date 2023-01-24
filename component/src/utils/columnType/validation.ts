@@ -1,5 +1,5 @@
+import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
-import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
 import {TextValidation} from '../../types/textValidation';
 import {CellText} from '../../types/tableContent';
 import {EMPTY_STRING} from '../../consts/text';

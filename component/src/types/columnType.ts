@@ -1,7 +1,7 @@
 import {LabelOptions, SelectOptions, SelectProperties} from './selectProperties';
+import {DEFAULT_COLUMN_TYPES} from '../enums/defaultColumnTypes';
 import {CalendarFunctionality} from './calendarFunctionality';
 import {CustomTextProcessing} from './customTextProcessing';
-import {DEFAULT_COLUMN_TYPES} from '../enums/columnType';
 import {IconSettings} from './dropdownButtonItem';
 import {TextValidation} from './textValidation';
 import {InterfacesUnion} from './utilityTypes';

@@ -1,8 +1,8 @@
 import {CalendarFunctionality} from '../../types/calendarFunctionality';
+import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {TableContent, TableRow} from '../../types/tableContent';
 import {CellElementIndex} from '../elements/cellElementIndex';
-import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {TextValidation} from '../../types/textValidation';
 import {SortingFuncs} from '../../types/sortingFuncs';

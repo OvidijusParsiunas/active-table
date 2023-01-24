@@ -1,4 +1,4 @@
-import {HoverableElementStyle} from './hoverableElementStyle';
+import {HoverableStyles} from './hoverableStyles';
 
 // REF-19
 // wrapIndexCellText:
@@ -19,7 +19,7 @@ export interface AuxiliaryTableContentDisplayProps {
 }
 
 export interface AuxiliaryTableContentGenericProps {
-  styleProps?: HoverableElementStyle;
+  styleProps?: HoverableStyles;
   inheritHeaderStyle?: boolean; // true by default, applied to header only and will not inherit the default header style
 }
 

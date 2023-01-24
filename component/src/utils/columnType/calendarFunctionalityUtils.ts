@@ -1,5 +1,5 @@
 import {CalendarFunctionality, YMDFormat} from '../../types/calendarFunctionality';
-import {DEFAULT_COLUMN_TYPES} from '../../enums/columnType';
+import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {RegexUtils} from '../regex/regexUtils';
 
 export class CalendarFunctionalityUtils {

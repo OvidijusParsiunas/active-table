@@ -48,7 +48,7 @@ export class AddNewColumnElement {
     headerCell.innerText = '+';
     Object.assign(
       headerCell.style,
-      at.columnsSettings.headerStyleProps?.default,
+      at.columnsSettings.headerStyles?.default,
       at.auxiliaryTableContentInternal.cellColors.header.default
     );
     return headerCell;

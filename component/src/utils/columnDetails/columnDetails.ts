@@ -15,14 +15,14 @@ export class ColumnDetails {
   // prettier-ignore
   private static getHeaderDefaultColor(columnsSettings: ColumnsSettingsDefault,
       key: keyof CellStateColorProperties, defaultColor: string, settings?: ColumnSettingsInternal) {
-    return settings?.headerStyleProps?.default?.[key] || settings?.cellStyle?.[key] ||
-      columnsSettings.headerStyleProps?.default?.[key] || columnsSettings.cellStyle?.[key] || defaultColor;
+    return settings?.headerStyles?.default?.[key] || settings?.cellStyle?.[key] ||
+      columnsSettings.headerStyles?.default?.[key] || columnsSettings.cellStyle?.[key] || defaultColor;
   }
 
   // prettier-ignore
   private static getHeaderHoverColor(columnsSettings: ColumnsSettingsDefault,
       key: keyof CellStateColorProperties, defaultColor: string, settings?: ColumnSettingsInternal) {
-    return settings?.headerStyleProps?.hoverColors?.[key] || columnsSettings.headerStyleProps?.hoverColors?.[key] ||
+    return settings?.headerStyles?.hoverColors?.[key] || columnsSettings.headerStyles?.hoverColors?.[key] ||
       ColumnDetails.getHeaderDefaultColor(columnsSettings, key, defaultColor, settings);
   }
 
