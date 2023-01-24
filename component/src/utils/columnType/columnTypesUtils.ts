@@ -155,8 +155,8 @@ export class ColumnTypesUtils {
   private static convertStringFunctionsToRealFunctions(type: ColumnType) {
     if (type.textValidation) ObjectUtils.convertStringToFunction(type.textValidation, 'func');
     if (type.customTextProcessing) {
-      ObjectUtils.convertStringToFunction(type.customTextProcessing, 'changeText');
-      ObjectUtils.convertStringToFunction(type.customTextProcessing, 'changeStyle');
+      ObjectUtils.convertStringToFunction(type.customTextProcessing, 'changeTextFunc');
+      ObjectUtils.convertStringToFunction(type.customTextProcessing, 'changeStyleFunc');
     }
     if (type.sorting) {
       ObjectUtils.convertStringToFunction(type.sorting, 'ascending');

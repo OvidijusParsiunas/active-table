@@ -57,7 +57,7 @@ export class ColumnSettingsStyleUtils {
   }
 
   // prettier-ignore
-  public static changeStyle(at: ActiveTable, columnIndex: number, oldSettings: ColumnSettingsInternal) {
+  public static changeStyleFunc(at: ActiveTable, columnIndex: number, oldSettings: ColumnSettingsInternal) {
     // resetDataCellsStyle unsets and reapplies settings style hence we only need to set the header here
     ProcessedDataTextStyle.resetDataCellsStyle(at, columnIndex,
       ColumnSettingsStyleUtils.changeHeaderStyleFunc.bind(at, columnIndex, oldSettings), oldSettings.cellStyle)

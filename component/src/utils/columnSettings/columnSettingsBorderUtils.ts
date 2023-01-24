@@ -100,7 +100,7 @@ export class ColumnSettingsBorderUtils {
     if (subjectColumn?.bordersOverwrittenBySiblings[subjectBorder]) {
       subjectColumn.bordersOverwrittenBySiblings[subjectBorder] = false;
       // not necessarily changing the style, but need to run this as there are a lot of styles unset and a lot being set
-      ColumnSettingsStyleUtils.changeStyle(at, columnIndex, at.columnsDetails[columnIndex].settings);
+      ColumnSettingsStyleUtils.changeStyleFunc(at, columnIndex, at.columnsDetails[columnIndex].settings);
     }
   }
 

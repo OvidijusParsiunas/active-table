@@ -15,12 +15,12 @@ export class ProcessedDataTextStyle {
   private static readonly DEFAULT_FAILED_VALIDATION_STYLE = {color: 'grey'};
 
   // prettier-ignore
-  private static setCustomStyle(changeStyle: CustomTextProcessing['changeStyle'], text: CellText,
+  private static setCustomStyle(changeStyleFunc: CustomTextProcessing['changeStyleFunc'], text: CellText,
       columnDetails: ColumnDetailsT, processedStyle: CellProcessedTextStyle,
       textContainerElement: HTMLElement, columnsSettings: ColumnsSettingsDefault) {
-    if (changeStyle) {
+    if (changeStyleFunc) {
       ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, textContainerElement, columnsSettings);
-      const newStyle = changeStyle(String(text));
+      const newStyle = changeStyleFunc(String(text));
       Object.assign(textContainerElement.style, newStyle);
       processedStyle.lastAppliedStyle = newStyle;
       ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [textContainerElement]);
@@ -42,12 +42,12 @@ export class ProcessedDataTextStyle {
       columnsSettings: ColumnsSettingsDefault): boolean {
     let wasValidationStyleSet = false; // REF-3
     if (!isValid) {
-      if (customTextProcessing?.changeStyle) {
+      if (customTextProcessing?.changeStyleFunc) {
         ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, textContainerElement, columnsSettings);
       }
       ProcessedDataTextStyle.setFailedValidationStyle(columnDetails, processedStyle, textContainerElement);
       wasValidationStyleSet = true;
-    } else if (!customTextProcessing?.changeStyle) { // REF-3 - set to default if no custom processing will occur
+    } else if (!customTextProcessing?.changeStyleFunc) { // REF-3 - set to default if no custom processing will occur
       ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, textContainerElement, columnsSettings);
       processedStyle.lastAppliedStyle = {};
       wasValidationStyleSet = true;
@@ -74,8 +74,8 @@ export class ProcessedDataTextStyle {
         processedStyle.isValid = isValid;
       }
     }
-    if (!wasValidationStyleSet && customTextProcessing?.changeStyle) { // REF-3
-      ProcessedDataTextStyle.setCustomStyle(customTextProcessing.changeStyle, text, columnDetails, processedStyle,
+    if (!wasValidationStyleSet && customTextProcessing?.changeStyleFunc) { // REF-3
+      ProcessedDataTextStyle.setCustomStyle(customTextProcessing.changeStyleFunc, text, columnDetails, processedStyle,
         textContainerElement, at.columnsSettings);
     }
   }
@@ -110,11 +110,11 @@ export class ProcessedDataTextStyle {
 
   // prettier-ignore
   // this is used for a case where the default style has been set and need to reapply the processed style
-  // without having to rerun the validation/changeStyle functions
+  // without having to rerun the validation/changeStyleFunc functions
   public static reapplyCellsStyle(at: ActiveTable, columnIndex: number) {
     const columnDetails = at.columnsDetails[columnIndex];
     const {textValidation: { func: validationFunc }, customTextProcessing} = columnDetails.activeType;
-    if (validationFunc || customTextProcessing?.changeStyle) {
+    if (validationFunc || customTextProcessing?.changeStyleFunc) {
       columnDetails.elements.slice(1).forEach((element, rowIndex) => {
         const relativeRowIndex = rowIndex + 1;
         Object.assign(element.style, columnDetails.processedStyle[relativeRowIndex].lastAppliedStyle);

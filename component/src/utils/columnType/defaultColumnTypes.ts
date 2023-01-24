@@ -67,7 +67,7 @@ export class DefaultColumnTypes {
       checkbox: true,
       customTextProcessing: {
         // cannot place this inside the CheckboxCellElement class as certain dependencies are not imported in time
-        changeText: (text: CellText) => {
+        changeTextFunc: (text: CellText) => {
           const processedString = String(text).trim().toLocaleLowerCase();
           // prettier-ignore
           if (processedString === '' || processedString === '0'

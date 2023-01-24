@@ -32,7 +32,9 @@ export class DataUtils {
     let processedText = typeof cellText === 'string' ? cellText.trim() : cellText;
     const {activeType: {textValidation, customTextProcessing}, settings: {defaultText}} = at.columnsDetails[columnIndex];
     if (rowIndex > 0) {
-      if (customTextProcessing?.changeText) processedText = customTextProcessing.changeText(String(processedText)); 
+      if (customTextProcessing?.changeTextFunc) {
+        processedText = customTextProcessing.changeTextFunc(String(processedText)); 
+      }
       if (!textValidation.setTextToDefaultOnFail && processedText !== EMPTY_STRING) return processedText;
     }
     const shouldSetToDefault = DataUtils.shouldBeSetToDefault(at, processedText, defaultText, rowIndex, textValidation);

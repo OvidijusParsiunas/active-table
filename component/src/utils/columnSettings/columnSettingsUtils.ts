@@ -48,7 +48,7 @@ export class ColumnSettingsUtils {
     ResetColumnStructure.reset(at, columnDetails, columnIndex);
     ColumnSettingsDefaultTextUtils.setDefaultText(at, columnDetails, columnIndex);
     if (!onColumnMove) ColumnSettingsWidthUtils.changeWidth(at, headerElement, oldSettings, newSettings);
-    ColumnSettingsStyleUtils.changeStyle(at, columnIndex, oldSettings);
+    ColumnSettingsStyleUtils.changeStyleFunc(at, columnIndex, oldSettings);
     ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
     ColumnSettingsUtils.updateSizer(at, columnIndex);
     if (at.displayIconsInHeaders) HeaderIconCellElement.changeHeaderIcon(at.columnsDetails[columnIndex]);
