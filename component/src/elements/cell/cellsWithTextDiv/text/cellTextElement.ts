@@ -19,6 +19,9 @@ export class CellTextElement {
   private static createTextElement(text: string, isCellTextEditable: boolean) {
     const textElement = document.createElement('div');
     textElement.innerText = text;
+    // this fixes an issue where converting to a text element that has no text does not add a <br> which causes
+    // an error to be thrown when clicking on the cell element
+    if (text === '') CaretDisplayFix.addBRPaddingToEmptyCell(textElement, '');
     textElement.classList.add(CellTextElement.CELL_TEXT_DIV_CLASS);
     CellElement.prepContentEditable(textElement, isCellTextEditable);
     return textElement;

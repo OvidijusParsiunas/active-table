@@ -39,7 +39,7 @@ export class CaretDisplayFix {
     }
   }
 
-  private static addBRPaddingToEmptyCell(textContainerElement: HTMLElement, text: string) {
+  public static addBRPaddingToEmptyCell(textContainerElement: HTMLElement, text: string) {
     const textElement = CellElement.getTextElement(textContainerElement);
     if (text === EMPTY_STRING && textElement.childNodes.length === 0) {
       textElement.appendChild(document.createElement(CaretDisplayFix.BR_TAG_NAME));
