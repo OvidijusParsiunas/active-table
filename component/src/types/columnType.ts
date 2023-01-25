@@ -1,8 +1,8 @@
 import {LabelOptions, SelectOptions, SelectProperties} from './selectProperties';
 import {DEFAULT_COLUMN_TYPES} from '../enums/defaultColumnTypes';
-import {CalendarFunctionality} from './calendarFunctionality';
 import {CustomTextProcessing} from './customTextProcessing';
 import {IconSettings} from './dropdownButtonItem';
+import {Calendar} from './calendarFunctionality';
 import {TextValidation} from './textValidation';
 import {InterfacesUnion} from './utilityTypes';
 import {Sorting} from './sorting';
@@ -23,8 +23,8 @@ interface Parent {
   iconSettings?: ColumnIconSettings; // by default will be set to text icon
 }
 
-interface Calendar extends Omit<Parent, 'sorting'> {
-  calendar: CalendarFunctionality;
+interface CalendarT extends Omit<Parent, 'sorting'> {
+  calendar: Calendar;
 }
 
 interface Checkbox extends Omit<Parent, 'sorting'> {
@@ -43,6 +43,6 @@ interface Select extends Omit<Parent, 'validation'> {
   select: SelectProperties<SelectOptions> | true;
 }
 
-export type ColumnType = InterfacesUnion<Calendar | Checkbox | Select | Label | Parent>;
+export type ColumnType = InterfacesUnion<CalendarT | Checkbox | Select | Label | Parent>;
 
 export type ColumnTypes = ColumnType[];

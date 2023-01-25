@@ -1,7 +1,7 @@
 import {LabelOptions, SelectProperties} from './selectProperties';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
-import {CalendarFunctionality} from './calendarFunctionality';
 import {CustomTextProcessing} from './customTextProcessing';
+import {Calendar} from './calendarFunctionality';
 import {TextValidation} from './textValidation';
 import {InterfacesUnion} from './utilityTypes';
 import {Sorting} from './sorting';
@@ -22,14 +22,14 @@ export interface Parent {
   dropdownItem: ColumnTypeDropdownItem;
 }
 
-interface Calendar extends Omit<Parent, 'sorting'> {
-  calendar: CalendarFunctionality;
+interface CalendarT extends Omit<Parent, 'sorting'> {
+  calendar: Calendar;
 }
 
 interface Checkbox extends Omit<Parent, 'sorting'> {
   checkbox: true;
 }
 
-export type ColumnTypeInternal = InterfacesUnion<Calendar | Checkbox | Parent>;
+export type ColumnTypeInternal = InterfacesUnion<CalendarT | Checkbox | Parent>;
 
 export type ColumnTypesInternal = ColumnTypeInternal[];

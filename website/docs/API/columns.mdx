@@ -492,7 +492,10 @@ tool (the reason for this is because the icon is an SVG element). Use `scale` to
   &nbsp;&nbsp;&nbsp;&nbsp; [`customTextProcessing?: CustomTextProcessing`](#CustomTextProcessing), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`sorting?: Sorting`](#Sorting), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`iconSettings?: IconSettings`](#IconSettings) <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`calendar?: Calendar`](#IconSettings) WORK <br />
+
   }
+
 - Default: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp; _sorting: in the ASCII character order ("Text" type)_, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; _dropdownIconSettings: using "Text" type icon _<br />
@@ -612,7 +615,7 @@ returns same/new text depending on its contents. `changeStyleFunc` is a function
 returns a styling object for the cell depenging on its contents. It is IMPORTANT to note that both functions
 need to be converted into strings as otherwise they will be removed when passed in with the parent object.
 
-#### Example validation for if currency is 20 (red) < 100 (yellow) < more (green)
+#### Example processing for currency: 20 (red) < 100 (yellow) < more (green)
 
 <TableContainer>
   <active-table
@@ -621,9 +624,9 @@ need to be converted into strings as otherwise they will be removed when passed 
         {
           "name": "Custom type",
           "customTextProcessing": {
-            "changeTextFunc": "(cellText) => `$${Number(String(cellText).replace(/[^0-9.-]+/g,\"\"))}`",
+            "changeTextFunc": "(cellText) => `$${Number(cellText.replace(/[^0-9.-]+/g,\"\"))}`",
             "changeStyleFunc": "(cellText) => {
-              const moneyNumber = Number(String(cellText).replace(/[^0-9.-]+/g,\"\"));
+              const moneyNumber = Number(cellText.replace(/[^0-9.-]+/g,\"\"));
               if (moneyNumber < 20) return {backgroundColor: `#ff3232`};
               if (moneyNumber < 100) return {backgroundColor: `#ffff00`};
               return {backgroundColor: `#00ac00`};
@@ -652,9 +655,9 @@ need to be converted into strings as otherwise they will be removed when passed 
       {
         "name": "Custom type",
         "customTextProcessing": {
-          "changeTextFunc": "(cellText) => `$${Number(String(cellText).replace(/[^0-9.-]+/g,\"\"))}`",
+          "changeTextFunc": "(cellText) => `$${Number(cellText.replace(/[^0-9.-]+/g,\"\"))}`",
           "changeStyleFunc": "(cellText) => {
-            const moneyNumber = Number(String(cellText).replace(/[^0-9.-]+/g,\"\"));
+            const moneyNumber = Number(cellText.replace(/[^0-9.-]+/g,\"\"));
             if (moneyNumber < 20) return {backgroundColor: `#ff3232`};
             if (moneyNumber < 100) return {backgroundColor: `#ffff00`};
             return {backgroundColor: `#00ac00`};
@@ -674,9 +677,9 @@ need to be converted into strings as otherwise they will be removed when passed 
       {
         "name": "Custom type",
         "customTextProcessing": {
-          "changeTextFunc": "(cellText) => `$${Number(String(cellText).replace(/[^0-9.-]+/g,\"\"))}`",
+          "changeTextFunc": "(cellText) => `$${Number(cellText.replace(/[^0-9.-]+/g,\"\"))}`",
           "changeStyleFunc": "(cellText) => {
-            const moneyNumber = Number(String(cellText).replace(/[^0-9.-]+/g,\"\"));
+            const moneyNumber = Number(cellText.replace(/[^0-9.-]+/g,\"\"));
             if (moneyNumber < 20) return {backgroundColor: `#ff3232`};
             if (moneyNumber < 100) return {backgroundColor: `#ffff00`};
             return {backgroundColor: `#00ac00`};
@@ -885,6 +888,108 @@ properties are also used for the header however if they don't fit the`headerCorr
 
 </TabItem>
 </Tabs>
+
+<LineBreak></LineBreak>
+
+### `Calendar` {#Calendar}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `toYMDFunc: ((cellText: string) => YMDFormat) as string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `fromYMDFunc: ((YMD: YMDFormat) => string) as string`, <br />
+  }
+
+Adds a hoverable calendar icon element to each data cell. When a cell is focused - a [date picker overlay](#https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date)
+is opened which the user can use to help select the date they need. <br />
+The `toYMDFunc` and `fromYMDFunc` functions are strictly used for converting cell text into a format ([`YMDFormat`](#YMDFormat)) the calendar API
+accepts and back to the original format when a new date is chosen.
+It is IMPORTANT to note that both functions need to be converted into strings as otherwise they will be removed when passed in with the parent object.
+
+#### Example for custom d/m/y type
+
+<TableContainer>
+  <active-table
+    columnsSettings='{
+      "customColumnTypes":[
+        {
+          "name": "Custom d/m/y type",
+          "calendar": {
+            "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
+            "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
+          }}],
+      "activeTypeName": "Custom d/m/y type"
+    }'
+    content='[
+      ["Date 1", "Date 2", "Date 3", "Date 4"],
+      ["3/2/2052", "4/2/1993", "6/12/2012", "2/2/2012"],
+      ["18/12/0001", "2/4/1689", "16/2/2029", "1/02/2004"],
+      ["12/8/1943", "24/2/1992", "16/12/2022", "17/3/2023"]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnsSettings='{
+    "customColumnTypes":[
+      {
+        "name": "Custom d/m/y type",
+        "calendar": {
+          "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
+          "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
+    }}]
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnsSettings='{
+    "customColumnTypes":[
+      {
+        "name": "Custom d/m/y type",
+        "calendar": {
+          "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
+          "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
+    }}],
+    "activeTypeName": "Custom d/m/y type"
+  }'
+  content='[
+    ["Date 1", "Date 2", "Date 3", "Date 4"],
+    ["3/2/2052", "4/2/1993", "6/12/2012", "2/2/2012"],
+    ["18/12/0001", "2/4/1689", "16/2/2029", "1/02/2004"],
+    ["12/8/1943", "24/2/1992", "16/12/2022", "17/3/2023"]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+:::danger
+The above code serves as an example and the `toYMDFunc` function will break if cells do not adhere to the d/m/y format. It is advisable to
+always analyze the incoming `cellText` value format and return a default value if it is not what was expected. Additionally, it is highly
+recommended to supplement `calendar` with the use of [`textValidation`](#TextValidation) and [`customTextProcessing`](#CustomTextProcessing)
+properties to make sure cell text is always in the correct format.
+:::
+:::info
+If the function strings inside `ascendingFunc` or `descendingFunc` contain " or \ characters make sure to escape them by prefixing them with **\\** e.g. \" and \\\
+:::
+
+<LineBreak></LineBreak>
+
+### `YMDFormat` {#YMDFormat}
+
+- Type: `[string, string, string, string?, string?, string?, string?]`
+
+Date format used by the [`Date Picker`](#https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date). The tuple contents translate to
+year / month / day (as digits e.g. '2022') and optionally hours / minutes / seconds / milliseconds (not used by the picker but may be required
+for a custom [`Calendar`](#Calendar) type).
 
 <LineBreak></LineBreak>
 

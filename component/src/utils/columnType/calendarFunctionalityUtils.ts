@@ -1,4 +1,4 @@
-import {CalendarFunctionality, YMDFormat} from '../../types/calendarFunctionality';
+import {Calendar, YMDFormat} from '../../types/calendarFunctionality';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {RegexUtils} from '../regex/regexUtils';
 
@@ -21,14 +21,14 @@ export class CalendarFunctionalityUtils {
     return [YMD[2], YMD[1], YMD[0]].join('-');
   }
 
-  public static readonly DEFAULT_TYPES_FUNCTIONALITY: {[key: string]: CalendarFunctionality} = {
+  public static readonly DEFAULT_TYPES_FUNCTIONALITY: {[key: string]: Calendar} = {
     [DEFAULT_COLUMN_TYPES.DATE_DMY]: {
-      toYMD: (cellText: string) => CalendarFunctionalityUtils.dMYCellTextToYMD(cellText),
-      fromYMD: (YMD: YMDFormat) => CalendarFunctionalityUtils.yMDToDMYCellText(YMD),
+      toYMDFunc: (cellText: string) => CalendarFunctionalityUtils.dMYCellTextToYMD(cellText),
+      fromYMDFunc: (YMD: YMDFormat) => CalendarFunctionalityUtils.yMDToDMYCellText(YMD),
     },
     [DEFAULT_COLUMN_TYPES.DATE_MDY]: {
-      toYMD: (cellText: string) => CalendarFunctionalityUtils.mdYCellTextToYMD(cellText),
-      fromYMD: (YMD: YMDFormat) => CalendarFunctionalityUtils.yMDToMDYCellText(YMD),
+      toYMDFunc: (cellText: string) => CalendarFunctionalityUtils.mdYCellTextToYMD(cellText),
+      fromYMDFunc: (YMD: YMDFormat) => CalendarFunctionalityUtils.yMDToMDYCellText(YMD),
     },
   };
 }

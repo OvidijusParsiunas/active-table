@@ -163,8 +163,8 @@ export class ColumnTypesUtils {
       ObjectUtils.convertStringToFunction(type.sorting, 'descendingFunc');
     }
     if (type.calendar) {
-      ObjectUtils.convertStringToFunction(type.calendar, 'toYMD');
-      ObjectUtils.convertStringToFunction(type.calendar, 'fromYMD');
+      ObjectUtils.convertStringToFunction(type.calendar, 'toYMDFunc');
+      ObjectUtils.convertStringToFunction(type.calendar, 'fromYMDFunc');
     }
   }
 
