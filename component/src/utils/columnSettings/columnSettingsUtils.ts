@@ -44,7 +44,7 @@ export class ColumnSettingsUtils {
     const columnDetails = at.columnsDetails[columnIndex];
     ColumnSettingsDefaultTextUtils.unsetDefaultText(at, columnDetails, columnIndex);
     columnDetails.settings = newSettings;
-    Object.assign(columnDetails, ColumnTypesUtils.getProcessedTypes(newSettings, columnDetails.activeType.name));
+    columnDetails.activeType = ColumnTypesUtils.getActiveType(newSettings, columnDetails.activeType.name);
     ResetColumnStructure.reset(at, columnDetails, columnIndex);
     ColumnSettingsDefaultTextUtils.setDefaultText(at, columnDetails, columnIndex);
     if (!onColumnMove) ColumnSettingsWidthUtils.changeWidth(at, headerElement, oldSettings, newSettings);
@@ -86,7 +86,7 @@ export class ColumnSettingsUtils {
   // prettier-ignore
   private static setDimension(settings: CustomColumnSettings, defSettings: ColumnsSettingsDefault, 
       dimension: 'width'|'minWidth') {
-    const internalSettings = settings as ColumnSettingsInternal;
+    const internalSettings = settings as unknown as ColumnSettingsInternal;
     if (settings.cellStyle?.[dimension]) {
       internalSettings[dimension] = settings.cellStyle[dimension]
     } else if (defSettings.cellStyle?.[dimension]) {
@@ -95,7 +95,7 @@ export class ColumnSettingsUtils {
   }
 
   private static processCellDimensions(settings: CustomColumnSettings, defSettings: ColumnsSettingsDefault) {
-    const internalSettings = settings as ColumnSettingsInternal;
+    const internalSettings = settings as unknown as ColumnSettingsInternal;
     if (!settings.cellStyle) return;
     ColumnSettingsUtils.setDimension(settings, defSettings, 'minWidth');
     ColumnSettingsUtils.setDimension(settings, defSettings, 'width');
@@ -104,7 +104,7 @@ export class ColumnSettingsUtils {
   }
 
   private static createInternalSettings(settings: CustomColumnSettings, defSettings: ColumnsSettingsDefault) {
-    const internalSettings = settings as ColumnSettingsInternal;
+    const internalSettings = settings as unknown as ColumnSettingsInternal;
     if (ColumnSettingsStyleUtils.doesSettingHaveSideBorderStyle(internalSettings)) {
       internalSettings.stylePrecedence = true; // REF-23
     }
@@ -113,6 +113,7 @@ export class ColumnSettingsUtils {
     Object.keys(defSettings).forEach((key: string) => {
       (internalSettings as unknown as GenericObject)[key] ??= defSettings[key as keyof ColumnsSettingsDefault] as string;
     });
+    internalSettings.types = ColumnTypesUtils.getProcessedTypes(internalSettings);
     return internalSettings;
   }
 
@@ -136,6 +137,8 @@ export class ColumnSettingsUtils {
     columnsSettings.dropdown.isInsertLeftAvailable ??= true;
     columnsSettings.dropdown.isInsertRightAvailable ??= true;
     columnsSettings.dropdown.isMoveAvailable ??= true;
+    const internalSettings = columnsSettings as unknown as ColumnSettingsInternal;
+    internalSettings.types = ColumnTypesUtils.getProcessedTypes(internalSettings);
   }
 
   public static setUpInternalSettings(at: ActiveTable) {

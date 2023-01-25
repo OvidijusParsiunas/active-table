@@ -1,4 +1,4 @@
-import {ColumnDetailsT, ColumnsDetailsT, LabelDetails, SelectDropdownT} from '../../../../types/columnDetails';
+import {ColumnDetailsT, ColumnsDetailsT, LabelDetails, SelectDropdownI} from '../../../../types/columnDetails';
 import {ColumnDetailsUtils} from '../../../../utils/columnDetails/columnDetailsUtils';
 import {PickerInputElement} from '../../../../types/pickerInputElement';
 import {FocusedElements} from '../../../../types/focusedElements';
@@ -29,7 +29,7 @@ export class SelectColorButtonEvents {
     }
   }
 
-  private static inputEvent(dropdown: SelectDropdownT, event: Event) {
+  private static inputEvent(dropdown: SelectDropdownI, event: Event) {
     const inputElement = event.target as HTMLInputElement;
     const {textElement, dropdownItemElement} = SelectColorButton.extractRelativeParentElements(inputElement);
     const itemText = textElement.textContent as string;

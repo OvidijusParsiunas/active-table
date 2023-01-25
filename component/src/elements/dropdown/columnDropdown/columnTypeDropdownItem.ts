@@ -27,9 +27,10 @@ export class ColumnTypeDropdownItem {
   // the items are repopulated every time column dropdown is opened
   public static setUp(at: ActiveTable, columnIndex: number) {
     const {columnTypeDropdown} = at.activeOverlayElements;
-    const elements = at.columnsDetails[columnIndex].types.map((type) => type.dropdownItem.element) as HTMLElement[];
+    const columnDetails = at.columnsDetails[columnIndex];
+    const elements = columnDetails.settings.types.map((type) => type.dropdownItem.element) as HTMLElement[];
     DropdownItem.addButtonItemElements(at, columnTypeDropdown as HTMLElement, elements);
     ColumnTypeDropdownItemEvents.set(at, elements, columnIndex);
-    ColumnTypeDropdownItem.setActiveItem(elements, at.columnsDetails[columnIndex].activeType.name);
+    ColumnTypeDropdownItem.setActiveItem(elements, columnDetails.activeType.name);
   }
 }

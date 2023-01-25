@@ -1,5 +1,5 @@
-import {LabelOptions, SelectProperties} from './selectProperties';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
+import {LabelOptions, SelectDropdownT} from './selectDropdown';
 import {CustomTextProcessing} from './customTextProcessing';
 import {Calendar} from './calendarFunctionality';
 import {TextValidation} from './textValidation';
@@ -9,7 +9,7 @@ import {Sorting} from './sorting';
 // this object encompasses properties for either select or label
 // the reason why LabelOptions is used is to capture all props
 // using isBasicSelect instead of isLabel to minimise the if statemnt logic complexity
-export type SelectPropertiesInternal = SelectProperties<LabelOptions> & {isBasicSelect: boolean};
+export type SelectPropertiesInternal = SelectDropdownT<LabelOptions> & {isBasicSelect: boolean};
 
 // to be used internally
 export interface Parent {

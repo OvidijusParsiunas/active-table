@@ -1,13 +1,13 @@
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
 import {SelectDropdownHorizontalScrollFix} from './selectDropdownHorizontalScrollFix';
-import {ActiveSelectItems, SelectDropdownT} from '../../../types/columnDetails';
+import {ActiveSelectItems, SelectDropdownI} from '../../../types/columnDetails';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {SelectButton} from './buttons/selectButton';
 import {SIDE} from '../../../types/side';
 
 export class SelectDropdownItemEvents {
   // prettier-ignore
-  public static blurItem(dropdown: SelectDropdownT, typeOfItem: keyof ActiveSelectItems, event?: MouseEvent) {
+  public static blurItem(dropdown: SelectDropdownI, typeOfItem: keyof ActiveSelectItems, event?: MouseEvent) {
     const {activeItems, labelDetails} = dropdown;
     if (labelDetails?.colorPickerContainer) return; // do not blur if color picker open
     const itemElement = activeItems[typeOfItem] as HTMLElement;
@@ -37,7 +37,7 @@ export class SelectDropdownItemEvents {
     }
   }
 
-  private static highlightItem(this: Document, dropdown: SelectDropdownT, event: MouseEvent) {
+  private static highlightItem(this: Document, dropdown: SelectDropdownI, event: MouseEvent) {
     const {scrollbarPresence, activeItems, labelDetails, canAddMoreOptions, element, itemsDetails} = dropdown;
     if (labelDetails?.colorPickerContainer) return; // do not highlight new if color picker open
     // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
@@ -60,7 +60,7 @@ export class SelectDropdownItemEvents {
     if (canAddMoreOptions) SelectButton.changeVisibility(event, dropdown, element);
   }
 
-  public static set(shadow: Document, itemElement: HTMLElement, dropdown: SelectDropdownT) {
+  public static set(shadow: Document, itemElement: HTMLElement, dropdown: SelectDropdownI) {
     itemElement.onmouseenter = SelectDropdownItemEvents.highlightItem.bind(shadow, dropdown);
     itemElement.onmouseleave = SelectDropdownItemEvents.blurItem.bind(this, dropdown, 'hovered');
   }

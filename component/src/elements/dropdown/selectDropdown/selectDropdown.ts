@@ -1,5 +1,5 @@
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
-import {SelectProperties, SelectDropdownStyle} from '../../../types/selectProperties';
+import {SelectDropdownStyle, SelectDropdownT} from '../../../types/selectDropdown';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {TableBorderDimensions} from '../../../types/tableBorderDimensions';
 import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
@@ -7,7 +7,7 @@ import {SelectDropdownItemEvents} from './selectDropdownItemEvents';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {OverflowUtils} from '../../../utils/overflow/overflowUtils';
 import {SelectDropdownScrollbar} from './selectDropdownScrollbar';
-import {SelectDropdownT} from '../../../types/columnDetails';
+import {SelectDropdownI} from '../../../types/columnDetails';
 import {SelectDropdownEvents} from './selectDropdownEvents';
 import {SelectDropdownItem} from './selectDropdownItem';
 import {CellText} from '../../../types/tableContent';
@@ -16,7 +16,6 @@ import {ActiveTable} from '../../../activeTable';
 import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
-
 export class SelectDropdown {
   private static readonly SELECT_DROPDOWN_CLASS = 'select-dropdown';
   private static readonly MAX_HEIGHT_PX = '150px';
@@ -100,7 +99,7 @@ export class SelectDropdown {
   }
 
   // prettier-ignore
-  public static updateSelectDropdown(textContainerElement: HTMLElement, dropdown: SelectDropdownT,
+  public static updateSelectDropdown(textContainerElement: HTMLElement, dropdown: SelectDropdownI,
       borderDimensions: TableBorderDimensions, defaultText: CellText, updateCellText: boolean,
       matchingCellElement?: HTMLElement) {
     const textElement = CellElement.getTextElement(textContainerElement);
@@ -111,7 +110,7 @@ export class SelectDropdown {
     }
   }
 
-  private static focusItemOnDropdownOpen(textElement: HTMLElement, dropdown: SelectDropdownT, defaultText: CellText) {
+  private static focusItemOnDropdownOpen(textElement: HTMLElement, dropdown: SelectDropdownI, defaultText: CellText) {
     // the updateCellText parameter is set to false for a case where the user clicks on a select cell which has
     // its text with a background color but one for a select that has been deleted, hence we do not want to
     // highlight it with a new background color
@@ -133,7 +132,7 @@ export class SelectDropdown {
     }
   }
 
-  private static getWidth(cellElement: HTMLElement, dropdown: SelectDropdownT, dropdownStyle?: SelectDropdownStyle) {
+  private static getWidth(cellElement: HTMLElement, dropdown: SelectDropdownI, dropdownStyle?: SelectDropdownStyle) {
     if (dropdownStyle?.width) return dropdownStyle.width;
     if (!dropdown.labelDetails) return Math.max(cellElement.offsetWidth - 2, SelectDropdown.MIN_WIDTH);
     const textContainerElement = cellElement.children[0] as HTMLElement;
@@ -161,7 +160,7 @@ export class SelectDropdown {
     return false;
   }
 
-  private static setCustomStyle(selectDropdown: SelectDropdownT, dropdownStyle: SelectDropdownStyle) {
+  private static setCustomStyle(selectDropdown: SelectDropdownI, dropdownStyle: SelectDropdownStyle) {
     const {textAlign, paddingTop, paddingBottom, border} = dropdownStyle;
     selectDropdown.element.style.textAlign = textAlign || 'left';
     selectDropdown.element.style.paddingTop = paddingTop || Dropdown.DROPDOWN_VERTICAL_PX;
@@ -169,7 +168,7 @@ export class SelectDropdown {
     selectDropdown.element.style.border = border || 'none';
   }
 
-  private static setCustomState(selectDropdown: SelectDropdownT, select: SelectProperties) {
+  private static setCustomState(selectDropdown: SelectDropdownI, select: SelectDropdownT) {
     selectDropdown.customDropdownStyle = select.dropdownStyle;
     selectDropdown.customItemStyle = select.optionStyle;
     selectDropdown.canAddMoreOptions = !!select.canAddMoreOptions;
@@ -195,7 +194,7 @@ export class SelectDropdown {
     return dropdownElement;
   }
 
-  public static getDefaultObj(dropdownElement: HTMLElement): SelectDropdownT {
+  public static getDefaultObj(dropdownElement: HTMLElement): SelectDropdownI {
     return {
       itemsDetails: {},
       activeItems: {},

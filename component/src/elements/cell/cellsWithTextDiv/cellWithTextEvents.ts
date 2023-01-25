@@ -20,7 +20,7 @@ export class CellWithTextEvents {
     const cellElement = CellElement.getCellElement(textElement);
     DataCellEvents.prepareText(this, rowIndex, columnIndex, textElement);
     focusCallback?.(this, columnIndex, cellElement);
-    FocusedCellUtils.set(cell, cellElement, rowIndex, columnIndex, columnsDetails[columnIndex].types);
+    FocusedCellUtils.set(cell, cellElement, rowIndex, columnIndex, columnsDetails[columnIndex].settings.types);
     if (this.userKeyEventsState[KEYBOARD_KEY.TAB]) {
       // contrary to this being called on mouseDownCell - this does not retrigger focus event
       CaretPosition.setToEndOfText(this, textElement);

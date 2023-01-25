@@ -256,6 +256,7 @@ export class ActiveTable extends LitElement {
     super.connectedCallback();
     StickyPropsUtils.process(this);
     AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
+    DefaultColumnTypes.createDropdownItemsForDefaultTypes();
     RowDropdownSettingsUtil.process(this);
     if (this.pagination) PaginationInternalUtils.process(this);
     if (this.stripedRows) StripedRows.process(this);
@@ -268,7 +269,6 @@ export class ActiveTable extends LitElement {
     InitialContentProcessing.preProcess(this);
     WindowElement.setEvents(this);
     ColumnSettingsUtils.setUpInternalSettings(this);
-    DefaultColumnTypes.createDropdownItemsForDefaultTypes();
     this.spellcheck = this.spellCheck;
   }
 

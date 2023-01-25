@@ -1,5 +1,5 @@
 import {ScrollbarUtils} from '../../../utils/scrollbar/scrollbarUtils';
-import {SelectDropdownT} from '../../../types/columnDetails';
+import {SelectDropdownI} from '../../../types/columnDetails';
 import {Dropdown} from '../dropdown';
 
 // REF-4
@@ -7,7 +7,7 @@ export class SelectDropdownHorizontalScrollFix {
   private static readonly NEW_BOTTOM_PADDING_IF_PRESENT = '8px';
   private static readonly SCROLL_FURTHER_BOTTOM_PX = 14;
 
-  public static setPropertiesIfHorizontalScrollPresent(dropdown: SelectDropdownT) {
+  public static setPropertiesIfHorizontalScrollPresent(dropdown: SelectDropdownI) {
     const {element, scrollbarPresence, customDropdownStyle} = dropdown;
     // fix is only needed when both horizontal and vertical scrolls are present
     if (ScrollbarUtils.isHorizontalPresent(element) && ScrollbarUtils.isVerticalPresent(element)) {

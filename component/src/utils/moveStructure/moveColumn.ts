@@ -67,7 +67,8 @@ export class MoveColumn {
     // overwrite current column using sibling column
     const overwritten = MoveColumn.overwrite(at, currentColumn, columnIndex, siblingColumnText,
       siblingColumn.activeType, siblingColumnWidth);
-    FocusedCellUtils.set(at.focusedElements.cell, siblingColumn.elements[0], 0, siblingIndex, siblingColumn.types);
+    FocusedCellUtils.set(
+      at.focusedElements.cell, siblingColumn.elements[0], 0, siblingIndex, siblingColumn.settings.types);
     // overwrite sibling column using overwritten content
     MoveColumn.overwrite(at, siblingColumn, siblingIndex, overwritten.overwrittenText,
       overwritten.overwrittenType, overwritten.overwrittenWidth);

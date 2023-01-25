@@ -491,9 +491,10 @@ tool (the reason for this is because the icon is an SVG element). Use `scale` to
   &nbsp;&nbsp;&nbsp;&nbsp; [`textValidation?: TextValidation`](#TextValidation), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`customTextProcessing?: CustomTextProcessing`](#CustomTextProcessing), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`sorting?: Sorting`](#Sorting), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`iconSettings?: IconSettings`](#IconSettings) <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`calendar?: Calendar`](#IconSettings) WORK <br />
-
+  &nbsp;&nbsp;&nbsp;&nbsp; [`iconSettings?: IconSettings`](#IconSettings), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`select?: boolean|SelectDropdown<SelectOptions>`](#SelectDropdown), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`calendar?: Calendar`](#IconSettings), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `checkbox?: boolean` <br />
   }
 
 - Default: {<br />
@@ -501,7 +502,9 @@ tool (the reason for this is because the icon is an SVG element). Use `scale` to
   &nbsp;&nbsp;&nbsp;&nbsp; _dropdownIconSettings: using "Text" type icon _<br />
   }
 
-Details for creating a column type.
+Details for creating a column type. <br />
+`select`, `label`, `calendar` and `checkbox` properties facilitate unique features and if
+more than one of these is defined - the first available one will be used in that order.
 
 <LineBreak></LineBreak>
 
@@ -882,6 +885,94 @@ properties are also used for the header however if they don't fit the`headerCorr
     [23.1, 142984, 1898, 79, 1326],
     [9, 120536, 568, 82, 687],
     [11, 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `SelectDropdown` {#SelectDropdown}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `dropdownStyle?: SelectDropdownStyle` WORK, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `optionStyle?: {textColor: string}`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `options?: SelectOptions|LabelOptions` WORK, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `canAddMoreOptions?: boolean` <br />
+  }
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _canAddMoreOptions: true or if `options` property is set then false_ <br />
+  }
+
+Dropdown customization properties for `select` and `label` in the [`ColumnType`](#ColumnType) object. <br />
+`dropdownStyle` and `optionStyle` are used to apply specific dropdown styling aspects. <br />
+`options` property defines custom options within the dropdown and uses the `SelectOptions` type to define individual options when used for a `select` dropdown
+and `LabelOptions` if used for `label`. <br />
+`canAddMoreOptions` controls whether new options can be added into the dropdown.
+
+Does cursor get changed??
+
+#### Example for custom d/m/y type
+
+<TableContainer>
+  <active-table
+    columnsSettings='{
+      "customColumnTypes":[
+        {
+          "name": "Custom select type",
+          "select": {
+            "options": ["Dog", "Cat"]
+          }}],
+      "activeTypeName": "Custom select type"
+    }'
+    content='[
+      ["Date 1", "Date 2", "Date 3", "Date 4"],
+      ["3/2/2052", "4/2/1993", "6/12/2012", "2/2/2012"],
+      ["18/12/0001", "2/4/1689", "16/2/2029", "1/02/2004"],
+      ["12/8/1943", "24/2/1992", "16/12/2022", "17/3/2023"]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnsSettings='{
+    "customColumnTypes":[
+      {
+        "name": "Custom d/m/y type",
+        "calendar": {
+          "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
+          "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
+    }}]
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnsSettings='{
+    "customColumnTypes":[
+      {
+        "name": "Custom d/m/y type",
+        "calendar": {
+          "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
+          "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
+    }}],
+    "activeTypeName": "Custom d/m/y type"
+  }'
+  content='[
+    ["Date 1", "Date 2", "Date 3", "Date 4"],
+    ["3/2/2052", "4/2/1993", "6/12/2012", "2/2/2012"],
+    ["18/12/0001", "2/4/1689", "16/2/2029", "1/02/2004"],
+    ["12/8/1943", "24/2/1992", "16/12/2022", "17/3/2023"]]'
   tableStyle='{"borderRadius":"2px"}'
 ></active-table>
 ```

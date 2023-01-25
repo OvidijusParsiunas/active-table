@@ -4,75 +4,41 @@ import {ColumnType, ColumnTypes, ColumnIconSettings} from '../../types/columnTyp
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
-import {ColumnDetailsT} from '../../types/columnDetails';
 import {DefaultColumnTypes} from './defaultColumnTypes';
 import {CellText} from '../../types/tableContent';
 import {ObjectUtils} from '../object/objectUtils';
 import {Validation} from './validation';
 
 export class ColumnTypesUtils {
-  public static get(settings: ColumnSettingsInternal): ColumnTypes {
-    let columnTypes = [
-      ...DefaultColumnTypes.DEFAULT_STATIC_TYPES.slice(0, 3),
-      // the reason why select and label are not with the default static types is because their validation
-      // is not generic and get set by on column settings - setSelectValidation
-      {
-        name: DEFAULT_COLUMN_TYPES.SELECT,
-        select: {},
-        dropdownItem: DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM,
-      },
-      {
-        name: DEFAULT_COLUMN_TYPES.LABEL,
-        label: {},
-        dropdownItem: DefaultColumnTypes.SELECT_LABEL_TYPE_DROPDOWN_ITEM,
-      },
-      ...DefaultColumnTypes.DEFAULT_STATIC_TYPES.slice(3),
-    ];
-    const {defaultColumnTypes, customColumnTypes} = settings;
-    if (defaultColumnTypes) {
-      const lowerCaseDefaultNames = defaultColumnTypes.map((typeName) => typeName.toLocaleLowerCase());
-      columnTypes = columnTypes.filter((type) => {
-        return lowerCaseDefaultNames.indexOf(type.name.toLocaleLowerCase() as DEFAULT_COLUMN_TYPES) > -1;
-      });
-    }
-    if (customColumnTypes) columnTypes.push(...customColumnTypes);
-    if (columnTypes.length === 0) columnTypes.push(DefaultColumnTypes.DEFAULT_TYPE);
-    return columnTypes;
-  }
-
   private static getTypeByName(availableTypes: ColumnTypesInternal, targetName: string) {
     return availableTypes.find((type) => type.name.toLocaleLowerCase() === targetName?.toLocaleLowerCase());
   }
 
-  // prettier-ignore
-  private static getTypeBasedOnProperties(settings: ColumnSettingsInternal, availableTypes: ColumnTypesInternal,
-      previousTypeName?: string) {
+  private static getTypeBasedOnProperties(settings: ColumnSettingsInternal, previousTypeName?: string) {
     // if changing type due to settings change - the activeType would already be set - then try to see if the previous
     // type is present in the new settings and if it is use it
     if (previousTypeName) {
-      const type = ColumnTypesUtils.getTypeByName(availableTypes, previousTypeName);
+      const type = ColumnTypesUtils.getTypeByName(settings.types, previousTypeName);
       if (type) return type;
     }
     // if there is no previous type or it is not found in new settings - use the one the user has set
     if (settings.activeTypeName) {
-      const type = ColumnTypesUtils.getTypeByName(availableTypes, settings.activeTypeName);
+      const type = ColumnTypesUtils.getTypeByName(settings.types, settings.activeTypeName);
       if (type) return type;
     }
     return undefined;
   }
 
-  // prettier-ignore
-  private static getActiveType(settings: ColumnSettingsInternal, availableTypes: ColumnTypesInternal,
-      previousTypeName?: string) {
-    const activeType = ColumnTypesUtils.getTypeBasedOnProperties(settings, availableTypes, previousTypeName);
+  public static getActiveType(settings: ColumnSettingsInternal, previousTypeName?: string): ColumnTypeInternal {
+    const activeType = ColumnTypesUtils.getTypeBasedOnProperties(settings, previousTypeName);
     if (activeType) return activeType;
     // if activeTypeName is not provided, default to first of the following:
     // First type to not have validation/First available type/'Text'
-    const noValidationType = availableTypes.find((type) => !type.textValidation.func);
+    const noValidationType = settings.types.find((type) => !type.textValidation.func);
     if (noValidationType) return noValidationType;
-    const firstType = availableTypes[0];
+    const firstType = settings.types[0];
     if (firstType) return firstType;
-    return DefaultColumnTypes.DEFAULT_TYPE;
+    return DefaultColumnTypes.DEFAULT_TYPE as ColumnTypeInternal;
   }
 
   // prettier-ignore
@@ -153,7 +119,9 @@ export class ColumnTypesUtils {
   // the reason why this is needed is when the argument is JSON stringified, properties that hold functions are removed,
   // hence they can only be applied to the component as strings
   private static convertStringFunctionsToRealFunctions(type: ColumnType) {
-    if (type.textValidation) ObjectUtils.convertStringToFunction(type.textValidation, 'func');
+    if (type.textValidation) {
+      ObjectUtils.convertStringToFunction(type.textValidation, 'func');
+    }
     if (type.customTextProcessing) {
       ObjectUtils.convertStringToFunction(type.customTextProcessing, 'changeTextFunc');
       ObjectUtils.convertStringToFunction(type.customTextProcessing, 'changeStyleFunc');
@@ -168,25 +136,63 @@ export class ColumnTypesUtils {
     }
   }
 
-  private static process(types: ColumnTypes, isDefaultTextRemovable: boolean, defaultText: CellText) {
-    types.forEach((type) => {
-      ColumnTypesUtils.convertStringFunctionsToRealFunctions(type);
-      ColumnTypesUtils.processSelect(type, isDefaultTextRemovable, defaultText);
-      ColumnTypesUtils.processTextValidationProps(type);
-      ColumnTypesUtils.processDropdownItemSettings(type);
-    });
-    return types as ColumnTypesInternal;
+  // this is important because when types get processed - their resultant structure is not be the same, hence if
+  // the same one is used in different settings (e.g. defaultColumnTypes set in default and custom settings),
+  // the processing of the same type again would not work
+  // JSON.stringify loses element and function references, hence they need to be manually reassigned
+  private static createTypeDeepCopy(type: ColumnTypeInternal) {
+    const newType = JSON.parse(JSON.stringify(type)) as ColumnTypeInternal;
+    if (type.dropdownItem) newType.dropdownItem = type.dropdownItem;
+    if (type.textValidation) newType.textValidation = type.textValidation;
+    if (type.customTextProcessing) newType.customTextProcessing = type.customTextProcessing;
+    if (type.sorting) newType.sorting = type.sorting;
+    if (type.calendar) newType.calendar = type.calendar;
+    return newType;
   }
 
-  // prettier-ignore
-  public static getProcessedTypes(settings: ColumnSettingsInternal,
-      previousTypeName?: string): Pick<ColumnDetailsT, 'types' | 'activeType'> {
+  private static process(types: ColumnTypes, isDefaultTextRemovable: boolean, defaultText: CellText) {
+    return types.map((type) => {
+      const newType = ColumnTypesUtils.createTypeDeepCopy(type as ColumnTypeInternal);
+      ColumnTypesUtils.convertStringFunctionsToRealFunctions(newType);
+      ColumnTypesUtils.processSelect(newType, isDefaultTextRemovable, defaultText);
+      ColumnTypesUtils.processTextValidationProps(newType);
+      ColumnTypesUtils.processDropdownItemSettings(newType);
+      return newType as ColumnTypeInternal;
+    });
+  }
+
+  private static getAvailableTypes(settings: ColumnSettingsInternal): ColumnTypes {
+    let columnTypes = [
+      ...DefaultColumnTypes.DEFAULT_STATIC_TYPES.slice(0, 3),
+      // the reason why select and label are not with the default static types is because their validation
+      // is not generic and get set by on column settings - setSelectValidation
+      {
+        name: DEFAULT_COLUMN_TYPES.SELECT,
+        select: {},
+        dropdownItem: DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM,
+      },
+      {
+        name: DEFAULT_COLUMN_TYPES.LABEL,
+        label: {},
+        dropdownItem: DefaultColumnTypes.SELECT_LABEL_TYPE_DROPDOWN_ITEM,
+      },
+      ...DefaultColumnTypes.DEFAULT_STATIC_TYPES.slice(3),
+    ];
+    const {defaultColumnTypes, customColumnTypes} = settings;
+    if (defaultColumnTypes) {
+      const lowerCaseDefaultNames = defaultColumnTypes.map((typeName) => typeName.toLocaleLowerCase());
+      columnTypes = columnTypes.filter((type) => {
+        return lowerCaseDefaultNames.indexOf(type.name.toLocaleLowerCase() as DEFAULT_COLUMN_TYPES) > -1;
+      });
+    }
+    if (customColumnTypes) columnTypes.push(...customColumnTypes);
+    if (columnTypes.length === 0) columnTypes.push(DefaultColumnTypes.DEFAULT_TYPE);
+    return columnTypes;
+  }
+
+  public static getProcessedTypes(settings: ColumnSettingsInternal) {
     const {isDefaultTextRemovable, defaultText} = settings;
-    const types = ColumnTypesUtils.get(settings);
-    const processedInternalTypes = ColumnTypesUtils.process(types, isDefaultTextRemovable, defaultText);
-    return {
-      types: processedInternalTypes,
-      activeType: ColumnTypesUtils.getActiveType(settings, processedInternalTypes, previousTypeName) as ColumnTypeInternal,
-    };
+    const types = ColumnTypesUtils.getAvailableTypes(settings);
+    return ColumnTypesUtils.process(types, isDefaultTextRemovable, defaultText);
   }
 }

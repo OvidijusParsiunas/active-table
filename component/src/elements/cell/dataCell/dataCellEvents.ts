@@ -66,6 +66,7 @@ export class DataCellEvents {
     }
   }
 
+  // prettier-ignore
   // textContainerElement can be cell element for data cell, text element for select and date cells
   public static blur(at: ActiveTable, rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
     if (CaretDisplayFix.isIssueBrowser()) CaretDisplayFix.removeContentEditable(textContainerElement);
@@ -74,7 +75,8 @@ export class DataCellEvents {
     FocusedCellUtils.purge(at.focusedElements.cell);
     setTimeout(() => {
       const columnDetails = at.columnsDetails[columnIndex];
-      const newType = CellTypeTotalsUtils.parseTypeName(CellElement.getText(textContainerElement), columnDetails.types);
+      const newType = CellTypeTotalsUtils.parseTypeName(
+        CellElement.getText(textContainerElement), columnDetails.settings.types);
       CellTypeTotalsUtils.changeCellType(columnDetails, oldType, newType); // CAUTION-2
     });
   }
@@ -97,13 +99,15 @@ export class DataCellEvents {
     CellEvents.removeTextIfDefault(at, rowIndex, columnIndex, textContainerElement);
   }
 
+  // prettier-ignore
   private static focusCell(this: ActiveTable, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const cellElement = event.target as HTMLElement;
     DataCellEvents.prepareText(this, rowIndex, columnIndex, cellElement);
     const {userKeyEventsState, focusedElements, columnsDetails} = this;
     // REF-7
     if (userKeyEventsState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
-    FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, columnIndex, columnsDetails[columnIndex].types);
+    FocusedCellUtils.set(
+      focusedElements.cell, cellElement, rowIndex, columnIndex, columnsDetails[columnIndex].settings.types);
   }
 
   public static setEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {

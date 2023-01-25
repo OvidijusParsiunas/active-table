@@ -1,5 +1,5 @@
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
-import {ActiveSelectItems, ColumnDetailsT, SelectDropdownT} from '../../../types/columnDetails';
+import {ActiveSelectItems, ColumnDetailsT, SelectDropdownI} from '../../../types/columnDetails';
 import {ColumnDetailsUtils} from '../../../utils/columnDetails/columnDetailsUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
@@ -7,7 +7,7 @@ import {SelectDropdownItemEvents} from './selectDropdownItemEvents';
 import {CellText, TableContent} from '../../../types/tableContent';
 import {SelectDeleteButton} from './buttons/selectDeleteButton';
 import {SelectColorButton} from './buttons/selectColorButton';
-import {LabelOptions} from '../../../types/selectProperties';
+import {LabelOptions} from '../../../types/selectDropdown';
 import {CellDetails} from '../../../types/focusedCell';
 import {Browser} from '../../../utils/browser/browser';
 import {CellElement} from '../../cell/cellElement';
@@ -62,7 +62,7 @@ export class SelectDropdownItem {
 
   // prettier-ignore
   private static updateCellTextBgColor(itemElement: HTMLElement | undefined, textElement: HTMLElement,
-      dropdown: SelectDropdownT, defaultText: CellText) {
+      dropdown: SelectDropdownI, defaultText: CellText) {
     const cellText = CellElement.getText(textElement);
     if (itemElement) {
       textElement.style.backgroundColor = dropdown.itemsDetails[cellText].backgroundColor;
@@ -92,7 +92,7 @@ export class SelectDropdownItem {
   }
 
   // prettier-ignore
-  public static attemptHighlightMatchingItemWithCell(textElement: HTMLElement, dropdown: SelectDropdownT,
+  public static attemptHighlightMatchingItemWithCell(textElement: HTMLElement, dropdown: SelectDropdownI,
       defaultText: CellText, updateCellText: boolean, matchingCellElement?: HTMLElement) {
     const {activeItems, itemsDetails} = dropdown;
     const targetText = CellElement.getText(textElement);

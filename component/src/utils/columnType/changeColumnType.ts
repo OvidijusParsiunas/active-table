@@ -1,8 +1,8 @@
 import {HeaderIconCellElement} from '../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
 import {DateCellElement} from '../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {CheckboxCellElement} from '../../elements/cell/checkboxCell/checkboxCellElement';
-import {SelectCell} from '../../elements/cell/cellsWithTextDiv/selectCell/selectCell';
 import {SelectDropdown} from '../../elements/dropdown/selectDropdown/selectDropdown';
+import {SelectCell} from '../../elements/cell/cellsWithTextDiv/selectCell/selectCell';
 import {DataCellElement} from '../../elements/cell/dataCell/dataCellElement';
 import {ColumnDetailsUtils} from '../columnDetails/columnDetailsUtils';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
@@ -30,7 +30,7 @@ export class ChangeColumnType {
 
   private static setNew(at: ActiveTable, newType: string, columnIndex: number) {
     const columnDetails = at.columnsDetails[columnIndex];
-    columnDetails.activeType = columnDetails.types.find((type) => type.name === newType) as ColumnTypeInternal;
+    columnDetails.activeType = columnDetails.settings.types.find((type) => type.name === newType) as ColumnTypeInternal;
     return columnDetails.activeType;
   }
 

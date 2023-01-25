@@ -46,17 +46,15 @@ export class ColumnDetails {
   public static createInitial(columnsSettings: ColumnsSettingsDefault, selectDropdown: HTMLElement,
       settings: ColumnSettingsInternal, index: number, defaultCellHoverColors: DefaultCellHoverColors,
       onColumnUpdate: OnColumnUpdate): ColumnDetailsInitial {
-    const columnSettings = settings || columnsSettings as ColumnSettingsInternal;
+    const columnSettings = settings || columnsSettings;
     ColumnSettingsWidthUtils.setMinWidthOnSettings(columnSettings, columnsSettings.cellStyle); // REF-36
-    const {types, activeType} = ColumnTypesUtils.getProcessedTypes(columnSettings);
     return {
       elements: [],
       processedStyle: [],
       settings: columnSettings,
       headerStateColors: ColumnDetails.createHeaderStateColors(columnsSettings, settings, defaultCellHoverColors),
       bordersOverwrittenBySiblings: {},
-      types,
-      activeType,
+      activeType: ColumnTypesUtils.getActiveType(columnSettings),
       selectDropdown: SelectDropdown.getDefaultObj(selectDropdown),
       index,
       onColumnUpdate,
@@ -67,7 +65,7 @@ export class ColumnDetails {
   public static updateWithNoSizer(columnDetails: ColumnDetailsInitial,
       columnDropdownCellOverlay: HTMLElement): ColumnDetailsNoSizer {
     const newObject: Omit<ColumnDetailsNoSizer, keyof ColumnDetailsInitial> = {
-      cellTypeTotals: CellTypeTotalsUtils.createObj(columnDetails.types),
+      cellTypeTotals: CellTypeTotalsUtils.createObj(columnDetails.settings.types),
       columnDropdownCellOverlay,
     };
     Object.assign(columnDetails, newObject);

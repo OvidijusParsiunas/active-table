@@ -47,12 +47,12 @@ export class CellTypeTotalsUtils {
   }
 
   public static incrementCellType(columnDetails: ColumnDetailsT, cellText: CellText) {
-    const type = CellTypeTotalsUtils.parseTypeName(cellText, columnDetails.types);
+    const type = CellTypeTotalsUtils.parseTypeName(cellText, columnDetails.settings.types);
     CellTypeTotalsUtils.callChangeTypeFuncs(columnDetails, [CellTypeTotalsUtils.incrementType.bind(this, type)]);
   }
 
   public static decrementCellType(columnDetails: ColumnDetailsT, cellText: CellText) {
-    const type = CellTypeTotalsUtils.parseTypeName(cellText, columnDetails.types);
+    const type = CellTypeTotalsUtils.parseTypeName(cellText, columnDetails.settings.types);
     CellTypeTotalsUtils.callChangeTypeFuncs(columnDetails, [CellTypeTotalsUtils.decrementType.bind(this, type)]);
   }
 

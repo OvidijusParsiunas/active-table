@@ -10,7 +10,7 @@ export class CheckboxEvents {
   private static focusCheckbox(this: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
   if (!Browser.IS_SAFARI) {
     const {focusedElements: {cell}, columnsDetails} = this;
-    FocusedCellUtils.set(cell, cellElement, rowIndex, columnIndex, columnsDetails[columnIndex].types);
+    FocusedCellUtils.set(cell, cellElement, rowIndex, columnIndex, columnsDetails[columnIndex].settings.types);
   }
 }
 

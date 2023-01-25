@@ -37,7 +37,7 @@ export class RowDropdown {
     if (auxiliaryTableContentInternal.displayIndexColumn) {
       FocusedCellUtils.setIndexCell(focusedElements.cell, cellElement, rowIndex);
     } else {
-      FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, 0, columnsDetails[0].types);
+      FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, 0, columnsDetails[0].settings.types);
     }
   }
 

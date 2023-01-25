@@ -1,7 +1,7 @@
-import {SelectDropdownStyle, SelectDropdownOptionStyle} from './selectProperties';
-import {ColumnTypeInternal, ColumnTypesInternal} from './columnTypeInternal';
+import {SelectDropdownStyle, SelectDropdownOptionStyle} from './selectDropdown';
 import {ColumnSettingsInternal} from './columnsSettingsInternal';
 import {ColProcessedTextStyle} from './processedTextStyle';
+import {ColumnTypeInternal} from './columnTypeInternal';
 import {AUXILIARY_CELL_TYPE} from '../enums/cellType';
 import {CellStateColors} from './cellStateColors';
 import {ColumnSizerT} from './columnSizer';
@@ -44,7 +44,8 @@ interface SelectItemsDetails {
   [itemText: string]: SelectItemDetails;
 }
 
-export interface SelectDropdownT {
+// using I to detone internal type
+export interface SelectDropdownI {
   itemsDetails: SelectItemsDetails;
   activeItems: ActiveSelectItems; // items that exhibit certain behaviours
   element: HTMLElement; // REF-8
@@ -64,10 +65,9 @@ export interface ColumnDetailsT {
   elements: HTMLElement[];
   processedStyle: ColProcessedTextStyle; // style added via validation
   columnSizer: ColumnSizerT;
-  types: ColumnTypesInternal;
   activeType: ColumnTypeInternal;
   cellTypeTotals: CellTypeTotals;
-  selectDropdown: SelectDropdownT;
+  selectDropdown: SelectDropdownI;
   columnDropdownCellOverlay: HTMLElement;
   settings: ColumnSettingsInternal;
   headerStateColors: CellStateColors;
@@ -81,7 +81,6 @@ export type ColumnDetailsInitial = Pick<
   ColumnDetailsT,
   | 'elements'
   | 'processedStyle'
-  | 'types'
   | 'activeType'
   | 'selectDropdown'
   | 'settings'

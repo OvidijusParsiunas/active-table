@@ -1,4 +1,4 @@
-import {LabelOptions, SelectOptions, SelectProperties} from './selectProperties';
+import {LabelOptions, SelectOptions, SelectDropdownT} from './selectDropdown';
 import {DEFAULT_COLUMN_TYPES} from '../enums/defaultColumnTypes';
 import {CustomTextProcessing} from './customTextProcessing';
 import {IconSettings} from './dropdownButtonItem';
@@ -28,7 +28,7 @@ interface CalendarT extends Omit<Parent, 'sorting'> {
 }
 
 interface Checkbox extends Omit<Parent, 'sorting'> {
-  // By default this comes with a customTextProcessing propertu function that uses '', '0', '00' and 'false' to uncheck
+  // By default this comes with a customTextProcessing property function that uses '', '0', '00' and 'false' to uncheck
   // the checkbox and all other values to check it
   // You can overwite this property with your own function that returns a string value of 'true' when the passed in value
   // should check the checkbox and 'false' for unchecking it
@@ -36,11 +36,11 @@ interface Checkbox extends Omit<Parent, 'sorting'> {
 }
 
 interface Label extends Omit<Parent, 'validation'> {
-  label: SelectProperties<LabelOptions> | true;
+  label: SelectDropdownT<LabelOptions> | true;
 }
 
 interface Select extends Omit<Parent, 'validation'> {
-  select: SelectProperties<SelectOptions> | true;
+  select: SelectDropdownT<SelectOptions> | true;
 }
 
 export type ColumnType = InterfacesUnion<CalendarT | Checkbox | Select | Label | Parent>;

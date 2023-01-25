@@ -1,4 +1,4 @@
-import {ColumnDetailsT, SelectDropdownT} from '../../../../types/columnDetails';
+import {ColumnDetailsT, SelectDropdownI} from '../../../../types/columnDetails';
 import {SelectColorButtonEvents} from './selectColorButtonEvents';
 import {Browser} from '../../../../utils/browser/browser';
 import {SelectDeleteButton} from './selectDeleteButton';
@@ -8,7 +8,7 @@ export class SelectButton {
   public static readonly SELECT_BUTTON_CONTAINER_CLASS = 'select-button-container';
   public static readonly SELECT_BUTTON_CLASS = 'select-button';
 
-  public static changeVisibility(event: MouseEvent, dropdown: SelectDropdownT, displayOnDropdown?: HTMLElement) {
+  public static changeVisibility(event: MouseEvent, dropdown: SelectDropdownI, displayOnDropdown?: HTMLElement) {
     if (event.isTrusted) {
       const itemElement = event.target as HTMLElement;
       const rightSideDelta = dropdown.scrollbarPresence.vertical ? 31 : 16;

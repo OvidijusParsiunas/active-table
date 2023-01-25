@@ -1,4 +1,4 @@
-import {ColumnDetailsT, ColumnsDetailsT, SelectDropdownT} from '../../types/columnDetails';
+import {ColumnDetailsT, ColumnsDetailsT, SelectDropdownI} from '../../types/columnDetails';
 import {ColumUpdateItems, ColumnUpdateDetails} from '../../types/onUpdate';
 import {FilteredColumns} from '../../types/filteredColumns';
 
@@ -20,7 +20,7 @@ export class ColumnDetailsUtils {
     return {dynamicWidthColumns, minWidthColumns, setWidthColumns};
   }
 
-  private static aggregateItems(selectDropdown: SelectDropdownT): ColumUpdateItems {
+  private static aggregateItems(selectDropdown: SelectDropdownI): ColumUpdateItems {
     return selectDropdown.labelDetails
       ? Object.keys(selectDropdown.itemsDetails).map((text) => {
           return {name: text, backgroundColor: selectDropdown.itemsDetails[text].backgroundColor};

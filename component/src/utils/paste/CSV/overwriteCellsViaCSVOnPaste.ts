@@ -53,8 +53,8 @@ export class OverwriteCellsViaCSVOnPaste {
   }
 
   private static changeColumnSettings(at: ActiveTable, columnIndex: number) {
-    const {elements, types} = at.columnsDetails[columnIndex];
-    FocusedCellUtils.set(at.focusedElements.cell, elements[0], 0, columnIndex, types);
+    const {elements, settings} = at.columnsDetails[columnIndex];
+    FocusedCellUtils.set(at.focusedElements.cell, elements[0], 0, columnIndex, settings.types);
     ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, elements[0], columnIndex);
   }
 
@@ -86,7 +86,7 @@ export class OverwriteCellsViaCSVOnPaste {
       || rowIndex > 0 && !columnDetails.settings.isCellTextEditable) return;
      // this is to allow duplicate headers to be identified
     if (rowIndex === 0) CellElement.setNewText(at, cellElement, newCellText, false, false);
-    const oldType = CellTypeTotalsUtils.parseTypeName(CellElement.getText(cellElement), columnDetails.types);
+    const oldType = CellTypeTotalsUtils.parseTypeName(CellElement.getText(cellElement), columnDetails.settings.types);
     const processedNewCellText = CellEvents.updateCell(
       at, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
     if (columnDetails.activeType.selectProps) {
@@ -97,7 +97,7 @@ export class OverwriteCellsViaCSVOnPaste {
     if (rowIndex === 0) OverwriteCellsViaCSVOnPaste.changeColumnSettings(at, columnIndex);
     setTimeout(() => {
       // CAUTION-2
-      const newType = CellTypeTotalsUtils.parseTypeName(processedNewCellText, columnDetails.types);
+      const newType = CellTypeTotalsUtils.parseTypeName(processedNewCellText, columnDetails.settings.types);
       CellTypeTotalsUtils.changeCellType(columnDetails, oldType, newType);
     });
   }
@@ -120,9 +120,11 @@ export class OverwriteCellsViaCSVOnPaste {
     }
   }
 
+  // prettier-ignore
   private static processFocusedCell(at: ActiveTable, columnIndex: number, cellElement: HTMLElement) {
     const text = CellElement.getText(cellElement);
-    at.focusedElements.cell.typeName = CellTypeTotalsUtils.parseTypeName(text, at.columnsDetails[columnIndex].types);
+    at.focusedElements.cell.typeName = CellTypeTotalsUtils.parseTypeName(
+      text, at.columnsDetails[columnIndex].settings.types);
     OverwriteCellsViaCSVOnPaste.setCaretToEndAndHighlightIfSelect(at, cellElement, columnIndex);
   }
 
@@ -187,10 +189,12 @@ export class OverwriteCellsViaCSVOnPaste {
     at.onTableUpdate(at.content);
   }
 
+  // prettier-ignore
   private static focusOriginalCellAfterProcess(at: ActiveTable, process: () => void) {
     const {element, rowIndex, columnIndex} = at.focusedElements.cell as Required<FocusedCell>;
     process();
-    FocusedCellUtils.set(at.focusedElements.cell, element, rowIndex, columnIndex, at.columnsDetails[columnIndex].types);
+    FocusedCellUtils.set(
+      at.focusedElements.cell, element, rowIndex, columnIndex, at.columnsDetails[columnIndex].settings.types);
   }
 
   // prettier-ignore

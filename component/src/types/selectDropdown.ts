@@ -17,7 +17,7 @@ export interface SelectDropdownStyle {
   border?: CSSStyleDeclaration['border'];
 }
 
-export interface SelectProperties<T = LabelOptions> {
+export interface SelectDropdownT<T = LabelOptions> {
   dropdownStyle?: SelectDropdownStyle;
   optionStyle?: SelectDropdownOptionStyle;
   options?: T;

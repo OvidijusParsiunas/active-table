@@ -22,10 +22,10 @@ export class ColumnTypeDropdown {
   }
 
   public static setUp(at: ActiveTable, dropdownEl: HTMLElement, columnIndex: number): string | void {
-    const {activeType, types} = at.columnsDetails[columnIndex];
+    const {activeType, settings} = at.columnsDetails[columnIndex];
     const itemElement = dropdownEl.getElementsByClassName(ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS)[0] as HTMLElement;
     ColumnTypeDropdown.setupParentItemContent(itemElement, activeType);
-    if (types.length < 2) return (itemElement.style.pointerEvents = 'none');
+    if (settings.types.length < 2) return (itemElement.style.pointerEvents = 'none');
     itemElement.style.pointerEvents = '';
     setTimeout(() => ColumnTypeDropdownItem.setUp(at, columnIndex));
   }

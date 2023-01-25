@@ -11,6 +11,7 @@ export class DateCellCalendarIconEvents {
   // while the current one is open, hence need to wait for animation to finish
   private static readonly PICKER_DISPLAY_DELAY_ML = Browser.IS_FIREFOX ? 190 : 0;
 
+  // prettier-ignore
   private static mouseDownIcon(this: ActiveTable, rowIndex: number, columnIndex: number, event: MouseEvent) {
     const {focusedElements, columnsDetails, activeOverlayElements} = this;
     const svgImage = event.target as HTMLElement;
@@ -19,7 +20,8 @@ export class DateCellCalendarIconEvents {
     setTimeout(() => {
       // this is in a timeout as upon selecting text, then clicking on the icon causes the text blur to activate
       // which purges the selected cell ref
-      FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, columnIndex, columnsDetails[columnIndex].types);
+      FocusedCellUtils.set(
+        focusedElements.cell, cellElement, rowIndex, columnIndex, columnsDetails[columnIndex].settings.types);
       // this is in a timeout because mouseDownIcon is triggered before window mouse down event which calls
       // delete activeOverlayElements.datePickerCell, thus this setter needs to be called after
       activeOverlayElements.datePickerCell = cellElement;
