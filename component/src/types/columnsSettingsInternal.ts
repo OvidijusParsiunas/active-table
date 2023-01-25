@@ -1,12 +1,18 @@
 import {ColumnDropdownSettings} from './columnDropdownSettings';
 import {InterfacesUnion, SetRequired} from './utilityTypes';
+import {ColumnTypesInternal} from './columnTypeInternal';
 import {CustomColumnSettings} from './columnsSettings';
 import {StringDimension} from './dimensions';
 import {CellCSSStyle} from './cssStyle';
 
 // to be used internally
 
-type InternalSettings = CustomColumnSettings<CellCSSStyle> & {dropdown: ColumnDropdownSettings};
+type InternalSettings = CustomColumnSettings<CellCSSStyle> & {
+  dropdown: ColumnDropdownSettings;
+  // encompasses processed types available for the column
+  // the reason why this is here is because this is processed once and settings is then added to column details
+  types: ColumnTypesInternal;
+};
 
 interface Width extends InternalSettings {
   // REF-24
