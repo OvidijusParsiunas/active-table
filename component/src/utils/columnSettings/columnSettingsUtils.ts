@@ -114,6 +114,7 @@ export class ColumnSettingsUtils {
       (internalSettings as unknown as GenericObject)[key] ??= defSettings[key as keyof ColumnsSettingsDefault] as string;
     });
     internalSettings.types = ColumnTypesUtils.getProcessedTypes(internalSettings);
+    ColumnSettingsWidthUtils.setMinWidthOnSettings(internalSettings, settings.cellStyle); // REF-36
     return internalSettings;
   }
 
@@ -139,6 +140,7 @@ export class ColumnSettingsUtils {
     columnsSettings.dropdown.isMoveAvailable ??= true;
     const internalSettings = columnsSettings as unknown as ColumnSettingsInternal;
     internalSettings.types = ColumnTypesUtils.getProcessedTypes(internalSettings);
+    ColumnSettingsWidthUtils.setMinWidthOnSettings(internalSettings, columnsSettings.cellStyle); // REF-36
   }
 
   public static setUpInternalSettings(at: ActiveTable) {
