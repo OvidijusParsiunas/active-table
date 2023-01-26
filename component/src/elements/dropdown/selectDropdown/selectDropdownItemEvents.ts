@@ -15,7 +15,7 @@ export class SelectDropdownItemEvents {
       if (typeOfItem === 'matchingWithCellText'
           || (typeOfItem === 'hovered' && itemElement !== activeItems.matchingWithCellText)) {
         itemElement.style.backgroundColor = '';
-        if (!labelDetails) itemElement.style.color = '';
+        if (!labelDetails) itemElement.style.color = dropdown.customItemStyle?.textColor || '';
         delete activeItems[typeOfItem];
       }
     }

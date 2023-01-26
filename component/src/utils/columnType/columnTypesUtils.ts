@@ -38,17 +38,13 @@ export class ColumnTypesUtils {
     if (noValidationType) return noValidationType;
     const firstType = settings.types[0];
     if (firstType) return firstType;
-    return DefaultColumnTypes.DEFAULT_TYPE as ColumnTypeInternal;
+    return DefaultColumnTypes.FALLBACK_TYPE as ColumnTypeInternal;
   }
 
   // prettier-ignore
   private static getReusableDefaultIcon(iconSettings: ColumnIconSettings) {
     const targetIconName = iconSettings.reusableIconName?.toLocaleLowerCase();
-    if (targetIconName === DEFAULT_COLUMN_TYPES.SELECT.toLocaleLowerCase()
-      || targetIconName === DEFAULT_COLUMN_TYPES.LABEL.toLocaleLowerCase()) {
-      return DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM?.settings.iconSettings as ColumnIconSettings;
-    }
-    const defaultSettings = DefaultColumnTypes.DEFAULT_STATIC_TYPES.find((type) => {
+    const defaultSettings = DefaultColumnTypes.DEFAULT_TYPES.find((type) => {
       return type.name.toLocaleLowerCase() === targetIconName;
     });
     if (defaultSettings?.iconSettings) return defaultSettings.iconSettings;
@@ -162,22 +158,7 @@ export class ColumnTypesUtils {
   }
 
   private static getAvailableTypes(settings: ColumnSettingsInternal): ColumnTypes {
-    let columnTypes = [
-      ...DefaultColumnTypes.DEFAULT_STATIC_TYPES.slice(0, 3),
-      // the reason why select and label are not with the default static types is because their validation
-      // is not generic and get set by on column settings - setSelectValidation
-      {
-        name: DEFAULT_COLUMN_TYPES.SELECT,
-        select: {},
-        dropdownItem: DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM,
-      },
-      {
-        name: DEFAULT_COLUMN_TYPES.LABEL,
-        label: {},
-        dropdownItem: DefaultColumnTypes.SELECT_LABEL_TYPE_DROPDOWN_ITEM,
-      },
-      ...DefaultColumnTypes.DEFAULT_STATIC_TYPES.slice(3),
-    ];
+    let columnTypes = [...DefaultColumnTypes.DEFAULT_TYPES];
     const {defaultColumnTypes, customColumnTypes} = settings;
     if (defaultColumnTypes) {
       const lowerCaseDefaultNames = defaultColumnTypes.map((typeName) => typeName.toLocaleLowerCase());
@@ -186,7 +167,7 @@ export class ColumnTypesUtils {
       });
     }
     if (customColumnTypes) columnTypes.push(...customColumnTypes);
-    if (columnTypes.length === 0) columnTypes.push(DefaultColumnTypes.DEFAULT_TYPE);
+    if (columnTypes.length === 0) columnTypes.push(DefaultColumnTypes.FALLBACK_TYPE);
     return columnTypes;
   }
 

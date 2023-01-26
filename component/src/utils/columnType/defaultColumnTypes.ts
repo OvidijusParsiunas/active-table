@@ -5,9 +5,7 @@ import {CHECKBOX_ICON_SVG_STRING} from '../../consts/icons/checkboxIconSVGString
 import {SELECT_ICON_SVG_STRING} from '../../consts/icons/selectIconSVGString';
 import {NUMBER_ICON_SVG_STRING} from '../../consts/icons/numberIconSVGString';
 import {LABEL_ICON_SVG_STRING} from '../../consts/icons/labelIconSVGString';
-import {ColumnTypeDropdownItem} from '../../types/columnTypeDropdownItem';
 import {TEXT_ICON_SVG_STRING} from '../../consts/icons/textIconSVGString';
-import {DropdownButtonItemSettings} from '../../types/dropdownButtonItem';
 import {CalendarFunctionalityUtils} from './calendarFunctionalityUtils';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
@@ -18,7 +16,7 @@ import {Validation} from './validation';
 import {Sort} from './sort';
 
 export class DefaultColumnTypes {
-  public static readonly DEFAULT_TYPE: ColumnType = {
+  public static readonly FALLBACK_TYPE: ColumnType = {
     name: DEFAULT_COLUMN_TYPES.TEXT,
     iconSettings: {
       svgString: TEXT_ICON_SVG_STRING,
@@ -29,8 +27,8 @@ export class DefaultColumnTypes {
     },
   };
 
-  public static readonly DEFAULT_STATIC_TYPES: ColumnTypes = [
-    DefaultColumnTypes.DEFAULT_TYPE,
+  public static readonly DEFAULT_TYPES: ColumnTypes = [
+    DefaultColumnTypes.FALLBACK_TYPE,
     {
       name: DEFAULT_COLUMN_TYPES.NUMBER,
       textValidation: {func: Validation.DEFAULT_TYPES_FUNCTIONALITY[DEFAULT_COLUMN_TYPES.NUMBER]},
@@ -53,6 +51,25 @@ export class DefaultColumnTypes {
           dropdown: {marginLeft: '-2px', marginRight: '4px', marginTop: '1px'},
           headerCorrections: {marginRight: '3px'},
         },
+      },
+    },
+    {
+      name: DEFAULT_COLUMN_TYPES.SELECT,
+      select: {},
+      iconSettings: {
+        svgString: SELECT_ICON_SVG_STRING,
+        containerStyles: {
+          dropdown: {marginTop: '0.5px', marginRight: '3px', marginLeft: '-2.75px'},
+          headerCorrections: {marginTop: '1.5px'},
+        },
+      },
+    },
+    {
+      name: DEFAULT_COLUMN_TYPES.LABEL,
+      label: {},
+      iconSettings: {
+        svgString: LABEL_ICON_SVG_STRING,
+        containerStyles: {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}},
       },
     },
     {
@@ -104,44 +121,9 @@ export class DefaultColumnTypes {
     },
   ];
 
-  // WARNING - If there are multiple ActiveTable components in the same browser window - the variables below will be shared
-  // between them. Currently they appear to be working as expected, but if problems occur - store them in internal state
-  public static SELECT_TYPE_DROPDOWN_ITEM: ColumnTypeDropdownItem | null = null;
-
-  public static SELECT_LABEL_TYPE_DROPDOWN_ITEM: ColumnTypeDropdownItem | null = null;
-
-  // the reason why select and label select are not with the default static types is because their validation
-  // is not generic and get set by column settings - setSelectValidation
-  private static createDropdownItemForSelectTypes() {
-    const selectSettings: DropdownButtonItemSettings = {
-      text: DEFAULT_COLUMN_TYPES.SELECT,
-      iconSettings: {
-        svgString: SELECT_ICON_SVG_STRING,
-        containerStyles: {
-          dropdown: {marginTop: '0.5px', marginRight: '3px', marginLeft: '-2.75px'},
-          headerCorrections: {marginTop: '1.5px'},
-        },
-      },
-    };
-    DefaultColumnTypes.SELECT_TYPE_DROPDOWN_ITEM = {
-      element: DropdownItem.createButtonItemNoEvents(undefined, selectSettings),
-      settings: selectSettings,
-    };
-    const labelSettings: DropdownButtonItemSettings = {
-      text: DEFAULT_COLUMN_TYPES.LABEL,
-      iconSettings: {
-        svgString: LABEL_ICON_SVG_STRING,
-        containerStyles: {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}},
-      },
-    };
-    DefaultColumnTypes.SELECT_LABEL_TYPE_DROPDOWN_ITEM = {
-      element: DropdownItem.createButtonItemNoEvents(undefined, labelSettings),
-      settings: labelSettings,
-    };
-  }
-
-  private static createDropdownItemsForDefaultStaticTypes() {
-    DefaultColumnTypes.DEFAULT_STATIC_TYPES.forEach((type) => {
+  // REF-28
+  public static createDropdownItemsForDefaultTypes() {
+    DefaultColumnTypes.DEFAULT_TYPES.forEach((type) => {
       const settings = {
         text: type.name,
         iconSettings: type.iconSettings || DropdownButtonItemConf.DEFAULT_ITEM.iconSettings,
@@ -151,11 +133,5 @@ export class DefaultColumnTypes {
         settings,
       };
     });
-  }
-
-  // REF-28
-  public static createDropdownItemsForDefaultTypes() {
-    DefaultColumnTypes.createDropdownItemsForDefaultStaticTypes();
-    DefaultColumnTypes.createDropdownItemForSelectTypes();
   }
 }

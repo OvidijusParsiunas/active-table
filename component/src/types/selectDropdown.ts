@@ -13,6 +13,8 @@ export interface SelectDropdownStyle {
   width?: PX;
   paddingTop?: PX;
   paddingBottom?: PX;
+  marginTop?: PX;
+  marginLeft?: PX;
   textAlign?: CSSStyleDeclaration['textAlign'];
   border?: CSSStyleDeclaration['border'];
 }

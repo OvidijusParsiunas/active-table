@@ -230,8 +230,8 @@ To remove a header row when there is data below the header, we swap the header r
 The reason for this approach is not to have to create a new row with <td> elements and sizers.
 
 REF-28
-Default column type dropdown items are created after the DEFAULT_STATIC_TYPES config has been initialised because the creation logic is
-not immediately available on startup (cannot use it in the DEFAULT_STATIC_TYPES variable) and additionally the items are not needed on
+Default column type dropdown items are created after the DEFAULT_TYPES config has been initialised because the creation logic is
+not immediately available on startup (cannot use it in the DEFAULT_TYPES variable) and additionally the items are not needed on
 the initial table render.
 
 REF-29

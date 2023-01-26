@@ -16,6 +16,7 @@ import {ActiveTable} from '../../../activeTable';
 import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
+
 export class SelectDropdown {
   private static readonly SELECT_DROPDOWN_CLASS = 'select-dropdown';
   private static readonly MAX_HEIGHT_PX = '150px';
@@ -133,7 +134,7 @@ export class SelectDropdown {
   }
 
   private static getWidth(cellElement: HTMLElement, dropdown: SelectDropdownI, dropdownStyle?: SelectDropdownStyle) {
-    if (dropdownStyle?.width) return dropdownStyle.width;
+    if (dropdownStyle?.width) return Number.parseInt(dropdownStyle.width);
     if (!dropdown.labelDetails) return Math.max(cellElement.offsetWidth - 2, SelectDropdown.MIN_WIDTH);
     const textContainerElement = cellElement.children[0] as HTMLElement;
     return Math.max(cellElement.offsetWidth - textContainerElement.offsetLeft * 2, SelectDropdown.MIN_WIDTH);
@@ -161,11 +162,13 @@ export class SelectDropdown {
   }
 
   private static setCustomStyle(selectDropdown: SelectDropdownI, dropdownStyle: SelectDropdownStyle) {
-    const {textAlign, paddingTop, paddingBottom, border} = dropdownStyle;
-    selectDropdown.element.style.textAlign = textAlign || 'left';
+    const {paddingTop, paddingBottom, marginTop, marginLeft, border, textAlign} = dropdownStyle;
     selectDropdown.element.style.paddingTop = paddingTop || Dropdown.DROPDOWN_VERTICAL_PX;
     selectDropdown.element.style.paddingBottom = paddingBottom || Dropdown.DROPDOWN_VERTICAL_PX;
+    selectDropdown.element.style.marginTop = marginTop || '0px';
+    selectDropdown.element.style.marginLeft = marginLeft || '0px';
     selectDropdown.element.style.border = border || 'none';
+    selectDropdown.element.style.textAlign = textAlign || 'left';
   }
 
   private static setCustomState(selectDropdown: SelectDropdownI, select: SelectDropdownT) {

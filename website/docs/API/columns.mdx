@@ -815,7 +815,7 @@ Defines column type icon properties. <br />
 `reusableIconName` allows the icon to reuse of the existing default type icons. <br />
 `svgString` is the full svg element string containing all DOM tags. Make sure to escape the quotes - change " to \" (An easy way to do this is to
 stringify it using JSON.stringify()). If the string is defined directly in HTML, you will need to escape the first less than (<) character by replacing it with `&lt`. <br />
-`containerStyles`allows the icon dimensions to be customised when displayed in the`dropdown`and in the header. By default, the`dropdown`dimension
+`containerStyles` allows the icon dimensions to be customised when displayed in the `dropdown` and in the header. By default, the `dropdown` dimension
 properties are also used for the header however if they don't fit the`headerCorrections` object can be used to change them.
 
 #### Example calendar icon
@@ -911,11 +911,10 @@ Dropdown customization properties for `select` and `label` in the [`ColumnType`]
 `dropdownStyle` and `optionStyle` are used to apply specific dropdown styling aspects. <br />
 `options` property defines custom options within the dropdown and uses the `SelectOptions` type to define individual options when used for a `select` dropdown
 and `LabelOptions` if used for `label`. <br />
-`canAddMoreOptions` controls whether new options can be added into the dropdown.
+`canAddMoreOptions` controls whether new options can be added into the dropdown. If _false_ then column cell text that
+is not in the _options_ array is automatically removed.
 
-Does cursor get changed??
-
-#### Example for custom d/m/y type
+#### Example for Select
 
 <TableContainer>
   <active-table
@@ -924,15 +923,19 @@ Does cursor get changed??
         {
           "name": "Custom select type",
           "select": {
-            "options": ["Dog", "Cat"]
+            "dropdownStyle": {"border": "0.5px solid #00000066"},
+            "optionStyle": {"textColor": "#606060"},
+            "options": ["Elephant", "Tiger", "Girafee"],
+            "canAddMoreOptions": false
           }}],
       "activeTypeName": "Custom select type"
     }'
     content='[
-      ["Date 1", "Date 2", "Date 3", "Date 4"],
-      ["3/2/2052", "4/2/1993", "6/12/2012", "2/2/2012"],
-      ["18/12/0001", "2/4/1689", "16/2/2029", "1/02/2004"],
-      ["12/8/1943", "24/2/1992", "16/12/2022", "17/3/2023"]]'
+      ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
+      ["Elephant", "Girafee", "Elephant", "Girafee", "Tiger"],
+      ["Tiger", "Elephant", "Tiger", "Tiger", "Girafee"],
+      ["Girafee", "Tiger", "Invalid animal", "Elephant", "Invalid animal"],
+      ["Invalid animal", "Tiger", "Girafee", "Invalid animal", "Tiger"]]'
     tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
   ></active-table>
 </TableContainer>

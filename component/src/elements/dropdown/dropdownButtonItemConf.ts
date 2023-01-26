@@ -3,7 +3,7 @@ import {DefaultColumnTypes} from '../../utils/columnType/defaultColumnTypes';
 
 export class DropdownButtonItemConf {
   public static readonly DEFAULT_ITEM: DropdownButtonItemSettings = {
-    text: DefaultColumnTypes.DEFAULT_TYPE.name,
-    iconSettings: DefaultColumnTypes.DEFAULT_TYPE.iconSettings as IconSettings,
+    text: DefaultColumnTypes.FALLBACK_TYPE.name,
+    iconSettings: DefaultColumnTypes.FALLBACK_TYPE.iconSettings as IconSettings,
   };
 }
