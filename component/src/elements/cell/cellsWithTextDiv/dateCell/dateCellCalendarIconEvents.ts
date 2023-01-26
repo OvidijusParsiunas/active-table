@@ -25,7 +25,7 @@ export class DateCellCalendarIconEvents {
       // this is in a timeout because mouseDownIcon is triggered before window mouse down event which calls
       // delete activeOverlayElements.datePickerCell, thus this setter needs to be called after
       activeOverlayElements.datePickerCell = cellElement;
-      // displaying the picker on mouse down in order to keep it consistent with mouse down display for select,
+      // displaying the picker on mouse down in order to keep it consistent with mouse down display for cell dropdown,
       // however if it feels more natural to do it on mouse up, can move it to that, but keep in mind that it
       // does not feel right for firefox as there is an additional timeout - hence may need to keep it here
       // for this particular browser

@@ -4,9 +4,9 @@ import {DateCellInputElement} from '../cellsWithTextDiv/dateCell/dateCellInputEl
 import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
 import {CellTypeTotalsUtils} from '../../../utils/columnType/cellTypeTotalsUtils';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
-import {SelectDropdown} from '../../dropdown/selectDropdown/selectDropdown';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {CaretDisplayFix} from '../../../utils/browser/caretDisplayFix';
+import {CellDropdown} from '../../dropdown/cellDropdown/cellDropdown';
 import {KEYBOARD_EVENT} from '../../../consts/keyboardEvents';
 import {PasteUtils} from '../../../utils/paste/pasteUtils';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
@@ -27,8 +27,8 @@ export class DataCellEvents {
   // prettier-ignore
   private static inputCell(this: ActiveTable, rowIndex: number, columnIndex: number, event: Event) {
     const inputEvent = event as InputEvent;
-    // can be cell element for data cell, text element for select and date cells, or even input element from date picker
-    // which is not processed here as its textContent property value is empty and the date value needs to be processed
+    // can be cell element for data cell, text element for cell dropdown and date cells, or even input element from date
+    // picker which is not processed here as its textContent property value is empty and date value needs to be processed
     const textContainerElement = inputEvent.target as HTMLElement;
     if (DateCellInputElement.isInputElement(textContainerElement)) return;
     const text = CellElement.getText(textContainerElement);
@@ -37,9 +37,9 @@ export class DataCellEvents {
       const isUndo = inputEvent.inputType === UNDO_INPUT_TYPE;
       CellElement.setNewText(this, textContainerElement, text, false, isUndo, false);
       const columnDetails = this.columnsDetails[columnIndex];
-      if (columnDetails.activeType.selectProps && rowIndex > 0) {
-        SelectDropdown.updateSelectDropdown(textContainerElement,
-          columnDetails.selectDropdown, this.tableDimensions.border, columnDetails.settings.defaultText, true);
+      if (columnDetails.activeType.cellDropdownProps && rowIndex > 0) {
+        CellDropdown.updateCellDropdown(textContainerElement,
+          columnDetails.cellDropdown, this.tableDimensions.border, columnDetails.settings.defaultText, true);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
     }
@@ -54,20 +54,21 @@ export class DataCellEvents {
       OverwriteCellsViaCSVOnPaste.overwrite(this, clipboardText, event, rowIndex, columnIndex);
     } else {
       const targetElement = event.target as HTMLElement;
-      const {selectDropdown, settings: {defaultText}, activeType} = this.columnsDetails[columnIndex];
-      const {calendar, selectProps} = activeType;
-      // if the user has deleted all text in calendar/select cell - targetElement can be the <br> tag
-      const containerElement = calendar || selectProps ? (targetElement.parentElement as HTMLElement) : targetElement;
+      const {cellDropdown, settings: {defaultText}, activeType} = this.columnsDetails[columnIndex];
+      const {calendar, cellDropdownProps} = activeType;
+      // if the user has deleted all text in calendar/select/label cell - targetElement can be the <br> tag
+      const containerElement = calendar || cellDropdownProps
+        ? (targetElement.parentElement as HTMLElement) : targetElement;
       setTimeout(() => {
-        if (selectProps) SelectDropdown.updateSelectDropdown(
-          containerElement, selectDropdown, this.tableDimensions.border, defaultText, true);
+        if (cellDropdownProps) CellDropdown.updateCellDropdown(
+          containerElement, cellDropdown, this.tableDimensions.border, defaultText, true);
         CellEvents.updateCell(this, CellElement.getText(containerElement), rowIndex, columnIndex, {processText: false});
       });
     }
   }
 
   // prettier-ignore
-  // textContainerElement can be cell element for data cell, text element for select and date cells
+  // textContainerElement can be cell element for data cell, text element for select/label and date cells
   public static blur(at: ActiveTable, rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
     if (CaretDisplayFix.isIssueBrowser()) CaretDisplayFix.removeContentEditable(textContainerElement);
     CellEvents.setCellToDefaultIfNeeded(at, rowIndex, columnIndex, textContainerElement);
@@ -88,7 +89,7 @@ export class DataCellEvents {
     DataCellEvents.blur(this, rowIndex, columnIndex, event.target as HTMLElement);
   }
 
-  // textContainerElement can be cell element for data cell, text element for select and date cells
+  // textContainerElement can be cell element for data cell, text element for select/label and date cells
   public static prepareText(at: ActiveTable, rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
     const openViaCellClick = at.columnsSettings.dropdown?.displaySettings?.openMethod?.cellClick;
     if (CaretDisplayFix.isIssueBrowser() && (rowIndex > 0 || !openViaCellClick)) {
@@ -116,7 +117,7 @@ export class DataCellEvents {
     // these are used in date cells and overwritten when converted from
     cellElement.onmouseenter = () => {};
     cellElement.onmouseleave = () => {};
-    // this is used by select element and overwritten when converted from
+    // this is used by select/label element and overwritten when converted from
     cellElement.onmousedown = () => {};
     cellElement.oninput = DataCellEvents.inputCell.bind(at, rowIndex, columnIndex);
     cellElement.onpaste = DataCellEvents.pasteCell.bind(at, rowIndex, columnIndex);

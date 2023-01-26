@@ -1,12 +1,12 @@
-import {SelectColorButtonEvents} from './selectColorButtonEvents';
+import {OptionColorButtonEvents} from './optionColorButtonEvents';
 import {ColumnDetailsT} from '../../../../types/columnDetails';
 import {Browser} from '../../../../utils/browser/browser';
-import {SelectButton} from './selectButton';
+import {OptionButton} from './optionButton';
 
-export class SelectColorButton {
+export class OptionColorButton {
   private static readonly COLOR_INPUT_CLASS = 'color-input';
-  public static readonly COLOR_BUTTON_CLASS = 'select-color-button';
-  private static readonly COLOR_BUTTON_ICON_CLASS = 'select-color-button-icon';
+  public static readonly COLOR_BUTTON_CLASS = 'option-color-button';
+  private static readonly COLOR_BUTTON_ICON_CLASS = 'cell-dropdown-option-color-button-icon';
   private static readonly COLOR_ICON_TEXT = 'c';
 
   // buttonLevelElement is either input or button
@@ -31,15 +31,15 @@ export class SelectColorButton {
 
   private static createIcon() {
     const iconElement = document.createElement('div');
-    iconElement.innerText = SelectColorButton.COLOR_ICON_TEXT;
-    iconElement.classList.add(SelectColorButton.COLOR_BUTTON_ICON_CLASS);
+    iconElement.innerText = OptionColorButton.COLOR_ICON_TEXT;
+    iconElement.classList.add(OptionColorButton.COLOR_BUTTON_ICON_CLASS);
     return iconElement;
   }
 
   private static createButton() {
     const buttonElement = document.createElement('div');
-    buttonElement.classList.add(SelectButton.SELECT_BUTTON_CLASS, SelectColorButton.COLOR_BUTTON_CLASS);
-    const iconElement = SelectColorButton.createIcon();
+    buttonElement.classList.add(OptionButton.BUTTON_CLASS, OptionColorButton.COLOR_BUTTON_CLASS);
+    const iconElement = OptionColorButton.createIcon();
     buttonElement.appendChild(iconElement);
     return buttonElement;
   }
@@ -48,23 +48,23 @@ export class SelectColorButton {
     const colorInputElement = document.createElement('input');
     colorInputElement.type = 'color';
     colorInputElement.style.top = Browser.IS_SAFARI ? '0px' : '14px';
-    colorInputElement.classList.add(SelectColorButton.COLOR_INPUT_CLASS);
+    colorInputElement.classList.add(OptionColorButton.COLOR_INPUT_CLASS);
     return colorInputElement;
   }
 
   private static createContainer() {
     const container = document.createElement('div');
-    container.classList.add(SelectButton.SELECT_BUTTON_CONTAINER_CLASS);
+    container.classList.add(OptionButton.BUTTON_CONTAINER_CLASS);
     return container;
   }
 
   public static create(columnDetails: ColumnDetailsT) {
-    const containerElement = SelectColorButton.createContainer();
-    const colorInputElement = SelectColorButton.createInput();
+    const containerElement = OptionColorButton.createContainer();
+    const colorInputElement = OptionColorButton.createInput();
     containerElement.appendChild(colorInputElement);
-    const iconElement = SelectColorButton.createButton();
+    const iconElement = OptionColorButton.createButton();
     containerElement.appendChild(iconElement);
-    SelectColorButtonEvents.setEvents(containerElement, colorInputElement, columnDetails);
+    OptionColorButtonEvents.setEvents(containerElement, colorInputElement, columnDetails);
     return containerElement;
   }
 }

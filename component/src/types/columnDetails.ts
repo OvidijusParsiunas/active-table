@@ -1,8 +1,8 @@
-import {SelectDropdownStyle, SelectDropdownOptionStyle} from './selectDropdown';
 import {ColumnSettingsInternal} from './columnsSettingsInternal';
 import {ColProcessedTextStyle} from './processedTextStyle';
 import {ColumnTypeInternal} from './columnTypeInternal';
 import {AUXILIARY_CELL_TYPE} from '../enums/cellType';
+import {CellDropdownI} from './cellDropdownInternal';
 import {CellStateColors} from './cellStateColors';
 import {ColumnSizerT} from './columnSizer';
 import {OnColumnUpdate} from './onUpdate';
@@ -16,47 +16,6 @@ export interface BordersOverwrittenBySiblings {
   right?: boolean;
 }
 
-export interface LabelDetails {
-  newItemColors: string[]; // REF-34
-  colorPickerContainer?: HTMLElement; // set when picker is opened
-  colorPickerNewValue?: {
-    itemText: string;
-    backgroundColor: string;
-  };
-}
-
-interface ScrollbarPresence {
-  horizontal: boolean;
-  vertical: boolean;
-}
-
-export interface ActiveSelectItems {
-  matchingWithCellText?: HTMLElement;
-  hovered?: HTMLElement;
-}
-
-interface SelectItemDetails {
-  backgroundColor: string;
-  element: HTMLElement;
-}
-
-interface SelectItemsDetails {
-  [itemText: string]: SelectItemDetails;
-}
-
-// using I to detone internal type
-export interface SelectDropdownI {
-  itemsDetails: SelectItemsDetails;
-  activeItems: ActiveSelectItems; // items that exhibit certain behaviours
-  element: HTMLElement; // REF-8
-  scrollbarPresence: ScrollbarPresence;
-  customDropdownStyle?: SelectDropdownStyle;
-  customItemStyle?: SelectDropdownOptionStyle;
-  canAddMoreOptions: boolean;
-  displayedCellElement?: HTMLElement;
-  labelDetails?: LabelDetails; // extra properties that are used for the label type that are not by the basic select type
-}
-
 export type CellTypeTotals = {
   [key in string]: number;
 } & {[AUXILIARY_CELL_TYPE.Undefined]: number};
@@ -67,7 +26,7 @@ export interface ColumnDetailsT {
   columnSizer: ColumnSizerT;
   activeType: ColumnTypeInternal;
   cellTypeTotals: CellTypeTotals;
-  selectDropdown: SelectDropdownI;
+  cellDropdown: CellDropdownI;
   columnDropdownCellOverlay: HTMLElement;
   settings: ColumnSettingsInternal;
   headerStateColors: CellStateColors;
@@ -82,7 +41,7 @@ export type ColumnDetailsInitial = Pick<
   | 'elements'
   | 'processedStyle'
   | 'activeType'
-  | 'selectDropdown'
+  | 'cellDropdown'
   | 'settings'
   | 'headerStateColors'
   | 'bordersOverwrittenBySiblings'

@@ -1,6 +1,6 @@
 import {NumberOfRowsDropdownEvents} from '../pagination/numberOfRowsOptions/optionsButton/numberOfRowsDropdownEvents';
 import {SelectCellTextBaseEvents} from '../cell/cellsWithTextDiv/selectCell/baseEvents/selectCellTextBaseEvents';
-import {SelectColorButtonEvents} from '../dropdown/selectDropdown/buttons/selectColorButtonEvents';
+import {OptionColorButtonEvents} from '../dropdown/cellDropdown/buttons/optionColorButtonEvents';
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
 import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
@@ -35,23 +35,23 @@ export class WindowEvents {
       ColumnDropdownEvents.onKeyDown.bind(this)(this.activeOverlayElements.columnDropdown as HTMLElement, event);
       return;
     }
-    if (this.columnsDetails[columnIndex].activeType.selectProps) {
+    if (this.columnsDetails[columnIndex].activeType.cellDropdownProps) {
       SelectCellTextBaseEvents.keyDownText(this, rowIndex, columnIndex, event);
     }
   }
 
   public static onKeyUp(this: ActiveTable, event: KeyboardEvent) {
     if (event.key === KEYBOARD_KEY.ESCAPE) {
-      SelectColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements); // picker stops key down
+      OptionColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements); // picker stops key down
       DateCellInputEvents.escapeKeyInput(this);
     } else if (event.key === KEYBOARD_KEY.ENTER) {
-      SelectColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements); // picker stops key down
+      OptionColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements); // picker stops key down
     }
   }
 
   // prettier-ignore
   public static onMouseDown(this: ActiveTable, event: MouseEvent) {
-    SelectColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements);
+    OptionColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements);
     if (Dropdown.isDisplayed(this.paginationInternal.numberOfRowsDropdown)) {
       NumberOfRowsDropdownEvents.windowOnMouseDown.bind(this)(this);
     }
@@ -69,7 +69,7 @@ export class WindowEvents {
       ColumnDropdown.processTextAndHide(this);
     // cell blur will not activate when the dropdown has been clicked and will not close if its scrollbar or padding are
     // clicked, if clicked elsewhere on the window we close the dropdown programmatically as follows
-    } else if (focusedElements.selectDropdown) {
+    } else if (focusedElements.cellDropdown) {
       CellWithTextEvents.programmaticBlur(this);
     } else if (this.activeOverlayElements.datePickerCell) {
       DateCellInputElement.toggle(this.activeOverlayElements.datePickerCell, false);

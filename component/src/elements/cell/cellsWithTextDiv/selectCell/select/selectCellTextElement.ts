@@ -1,4 +1,4 @@
-import {SelectDropdownItem} from '../../../../dropdown/selectDropdown/selectDropdownItem';
+import {CellDropdownItem} from '../../../../dropdown/cellDropdown/cellDropdownItem';
 import {CellTextElement} from '../../text/cellTextElement';
 import {EMPTY_STRING} from '../../../../../consts/text';
 import {ActiveTable} from '../../../../../activeTable';
@@ -16,12 +16,12 @@ export class SelectCellTextElement {
   // prettier-ignore
   public static finaliseEditedText(at: ActiveTable, textElement: HTMLElement, columnIndex: number) {
     const columnDetails = at.columnsDetails[columnIndex];
-    const {selectDropdown, activeType, settings} = columnDetails;
+    const {cellDropdown, activeType, settings} = columnDetails;
     const text = CellElement.getText(textElement);
-    const isPresent = !!selectDropdown.itemsDetails[text]?.backgroundColor;
-    if (activeType.selectProps?.canAddMoreOptions && text !== EMPTY_STRING && !isPresent
+    const isPresent = !!cellDropdown.itemsDetails[text]?.backgroundColor;
+    if (activeType.cellDropdownProps?.canAddMoreOptions && text !== EMPTY_STRING && !isPresent
         && (!settings.isDefaultTextRemovable || text !== settings.defaultText)) {
-      SelectDropdownItem.addNewSelectItem(at, textElement, columnDetails, textElement.style.backgroundColor);
+      CellDropdownItem.addNewItem(at, textElement, columnDetails, textElement.style.backgroundColor);
     }
   }
 }

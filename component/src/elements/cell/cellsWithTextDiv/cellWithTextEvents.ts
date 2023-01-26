@@ -33,9 +33,9 @@ export class CellWithTextEvents {
     textElement.blur();
     // the above will not trigger the SelectCellEvents.blur functionality if dropdown has been focused, but will blur
     // the element in the dom, the following will trigger the required programmatic functionality
-    if (at.focusedElements.selectDropdown) {
+    if (at.focusedElements.cellDropdown) {
       SelectCellTextBaseEvents.blurring(at, rowIndex, columnIndex, textElement);
-      delete at.focusedElements.selectDropdown;
+      delete at.focusedElements.cellDropdown;
     }
   }
 

@@ -1,4 +1,4 @@
-import {ColumnTypeInternal, ColumnTypesInternal, SelectPropertiesInternal} from '../../types/columnTypeInternal';
+import {ColumnTypeInternal, ColumnTypesInternal, CellDropdownPropertiesI} from '../../types/columnTypeInternal';
 import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItemConf';
 import {ColumnType, ColumnTypes, ColumnIconSettings} from '../../types/columnType';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
@@ -85,12 +85,12 @@ export class ColumnTypesUtils {
 
   private static processSelectOptions(type: ColumnType) {
     if (typeof type.select === 'object' && type.select.options) {
-      const internalSelectProps = type.select as SelectPropertiesInternal;
+      const internalSelectProps = type.select as CellDropdownPropertiesI;
       internalSelectProps.options = type.select.options.map((option) => {
         return {text: option};
       });
     } else if (typeof type.label === 'object' && type.label.options) {
-      const internalSelectProps = type.label as SelectPropertiesInternal;
+      const internalSelectProps = type.label as CellDropdownPropertiesI;
       // the reason for deep copy is because if canAddMoreOptions is set - colors can be changed and if the user
       // is reusing the same object for multiple columns a change in one can affect all others
       internalSelectProps.options = JSON.parse(JSON.stringify(type.label.options));
@@ -100,15 +100,15 @@ export class ColumnTypesUtils {
   private static processSelect(type: ColumnType, isDefaultTextRemovable: boolean, defaultText: CellText) {
     const internalType = type as ColumnTypeInternal;
     if (type.select === true || type.label === true) {
-      internalType.selectProps = {isBasicSelect: !type.label};
+      internalType.cellDropdownProps = {isBasicSelect: !type.label};
     } else if (typeof type.select === 'object' || typeof type.label === 'object') {
-      internalType.selectProps = (type.select || type.label) as SelectPropertiesInternal;
-      internalType.selectProps.isBasicSelect = !type.label;
+      internalType.cellDropdownProps = (type.select || type.label) as CellDropdownPropertiesI;
+      internalType.cellDropdownProps.isBasicSelect = !type.label;
       ColumnTypesUtils.processSelectOptions(type);
       Validation.setSelectValidation(internalType, isDefaultTextRemovable, defaultText);
     }
-    if (internalType.selectProps && internalType.selectProps.canAddMoreOptions === undefined) {
-      internalType.selectProps.canAddMoreOptions = !internalType.selectProps?.options;
+    if (internalType.cellDropdownProps && internalType.cellDropdownProps.canAddMoreOptions === undefined) {
+      internalType.cellDropdownProps.canAddMoreOptions = !internalType.cellDropdownProps?.options;
     }
   }
 

@@ -1,13 +1,13 @@
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
-import {SelectDropdownHorizontalScrollFix} from './selectDropdownHorizontalScrollFix';
-import {ActiveSelectItems, SelectDropdownI} from '../../../types/columnDetails';
+import {CellDropdownI, ActiveCellDropdownItems} from '../../../types/cellDropdownInternal';
+import {CellDropdownHorizontalScrollFix} from './cellDropdownHorizontalScrollFix';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
-import {SelectButton} from './buttons/selectButton';
+import {OptionButton} from './buttons/optionButton';
 import {SIDE} from '../../../types/side';
 
-export class SelectDropdownItemEvents {
+export class CellDropdownItemEvents {
   // prettier-ignore
-  public static blurItem(dropdown: SelectDropdownI, typeOfItem: keyof ActiveSelectItems, event?: MouseEvent) {
+  public static blurItem(dropdown: CellDropdownI, typeOfItem: keyof ActiveCellDropdownItems, event?: MouseEvent) {
     const {activeItems, labelDetails} = dropdown;
     if (labelDetails?.colorPickerContainer) return; // do not blur if color picker open
     const itemElement = activeItems[typeOfItem] as HTMLElement;
@@ -19,7 +19,7 @@ export class SelectDropdownItemEvents {
         delete activeItems[typeOfItem];
       }
     }
-    if (event && dropdown.canAddMoreOptions) SelectButton.changeVisibility(event, dropdown);
+    if (event && dropdown.canAddMoreOptions) OptionButton.changeVisibility(event, dropdown);
   }
 
   // prettier-ignore
@@ -32,12 +32,12 @@ export class SelectDropdownItemEvents {
       itemElement.scrollIntoView({block: 'nearest'});
       // REF-4
       if (isHorizontalScrollPresent && visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
-        SelectDropdownHorizontalScrollFix.scrollDownFurther(dropdownElement)
+        CellDropdownHorizontalScrollFix.scrollDownFurther(dropdownElement)
       }
     }
   }
 
-  private static highlightItem(this: Document, dropdown: SelectDropdownI, event: MouseEvent) {
+  private static highlightItem(this: Document, dropdown: CellDropdownI, event: MouseEvent) {
     const {scrollbarPresence, activeItems, labelDetails, canAddMoreOptions, element, itemsDetails} = dropdown;
     if (labelDetails?.colorPickerContainer) return; // do not highlight new if color picker open
     // this is used for a case where an item is highlighted via arrow and then mouse hovers over another item
@@ -49,7 +49,7 @@ export class SelectDropdownItemEvents {
     const text = (itemElement.children[0] as HTMLElement).innerText;
     itemElement.style.backgroundColor = itemsDetails[text].backgroundColor;
     const dropdownElement = itemElement.parentElement as HTMLElement;
-    SelectDropdownItemEvents.scrollToItem(this, itemElement, scrollbarPresence.horizontal, dropdownElement, event);
+    CellDropdownItemEvents.scrollToItem(this, itemElement, scrollbarPresence.horizontal, dropdownElement, event);
     if (itemElement === activeItems.matchingWithCellText) {
       if (!labelDetails) itemElement.style.color = 'white';
       delete activeItems.hovered;
@@ -57,11 +57,11 @@ export class SelectDropdownItemEvents {
       if (!labelDetails) itemElement.style.backgroundColor = DropdownItemHighlightUtils.HOVER_BACKGROUND_COLOR;
       activeItems.hovered = itemElement;
     }
-    if (canAddMoreOptions) SelectButton.changeVisibility(event, dropdown, element);
+    if (canAddMoreOptions) OptionButton.changeVisibility(event, dropdown, element);
   }
 
-  public static set(shadow: Document, itemElement: HTMLElement, dropdown: SelectDropdownI) {
-    itemElement.onmouseenter = SelectDropdownItemEvents.highlightItem.bind(shadow, dropdown);
-    itemElement.onmouseleave = SelectDropdownItemEvents.blurItem.bind(this, dropdown, 'hovered');
+  public static set(shadow: Document, itemElement: HTMLElement, dropdown: CellDropdownI) {
+    itemElement.onmouseenter = CellDropdownItemEvents.highlightItem.bind(shadow, dropdown);
+    itemElement.onmouseleave = CellDropdownItemEvents.blurItem.bind(this, dropdown, 'hovered');
   }
 }

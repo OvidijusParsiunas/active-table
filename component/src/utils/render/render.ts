@@ -9,7 +9,7 @@ export class Render {
   // CAUTION-4 overwriting properties causes the whole table to refresh and subsequently - an infinite render loop
   // prettier-ignore
   private static refreshTableState(at: ActiveTable) {
-    at.selectDropdownContainer?.replaceChildren();
+    at.cellDropdownContainer?.replaceChildren();
     at.columnsDetails.splice(0, at.columnsDetails.length);
     at.tableDimensions.indexColumnWidth = IndexColumn.DEFAULT_WIDTH;
     at.addColumnCellsElementsRef.splice(0, at.addColumnCellsElementsRef.length);

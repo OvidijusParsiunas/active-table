@@ -1,27 +1,27 @@
 import {ColumnDetailsUtils} from '../../../../utils/columnDetails/columnDetailsUtils';
 import {CellWithTextEvents} from '../../../cell/cellsWithTextDiv/cellWithTextEvents';
-import {SelectDropdownScrollbar} from '../selectDropdownScrollbar';
+import {CellDropdownScrollbar} from '../cellDropdownScrollbar';
 import {ColumnDetailsT} from '../../../../types/columnDetails';
 import {CellElement} from '../../../cell/cellElement';
 import {ActiveTable} from '../../../../activeTable';
 
-export class SelectDeleteButtonEvents {
+export class OptionDeleteButtonEvents {
   private static delete(this: ActiveTable, columnDetails: ColumnDetailsT, event: MouseEvent) {
-    const {selectDropdown} = columnDetails;
+    const {cellDropdown} = columnDetails;
     const buttonElement = event.target as HTMLElement;
     const containerElement = buttonElement.parentElement as HTMLElement;
     const itemElement = containerElement.parentElement as HTMLElement;
-    delete selectDropdown.itemsDetails[CellElement.getText(itemElement.children[0] as HTMLElement)];
+    delete cellDropdown.itemsDetails[CellElement.getText(itemElement.children[0] as HTMLElement)];
     itemElement.remove();
-    if (Object.keys(selectDropdown.itemsDetails).length === 0) {
+    if (Object.keys(cellDropdown.itemsDetails).length === 0) {
       CellWithTextEvents.programmaticBlur(this);
     } else {
-      SelectDropdownScrollbar.setProperties(selectDropdown);
+      CellDropdownScrollbar.setProperties(cellDropdown);
     }
     setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
   }
 
   public static addEvents(at: ActiveTable, columnDetails: ColumnDetailsT, buttonElement: HTMLElement) {
-    buttonElement.onclick = SelectDeleteButtonEvents.delete.bind(at, columnDetails);
+    buttonElement.onclick = OptionDeleteButtonEvents.delete.bind(at, columnDetails);
   }
 }

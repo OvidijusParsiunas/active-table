@@ -1,7 +1,7 @@
 import {DateCellInputElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {SelectCell} from '../../../elements/cell/cellsWithTextDiv/selectCell/selectCell';
-import {SelectDropdown} from '../../../elements/dropdown/selectDropdown/selectDropdown';
 import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
+import {CellDropdown} from '../../../elements/dropdown/cellDropdown/cellDropdown';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {ColumnSettingsUtils} from '../../columnSettings/columnSettingsUtils';
 import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
@@ -89,7 +89,7 @@ export class OverwriteCellsViaCSVOnPaste {
     const oldType = CellTypeTotalsUtils.parseTypeName(CellElement.getText(cellElement), columnDetails.settings.types);
     const processedNewCellText = CellEvents.updateCell(
       at, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
-    if (columnDetails.activeType.selectProps) {
+    if (columnDetails.activeType.cellDropdownProps) {
       SelectCell.finaliseEditedText(at, cellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (Browser.IS_INPUT_DATE_SUPPORTED && columnDetails.activeType.calendar) {
       DateCellInputElement.updateInputBasedOnTextDiv(cellElement, columnDetails.activeType);
@@ -113,10 +113,10 @@ export class OverwriteCellsViaCSVOnPaste {
 
   // prettier-ignore
   private static setCaretToEndAndHighlightIfSelect(at: ActiveTable, cellElement: HTMLElement, columnIndex: number) {
-    const {activeType, selectDropdown, settings: {defaultText}} = at.columnsDetails[columnIndex];
+    const {activeType, cellDropdown, settings: {defaultText}} = at.columnsDetails[columnIndex];
     CaretPosition.setToEndOfText(at, cellElement);
-    if (activeType.selectProps) {
-      SelectDropdown.updateSelectDropdown(cellElement, selectDropdown, at.tableDimensions.border, defaultText, true);
+    if (activeType.cellDropdownProps) {
+      CellDropdown.updateCellDropdown(cellElement, cellDropdown, at.tableDimensions.border, defaultText, true);
     }
   }
 

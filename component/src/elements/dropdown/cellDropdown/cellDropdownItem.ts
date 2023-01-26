@@ -1,13 +1,14 @@
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
-import {ActiveSelectItems, ColumnDetailsT, SelectDropdownI} from '../../../types/columnDetails';
+import {CellDropdownI, ActiveCellDropdownItems} from '../../../types/cellDropdownInternal';
 import {ColumnDetailsUtils} from '../../../utils/columnDetails/columnDetailsUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
-import {SelectDropdownItemEvents} from './selectDropdownItemEvents';
 import {CellText, TableContent} from '../../../types/tableContent';
-import {SelectDeleteButton} from './buttons/selectDeleteButton';
-import {SelectColorButton} from './buttons/selectColorButton';
-import {LabelOptions} from '../../../types/selectDropdown';
+import {CellDropdownItemEvents} from './cellDropdownItemEvents';
+import {OptionDeleteButton} from './buttons/optionDeleteButton';
+import {OptionColorButton} from './buttons/optionColorButton';
+import {ColumnDetailsT} from '../../../types/columnDetails';
+import {LabelOptions} from '../../../types/cellDropdown';
 import {CellDetails} from '../../../types/focusedCell';
 import {Browser} from '../../../utils/browser/browser';
 import {CellElement} from '../../cell/cellElement';
@@ -20,8 +21,8 @@ interface ItemToColor {
   [cellText: CellText]: string;
 }
 
-export class SelectDropdownItem {
-  private static readonly SELECT_ACTIVE_ITEM_BACKGROUND_COLOR = '#4a69d4';
+export class CellDropdownItem {
+  private static readonly ACTIVE_ITEM_BACKGROUND_COLOR = '#4a69d4';
 
   // prettier-ignore
   private static updateCellElementIfNotUpdated(at: ActiveTable,
@@ -32,19 +33,19 @@ export class SelectDropdownItem {
   }
 
   // prettier-ignore
-  public static selectExistingSelectItem(at: ActiveTable,
+  public static selectExistingItem(at: ActiveTable,
       activeItemElement: HTMLElement, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const newText = CellElement.getText(activeItemElement.children[0] as HTMLElement);
-    SelectDropdownItem.updateCellElementIfNotUpdated(at, newText, rowIndex, columnIndex, textElement);
+    CellDropdownItem.updateCellElementIfNotUpdated(at, newText, rowIndex, columnIndex, textElement);
     if (LabelCellTextElement.isLabelText(textElement)) {
       textElement.style.backgroundColor = at.columnsDetails[columnIndex]
-        .selectDropdown.itemsDetails[newText]?.backgroundColor;
+        .cellDropdown.itemsDetails[newText]?.backgroundColor;
     }
   }
 
   // prettier-ignore
-  public static addNewSelectItem(at: ActiveTable, textElement: HTMLElement, columnDetails: ColumnDetailsT, color: string) {
-    const {selectDropdown: {labelDetails}} = columnDetails;
+  public static addNewItem(at: ActiveTable, textElement: HTMLElement, columnDetails: ColumnDetailsT, color: string) {
+    const {cellDropdown: {labelDetails}} = columnDetails;
     const newItemText = CellElement.getText(textElement);
     if (newItemText === EMPTY_STRING) return;
     let newColor = '';
@@ -54,15 +55,15 @@ export class SelectDropdownItem {
       textElement.style.backgroundColor = newColor;
       labelDetails.newItemColors?.pop() || LabelColorUtils.setNewLatestPasteleColor();
     } else {
-      newColor = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
+      newColor = CellDropdownItem.ACTIVE_ITEM_BACKGROUND_COLOR;
     }
-    SelectDropdownItem.addItem(at, newItemText, newColor, columnDetails);
+    CellDropdownItem.addItem(at, newItemText, newColor, columnDetails);
     setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
   }
 
   // prettier-ignore
   private static updateCellTextBgColor(itemElement: HTMLElement | undefined, textElement: HTMLElement,
-      dropdown: SelectDropdownI, defaultText: CellText) {
+      dropdown: CellDropdownI, defaultText: CellText) {
     const cellText = CellElement.getText(textElement);
     if (itemElement) {
       textElement.style.backgroundColor = dropdown.itemsDetails[cellText].backgroundColor;
@@ -75,14 +76,14 @@ export class SelectDropdownItem {
     }
   }
 
-  private static updateItemColor(itemElement: HTMLElement | undefined, activeItems: ActiveSelectItems) {
+  private static updateItemColor(itemElement: HTMLElement | undefined, activeItems: ActiveCellDropdownItems) {
     if (itemElement) {
       activeItems.matchingWithCellText = itemElement;
       itemElement.dispatchEvent(new MouseEvent('mouseenter'));
     }
   }
 
-  private static hideHoveredItemHighlight(activeItems: ActiveSelectItems) {
+  private static hideHoveredItemHighlight(activeItems: ActiveCellDropdownItems) {
     const {hovered, matchingWithCellText} = activeItems;
     if (hovered) {
       hovered.style.backgroundColor = '';
@@ -92,82 +93,82 @@ export class SelectDropdownItem {
   }
 
   // prettier-ignore
-  public static attemptHighlightMatchingItemWithCell(textElement: HTMLElement, dropdown: SelectDropdownI,
+  public static attemptHighlightMatchingItemWithCell(textElement: HTMLElement, dropdown: CellDropdownI,
       defaultText: CellText, updateCellText: boolean, matchingCellElement?: HTMLElement) {
     const {activeItems, itemsDetails} = dropdown;
     const targetText = CellElement.getText(textElement);
     const itemElement = matchingCellElement || itemsDetails[targetText]?.element;
     if (!itemElement || activeItems.matchingWithCellText !== itemElement) {
       // this is used to preserve the ability for the user to still allow the use of arrow keys to traverse the dropdown
-      SelectDropdownItem.hideHoveredItemHighlight(activeItems);
-      SelectDropdownItemEvents.blurItem(dropdown, 'matchingWithCellText');
+      CellDropdownItem.hideHoveredItemHighlight(activeItems);
+      CellDropdownItemEvents.blurItem(dropdown, 'matchingWithCellText');
     }
-    SelectDropdownItem.updateItemColor(itemElement, activeItems);
+    CellDropdownItem.updateItemColor(itemElement, activeItems);
     if (updateCellText && dropdown.labelDetails?.newItemColors) {
-      SelectDropdownItem.updateCellTextBgColor(itemElement, textElement, dropdown, defaultText);
+      CellDropdownItem.updateCellTextBgColor(itemElement, textElement, dropdown, defaultText);
     }
   }
 
   // prettier-ignore
   private static setItemOnCell(at: ActiveTable, item: HTMLElement) {
     const {element, rowIndex, columnIndex} = at.focusedElements.cell as CellDetails;
-    const {selectDropdown, settings: {defaultText}} = at.columnsDetails[columnIndex];
+    const {cellDropdown, settings: {defaultText}} = at.columnsDetails[columnIndex];
     const textElement = element.children[0] as HTMLElement;
     const itemText = CellElement.getText(item.children[0] as HTMLElement);
-    SelectDropdownItem.updateCellElementIfNotUpdated(at, itemText, rowIndex, columnIndex, textElement);
-    SelectDropdownItem.attemptHighlightMatchingItemWithCell(textElement, selectDropdown, defaultText, true, item);
+    CellDropdownItem.updateCellElementIfNotUpdated(at, itemText, rowIndex, columnIndex, textElement);
+    CellDropdownItem.attemptHighlightMatchingItemWithCell(textElement, cellDropdown, defaultText, true, item);
     CaretPosition.setToEndOfText(at, textElement);
   }
 
   // prettier-ignore
   public static setSiblingItemOnCell(at: ActiveTable,
-      activeItems: ActiveSelectItems, sibling: 'previousSibling' | 'nextSibling') {
+      activeItems: ActiveCellDropdownItems, sibling: 'previousSibling' | 'nextSibling') {
     const {hovered, matchingWithCellText} = activeItems;
     const currentlyHighlightedItem = hovered || matchingWithCellText as HTMLElement;
     const siblingItem = currentlyHighlightedItem?.[sibling] as HTMLElement;
     if (siblingItem) {
-      SelectDropdownItem.setItemOnCell(at, siblingItem);
+      CellDropdownItem.setItemOnCell(at, siblingItem);
     } else {
       const {columnIndex} = at.focusedElements.cell as CellDetails;
-      const dropdownElement = at.columnsDetails[columnIndex].selectDropdown.element as HTMLElement;
+      const dropdownElement = at.columnsDetails[columnIndex].cellDropdown.element as HTMLElement;
       if (sibling === 'nextSibling') {
         const firstItem = dropdownElement.children[0] as HTMLElement;
-        if (firstItem) SelectDropdownItem.setItemOnCell(at, firstItem);
+        if (firstItem) CellDropdownItem.setItemOnCell(at, firstItem);
       } else {
         const lastItem = dropdownElement.children[dropdownElement.children.length - 1] as HTMLElement;
-        if (lastItem) SelectDropdownItem.setItemOnCell(at, lastItem);
+        if (lastItem) CellDropdownItem.setItemOnCell(at, lastItem);
       }
     }
   }
 
   private static addItemElement(at: ActiveTable, text: string, columnDetails: ColumnDetailsT, atStart = false) {
-    const {selectDropdown} = columnDetails;
-    const itemElement = DropdownItem.addPlaneButtonItem(selectDropdown.element, text, atStart ? 0 : undefined);
-    if (selectDropdown.customItemStyle) itemElement.style.color = selectDropdown.customItemStyle.textColor;
-    if (selectDropdown.canAddMoreOptions) {
-      const deleteButtonElement = SelectDeleteButton.create(at, columnDetails);
+    const {cellDropdown} = columnDetails;
+    const itemElement = DropdownItem.addPlaneButtonItem(cellDropdown.element, text, atStart ? 0 : undefined);
+    if (cellDropdown.customItemStyle) itemElement.style.color = cellDropdown.customItemStyle.textColor;
+    if (cellDropdown.canAddMoreOptions) {
+      const deleteButtonElement = OptionDeleteButton.create(at, columnDetails);
       itemElement.appendChild(deleteButtonElement);
-      if (Browser.IS_COLOR_PICKER_SUPPORTED && selectDropdown.labelDetails?.newItemColors) {
-        const colorInputElement = SelectColorButton.create(columnDetails);
+      if (Browser.IS_COLOR_PICKER_SUPPORTED && cellDropdown.labelDetails?.newItemColors) {
+        const colorInputElement = OptionColorButton.create(columnDetails);
         itemElement.appendChild(colorInputElement);
       }
     }
-    SelectDropdownItemEvents.set(at.shadowRoot as unknown as Document, itemElement, selectDropdown);
+    CellDropdownItemEvents.set(at.shadowRoot as unknown as Document, itemElement, cellDropdown);
     return itemElement;
   }
 
   private static addItem(at: ActiveTable, itemText: string, color: string, columnDetails: ColumnDetailsT) {
-    columnDetails.selectDropdown.itemsDetails[itemText] = {
+    columnDetails.cellDropdown.itemsDetails[itemText] = {
       backgroundColor: color,
-      element: SelectDropdownItem.addItemElement(at, itemText, columnDetails),
+      element: CellDropdownItem.addItemElement(at, itemText, columnDetails),
     };
   }
 
   private static addItems(at: ActiveTable, itemToColor: ItemToColor, columnDetails: ColumnDetailsT) {
-    columnDetails.selectDropdown.element.replaceChildren();
-    columnDetails.selectDropdown.itemsDetails = {};
+    columnDetails.cellDropdown.element.replaceChildren();
+    columnDetails.cellDropdown.itemsDetails = {};
     Object.keys(itemToColor).forEach((itemText) => {
-      SelectDropdownItem.addItem(at, itemText, itemToColor[itemText], columnDetails);
+      CellDropdownItem.addItem(at, itemText, itemToColor[itemText], columnDetails);
     });
   }
 
@@ -181,7 +182,7 @@ export class SelectDropdownItem {
         itemToColor[option.text] =
           option.backgroundColor || newItemColors.pop() || LabelColorUtils.getLatestPasteleColorAndSetNew();
       } else {
-        itemToColor[option.text] = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
+        itemToColor[option.text] = CellDropdownItem.ACTIVE_ITEM_BACKGROUND_COLOR;
       }
       return itemToColor;
     }, {});
@@ -196,7 +197,7 @@ export class SelectDropdownItem {
         if (newItemColors) {
           itemToColor[cellText] = newItemColors.pop() || LabelColorUtils.getLatestPasteleColorAndSetNew();
         } else {
-          itemToColor[cellText] = SelectDropdownItem.SELECT_ACTIVE_ITEM_BACKGROUND_COLOR;
+          itemToColor[cellText] = CellDropdownItem.ACTIVE_ITEM_BACKGROUND_COLOR;
         }
       }
       return itemToColor;
@@ -207,17 +208,17 @@ export class SelectDropdownItem {
   public static populateItems(at: ActiveTable, columnIndex: number) {
     const {content, columnsDetails} = at;
     const columnDetails = columnsDetails[columnIndex];
-    const {selectDropdown: {labelDetails}, settings: {defaultText, isDefaultTextRemovable}, activeType: {selectProps}
+    const {cellDropdown: {labelDetails}, settings: {defaultText, isDefaultTextRemovable}, activeType: {cellDropdownProps}
       } = columnDetails;
-    if (!selectProps) return;
+    if (!cellDropdownProps) return;
     let itemToColor: ItemToColor = {}
-    if (selectProps.options) {
-      itemToColor = SelectDropdownItem.changeUserOptionsToItemToColor(selectProps.options, labelDetails?.newItemColors)
+    if (cellDropdownProps.options) {
+      itemToColor = CellDropdownItem.changeUserOptionsToItemToColor(cellDropdownProps.options, labelDetails?.newItemColors)
     }
-    if (selectProps.canAddMoreOptions) {
-      SelectDropdownItem.aggregateItemToColor(content, columnIndex, itemToColor, labelDetails?.newItemColors);
+    if (cellDropdownProps.canAddMoreOptions) {
+      CellDropdownItem.aggregateItemToColor(content, columnIndex, itemToColor, labelDetails?.newItemColors);
     }
-    SelectDropdownItem.postProcessItemToColor(isDefaultTextRemovable, itemToColor, defaultText);
-    SelectDropdownItem.addItems(at, itemToColor, columnDetails);
+    CellDropdownItem.postProcessItemToColor(isDefaultTextRemovable, itemToColor, defaultText);
+    CellDropdownItem.addItems(at, itemToColor, columnDetails);
   }
 }

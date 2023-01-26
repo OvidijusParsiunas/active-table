@@ -8,7 +8,7 @@ import {CheckboxCellElement} from '../../../elements/cell/checkboxCell/checkboxC
 import {UpdateIndexColumnWidth} from '../../../elements/indexColumn/updateIndexColumnWidth';
 import {SelectCell} from '../../../elements/cell/cellsWithTextDiv/selectCell/selectCell';
 import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
-import {SelectDropdown} from '../../../elements/dropdown/selectDropdown/selectDropdown';
+import {CellDropdown} from '../../../elements/dropdown/cellDropdown/cellDropdown';
 import {ColumnDetailsInitial, ColumnDetailsT} from '../../../types/columnDetails';
 import {ProcessedDataTextStyle} from '../../columnType/processedDataTextStyle';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
@@ -68,9 +68,9 @@ export class InsertNewCell {
       HeaderIconCellElement.setHeaderIconStructure(at, newCellElement, columnIndex);
     }
     if (!columnDetails.activeType) return;
-    if (columnDetails.activeType.selectProps) {
+    if (columnDetails.activeType.cellDropdownProps) {
       if (rowIndex === 0) {
-        SelectDropdown.setUpDropdown(at, columnIndex);
+        CellDropdown.setUpDropdown(at, columnIndex);
       } else {
         SelectCell.convertCell(at, columnIndex, newCellElement);
         SelectCell.finaliseEditedText(at, newCellElement.children[0] as HTMLElement, columnIndex, true);
@@ -88,10 +88,10 @@ export class InsertNewCell {
   // REF-13
   // prettier-ignore
   private static insertInitialColumnDetails(at: ActiveTable, cellText: CellText, columnIndex: number) {
-    const {columnsDetails, customColumnsSettingsInternal, selectDropdownContainer, columnsSettings, onColumnUpdate} = at;
-    const selectDropdown = SelectDropdown.createAndAppend(selectDropdownContainer as HTMLElement);
+    const {columnsDetails, customColumnsSettingsInternal, cellDropdownContainer, columnsSettings, onColumnUpdate} = at;
+    const cellDropdown = CellDropdown.createAndAppend(cellDropdownContainer as HTMLElement);
     const columnDetails = ColumnDetails.createInitial(columnsSettings,
-      selectDropdown, customColumnsSettingsInternal[cellText], columnIndex, at.defaultCellHoverColors, onColumnUpdate);
+      cellDropdown, customColumnsSettingsInternal[cellText], columnIndex, at.defaultCellHoverColors, onColumnUpdate);
     columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
   }
 

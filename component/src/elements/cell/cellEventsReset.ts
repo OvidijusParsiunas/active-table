@@ -24,8 +24,8 @@ export class CellEventsReset {
     const {settings, activeType} = at.columnsDetails[columnIndex];
     if (!settings.isCellTextEditable) return;
     DataCellEvents.setEvents(at, cellElement, rowIndex, columnIndex);
-    const {selectProps, calendar, checkbox} = activeType;
-    if (selectProps) {
+    const {cellDropdownProps, calendar, checkbox} = activeType;
+    if (cellDropdownProps) {
       SelectCell.setEvents(at, cellElement, rowIndex, columnIndex);
     } else if (calendar) {
       DateCellEvents.setEvents(at, cellElement, rowIndex, columnIndex);

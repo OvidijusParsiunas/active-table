@@ -1,7 +1,7 @@
 import {FocusNextCellFromSelectCell} from '../../../../../utils/focusedElements/focusNextCellFromSelectCell';
-import {SelectDropdownItem} from '../../../../dropdown/selectDropdown/selectDropdownItem';
-import {SelectButton} from '../../../../dropdown/selectDropdown/buttons/selectButton';
-import {SelectDropdown} from '../../../../dropdown/selectDropdown/selectDropdown';
+import {CellDropdownItem} from '../../../../dropdown/cellDropdown/cellDropdownItem';
+import {OptionButton} from '../../../../dropdown/cellDropdown/buttons/optionButton';
+import {CellDropdown} from '../../../../dropdown/cellDropdown/cellDropdown';
 import {ArrowDownIconElement} from '../select/arrowDownIconElement';
 import {ColumnDetailsT} from '../../../../../types/columnDetails';
 import {KEYBOARD_KEY} from '../../../../../consts/keyboardKeys';
@@ -19,7 +19,7 @@ export class SelectCellTextBaseEvents {
   // keydown events will no longer be fired through the cell text - however we need to maintain the same behaviour
   // prettier-ignore
   public static keyDownText(at: ActiveTable, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
-    const {selectDropdown: {activeItems, canAddMoreOptions}, elements} = at.columnsDetails[columnIndex];
+    const {cellDropdown: {activeItems, canAddMoreOptions}, elements} = at.columnsDetails[columnIndex];
     if (event.key === KEYBOARD_KEY.ESCAPE) {
       CellWithTextEvents.programmaticBlur(at);
     } else if (event.key === KEYBOARD_KEY.TAB) {
@@ -29,39 +29,39 @@ export class SelectCellTextBaseEvents {
       FocusNextCellFromSelectCell.focusOrBlurSelectNextCell(elements, rowIndex);
     } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
       event.preventDefault();
-      SelectDropdownItem.setSiblingItemOnCell(at, activeItems, 'previousSibling');
+      CellDropdownItem.setSiblingItemOnCell(at, activeItems, 'previousSibling');
     } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
       event.preventDefault();
-      SelectDropdownItem.setSiblingItemOnCell(at, activeItems, 'nextSibling');
+      CellDropdownItem.setSiblingItemOnCell(at, activeItems, 'nextSibling');
     } else if ((at.dataStartsAtHeader || rowIndex > 0) && !canAddMoreOptions) {
       event.preventDefault();
     }
   }
 
   private static displayDropdown(at: ActiveTable, columnIndex: number, cellElement: HTMLElement) {
-    const isDisplayed = SelectDropdown.display(at, columnIndex, cellElement);
-    const {activeType, selectDropdown} = at.columnsDetails[columnIndex];
-    if (activeType.selectProps?.isBasicSelect && isDisplayed) {
-      selectDropdown.displayedCellElement = cellElement;
+    const isDisplayed = CellDropdown.display(at, columnIndex, cellElement);
+    const {activeType, cellDropdown} = at.columnsDetails[columnIndex];
+    if (activeType.cellDropdownProps?.isBasicSelect && isDisplayed) {
+      cellDropdown.displayedCellElement = cellElement;
       ArrowDownIconElement.toggle(cellElement, true);
     }
   }
 
   private static clearTypeSpecificProps(columnDetails: ColumnDetailsT) {
-    const {selectDropdown, activeType} = columnDetails;
-    if (!activeType.selectProps) return;
-    if (activeType.selectProps.isBasicSelect) {
-      ArrowDownIconElement.toggle(selectDropdown.displayedCellElement, false);
-      delete selectDropdown.displayedCellElement;
+    const {cellDropdown, activeType} = columnDetails;
+    if (!activeType.cellDropdownProps) return;
+    if (activeType.cellDropdownProps.isBasicSelect) {
+      ArrowDownIconElement.toggle(cellDropdown.displayedCellElement, false);
+      delete cellDropdown.displayedCellElement;
     } else {
-      SelectButton.hideAfterColorPickerContainerClose(columnDetails);
+      OptionButton.hideAfterColorPickerContainerClose(columnDetails);
     }
   }
 
   public static blurring(at: ActiveTable, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
     const columnDetails = at.columnsDetails[columnIndex];
-    Dropdown.hide(columnDetails.selectDropdown.element);
-    if (!columnDetails.selectDropdown.itemsDetails[CellElement.getText(textElement)]) {
+    Dropdown.hide(columnDetails.cellDropdown.element);
+    if (!columnDetails.cellDropdown.itemsDetails[CellElement.getText(textElement)]) {
       SelectCell.finaliseEditedText(at, textElement, columnIndex);
     }
     SelectCellTextBaseEvents.clearTypeSpecificProps(columnDetails);
@@ -69,7 +69,7 @@ export class SelectCellTextBaseEvents {
   }
 
   public static blurText(this: ActiveTable, rowIndex: number, columnIndex: number, event: Event) {
-    if (!this.focusedElements.selectDropdown) {
+    if (!this.focusedElements.cellDropdown) {
       SelectCellTextBaseEvents.blurring(this, rowIndex, columnIndex, event.target as HTMLElement);
     }
   }

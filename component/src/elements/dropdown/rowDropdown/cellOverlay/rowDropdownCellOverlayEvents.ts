@@ -35,7 +35,7 @@ export class RowDropdownCellOverlayEvents {
   }
 
   // This method is adding more events to existing cells instead of overwriting them, the reason for using this approach is
-  // because we would instead need to add logic inside data cell events, select events, header events and more as
+  // because we would instead need to add logic inside data cell events, select/label events, header events and more as
   // row dropdown overlay can appear above them if index column is not displayed
   // Interestingly using setting events like .onmousenter does not overwrite the events that have been added via
   // addEventListener, hence they need to be removed here before adding again

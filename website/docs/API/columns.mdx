@@ -493,8 +493,8 @@ tool (the reason for this is because the icon is an SVG element). Use `scale` to
   &nbsp;&nbsp;&nbsp;&nbsp; [`customTextProcessing?: CustomTextProcessing`](#CustomTextProcessing), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`sorting?: Sorting`](#Sorting), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`iconSettings?: IconSettings`](#IconSettings), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`select?: boolean|SelectDropdown<SelectOptions>`](#SelectDropdown), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`label?: boolean|SelectDropdown<LabelOptions>`](#SelectDropdown), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`select?: boolean|CellDropdown<SelectOptions>`](#CellDropdown), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`label?: boolean|CellDropdown<LabelOptions>`](#CellDropdown), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`calendar?: Calendar`](#IconSettings), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `checkbox?: boolean` <br />
   }
@@ -897,10 +897,10 @@ properties are also used for the header however if they don't fit the `headerCor
 
 <LineBreak></LineBreak>
 
-### `SelectDropdown` {#SelectDropdown}
+### `CellDropdown` {#CellDropdown}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`dropdownStyle?: SelectDropdownStyle`](#SelectDropdownStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`dropdownStyle?: CellDropdownStyle`](#CellDropdownStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `optionStyle?: {textColor: string}`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`options?: SelectOptions|LabelOptions`](#SelectOptions), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `canAddMoreOptions?: boolean` <br />
@@ -914,7 +914,7 @@ used for a `select` dropdown and [`LabelOptions`](#LabelOptions) if used for `la
 `canAddMoreOptions` controls whether new options can be added into the dropdown. If _false_ then column cell text that
 is not in the _options_ array is automatically removed.
 
-#### `SelectDropdownStyle` {#SelectDropdownStyle}
+#### `CellDropdownStyle` {#CellDropdownStyle}
 
 - Type: { <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `width?: string`, <br />

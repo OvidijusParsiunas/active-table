@@ -10,8 +10,8 @@ export class SelectCellEvents {
   private static mouseLeaveCell(this: ActiveTable, columnIndex: number, event: MouseEvent) {
     delete this.hoveredElements.selectCell;
     const cellElement = event.target as HTMLElement;
-    const {selectDropdown} = this.columnsDetails[columnIndex];
-    if (!Dropdown.isDisplayed(selectDropdown.element) || selectDropdown.displayedCellElement !== cellElement) {
+    const {cellDropdown} = this.columnsDetails[columnIndex];
+    if (!Dropdown.isDisplayed(cellDropdown.element) || cellDropdown.displayedCellElement !== cellElement) {
       ArrowDownIconElement.toggle(cellElement, false);
     }
   }

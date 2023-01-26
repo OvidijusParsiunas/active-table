@@ -171,7 +171,7 @@ export class ActiveTable extends LitElement {
   tableDimensions: TableDimensions = TableDimensionsUtils.getDefault();
 
   @state()
-  selectDropdownContainer: HTMLElement | null = null;
+  cellDropdownContainer: HTMLElement | null = null;
 
   @property({type: Object})
   rowHoverStyle: RowHoverStyle | null = null;

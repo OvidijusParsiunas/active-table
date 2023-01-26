@@ -5,9 +5,9 @@ import {ActiveTable} from '../../../../../activeTable';
 export class SelectCellBaseEvents {
   public static blurIfDropdownFocused(at: ActiveTable) {
     // text blur will not activate when the dropdown has been clicked and will not close if its scrollbar, padding
-    // or delete select buttons are clicked, hence once that happens and the user clicks on another select cell,
-    // the dropdown is closed programmatically as follows
-    if (at.focusedElements.selectDropdown) {
+    // or option del/col buttons are clicked, hence once that happens and the user clicks on another select/label
+    // cell, the dropdown is closed programmatically as follows
+    if (at.focusedElements.cellDropdown) {
       CellWithTextEvents.programmaticBlur(at);
     }
   }

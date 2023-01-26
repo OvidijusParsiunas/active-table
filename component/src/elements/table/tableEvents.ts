@@ -1,6 +1,6 @@
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {UserKeyEventsStateUtils} from '../../utils/userEventsState/userEventsStateUtils';
-import {SelectColorButton} from '../dropdown/selectDropdown/buttons/selectColorButton';
+import {OptionColorButton} from '../dropdown/cellDropdown/buttons/optionColorButton';
 import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {ActiveOverlayElements} from '../../types/activeOverlayElements';
@@ -25,10 +25,10 @@ export class TableEvents {
   // or delete cateogory buttons are clicked. If the user clicks elsewhere on the table, the dropdown is closed
   // programmatically as follows
   // prettier-ignore
-  private static closeSelectDropdown(at: ActiveTable, targetElement: HTMLElement) {
+  private static closeCellDropdown(at: ActiveTable, targetElement: HTMLElement) {
     const {focusedElements} = at;
-    if (focusedElements.selectDropdown && !Dropdown.isPartOfDropdownElement(targetElement)
-        && !targetElement.classList.contains(SelectColorButton.COLOR_BUTTON_CLASS)
+    if (focusedElements.cellDropdown && !Dropdown.isPartOfDropdownElement(targetElement)
+        && !targetElement.classList.contains(OptionColorButton.COLOR_BUTTON_CLASS)
         && focusedElements.cell.element !== CellElement.getCellElement(targetElement)) {
       CellWithTextEvents.programmaticBlur(at);
     }
@@ -37,7 +37,7 @@ export class TableEvents {
   public static onMouseDown(this: ActiveTable, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
     UserKeyEventsStateUtils.temporarilyIndicateEvent(this.userKeyEventsState, MOUSE_EVENT.DOWN);
-    TableEvents.closeSelectDropdown(this, targetElement);
+    TableEvents.closeCellDropdown(this, targetElement);
     TableEvents.closeDatePicker(this.activeOverlayElements, event.target as HTMLElement);
   }
 

@@ -1,6 +1,6 @@
 import {CellStateColorProperties, DefaultCellHoverColors} from '../../types/cellStateColors';
-import {SelectDropdown} from '../../elements/dropdown/selectDropdown/selectDropdown';
 import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
+import {CellDropdown} from '../../elements/dropdown/cellDropdown/cellDropdown';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
 import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
@@ -42,7 +42,7 @@ export class ColumnDetails {
   }
 
   // prettier-ignore
-  public static createInitial(columnsSettings: ColumnsSettingsDefault, selectDropdown: HTMLElement,
+  public static createInitial(columnsSettings: ColumnsSettingsDefault, cellDropdown: HTMLElement,
       settings: ColumnSettingsInternal, index: number, defaultCellHoverColors: DefaultCellHoverColors,
       onColumnUpdate: OnColumnUpdate): ColumnDetailsInitial {
     const columnSettings = settings || columnsSettings;
@@ -53,7 +53,7 @@ export class ColumnDetails {
       headerStateColors: ColumnDetails.createHeaderStateColors(columnsSettings, settings, defaultCellHoverColors),
       bordersOverwrittenBySiblings: {},
       activeType: ColumnTypesUtils.getActiveType(columnSettings),
-      selectDropdown: SelectDropdown.getDefaultObj(selectDropdown),
+      cellDropdown: CellDropdown.getDefaultObj(cellDropdown),
       index,
       onColumnUpdate,
     };

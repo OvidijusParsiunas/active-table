@@ -199,7 +199,7 @@ export const activeTableStyle = css`
     z-index: 1;
   }
 
-  .select-dropdown {
+  .cell-dropdown {
     overflow: auto;
     white-space: nowrap;
   }
@@ -273,7 +273,7 @@ export const activeTableStyle = css`
     color: #9e9e9e8a;
   }
 
-  .select-button {
+  .cell-drodown-option-button {
     height: 13px;
     width: 13px;
     position: sticky;
@@ -283,11 +283,11 @@ export const activeTableStyle = css`
     background-color: white;
   }
 
-  .select-button:hover {
+  .cell-drodown-option-button:hover {
     opacity: 1;
   }
 
-  .select-button-icon {
+  .cell-drodown-option-button-icon {
     position: absolute;
     color: grey;
     left: 2px;
@@ -297,7 +297,7 @@ export const activeTableStyle = css`
     color: black;
   }
 
-  .select-button-container {
+  .cell-drodown-option-button-container {
     position: absolute;
     width: 100%;
     height: 0px;
@@ -306,7 +306,7 @@ export const activeTableStyle = css`
     display: none;
   }
 
-  .select-color-button-icon {
+  .cell-dropdown-option-color-button-icon {
     position: absolute;
     font-size: 13px;
     top: -3.2px;

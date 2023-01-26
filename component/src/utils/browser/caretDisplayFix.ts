@@ -5,7 +5,7 @@ import {ActiveTable} from '../../activeTable';
 import {Browser} from './browser';
 
 // REF-2 - currently an issue in Firefox and Safari
-// textContainerElement can be data cell element or text element from a select cell
+// textContainerElement can be data cell element or text element from a select/label cells
 export class CaretDisplayFix {
   private static readonly CONTENT_EDITABLE = 'contenteditable';
   private static readonly TAB_INDEX = 'tabindex';

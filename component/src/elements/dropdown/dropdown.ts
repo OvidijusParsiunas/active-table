@@ -3,7 +3,7 @@ import {DropdownItem} from './dropdownItem';
 
 export class Dropdown {
   public static readonly DROPDOWN_CLASS = 'active-table-dropdown';
-  // when there is a horizontal overflow (select) - this automatically stretches all items to the dropdown width
+  // when there is a horizontal overflow (select/label) - this automatically stretches all items to the dropdown width
   private static readonly CSS_DISPLAY_VISIBLE = 'grid';
   public static readonly DROPDOWN_WIDTH = 176;
   public static readonly DROPDOWN_VERTICAL_PX = '4px';

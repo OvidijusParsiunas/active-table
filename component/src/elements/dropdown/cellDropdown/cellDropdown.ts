@@ -1,24 +1,24 @@
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
-import {SelectDropdownStyle, SelectDropdownT} from '../../../types/selectDropdown';
+import {CellDropdownStyle, CellDropdownT} from '../../../types/cellDropdown';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {TableBorderDimensions} from '../../../types/tableBorderDimensions';
 import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
-import {SelectDropdownItemEvents} from './selectDropdownItemEvents';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {OverflowUtils} from '../../../utils/overflow/overflowUtils';
-import {SelectDropdownScrollbar} from './selectDropdownScrollbar';
-import {SelectDropdownI} from '../../../types/columnDetails';
-import {SelectDropdownEvents} from './selectDropdownEvents';
-import {SelectDropdownItem} from './selectDropdownItem';
+import {CellDropdownI} from '../../../types/cellDropdownInternal';
+import {CellDropdownItemEvents} from './cellDropdownItemEvents';
+import {CellDropdownScrollbar} from './cellDropdownScrollbar';
+import {CellDropdownEvents} from './cellDropdownEvents';
 import {CellText} from '../../../types/tableContent';
+import {CellDropdownItem} from './cellDropdownItem';
 import {CellElement} from '../../cell/cellElement';
 import {ActiveTable} from '../../../activeTable';
 import {PX} from '../../../types/dimensions';
 import {SIDE} from '../../../types/side';
 import {Dropdown} from '../dropdown';
 
-export class SelectDropdown {
-  private static readonly SELECT_DROPDOWN_CLASS = 'select-dropdown';
+export class CellDropdown {
+  private static readonly CELL_DROPDOWN_CLASS = 'cell-dropdown';
   private static readonly MAX_HEIGHT_PX = '150px';
   private static readonly MIN_WIDTH = 70;
   private static readonly MAX_WIDTH = 200;
@@ -61,13 +61,13 @@ export class SelectDropdown {
       if (details.blockingSides.has(SIDE.RIGHT)) {
         dropdown.style.left = '';
         // using right instead of left as it is more convenient to display dropdown beside the right side of the table
-        dropdown.style.right = SelectDropdown.generateRightPosition();
+        dropdown.style.right = CellDropdown.generateRightPosition();
       }
       if (details.blockingSides.has(SIDE.BOTTOM)) {
         dropdown.style.top = '';
-        // the reason why bottom property is used instead of top is because the removal of a select item
+        // the reason why bottom property is used instead of top is because the removal of a select/label item
         // reduces the dropdown height and the bottom property keeps the dropdown position close to cell
-        dropdown.style.bottom = SelectDropdown.generateBottomPosition(
+        dropdown.style.bottom = CellDropdown.generateBottomPosition(
           cellElement, textContainerElement, borderDimensions);
       }
     }
@@ -88,34 +88,34 @@ export class SelectDropdown {
     const textContainerElement = cellElement.children[0] as HTMLElement;
     dropdown.style.bottom = '';
     dropdown.style.right = '';
-    dropdown.style.left = SelectDropdown.generateLeftPosition(cellElement, textContainerElement, borderDimensions);
-    dropdown.style.top = SelectDropdown.generateTopPosition(cellElement, textContainerElement, borderDimensions);
+    dropdown.style.left = CellDropdown.generateLeftPosition(cellElement, textContainerElement, borderDimensions);
+    dropdown.style.top = CellDropdown.generateTopPosition(cellElement, textContainerElement, borderDimensions);
     const tableElement = (dropdown.parentElement as HTMLElement).parentElement as HTMLElement;
     const overflowElement = tableElement.parentElement as HTMLElement;
     if (OverflowUtils.isOverflowElement(overflowElement)) {
-      SelectDropdown.correctPositionForOverflow(dropdown, tableElement, overflowElement);
+      CellDropdown.correctPositionForOverflow(dropdown, tableElement, overflowElement);
     } else {
-      SelectDropdown.correctPosition(dropdown, cellElement, textContainerElement, borderDimensions);
+      CellDropdown.correctPosition(dropdown, cellElement, textContainerElement, borderDimensions);
     }
   }
 
   // prettier-ignore
-  public static updateSelectDropdown(textContainerElement: HTMLElement, dropdown: SelectDropdownI,
+  public static updateCellDropdown(textContainerElement: HTMLElement, dropdown: CellDropdownI,
       borderDimensions: TableBorderDimensions, defaultText: CellText, updateCellText: boolean,
       matchingCellElement?: HTMLElement) {
     const textElement = CellElement.getTextElement(textContainerElement);
-    SelectDropdownItem.attemptHighlightMatchingItemWithCell(textElement,
+    CellDropdownItem.attemptHighlightMatchingItemWithCell(textElement,
       dropdown, defaultText, updateCellText, matchingCellElement)
     if (updateCellText) {
-      SelectDropdown.setPosition(dropdown.element, textElement.parentElement as HTMLElement, borderDimensions);
+      CellDropdown.setPosition(dropdown.element, textElement.parentElement as HTMLElement, borderDimensions);
     }
   }
 
-  private static focusItemOnDropdownOpen(textElement: HTMLElement, dropdown: SelectDropdownI, defaultText: CellText) {
-    // the updateCellText parameter is set to false for a case where the user clicks on a select cell which has
-    // its text with a background color but one for a select that has been deleted, hence we do not want to
+  private static focusItemOnDropdownOpen(textElement: HTMLElement, dropdown: CellDropdownI, defaultText: CellText) {
+    // the updateCellText parameter is set to false for a case where the user clicks on a select/label cell which has
+    // its text with a background color but one for a select/label that has been deleted, hence we do not want to
     // highlight it with a new background color
-    SelectDropdownItem.attemptHighlightMatchingItemWithCell(textElement, dropdown, defaultText, false);
+    CellDropdownItem.attemptHighlightMatchingItemWithCell(textElement, dropdown, defaultText, false);
   }
 
   // prettier-ignore
@@ -123,7 +123,7 @@ export class SelectDropdown {
     if (dropdownElement.clientWidth !== dropdownElement.scrollWidth) {
       const scrollbarPadding = dropdownElement.clientHeight !== dropdownElement.scrollHeight ? 16 : 0;
       const newWidth = dropdownElement.scrollWidth + scrollbarPadding;
-      dropdownElement.style.width = `${Math.min(newWidth, SelectDropdown.MAX_WIDTH)}px`;
+      dropdownElement.style.width = `${Math.min(newWidth, CellDropdown.MAX_WIDTH)}px`;
     }
     // the following is a bug fix where display 'grid' property on the dropdown can set the item lengths
     // a couple of decimal places higher than clientWidth, causing an overflow when there shouldn't be
@@ -133,71 +133,71 @@ export class SelectDropdown {
     }
   }
 
-  private static getWidth(cellElement: HTMLElement, dropdown: SelectDropdownI, dropdownStyle?: SelectDropdownStyle) {
+  private static getWidth(cellElement: HTMLElement, dropdown: CellDropdownI, dropdownStyle?: CellDropdownStyle) {
     if (dropdownStyle?.width) return Number.parseInt(dropdownStyle.width);
-    if (!dropdown.labelDetails) return Math.max(cellElement.offsetWidth - 2, SelectDropdown.MIN_WIDTH);
+    if (!dropdown.labelDetails) return Math.max(cellElement.offsetWidth - 2, CellDropdown.MIN_WIDTH);
     const textContainerElement = cellElement.children[0] as HTMLElement;
-    return Math.max(cellElement.offsetWidth - textContainerElement.offsetLeft * 2, SelectDropdown.MIN_WIDTH);
+    return Math.max(cellElement.offsetWidth - textContainerElement.offsetLeft * 2, CellDropdown.MIN_WIDTH);
   }
 
   // prettier-ignore
   public static display(at: ActiveTable, columnIndex: number, cellElement: HTMLElement) {
-    const {selectDropdown, settings: {defaultText}, activeType: {selectProps}} = at.columnsDetails[columnIndex];
-    const {element: dropdownEl, itemsDetails} = selectDropdown;
-    if (Object.keys(itemsDetails).length > 0 && selectProps) {
-      SelectDropdownEvents.set(at, dropdownEl);
-      SelectDropdownItemEvents.blurItem(selectDropdown, 'hovered');
-      SelectDropdownItemEvents.blurItem(selectDropdown, 'matchingWithCellText');
-      dropdownEl.style.width = `${SelectDropdown.getWidth(cellElement, selectDropdown, selectProps.dropdownStyle)}px`
+    const {cellDropdown, settings: {defaultText}, activeType: {cellDropdownProps}} = at.columnsDetails[columnIndex];
+    const {element: dropdownEl, itemsDetails} = cellDropdown;
+    if (Object.keys(itemsDetails).length > 0 && cellDropdownProps) {
+      CellDropdownEvents.set(at, dropdownEl);
+      CellDropdownItemEvents.blurItem(cellDropdown, 'hovered');
+      CellDropdownItemEvents.blurItem(cellDropdown, 'matchingWithCellText');
+      dropdownEl.style.width = `${CellDropdown.getWidth(cellElement, cellDropdown, cellDropdownProps.dropdownStyle)}px`
       Dropdown.display(dropdownEl);
       dropdownEl.scrollLeft = 0;
-      SelectDropdown.correctWidthForOverflow(dropdownEl);
-      SelectDropdownScrollbar.setProperties(selectDropdown);
-      SelectDropdown.setPosition(dropdownEl, cellElement, at.tableDimensions.border);
+      CellDropdown.correctWidthForOverflow(dropdownEl);
+      CellDropdownScrollbar.setProperties(cellDropdown);
+      CellDropdown.setPosition(dropdownEl, cellElement, at.tableDimensions.border);
       const textElement = cellElement.children[0] as HTMLElement;
-      SelectDropdown.focusItemOnDropdownOpen(textElement, selectDropdown, defaultText);
+      CellDropdown.focusItemOnDropdownOpen(textElement, cellDropdown, defaultText);
       return true;
     }
     return false;
   }
 
-  private static setCustomStyle(selectDropdown: SelectDropdownI, dropdownStyle: SelectDropdownStyle) {
+  private static setCustomStyle(cellDropdown: CellDropdownI, dropdownStyle: CellDropdownStyle) {
     const {paddingTop, paddingBottom, marginTop, marginLeft, border, textAlign} = dropdownStyle;
-    selectDropdown.element.style.paddingTop = paddingTop || Dropdown.DROPDOWN_VERTICAL_PX;
-    selectDropdown.element.style.paddingBottom = paddingBottom || Dropdown.DROPDOWN_VERTICAL_PX;
-    selectDropdown.element.style.marginTop = marginTop || '0px';
-    selectDropdown.element.style.marginLeft = marginLeft || '0px';
-    selectDropdown.element.style.border = border || 'none';
-    selectDropdown.element.style.textAlign = textAlign || 'left';
+    cellDropdown.element.style.paddingTop = paddingTop || Dropdown.DROPDOWN_VERTICAL_PX;
+    cellDropdown.element.style.paddingBottom = paddingBottom || Dropdown.DROPDOWN_VERTICAL_PX;
+    cellDropdown.element.style.marginTop = marginTop || '0px';
+    cellDropdown.element.style.marginLeft = marginLeft || '0px';
+    cellDropdown.element.style.border = border || 'none';
+    cellDropdown.element.style.textAlign = textAlign || 'left';
   }
 
-  private static setCustomState(selectDropdown: SelectDropdownI, select: SelectDropdownT) {
-    selectDropdown.customDropdownStyle = select.dropdownStyle;
-    selectDropdown.customItemStyle = select.optionStyle;
-    selectDropdown.canAddMoreOptions = !!select.canAddMoreOptions;
+  private static setCustomState(cellDropdown: CellDropdownI, cellDropdownType: CellDropdownT) {
+    cellDropdown.customDropdownStyle = cellDropdownType.dropdownStyle;
+    cellDropdown.customItemStyle = cellDropdownType.optionStyle;
+    cellDropdown.canAddMoreOptions = !!cellDropdownType.canAddMoreOptions;
   }
 
   // prettier-ignore
   public static setUpDropdown(at: ActiveTable, columnIndex: number) {
-    const {activeType: {selectProps}, selectDropdown} = at.columnsDetails[columnIndex];
-    if (!selectProps) return;
-    selectDropdown.labelDetails = selectProps.isBasicSelect ?
+    const {activeType: {cellDropdownProps}, cellDropdown} = at.columnsDetails[columnIndex];
+    if (!cellDropdownProps) return;
+    cellDropdown.labelDetails = cellDropdownProps.isBasicSelect ?
       undefined : {newItemColors: LabelColorUtils.generateDefaultColors()}; // REF-34
-    SelectDropdown.setCustomState(selectDropdown, selectProps)
-    SelectDropdownItem.populateItems(at, columnIndex);
-    if (selectProps.dropdownStyle) SelectDropdown.setCustomStyle(selectDropdown, selectProps.dropdownStyle);
+    CellDropdown.setCustomState(cellDropdown, cellDropdownProps)
+    CellDropdownItem.populateItems(at, columnIndex);
+    if (cellDropdownProps.dropdownStyle) CellDropdown.setCustomStyle(cellDropdown, cellDropdownProps.dropdownStyle);
   }
 
   // REF-8 - Created for every column
   public static createAndAppend(containerElement: HTMLElement) {
     const dropdownElement = Dropdown.createBase();
-    dropdownElement.style.maxHeight = SelectDropdown.MAX_HEIGHT_PX;
-    dropdownElement.classList.add(SelectDropdown.SELECT_DROPDOWN_CLASS);
+    dropdownElement.style.maxHeight = CellDropdown.MAX_HEIGHT_PX;
+    dropdownElement.classList.add(CellDropdown.CELL_DROPDOWN_CLASS);
     containerElement.appendChild(dropdownElement);
     return dropdownElement;
   }
 
-  public static getDefaultObj(dropdownElement: HTMLElement): SelectDropdownI {
+  public static getDefaultObj(dropdownElement: HTMLElement): CellDropdownI {
     return {
       itemsDetails: {},
       activeItems: {},

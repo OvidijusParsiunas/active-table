@@ -81,7 +81,7 @@ export class RemoveColumn {
     ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
     setTimeout(() => {
       // CAUTION-2
-      removedColumnDetails.selectDropdown.element.remove();
+      removedColumnDetails.cellDropdown.element.remove();
       InsertRemoveColumnSizer.remove(at, columnIndex);
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, columnIndex);
       if (columnIndex === 0 && at.columnsDetails.length > 0) RowDropdownCellOverlay.resetOverlays(at);

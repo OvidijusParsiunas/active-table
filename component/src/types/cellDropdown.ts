@@ -5,11 +5,11 @@ export type SelectOptions = string[];
 // if backgroundColor is not provided - a random one is generated
 export type LabelOptions = {text: string; backgroundColor?: string}[];
 
-export interface SelectDropdownOptionStyle {
+export interface CellDropdownOptionStyle {
   textColor: CSSStyleDeclaration['color'];
 }
 
-export interface SelectDropdownStyle {
+export interface CellDropdownStyle {
   width?: PX;
   paddingTop?: PX;
   paddingBottom?: PX;
@@ -19,9 +19,9 @@ export interface SelectDropdownStyle {
   border?: CSSStyleDeclaration['border'];
 }
 
-export interface SelectDropdownT<T = LabelOptions> {
-  dropdownStyle?: SelectDropdownStyle;
-  optionStyle?: SelectDropdownOptionStyle;
+export interface CellDropdownT<T = LabelOptions> {
+  dropdownStyle?: CellDropdownStyle;
+  optionStyle?: CellDropdownOptionStyle;
   options?: T;
   canAddMoreOptions?: boolean; // by default this is true or if options is set it is false
 }

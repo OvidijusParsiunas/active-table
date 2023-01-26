@@ -13,12 +13,12 @@ import {ColumnWidthsState} from '../../utils/columnDetails/columnWidthsState';
 import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
 import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
 import {StickyPropsUtils} from '../../utils/stickyProps/stickyPropsUtils';
-import {SelectDropdown} from '../dropdown/selectDropdown/selectDropdown';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {CustomRowProperties} from '../../utils/rows/customRowProperties';
 import {TableBorderDimensionsUtils} from './tableBorderDimensionsUtils';
 import {ActiveOverlayElements} from '../../types/activeOverlayElements';
 import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
+import {CellDropdown} from '../dropdown/cellDropdown/cellDropdown';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {TableDimensions} from '../../types/tableDimensions';
 import {IndexColumn} from '../indexColumn/indexColumn';
@@ -119,8 +119,8 @@ export class TableElement {
     at.tableBodyElementRef = TableElement.createTableBody(at.stickyProps.header);
     at.addRowCellElementRef = AddNewRowElement.create(at); // REF-18
     at.tableElementRef.appendChild(at.tableBodyElementRef);
-    at.selectDropdownContainer = SelectDropdown.createContainerElement();
-    at.tableElementRef.appendChild(at.selectDropdownContainer);
+    at.cellDropdownContainer = CellDropdown.createContainerElement();
+    at.tableElementRef.appendChild(at.cellDropdownContainer);
     if (!at.overflow && at.stickyProps.header) StickyPropsUtils.moveTopBorderToHeaderCells(at);
     at.tableDimensions.border = TableBorderDimensionsUtils.generateUsingElement(at.tableElementRef as HTMLElement);
     return at.tableElementRef;

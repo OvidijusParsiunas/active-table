@@ -1,5 +1,6 @@
-import {ColumnDetailsT, ColumnsDetailsT, SelectDropdownI} from '../../types/columnDetails';
 import {ColumUpdateItems, ColumnUpdateDetails} from '../../types/onUpdate';
+import {ColumnDetailsT, ColumnsDetailsT} from '../../types/columnDetails';
+import {CellDropdownI} from '../../types/cellDropdownInternal';
 import {FilteredColumns} from '../../types/filteredColumns';
 
 export class ColumnDetailsUtils {
@@ -20,12 +21,12 @@ export class ColumnDetailsUtils {
     return {dynamicWidthColumns, minWidthColumns, setWidthColumns};
   }
 
-  private static aggregateItems(selectDropdown: SelectDropdownI): ColumUpdateItems {
-    return selectDropdown.labelDetails
-      ? Object.keys(selectDropdown.itemsDetails).map((text) => {
-          return {name: text, backgroundColor: selectDropdown.itemsDetails[text].backgroundColor};
+  private static aggregateItems(cellDropdown: CellDropdownI): ColumUpdateItems {
+    return cellDropdown.labelDetails
+      ? Object.keys(cellDropdown.itemsDetails).map((text) => {
+          return {name: text, backgroundColor: cellDropdown.itemsDetails[text].backgroundColor};
         })
-      : Object.keys(selectDropdown.itemsDetails).map((text) => {
+      : Object.keys(cellDropdown.itemsDetails).map((text) => {
           return {name: text};
         });
   }
@@ -35,8 +36,8 @@ export class ColumnDetailsUtils {
       columnIndex: columnDetails.index,
       typeName: columnDetails.activeType.name,
     };
-    if (columnDetails.activeType.selectProps) {
-      updateDetails.items = ColumnDetailsUtils.aggregateItems(columnDetails.selectDropdown);
+    if (columnDetails.activeType.cellDropdownProps) {
+      updateDetails.items = ColumnDetailsUtils.aggregateItems(columnDetails.cellDropdown);
     }
     columnDetails.onColumnUpdate(updateDetails);
   }

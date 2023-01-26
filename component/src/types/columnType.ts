@@ -1,4 +1,4 @@
-import {LabelOptions, SelectOptions, SelectDropdownT} from './selectDropdown';
+import {LabelOptions, SelectOptions, CellDropdownT} from './cellDropdown';
 import {DEFAULT_COLUMN_TYPES} from '../enums/defaultColumnTypes';
 import {CustomTextProcessing} from './customTextProcessing';
 import {IconSettings} from './dropdownButtonItem';
@@ -36,11 +36,11 @@ interface Checkbox extends Omit<Parent, 'sorting'> {
 }
 
 interface Label extends Omit<Parent, 'validation'> {
-  label: SelectDropdownT<LabelOptions> | true;
+  label: CellDropdownT<LabelOptions> | true;
 }
 
 interface Select extends Omit<Parent, 'validation'> {
-  select: SelectDropdownT<SelectOptions> | true;
+  select: CellDropdownT<SelectOptions> | true;
 }
 
 export type ColumnType = InterfacesUnion<CalendarT | Checkbox | Select | Label | Parent>;
