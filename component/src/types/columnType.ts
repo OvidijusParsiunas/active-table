@@ -23,6 +23,14 @@ interface Parent {
   iconSettings?: ColumnIconSettings; // by default will be set to text icon
 }
 
+interface Label extends Omit<Parent, 'validation'> {
+  label: CellDropdownT<LabelOptions> | true;
+}
+
+interface Select extends Omit<Parent, 'validation'> {
+  select: CellDropdownT<SelectOptions> | true;
+}
+
 interface CalendarT extends Omit<Parent, 'sorting'> {
   calendar: Calendar;
 }
@@ -35,14 +43,6 @@ interface Checkbox extends Omit<Parent, 'sorting'> {
   checkbox: true;
 }
 
-interface Label extends Omit<Parent, 'validation'> {
-  label: CellDropdownT<LabelOptions> | true;
-}
-
-interface Select extends Omit<Parent, 'validation'> {
-  select: CellDropdownT<SelectOptions> | true;
-}
-
-export type ColumnType = InterfacesUnion<CalendarT | Checkbox | Select | Label | Parent>;
+export type ColumnType = InterfacesUnion<Select | Label | CalendarT | Checkbox | Parent>;
 
 export type ColumnTypes = ColumnType[];

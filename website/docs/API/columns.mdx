@@ -129,11 +129,22 @@ cannot be reduced any further the excess ones will not be removed even if `prese
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`ColumnSettings`](#ColumnSettings),<br />
   &nbsp;&nbsp;&nbsp;&nbsp; `dropdown?`: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[`ColumnDropdownSettings`](#ColumnSettings), WORK <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[`displaySettings?: DropdownDisplaySettings`](http) WORK<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[`ColumnDropdownSettings`](#ColumnDropdownSettings), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[`displaySettings?: DropdownDisplaySettings`](./types#DropdownDisplaySettings)<br />
   }}
 
 Default settings for all columns.
+
+#### `ColumnDropdownSettings` {#ColumnDropdownSettings}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isSortAvailable?: boolean`,<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isDeleteAvailable?: boolean`,<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isInsertLeftAvailable?: boolean`,<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isInsertRightAvailable?: boolean`,<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isMoveAvailable?: boolean`<br />
+  }}
+- Default: _true_ for all
 
 #### Example
 
@@ -280,7 +291,7 @@ Custom settings for columns that have a header text that matches the `headerName
 
 ## Types
 
-Object types that are shared between column properties:
+Object types that are shared by [`columnsSettings`](#columnsSettings) and [`customColumnsSettings`](#customColumnsSettings) properties:
 
 ### `ColumnSettings` {#ColumnSettings}
 
@@ -317,6 +328,60 @@ header cells which defines styling for default and mouse hover states. <br />
 `defaultColumnTypes` overwrites the available default column types (_use [] to remove all_) and `customColumnTypes` defines additional custom
 column types. <br />
 `activeTypeName` is the starting type name for the column. <br />
+
+#### Example
+
+<TableContainer>
+  <active-table
+    columnsSettings='{
+      "isCellTextEditable": false,
+      "defaultColumnTypes": ["Text"]
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnsSettings='{
+    "isCellTextEditable": false,
+    "defaultColumnTypes": ["Text"]
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnsSettings='{
+    "isCellTextEditable": false,
+    "defaultColumnTypes": ["Text"]
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
 
 <LineBreak></LineBreak>
 
@@ -495,8 +560,8 @@ tool (the reason for this is because the icon is an SVG element). Use `scale` to
   &nbsp;&nbsp;&nbsp;&nbsp; [`iconSettings?: IconSettings`](#IconSettings), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`select?: boolean|CellDropdown<SelectOptions>`](#CellDropdown), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`label?: boolean|CellDropdown<LabelOptions>`](#CellDropdown), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`calendar?: Calendar`](#IconSettings), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `checkbox?: boolean` <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`calendar?: Calendar`](#Calendar), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`checkbox?: Checkbox`](#Checkbox) <br />
   }
 
 - Default: {<br />
@@ -1186,44 +1251,82 @@ If the function strings inside `ascendingFunc` or `descendingFunc` contain " or 
 
 <LineBreak></LineBreak>
 
-### `DEFAULT_COLUMN_TYPES` {#DEFAULT_COLUMN_TYPES}
+### `Checkbox` {#Checkbox}
 
-- Type: `"Text"` | `"Number"` | `"Currency"` | `"Date d-m-y"` | `"Date m-d-y"` | `"Checkbox"` | `"Select"` | `"Label"`
+- Type: `boolean`
 
-Default column type names.
+Replaces cell text with a checkbox. <br />
+This type automatically comes with a predefined [`customTextProcessing`](#CustomTextProcessing) property in the [`ColumnType`](#ColumnType) that
+uses _""_, _"0"_, _"00"_ and _"false"_ values to represent the checkbox as unchecked and all the other values as checked. You can overwite it
+with your own `changeTextFunc` function that would return a string of "true" when the checkbox should be checked and "false" when it should
+be unchecked. <br />
+The `onCellUpdate` WORK property will return string "true" if the checkbox is checked and "false" if unchecked.
 
----
-
-Saved for later
+#### Example
 
 <TableContainer>
   <active-table
     columnsSettings='{
       "customColumnTypes":[
         {
-          "name": "Custom type",
-          "textValidation": {
-            "func": "(cellText)=>{return cellText!==`red`}",
-            "setTextToDefaultOnFail":false,
-            "failedStyle":{"color":"red"}
-          },
-          "customTextProcessing": {
-          "changeStyleFunc": "(cellText)=>{if(cellText===`green`){return{backgroundColor:`green`}}if(cellText===`purple`){return{color:`purple`}}return{color:`black`}}"
-        },
-        "iconSettings": {
-          "reusableIconName": "Select"
-        }
-      }
-    ],
-      "activeTypeName": "Custom type"
-  }'
+          "name": "Custom checkbox type",
+          "checkbox": true
+        }],
+      "activeTypeName": "Custom checkbox type"
+    }'
     content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
+      ["Criteria 1", "Criteria 2", "Criteria 3", "Criteria 4"],
+      ["positive", "true", "positive", "false"],
+      ["true", "false", "00", ""],
+      ["", "0", "positive", "truthy"]]'
     tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
   ></active-table>
 </TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnsSettings='{
+    "customColumnTypes":[
+      {
+        "name": "Custom checkbox type",
+        "checkbox": true
+      }]
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnsSettings='{
+    "customColumnTypes":[
+      {
+        "name": "Custom d/m/y type",
+        "checkbox": true
+      }],
+    "activeTypeName": "Custom d/m/y type"
+  }'
+  content='[
+    ["Criteria 1", "Criteria 2", "Criteria 3", "Criteria 4"],
+    ["positive", "true", "positive", "false"],
+    ["true", "false", "00", ""],
+    ["", "0", "positive", "truthy"]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `DEFAULT_COLUMN_TYPES` {#DEFAULT_COLUMN_TYPES}
+
+- Type: `"Text"` | `"Number"` | `"Currency"` | `"Date d-m-y"` | `"Date m-d-y"` | `"Checkbox"` | `"Select"` | `"Label"`
+
+Default column type names.

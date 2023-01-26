@@ -1,3 +1,4 @@
+import {CheckboxValidationFunc} from '../../elements/cell/checkboxCell/checkboxValidationFunc';
 import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItemConf';
 import {CURRENCY_ICON_SVG_STRING} from '../../consts/icons/currencyIconSVGString';
 import {CALENDAR_ICON_SVG_STRING} from '../../consts/icons/calendarIconSVGString';
@@ -11,7 +12,6 @@ import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {ColumnType, ColumnTypes} from '../../types/columnType';
-import {CellText} from '../../types/tableContent';
 import {Validation} from './validation';
 import {Sort} from './sort';
 
@@ -83,16 +83,7 @@ export class DefaultColumnTypes {
       },
       checkbox: true,
       customTextProcessing: {
-        // cannot place this inside the CheckboxCellElement class as certain dependencies are not imported in time
-        changeTextFunc: (text: CellText) => {
-          const processedString = String(text).trim().toLocaleLowerCase();
-          // prettier-ignore
-          if (processedString === '' || processedString === '0'
-              || processedString === '00' || processedString === 'false') {
-            return 'false';
-          }
-          return 'true';
-        },
+        changeTextFunc: CheckboxValidationFunc.getDefault(),
       },
     },
     {

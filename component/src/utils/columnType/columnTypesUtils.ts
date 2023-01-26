@@ -1,4 +1,5 @@
 import {ColumnTypeInternal, ColumnTypesInternal, CellDropdownPropertiesI} from '../../types/columnTypeInternal';
+import {CheckboxValidationFunc} from '../../elements/cell/checkboxCell/checkboxValidationFunc';
 import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItemConf';
 import {ColumnType, ColumnTypes, ColumnIconSettings} from '../../types/columnType';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
@@ -83,6 +84,13 @@ export class ColumnTypesUtils {
     type.textValidation.setTextToDefaultOnFail ??= true;
   }
 
+  private static processCheckbox(type: ColumnType) {
+    if (type.checkbox && !type.customTextProcessing?.changeTextFunc) {
+      type.customTextProcessing ??= {};
+      type.customTextProcessing.changeTextFunc = CheckboxValidationFunc.getDefault();
+    }
+  }
+
   private static processSelectOptions(type: ColumnType) {
     if (typeof type.select === 'object' && type.select.options) {
       const internalSelectProps = type.select as CellDropdownPropertiesI;
@@ -151,6 +159,7 @@ export class ColumnTypesUtils {
       const newType = ColumnTypesUtils.createTypeDeepCopy(type as ColumnTypeInternal);
       ColumnTypesUtils.convertStringFunctionsToRealFunctions(newType);
       ColumnTypesUtils.processSelect(newType, isDefaultTextRemovable, defaultText);
+      ColumnTypesUtils.processCheckbox(newType);
       ColumnTypesUtils.processTextValidationProps(newType);
       ColumnTypesUtils.processDropdownItemSettings(newType);
       return newType as ColumnTypeInternal;
