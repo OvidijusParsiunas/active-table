@@ -271,9 +271,12 @@ would need a hard rewrite to track each and every column that has its width chan
 This is also why we update the column widths separately in the onColumnWidthsUpdate method and display all columns instead.
 
 REF-36
-If custom column settings have not been defined (or is a fresh new column) and default cell minWidth is set, we add it to the internal
-settings minWidth property so it would be treated as part of static width and prevent the column from being resized to smaller width.
-If default column setting is instead just width, we simply set the column header width.
+If custom column settings do not use minWidth/width in their cellStyle (or is a fresh new column) and default settings do use minWidth,
+we add it to the internal settings minWidth property so it would be treated as part of static width and prevent the column from being
+resized to smaller width.
+If default column setting is instead just width, we simply set the column header width so it can be resized.
+Because all dimension styles are removed from cellStyles for settings except 'width' for default settings, we take advantage of that
+and allow the cells to both have a minWidth static style and a width - which can be resized as desired.
 
 REF-37
 When the header is sticky and the overflow is not coming from the table, but the parent element - upon scrolling the table - header row

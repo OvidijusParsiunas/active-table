@@ -104,6 +104,8 @@ export class DefaultColumnTypes {
     },
   ];
 
+  // WARNING - If there are multiple ActiveTable components in the same browser window - the variables below will be shared
+  // between them. Currently they appear to be working as expected, but if problems occur - store them in internal state
   public static SELECT_TYPE_DROPDOWN_ITEM: ColumnTypeDropdownItem | null = null;
 
   public static SELECT_LABEL_TYPE_DROPDOWN_ITEM: ColumnTypeDropdownItem | null = null;

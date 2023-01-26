@@ -17,7 +17,7 @@ interface Parent {
   name: string;
   // textValidation and customTextProcessing only operate on data cells
   // REF-3
-  textValidation?: TextValidation; // this is a genuine form of custom text validation and its resulting style
+  textValidation?: TextValidation; // does not validate header even if dataStartsAtHeader is set to true
   customTextProcessing?: CustomTextProcessing; // this is used to allow explicit processing of text and its resulting style
   sorting?: Sorting; // by default the elements will be sorted in ascending ASCII character order
   iconSettings?: ColumnIconSettings; // by default will be set to text icon

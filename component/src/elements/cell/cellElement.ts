@@ -127,6 +127,7 @@ export class CellElement {
       cellElement: HTMLElement, defaultWidth?: ColumnWidth, settings?: ColumnWidth) {
     if (settings && ColumnSettingsWidthUtils.isWidthDefined(settings)) {
       ColumnSettingsWidthUtils.updateColumnWidth(at, cellElement, settings, true);
+      if (defaultWidth?.width) cellElement.style.width = defaultWidth?.width; // width+minWidth on def settings - REF-36
     } else {
       cellElement.style.width = `${defaultWidth?.width || at.tableDimensions.newColumnWidth}px`; // REF-36
     }
@@ -145,7 +146,7 @@ export class CellElement {
     const isEditable = isHeader ? !isOpenViaCellClick && settings.isHeaderTextEditable : settings.isCellTextEditable;
     CellElement.prepContentEditable(cellElement, Boolean(isEditable), isOpenViaCellClick);
     // overwritten again if static table
-    if (isHeader) CellElement.setColumnWidth(at, cellElement, cellStyle, settings);
+    if (isHeader) CellElement.setColumnWidth(at, cellElement, cellStyle as ColumnWidth, settings);
     CellElement.setNewText(at, cellElement, text, true, false);
     return cellElement;
   }

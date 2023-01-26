@@ -503,8 +503,9 @@ tool (the reason for this is because the icon is an SVG element). Use `scale` to
   }
 
 Details for creating a column type. <br />
-`select`, `label`, `calendar` and `checkbox` properties facilitate unique features and if
-more than one of these is defined - the first available one will be used in that order.
+If `textValidation` and `customTextProcessing` are both provided, `customTextProcessing` will be executed first. <br />
+The `select`, `label`, `calendar` and `checkbox` properties facilitate unique features and if
+more than one of these is provided - only the first one will be used in that order.
 
 <LineBreak></LineBreak>
 
