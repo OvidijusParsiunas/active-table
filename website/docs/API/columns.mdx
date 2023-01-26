@@ -70,8 +70,9 @@ import Tabs from '@theme/Tabs';
 - Default: _true_
 
 When [`tableStyle`](./table#tableStyle) is set with a `width` or `maxWidth` property to limit its size, the insertion of new columns will
-cause all existing column widths to automatically be reduced to make space for the new ones (except columns set with `width` or `minWidth` property inside `cellStyle` of the `customColumnSettings` object.
-WORK). This can however become problematic when existing column widths eventually become too narrow\* and their widths cannot be reduced any further. <br />
+cause all existing column widths to automatically be reduced to make space for the new ones (except columns set with `width` or `minWidth` property
+inside `cellStyle` WORK of the [`customColumnsSettings`](#customColumnsSettings) object). This can however become problematic when existing column
+widths eventually become too narrow\* and their widths cannot be reduced any further. <br />
 When `preserveNarrowColumns` is `true` and column widths are too narrow\*, the table width will be increased allow new columns to be inserted. <br />
 When `preserveNarrowColumns` is `false` and column widths are too narow\*, no new columns will be allowed to be inserted.
 set to true by default.<br />
@@ -123,7 +124,7 @@ cannot be reduced any further the excess ones will not be removed even if `prese
 
 <LineBreak></LineBreak>
 
-### `columnsSettings`
+### `columnsSettings` {#columnsSettings}
 
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`ColumnSettings`](#ColumnSettings),<br />
@@ -312,7 +313,7 @@ Object types that are shared between column properties:
 `isHeaderTextEditable` for header cells. <br />
 `cellStyle` defines the cell style and applies to both data and header cells, but is superseded by `headerStyles` for
 header cells which defines styling for default and mouse hover states. <br />
-`headerIconStyle` controls the style of the header icon if present WORK. <br />
+`headerIconStyle` controls the style of the header icon if present ([`displayIconsInHeaders`](./header#displayIconsInHeaders)). <br />
 `defaultColumnTypes` overwrites the available default column types (_use [] to remove all_) and `customColumnTypes` defines additional custom
 column types. <br />
 `activeTypeName` is the starting type name for the column. <br />
@@ -492,7 +493,8 @@ tool (the reason for this is because the icon is an SVG element). Use `scale` to
   &nbsp;&nbsp;&nbsp;&nbsp; [`customTextProcessing?: CustomTextProcessing`](#CustomTextProcessing), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`sorting?: Sorting`](#Sorting), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`iconSettings?: IconSettings`](#IconSettings), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`select?: boolean|SelectDropdown<SelectOptions>`](#SelectDropdown), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`select?: boolean|SelectDropdown<SelectOptions>`](#SelectDropdown), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`label?: boolean|SelectDropdown<LabelOptions>`](#SelectDropdown), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`calendar?: Calendar`](#IconSettings), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `checkbox?: boolean` <br />
   }
@@ -523,7 +525,7 @@ The `func` property takes a function that will be called when the text is initia
 it changes. The function must return `true` if the text is correct or `false` if it is incorrect. It is IMPORTANT
 to note that the function needs to be converted into a string, as otherwise it will be removed when passed in
 with the parent object.
-`setTextToDefaultOnFail` will reset the cell text to value defined inside `columnsSettings` -> `defaultText` WORK
+`setTextToDefaultOnFail` will reset the cell text to value defined inside [`ColumnSettings` -> `defaultText`](#ColumnSettings)
 if the function returns `false`. <br />
 `failedStyle` is used to change the cell styling if the function returns `false`.
 
@@ -816,7 +818,7 @@ Defines column type icon properties. <br />
 `svgString` is the full svg element string containing all DOM tags. Make sure to escape the quotes - change " to \" (An easy way to do this is to
 stringify it using JSON.stringify()). If the string is defined directly in HTML, you will need to escape the first less than (<) character by replacing it with `&lt`. <br />
 `containerStyles` allows the icon dimensions to be customised when displayed in the `dropdown` and in the header. By default, the `dropdown` dimension
-properties are also used for the header however if they don't fit the`headerCorrections` object can be used to change them.
+properties are also used for the header however if they don't fit the `headerCorrections` object can be used to change them.
 
 #### Example calendar icon
 
@@ -898,21 +900,37 @@ properties are also used for the header however if they don't fit the`headerCorr
 ### `SelectDropdown` {#SelectDropdown}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `dropdownStyle?: SelectDropdownStyle` WORK, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`dropdownStyle?: SelectDropdownStyle`](#SelectDropdownStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `optionStyle?: {textColor: string}`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `options?: SelectOptions|LabelOptions` WORK, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`options?: SelectOptions|LabelOptions`](#SelectOptions), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `canAddMoreOptions?: boolean` <br />
   }
-- Default: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _canAddMoreOptions: true or if `options` property is set then false_ <br />
-  }
+- Default: { _canAddMoreOptions: true or if options property is set then false_ }
 
-Dropdown customization properties for `select` and `label` in the [`ColumnType`](#ColumnType) object. <br />
+Dropdown customization properties for `select` and `label` properties in the [`ColumnType`](#ColumnType) object. <br />
 `dropdownStyle` and `optionStyle` are used to apply specific dropdown styling aspects. <br />
-`options` property defines custom options within the dropdown and uses the `SelectOptions` type to define individual options when used for a `select` dropdown
-and `LabelOptions` if used for `label`. <br />
+`options` property defines custom options within the dropdown and uses the [`SelectOptions`](#SelectOptions) type to define individual options when
+used for a `select` dropdown and [`LabelOptions`](#LabelOptions) if used for `label`. <br />
 `canAddMoreOptions` controls whether new options can be added into the dropdown. If _false_ then column cell text that
 is not in the _options_ array is automatically removed.
+
+#### `SelectDropdownStyle` {#SelectDropdownStyle}
+
+- Type: { <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `width?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `paddingTop?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `paddingBottom?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `marginTop?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `marginLeft?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `textAlign?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `border?: string`, <br />
+  }
+
+Styling properties for the select and label dropdowns.
+
+#### `SelectOptions` {#SelectOptions}
+
+- Type: `string[]`<br />
 
 #### Example for Select
 
@@ -925,17 +943,17 @@ is not in the _options_ array is automatically removed.
           "select": {
             "dropdownStyle": {"border": "0.5px solid #00000066"},
             "optionStyle": {"textColor": "#606060"},
-            "options": ["Elephant", "Tiger", "Girafee"],
+            "options": ["Elephant", "Tiger", "Giraffe"],
             "canAddMoreOptions": false
           }}],
       "activeTypeName": "Custom select type"
     }'
     content='[
       ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
-      ["Elephant", "Girafee", "Elephant", "Girafee", "Tiger"],
-      ["Tiger", "Elephant", "Tiger", "Tiger", "Girafee"],
-      ["Girafee", "Tiger", "Invalid animal", "Elephant", "Invalid animal"],
-      ["Invalid animal", "Tiger", "Girafee", "Invalid animal", "Tiger"]]'
+      ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
+      ["Tiger", "Elephant", "Tiger", "Tiger", "Giraffe"],
+      ["Giraffe", "Tiger", "Invalid animal", "Elephant", "Invalid animal"],
+      ["Invalid animal", "Tiger", "Giraffe", "Invalid animal", "Tiger"]]'
     tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
   ></active-table>
 </TableContainer>
@@ -948,11 +966,14 @@ is not in the _options_ array is automatically removed.
   columnsSettings='{
     "customColumnTypes":[
       {
-        "name": "Custom d/m/y type",
-        "calendar": {
-          "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
-          "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
-    }}]
+        "name": "Custom select type",
+        "select": {
+          "dropdownStyle": {"border": "0.5px solid #00000066"},
+          "optionStyle": {"textColor": "#606060"},
+          "options": ["Elephant", "Tiger", "Giraffe"],
+          "canAddMoreOptions": false
+        }}]
+    }'
   }'
 ></active-table>
 ```
@@ -965,18 +986,97 @@ is not in the _options_ array is automatically removed.
   columnsSettings='{
     "customColumnTypes":[
       {
-        "name": "Custom d/m/y type",
-        "calendar": {
-          "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
-          "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
-    }}],
-    "activeTypeName": "Custom d/m/y type"
+        "name": "Custom select type",
+        "select": {
+          "dropdownStyle": {"border": "0.5px solid #00000066"},
+          "optionStyle": {"textColor": "#606060"},
+          "options": ["Elephant", "Tiger", "Giraffe"],
+          "canAddMoreOptions": false
+        }}],
+      "activeTypeName": "Custom select type"
+    }'
+    content='[
+      ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
+      ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
+      ["Tiger", "Elephant", "Tiger", "Tiger", "Giraffe"],
+      ["Giraffe", "Tiger", "Invalid animal", "Elephant", "Invalid animal"],
+      ["Invalid animal", "Tiger", "Giraffe", "Invalid animal", "Tiger"]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+#### `LabelOptions` {#LabelOptions}
+
+- Type: `{text: string; backgroundColor?: string}[]`<br />
+- Default: _if backgroundColor is not provided then it is set to a random color_
+
+#### Example for Label
+
+<TableContainer>
+  <active-table
+    columnsSettings='{
+      "customColumnTypes":[
+        {
+          "name": "Custom label type",
+          "label": {
+            "options": [{"text":"Elephant", "backgroundColor": "#4ddd3878"}, {"text":"Tiger", "backgroundColor": "#ff606082"}, {"text":"Giraffe", "backgroundColor": "#ff940f8f"}],
+            "canAddMoreOptions": true
+          }}],
+      "activeTypeName": "Custom label type"
+    }'
+    content='[
+      ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
+      ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
+      ["Tiger", "Elephant", "Tiger", "Tiger", "Giraffe"],
+      ["Giraffe", "Tiger", "Elephant", "Elephant", "Kangaroo"],
+      ["Goose", "Elephant", "Giraffe", "Whale", "Tiger"]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnsSettings='{
+    "customColumnTypes":[
+      {
+        "name": "Custom label type",
+        "label": {
+          "options": [{"text":"Elephant", "backgroundColor": "#4ddd3878"}, {"text":"Tiger", "backgroundColor": "#ff606082"}, {"text":"Giraffe", "backgroundColor": "#ff940f8f"}],
+          "canAddMoreOptions": true
+        }}]
+    }'
   }'
-  content='[
-    ["Date 1", "Date 2", "Date 3", "Date 4"],
-    ["3/2/2052", "4/2/1993", "6/12/2012", "2/2/2012"],
-    ["18/12/0001", "2/4/1689", "16/2/2029", "1/02/2004"],
-    ["12/8/1943", "24/2/1992", "16/12/2022", "17/3/2023"]]'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnsSettings='{
+    "customColumnTypes":[
+      {
+        "name": "Custom label type",
+        "label": {
+          "options": [{"text":"Elephant", "backgroundColor": "#4ddd3878"}, {"text":"Tiger", "backgroundColor": "#ff606082"}, {"text":"Giraffe", "backgroundColor": "#ff940f8f"}],
+          "canAddMoreOptions": true
+        }}],
+      "activeTypeName": "Custom label type"
+    }'
+    content='[
+      ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
+      ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
+      ["Tiger", "Elephant", "Tiger", "Tiger", "Giraffe"],
+      ["Giraffe", "Tiger", "Elephant", "Elephant", "Kangaroo"],
+      ["Goose", "Elephant", "Giraffe", "Whale", "Tiger"]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
   tableStyle='{"borderRadius":"2px"}'
 ></active-table>
 ```
@@ -998,6 +1098,14 @@ is opened which the user can use to help select the date they need. <br />
 The `toYMDFunc` and `fromYMDFunc` functions are strictly used for converting cell text into a format ([`YMDFormat`](#YMDFormat)) the calendar API
 accepts and back to the original format when a new date is chosen.
 It is IMPORTANT to note that both functions need to be converted into strings as otherwise they will be removed when passed in with the parent object.
+
+#### `YMDFormat` {#YMDFormat}
+
+- Type: `[string, string, string, string?, string?, string?, string?]`
+
+Date format used by the [`Date Picker`](#https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date). The tuple contents translate to
+year / month / day (as digits e.g. '2022') and optionally hours / minutes / seconds / milliseconds (not used by the picker but may be required
+for a custom [`Calendar`](#Calendar) type).
 
 #### Example for custom d/m/y type
 
@@ -1075,16 +1183,6 @@ properties to make sure cell text is always in the correct format.
 :::info
 If the function strings inside `ascendingFunc` or `descendingFunc` contain " or \ characters make sure to escape them by prefixing them with **\\** e.g. \" and \\\
 :::
-
-<LineBreak></LineBreak>
-
-### `YMDFormat` {#YMDFormat}
-
-- Type: `[string, string, string, string?, string?, string?, string?]`
-
-Date format used by the [`Date Picker`](#https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date). The tuple contents translate to
-year / month / day (as digits e.g. '2022') and optionally hours / minutes / seconds / milliseconds (not used by the picker but may be required
-for a custom [`Calendar`](#Calendar) type).
 
 <LineBreak></LineBreak>
 

@@ -33,7 +33,7 @@ export class SelectCellTextBaseEvents {
     } else if (event.key === KEYBOARD_KEY.ARROW_DOWN) {
       event.preventDefault();
       SelectDropdownItem.setSiblingItemOnCell(at, activeItems, 'nextSibling');
-    } else if (rowIndex > 0 && !canAddMoreOptions) {
+    } else if ((at.dataStartsAtHeader || rowIndex > 0) && !canAddMoreOptions) {
       event.preventDefault();
     }
   }
