@@ -33,23 +33,10 @@ export class MoveLimits {
     return (tableDimensions.maxWidth as number) - tableElement.offsetWidth;
   }
 
-  // prettier-ignore
-  private static getRightLimitStaticWidthTable(at: ActiveTable, rightHeader?: HTMLElement, sideLimitDelta?: number) {
-    if (rightHeader) {
-      let rightLimit = Number.parseFloat(rightHeader.style.width);
-      if (sideLimitDelta !== undefined) rightLimit += sideLimitDelta;
-      return rightLimit;
-    }
-    // table with set width does not normally have a sizer on the last column and this class would not be called, however
-    // when the sizer is selected for column with minWidth setting and all the following columns are not dynamic (with
-    // width/minWidth settings), rightHeader will be undefined and this is the only way to get the right limit.
-    const {tableElementRef, tableDimensions: {width}} = at;
-    return (width as number) - (tableElementRef as HTMLElement).offsetWidth;
-  }
-
-  private static getRightLimit(at: ActiveTable, rightHeader?: HTMLElement, sideLimitDelta?: number) {
+  private static getRightLimit(at: ActiveTable, rightHeader?: HTMLElement) {
     if (at.tableDimensions.width !== undefined) {
-      return MoveLimits.getRightLimitStaticWidthTable(at, rightHeader, sideLimitDelta);
+      // there is always a resizable header on right of a sizer when table width is set
+      return Number.parseFloat((rightHeader as HTMLElement).style.width);
     } else if (at.tableDimensions.maxWidth !== undefined && at.tableElementRef) {
       return MoveLimits.getRightLimitForMaxWidth(at.tableElementRef, at.tableDimensions, rightHeader);
     }
@@ -68,7 +55,7 @@ export class MoveLimits {
     const sideLimitDelta = isFirstSizer || isLastSizer ? MoveLimits.getSideLimitDelta(leftHeader) : 0;
     return {
       left: MoveLimits.getLeftLimit(leftHeader, isFirstSizer ? sideLimitDelta : undefined) + columnSizerOffset,
-      right: MoveLimits.getRightLimit(at, rightHeader, isLastSizer ? sideLimitDelta : undefined) + columnSizerOffset,
+      right: MoveLimits.getRightLimit(at, rightHeader),
     };
   }
 }
