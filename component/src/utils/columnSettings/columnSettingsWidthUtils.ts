@@ -1,52 +1,37 @@
-import {StringDimensionUtils, SuccessResult} from '../tableDimensions/stringDimensionUtils';
+import {StringDimensionUtils, ParsedDimension} from '../tableDimensions/stringDimensionUtils';
 import {StaticTableWidthUtils} from '../tableDimensions/staticTable/staticTableWidthUtils';
-import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
+import {ColumnWidthsI} from '../../types/columnsSettingsInternal';
 import {TableElement} from '../../elements/table/tableElement';
 import {ColumnDetails} from '../columnDetails/columnDetails';
-import {ColumnWidth} from '../../types/columnsSettings';
 import {ActiveTable} from '../../activeTable';
 
 // REF-24
 export class ColumnSettingsWidthUtils {
-  public static isWidthDefined(width: ColumnWidth) {
-    return width.width !== undefined || width.minWidth !== undefined;
-  }
-
   // prettier-ignore
-  public static getSettingsWidthNumber(tableElement: HTMLElement, width: ColumnWidth): SuccessResult {
-    const result = width.minWidth !== undefined ?
-        StringDimensionUtils.generateNumberDimensionFromClientString(
-          'minWidth', tableElement, width, true, ColumnDetails.MINIMAL_COLUMN_WIDTH)
-      : StringDimensionUtils.generateNumberDimensionFromClientString(
-          'width', tableElement, width, true, ColumnDetails.MINIMAL_COLUMN_WIDTH);
-    // Should always return a successful result for column as parent width should technically be determinible
-    return result as SuccessResult;
+  public static getSettingsWidthNumber(table: HTMLElement, widths: ColumnWidthsI, isStatic = true): ParsedDimension {
+    return StringDimensionUtils.generateNumberDimensionFromClientString(
+      table, widths, isStatic ? 'staticWidth' : 'initialWidth', true, ColumnDetails.MINIMAL_COLUMN_WIDTH);
   }
 
-  public static updateColumnWidth(at: ActiveTable, cellElement: HTMLElement, width: ColumnWidth, isNewSetting: boolean) {
+  public static updateColumnWidth(at: ActiveTable, cellEl: HTMLElement, widths: ColumnWidthsI, isNewSetting: boolean) {
     const {tableDimensions, tableElementRef} = at;
-    const {number: numberWidth} = ColumnSettingsWidthUtils.getSettingsWidthNumber(tableElementRef as HTMLElement, width);
-    cellElement.style.width = `${numberWidth}px`;
+    const {number: numberWidth} = ColumnSettingsWidthUtils.getSettingsWidthNumber(tableElementRef as HTMLElement, widths);
+    cellEl.style.width = `${numberWidth}px`;
     TableElement.changeStaticWidthTotal(tableDimensions, isNewSetting ? numberWidth : -numberWidth);
   }
 
-  public static changeWidth(at: ActiveTable, cellElement: HTMLElement, oldWidth?: ColumnWidth, newWidth?: ColumnWidth) {
+  // prettier-ignore
+  public static changeWidth(at: ActiveTable,
+      cellElement: HTMLElement, oldWidths?: ColumnWidthsI, newWidths?: ColumnWidthsI) {
     let hasWidthChanged = false;
-    if (oldWidth && ColumnSettingsWidthUtils.isWidthDefined(oldWidth)) {
-      ColumnSettingsWidthUtils.updateColumnWidth(at, cellElement, oldWidth, false);
+    if (oldWidths?.staticWidth) {
+      ColumnSettingsWidthUtils.updateColumnWidth(at, cellElement, oldWidths, false);
       hasWidthChanged = true;
     }
-    if (newWidth && ColumnSettingsWidthUtils.isWidthDefined(newWidth)) {
-      ColumnSettingsWidthUtils.updateColumnWidth(at, cellElement, newWidth, true);
+    if (newWidths?.staticWidth) {
+      ColumnSettingsWidthUtils.updateColumnWidth(at, cellElement, newWidths, true);
       hasWidthChanged = true;
     }
     if (hasWidthChanged) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true);
-  }
-
-  // REF-36
-  public static setMinWidthOnSettings(settings: ColumnSettingsInternal, defaultWidth?: ColumnWidth) {
-    if (defaultWidth?.minWidth && !settings.width && !settings.minWidth) {
-      (settings as Required<ColumnSettingsInternal>).minWidth = defaultWidth.minWidth;
-    }
   }
 }

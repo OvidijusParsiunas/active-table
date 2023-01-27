@@ -52,7 +52,7 @@ export class InsertRemoveColumnSizer {
     const previousIndex = columnIndex - 1;
     if (previousIndex < 0) return;
     const {columnSizer} = columnsDetails[previousIndex];
-    if (columnsDetails[previousIndex].settings.width !== undefined || !columnSizer) return;
+    if (columnsDetails[previousIndex].settings.widths?.staticWidth !== undefined || !columnSizer) return;
     InsertRemoveColumnSizer.updateSizer(columnSizer, columnsDetails, columnIndex, tableElement);
   }
 
@@ -68,10 +68,10 @@ export class InsertRemoveColumnSizer {
   // REF-13
   public static insert(at: ActiveTable, columnIndex: number) {
     const {columnsDetails} = at;
-    if (columnsDetails[columnIndex].settings.width !== undefined) return;
+    if (columnsDetails[columnIndex].settings.widths?.staticWidth !== undefined) return;
     if (at.tableDimensions.width !== undefined) {
       columnIndex = InsertRemoveColumnSizer.getNewColumnIndexIfWidthSet(at.columnsDetails, columnIndex);
-      if (columnIndex === -1 || columnsDetails[columnIndex].settings.width !== undefined) return;
+      if (columnIndex === -1 || columnsDetails[columnIndex].settings.widths?.staticWidth !== undefined) return;
     } else {
       // only dynamic width tables have a sizer on the last column - hence only their styles need to be changed
       InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex, at.tableElementRef as HTMLElement);
@@ -107,9 +107,8 @@ export class InsertRemoveColumnSizer {
     InsertRemoveColumnSizer.updateIdsOfAllSubsequent(columnsDetails, columnIndex);
   }
 
-  // This is used to cleanup sizers for columns that have or had width settings because when the table width is set,
-  // columns that have settings width do not have a sizer, additionally the last column that does not have any setting
-  // width does not have a sizer. Columns with a setting for minWidth do have sizers.
+  // This is used to cleanup sizers for columns that have or had static widths because they do not have sizers,
+  // additionally when the table width is set the last column that is not static also does not have a sizer.
   public static cleanUpCustomColumnSizers(at: ActiveTable, changedColumnIndex: number) {
     const {tableDimensions, columnsDetails} = at;
     if (tableDimensions.width === undefined) return;
@@ -118,24 +117,22 @@ export class InsertRemoveColumnSizer {
     for (let i = columnsDetails.length - 1; i >= 0; i -= 1) {
       const columnDetails = columnsDetails[i];
       // if the column has a width or it is the last column, it should not have a sizer
-      if (columnDetails.settings.width !== undefined) {
+      if (columnDetails.settings.widths?.staticWidth !== undefined) {
         if (columnDetails.columnSizer) InsertRemoveColumnSizer.removeSizer(columnDetails);
         // dynamic column traversal (columns without a set width in settings)
-      } else if (columnDetails.settings.minWidth === undefined) {
-        if (isLastDynamicColumnFound === false) {
-          isLastDynamicColumnFound = true;
-          // last column index should not have a sizer
-          if (columnDetails.columnSizer) InsertRemoveColumnSizer.removeSizer(columnDetails);
-          // exit only if the first column without settings is before changedColumnIndex
-          if (i < changedColumnIndex) break;
-        } else {
-          // if column does not have settings and it is not last, it should have a sizer
-          if (!columnDetails.columnSizer && columnsDetails.length - 1 !== i) {
-            InsertRemoveColumnSizer.insertAtIndex(at, columnDetails, i);
-          }
-          // if the last dynamic column has already been identified and we are beyond the changed index, can exit
-          if (isLastDynamicColumnFound === true && i < changedColumnIndex) break;
+      } else if (isLastDynamicColumnFound === false) {
+        isLastDynamicColumnFound = true;
+        // last column index should not have a sizer
+        if (columnDetails.columnSizer) InsertRemoveColumnSizer.removeSizer(columnDetails);
+        // exit only if the first column without settings is before changedColumnIndex
+        if (i < changedColumnIndex) break;
+      } else {
+        // if column does not have settings and it is not last, it should have a sizer
+        if (!columnDetails.columnSizer && columnsDetails.length - 1 !== i) {
+          InsertRemoveColumnSizer.insertAtIndex(at, columnDetails, i);
         }
+        // if the last dynamic column has already been identified and we are beyond the changed index, can exit
+        if (isLastDynamicColumnFound === true && i < changedColumnIndex) break;
       }
     }
   }

@@ -1,7 +1,4 @@
-import {ColumnSettingsWidthUtils} from '../../../utils/columnSettings/columnSettingsWidthUtils';
 import {StaticTable} from '../../../utils/tableDimensions/staticTable/staticTable';
-import {ColumnDetailsUtils} from '../../../utils/columnDetails/columnDetailsUtils';
-import {ColumnSettingsInternal} from '../../../types/columnsSettingsInternal';
 import {ExtractElements} from '../../../utils/elements/extractElements';
 import {TableDimensions} from '../../../types/tableDimensions';
 import {SizerMoveLimits} from '../../../types/columnSizer';
@@ -14,8 +11,7 @@ export class MoveLimits {
   // the total of those two borders width.
   // prettier-ignore
   private static getSideLimitDelta(leftElement: HTMLElement) {
-    // left element will always be the actual element as even when minWidth is set in its settings, we return
-    // the left element of the sizer, however when minWidth/width are set on the right header(s), rightHeader
+    // left element will always be the actual element, however when width is set on the right header(s), rightHeader
     // will actually be first dynamic header in the ones following the sizer. Hence the only reliably way
     // of obtaining the actual right header is by extracting it manually by traversing the DOM.
     const rightElement = ExtractElements.getRightColumnSiblingCell(leftElement) as HTMLElement;
@@ -60,35 +56,19 @@ export class MoveLimits {
     return MoveLimits.getRightLimitDynamicWidthTable();
   }
 
-  // prettier-ignore
-  private static getLeftLimit(at: ActiveTable,
-      leftHeader: HTMLElement, leftHeaderSettings: ColumnSettingsInternal, sideLimitDelta?: number) {
-    const {tableElementRef, columnsDetails} = at;
-    let leftLimit = 0;
-    if (leftHeaderSettings.minWidth !== undefined) {
-      // if table width is set and there are no more dynamic columns, do not allow current column size to be reduced
-      if (at.tableDimensions.width !== undefined
-        && ColumnDetailsUtils.getFilteredColumns(columnsDetails).dynamicWidthColumns.length === 0) return 0;
-      // REF-21 - works for left, but not perfectly for right
-      const {number} = ColumnSettingsWidthUtils.getSettingsWidthNumber(tableElementRef as HTMLElement, leftHeaderSettings);
-      leftLimit = -(leftHeader.offsetWidth - number);
-    } else {
-      leftLimit = -leftHeader.offsetWidth;
-    }
+  private static getLeftLimit(leftHeader: HTMLElement, sideLimitDelta?: number) {
+    let leftLimit = -leftHeader.offsetWidth;
     if (sideLimitDelta !== undefined) leftLimit += sideLimitDelta;
     return leftLimit;
   }
 
   // prettier-ignore
-  public static generate(at: ActiveTable, isFirstSizer: boolean,
-      isLastSizer: boolean, columnSizerOffset: number, rightHeader: HTMLElement | undefined,
-      leftHeader: HTMLElement, leftHeaderSettings: ColumnSettingsInternal): SizerMoveLimits {
+  public static generate(at: ActiveTable, isFirstSizer: boolean, isLastSizer: boolean,
+      columnSizerOffset: number, rightHeader: HTMLElement | undefined, leftHeader: HTMLElement): SizerMoveLimits {
     const sideLimitDelta = isFirstSizer || isLastSizer ? MoveLimits.getSideLimitDelta(leftHeader) : 0;
     return {
-      left: MoveLimits.getLeftLimit(at, leftHeader, leftHeaderSettings,
-        isFirstSizer ? sideLimitDelta : undefined) + columnSizerOffset,
-      right: MoveLimits.getRightLimit(at, rightHeader,
-        isLastSizer ? sideLimitDelta : undefined) + columnSizerOffset,
+      left: MoveLimits.getLeftLimit(leftHeader, isFirstSizer ? sideLimitDelta : undefined) + columnSizerOffset,
+      right: MoveLimits.getRightLimit(at, rightHeader, isLastSizer ? sideLimitDelta : undefined) + columnSizerOffset,
     };
   }
 }

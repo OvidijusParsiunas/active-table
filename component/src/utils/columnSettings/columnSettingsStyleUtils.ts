@@ -16,6 +16,17 @@ export class ColumnSettingsStyleUtils {
     Object.assign(cellElement.style, settings.cellStyle || {}, isHeader ? settings.headerStyles?.default || {} : {});
   }
 
+  // prettier-ignore
+  private static setNewHeaderStyle(at: ActiveTable, columnDetails: ColumnDetailsT) {
+    const {settings, elements} = columnDetails;
+    const newHeaderStyle = settings.cellStyle || settings.headerStyles?.default;
+    if (newHeaderStyle) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, elements[0], true);
+    const newStyleSettings = newHeaderStyle ? settings : undefined;
+    columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(at.columnsSettings,
+      newStyleSettings, at.defaultCellHoverColors);
+    ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [elements[0]]);
+  }
+
   private static unsetHeaderSettingStyle(headerElement: HTMLElement, style: NoDimensionCSSStyle) {
     Object.keys(style).forEach((styleName) => {
       GenericElementUtils.setStyle(headerElement, styleName, '');
@@ -31,17 +42,6 @@ export class ColumnSettingsStyleUtils {
     if (settings.cellStyle) ElementStyle.unsetStyle(columnElements[0], settings.cellStyle);
     const {cellStyle, headerStyles} = columnsSettings;
     CellElement.setDefaultCellStyle(columnElements[0], cellStyle, headerStyles?.default);
-  }
-
-  // prettier-ignore
-  private static setNewHeaderStyle(at: ActiveTable, columnDetails: ColumnDetailsT) {
-    const {settings, elements} = columnDetails;
-    const newHeaderStyle = settings.cellStyle || settings.headerStyles?.default;
-    if (newHeaderStyle) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, elements[0], true);
-    const newStyleSettings = newHeaderStyle ? settings : undefined;
-    columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(at.columnsSettings,
-      newStyleSettings, at.defaultCellHoverColors);
-    ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [elements[0]]);
   }
 
   // prettier-ignore

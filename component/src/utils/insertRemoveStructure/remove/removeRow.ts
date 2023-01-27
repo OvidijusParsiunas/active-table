@@ -23,7 +23,7 @@ export class RemoveRow {
   // when the last row has been removed, there are no more columns
   private static removeAllColumnsDetails(at: ActiveTable) {
     const {columnsDetails} = at;
-    columnsDetails.forEach((columnDetails) => RemoveColumn.reduceStaticWidthTotal(at, columnDetails));
+    columnsDetails.forEach((columnDetails) => RemoveColumn.reduceStaticWidthTotal(at, columnDetails.settings));
     columnsDetails.splice(0, columnsDetails.length);
   }
 

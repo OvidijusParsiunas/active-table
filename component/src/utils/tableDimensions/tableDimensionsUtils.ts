@@ -32,9 +32,9 @@ export class TableDimensionsUtils {
   private static setDimension(at: ActiveTable, key: keyof PossibleStringDimensions<TableStyle>) {
     const {tableStyle, tableDimensions, tableElementRef, parentElement} = at;
     if (!tableElementRef || !parentElement) return;
-    const numberDimension = StringDimensionUtils.generateNumberDimensionFromClientString(key,
-      parentElement, tableStyle, true, TableDimensionsUtils.MINIMAL_TABLE_WIDTH);
-    if (numberDimension !== undefined) {
+    const numberDimension = StringDimensionUtils.generateNumberDimensionFromClientString(
+      parentElement, tableStyle, key, true, TableDimensionsUtils.MINIMAL_TABLE_WIDTH);
+    if (numberDimension.number > 0) {
       if (at.overflow) OverflowUtils.processNumberDimension(tableDimensions, numberDimension);
       tableDimensions[key] = numberDimension.number;
       tableDimensions.isPercentage = numberDimension.isPercentage;

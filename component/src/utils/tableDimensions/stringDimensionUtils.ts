@@ -7,8 +7,7 @@ import {RegexUtils} from '../regex/regexUtils';
 import {CSSStyle} from '../../types/cssStyle';
 
 export type PossibleStringDimensions<T> = PropertiesOfType<T, FullStringDimension>;
-export type SuccessResult = {number: number; isPercentage: boolean};
-type Result = SuccessResult | undefined;
+export type ParsedDimension = {number: number; isPercentage: boolean};
 
 export class StringDimensionUtils {
   private static processDimension(extractedWidth: number, minimalWidth: number) {
@@ -17,11 +16,13 @@ export class StringDimensionUtils {
 
   // prettier-ignore
   private static processPercentageDimension(parentElement: HTMLElement, extractedNumber: number,
-      isWidth: boolean, minimalDimension: number): Result {
+      isWidth: boolean, minimalDimension: number): ParsedDimension {
     // if true then holds an unlimited size
     // when this is used for column, this condition should be false
     if (extractedNumber > 100) extractedNumber = 100;
-    if (isWidth && GenericElementUtils.isParentWidthUndetermined(parentElement.style.width)) return;
+    if (isWidth && GenericElementUtils.isParentWidthUndetermined(parentElement.style.width)) {
+      return {number: 0, isPercentage: false};
+    }
     const offset = isWidth ? parentElement.offsetWidth : parentElement.offsetHeight;
     const dimension = offset * (extractedNumber / 100);
     return { number: StringDimensionUtils.processDimension(dimension, minimalDimension), isPercentage: true };
@@ -30,9 +31,9 @@ export class StringDimensionUtils {
   // can also parse numbers incase the client used that
   // if this returns a number 0 for a %, the likelyhood is that the parent element does not have that dimension set
   // prettier-ignore
-  public static generateNumberDimensionFromClientString<T>(key: keyof PossibleStringDimensions<T>,
-      parentElement: HTMLElement, sourceObj: T, isWidth: boolean, minimalDimension = 0): Result {
-    const sourcevalue = sourceObj[key] as unknown as string | number;
+  public static generateNumberDimensionFromClientString<T>(parentElement: HTMLElement, sourceObj: T,
+      dimensionKey: keyof PossibleStringDimensions<T>, isWidth: boolean, minimalDimension = 0): ParsedDimension {
+    const sourcevalue = sourceObj[dimensionKey] as unknown as string | number;
     const isSourceValueStr = typeof sourcevalue === 'string';
     let extractedNumber = isSourceValueStr ? Number(RegexUtils.extractIntegerStrs(sourcevalue)[0]) : sourcevalue;
     if (isSourceValueStr) {
@@ -50,7 +51,7 @@ export class StringDimensionUtils {
 
   public static removeAllDimensions(style: CSSStyle) {
     if (!style) return;
-    ObjectUtils.removeProperties(style, 'width', 'maxHeight', 'minWidth', 'height', 'minHeight', 'maxHeight');
+    ObjectUtils.removeProperties(style, 'width', 'minWidth', 'maxWidth', 'height', 'minHeight', 'maxHeight');
     return style;
   }
 }

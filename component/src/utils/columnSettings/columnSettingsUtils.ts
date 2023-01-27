@@ -1,11 +1,12 @@
 import {ColumnDropdownCellOverlay} from '../../elements/dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlay';
 import {HeaderIconCellElement} from '../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
-import {CustomColumnsSettings, CustomColumnSettings, ColumnWidth} from '../../types/columnsSettings';
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {DropdownDisplaySettingsUtil} from '../../elements/dropdown/dropdownDisplaySettingsUtil';
 import {ColumnSettingsInternal, ColumnsSettingsMap} from '../../types/columnsSettingsInternal';
+import {CustomColumnsSettings, CustomColumnSettings} from '../../types/columnsSettings';
 import {ColumnSettingsDefaultTextUtils} from './columnSettingsDefaultTextUtils';
+import {StringDimensionUtils} from '../tableDimensions/stringDimensionUtils';
 import {ColumnDropdownSettings} from '../../types/columnDropdownSettings';
 import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
@@ -15,7 +16,6 @@ import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 import {ResetColumnStructure} from './resetColumnStructure';
 import {CellElement} from '../../elements/cell/cellElement';
 import {GenericObject} from '../../types/genericObject';
-import {ObjectUtils} from '../object/objectUtils';
 import {EMPTY_STRING} from '../../consts/text';
 import {ActiveTable} from '../../activeTable';
 
@@ -46,7 +46,7 @@ export class ColumnSettingsUtils {
     columnDetails.activeType = ColumnTypesUtils.getActiveType(newSettings, columnDetails.activeType.name);
     ResetColumnStructure.reset(at, columnDetails, columnIndex);
     ColumnSettingsDefaultTextUtils.setDefaultText(at, columnDetails, columnIndex);
-    if (!onColumnMove) ColumnSettingsWidthUtils.changeWidth(at, headerElement, oldSettings, newSettings);
+    if (!onColumnMove) ColumnSettingsWidthUtils.changeWidth(at, headerElement, oldSettings.widths, newSettings.widths);
     ColumnSettingsStyleUtils.changeStyleFunc(at, columnIndex, oldSettings);
     ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
     ColumnSettingsUtils.updateSizer(at, columnIndex);
@@ -82,16 +82,18 @@ export class ColumnSettingsUtils {
     customDropdown.isMoveAvailable ??= defDropdown.isMoveAvailable;
   }
 
-  private static processCellDimensions(settings: CustomColumnSettings, isCustom = true) {
+  private static processCellDimensions(settings: CustomColumnSettings) {
     const cellStyle = settings.cellStyle;
     if (!cellStyle) return;
     const internalSettings = settings as unknown as ColumnSettingsInternal;
-    if (cellStyle.minWidth) internalSettings.minWidth = cellStyle.minWidth;
-    // when width is set in custom width it will be static, but when on default settings it will not be
-    if (isCustom && cellStyle.width) internalSettings.width = cellStyle.width;
-    const propertiesToRemove = ['maxHeight', 'minWidth', 'height', 'minHeight', 'maxHeight'] as (keyof typeof cellStyle)[];
-    if (isCustom) propertiesToRemove.push('width');
-    ObjectUtils.removeProperties(cellStyle, ...propertiesToRemove);
+    if (cellStyle.width) {
+      if (settings.isResizable === false) {
+        internalSettings.widths = {staticWidth: cellStyle.width};
+      } else {
+        internalSettings.widths = {initialWidth: cellStyle.width};
+      }
+    }
+    StringDimensionUtils.removeAllDimensions(cellStyle);
   }
 
   private static createInternalSettings(settings: CustomColumnSettings, defSettings: ColumnsSettingsDefault) {
@@ -99,13 +101,12 @@ export class ColumnSettingsUtils {
     if (ColumnSettingsStyleUtils.doesSettingHaveSideBorderStyle(internalSettings)) {
       internalSettings.stylePrecedence = true; // REF-23
     }
-    ColumnSettingsUtils.processCellDimensions(settings);
     ColumnSettingsUtils.setDropdownSettings(settings.dropdown, defSettings.dropdown);
     Object.keys(defSettings).forEach((key: string) => {
       (internalSettings as unknown as GenericObject)[key] ??= defSettings[key as keyof ColumnsSettingsDefault] as string;
     });
     internalSettings.types = ColumnTypesUtils.getProcessedTypes(internalSettings);
-    ColumnSettingsWidthUtils.setMinWidthOnSettings(internalSettings, settings.cellStyle); // REF-36
+    ColumnSettingsUtils.processCellDimensions(settings); // here to first inherit isResizable if not set by user
     return internalSettings;
   }
 
@@ -121,11 +122,12 @@ export class ColumnSettingsUtils {
     columnsSettings.isDefaultTextRemovable ??= true;
     columnsSettings.isCellTextEditable ??= true;
     columnsSettings.isHeaderTextEditable ??= columnsSettings.isCellTextEditable;
+    columnsSettings.isResizable ??= true;
     const defaultDisplaySettings = {openMethod: {cellClick: true}};
     columnsSettings.dropdown ??= {displaySettings: defaultDisplaySettings};
     columnsSettings.dropdown.displaySettings ??= defaultDisplaySettings;
     const internalSettings = columnsSettings as unknown as ColumnSettingsInternal;
-    ColumnSettingsUtils.processCellDimensions(columnsSettings as CustomColumnSettings, false);
+    ColumnSettingsUtils.processCellDimensions(columnsSettings as CustomColumnSettings);
     DropdownDisplaySettingsUtil.process(columnsSettings.dropdown.displaySettings);
     columnsSettings.dropdown.isSortAvailable ??= true;
     columnsSettings.dropdown.isDeleteAvailable ??= true;
@@ -133,7 +135,6 @@ export class ColumnSettingsUtils {
     columnsSettings.dropdown.isInsertRightAvailable ??= true;
     columnsSettings.dropdown.isMoveAvailable ??= true;
     internalSettings.types = ColumnTypesUtils.getProcessedTypes(internalSettings);
-    ColumnSettingsWidthUtils.setMinWidthOnSettings(internalSettings, columnsSettings.cellStyle as ColumnWidth); // REF-36
   }
 
   public static setUpInternalSettings(at: ActiveTable) {

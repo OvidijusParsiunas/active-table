@@ -2,7 +2,6 @@ import {DEFAULT_COLUMN_TYPES} from '../enums/defaultColumnTypes';
 import {ColumnDropdownSettings} from './columnDropdownSettings';
 import {HeaderIconStyle} from './headerIconStyle';
 import {HoverableStyles} from './hoverableStyles';
-import {InterfacesUnion} from './utilityTypes';
 import {NoDimensionCSSStyle} from './cssStyle';
 import {StringDimension} from './dimensions';
 import {ColumnTypes} from './columnType';
@@ -18,6 +17,7 @@ interface Parent<CellStyle> {
   defaultText?: CellText;
   isDefaultTextRemovable?: boolean; // true by default
   cellStyle?: CellStyle;
+  isResizable?: boolean;
   isCellTextEditable?: boolean; // true by default
   headerStyles?: HoverableStyles;
   isHeaderTextEditable?: boolean; // uses isCellTextEditable by default
@@ -31,13 +31,10 @@ interface Parent<CellStyle> {
 }
 
 // REF-24
-// if dimension is a percentage - will use the table width
+// if width dimension is a percentage - will use the table width
 // if total custom columns width is higher than the width in tableStyle, they will breach that width
-export type ColumnWidth = InterfacesUnion<{width: StringDimension} | {minWidth: StringDimension} | {}>;
+type DimensionalCSSStyle = NoDimensionCSSStyle & {width?: StringDimension};
 
-type DimensionalCSSStyle = NoDimensionCSSStyle & ColumnWidth;
-
-// if the user proceeds to set width and minWidth properties - minWidth will take precedence
 export type CustomColumnSettings<T = DimensionalCSSStyle> = Parent<T>;
 
 export type CustomColumnsSettings = Array<CustomColumnSettings>;

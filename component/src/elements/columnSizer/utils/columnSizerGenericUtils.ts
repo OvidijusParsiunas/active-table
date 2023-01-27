@@ -1,4 +1,3 @@
-import {ColumnSettingsWidthUtils} from '../../../utils/columnSettings/columnSettingsWidthUtils';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {RegexUtils} from '../../../utils/regex/regexUtils';
 
@@ -11,7 +10,7 @@ export class ColumnSizerGenericUtils {
 
   public static findNextResizableColumnHeader(columnsDetails: ColumnsDetailsT, sizerNumber: number) {
     const columnDetails = columnsDetails.slice(sizerNumber + 1).find((columnDetails) => {
-      return !ColumnSettingsWidthUtils.isWidthDefined(columnDetails.settings);
+      return !columnDetails.settings.widths?.staticWidth;
     });
     return columnDetails?.elements[0];
   }

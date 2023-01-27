@@ -7,8 +7,8 @@ import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {CheckboxCellElement} from './checkboxCell/checkboxCellElement';
 import {CaretDisplayFix} from '../../utils/browser/caretDisplayFix';
+import {WidthsI} from '../../types/columnsSettingsInternal';
 import {NoDimensionCSSStyle} from '../../types/cssStyle';
-import {ColumnWidth} from '../../types/columnsSettings';
 import {CellText} from '../../types/tableContent';
 import {ActiveTable} from '../../activeTable';
 
@@ -124,14 +124,17 @@ export class CellElement {
     }
   }
 
-  // prettier-ignore
-  private static setColumnWidth(at: ActiveTable,
-      cellElement: HTMLElement, defaultWidth?: ColumnWidth, settings?: ColumnWidth) {
-    if (settings && ColumnSettingsWidthUtils.isWidthDefined(settings)) {
-      ColumnSettingsWidthUtils.updateColumnWidth(at, cellElement, settings, true);
-      if (defaultWidth?.width) cellElement.style.width = defaultWidth?.width; // width+minWidth on def settings - REF-36
+  // REF-36
+  private static setColumnWidth(at: ActiveTable, cellElement: HTMLElement, customWidths?: WidthsI, defWidths?: WidthsI) {
+    if (!at.tableElementRef) return;
+    const widths = customWidths?.widths || defWidths?.widths;
+    if (widths?.staticWidth) {
+      ColumnSettingsWidthUtils.updateColumnWidth(at, cellElement, widths, true);
+    } else if (widths?.initialWidth) {
+      const result = ColumnSettingsWidthUtils.getSettingsWidthNumber(at.tableElementRef, widths, false);
+      cellElement.style.width = `${result.number}px`;
     } else {
-      cellElement.style.width = `${defaultWidth?.width || at.tableDimensions.newColumnWidth}px`; // REF-36
+      cellElement.style.width = `${at.tableDimensions.newColumnWidth}px`;
     }
   }
 
@@ -148,7 +151,7 @@ export class CellElement {
     const isEditable = isHeader ? !isOpenViaCellClick && settings.isHeaderTextEditable : settings.isCellTextEditable;
     CellElement.prepContentEditable(cellElement, Boolean(isEditable), isOpenViaCellClick);
     // overwritten again if static table
-    if (isHeader) CellElement.setColumnWidth(at, cellElement, cellStyle as ColumnWidth, settings);
+    if (isHeader) CellElement.setColumnWidth(at, cellElement, settings, at.columnsSettings as WidthsI);
     CellElement.setNewText(at, cellElement, text, true, false);
     return cellElement;
   }

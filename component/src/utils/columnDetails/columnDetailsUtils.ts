@@ -1,24 +1,21 @@
 import {ColumUpdateItems, ColumnUpdateDetails} from '../../types/onUpdate';
 import {ColumnDetailsT, ColumnsDetailsT} from '../../types/columnDetails';
 import {CellDropdownI} from '../../types/cellDropdownInternal';
-import {FilteredColumns} from '../../types/filteredColumns';
+import {ColumnsByWidth} from '../../types/columnsByWidth';
 
 export class ColumnDetailsUtils {
-  public static getFilteredColumns(columnsDetails: ColumnsDetailsT): FilteredColumns {
-    const dynamicWidthColumns: ColumnsDetailsT = [];
-    const minWidthColumns: ColumnsDetailsT = [];
-    const setWidthColumns: ColumnsDetailsT = [];
+  public static getColumnsByWidth(columnsDetails: ColumnsDetailsT): ColumnsByWidth {
+    const dynamicWidth: ColumnsDetailsT = [];
+    const staticWidth: ColumnsDetailsT = [];
     for (let i = 0; i < columnsDetails.length; i += 1) {
       const columnDetails = columnsDetails[i];
-      if (columnDetails.settings.width !== undefined) {
-        setWidthColumns.push(columnDetails);
-      } else if (columnDetails.settings.minWidth !== undefined) {
-        minWidthColumns.push(columnDetails);
+      if (columnDetails.settings.widths?.staticWidth !== undefined) {
+        staticWidth.push(columnDetails);
       } else {
-        dynamicWidthColumns.push(columnDetails);
+        dynamicWidth.push(columnDetails);
       }
     }
-    return {dynamicWidthColumns, minWidthColumns, setWidthColumns};
+    return {dynamicWidth, staticWidth};
   }
 
   private static aggregateItems(cellDropdown: CellDropdownI): ColumUpdateItems {

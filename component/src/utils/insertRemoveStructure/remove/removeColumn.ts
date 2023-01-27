@@ -6,6 +6,7 @@ import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
 import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
 import {ColumnSettingsWidthUtils} from '../../columnSettings/columnSettingsWidthUtils';
+import {ColumnSettingsInternal} from '../../../types/columnsSettingsInternal';
 import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {TableElement} from '../../../elements/table/tableElement';
@@ -13,7 +14,6 @@ import {CellElementIndex} from '../../elements/cellElementIndex';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
-import {ColumnDetailsT} from '../../../types/columnDetails';
 import {TableContent} from '../../../types/tableContent';
 import {ActiveTable} from '../../../activeTable';
 import {LastColumn} from '../shared/lastColumn';
@@ -24,17 +24,15 @@ export class RemoveColumn {
     ToggleAdditionElements.update(at, false, AddNewColumnElement.toggle);
   }
 
-  // prettier-ignore
-  public static reduceStaticWidthTotal(at: ActiveTable, columnDetails: ColumnDetailsT) {
-    if (columnDetails.settings && ColumnSettingsWidthUtils.isWidthDefined(columnDetails.settings)) {
-      const {number} = ColumnSettingsWidthUtils.getSettingsWidthNumber(
-        at.tableElementRef as HTMLElement, columnDetails.settings);
+  public static reduceStaticWidthTotal(at: ActiveTable, settings: ColumnSettingsInternal) {
+    if (settings.widths?.staticWidth) {
+      const {number} = ColumnSettingsWidthUtils.getSettingsWidthNumber(at.tableElementRef as HTMLElement, settings.widths);
       TableElement.changeStaticWidthTotal(at.tableDimensions, -number);
     }
   }
 
-  private static updateTableDimensions(at: ActiveTable, columnDetails: ColumnDetailsT) {
-    RemoveColumn.reduceStaticWidthTotal(at, columnDetails);
+  private static updateTableDimensions(at: ActiveTable, settings: ColumnSettingsInternal) {
+    RemoveColumn.reduceStaticWidthTotal(at, settings);
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, false);
   }
 
@@ -71,7 +69,7 @@ export class RemoveColumn {
     RemoveColumn.cleanUpContent(at.content);
     // needs to be after getDetails but before changeWidthsBasedOnColumnInsertRemove
     const removedColumnDetails = at.columnsDetails.splice(columnIndex, 1)[0];
-    RemoveColumn.updateTableDimensions(at, removedColumnDetails);
+    RemoveColumn.updateTableDimensions(at, removedColumnDetails.settings);
     return removedColumnDetails;
   }
 

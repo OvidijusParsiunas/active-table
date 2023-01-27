@@ -175,7 +175,7 @@ REF-20
 onCellUpdate is specifically designed to help maintain a data object in the parent application and IS NOT meant to be used like
 an alert notification system to report what has been specifically removed or added. The reason for this is because the update
 messages that are sent don't actually describe the particular cells that have been removed/added are and instead describe what
-changes need to be made to the outside data object in order for it to be the same as the data object (content) in this component.
+changes need to be made to the outside data object in order for it to be the same as the data object in this component.
 Example:
 When there are 5 rows and 5 columns, and row number 3 gets removed - the messages that are sent out do not say that row 3 cells
 were removed and instead they will say that row 3 cells were updated, row 4 was updated ad row 5 was the one that was removed.
@@ -191,10 +191,6 @@ of what else needs to be changed when one has been deleted/inserted at a particu
 the messages tell them to and absolutely nothing else.
 
 REF-21
-When manually increasing the width of a column and the next columns have widths higher than their minWidth setting, those column
-widths will not be reduced because it has been concluded that the calculation to identify the limit of how much the current cell
-can be expanded to the right and the effort that will be required to resize those proceeding columns is not worth the value that
-will ultimately be provided. However, if users are requesting this functionality, implement its logic as needed.
 
 REF-22
 Using auxiliaryTableContentInternal object because the client may choose not to include some properties inside the auxiliaryTableContent
@@ -271,12 +267,9 @@ would need a hard rewrite to track each and every column that has its width chan
 This is also why we update the column widths separately in the onColumnWidthsUpdate method and display all columns instead.
 
 REF-36
-If custom column settings do not use minWidth/width in their cellStyle (or is a fresh new column) and default settings do use minWidth,
-we add it to the internal settings minWidth property so it would be treated as part of static width and prevent the column from being
-resized to smaller width.
-If default column setting is instead just width, we simply set the column header width so it can be resized.
-Because all dimension styles are removed from cellStyles for settings except 'width' for default settings, we take advantage of that
-and allow the cells to both have a minWidth static style and a width - which can be resized as desired.
+Columns have two types of widths:
+static which cannot be resized and will cause subject column widths to always be the same
+initial is a starter width which can be resized and is overwritten if table has a set width
 
 REF-37
 When the header is sticky and the overflow is not coming from the table, but the parent element - upon scrolling the table - header row

@@ -1,4 +1,4 @@
-import {StringDimensionUtils, SuccessResult} from '../tableDimensions/stringDimensionUtils';
+import {StringDimensionUtils, ParsedDimension} from '../tableDimensions/stringDimensionUtils';
 import {GenericElementUtils} from '../elements/genericElementUtils';
 import {TableElement} from '../../elements/table/tableElement';
 import {OverflowInternal} from '../../types/overflowInternal';
@@ -17,7 +17,7 @@ export class OverflowUtils {
 
   // a simple way to not take the border into consideration when doing table width calculation, however if there are issues
   // feel free to investigate a better way
-  public static unsetBorderDimensions(tableDimensions: TableDimensions, numberDimension: SuccessResult) {
+  public static unsetBorderDimensions(tableDimensions: TableDimensions, numberDimension: ParsedDimension) {
     numberDimension.number -= tableDimensions.border.leftWidth + tableDimensions.border.rightWidth;
     TableElement.changeStaticWidthTotal(tableDimensions, -tableDimensions.border.leftWidth);
     TableElement.changeStaticWidthTotal(tableDimensions, -tableDimensions.border.rightWidth);
@@ -27,7 +27,7 @@ export class OverflowUtils {
     tableDimensions.border.bottomWidth = 0;
   }
 
-  public static processNumberDimension(tableDimensions: TableDimensions, numberDimension: SuccessResult) {
+  public static processNumberDimension(tableDimensions: TableDimensions, numberDimension: ParsedDimension) {
     OverflowUtils.unsetBorderDimensions(tableDimensions, numberDimension);
     numberDimension.number -= OverflowUtils.SCROLLBAR_WIDTH;
   }
@@ -62,12 +62,12 @@ export class OverflowUtils {
   // prettier-ignore
   private static getDimensions(at: ActiveTable, overflow: Overflow, overflowInternal: OverflowInternal) {
     const widthResult = StringDimensionUtils.generateNumberDimensionFromClientString(
-      'maxWidth', at.parentElement as HTMLElement, overflow, true) || {number: 0, isPercentage: false};
+      at.parentElement as HTMLElement, overflow, 'maxWidth', true);
     widthResult.number -= at.tableDimensions.border.leftWidth + at.tableDimensions.border.rightWidth;
     if (widthResult.isPercentage) overflowInternal.isWidthPercentage = true;
     // if heightResult is 0 for a %, the likelyhood is that the parent element does not have height set
     const heightResult = StringDimensionUtils.generateNumberDimensionFromClientString(
-      'maxHeight', at.parentElement as HTMLElement, overflow, false) || {number: 0, isPercentage: false};
+      at.parentElement as HTMLElement, overflow, 'maxHeight', false);
     heightResult.number -= at.tableDimensions.border.topWidth + at.tableDimensions.border.bottomWidth;
     if (heightResult.isPercentage) overflowInternal.isHeightPercentage = true;
     return {width: widthResult.number, height: heightResult.number};
