@@ -17,7 +17,7 @@ interface Parent<CellStyle> {
   defaultText?: CellText;
   isDefaultTextRemovable?: boolean; // true by default
   cellStyle?: CellStyle;
-  isResizable?: boolean;
+  isResizable?: boolean; // true by default, if no width is defined this will simply just not show the sizer
   isCellTextEditable?: boolean; // true by default
   headerStyles?: HoverableStyles;
   isHeaderTextEditable?: boolean; // uses isCellTextEditable by default

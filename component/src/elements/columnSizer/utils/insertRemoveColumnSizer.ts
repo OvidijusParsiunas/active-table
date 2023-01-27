@@ -65,13 +65,18 @@ export class InsertRemoveColumnSizer {
     return columnIndex;
   }
 
+  private static isNotResizable(columnDetails: ColumnDetailsT) {
+    const {widths, isResizable} = columnDetails.settings;
+    return widths?.staticWidth !== undefined || !isResizable;
+  }
+
   // REF-13
   public static insert(at: ActiveTable, columnIndex: number) {
     const {columnsDetails} = at;
-    if (columnsDetails[columnIndex].settings.widths?.staticWidth !== undefined) return;
+    if (InsertRemoveColumnSizer.isNotResizable(columnsDetails[columnIndex])) return;
     if (at.tableDimensions.width !== undefined) {
       columnIndex = InsertRemoveColumnSizer.getNewColumnIndexIfWidthSet(at.columnsDetails, columnIndex);
-      if (columnIndex === -1 || columnsDetails[columnIndex].settings.widths?.staticWidth !== undefined) return;
+      if (columnIndex === -1 || InsertRemoveColumnSizer.isNotResizable(columnsDetails[columnIndex])) return;
     } else {
       // only dynamic width tables have a sizer on the last column - hence only their styles need to be changed
       InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex, at.tableElementRef as HTMLElement);
@@ -117,7 +122,7 @@ export class InsertRemoveColumnSizer {
     for (let i = columnsDetails.length - 1; i >= 0; i -= 1) {
       const columnDetails = columnsDetails[i];
       // if the column has a width or it is the last column, it should not have a sizer
-      if (columnDetails.settings.widths?.staticWidth !== undefined) {
+      if (InsertRemoveColumnSizer.isNotResizable(columnDetails)) {
         if (columnDetails.columnSizer) InsertRemoveColumnSizer.removeSizer(columnDetails);
         // dynamic column traversal (columns without a set width in settings)
       } else if (isLastDynamicColumnFound === false) {

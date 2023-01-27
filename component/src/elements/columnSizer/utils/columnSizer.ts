@@ -98,7 +98,7 @@ export class ColumnSizer {
 
   // prettier-ignore
   public static create(at: ActiveTable, sizerIndex: number) {
-    const { columnsDetails, tableElementRef, columnResizerStyle: userSetColumnSizerStyle } = at;
+    const {columnsDetails, tableElementRef, columnResizerStyle: userSetColumnSizerStyle} = at;
     const columnSizerElement = ColumnSizerElement.create(sizerIndex, userSetColumnSizerStyle);
     const movableColumnSizer = MovableColumnSizerElement.create(userSetColumnSizerStyle);
     const overlayElement = ColumnSizerOverlayElement.create();
