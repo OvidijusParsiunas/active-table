@@ -3,10 +3,10 @@ import {ColumnDropdownSettings} from './columnDropdownSettings';
 import {HeaderIconStyle} from './headerIconStyle';
 import {HoverableStyles} from './hoverableStyles';
 import {InterfacesUnion} from './utilityTypes';
+import {NoDimensionCSSStyle} from './cssStyle';
 import {StringDimension} from './dimensions';
 import {ColumnTypes} from './columnType';
 import {CellText} from './tableContent';
-import {CellCSSStyle} from './cssStyle';
 
 // to be used by the client
 
@@ -35,7 +35,7 @@ interface Parent<CellStyle> {
 // if total custom columns width is higher than the width in tableStyle, they will breach that width
 export type ColumnWidth = InterfacesUnion<{width: StringDimension} | {minWidth: StringDimension} | {}>;
 
-type DimensionalCSSStyle = CellCSSStyle & ColumnWidth;
+type DimensionalCSSStyle = NoDimensionCSSStyle & ColumnWidth;
 
 // if the user proceeds to set width and minWidth properties - minWidth will take precedence
 export type CustomColumnSettings<T = DimensionalCSSStyle> = Parent<T>;

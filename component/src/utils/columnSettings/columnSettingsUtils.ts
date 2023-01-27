@@ -121,8 +121,9 @@ export class ColumnSettingsUtils {
     columnsSettings.isDefaultTextRemovable ??= true;
     columnsSettings.isCellTextEditable ??= true;
     columnsSettings.isHeaderTextEditable ??= columnsSettings.isCellTextEditable;
-    // displaySettings is only available for the default columnsSettings
-    columnsSettings.dropdown ??= {displaySettings: {openMethod: {cellClick: true}}};
+    const defaultDisplaySettings = {openMethod: {cellClick: true}};
+    columnsSettings.dropdown ??= {displaySettings: defaultDisplaySettings};
+    columnsSettings.dropdown.displaySettings ??= defaultDisplaySettings;
     const internalSettings = columnsSettings as unknown as ColumnSettingsInternal;
     ColumnSettingsUtils.processCellDimensions(columnsSettings as CustomColumnSettings, false);
     DropdownDisplaySettingsUtil.process(columnsSettings.dropdown.displaySettings);

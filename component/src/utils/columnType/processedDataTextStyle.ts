@@ -5,8 +5,8 @@ import {CellProcessedTextStyle} from '../../types/processedTextStyle';
 import {ResetColumnStyles} from '../columnSettings/resetColumnStyles';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
+import {NoDimensionCSSStyle} from '../../types/cssStyle';
 import {CellText} from '../../types/tableContent';
-import {CellCSSStyle} from '../../types/cssStyle';
 import {ActiveTable} from '../../activeTable';
 
 // this class only operates on data cells
@@ -89,7 +89,7 @@ export class ProcessedDataTextStyle {
     });
   }
 
-  private static unsetStyleOnColumn(at: ActiveTable, columnIndex: number, oldCellStyle?: CellCSSStyle) {
+  private static unsetStyleOnColumn(at: ActiveTable, columnIndex: number, oldCellStyle?: NoDimensionCSSStyle) {
     const columnDetails = at.columnsDetails[columnIndex];
     columnDetails.elements.slice(1).forEach((element, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
@@ -102,7 +102,7 @@ export class ProcessedDataTextStyle {
   // new style
   // prettier-ignore
   public static resetDataCellsStyle(at: ActiveTable, columnIndex: number, changeFunc: () => void,
-      oldCellStyle?: CellCSSStyle) {
+      oldCellStyle?: NoDimensionCSSStyle) {
     ProcessedDataTextStyle.unsetStyleOnColumn(at, columnIndex, oldCellStyle);
     changeFunc(); // arguments are expected to be binded
     ProcessedDataTextStyle.setStyleOnColumn(at, columnIndex);

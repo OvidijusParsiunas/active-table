@@ -1,8 +1,8 @@
-import {CellCSSStyle, StatefulCSSS} from '../../types/cssStyle';
+import {NoDimensionCSSStyle, StatefulCSSS} from '../../types/cssStyle';
 import {GenericObject} from '../../types/genericObject';
 
 export class ElementStyle {
-  public static unsetStyle(element: HTMLElement, style: CellCSSStyle) {
+  public static unsetStyle(element: HTMLElement, style: NoDimensionCSSStyle) {
     const unsetStyles = Object.keys(style).reduce<GenericObject>((obj, styleName) => {
       obj[styleName] = '';
       return obj;

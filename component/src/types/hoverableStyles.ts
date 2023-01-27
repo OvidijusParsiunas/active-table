@@ -1,4 +1,4 @@
 import {CellStateColorProperties} from './cellStateColors';
-import {CellCSSStyle} from './cssStyle';
+import {NoDimensionCSSStyle} from './cssStyle';
 
-export type HoverableStyles = {default?: CellCSSStyle; hoverColors?: CellStateColorProperties};
+export type HoverableStyles = {default?: NoDimensionCSSStyle; hoverColors?: CellStateColorProperties};

@@ -2,12 +2,12 @@ import {ColumnDropdownSettings} from './columnDropdownSettings';
 import {InterfacesUnion, SetRequired} from './utilityTypes';
 import {ColumnTypesInternal} from './columnTypeInternal';
 import {CustomColumnSettings} from './columnsSettings';
+import {NoDimensionCSSStyle} from './cssStyle';
 import {StringDimension} from './dimensions';
-import {CellCSSStyle} from './cssStyle';
 
 // to be used internally
 
-type InternalSettings = CustomColumnSettings<CellCSSStyle> & {
+type InternalSettings = CustomColumnSettings<NoDimensionCSSStyle> & {
   dropdown: ColumnDropdownSettings;
   // encompasses processed types available for the column
   // the reason why this is here is because this is processed once and settings is then added to column details

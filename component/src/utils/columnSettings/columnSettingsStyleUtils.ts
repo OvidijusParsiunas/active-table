@@ -3,9 +3,9 @@ import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {GenericElementUtils} from '../elements/genericElementUtils';
+import {NoDimensionCSSStyle, CSSStyle} from '../../types/cssStyle';
 import {ColumnDetails} from '../columnDetails/columnDetails';
 import {CellElement} from '../../elements/cell/cellElement';
-import {CellCSSStyle, CSSStyle} from '../../types/cssStyle';
 import {ColumnDetailsT} from '../../types/columnDetails';
 import {ElementStyle} from '../elements/elementStyle';
 import {RegexUtils} from '../regex/regexUtils';
@@ -16,7 +16,7 @@ export class ColumnSettingsStyleUtils {
     Object.assign(cellElement.style, settings.cellStyle || {}, isHeader ? settings.headerStyles?.default || {} : {});
   }
 
-  private static unsetHeaderSettingStyle(headerElement: HTMLElement, style: CellCSSStyle) {
+  private static unsetHeaderSettingStyle(headerElement: HTMLElement, style: NoDimensionCSSStyle) {
     Object.keys(style).forEach((styleName) => {
       GenericElementUtils.setStyle(headerElement, styleName, '');
     });

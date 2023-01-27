@@ -27,7 +27,7 @@ and clicking on the overlay via `overlayClick`.
 
 #### `DropdownCellOverlayStyle` {#DropdownCellOverlayStyle}
 
-- Type: `{ default?: { backgroundColor: string }`, `hover?: { backgroundColor: string } }`
+- Type: { `default?`: { `backgroundColor: string` }, `hover?`: { `backgroundColor: string` } }
 
 #### Example
 
@@ -90,3 +90,9 @@ import Tabs from '@theme/Tabs';
 </Tabs>
 
 <LineBreak></LineBreak>
+
+### `NoDimensionCSSStyle` {#NoDimensionCSSStyle}
+
+- Type: { `CSSStyle` WORK & `!width` & `!minWidth` & `!maxWidth` & `!height` & `!minHeight` & `!maxHeight` }
+
+Object containing all `CSSStyle` properties except `width`, `minWidth`, `maxWidth`, `height`, `minHeight` and `maxHeight`.

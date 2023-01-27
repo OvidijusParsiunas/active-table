@@ -7,9 +7,9 @@ import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {CheckboxCellElement} from './checkboxCell/checkboxCellElement';
 import {CaretDisplayFix} from '../../utils/browser/caretDisplayFix';
+import {NoDimensionCSSStyle} from '../../types/cssStyle';
 import {ColumnWidth} from '../../types/columnsSettings';
 import {CellText} from '../../types/tableContent';
-import {CellCSSStyle} from '../../types/cssStyle';
 import {ActiveTable} from '../../activeTable';
 
 export class CellElement {
@@ -18,7 +18,9 @@ export class CellElement {
   public static readonly HEADER_TAG = 'TH';
   public static readonly DATA_TAG = 'TD';
 
-  public static setDefaultCellStyle(cellElement: HTMLElement, cellStyle?: CellCSSStyle, customStyle?: CellCSSStyle) {
+  // prettier-ignore
+  public static setDefaultCellStyle(cellElement: HTMLElement,
+      cellStyle?: NoDimensionCSSStyle, customStyle?: NoDimensionCSSStyle) {
     Object.assign(cellElement.style, cellStyle, customStyle);
   }
 
@@ -30,7 +32,7 @@ export class CellElement {
   }
 
   // prettier-ignore
-  public static createContentCell(isHeader: boolean, cellStyle?: CellCSSStyle, customStyle?: CellCSSStyle,
+  public static createContentCell(isHeader: boolean, cellStyle?: NoDimensionCSSStyle, customStyle?: NoDimensionCSSStyle,
       isUsedAsAButton?: boolean) {
     const cellElement = CellElement.createBaseCell(isHeader);
     if (isHeader && isUsedAsAButton) cellElement.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);

@@ -135,17 +135,6 @@ cannot be reduced any further the excess ones will not be removed even if `prese
 
 Default settings for all columns.
 
-#### `ColumnDropdownSettings` {#ColumnDropdownSettings}
-
-- Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`isSortAvailable?: boolean`,<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`isDeleteAvailable?: boolean`,<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`isInsertLeftAvailable?: boolean`,<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`isInsertRightAvailable?: boolean`,<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`isMoveAvailable?: boolean`<br />
-  }}
-- Default: _true_ for all
-
 #### Example
 
 <TableContainer>
@@ -222,7 +211,7 @@ Default settings for all columns.
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp;`headerName: string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`ColumnSettings`](#ColumnSettings),<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`dropdown?: ColumnDropdownSettings`](#ColumnSettings), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`dropdown?: ColumnDropdownSettings`](#ColumnDropdownSettings), <br />
   }[]
 
 Custom settings for columns that have a header text that matches the `headerName` string.
@@ -306,7 +295,7 @@ Object types that are shared by [`columnsSettings`](#columnsSettings) and [`cust
   &nbsp;&nbsp;&nbsp;&nbsp; [`defaultColumnTypes?: DEFAULT_COLUMN_TYPES[]`](#DEFAULT_COLUMN_TYPES), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`customColumnTypes?: ColumnType[]`](#ColumnType), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `activeTypeName?: string`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`dropdown?: ColumnDropdownSettingsDisplay`](https), WORK <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`dropdown?: ColumnDropdownSettingsDisplay`](#ColumnDropdownSettings) <br />
   }
 - Default: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp; _defaultText: ""_, <br />
@@ -1330,3 +1319,83 @@ The `onCellUpdate` WORK property will return string "true" if the checkbox is ch
 - Type: `"Text"` | `"Number"` | `"Currency"` | `"Date d-m-y"` | `"Date m-d-y"` | `"Checkbox"` | `"Select"` | `"Label"`
 
 Default column type names.
+
+### `ColumnDropdownSettings` {#ColumnDropdownSettings}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isSortAvailable?: boolean`,<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isDeleteAvailable?: boolean`,<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isInsertLeftAvailable?: boolean`,<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isInsertRightAvailable?: boolean`,<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isMoveAvailable?: boolean`<br />
+  }
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isSortAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isDeleteAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isInsertLeftAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isInsertRightAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isMoveAvailable: true_ <br />
+  }
+
+#### Example
+
+<TableContainer>
+  <active-table
+    columnsSettings='{
+      "dropdown": {
+        "isSortAvailable": false,
+        "isDeleteAvailable": true,
+        "isInsertLeftAvailable": false,
+        "isInsertRightAvailable": true
+      }}'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnsSettings='{
+    "dropdown": {
+      "isSortAvailable": false,
+      "isDeleteAvailable": true,
+      "isInsertLeftAvailable": false,
+      "isInsertRightAvailable": true
+    }}'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnsSettings='{
+    "dropdown": {
+      "isSortAvailable": false,
+      "isDeleteAvailable": true,
+      "isInsertLeftAvailable": false,
+      "isInsertRightAvailable": true
+    }}'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>

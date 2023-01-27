@@ -4,8 +4,8 @@ import {GenericElementUtils} from '../elements/genericElementUtils';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
+import {NoDimensionCSSStyle} from '../../types/cssStyle';
 import {ElementStyle} from '../elements/elementStyle';
-import {CellCSSStyle} from '../../types/cssStyle';
 
 export class ResetColumnStyles {
   public static applyDefaultStyles(columnElements: HTMLElement[], columnsSettings: ColumnsSettingsDefault) {
@@ -25,7 +25,7 @@ export class ResetColumnStyles {
   // if this operation turns out to be expensive - try to save and reuse the default style
   // prettier-ignore
   public static setDefaultStyle(columnDetails: ColumnDetailsT, processedStyle: CellProcessedTextStyle,
-      textContainerElement: HTMLElement, columnsSettings: ColumnsSettingsDefault, oldCellStyle?: CellCSSStyle) {
+      textContainerElement: HTMLElement, columnsSettings: ColumnsSettingsDefault, oldCellStyle?: NoDimensionCSSStyle) {
     ResetColumnStyles.unsetLastAppliedStyle(processedStyle, textContainerElement);
     if (oldCellStyle) ElementStyle.unsetStyle(textContainerElement, oldCellStyle);
     CellElement.setDefaultCellStyle(textContainerElement, columnsSettings.cellStyle);
