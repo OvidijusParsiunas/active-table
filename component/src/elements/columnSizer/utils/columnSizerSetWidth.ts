@@ -32,7 +32,8 @@ export class ColumnSizerSetWidth {
   // prettier-ignore
   private static correctWidths(selectedColumnSizer: SelectedColumnSizerT, crushedElement: HTMLElement,
       sideElement: HTMLElement, initialWidthsTotal: number) {
-    if (crushedElement.offsetWidth !== Number.parseInt(crushedElement.style.width)) {
+    // Using Number.parseFloat as Number.parseInt rounds with ceil
+    if (crushedElement.offsetWidth !== Math.round(Number.parseFloat(crushedElement.style.width))) {
       const leftValue = `${crushedElement.offsetWidth}px`;
       const rightValue = `${initialWidthsTotal - crushedElement.offsetWidth}px`;
       crushedElement.style.width = leftValue;
