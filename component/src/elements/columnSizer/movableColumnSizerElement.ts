@@ -1,9 +1,9 @@
-import {ColumnSizerT, UserSetColumnSizerStyle} from '../../types/columnSizer';
+import {ColumnSizerT, ColumnResizerColors} from '../../types/columnSizer';
 import {PX} from '../../types/dimensions';
 
 // REF-12
 export class MovableColumnSizerElement {
-  private static readonly DEFAULT_BACKGROUND_COLOR = '#4668ed';
+  public static readonly DEFAULT_BACKGROUND_COLOR = '#4668ed';
   private static readonly MOVABLE_SIZER_CLASS = 'movable-column-sizer';
   private static readonly VERTICAL_LINE_CLASS = 'movable-column-sizer-vertical-line';
 
@@ -46,16 +46,12 @@ export class MovableColumnSizerElement {
     return verticalLine;
   }
 
-  private static getBackgroundColor(userSetColumnSizerStyle: UserSetColumnSizerStyle) {
-    return (
-      userSetColumnSizerStyle.click?.backgroundColor ||
-      userSetColumnSizerStyle.hover?.backgroundColor ||
-      MovableColumnSizerElement.DEFAULT_BACKGROUND_COLOR
-    );
+  private static getMovableBackgroundColor(columnResizerColors: ColumnResizerColors) {
+    return columnResizerColors.click || columnResizerColors.hover || MovableColumnSizerElement.DEFAULT_BACKGROUND_COLOR;
   }
 
-  public static create(userSetColumnSizerStyle: UserSetColumnSizerStyle) {
-    const backgroundColor = MovableColumnSizerElement.getBackgroundColor(userSetColumnSizerStyle) as string;
+  public static create(columnResizerColors: ColumnResizerColors) {
+    const backgroundColor = MovableColumnSizerElement.getMovableBackgroundColor(columnResizerColors) as string;
     const movableSizer = document.createElement('div');
     movableSizer.style.backgroundColor = backgroundColor;
     movableSizer.classList.add(MovableColumnSizerElement.MOVABLE_SIZER_CLASS);

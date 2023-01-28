@@ -29,11 +29,11 @@ import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {PaginationInternal} from './types/paginationInternal';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
-import {UserSetColumnSizerStyle} from './types/columnSizer';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
 import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
+import {ColumnResizerColors} from './types/columnSizer';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
@@ -212,7 +212,7 @@ export class ActiveTable extends LitElement {
 
   // called columnResizer for the client - columnSizer in the code
   @property({type: Object})
-  columnResizerStyle: UserSetColumnSizerStyle = {};
+  columnResizerColors: ColumnResizerColors = {};
 
   @property({type: Object})
   rowDropdown: RowDropdownSettings = {displaySettings: {isAvailable: true, openMethod: {cellClick: true}}};

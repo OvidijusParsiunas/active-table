@@ -49,7 +49,7 @@ export class ColumnSizerExtrinsicEvents {
 
   private static setSizerStyleToHoverNoAnimation(columnSizer: ColumnSizerT, anotherColor?: string) {
     const {width} = columnSizer.styles.hover;
-    ColumnSizerElement.setHoverStyle(columnSizer.element, width, false, anotherColor);
+    ColumnSizerElement.setHoverStyle(columnSizer, width, false, anotherColor);
     ColumnSizerElement.unsetBackgroundImage(columnSizer.element);
   }
 

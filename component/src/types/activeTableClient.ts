@@ -5,7 +5,7 @@ import {AuxiliaryTableContent} from './auxiliaryTableContent';
 import {RowDropdownSettings} from './rowDropdownSettings';
 import {DynamicCellUpdateT} from './dynamicCellUpdateT';
 import {CustomColumnsSettings} from './columnsSettings';
-import {UserSetColumnSizerStyle} from './columnSizer';
+import {ColumnResizerColors} from './columnSizer';
 import {ColumnsWidths} from './columnsWidths';
 import {RowHoverStyle} from './rowHoverStyle';
 import {TableContent} from './tableContent';
@@ -37,7 +37,7 @@ export interface ActiveTable extends LitElement {
   maxRows?: number;
   auxiliaryTableContent?: AuxiliaryTableContent;
   dataStartsAtHeader?: boolean;
-  columnResizerStyle?: UserSetColumnSizerStyle;
+  columnResizerColors?: ColumnResizerColors;
   columnDropdownDisplaySettings?: DropdownDisplaySettings;
   rowDropdown?: RowDropdownSettings;
   stripedRows?: StripedRowsT | boolean;

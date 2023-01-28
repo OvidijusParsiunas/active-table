@@ -17,9 +17,7 @@ export class ColumnSizerOverlayEvents {
     ColumnSizerElement.display(columnSizer.element);
     ColumnSizerElement.setTransitionTime(columnSizer.element);
     setTimeout(() => {
-      if (columnSizer.isSizerHovered) {
-        ColumnSizerElement.setHoverStyle(columnSizer.element, width, false);
-      }
+      if (columnSizer.isSizerHovered) ColumnSizerElement.setHoverStyle(columnSizer, width, false);
     }, 1);
     // only remove the background image if the user is definitely hovering over it
     setTimeout(() => {

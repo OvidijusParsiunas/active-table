@@ -124,6 +124,60 @@ cannot be reduced any further the excess ones will not be removed even if `prese
 
 <LineBreak></LineBreak>
 
+### `columnResizerColors` {#columnResizerColors}
+
+- Type: { `hover?: string`, `click?: string` }
+- Default: { _hover: #808080_, _click: #4668ed_ }
+
+Column width resizer overlay background color style for hover and click events.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    columnResizerColors='{ "hover": "#87ddff", "click": "#369cfd" }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnResizerColors='{ "hover": "#87ddff", "click": "#369cfd" }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnResizerColors='{ "hover": "#87ddff", "click": "#369cfd" }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
 ### `columnsSettings` {#columnsSettings}
 
 - Type: {<br />

@@ -1,7 +1,7 @@
 import {UpdateRowElement} from '../../utils/insertRemoveStructure/update/updateRowElement';
-import {ColumnSizerT, UserSetColumnSizerStyle} from '../../types/columnSizer';
 import {ColumnSizerFillerElement} from './columnSizerFillerElement';
 import {SEMI_TRANSPARENT_COLOR} from '../../consts/colors';
+import {ColumnSizerT} from '../../types/columnSizer';
 import {PX} from '../../types/dimensions';
 
 export interface BorderWidths {
@@ -23,8 +23,8 @@ export class ColumnSizerElement {
   public static readonly FILLED_BACKGROUND_IMAGE =
     'linear-gradient(180deg, #cdcdcd, #cdcdcd 75%, transparent 75%, transparent 100%)';
   public static readonly EMPTY_BACKGROUND_IMAGE = 'none';
-  // this is not part of the ColumnSizerStyles object as it remains consistent for all sizers after setting it once
-  public static HOVER_COLOR = 'grey';
+  // this is not part of the ColumnResizerStyles object as it remains consistent for all sizers after setting it once
+  public static readonly DEFAULT_HOVER_COLOR = 'grey';
   private static readonly COLUMN_SIZER_CLASS = 'column-sizer';
   private static readonly COLUMN_SIZER_ID_PREFIX = `${ColumnSizerElement.COLUMN_SIZER_CLASS}-`;
   public static readonly TRANSITION_TIME_ML = 200;
@@ -71,17 +71,11 @@ export class ColumnSizerElement {
     columnSizerElement.id = `${ColumnSizerElement.COLUMN_SIZER_ID_PREFIX}${sizerIndex}`;
   }
 
-  private static setHoverColorProperty(userSetColumnSizerStyle: UserSetColumnSizerStyle) {
-    const backgroundColor = userSetColumnSizerStyle?.hover?.backgroundColor;
-    if (backgroundColor) ColumnSizerElement.HOVER_COLOR = backgroundColor;
-  }
-
-  public static create(sizerIndex: number, userSetColumnSizerStyle: UserSetColumnSizerStyle) {
+  public static create(sizerIndex: number, hoverColor?: string) {
     const columnSizerElement = document.createElement('div');
     ColumnSizerElement.setElementId(columnSizerElement, sizerIndex);
-    ColumnSizerElement.setHoverColorProperty(userSetColumnSizerStyle);
     columnSizerElement.classList.add(ColumnSizerElement.COLUMN_SIZER_CLASS);
-    const fillerElement = ColumnSizerFillerElement.create();
+    const fillerElement = ColumnSizerFillerElement.create(hoverColor);
     columnSizerElement.append(fillerElement);
     ColumnSizerElement.hide(columnSizerElement);
     return columnSizerElement;
@@ -114,10 +108,11 @@ export class ColumnSizerElement {
     }
   }
 
-  public static setHoverStyle(columnSizerElement: HTMLElement, width: PX, setTransition: boolean, anotherColor?: string) {
-    ColumnSizerFillerElement.display(columnSizerElement.children[0] as HTMLElement);
-    if (setTransition) ColumnSizerElement.setTransitionTime(columnSizerElement);
-    ColumnSizerElement.setBackgroundColor(columnSizerElement, anotherColor || ColumnSizerElement.HOVER_COLOR);
-    columnSizerElement.style.width = width;
+  public static setHoverStyle(columnSizer: ColumnSizerT, width: PX, setTransition: boolean, anotherColor?: string) {
+    const {element, hoverColor} = columnSizer;
+    ColumnSizerFillerElement.display(element.children[0] as HTMLElement);
+    if (setTransition) ColumnSizerElement.setTransitionTime(element);
+    ColumnSizerElement.setBackgroundColor(element, anotherColor || hoverColor);
+    element.style.width = width;
   }
 }

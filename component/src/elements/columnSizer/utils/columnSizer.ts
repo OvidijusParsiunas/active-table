@@ -1,8 +1,8 @@
+import {ColumnResizerColors, ColumnSizerT} from '../../../types/columnSizer';
 import {BorderWidths, ColumnSizerElement} from '../columnSizerElement';
 import {MovableColumnSizerElement} from '../movableColumnSizerElement';
 import {ColumnSizerOverlayElement} from '../columnSizerOverlayElement';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
-import {ColumnSizerT} from '../../../types/columnSizer';
 import {Optional} from '../../../types/utilityTypes';
 import {ActiveTable} from '../../../activeTable';
 import {PX} from '../../../types/dimensions';
@@ -63,7 +63,8 @@ export class ColumnSizer {
 
   // prettier-ignore
   public static createObject(columnSizerElement: HTMLElement, columnsDetails: ColumnsDetailsT, sizerIndex: number,
-      tableElement: HTMLElement, overlayElement?: HTMLElement, movableColumnSizer?: HTMLElement): ColumnSizerT {
+      tableElement: HTMLElement, overlayElement?: HTMLElement, movableColumnSizer?: HTMLElement,
+      columnResizerColors?: ColumnResizerColors): ColumnSizerT {
     const borderWidthsInfo = ColumnSizer.generateBorderWidthsInfo(columnsDetails, sizerIndex);
     const totalCellBorderWidth = ColumnSizer.getTotalCellBorderWidth(borderWidthsInfo);
     const isLastCell = columnsDetails.length - 1 === sizerIndex;
@@ -73,7 +74,7 @@ export class ColumnSizer {
     // movableElement should be treated as always present in columnSizer, but InsertRemoveColumnSizer needs to create
     // a new object to overwrite its other properties
     const shouldWidthBeIncreased = ColumnSizer.shouldWidthBeIncreased(totalCellBorderWidth);
-    const columnSizerState: Optional<ColumnSizerT, 'movableElement' | 'overlayElement'> = {
+    const columnSizerState: Optional<ColumnSizerT, 'movableElement' | 'overlayElement' | 'hoverColor'> = {
       element: columnSizerElement,
       styles: {
         default: {
@@ -91,6 +92,9 @@ export class ColumnSizer {
       isSizerHovered: false,
       isMouseUpOnSizer: false,
     };
+    if (columnResizerColors) {
+      columnSizerState.hoverColor = columnResizerColors.hover || ColumnSizerElement.DEFAULT_HOVER_COLOR;
+    }
     if (movableColumnSizer) columnSizerState.movableElement = movableColumnSizer;
     if (overlayElement) columnSizerState.overlayElement = overlayElement;
     return columnSizerState as ColumnSizerT;
@@ -98,12 +102,12 @@ export class ColumnSizer {
 
   // prettier-ignore
   public static create(at: ActiveTable, sizerIndex: number) {
-    const {columnsDetails, tableElementRef, columnResizerStyle: userSetColumnSizerStyle} = at;
-    const columnSizerElement = ColumnSizerElement.create(sizerIndex, userSetColumnSizerStyle);
-    const movableColumnSizer = MovableColumnSizerElement.create(userSetColumnSizerStyle);
+    const {columnsDetails, tableElementRef, columnResizerColors} = at;
+    const columnSizerElement = ColumnSizerElement.create(sizerIndex, columnResizerColors.hover);
+    const movableColumnSizer = MovableColumnSizerElement.create(columnResizerColors);
     const overlayElement = ColumnSizerOverlayElement.create();
     const columnSizer = ColumnSizer.createObject(columnSizerElement, columnsDetails, sizerIndex,
-      tableElementRef as HTMLElement, overlayElement, movableColumnSizer);
+      tableElementRef as HTMLElement, overlayElement, movableColumnSizer, columnResizerColors);
     ColumnSizerOverlayElement.applyEvents(at, columnSizer);
     return columnSizer;
   }

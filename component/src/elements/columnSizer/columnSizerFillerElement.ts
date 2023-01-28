@@ -10,10 +10,10 @@ import {PX} from '../../types/dimensions';
 export class ColumnSizerFillerElement {
   private static readonly SIZER_FILLER_CLASS = 'column-sizer-filler';
 
-  public static create() {
+  public static create(hoverColor?: string) {
     const fillerElement = document.createElement('div');
     fillerElement.classList.add(ColumnSizerFillerElement.SIZER_FILLER_CLASS);
-    fillerElement.style.backgroundColor = ColumnSizerElement.HOVER_COLOR;
+    fillerElement.style.backgroundColor = hoverColor || ColumnSizerElement.DEFAULT_HOVER_COLOR;
     fillerElement.style.display = 'none';
     return fillerElement;
   }

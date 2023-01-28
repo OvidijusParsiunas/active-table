@@ -1,4 +1,3 @@
-import {StatefulCSSS, NoDimensionCSSStyle} from './cssStyle';
 import {PX} from './dimensions';
 
 export interface SizerMoveLimits {
@@ -7,7 +6,7 @@ export interface SizerMoveLimits {
 }
 
 // these are styles that are dynamic and also depend on the column index
-export interface ColumnSizerStyles {
+export interface ColumnResizerStyles {
   default: {
     // this is dynamic as it can depend on the index of the column this is on
     backgroundImage: string;
@@ -29,10 +28,12 @@ export interface ColumnSizerT {
   element: HTMLElement;
   movableElement: HTMLElement;
   overlayElement: HTMLElement;
-  styles: ColumnSizerStyles;
+  styles: ColumnResizerStyles;
   isSideCellHovered: boolean;
   isSizerHovered: boolean;
   isMouseUpOnSizer: boolean;
+  // color that needs to be passed down for events and is set here to not overwrite it when updating the object
+  hoverColor: string;
 }
 
 export interface SelectedColumnSizerT {
@@ -44,4 +45,5 @@ export interface SelectedColumnSizerT {
   initialOffset: number;
 }
 
-export type UserSetColumnSizerStyle = Omit<StatefulCSSS<Pick<NoDimensionCSSStyle, 'backgroundColor'>>, 'default'>;
+// called columnResizer for the client - columnSizer in the code
+export type ColumnResizerColors = {hover?: string; click?: string};
