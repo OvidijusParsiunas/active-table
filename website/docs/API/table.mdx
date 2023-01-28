@@ -6,12 +6,12 @@ sidebar_position: 1
 
 Properties related to the table:
 
-### `tableStyle`{#tableStyle}
+### `tableStyle` {#tableStyle}
 
-- Type: [`CSSStyle`](http) WORK
+- Type: [`CSSStyle`](./types#CSSStyle)
 <!-- CSSObject - min width not allowed -->
 
-CSS that will affect the table element.
+Object containing CSS styling properties for the table element. <br />
 
 #### Example
 
@@ -22,7 +22,11 @@ import Tabs from '@theme/Tabs';
 
 <TableContainer>
   <active-table
-    tableStyle='{"borderColor":"black", "width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px"}'
+    tableStyle='{
+      "borderRadius": "10px",
+      "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px",
+      "width":"100%"
+    }'
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
@@ -37,7 +41,13 @@ import Tabs from '@theme/Tabs';
 <TabItem value="js" label="Sample">
 
 ```text
-<active-table tableStyle='{"borderColor":"black"}'</active-table>
+<active-table
+  tableStyle='{
+    "borderRadius": "10px",
+    "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px",
+    "width":"100%"
+  }'
+></active-table>
 ```
 
 </TabItem>
@@ -45,7 +55,11 @@ import Tabs from '@theme/Tabs';
 
 ```text
 <active-table
-  tableStyle='{"borderColor":"black"}'
+  tableStyle='{
+    "borderRadius": "10px",
+    "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px",
+    "width":"100%"
+  }'
   content='[
     ["Planet", "Diameter", "Mass", "Moons","Density"],
     ["Earth", 12756, 5.97, 1, 5514],
@@ -57,3 +71,10 @@ import Tabs from '@theme/Tabs';
 
 </TabItem>
 </Tabs>
+
+:::tip
+When table `width` needs to _inherit_ the parent element width, set `width` to 100% as displayed in the example.
+:::
+:::note
+`minWidth`, `height`, `minHeight`, `maxHeight` properties are not supported.
+:::

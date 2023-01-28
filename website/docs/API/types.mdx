@@ -91,8 +91,15 @@ import Tabs from '@theme/Tabs';
 
 <LineBreak></LineBreak>
 
+### `CSSStyle` {#CSSStyle}
+
+- Type: [`CSSStyleDeclaration`](https://webplatform.github.io/docs/css/cssom/CSSStyleDeclaration/CSSStyleDeclaration/)
+
+Object containing all properties defined in the CSSStyleDeclaration [`specification`](https://webplatform.github.io/docs/css/cssom/CSSStyleDeclaration/CSSStyleDeclaration/)
+as optionals. A TypeScript example can be found in this [link](https://github.com/microsoft/TypeScript-DOM-lib-generator/blob/bf671e99615b06404db7a89fa9ae05bf14a8e47c/baselines/dom.generated.d.ts#L2737).
+
 ### `NoDimensionCSSStyle` {#NoDimensionCSSStyle}
 
-- Type: { `CSSStyle` WORK & `!width` & `!minWidth` & `!maxWidth` & `!height` & `!minHeight` & `!maxHeight` }
+- Type: { [`CSSStyle`](#CSSStyle) & `!width` & `!minWidth` & `!maxWidth` & `!height` & `!minHeight` & `!maxHeight` }
 
-Object containing all `CSSStyle` properties except `width`, `minWidth`, `maxWidth`, `height`, `minHeight` and `maxHeight`.
+Object containing all [`CSSStyle`](#CSSStyle) properties except `width`, `minWidth`, `maxWidth`, `height`, `minHeight` and `maxHeight`.

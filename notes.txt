@@ -215,7 +215,8 @@ to be added (incl. render) even when preserveNarrowColumns is true.
 
 REF-25
 Given that the add new row button is not always visible and there is no css selector that can identify the last visible row, we manually
-mark the last visible row with an id. This is done to not display bottom border if last row cells contain one in their style settings.
+mark the last visible row with an id. This is done to not display bottom border if last row cells contain one in their style settings
+and to inherit bottom table border radius.
 
 REF-26
 To insert a header row when there is an existing one - we create a new row below it and move the content of the header row to it.

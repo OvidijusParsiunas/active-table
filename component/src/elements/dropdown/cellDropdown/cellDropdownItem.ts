@@ -188,6 +188,7 @@ export class CellDropdownItem {
     }, {});
   }
 
+  // WORK - need a more global object to keep colors consistent between columns
   // prettier-ignore
   private static aggregateItemToColor(content: TableContent, columnIndex: number, itemToColor: ItemToColor,
       newItemColors?: string[]) {

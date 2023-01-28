@@ -1,9 +1,9 @@
 import {ColumnDropdownCellOverlay} from '../../elements/dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlay';
 import {HeaderIconCellElement} from '../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
+import {ColumnSettingsInternal, ColumnsSettingsMap, ColumnWidthsI} from '../../types/columnsSettingsInternal';
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {DropdownDisplaySettingsUtil} from '../../elements/dropdown/dropdownDisplaySettingsUtil';
-import {ColumnSettingsInternal, ColumnsSettingsMap} from '../../types/columnsSettingsInternal';
 import {CustomColumnsSettings, CustomColumnSettings} from '../../types/columnsSettings';
 import {ColumnSettingsDefaultTextUtils} from './columnSettingsDefaultTextUtils';
 import {StringDimensionUtils} from '../tableDimensions/stringDimensionUtils';
@@ -87,11 +87,11 @@ export class ColumnSettingsUtils {
     if (!cellStyle) return;
     const internalSettings = settings as unknown as ColumnSettingsInternal;
     if (cellStyle.width) {
-      if (settings.isResizable === false) {
-        internalSettings.widths = {staticWidth: cellStyle.width};
-      } else {
-        internalSettings.widths = {initialWidth: cellStyle.width};
-      }
+      const key: keyof ColumnWidthsI = settings.isResizable === false ? 'staticWidth' : 'initialWidth';
+      internalSettings.widths = {[key]: cellStyle.width} as unknown as ColumnWidthsI;
+      // when customSetting does not have width set and is resizable, but default settings have a static width set
+    } else if (internalSettings.widths && settings.isResizable && internalSettings.widths.staticWidth) {
+      internalSettings.widths = {initialWidth: internalSettings.widths.staticWidth};
     }
     StringDimensionUtils.removeAllDimensions(cellStyle);
   }
