@@ -1,5 +1,6 @@
 import {ElementVisibility} from '../../../../utils/elements/elementVisibility';
 import {TableBorderDimensions} from '../../../../types/tableBorderDimensions';
+import {PaginationInternal} from '../../../../types/paginationInternal';
 import {RowsPerPageDropdownEvents} from './rowsPerPageDropdownEvents';
 import {RowsPerPageDropdownItem} from './rowsPerPageDropdownItem';
 import {ActiveTable} from '../../../../activeTable';
@@ -8,8 +9,6 @@ import {PX} from '../../../../types/dimensions';
 import {SIDE} from '../../../../types/side';
 
 export class RowsPerPageDropdown {
-  private static DROPDOWN_WIDTH = 24;
-
   public static hide(dropdownElement: HTMLElement, dropdownItems?: HTMLElement[]) {
     Dropdown.hide(dropdownElement);
     const items = dropdownItems || (Array.from(dropdownElement.children) as HTMLElement[]);
@@ -20,16 +19,16 @@ export class RowsPerPageDropdown {
     return `${buttonElement.offsetTop + buttonElement.offsetHeight}px`;
   }
 
-  private static getLeftPropertyToCenterDropdown(buttonElement: HTMLElement) {
+  private static getLeftPropertyToCenterDropdown(buttonElement: HTMLElement, dropdownWidth: number) {
     const leftOffset = buttonElement.offsetLeft + buttonElement.offsetWidth / 2;
-    return `${leftOffset - RowsPerPageDropdown.DROPDOWN_WIDTH / 2}px`;
+    return `${leftOffset - dropdownWidth / 2}px`;
   }
 
   // prettier-ignore
   private static displayAndSetDropdownPosition(buttonElement: HTMLElement, dropdownElement: HTMLElement,
-      borderDimensions: TableBorderDimensions) {
+      dropdownWidth: number, borderDimensions: TableBorderDimensions) {
     dropdownElement.style.bottom = '';
-    dropdownElement.style.left = RowsPerPageDropdown.getLeftPropertyToCenterDropdown(buttonElement);
+    dropdownElement.style.left = RowsPerPageDropdown.getLeftPropertyToCenterDropdown(buttonElement, dropdownWidth);
     dropdownElement.style.top = RowsPerPageDropdown.getDropdownTopPosition(buttonElement);
     // needs to be displayed here to evalute if in view port
     Dropdown.display(dropdownElement);
@@ -40,22 +39,24 @@ export class RowsPerPageDropdown {
     }
   }
 
-  public static display(buttonElement: HTMLElement, dropdown: HTMLElement, borderDimensions: TableBorderDimensions) {
-    RowsPerPageDropdown.displayAndSetDropdownPosition(buttonElement, dropdown, borderDimensions);
+  // prettier-ignore
+  public static display(buttonElement: HTMLElement, dropdown: HTMLElement, dropdownWidth: number,
+      borderDimensions: TableBorderDimensions) {
+    RowsPerPageDropdown.displayAndSetDropdownPosition(buttonElement, dropdown, dropdownWidth, borderDimensions);
   }
 
-  private static setWidth(dropdownElement: HTMLElement, rowsPerPageOptionsItemText: string[]) {
-    const maxTextCharLength = rowsPerPageOptionsItemText.reduce((currrentMax, value) => {
+  private static setWidth(dropdownElement: HTMLElement, pagination: PaginationInternal) {
+    const maxTextCharLength = pagination.rowsPerPageOptionsItemText.reduce((currrentMax, value) => {
       return isNaN(Number(value)) ? currrentMax : Math.max(currrentMax, value.length);
     }, 1);
     const textLength = maxTextCharLength * 8;
-    RowsPerPageDropdown.DROPDOWN_WIDTH = RowsPerPageDropdown.DROPDOWN_WIDTH + textLength;
-    dropdownElement.style.width = `${RowsPerPageDropdown.DROPDOWN_WIDTH}px`;
+    pagination.dropdownWidth = pagination.dropdownWidth + textLength;
+    dropdownElement.style.width = `${pagination.dropdownWidth}px`;
   }
 
   public static create(at: ActiveTable, optionsButton: HTMLElement) {
     const dropdownElement = Dropdown.createBase();
-    RowsPerPageDropdown.setWidth(dropdownElement, at.paginationInternal.rowsPerPageOptionsItemText);
+    RowsPerPageDropdown.setWidth(dropdownElement, at.paginationInternal);
     RowsPerPageDropdownItem.populate(at, dropdownElement, optionsButton);
     RowsPerPageDropdownEvents.set(at, dropdownElement);
     return dropdownElement;

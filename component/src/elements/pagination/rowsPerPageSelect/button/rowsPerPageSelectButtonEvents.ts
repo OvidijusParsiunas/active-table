@@ -7,13 +7,15 @@ import {ActiveTable} from '../../../../activeTable';
 import {Dropdown} from '../../../dropdown/dropdown';
 
 export class RowsPerPageSelectButtonEvents {
+  // prettier-ignore
   private static buttonClick(this: ActiveTable, event: MouseEvent) {
     const dropdownElement = this.paginationInternal.rowsPerPageDropdown as HTMLElement;
     if (Dropdown.isDisplayed(dropdownElement)) {
       Dropdown.hide(dropdownElement);
     } else {
       const buttonElement = event.target as HTMLElement;
-      RowsPerPageDropdown.display(buttonElement, dropdownElement, this.tableDimensions.border);
+      RowsPerPageDropdown.display(buttonElement, dropdownElement,
+        this.paginationInternal.dropdownWidth, this.tableDimensions.border);
     }
   }
 

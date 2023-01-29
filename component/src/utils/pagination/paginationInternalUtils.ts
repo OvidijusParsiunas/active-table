@@ -202,6 +202,7 @@ export class PaginationInternalUtils {
       displayFirstLast: true,
       displayNumberOfVisibleRows: true,
       style: {}, // this is going to be populated during the call of processInternal method
+      dropdownWidth: 24,
       positions: {
         pageButtons: {
           side: PaginationInternalUtils.DEFAULT_SIDE,

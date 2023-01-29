@@ -11,6 +11,7 @@ export interface IPaginationStyle extends PaginationStyle<Required<StatefulCSSS>
 
 export interface PaginationInternal extends Required<Pagination> {
   style: IPaginationStyle;
+  dropdownWidth: number;
   positions: Required<PaginationPositions>;
   buttonContainer: HTMLElement;
   numberOfVisibleRowsElement?: HTMLElement;
