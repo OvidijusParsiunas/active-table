@@ -6,10 +6,10 @@ sidebar_position: 3
 
 Properties related to the header row.
 
-### `stickyHeader`
+### `stickyHeader` {#stickyHeader}
 
 - Type: `boolean`
-- Default: _false_ or if WORK `overflow` property is defined set to _true_
+- Default: _false_ or if [`overflow`](./table#overflow) property is defined set to _true_
 
 Header row will remain at the top of the table when there is overflow in the table or a parent element.
 
@@ -63,6 +63,11 @@ import Tabs from '@theme/Tabs';
 
 </TabItem>
 </Tabs>
+
+:::note
+The scrollbar in this example is located on the parent div element, however when using the [`overflow`](./table#overflow) property
+it would be placed directly on the actual table component.
+:::
 
 <LineBreak></LineBreak>
 

@@ -35,7 +35,8 @@ export class OverflowUtils {
   // prettier-ignore
   private static moveBorderToOverflowContainer(overflowContainer: HTMLElement, tableElement: HTMLElement) {
     GenericElementUtils.moveStyles(tableElement, overflowContainer,
-      'borderRight', 'borderLeft', 'borderTop', 'borderBottom');
+      'borderRight', 'borderLeft', 'borderTop', 'borderBottom', 'borderRadius',
+      'borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomLeftRadius', 'borderBottomRightRadius');
     tableElement.style.border = 'unset';
   }
 
