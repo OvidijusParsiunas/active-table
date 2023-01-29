@@ -50,35 +50,33 @@ export class UpdateIndexColumnWidth {
     if (UpdateIndexColumnWidth.shouldTextBeWrapped(at)) UpdateIndexColumnWidth.forceWrap(at, firstRow);
   }
 
-  private static getCellOverflow(cell: HTMLElement) {
+  private static getCellWidth(cell: HTMLElement) {
     return cell.scrollWidth + (Number.parseInt(getComputedStyle(cell).borderRightWidth) || 0);
   }
 
-  private static getIndexColumnOverflowWidth(firstRow: HTMLElement, lastCell: HTMLElement) {
-    const overflowWidth = UpdateIndexColumnWidth.getCellOverflow(lastCell);
-    // if using pagination and the last row is not visible, then overflowWidth will be 0 and we must temporarily add
+  private static getIndexColumnWidth(firstRow: HTMLElement, lastCell: HTMLElement) {
+    // if using pagination and the last row is not visible, then scrollWidth will be 0 and we must temporarily add
     // the last cell content to the first data row cell to measure the overflow
-    if (overflowWidth === 0) {
+    if (lastCell.scrollWidth === 0) {
       const firstDataRow = firstRow.nextSibling as HTMLElement;
       if (firstDataRow && !AddNewRowElement.isAddNewRowRow(firstDataRow)) {
         const firstDataCell = firstDataRow.children[0] as HTMLElement;
         const firstCellContent = firstDataCell.textContent;
         firstDataCell.textContent = lastCell.textContent;
         setTimeout(() => (firstDataCell.textContent = firstCellContent));
-        return UpdateIndexColumnWidth.getCellOverflow(firstDataCell);
+        return UpdateIndexColumnWidth.getCellWidth(firstDataCell);
       }
     }
-    return overflowWidth;
+    return UpdateIndexColumnWidth.getCellWidth(lastCell);
   }
 
   // this works because the 'block' display style is not set on the table
   // checking if the cells width is overflown and if so - increase its width (cannot decrease the width)
   private static updateColumnWidthWhenOverflow(at: ActiveTable, firstRow: HTMLElement, lastCell: HTMLElement) {
-    // overflow width does not include the borderRightWidth - which the ChangeIndexColumnWidth.WIDTH does
-    const overflowWidth = UpdateIndexColumnWidth.getIndexColumnOverflowWidth(firstRow, lastCell);
-    if (at.tableDimensions.indexColumnWidth !== overflowWidth && overflowWidth !== 0) {
+    const indexColumnWidth = UpdateIndexColumnWidth.getIndexColumnWidth(firstRow, lastCell);
+    if (at.tableDimensions.indexColumnWidth !== indexColumnWidth && indexColumnWidth !== 0) {
       // Firefox does not include lastCell paddingRight (4px) when setting the new width
-      const newWidth = overflowWidth + (Browser.IS_FIREFOX ? 4 : 0);
+      const newWidth = indexColumnWidth + (Browser.IS_FIREFOX ? 4 : 0);
       if (Browser.IS_SAFARI) {
         setTimeout(() => UpdateIndexColumnWidth.changeWidth(at, firstRow, newWidth));
       } else {
@@ -88,8 +86,8 @@ export class UpdateIndexColumnWidth {
   }
 
   // when the table element display property is 'block', the 'overflow: hidden;' property does not actually work
-  // and instead the lastCell width is change automatically, all we do here is check if the expected width
-  // (ChangeIndexColumnWidth.WIDTH) is different to the actual one and if so, we change it to actual
+  // and instead the lastCell width is changed automatically, all we do here is check if the expected width
+  // (at.tableDimensions.indexColumnWidth) is different to the actual one and if so, we change it to actual
   private static checkAutoColumnWidthUpdate(at: ActiveTable, lastCell: HTMLElement) {
     if (lastCell.offsetWidth !== at.tableDimensions.indexColumnWidth) {
       let newWidth = lastCell.offsetWidth;

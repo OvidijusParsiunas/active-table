@@ -220,7 +220,7 @@ export class ActiveTable extends LitElement {
   @state()
   rowDropdownCellOverlays: RowDropdownCellOverlays = [];
 
-  // if using pagination with user defined numberOfRowsOptions, the options need to have an even number or otherwise
+  // if using pagination with user defined rowsPerPageSelect, the options need to have an even number or otherwise
   // two rows could have same color (as rows are hidden and not removed)
   @property({type: Object})
   stripedRows: StripedRowsT | boolean | null = null;

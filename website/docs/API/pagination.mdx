@@ -1,0 +1,140 @@
+---
+sidebar_position: 5
+---
+
+# Pagination
+
+Divide table rows into a series of pages.
+
+### `pagination` {#pagination}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`rowsPerPage: number`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`rowsPerPageSelect: boolean|RowsPerPageSelect`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`maxNumberOfVisiblePageButtons: number`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`displayPrevNext: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`displayFirstLast: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`displayNumberOfVisibleRows: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`style: PaginationStyle<StatefulCSSS>`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`positions: PaginationPositions` <br />
+  }
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_rowsPerPage: 10_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_rowsPerPageSelect: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_maxNumberOfVisiblePageButtons: 8_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_displayPrevNext: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_displayFirstLast: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_displayNumberOfVisibleRows: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_positions: refer to the PaginationPositions type_ <br />
+  }
+
+`rowsPerPage` is the number of maximum data rows that can be displayed in a single page. <br />
+`rowsPerPageSelect` controls a dropdown that allows the user to change `rowsPerPage`. <br />
+`maxNumberOfVisiblePageButtons` is the maximum number of page (number) buttons that are visible, the rest will be hidden. <br />
+`displayPrevNext` defines whether the previous and next page buttons are displayed. <br />
+`displayFirstLast` defines whether the first and last page buttons are displayed. <br />
+`displayNumberOfVisibleRows` displays information on the index of currently visible rows out of the total number of rows in the table. E.g. _1-5 of 20_. <br />
+`style` defines the styling properties of pagination components. <br />
+`positions` defines pagination components positions. <br />
+
+#### Example
+
+import TableContainer from '@site/src/components/table/table-container';
+import LineBreak from '@site/src/components/markdown/line-break';
+import {ActiveTable} from 'active-table';
+import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs';
+
+<TableContainer>
+  <active-table
+    pagination='{"rowsPerPage": 6, "maxNumberOfVisiblePageButtons": 4}'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Pluto", 2376, 0.013, 5, 1850],
+      ["Moon", 3475, 0.073, 0, 3340],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Pluto", 2376, 0.013, 5, 1850],
+      ["Moon", 3475, 0.073, 0, 3340],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Pluto", 2376, 0.013, 5, 1850],
+      ["Moon", 3475, 0.073, 0, 3340]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+> </active-table>
+
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  pagination='{"rowsPerPage": 6, "maxNumberOfVisiblePageButtons": 4}'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full Code">
+
+```text
+<active-table
+  pagination='{"rowsPerPage": 6, "maxNumberOfVisiblePageButtons": 4}'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Pluto", 2376, 0.013, 5, 1850],
+    ["Moon", 3475, 0.073, 0, 3340],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Pluto", 2376, 0.013, 5, 1850],
+    ["Moon", 3475, 0.073, 0, 3340],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Pluto", 2376, 0.013, 5, 1850],
+    ["Moon", 3475, 0.073, 0, 3340]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>

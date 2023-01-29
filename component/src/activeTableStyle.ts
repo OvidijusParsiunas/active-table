@@ -435,29 +435,29 @@ export const activeTableStyle = css`
     padding-top: 4px;
   }
 
-  #pagination-of-rows-options {
+  #pagination-number-of-rows-select {
     padding-top: 2px;
     position: relative;
   }
 
-  #pagination-of-rows-options-text {
+  #pagination-number-of-rows-select-text {
     display: inline-block;
   }
 
-  #pagination-of-rows-options-button {
+  #rows-per-page-select-button {
     display: inline-block;
     border: 1px solid grey;
     border-radius: 5px;
     cursor: pointer;
   }
 
-  #pagination-of-rows-options-button-arrow {
+  #rows-per-page-select-button-arrow {
     display: inline-block;
     pointer-events: none;
     color: #353535;
   }
 
-  #pagination-of-rows-options-button-text {
+  #rows-per-page-select-button-text {
     display: inline-block;
     pointer-events: none;
   }
@@ -467,7 +467,8 @@ export const activeTableStyle = css`
   }
 
   .number-of-rows-dropdown-item {
-    padding-left: 10px;
+    padding-right: 12.5px;
+    text-align: right;
   }
 
   .hidden-row {

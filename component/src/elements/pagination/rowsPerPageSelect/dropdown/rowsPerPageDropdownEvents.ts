@@ -1,13 +1,13 @@
 import {DropdownItemNavigation} from '../../../dropdown/dropdownItemNavigation';
 import {DropdownEvents} from '../../../dropdown/dropdownEvents';
 import {KEYBOARD_KEY} from '../../../../consts/keyboardKeys';
-import {NumberOfRowsDropdown} from './numberOfRowsDropdown';
+import {RowsPerPageDropdown} from './rowsPerPageDropdown';
 import {ActiveTable} from '../../../../activeTable';
 
-export class NumberOfRowsDropdownEvents {
+export class RowsPerPageDropdownEvents {
   public static windowOnMouseDown(at: ActiveTable) {
-    if (!at.paginationInternal.mouseDownOnNumberOfRowsButton) {
-      NumberOfRowsDropdown.hide(at.paginationInternal.numberOfRowsDropdown as HTMLElement);
+    if (!at.paginationInternal.mouseDownOnRowsPerPageButton) {
+      RowsPerPageDropdown.hide(at.paginationInternal.rowsPerPageDropdown as HTMLElement);
     }
   }
 
@@ -17,9 +17,9 @@ export class NumberOfRowsDropdownEvents {
   // prettier-ignore
   public static windowOnKeyDown(at: ActiveTable, event: KeyboardEvent) {
     const {shadowRoot, paginationInternal} = at;
-    const dropdownElement = paginationInternal.numberOfRowsDropdown as HTMLElement;
+    const dropdownElement = paginationInternal.rowsPerPageDropdown as HTMLElement;
     if (event.key === KEYBOARD_KEY.ESCAPE || event.key === KEYBOARD_KEY.ENTER) {
-      NumberOfRowsDropdown.hide(dropdownElement);
+      RowsPerPageDropdown.hide(dropdownElement);
     } else if (!shadowRoot?.activeElement) {
       if (event.key === KEYBOARD_KEY.ARROW_DOWN || event.key === KEYBOARD_KEY.TAB) {
         event.preventDefault();
@@ -37,12 +37,12 @@ export class NumberOfRowsDropdownEvents {
       const itemElement = event.target as HTMLElement;
       itemElement.dispatchEvent(new MouseEvent('mousedown'));
     } else if (event.key === KEYBOARD_KEY.ESCAPE) {
-      NumberOfRowsDropdown.hide(dropdownElement);
+      RowsPerPageDropdown.hide(dropdownElement);
     }
     DropdownEvents.itemKeyNavigation(this.shadowRoot as ShadowRoot, dropdownElement, event);
   }
 
   public static set(at: ActiveTable, dropdownElement: HTMLElement) {
-    dropdownElement.onkeydown = NumberOfRowsDropdownEvents.dropdownOnKeyDown.bind(at, dropdownElement);
+    dropdownElement.onkeydown = RowsPerPageDropdownEvents.dropdownOnKeyDown.bind(at, dropdownElement);
   }
 }

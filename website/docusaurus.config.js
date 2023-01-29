@@ -75,6 +75,7 @@ const config = {
   // API
   // // table:
   // // // tableStyle: TableStyle;
+  // // // overflow: Overflow | null;
   // // content:
   // // // content: TableContent;
   // // // spellCheck: boolean;
@@ -100,8 +101,6 @@ const config = {
   // // // onColumnUpdate: OnColumnUpdate;
   // // // onTableUpdate: OnTableUpdate;
   // // // onColumnWidthsUpdate: OnColumnWidthsUpdate;
-  // // overflow: // could be in with table
-  // // // overflow: Overflow | null;
   // // pagination:
   // // // pagination: Pagination | null;
   // // misc:

@@ -16,10 +16,10 @@ export interface PaginationPosition {
 export interface PaginationPositions {
   pageButtons?: PaginationPosition;
   numberOfVisibleRows?: PaginationPosition;
-  numberOfRowsOptions?: PaginationPosition;
+  rowsPerPageSelect?: PaginationPosition;
 }
 
-export interface NumberOfRowsOptionsStyle<T = StatefulCSSS> {
+export interface RowsPerPageOptionsStyle<T = StatefulCSSS> {
   container?: CSSStyle;
   prefixText?: CSSStyle;
   button?: T;
@@ -45,18 +45,18 @@ export interface PageButtonStyle<T = StatefulCSSS> {
 export interface PaginationStyle<T> {
   pageButtons: PageButtonStyle<T>;
   numberOfVisibleRows?: CSSStyle;
-  numberOfRowsOptions?: NumberOfRowsOptionsStyle<T>;
+  rowsPerPageSelect?: RowsPerPageOptionsStyle<T>;
 }
 
-export interface NumberOfRowsOptions {
+export interface RowsPerPageSelect {
   // 'All'|'all' causes all table rows to be displayed
   options?: (number | 'All' | 'all')[]; // by default [10, 25, 50, 'All']
   prefixText?: string; // by default 'Rows per page'
 }
 
 export interface Pagination {
-  numberOfRows?: number; // by default set to 10
-  numberOfRowsOptions?: NumberOfRowsOptions | boolean;
+  rowsPerPage?: number; // by default set to 10
+  rowsPerPageSelect?: RowsPerPageSelect | boolean;
   maxNumberOfVisiblePageButtons?: number; // by default set to 8
   displayPrevNext?: boolean; // by default true
   displayFirstLast?: boolean; // by default true

@@ -7,9 +7,9 @@ export class NumberOfVisibleRowsElement {
   private static readonly ID = 'pagination-number-of-visible-rows';
 
   private static updateForRelativeRowNumber(pagination: PaginationInternal, dataRowsLength: number) {
-    const {activePageNumber, numberOfRows, numberOfVisibleRowsElement} = pagination as Required<PaginationInternal>;
-    const maxRowIndex = activePageNumber * numberOfRows;
-    const minVisibleRowIndex = dataRowsLength < 1 ? 0 : Math.max(maxRowIndex - numberOfRows + 1, 1);
+    const {activePageNumber, rowsPerPage, numberOfVisibleRowsElement} = pagination as Required<PaginationInternal>;
+    const maxRowIndex = activePageNumber * rowsPerPage;
+    const minVisibleRowIndex = dataRowsLength < 1 ? 0 : Math.max(maxRowIndex - rowsPerPage + 1, 1);
     const maxVisibleRowIndex = Math.min(dataRowsLength, maxRowIndex);
     numberOfVisibleRowsElement.innerText = `${minVisibleRowIndex}-${maxVisibleRowIndex} of ${dataRowsLength}`;
   }

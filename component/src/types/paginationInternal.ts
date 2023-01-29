@@ -14,12 +14,12 @@ export interface PaginationInternal extends Required<Pagination> {
   positions: Required<PaginationPositions>;
   buttonContainer: HTMLElement;
   numberOfVisibleRowsElement?: HTMLElement;
-  numberOfRowsDropdown?: HTMLElement;
   visibleRows: HTMLElement[];
   activePageNumber: number;
   programaticallyHoveredPageNumberButton?: HTMLElement;
   clickedPageNumberButton?: boolean; // REF-30
-  mouseDownOnNumberOfRowsButton?: boolean;
+  rowsPerPageDropdown?: HTMLElement;
+  mouseDownOnRowsPerPageButton?: boolean;
   isAllRowsOptionSelected: boolean;
-  numberOfRowsOptionsItemText: string[];
+  rowsPerPageOptionsItemText: string[];
 }

@@ -1,5 +1,5 @@
-import {NumberOfRowsDropdownEvents} from '../pagination/numberOfRowsOptions/optionsButton/numberOfRowsDropdownEvents';
 import {SelectCellTextBaseEvents} from '../cell/cellsWithTextDiv/selectCell/baseEvents/selectCellTextBaseEvents';
+import {RowsPerPageDropdownEvents} from '../pagination/rowsPerPageSelect/dropdown/rowsPerPageDropdownEvents';
 import {OptionColorButtonEvents} from '../dropdown/cellDropdown/buttons/optionColorButtonEvents';
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
@@ -17,8 +17,8 @@ import {Dropdown} from '../dropdown/dropdown';
 export class WindowEvents {
   // prettier-ignore
   public static onKeyDown(this: ActiveTable, event: KeyboardEvent) {
-    if (Dropdown.isDisplayed(this.paginationInternal.numberOfRowsDropdown)) {
-      NumberOfRowsDropdownEvents.windowOnKeyDown.bind(this)(this, event);
+    if (Dropdown.isDisplayed(this.paginationInternal.rowsPerPageDropdown)) {
+      RowsPerPageDropdownEvents.windowOnKeyDown.bind(this)(this, event);
     }
     if (Dropdown.isDisplayed(this.activeOverlayElements.rowDropdown)) {
       RowDropdownEvents.windowOnKeyDown(this, event);
@@ -52,8 +52,8 @@ export class WindowEvents {
   // prettier-ignore
   public static onMouseDown(this: ActiveTable, event: MouseEvent) {
     OptionColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements);
-    if (Dropdown.isDisplayed(this.paginationInternal.numberOfRowsDropdown)) {
-      NumberOfRowsDropdownEvents.windowOnMouseDown.bind(this)(this);
+    if (Dropdown.isDisplayed(this.paginationInternal.rowsPerPageDropdown)) {
+      RowsPerPageDropdownEvents.windowOnMouseDown.bind(this)(this);
     }
     // window event.target can only identify the parent element in shadow dom, not elements
     // inside it, hence if the user clicks inside the element, the elements inside will
