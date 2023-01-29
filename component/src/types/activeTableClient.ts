@@ -6,7 +6,6 @@ import {RowDropdownSettings} from './rowDropdownSettings';
 import {DynamicCellUpdateT} from './dynamicCellUpdateT';
 import {CustomColumnsSettings} from './columnsSettings';
 import {ColumnResizerColors} from './columnSizer';
-import {ColumnsWidths} from './columnsWidths';
 import {RowHoverStyle} from './rowHoverStyle';
 import {TableContent} from './tableContent';
 import {StripedRowsT} from './stripedRows';
@@ -31,7 +30,6 @@ export interface ActiveTable extends LitElement {
   customColumnsSettings?: CustomColumnsSettings;
   tableStyle?: TableStyle;
   rowHoverStyle?: RowHoverStyle;
-  overwriteColumnWidths?: ColumnsWidths;
   preserveNarrowColumns?: boolean;
   maxColumns?: number;
   maxRows?: number;

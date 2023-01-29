@@ -95,7 +95,6 @@ const config = {
   // // // preserveNarrowColumns: boolean;
   // // // maxColumns?: number;
   // // // columnResizerColors: ColumnResizerColors;
-  // // // overwriteColumnWidths: ColumnsWidths | null;
   // // events:
   // // // onCellUpdate: OnCellUpdate;
   // // // onColumnUpdate: OnColumnUpdate;

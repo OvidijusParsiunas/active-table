@@ -39,7 +39,6 @@ import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {StripedRows} from './utils/rows/stripedRows';
-import {ColumnsWidths} from './types/columnsWidths';
 import {activeTableStyle} from './activeTableStyle';
 import {RowHoverStyle} from './types/rowHoverStyle';
 import {TableContent} from './types/tableContent';
@@ -231,9 +230,6 @@ export class ActiveTable extends LitElement {
 
   @property({type: Object})
   overflow: Overflow | null = null;
-
-  @property({type: Object})
-  overwriteColumnWidths: ColumnsWidths | null = null;
 
   @state()
   overflowInternal: OverflowInternal | null = null;

@@ -9,7 +9,6 @@ import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayEleme
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {AddNewColumnElement} from './addNewElements/column/addNewColumnElement';
 import {ColumnDetailsUtils} from '../../utils/columnDetails/columnDetailsUtils';
-import {ColumnWidthsState} from '../../utils/columnDetails/columnWidthsState';
 import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
 import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
 import {StickyPropsUtils} from '../../utils/stickyProps/stickyPropsUtils';
@@ -67,7 +66,6 @@ export class TableElement {
   private static postProcessColumns(at: ActiveTable) {
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true); // REF-11
     InitialContentProcessing.postProcess(at.content, at.columnsDetails);
-    if (at.overwriteColumnWidths) ColumnWidthsState.overwriteWidths(at.columnsDetails, at.overwriteColumnWidths);
     setTimeout(() => {
       at.columnsDetails.forEach((columnDetails) => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, at.columnsDetails.length - 1);
