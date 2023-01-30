@@ -139,18 +139,23 @@ export class PaginationInternalUtils {
     (paginationInternal.style.pageButtons as unknown as StatefulStyle) ??= {};
     const statefulStyle = paginationInternal.style.pageButtons as StatefulStyle;
     // buttons
-    const defButtonsBackgroundColors = {def: 'yellow', hover: 'orange', click: 'red'};
+    const defButtonsBackgroundColors = {def: 'white', hover: '#f5f5f5', click: '#c8c8c8'};
     PaginationInternalUtils.setStatefulCSS(statefulStyle, defButtonsBackgroundColors, 'buttons');
     // actionButtons
     const newActionButtons = PaginationInternalUtils.mergeActionButtonsStyleWithNewButtons(statefulStyle);
     paginationInternal.style.pageButtons.actionButtons = newActionButtons;
-    const defActionBackgroundColors = {def: 'green', hover: 'blue', click: 'deepskyblue'};
-    PaginationInternalUtils.setStatefulCSS(statefulStyle, defActionBackgroundColors, 'actionButtons');
+    PaginationInternalUtils.setStatefulCSS(statefulStyle, {} as DefaultBackgroundColors, 'actionButtons');
     // activeButton
-    const defBackgroundColors = {def: 'brown', hover: 'violet', click: 'purple'};
-    PaginationInternalUtils.setStatefulCSS(statefulStyle, defBackgroundColors, 'activeButton');
+    const defActiveBackgroundColors = {def: '#e8e8e8', hover: '#d6d6d6', click: '#c8c8c8'};
+    PaginationInternalUtils.setStatefulCSS(statefulStyle, defActiveBackgroundColors, 'activeButton');
     // disabledButtons
-    paginationInternal.style.pageButtons.disabledButtons ??= {backgroundColor: 'grey'};
+    paginationInternal.style.pageButtons.disabledButtons ??= {backgroundColor: '#f9f9f9', color: '#9d9d9d'};
+    // first overrides
+    const defFirstVisibleOverride = {borderLeft: '0px', borderTopRightRadius: '2px', borderBottomRightRadius: '2px'};
+    paginationInternal.style.pageButtons.firstVisibleButtonOverride ??= defFirstVisibleOverride;
+    // last overrides
+    const defLastVisibleOverride = {borderRight: '0px', borderTopLeftRadius: '2px', borderBottomLeftRadius: '2px'};
+    paginationInternal.style.pageButtons.firstVisibleButtonOverride ??= defLastVisibleOverride;
   }
 
   private static processStyle(pagination: Pagination, paginationInternal: PaginationInternal) {
@@ -202,6 +207,7 @@ export class PaginationInternalUtils {
       displayFirstLast: true,
       displayNumberOfVisibleRows: true,
       style: {}, // this is going to be populated during the call of processInternal method
+      numberOfActionButtons: 0,
       dropdownWidth: 24,
       positions: {
         pageButtons: {

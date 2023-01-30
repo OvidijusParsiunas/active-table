@@ -40,9 +40,11 @@ export interface PageButtonStyle<T = StatefulCSSS> {
   activeButton?: T;
   disabledButtons?: CSSStyle; // disabled buttons do not have any mouse events
   actionButtons?: ActionButtonStyle<T>; // will also use 'buttons' style
+  firstVisibleButtonOverride?: CSSStyle;
+  lastVisibleButtonOverride?: CSSStyle;
 }
 
-export interface PaginationStyle<T> {
+export interface PaginationStyle<T = StatefulCSSS> {
   pageButtons: PageButtonStyle<T>;
   numberOfVisibleRows?: CSSStyle;
   rowsPerPageSelect?: RowsPerPageOptionsStyle<T>;
@@ -61,6 +63,6 @@ export interface Pagination {
   displayPrevNext?: boolean; // by default true
   displayFirstLast?: boolean; // by default true
   displayNumberOfVisibleRows?: boolean; // by default true
-  style?: PaginationStyle<StatefulCSSS>;
+  style?: PaginationStyle;
   positions?: PaginationPositions;
 }

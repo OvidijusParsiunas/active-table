@@ -9,7 +9,8 @@ export class PaginationElements {
 
   public static create(at: ActiveTable) {
     const containers = PaginationContainerElement.addPaginationContainers(at);
-    at.paginationInternal.buttonContainer = PageButtonContainerElement.create(at, containers);
+    at.paginationInternal.buttonContainer = PageButtonContainerElement.create(at);
+    PageButtonContainerElement.addInitialElements(at, containers);
     if (at.paginationInternal.rowsPerPageOptionsItemText) {
       RowsPerPageSelectElement.create(at, containers);
     }

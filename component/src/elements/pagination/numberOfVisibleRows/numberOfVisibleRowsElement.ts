@@ -22,7 +22,8 @@ export class NumberOfVisibleRowsElement {
     const {paginationInternal, content, dataStartsAtHeader} = at;
     const {numberOfVisibleRowsElement, isAllRowsOptionSelected} = paginationInternal;
     if (!numberOfVisibleRowsElement) return;
-    const dataRowsLength = dataStartsAtHeader ? content.length : content.length - 1;
+    // using max as when there are no contents on startup - dataRowsLength is -1
+    const dataRowsLength = Math.max(dataStartsAtHeader ? content.length : content.length - 1, 0);
     if (isAllRowsOptionSelected) {
       NumberOfVisibleRowsElement.updateForAllRows(numberOfVisibleRowsElement, dataRowsLength);
     } else {

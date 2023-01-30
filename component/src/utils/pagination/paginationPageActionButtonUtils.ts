@@ -1,4 +1,3 @@
-import {PageButtonContainerElement} from '../../elements/pagination/pageButtons/pageButtonContainerElement';
 import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
 import {PageButtonStyle} from '../../elements/pagination/pageButtons/pageButtonStyle';
 import {IPageButtonsStyle, IPaginationStyle} from '../../types/paginationInternal';
@@ -36,9 +35,9 @@ export class PaginationPageActionButtonUtils {
   }
 
   public static toggleActionButtons(at: ActiveTable, buttonContainer: HTMLElement) {
-    const {activePageNumber, style} = at.paginationInternal;
+    const {activePageNumber, style, numberOfActionButtons} = at.paginationInternal;
     const buttons = Array.from(buttonContainer.children) as HTMLElement[];
-    const halfOfActionButtons = PageButtonContainerElement.NUMBER_OF_ACTION_BUTTONS / 2;
+    const halfOfActionButtons = numberOfActionButtons / 2;
     PaginationPageActionButtonUtils.toggleLeftButtons(buttons, activePageNumber, halfOfActionButtons, style);
     PaginationPageActionButtonUtils.toggleRightButtons(at, buttons, halfOfActionButtons);
   }

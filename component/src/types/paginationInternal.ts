@@ -14,6 +14,7 @@ export interface PaginationInternal extends Required<Pagination> {
   dropdownWidth: number;
   positions: Required<PaginationPositions>;
   buttonContainer: HTMLElement;
+  numberOfActionButtons: number;
   numberOfVisibleRowsElement?: HTMLElement;
   visibleRows: HTMLElement[];
   activePageNumber: number;

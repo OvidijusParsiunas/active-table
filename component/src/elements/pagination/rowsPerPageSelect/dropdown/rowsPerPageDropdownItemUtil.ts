@@ -6,8 +6,7 @@ import {ActiveTable} from '../../../../activeTable';
 
 export class RowsPerPageDropdownItemUtil {
   private static updateRowsAndPaginationComponents(at: ActiveTable, optionsButton: HTMLElement, newRowsPerPage: string) {
-    const {buttonContainer} = at.paginationInternal;
-    PageButtonContainerElement.repopulateButtons(at, buttonContainer);
+    PageButtonContainerElement.repopulateButtons(at);
     RowsPerPageSelectButtonElement.updateButtonText(optionsButton, newRowsPerPage);
     PaginationUtils.displayRowsForDifferentButton(at, 1);
   }

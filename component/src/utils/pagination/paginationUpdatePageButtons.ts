@@ -15,14 +15,13 @@ export class PaginationUpdatePageButtons {
   }
 
   public static updateOnRowRemove(at: ActiveTable) {
-    const {buttonContainer, style} = at.paginationInternal;
-    const numberButtons = PaginationUtils.getPageNumberButtons(buttonContainer);
+    const numberButtons = PaginationUtils.getPageNumberButtons(at.paginationInternal);
     const lastNumberButton = numberButtons[numberButtons.length - 1];
     if (Number(lastNumberButton.innerText) > PaginationUtils.getLastPossiblePageNumber(at)) {
       if (numberButtons.length > 1) {
         PaginationUpdatePageButtons.removeLastNumberButton(at, numberButtons);
       } else {
-        PageButtonElement.setDisabled(buttonContainer, style.pageButtons);
+        PageButtonElement.setDisabled(at.paginationInternal);
       }
     }
   }
@@ -37,14 +36,13 @@ export class PaginationUpdatePageButtons {
   }
 
   public static updateOnRowInsert(at: ActiveTable) {
-    const {buttonContainer, style, maxNumberOfVisiblePageButtons} = at.paginationInternal;
     const expectedItemsBeforeInsert = at.dataStartsAtHeader ? 0 : 1;
     if (at.content.length === expectedItemsBeforeInsert) {
-      PageButtonElement.unsetDisabled(buttonContainer, style.pageButtons);
+      PageButtonElement.unsetDisabled(at.paginationInternal);
     } else {
-      const numberButtons = PaginationUtils.getPageNumberButtons(buttonContainer);
+      const numberButtons = PaginationUtils.getPageNumberButtons(at.paginationInternal);
       // if number of buttons is at limit - updateOnNewActive will handle it
-      if (numberButtons.length < maxNumberOfVisiblePageButtons) {
+      if (numberButtons.length < at.paginationInternal.maxNumberOfVisiblePageButtons) {
         PaginationUpdatePageButtons.addNewNumberButtonAtEndIfNeeded(at, numberButtons);
       }
     }
@@ -97,9 +95,9 @@ export class PaginationUpdatePageButtons {
     numberButtons.slice(0, numberOfButtonsToShift).forEach((button) => button.remove());
   }
 
-  public static updateOnNewActive(at: ActiveTable, buttonContainer: HTMLElement) {
+  public static updateOnNewActive(at: ActiveTable) {
+    const numberButtons = PaginationUtils.getPageNumberButtons(at.paginationInternal);
     const {activePageNumber, maxNumberOfVisiblePageButtons} = at.paginationInternal;
-    const numberButtons = PaginationUtils.getPageNumberButtons(buttonContainer);
     if (numberButtons.length < maxNumberOfVisiblePageButtons) return;
     const lastVisibleButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
     // number that should not trigger shift to the right

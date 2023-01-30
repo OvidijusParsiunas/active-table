@@ -12,71 +12,73 @@ import {ActiveTable} from '../../../activeTable';
 
 export class PageButtonContainerElement {
   private static readonly PAGINATION_BUTTON_CONTAINER_ID = 'pagination-button-container';
-  public static NUMBER_OF_ACTION_BUTTONS = 0;
 
-  private static setStyle(at: ActiveTable, buttonContainerElement: HTMLElement) {
+  private static setStyle(at: ActiveTable) {
     const minNumberOfButtonsToBeActive = at.dataStartsAtHeader ? 1 : 2;
     if (at.content.length < minNumberOfButtonsToBeActive) {
-      const {style} = at.paginationInternal;
-      PageButtonElement.setDisabled(buttonContainerElement, style.pageButtons);
+      PageButtonElement.setDisabled(at.paginationInternal);
     } else {
-      PageButtonElement.setActive(at, buttonContainerElement, 1);
+      PageButtonElement.setActive(at, 1);
     }
   }
 
-  private static addNumberButtons(at: ActiveTable, buttonContainerElement: HTMLElement) {
+  private static addNumberButtons(at: ActiveTable) {
     // the reason why 1 button is required when it should be 0 is because we hide it and show it when a row is added
     const requiredNumberOfButtons = PaginationUtils.getLastPossiblePageNumber(at);
-    const {maxNumberOfVisiblePageButtons} = at.paginationInternal;
+    const {maxNumberOfVisiblePageButtons, buttonContainer} = at.paginationInternal;
     for (let i = 0; i < Math.min(requiredNumberOfButtons, maxNumberOfVisiblePageButtons); i += 1) {
       const buttonElement = PageNumberButtonElement.create(at, i + 1);
-      buttonContainerElement.appendChild(buttonElement);
+      buttonContainer.appendChild(buttonElement);
     }
   }
 
-  private static addButton(buttonContainerElement: HTMLElement, buttonElement: HTMLElement) {
-    buttonContainerElement.appendChild(buttonElement);
-    PageButtonContainerElement.NUMBER_OF_ACTION_BUTTONS += 1;
+  private static addButton(paginationInternal: PaginationInternal, button: HTMLElement) {
+    paginationInternal.buttonContainer.appendChild(button);
+    paginationInternal.numberOfActionButtons += 1;
   }
 
-  private static addButtons(at: ActiveTable, buttonContainerElement: HTMLElement) {
+  private static addButtons(at: ActiveTable) {
     const {displayPrevNext, displayFirstLast} = at.paginationInternal;
     if (displayFirstLast) {
-      PageButtonContainerElement.addButton(buttonContainerElement, FirstPageButtonElement.create(at));
+      PageButtonContainerElement.addButton(at.paginationInternal, FirstPageButtonElement.create(at));
     }
     if (displayPrevNext) {
-      PageButtonContainerElement.addButton(buttonContainerElement, PreviousPageButtonElement.create(at));
+      PageButtonContainerElement.addButton(at.paginationInternal, PreviousPageButtonElement.create(at));
     }
-    PageButtonContainerElement.addNumberButtons(at, buttonContainerElement);
+    PageButtonContainerElement.addNumberButtons(at);
     if (displayPrevNext) {
-      PageButtonContainerElement.addButton(buttonContainerElement, NextPageButtonElement.create(at));
+      PageButtonContainerElement.addButton(at.paginationInternal, NextPageButtonElement.create(at));
     }
     if (displayFirstLast) {
-      PageButtonContainerElement.addButton(buttonContainerElement, LastPageButtonElement.create(at));
+      PageButtonContainerElement.addButton(at.paginationInternal, LastPageButtonElement.create(at));
     }
   }
 
   private static resetState(pagination: PaginationInternal) {
     pagination.activePageNumber = 1;
-    PageButtonContainerElement.NUMBER_OF_ACTION_BUTTONS = 0;
+    pagination.numberOfActionButtons = 0;
   }
 
-  public static repopulateButtons(at: ActiveTable, buttonContainerElement: HTMLElement) {
+  public static repopulateButtons(at: ActiveTable) {
     PageButtonContainerElement.resetState(at.paginationInternal);
-    buttonContainerElement.replaceChildren();
-    PageButtonContainerElement.addButtons(at, buttonContainerElement);
-    PageButtonContainerElement.setStyle(at, buttonContainerElement);
+    at.paginationInternal.buttonContainer.replaceChildren();
+    PageButtonContainerElement.addButtons(at);
+    PageButtonContainerElement.setStyle(at);
   }
 
-  public static create(at: ActiveTable, containers: Containers) {
+  public static addInitialElements(at: ActiveTable, containers: Containers) {
+    PageButtonContainerElement.repopulateButtons(at);
+    const {positions, buttonContainer} = at.paginationInternal;
+    PaginationContainerElement.addToContainer(positions.pageButtons.side, containers, buttonContainer);
+  }
+
+  public static create(at: ActiveTable) {
     const buttonContainerElement = document.createElement('div');
     buttonContainerElement.id = PageButtonContainerElement.PAGINATION_BUTTON_CONTAINER_ID;
     const {style, positions} = at.paginationInternal;
     buttonContainerElement.style.order = String(positions.pageButtons.order);
     Object.assign(buttonContainerElement.style, style.pageButtons.container);
     PageButtonContainerEvents.setEvents(buttonContainerElement, at.paginationInternal);
-    PageButtonContainerElement.repopulateButtons(at, buttonContainerElement);
-    PaginationContainerElement.addToContainer(positions.pageButtons.side, containers, buttonContainerElement);
     return buttonContainerElement;
   }
 }

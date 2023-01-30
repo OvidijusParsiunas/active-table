@@ -43,11 +43,11 @@ export class RowsPerPageSelectButtonElement {
     arrow.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);
     if (Browser.IS_FIREFOX) {
       arrow.style.transform = 'translateY(-8%) scaleX(1.4)';
-      arrow.style.fontSize = '14px';
+      arrow.style.fontSize = '17px';
       arrow.style.marginLeft = '5px';
     } else {
       arrow.style.transform = 'translateY(-16%)';
-      arrow.style.fontSize = '15px';
+      arrow.style.fontSize = '17px';
       arrow.style.marginLeft = '4px';
     }
     Object.assign(arrow.style, pagination.style.rowsPerPageSelect?.buttonText?.default);

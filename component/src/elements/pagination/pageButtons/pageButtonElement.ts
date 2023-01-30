@@ -1,9 +1,9 @@
 import {PaginationPageActionButtonUtils} from '../../../utils/pagination/paginationPageActionButtonUtils';
+import {PaginationVisibleButtonsUtils} from '../../../utils/pagination/paginationVisibleButtonsUtils';
 import {PaginationUpdatePageButtons} from '../../../utils/pagination/paginationUpdatePageButtons';
 import {IPageButtonsStyle, PaginationInternal} from '../../../types/paginationInternal';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {PaginationUtils} from '../../../utils/pagination/paginationUtils';
-import {PageButtonContainerElement} from './pageButtonContainerElement';
 import {PaginationElements} from '../paginationElements';
 import {CellText} from '../../../types/tableContent';
 import {PageButtonEvents} from './pageButtonEvents';
@@ -15,26 +15,28 @@ export class PageButtonElement {
   public static readonly DISABLED_PAGINATION_BUTTON_CLASS = 'pagination-button-disabled';
   public static readonly ACTIVE_PAGINATION_BUTTON_CLASS = 'pagination-button-active';
 
-  public static unsetDisabled(buttonContainer: HTMLElement, pageButtonsStyle: IPageButtonsStyle) {
-    const numberButton = PaginationUtils.getPageNumberButtons(buttonContainer)[0];
-    PageButtonStyle.setActive(numberButton, pageButtonsStyle);
+  public static unsetDisabled(paginationInternal: PaginationInternal) {
+    const {style, numberOfActionButtons} = paginationInternal;
+    const numberButton = PaginationUtils.getPageNumberButtons(paginationInternal)[0];
+    PageButtonStyle.setActive(numberButton, style.pageButtons);
     numberButton.classList.replace(
       PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS,
       PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS
     );
-    if (PageButtonContainerElement.NUMBER_OF_ACTION_BUTTONS > 0) numberButton.style.display = '';
+    if (numberOfActionButtons > 0) numberButton.style.display = '';
   }
 
-  public static setDisabled(buttonContainer: HTMLElement, pageButtonsStyle: IPageButtonsStyle) {
+  public static setDisabled(pagination: PaginationInternal) {
+    const {buttonContainer, style, numberOfActionButtons} = pagination;
     const buttons = Array.from(buttonContainer.children);
-    for (let i = 0; i < PageButtonContainerElement.NUMBER_OF_ACTION_BUTTONS / 2; i += 1) {
-      PageButtonStyle.setDisabled(buttons[i] as HTMLElement, pageButtonsStyle, true);
-      PageButtonStyle.setDisabled(buttons[buttons.length - 1 - i] as HTMLElement, pageButtonsStyle, true);
+    for (let i = 0; i < numberOfActionButtons / 2; i += 1) {
+      PageButtonStyle.setDisabled(buttons[i] as HTMLElement, style.pageButtons, true);
+      PageButtonStyle.setDisabled(buttons[buttons.length - 1 - i] as HTMLElement, style.pageButtons, true);
     }
-    const numberButton = PaginationUtils.getPageNumberButtons(buttonContainer)[0];
-    PageButtonStyle.setDisabled(numberButton, pageButtonsStyle, false);
+    const numberButton = PaginationUtils.getPageNumberButtons(pagination)[0];
+    PageButtonStyle.setDisabled(numberButton, style.pageButtons, false);
     numberButton.classList.remove(PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
-    if (PageButtonContainerElement.NUMBER_OF_ACTION_BUTTONS > 0) numberButton.style.display = 'none';
+    if (numberOfActionButtons > 0) numberButton.style.display = 'none';
     buttons.forEach((buttonElement) => {
       buttonElement.classList.add(PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS);
     });
@@ -52,8 +54,8 @@ export class PageButtonElement {
     }
   }
 
-  private static setNewActive(buttonContainer: HTMLElement, buttonNumber: number) {
-    const numberButtons = PaginationUtils.getPageNumberButtons(buttonContainer);
+  private static setNewActive(paginationInternal: PaginationInternal, buttonNumber: number) {
+    const numberButtons = PaginationUtils.getPageNumberButtons(paginationInternal);
     const lastButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
     const newActiveIndex = numberButtons.length - (lastButtonNumber - buttonNumber) - 1;
     const newActiveButton = numberButtons[newActiveIndex];
@@ -61,10 +63,10 @@ export class PageButtonElement {
     return {newActiveButton, numberButtons};
   }
 
-  private static unsetPreviousActive(at: ActiveTable, buttonContainer: HTMLElement, buttonNumber: number) {
-    const numberButtons = PaginationUtils.getPageNumberButtons(buttonContainer);
+  private static unsetPreviousActive(paginationInternal: PaginationInternal, buttonNumber: number) {
+    const numberButtons = PaginationUtils.getPageNumberButtons(paginationInternal);
     const lastButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
-    const previousActiveIndex = numberButtons.length - (lastButtonNumber - at.paginationInternal.activePageNumber) - 1;
+    const previousActiveIndex = numberButtons.length - (lastButtonNumber - paginationInternal.activePageNumber) - 1;
     const previousActiveButton = numberButtons[previousActiveIndex];
     const previousLocationOfNewIndex = numberButtons.length - (lastButtonNumber - buttonNumber) - 1;
     if (previousActiveButton) {
@@ -75,16 +77,18 @@ export class PageButtonElement {
   }
 
   // prettier-ignore
-  public static setActive(at: ActiveTable, buttonContainer: HTMLElement, buttonNumber: number) {
-    const {previousActiveButton, previousLocationOfNewIndex} = PageButtonElement.unsetPreviousActive(
-      at, buttonContainer, buttonNumber);
+  public static setActive(at: ActiveTable, buttonNumber: number) {
     const {paginationInternal} = at;
-    const {style: {pageButtons}, clickedPageNumberButton} = paginationInternal;
+    const {style: {pageButtons}, clickedPageNumberButton, buttonContainer} = paginationInternal;
+    const {previousActiveButton, previousLocationOfNewIndex} = PageButtonElement.unsetPreviousActive(
+      paginationInternal, buttonNumber);
+    PaginationVisibleButtonsUtils.unsetStyles(buttonContainer, pageButtons);
     paginationInternal.activePageNumber = buttonNumber;
-    PaginationUpdatePageButtons.updateOnNewActive(at, buttonContainer);
-    const {newActiveButton, numberButtons} = PageButtonElement.setNewActive(buttonContainer, buttonNumber);
+    PaginationUpdatePageButtons.updateOnNewActive(at);
+    const {newActiveButton, numberButtons} = PageButtonElement.setNewActive(paginationInternal, buttonNumber);
     PageButtonStyle.setActive(newActiveButton, pageButtons, previousActiveButton);
     PaginationPageActionButtonUtils.toggleActionButtons(at, buttonContainer);
+    PaginationVisibleButtonsUtils.setStyles(buttonContainer, pageButtons);
     // REF-30
     if (clickedPageNumberButton) {
       PageButtonElement.programmaticMouseEnterTrigger(numberButtons, paginationInternal, previousLocationOfNewIndex);

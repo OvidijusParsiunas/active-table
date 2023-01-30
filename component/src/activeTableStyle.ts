@@ -399,7 +399,7 @@ export const activeTableStyle = css`
   }
 
   #pagination-button-container {
-    border: 1px solid black;
+    border: 1px solid #0000004d;
     border-radius: 2px;
     right: 0;
     display: flex;
@@ -408,36 +408,29 @@ export const activeTableStyle = css`
   }
 
   .pagination-button {
-    border-right: 1px solid black;
-    width: 28px;
+    border-right: 1px solid #0000004d;
+    color: #353535;
+    width: 30px;
     height: 25px;
-    padding-top: 3px;
+    padding-top: 4px;
     text-align: center;
     cursor: pointer;
   }
 
   .pagination-button-disabled {
     pointer-events: none;
-  }
-
-  .pagination-button:last-child {
-    border-right: 0px;
-    border-top-right-radius: 1px;
-    border-bottom-right-radius: 1px;
-  }
-
-  .pagination-button:first-child {
-    border-top-left-radius: 1px;
-    border-bottom-left-radius: 1px;
+    color: #7c7c7c;
   }
 
   #pagination-number-of-visible-rows {
-    padding-top: 4px;
+    padding-top: 6px;
+    color: #1d1d1d;
   }
 
   #pagination-number-of-rows-select {
     padding-top: 2px;
     position: relative;
+    color: #1d1d1d;
   }
 
   #pagination-number-of-rows-select-text {
@@ -446,7 +439,7 @@ export const activeTableStyle = css`
 
   #rows-per-page-select-button {
     display: inline-block;
-    border: 1px solid grey;
+    border: 1px solid #0000004d;
     border-radius: 5px;
     cursor: pointer;
   }
@@ -496,11 +489,11 @@ export const activeTableStyle = css`
   }
 
   #pagination-top-container > div > * {
-    margin-bottom: 10px;
+    margin-bottom: 13px;
   }
 
   #pagination-bottom-container > div > * {
-    margin-top: 10px;
+    margin-top: 13px;
   }
 
   .pagination-container-column {
