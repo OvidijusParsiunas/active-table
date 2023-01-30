@@ -16,14 +16,12 @@ export class PageButtonElement {
   public static readonly ACTIVE_PAGINATION_BUTTON_CLASS = 'pagination-button-active';
 
   public static unsetDisabled(pagination: PaginationInternal) {
-    const {style, numberOfActionButtons} = pagination;
     const numberButton = PaginationUtils.getPageNumberButtons(pagination)[0];
-    PageButtonStyle.setActive(numberButton, style.pageButtons);
+    PageButtonStyle.setActive(numberButton, pagination.style.pageButtons);
     numberButton.classList.replace(
       PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS,
       PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS
     );
-    if (numberOfActionButtons > 0) numberButton.style.display = '';
   }
 
   public static setDisabled(pagination: PaginationInternal) {
@@ -36,7 +34,6 @@ export class PageButtonElement {
     const numberButton = PaginationUtils.getPageNumberButtons(pagination)[0];
     PageButtonStyle.setDisabled(numberButton, style.pageButtons, false);
     numberButton.classList.remove(PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
-    if (numberOfActionButtons > 0) numberButton.style.display = 'none';
     buttons.forEach((buttonElement) => {
       buttonElement.classList.add(PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS);
     });

@@ -20,9 +20,9 @@ export class PaginationUpdatePageButtons {
     if (Number(lastNumberButton.innerText) > PaginationUtils.getLastPossiblePageNumber(at)) {
       if (numberButtons.length > 1) {
         PaginationUpdatePageButtons.removeLastNumberButton(at, numberButtons);
-      } else {
-        PageButtonElement.setDisabled(at.paginationInternal);
       }
+    } else if (at.content.length < (at.dataStartsAtHeader ? 1 : 2)) {
+      PageButtonElement.setDisabled(at.paginationInternal);
     }
   }
 
