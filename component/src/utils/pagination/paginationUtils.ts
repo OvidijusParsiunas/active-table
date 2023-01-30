@@ -22,8 +22,8 @@ export class PaginationUtils {
     return Math.max(Math.ceil(numberOfRows / paginationInternal.rowsPerPage), 1);
   }
 
-  public static getPageNumberButtons(paginationInternal: PaginationInternal) {
-    const {buttonContainer, numberOfActionButtons} = paginationInternal;
+  public static getPageNumberButtons(pagination: PaginationInternal) {
+    const {buttonContainer, numberOfActionButtons} = pagination;
     const allButtons = Array.from(buttonContainer.children) as HTMLElement[];
     const halfOfSideButtons = numberOfActionButtons / 2;
     return allButtons.slice(halfOfSideButtons, allButtons.length - halfOfSideButtons);
@@ -84,12 +84,12 @@ export class PaginationUtils {
     }
   }
 
-  public static hideLastVisibleRow(paginationInternal: PaginationInternal) {
-    const {visibleRows} = paginationInternal;
+  public static hideLastVisibleRow(pagination: PaginationInternal) {
+    const {visibleRows} = pagination;
     if (visibleRows.length === 0) return;
     const lastRow = visibleRows[visibleRows.length - 1];
     PaginationUtils.hideRow(lastRow);
-    paginationInternal.visibleRows.splice(paginationInternal.visibleRows.length - 1, 1);
+    pagination.visibleRows.splice(pagination.visibleRows.length - 1, 1);
   }
 
   private static updateRowsOnNewInsert(at: ActiveTable, rowIndex: number, newRowElement: HTMLElement) {
@@ -109,9 +109,9 @@ export class PaginationUtils {
 
   // prettier-ignore
   public static updateOnRowChange(at: ActiveTable, rowIndex: number, newRowElement?: HTMLElement) {
-    const {dataStartsAtHeader, content, paginationInternal: {buttonContainer, style: {pageButtons}}} = at;
+    const {dataStartsAtHeader, content, paginationInternal} = at;
     if (!dataStartsAtHeader && rowIndex === 0 && content.length === 0) return;
-    PaginationVisibleButtonsUtils.unsetStyles(buttonContainer, pageButtons);
+    PaginationVisibleButtonsUtils.unsetStateAndStyles(paginationInternal);
     // buttons need to be updated first as displayRowsForDifferentButton will use them to toggle the side buttons
     if (newRowElement) {
       PaginationUpdatePageButtons.updateOnRowInsert(at);
@@ -120,8 +120,8 @@ export class PaginationUtils {
       PaginationUpdatePageButtons.updateOnRowRemove(at);
       PaginationUtils.updateRowsOnRemoval(at, rowIndex);
     }
-    PaginationPageActionButtonUtils.toggleActionButtons(at, buttonContainer);
-    PaginationVisibleButtonsUtils.setStyles(buttonContainer, pageButtons);
+    PaginationPageActionButtonUtils.toggleActionButtons(at);
+    PaginationVisibleButtonsUtils.setStateAndStyles(paginationInternal);
     setTimeout(() => NumberOfVisibleRowsElement.update(at));
   }
 
@@ -156,9 +156,9 @@ export class PaginationUtils {
     });
   }
 
-  private static hideAllRows(paginationInternal: PaginationInternal) {
-    paginationInternal.visibleRows.forEach((rowElement) => PaginationUtils.hideRow(rowElement));
-    paginationInternal.visibleRows = [];
+  private static hideAllRows(pagination: PaginationInternal) {
+    pagination.visibleRows.forEach((rowElement) => PaginationUtils.hideRow(rowElement));
+    pagination.visibleRows = [];
   }
 
   public static displayRowsForDifferentButton(at: ActiveTable, buttonNumber: number) {

@@ -5,9 +5,9 @@ import {PageButtonStyle} from '../../pageButtonStyle';
 
 export class PageNumberButtonEvents {
   // REF-30
-  private static markClick(paginationInternal: PaginationInternal) {
-    paginationInternal.clickedPageNumberButton = true;
-    setTimeout(() => (paginationInternal.clickedPageNumberButton = false));
+  private static markClick(pagination: PaginationInternal) {
+    pagination.clickedPageNumberButton = true;
+    setTimeout(() => (pagination.clickedPageNumberButton = false));
   }
 
   private static buttonMouseUp(this: ActiveTable, buttonNumber: number, event: MouseEvent) {

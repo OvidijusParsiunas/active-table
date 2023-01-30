@@ -3,14 +3,14 @@ import {PageButtonStyle} from './pageButtonStyle';
 
 export class PageButtonContainerEvents {
   // REF-31
-  private static containerMouseLeave(paginationInternal: PaginationInternal) {
-    const {clickedPageNumberButton, programaticallyHoveredPageNumberButton, style} = paginationInternal;
+  private static containerMouseLeave(pagination: PaginationInternal) {
+    const {clickedPageNumberButton, programaticallyHoveredPageNumberButton, style} = pagination;
     if (clickedPageNumberButton && programaticallyHoveredPageNumberButton) {
       PageButtonStyle.mouseLeave(programaticallyHoveredPageNumberButton, style.pageButtons, false);
     }
   }
 
-  public static setEvents(buttonContainerElement: HTMLElement, paginationInternal: PaginationInternal) {
-    buttonContainerElement.onmouseleave = PageButtonContainerEvents.containerMouseLeave.bind(this, paginationInternal);
+  public static setEvents(buttonContainerElement: HTMLElement, pagination: PaginationInternal) {
+    buttonContainerElement.onmouseleave = PageButtonContainerEvents.containerMouseLeave.bind(this, pagination);
   }
 }

@@ -34,8 +34,8 @@ export class PaginationPageActionButtonUtils {
     leftActionButtons.forEach((button) => callback(button, paginationStyle.pageButtons));
   }
 
-  public static toggleActionButtons(at: ActiveTable, buttonContainer: HTMLElement) {
-    const {activePageNumber, style, numberOfActionButtons} = at.paginationInternal;
+  public static toggleActionButtons(at: ActiveTable) {
+    const {activePageNumber, style, numberOfActionButtons, buttonContainer} = at.paginationInternal;
     const buttons = Array.from(buttonContainer.children) as HTMLElement[];
     const halfOfActionButtons = numberOfActionButtons / 2;
     PaginationPageActionButtonUtils.toggleLeftButtons(buttons, activePageNumber, halfOfActionButtons, style);

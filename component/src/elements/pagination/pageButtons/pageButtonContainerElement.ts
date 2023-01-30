@@ -32,9 +32,9 @@ export class PageButtonContainerElement {
     }
   }
 
-  private static addButton(paginationInternal: PaginationInternal, button: HTMLElement) {
-    paginationInternal.buttonContainer.appendChild(button);
-    paginationInternal.numberOfActionButtons += 1;
+  private static addButton(pagination: PaginationInternal, button: HTMLElement) {
+    pagination.buttonContainer.appendChild(button);
+    pagination.numberOfActionButtons += 1;
   }
 
   private static addButtons(at: ActiveTable) {
