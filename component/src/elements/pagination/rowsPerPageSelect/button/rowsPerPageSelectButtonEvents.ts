@@ -32,12 +32,12 @@ export class RowsPerPageSelectButtonEvents {
 
   private static buttonMouseLeave(paginationStyle: PaginationStyle<Required<StatefulCSSS>>, event: MouseEvent) {
     const button = event.target as HTMLElement;
-    RowsPerPageSelectButtonElement.reapplyStylesOnElements(button, 'default', paginationStyle.rowsPerPageSelect);
+    RowsPerPageSelectButtonElement.applyStylesOnElements(button, 'default', paginationStyle.rowsPerPageSelect);
   }
 
   private static buttonMouseEnter(paginationStyle: PaginationStyle<Required<StatefulCSSS>>, event: MouseEvent) {
     const button = event.target as HTMLElement;
-    RowsPerPageSelectButtonElement.reapplyStylesOnElements(button, 'hover', paginationStyle.rowsPerPageSelect);
+    RowsPerPageSelectButtonElement.applyStylesOnElements(button, 'hover', paginationStyle.rowsPerPageSelect);
   }
 
   public static setEvents(at: ActiveTable, optionsButton: HTMLElement) {

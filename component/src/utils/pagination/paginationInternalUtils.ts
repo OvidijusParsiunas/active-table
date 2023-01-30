@@ -153,10 +153,10 @@ export class PaginationInternalUtils {
     // disabledButtons
     pagination.style.pageButtons.disabledButtons ??= {backgroundColor: '#f9f9f9', color: '#9d9d9d'};
     // first overrides
-    const defFirstVisibleOverride = {borderLeft: '0px', borderTopRightRadius: '2px', borderBottomRightRadius: '2px'};
+    const defFirstVisibleOverride = {borderLeft: '0px', borderTopLeftRadius: '2px', borderBottomLeftRadius: '2px'};
     pagination.style.pageButtons.firstVisibleButtonOverride ??= defFirstVisibleOverride;
     // last overrides
-    const defLastVisibleOverride = {borderRight: '0px', borderTopLeftRadius: '2px', borderBottomLeftRadius: '2px'};
+    const defLastVisibleOverride = {borderRight: '0px', borderTopRightRadius: '2px', borderBottomRightRadius: '2px'};
     pagination.style.pageButtons.lastVisibleButtonOverride ??= defLastVisibleOverride;
   }
 

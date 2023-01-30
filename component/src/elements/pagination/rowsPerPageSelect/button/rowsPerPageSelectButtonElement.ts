@@ -13,7 +13,7 @@ export class RowsPerPageSelectButtonElement {
   private static readonly TEXT_ID = 'rows-per-page-select-button-text';
 
   // prettier-ignore
-  private static reapplyStyle(element: HTMLElement, rowsPerPageSelect: RowsPerPageOptionsStyle,
+  private static applyStyle(element: HTMLElement, rowsPerPageSelect: RowsPerPageOptionsStyle,
       elementName: keyof RowsPerPageOptionsStyle, cssState: keyof StatefulCSSS) {
     const statefulStyle = rowsPerPageSelect[elementName] as StatefulCSSS;
     ElementStyle.unsetAllCSSStates(element, statefulStyle);
@@ -21,19 +21,19 @@ export class RowsPerPageSelectButtonElement {
   }
 
   // prettier-ignore
-  public static reapplyStylesOnElements(button: HTMLElement, cssState: keyof StatefulCSSS,
+  public static applyStylesOnElements(button: HTMLElement, cssState: keyof StatefulCSSS,
       rowsPerPageSelect?: RowsPerPageOptionsStyle) {
     if (!rowsPerPageSelect) return;
     if (rowsPerPageSelect.button) {
-      RowsPerPageSelectButtonElement.reapplyStyle(button, rowsPerPageSelect, 'button', cssState);
+      RowsPerPageSelectButtonElement.applyStyle(button, rowsPerPageSelect, 'button', cssState);
     }
     if (rowsPerPageSelect.buttonText) {
       const buttonText = button.children[0] as HTMLElement;
-      RowsPerPageSelectButtonElement.reapplyStyle(buttonText, rowsPerPageSelect, 'buttonText', cssState);
+      RowsPerPageSelectButtonElement.applyStyle(buttonText, rowsPerPageSelect, 'buttonText', cssState);
     }
     if (rowsPerPageSelect.buttonArrow) {
       const buttonArrow = button.children[1] as HTMLElement;
-      RowsPerPageSelectButtonElement.reapplyStyle(buttonArrow, rowsPerPageSelect, 'buttonArrow', cssState);
+      RowsPerPageSelectButtonElement.applyStyle(buttonArrow, rowsPerPageSelect, 'buttonArrow', cssState);
     }
   }
 
@@ -50,7 +50,7 @@ export class RowsPerPageSelectButtonElement {
       arrow.style.fontSize = '17px';
       arrow.style.marginLeft = '4px';
     }
-    Object.assign(arrow.style, pagination.style.rowsPerPageSelect?.buttonText?.default);
+    Object.assign(arrow.style, pagination.style.rowsPerPageSelect?.buttonArrow?.default);
     arrow.innerHTML = '&#8964';
     return arrow;
   }
