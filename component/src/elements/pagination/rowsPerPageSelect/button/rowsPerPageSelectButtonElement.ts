@@ -43,7 +43,7 @@ export class RowsPerPageSelectButtonElement {
     arrow.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);
     if (Browser.IS_FIREFOX) {
       arrow.style.transform = 'translateY(-8%) scaleX(1.4)';
-      arrow.style.fontSize = '17px';
+      arrow.style.fontSize = '16px';
       arrow.style.marginLeft = '5px';
     } else {
       arrow.style.transform = 'translateY(-16%)';

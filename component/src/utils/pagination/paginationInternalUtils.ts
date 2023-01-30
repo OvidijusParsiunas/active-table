@@ -2,6 +2,7 @@ import {RowsPerPageDropdownItem} from '../../elements/pagination/rowsPerPageSele
 import {IPaginationStyle, PaginationInternal} from '../../types/paginationInternal';
 import {StatefulCSSS} from '../../types/cssStyle';
 import {ActiveTable} from '../../activeTable';
+import {Browser} from '../browser/browser';
 import {
   PaginationPositionSide,
   RowsPerPageSelect,
@@ -132,6 +133,7 @@ export class PaginationInternalUtils {
     buttonsClone.nextText = actionButtons.nextText || '&#62';
     buttonsClone.firstText = actionButtons.firstText || '&#8810';
     buttonsClone.lastText = actionButtons.lastText || '&#8811';
+    if (Browser.IS_FIREFOX) buttonsClone.default = {fontFamily: 'Georgia, serif'}; // first buttond default padding fix
     return buttonsClone;
   }
 
@@ -155,7 +157,7 @@ export class PaginationInternalUtils {
     pagination.style.pageButtons.firstVisibleButtonOverride ??= defFirstVisibleOverride;
     // last overrides
     const defLastVisibleOverride = {borderRight: '0px', borderTopLeftRadius: '2px', borderBottomLeftRadius: '2px'};
-    pagination.style.pageButtons.firstVisibleButtonOverride ??= defLastVisibleOverride;
+    pagination.style.pageButtons.lastVisibleButtonOverride ??= defLastVisibleOverride;
   }
 
   private static processStyle(pagination: Pagination, paginationInternal: PaginationInternal) {

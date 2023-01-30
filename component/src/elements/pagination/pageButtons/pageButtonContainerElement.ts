@@ -1,4 +1,5 @@
 import {Containers, PaginationContainerElement} from '../paginationContainer/paginationContainerElement';
+import {PaginationVisibleButtonsUtils} from '../../../utils/pagination/paginationVisibleButtonsUtils';
 import {PreviousPageButtonElement} from './buttons/prevNext/previousPageButtonElement';
 import {FirstPageButtonElement} from './buttons/firstLast/firstPageButtonElement';
 import {PageNumberButtonElement} from './buttons/number/pageNumberButtonElement';
@@ -57,6 +58,7 @@ export class PageButtonContainerElement {
   private static resetState(pagination: PaginationInternal) {
     pagination.activePageNumber = 1;
     pagination.numberOfActionButtons = 0;
+    pagination.visibleEdgeButtons = [];
   }
 
   public static repopulateButtons(at: ActiveTable) {
@@ -68,6 +70,7 @@ export class PageButtonContainerElement {
 
   public static addInitialElements(at: ActiveTable, containers: Containers) {
     PageButtonContainerElement.repopulateButtons(at);
+    PaginationVisibleButtonsUtils.setStateAndStyles(at.paginationInternal);
     const {positions, buttonContainer} = at.paginationInternal;
     PaginationContainerElement.addToContainer(positions.pageButtons.side, containers, buttonContainer);
   }
