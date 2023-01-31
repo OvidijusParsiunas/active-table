@@ -1,7 +1,8 @@
+import {PaginationVisibleButtonsUtils} from '../../../utils/pagination/paginationVisibleButtonsUtils';
 import {IPageButtonsStyle} from '../../../types/paginationInternal';
-import {PageButtonElement} from './pageButtonElement';
 import {ElementStyle} from '../../../utils/elements/elementStyle';
 import {PropertiesOfType} from '../../../types/utilityTypes';
+import {PageButtonElement} from './pageButtonElement';
 import {StatefulCSSS} from '../../../types/cssStyle';
 
 // action buttons will never be active
@@ -59,6 +60,7 @@ export class PageButtonStyle {
     } else {
       Object.assign(buttonElement.style, pageButtonsStyle.buttons.click);
     }
+    PaginationVisibleButtonsUtils.overrideOnMouseEvent(buttonElement, pageButtonsStyle);
   }
 
   public static mouseEnter(buttonElement: HTMLElement, pageButtonsStyle: IPageButtonsStyle, isActionButton: boolean) {
@@ -77,6 +79,7 @@ export class PageButtonStyle {
         Object.assign(buttonElement.style, pageButtonsStyle.buttons.hover);
       }
     }
+    PaginationVisibleButtonsUtils.overrideOnMouseEvent(buttonElement, pageButtonsStyle);
   }
 
   public static mouseLeave(buttonElement: HTMLElement, pageButtonsStyle: IPageButtonsStyle, isActionButton: boolean) {
@@ -89,5 +92,6 @@ export class PageButtonStyle {
     } else {
       PageButtonStyle.setDefault(buttonElement, pageButtonsStyle, isActionButton);
     }
+    PaginationVisibleButtonsUtils.overrideOnMouseEvent(buttonElement, pageButtonsStyle);
   }
 }

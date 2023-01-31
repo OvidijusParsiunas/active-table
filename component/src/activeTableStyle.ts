@@ -425,6 +425,8 @@ export const activeTableStyle = css`
   #pagination-number-of-visible-rows {
     padding-top: 6px;
     color: #1d1d1d;
+    min-width: 82px;
+    text-align: center;
   }
 
   #pagination-number-of-rows-select {

@@ -37,6 +37,18 @@ export class RowsPerPageSelectButtonElement {
     }
   }
 
+  private static processStatefulStyle(statefulCSS: StatefulCSSS) {
+    statefulCSS.hover ??= statefulCSS.default;
+    statefulCSS.click ??= statefulCSS.hover;
+  }
+
+  private static processAndApplyDefaultStyle(element: HTMLElement, styling?: StatefulCSSS) {
+    if (styling) {
+      RowsPerPageSelectButtonElement.processStatefulStyle(styling);
+      Object.assign(element.style, styling.default);
+    }
+  }
+
   private static createButtonArrow(pagination: PaginationInternal) {
     const arrow = document.createElement('div');
     arrow.id = RowsPerPageSelectButtonElement.ARROW_ID;
@@ -50,7 +62,7 @@ export class RowsPerPageSelectButtonElement {
       arrow.style.fontSize = '17px';
       arrow.style.marginLeft = '4px';
     }
-    Object.assign(arrow.style, pagination.style.rowsPerPageSelect?.buttonArrow?.default);
+    RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(arrow, pagination.style.rowsPerPageSelect?.buttonArrow);
     arrow.innerHTML = '&#8964';
     return arrow;
   }
@@ -65,7 +77,7 @@ export class RowsPerPageSelectButtonElement {
     const text = document.createElement('div');
     text.id = RowsPerPageSelectButtonElement.TEXT_ID;
     text.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);
-    Object.assign(text.style, style.rowsPerPageSelect?.buttonText?.default);
+    RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(text, style.rowsPerPageSelect?.buttonText);
     text.innerText = isAllRowsOptionSelected ? rowsPerPageOptionsItemText[0] : String(rowsPerPage);
     return text;
   }
@@ -74,7 +86,7 @@ export class RowsPerPageSelectButtonElement {
     const optionsButton = document.createElement('div');
     optionsButton.id = RowsPerPageSelectButtonElement.BUTTON_ID;
     optionsButton.style.padding = Browser.IS_CHROMIUM ? '1px 5px' : '1px 6px';
-    Object.assign(optionsButton.style, pagination.style.rowsPerPageSelect?.button?.default);
+    RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(optionsButton, pagination.style.rowsPerPageSelect?.button);
     return optionsButton;
   }
 
