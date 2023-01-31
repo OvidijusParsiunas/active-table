@@ -14,14 +14,13 @@ export class PageButtonElement {
   private static readonly PAGINATION_BUTTON_CLASS = 'pagination-button';
   public static readonly DISABLED_PAGINATION_BUTTON_CLASS = 'pagination-button-disabled';
   public static readonly ACTIVE_PAGINATION_BUTTON_CLASS = 'pagination-button-active';
+  public static readonly PRECEDENCE_ACTIVE_PAGINATION_BUTTON_CLASS = 'pagination-button-active-precedence';
 
   public static unsetDisabled(pagination: PaginationInternal) {
     const numberButton = PaginationUtils.getPageNumberButtons(pagination)[0];
-    PageButtonStyle.setActive(numberButton, pagination.style.pageButtons);
-    numberButton.classList.replace(
-      PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS,
-      PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS
-    );
+    const {pageButtons} = pagination.style;
+    PageButtonStyle.setActive(numberButton, pageButtons);
+    numberButton.classList.replace(PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS, pageButtons.activeButtonClass);
   }
 
   public static setDisabled(pagination: PaginationInternal) {
@@ -33,7 +32,7 @@ export class PageButtonElement {
     }
     const numberButton = PaginationUtils.getPageNumberButtons(pagination)[0];
     PageButtonStyle.setDisabled(numberButton, style.pageButtons, false);
-    numberButton.classList.remove(PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
+    numberButton.classList.remove(style.pageButtons.activeButtonClass);
     buttons.forEach((buttonElement) => {
       buttonElement.classList.add(PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS);
     });
@@ -43,8 +42,9 @@ export class PageButtonElement {
   private static programmaticMouseEnterTrigger(numberButtons: HTMLElement[], pagination: PaginationInternal,
       previousLocationOfNewIndex: number) {
     const elementToBeHovered = numberButtons[previousLocationOfNewIndex];
-    if (elementToBeHovered && !elementToBeHovered.classList.contains(PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)) {
-      PageButtonStyle.mouseEnter(elementToBeHovered, pagination.style.pageButtons, false);
+    const {pageButtons} = pagination.style;
+    if (elementToBeHovered && !elementToBeHovered.classList.contains(pageButtons.activeButtonClass)) {
+      PageButtonStyle.mouseEnter(elementToBeHovered, pageButtons, false);
       // REF-31
       pagination.programaticallyHoveredPageNumberButton = elementToBeHovered;
       setTimeout(() => delete pagination.programaticallyHoveredPageNumberButton);
@@ -56,7 +56,7 @@ export class PageButtonElement {
     const lastButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
     const newActiveIndex = numberButtons.length - (lastButtonNumber - buttonNumber) - 1;
     const newActiveButton = numberButtons[newActiveIndex];
-    newActiveButton.classList.add(PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
+    newActiveButton.classList.add(pagination.style.pageButtons.activeButtonClass);
     return {newActiveButton, numberButtons};
   }
 
@@ -67,7 +67,7 @@ export class PageButtonElement {
     const previousActiveButton = numberButtons[previousActiveIndex];
     const previousLocationOfNewIndex = numberButtons.length - (lastButtonNumber - buttonNumber) - 1;
     if (previousActiveButton) {
-      previousActiveButton.classList.remove(PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS);
+      previousActiveButton.classList.remove(pagination.style.pageButtons.activeButtonClass);
       return {previousActiveButton, previousLocationOfNewIndex};
     }
     return {previousLocationOfNewIndex};

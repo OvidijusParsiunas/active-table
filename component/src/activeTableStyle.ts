@@ -399,8 +399,6 @@ export const activeTableStyle = css`
   }
 
   #pagination-button-container {
-    border: 1px solid #0000004d;
-    border-radius: 2px;
     right: 0;
     display: flex;
     width: fit-content;
@@ -408,7 +406,8 @@ export const activeTableStyle = css`
   }
 
   .pagination-button {
-    border-right: 1px solid #0000004d;
+    border: 1px solid #0000004d;
+    border-left: unset;
     color: #353535;
     width: 30px;
     height: 25px;
@@ -521,6 +520,10 @@ export const activeTableStyle = css`
 
   .pagination-container-right-column > div {
     margin-left: 10px;
+  }
+
+  .pagination-button-active-precedence + div {
+    border-left: unset !important;
   }
 
   .sticky-header-body > *:first-child {

@@ -14,7 +14,7 @@ export class PageButtonStyle {
   }
 
   private static unsetAll(buttonElement: HTMLElement, pageButtonsStyle: IPageButtonsStyle, isActionButton: boolean) {
-    if (buttonElement.classList.contains(PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)) {
+    if (buttonElement.classList.contains(pageButtonsStyle.activeButtonClass)) {
       PageButtonStyle.unsetAllCSSStates(buttonElement, pageButtonsStyle, 'activeButton');
     } else if (buttonElement.classList.contains(PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) {
       ElementStyle.unsetStyle(buttonElement, pageButtonsStyle.disabledButtons);
@@ -53,7 +53,7 @@ export class PageButtonStyle {
   }
 
   public static mouseDown(buttonElement: HTMLElement, pageButtonsStyle: IPageButtonsStyle, isActionButton: boolean) {
-    if (buttonElement.classList.contains(PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)) {
+    if (buttonElement.classList.contains(pageButtonsStyle.activeButtonClass)) {
       Object.assign(buttonElement.style, pageButtonsStyle.activeButton.click);
     } else if (isActionButton) {
       Object.assign(buttonElement.style, pageButtonsStyle.actionButtons.click);
@@ -65,7 +65,7 @@ export class PageButtonStyle {
 
   public static mouseEnter(buttonElement: HTMLElement, pageButtonsStyle: IPageButtonsStyle, isActionButton: boolean) {
     if (buttonElement.classList.contains(PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) return;
-    if (buttonElement.classList.contains(PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)) {
+    if (buttonElement.classList.contains(pageButtonsStyle.activeButtonClass)) {
       // needed to unset click style and reset default + hover styles
       PageButtonStyle.unsetAllCSSStates(buttonElement, pageButtonsStyle, 'activeButton');
       Object.assign(buttonElement.style, pageButtonsStyle.activeButton.default);
@@ -86,7 +86,7 @@ export class PageButtonStyle {
     // this is required because mouseLeave can be fired when the hovered button is disabled
     // as pointer-events are set to none
     if (buttonElement.classList.contains(PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) return;
-    if (buttonElement.classList.contains(PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS)) {
+    if (buttonElement.classList.contains(pageButtonsStyle.activeButtonClass)) {
       PageButtonStyle.unsetAll(buttonElement, pageButtonsStyle, false);
       Object.assign(buttonElement.style, pageButtonsStyle.activeButton.default);
     } else {

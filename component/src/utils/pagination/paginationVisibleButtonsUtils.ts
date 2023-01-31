@@ -1,17 +1,37 @@
+import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
+import {GenericElementUtils} from '../elements/genericElementUtils';
 import {PaginationInternal} from '../../types/paginationInternal';
 import {PageButtonStyle} from '../../types/pagination';
 import {ElementStyle} from '../elements/elementStyle';
+import {CSSStyle} from '../../types/cssStyle';
 
 // this is used for overriding first and last visible button styling
 export class PaginationVisibleButtonsUtils {
   private static readonly FIRST_VISIBLE_CLASS = 'pagination-first-visible-button';
   private static readonly LAST_VISIBLE_CLASS = 'pagination-last-visible-button';
+  private static readonly FIRST_PRECEDENCE_VALUES = ['borderLeft', 'borderLeftWidth', 'borderLeftColor'];
+  private static readonly LAST_PRECEDENCE_VALUES = ['borderRight', 'borderRightWidth', 'borderRightColor'];
 
+  private static setStyle(buttonElement: HTMLElement, precedenceValues: string[], edgeStyle?: CSSStyle) {
+    if (!edgeStyle) return;
+    const styleKeys = new Set<string>(Object.keys(edgeStyle));
+    if (buttonElement.classList.contains(PageButtonElement.PRECEDENCE_ACTIVE_PAGINATION_BUTTON_CLASS)) {
+      precedenceValues.forEach((value) => styleKeys.delete(value));
+    }
+    styleKeys.forEach((key) => {
+      GenericElementUtils.setStyle(buttonElement, key, edgeStyle[key as keyof typeof edgeStyle] as string);
+    });
+  }
+
+  // prettier-ignore
   public static overrideOnMouseEvent(buttonElement: HTMLElement, pageButtonsStyle: PageButtonStyle) {
+    const {firstVisibleButtonOverride, lastVisibleButtonOverride} = pageButtonsStyle;
     if (buttonElement.classList.contains(PaginationVisibleButtonsUtils.FIRST_VISIBLE_CLASS)) {
-      Object.assign(buttonElement.style, pageButtonsStyle.firstVisibleButtonOverride);
+      PaginationVisibleButtonsUtils.setStyle(buttonElement,
+        PaginationVisibleButtonsUtils.FIRST_PRECEDENCE_VALUES, firstVisibleButtonOverride);
     } else if (buttonElement.classList.contains(PaginationVisibleButtonsUtils.LAST_VISIBLE_CLASS)) {
-      Object.assign(buttonElement.style, pageButtonsStyle.lastVisibleButtonOverride);
+      PaginationVisibleButtonsUtils.setStyle(buttonElement,
+        PaginationVisibleButtonsUtils.LAST_PRECEDENCE_VALUES, lastVisibleButtonOverride);
     }
   }
 
@@ -36,11 +56,13 @@ export class PaginationVisibleButtonsUtils {
     const {style: {pageButtons: {firstVisibleButtonOverride, lastVisibleButtonOverride}}} = pagination;
     const firstVisibleButton = buttons[firstVisibleIndex];
     if (!firstVisibleButton) return;
-    Object.assign(firstVisibleButton.style, firstVisibleButtonOverride);
+    PaginationVisibleButtonsUtils.setStyle(firstVisibleButton,
+      PaginationVisibleButtonsUtils.FIRST_PRECEDENCE_VALUES, firstVisibleButtonOverride);
     firstVisibleButton.classList.add(PaginationVisibleButtonsUtils.FIRST_VISIBLE_CLASS);
     const lastVisibleIndex = buttons.findLastIndex(PaginationVisibleButtonsUtils.isButtonVisible);
     const lastVisibleButton = buttons[lastVisibleIndex];
-    Object.assign(lastVisibleButton.style, lastVisibleButtonOverride);
+    PaginationVisibleButtonsUtils.setStyle(lastVisibleButton,
+      PaginationVisibleButtonsUtils.LAST_PRECEDENCE_VALUES, lastVisibleButtonOverride);
     lastVisibleButton.classList.add(PaginationVisibleButtonsUtils.LAST_VISIBLE_CLASS);
     pagination.visibleEdgeButtons = [firstVisibleButton, lastVisibleButton]
   }

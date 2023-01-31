@@ -38,6 +38,7 @@ export interface PageButtonStyle<T = StatefulCSSS> {
   container?: CSSStyle;
   buttons?: T;
   activeButton?: T;
+  activeButtonPrecedence?: boolean; // by default false
   disabledButtons?: CSSStyle; // disabled buttons do not have any mouse events
   actionButtons?: ActionButtonStyle<T>; // will also use 'buttons' style
   firstVisibleButtonOverride?: CSSStyle;

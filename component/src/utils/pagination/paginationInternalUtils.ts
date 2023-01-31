@@ -1,4 +1,5 @@
 import {RowsPerPageDropdownItem} from '../../elements/pagination/rowsPerPageSelect/dropdown/rowsPerPageDropdownItem';
+import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
 import {IPaginationStyle, PaginationInternal} from '../../types/paginationInternal';
 import {StatefulCSSS} from '../../types/cssStyle';
 import {ActiveTable} from '../../activeTable';
@@ -149,9 +150,10 @@ export class PaginationInternalUtils {
     return buttonsClone;
   }
 
+  // prettier-ignore
   private static processPageButtonStyle(pagination: PaginationInternal) {
     (pagination.style.pageButtons as unknown as StatefulStyle) ??= {};
-    const statefulStyle = pagination.style.pageButtons as StatefulStyle;
+    const statefulStyle = pagination.style.pageButtons as unknown as StatefulStyle;
     // buttons
     const defButtonsBackgroundColors = {def: 'white', hover: '#f5f5f5', click: '#c8c8c8'};
     PaginationInternalUtils.setStatefulCSS(statefulStyle, defButtonsBackgroundColors, 'buttons');
@@ -167,11 +169,16 @@ export class PaginationInternalUtils {
     // disabledButtons - this inherits the 'buttons' style when using the PageButtonStyle.setDisabled method
     pagination.style.pageButtons.disabledButtons ??= {backgroundColor: '#f9f9f9', color: '#9d9d9d'};
     // first overrides
-    const defFirstVisibleOverride = {borderLeft: '0px', borderTopLeftRadius: '2px', borderBottomLeftRadius: '2px'};
+    const defFirstVisibleOverride = {
+      borderLeft: '1px solid #0000004d', borderTopLeftRadius: '2px', borderBottomLeftRadius: '2px'};
     pagination.style.pageButtons.firstVisibleButtonOverride ??= defFirstVisibleOverride;
     // last overrides
-    const defLastVisibleOverride = {borderRight: '0px', borderTopRightRadius: '2px', borderBottomRightRadius: '2px'};
+    const defLastVisibleOverride = {
+      borderRight: '1px solid #0000004d', borderTopRightRadius: '2px', borderBottomRightRadius: '2px'};
     pagination.style.pageButtons.lastVisibleButtonOverride ??= defLastVisibleOverride;
+    // active style
+    pagination.style.pageButtons.activeButtonClass = pagination.style.pageButtons.activeButtonPrecedence
+      ? PageButtonElement.PRECEDENCE_ACTIVE_PAGINATION_BUTTON_CLASS : PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS;
   }
 
   private static processStyle(pagination: Pagination, paginationInternal: PaginationInternal) {

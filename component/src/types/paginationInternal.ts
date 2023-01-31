@@ -1,8 +1,12 @@
 import {PageButtonStyle, Pagination, PaginationPositions, PaginationStyle} from './pagination';
 import {StatefulCSSS} from './cssStyle';
 
+interface ActiveButtonClass {
+  activeButtonClass: 'pagination-button-active' | 'pagination-button-active-precedence';
+}
+
 // (InternalPageButtonsStyle)
-export type IPageButtonsStyle = Required<PageButtonStyle<Required<StatefulCSSS>>>;
+export type IPageButtonsStyle = Required<PageButtonStyle<Required<StatefulCSSS>>> & ActiveButtonClass;
 
 // (InternalPaginationStyle)
 export interface IPaginationStyle extends PaginationStyle<Required<StatefulCSSS>> {
