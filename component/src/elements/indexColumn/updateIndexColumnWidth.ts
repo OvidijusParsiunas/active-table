@@ -99,7 +99,7 @@ export class UpdateIndexColumnWidth {
   }
 
   private static updatedBasedOnTableStyle(at: ActiveTable, lastCell: HTMLElement, forceWrap = false) {
-    const firstRow = (at.tableBodyElementRef as HTMLElement).children[0] as HTMLElement;
+    const firstRow = at.paginationInternal.visibleRows[0];
     if (forceWrap) {
       UpdateIndexColumnWidth.forceWrap(at, firstRow);
       // when 'block' display style is not set on the table
