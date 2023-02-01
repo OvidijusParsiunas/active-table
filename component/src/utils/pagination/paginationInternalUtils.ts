@@ -125,6 +125,9 @@ export class PaginationInternalUtils {
   private static mergeButtonsStyleWithActiveStyle(statefulStyle: PageButtonStyle) {
     const {buttons, actionButtons, activeButton} = statefulStyle as Required<PageButtonStyle<Required<StatefulCSSS>>>;
     const buttonsClone = JSON.parse(JSON.stringify(buttons)) as typeof actionButtons;
+    buttonsClone.default.backgroundColor = '#e8e8e8';
+    buttonsClone.hover.backgroundColor = '#d6d6d6';
+    buttonsClone.click.backgroundColor = '#c8c8c8';
     if (activeButton) {
       Object.assign(buttonsClone.default, activeButton.default);
       buttonsClone.hover = activeButton.hover;
@@ -160,12 +163,9 @@ export class PaginationInternalUtils {
     // actionButtons
     const newActionButtons = PaginationInternalUtils.mergeButtonsStyleWithActionStyle(statefulStyle);
     pagination.style.pageButtons.actionButtons = newActionButtons;
-    PaginationInternalUtils.setStatefulCSS(statefulStyle, {} as DefaultBackgroundColors, 'actionButtons');
     // activeButton
     const newActiveButtons = PaginationInternalUtils.mergeButtonsStyleWithActiveStyle(statefulStyle);
     pagination.style.pageButtons.activeButton = newActiveButtons;
-    const defActiveBackgroundColors = {def: '#e8e8e8', hover: '#d6d6d6', click: '#c8c8c8'};
-    PaginationInternalUtils.setStatefulCSS(statefulStyle, defActiveBackgroundColors, 'activeButton');
     // disabledButtons - this inherits the 'buttons' style when using the PageButtonStyle.setDisabled method
     pagination.style.pageButtons.disabledButtons ??= {backgroundColor: '#f9f9f9', color: '#9d9d9d'};
     // first overrides

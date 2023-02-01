@@ -52,6 +52,7 @@ import {Overflow} from './types/overflow';
 import {LitElement} from 'lit';
 
 // WORK - remove the generated type file and replace with activeTableClient, otherwise use one object for internal state
+// WORK - perhaps rename Internal types to use _
 @customElement('active-table')
 export class ActiveTable extends LitElement {
   static override styles = [activeTableStyle];
