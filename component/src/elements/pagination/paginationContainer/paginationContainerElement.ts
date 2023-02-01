@@ -15,6 +15,19 @@ export class PaginationContainerElement {
   private static readonly MIDDLE_COLUMN_CLASS = 'pagination-container-middle-column';
   private static readonly RIGHT_COLUMN_CLASS = 'pagination-container-right-column';
 
+  private static setContainerHeightBasedOnMiddleColumn(container: HTMLElement) {
+    if (container.getBoundingClientRect().height === 0) {
+      container.style.height = `${container.children[1].getBoundingClientRect().height}px`;
+    }
+  }
+
+  private static setHeightsWhenOnlyMiddleColumns(containers: Containers) {
+    setTimeout(() => {
+      if (containers.bottom) PaginationContainerElement.setContainerHeightBasedOnMiddleColumn(containers.bottom);
+      if (containers.top) PaginationContainerElement.setContainerHeightBasedOnMiddleColumn(containers.top);
+    });
+  }
+
   public static addToContainer(side: PaginationPositionSide, containers: Containers, element: HTMLElement) {
     const container = (side.indexOf('top') >= 0 ? containers.top : containers.bottom) as HTMLElement;
     if (side.indexOf('left') >= 0) {
@@ -26,24 +39,20 @@ export class PaginationContainerElement {
     }
   }
 
-  private static createContainerColumn(columnNumber: string) {
+  private static createContainerColumn(sideClass: string) {
     const column = document.createElement('div');
-    column.style.gridColumn = columnNumber;
-    column.classList.add(PaginationContainerElement.COLUMN_CLASS);
+    column.classList.add(PaginationContainerElement.COLUMN_CLASS, sideClass);
     return column;
   }
 
   private static createContainerElement() {
     const container = document.createElement('div');
     container.classList.add(PaginationContainerElement.CONTAINER_CLASS);
-    const left = PaginationContainerElement.createContainerColumn('1');
-    left.classList.add(PaginationContainerElement.LEFT_COLUMN_CLASS);
+    const left = PaginationContainerElement.createContainerColumn(PaginationContainerElement.LEFT_COLUMN_CLASS);
     container.appendChild(left);
-    const middle = PaginationContainerElement.createContainerColumn('2');
-    middle.classList.add(PaginationContainerElement.MIDDLE_COLUMN_CLASS);
+    const middle = PaginationContainerElement.createContainerColumn(PaginationContainerElement.MIDDLE_COLUMN_CLASS);
     container.appendChild(middle);
-    const right = PaginationContainerElement.createContainerColumn('3');
-    right.classList.add(PaginationContainerElement.RIGHT_COLUMN_CLASS);
+    const right = PaginationContainerElement.createContainerColumn(PaginationContainerElement.RIGHT_COLUMN_CLASS);
     container.appendChild(right);
     return container;
   }
@@ -80,6 +89,7 @@ export class PaginationContainerElement {
       const container = PaginationContainerElement.addContainer(parentEl, PaginationContainerElement.BOTTOM_CONTAINER_ID);
       containers.bottom = container;
     }
+    PaginationContainerElement.setHeightsWhenOnlyMiddleColumns(containers);
     return containers;
   }
 }

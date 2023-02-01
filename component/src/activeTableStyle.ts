@@ -487,6 +487,7 @@ export const activeTableStyle = css`
 
   .pagination-container {
     display: grid;
+    position: relative;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -508,6 +509,8 @@ export const activeTableStyle = css`
 
   .pagination-container-middle-column {
     justify-content: center;
+    position: absolute;
+    width: 100%;
   }
 
   .pagination-container-middle-column > div {
