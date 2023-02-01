@@ -104,12 +104,14 @@ export class PaginationInternalUtils {
     delete pagination.rowsPerPageSelect;
   }
 
-  // prettier-ignore
-  private static setDefaultBackgroundColor(style: Required<StatefulCSSS>, defaultBackgrounds: DefaultBackgroundColors) {
-    const {def, hover, click} = defaultBackgrounds;
-    style.click.backgroundColor ??= click;
-    style.hover.backgroundColor ??= hover;
-    style.default.backgroundColor ??= def;
+  private static setDefaultBackgroundColors(style: Required<StatefulCSSS>, defaultBackgrounds: DefaultBackgroundColors) {
+    // if default backgroundColor is set, then setStatefulCSS has used it for all already
+    if (style.default.backgroundColor === undefined) {
+      const {def, hover, click} = defaultBackgrounds;
+      style.click.backgroundColor ??= click;
+      style.hover.backgroundColor ??= hover;
+      style.default.backgroundColor ??= def;
+    }
   }
 
   private static setStatefulCSS<T extends StatefulStyle>(style: T, elementType: keyof T) {
@@ -124,7 +126,7 @@ export class PaginationInternalUtils {
   private static setRowsPerPageOptionsStyle(style: IPaginationStyle) {
     PaginationInternalUtils.setStatefulCSS(style.rowsPerPageSelect as StatefulStyle, 'button');
     const defButtonsBackgroundColors = {def: '', hover: '#f5f5f5', click: '#f5f5f5'};
-    PaginationInternalUtils.setDefaultBackgroundColor(style.rowsPerPageSelect?.button as Required<StatefulCSSS>,
+    PaginationInternalUtils.setDefaultBackgroundColors(style.rowsPerPageSelect?.button as Required<StatefulCSSS>,
       defButtonsBackgroundColors);
   }
 
@@ -167,7 +169,7 @@ export class PaginationInternalUtils {
     // buttons
     const defButtonsBackgroundColors = {def: 'white', hover: '#f5f5f5', click: '#c8c8c8'};
     PaginationInternalUtils.setStatefulCSS(statefulStyle, 'buttons');
-    PaginationInternalUtils.setDefaultBackgroundColor(pagination.style.pageButtons.buttons, defButtonsBackgroundColors)
+    PaginationInternalUtils.setDefaultBackgroundColors(pagination.style.pageButtons.buttons, defButtonsBackgroundColors)
     // actionButtons
     const newActionButtons = PaginationInternalUtils.mergeButtonsStyleWithActionStyle(statefulStyle);
     pagination.style.pageButtons.actionButtons = newActionButtons;

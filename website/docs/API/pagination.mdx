@@ -15,7 +15,7 @@ Divide table rows into a series of pages.
   &nbsp;&nbsp;&nbsp;&nbsp;`displayPrevNext?: boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`displayFirstLast?: boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`displayNumberOfVisibleRows?: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`style?: PaginationStyle<StatefulCSSS>`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`style?: PaginationStyle`](#PaginationStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`positions?: PaginationPositions` <br />
   }
 - Default: {<br />
@@ -30,7 +30,7 @@ Divide table rows into a series of pages.
 
 `rowsPerPage` is the number of maximum data rows that can be displayed in a single page. <br />
 `rowsPerPageSelect` facilitates a `rowsPerPage` selection button that opens up a dropdown containing a number of options that the user can select
-to change `rowsPerPage`. If the defined `rowsPerPage` value within this object is not in the options list, it will be added automatically. <br />
+to change `rowsPerPage`. <br />
 `maxNumberOfVisiblePageButtons` is the maximum number of page (number) buttons that are visible, the rest will be hidden. <br />
 `displayPrevNext` defines whether the previous and next page buttons are displayed. <br />
 `displayFirstLast` defines whether the first and last page buttons are displayed. <br />
@@ -48,7 +48,7 @@ import Tabs from '@theme/Tabs';
 
 <TableContainer>
   <active-table
-    pagination='{"rowsPerPage": 5, "maxNumberOfVisiblePageButtons": 4}'
+    pagination='{}'
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
@@ -84,9 +84,7 @@ import Tabs from '@theme/Tabs';
 <TabItem value="js" label="Sample">
 
 ```text
-<active-table
-  pagination='{"rowsPerPage": 6, "maxNumberOfVisiblePageButtons": 4}'
-></active-table>
+<active-table pagination='{}'></active-table>
 ```
 
 </TabItem>
@@ -94,7 +92,7 @@ import Tabs from '@theme/Tabs';
 
 ```text
 <active-table
-  pagination='{"rowsPerPage": 6, "maxNumberOfVisiblePageButtons": 4}'
+  pagination='{}'
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
@@ -137,24 +135,25 @@ Object types for properties inside [`pagination`](#pagination):
 ### `RowsPerPageSelect` {#RowsPerPageSelect}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`options?: (number | "all" | "All" )[]`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`prefixText?: string` <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`prefixText?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`options?: (number | "all" | "All" )[]` <br />
   }
 - Default: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;_options: [10, 25, 50, "All"]_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;_prefixText: "Rows per page"_ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_prefixText: "Rows per page"_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_options: [10, 25, 50, "All"]_ <br />
   }
 
 Custom settings for the `rowsPerPageSelect` property. <br />
-`prefixText` is the text that is displayed before the button.
-`options` is the array of options that are displayed in the dropdown. `"all"|"All"` displays all of the table's rows within the same page. <br />
+`prefixText` is the text that is displayed before the button. <br />
+`options` is the array of options that are displayed in the dropdown. `"all"|"All"` option displays all of the table's rows within one page.
+If the defined `rowsPerPage` value (in [`pagination`](#pagination) object) is not in the options array, it will be added to it automatically. <br />
 
 <TableContainer>
   <active-table
     pagination='{
-      "rowsPerPage": 5,
-      "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [5, 10, 15, 20, "All"]
-    }}'
+      "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [10, 15, 20, "All"]},
+      "rowsPerPage": 5
+    }'
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
@@ -192,9 +191,9 @@ Custom settings for the `rowsPerPageSelect` property. <br />
 ```text
 <active-table
   pagination='{
-    "rowsPerPage": 5,
-    "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [5, 10, 15, 20, "All"]
-  }}'
+    "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [10, 15, 20, "All"]},
+    "rowsPerPage": 5
+  }'
 ></active-table>
 ```
 
@@ -204,9 +203,9 @@ Custom settings for the `rowsPerPageSelect` property. <br />
 ```text
 <active-table
   pagination='{
-    "rowsPerPage": 5,
-    "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [5, 10, 15, 20, "All"]
-  }}'
+    "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [10, 15, 20, "All"]},
+    "rowsPerPage": 5
+  }'
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
@@ -241,3 +240,162 @@ Custom settings for the `rowsPerPageSelect` property. <br />
 </Tabs>
 
 <LineBreak></LineBreak>
+
+### `PaginationStyle` {#PaginationStyle}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`rowsPerPageSelect?: RowsPerPageOptionsStyle`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`numberOfVisibleRows?: CSSStyle`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`pageButtons?: PageButtonStyle` <br />
+  }
+
+Styling properties of pagination components. <br />
+`rowsPerPageSelect` defines styling properties for the rowsPerPage button container and its dropdown.
+`numberOfVisibleRows` defines styling properties for the number of visible rows text. <br />
+`pageButtons` defines styling properties for the page/previous/next/first/last buttons. <br />
+
+<TableContainer>
+  <active-table
+    pagination='{
+      "style": {
+        "rowsPerPageSelect": {
+          "prefixText": {"color": "#174a76"},
+          "buttonText": {"default":{"color": "#174a76"}},
+          "buttonArrow": {"default":{"color": "#174a76"}}
+        },
+        "numberOfVisibleRows": {"color": "#174a76"},
+        "pageButtons": {
+          "buttons": {
+            "default": {"color": "steelblue", "border":"1px solid #dedede", "borderRight": "unset"}
+          },
+          "activeButton": {"default": {"backgroundColor": "steelblue", "color": "white", "border":"1px solid steelblue"}},
+          "firstVisibleButtonOverride": {"borderLeft": "1px solid #dedede", "borderTopLeftRadius": "2px", "borderBottomLeftRadius": "2px"},
+          "lastVisibleButtonOverride": {"borderRight": "1px solid #dedede", "borderTopRightRadius": "2px", "borderBottomRightRadius": "2px"},
+          "activeButtonPrecedence": true
+      }},
+      "rowsPerPage": 5
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+> </active-table>
+
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  pagination='{
+    "style": {
+      "rowsPerPageSelect": {
+        "prefixText": {"color": "#174a76"},
+        "buttonText": {"default":{"color": "#174a76"}},
+        "buttonArrow": {"default":{"color": "#174a76"}}
+      },
+      "numberOfVisibleRows": {"color": "#174a76"},
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "steelblue", "border":"1px solid #dedede", "borderRight": "unset"}
+        },
+        "activeButton": {"default": {"backgroundColor": "steelblue", "color": "white", "border":"1px solid steelblue"}},
+        "firstVisibleButtonOverride": {"borderLeft": "1px solid #dedede", "borderTopLeftRadius": "2px", "borderBottomLeftRadius": "2px"},
+        "lastVisibleButtonOverride": {"borderRight": "1px solid #dedede", "borderTopRightRadius": "2px", "borderBottomRightRadius": "2px"},
+        "activeButtonPrecedence": true
+    }},
+    "rowsPerPage": 5
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full Code">
+
+```text
+<active-table
+  pagination='{
+    "style": {
+      "rowsPerPageSelect": {
+        "prefixText": {"color": "#174a76"},
+        "buttonText": {"default":{"color": "#174a76"}},
+        "buttonArrow": {"default":{"color": "#174a76"}}
+      },
+      "numberOfVisibleRows": {"color": "#174a76"},
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "steelblue", "border":"1px solid #dedede", "borderRight": "unset"}
+        },
+        "activeButton": {"default": {"backgroundColor": "steelblue", "color": "white", "border":"1px solid steelblue"}},
+        "firstVisibleButtonOverride": {"borderLeft": "1px solid #dedede", "borderTopLeftRadius": "2px", "borderBottomLeftRadius": "2px"},
+        "lastVisibleButtonOverride": {"borderRight": "1px solid #dedede", "borderTopRightRadius": "2px", "borderBottomRightRadius": "2px"},
+        "activeButtonPrecedence": true
+    }},
+    "rowsPerPage": 5
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+:::tip
+When number of visible rows text contains digits that are in the 100s+, it is advisable to set `numberOfVisibleRows` with a minWidth value that is higher than
+'32px' to stop side components from moving when its digits change.
+:::
+
+:::tip
+When setting button side borders and a container border - use borderRight as buttons have a default borderRight style which when using with
+a borderLeft would cause an unexpectadly thick border - alternatively you can simply unset borderRight.
+:::

@@ -1,6 +1,6 @@
 {
   "name": "active-table",
-  "version": "0.0.97",
+  "version": "0.0.98",
   "description": "A fully editable table",
   "main": "./dist/activeTable.js",
   "module": "./dist/activeTable.js",
