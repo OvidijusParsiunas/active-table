@@ -440,6 +440,7 @@ export const activeTableStyle = css`
 
   #rows-per-page-select-button {
     display: inline-block;
+    background-color: white;
     border: 1px solid #0000004d;
     border-radius: 5px;
     cursor: pointer;

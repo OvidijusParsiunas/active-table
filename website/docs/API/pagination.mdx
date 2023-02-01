@@ -244,8 +244,8 @@ If the defined `rowsPerPage` value (in [`pagination`](#pagination) object) is no
 ### `PaginationStyle` {#PaginationStyle}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`rowsPerPageSelect?: RowsPerPageOptionsStyle`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`numberOfVisibleRows?: CSSStyle`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`rowsPerPageSelect?: RowsPerPageOptionsStyle`](#RowsPerPageOptionsStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`numberOfVisibleRows?: CSSStyle`](./types#CSSStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`pageButtons?: PageButtonStyle` <br />
   }
 
@@ -399,3 +399,129 @@ When number of visible rows text contains digits that are in the 100s+, it is ad
 When setting button side borders and a container border - use borderRight as buttons have a default borderRight style which when using with
 a borderLeft would cause an unexpectadly thick border - alternatively you can simply unset borderRight.
 :::
+
+<LineBreak></LineBreak>
+
+### `RowsPerPageOptionsStyle` {#RowsPerPageOptionsStyle}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`container?: CSSStyle`](./types#CSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`prefixText?: CSSStyle`](./types#CSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`button?: StatefulCSS`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`buttonText?: StatefulCSS`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`buttonArrow?: StatefulCSS` <br />
+  }
+
+Styling properties for the rows per page component elements. `container` is the parent element that encapsulates all of the rows per page elements.
+
+<TableContainer>
+  <active-table
+    pagination='{
+      "style": {
+        "rowsPerPageSelect": {
+          "container": {"marginRight": "1px"},
+          "prefixText": {"color": "#444444"},
+          "button": {"default":{"backgroundColor": "white", "border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
+          "buttonText": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
+          "buttonArrow": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
+        }},
+      "rowsPerPage": 5
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+> </active-table>
+
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  pagination='{
+    "style": {
+      "rowsPerPageSelect": {
+        "container": {"marginRight": "1px"},
+        "prefixText": {"color": "#444444"},
+        "button": {"default":{"backgroundColor": "white", "border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
+        "buttonText": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
+        "buttonArrow": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
+      }},
+    "rowsPerPage": 5
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full Code">
+
+```text
+<active-table
+  pagination='{
+    "style": {
+      "rowsPerPageSelect": {
+        "container": {"marginRight": "1px"},
+        "prefixText": {"color": "#444444"},
+        "button": {"default":{"backgroundColor": "white", "border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
+        "buttonText": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
+        "buttonArrow": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
+      }},
+    "rowsPerPage": 5
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>

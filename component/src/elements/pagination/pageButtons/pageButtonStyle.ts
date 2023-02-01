@@ -3,13 +3,13 @@ import {IPageButtonsStyle} from '../../../types/paginationInternal';
 import {ElementStyle} from '../../../utils/elements/elementStyle';
 import {PropertiesOfType} from '../../../types/utilityTypes';
 import {PageButtonElement} from './pageButtonElement';
-import {StatefulCSSS} from '../../../types/cssStyle';
+import {StatefulCSS} from '../../../types/cssStyle';
 
 // action buttons will never be active
 export class PageButtonStyle {
   // prettier-ignore
   private static unsetAllCSSStates(buttonElement: HTMLElement,
-      pageButtonsStyle: IPageButtonsStyle, buttonType: keyof PropertiesOfType<IPageButtonsStyle, Required<StatefulCSSS>>) {
+      pageButtonsStyle: IPageButtonsStyle, buttonType: keyof PropertiesOfType<IPageButtonsStyle, Required<StatefulCSS>>) {
     ElementStyle.unsetAllCSSStates(buttonElement, pageButtonsStyle[buttonType]);
   }
 

@@ -1,7 +1,7 @@
 import {RowsPerPageDropdownItem} from '../../elements/pagination/rowsPerPageSelect/dropdown/rowsPerPageDropdownItem';
 import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
 import {IPaginationStyle, PaginationInternal} from '../../types/paginationInternal';
-import {StatefulCSSS} from '../../types/cssStyle';
+import {StatefulCSS} from '../../types/cssStyle';
 import {ActiveTable} from '../../activeTable';
 import {Browser} from '../browser/browser';
 import {
@@ -18,7 +18,7 @@ interface DefaultBackgroundColors {
   click: string;
 }
 
-type StatefulStyle = {[key: string]: StatefulCSSS};
+type StatefulStyle = {[key: string]: StatefulCSS};
 
 export class PaginationInternalUtils {
   private static readonly DEFAULT_SIDE = 'bottom-right';
@@ -104,14 +104,15 @@ export class PaginationInternalUtils {
     delete pagination.rowsPerPageSelect;
   }
 
-  private static setDefaultBackgroundColors(style: Required<StatefulCSSS>, defaultBackgrounds: DefaultBackgroundColors) {
+  private static setDefaultBackgroundColors(style: Required<StatefulCSS>, defaultBackgrounds: DefaultBackgroundColors) {
     // if default backgroundColor is set, then setStatefulCSS has used it for all already
-    if (style.default.backgroundColor === undefined) {
-      const {def, hover, click} = defaultBackgrounds;
-      style.click.backgroundColor ??= click;
-      style.hover.backgroundColor ??= hover;
-      style.default.backgroundColor ??= def;
-    }
+    const {def, hover, click} = defaultBackgrounds;
+    style.click.backgroundColor ??= style.hover.backgroundColor || style.default.backgroundColor || click;
+    style.hover.backgroundColor ??= style.default.backgroundColor || hover;
+    style.default.backgroundColor ??= def;
+    (['click', 'hover', 'default'] as (keyof StatefulCSS)[]).forEach((key) => {
+      style[key].backgroundColor === undefined ? delete style[key].backgroundColor : {};
+    });
   }
 
   private static setStatefulCSS<T extends StatefulStyle>(style: T, elementType: keyof T) {
@@ -126,13 +127,13 @@ export class PaginationInternalUtils {
   private static setRowsPerPageOptionsStyle(style: IPaginationStyle) {
     PaginationInternalUtils.setStatefulCSS(style.rowsPerPageSelect as StatefulStyle, 'button');
     const defButtonsBackgroundColors = {def: '', hover: '#f5f5f5', click: '#f5f5f5'};
-    PaginationInternalUtils.setDefaultBackgroundColors(style.rowsPerPageSelect?.button as Required<StatefulCSSS>,
+    PaginationInternalUtils.setDefaultBackgroundColors(style.rowsPerPageSelect?.button as Required<StatefulCSS>,
       defButtonsBackgroundColors);
   }
 
   // activeButtons reuse buttons style
   private static mergeButtonsStyleWithActiveStyle(statefulStyle: PageButtonStyle) {
-    const {buttons, actionButtons, activeButton} = statefulStyle as Required<PageButtonStyle<Required<StatefulCSSS>>>;
+    const {buttons, actionButtons, activeButton} = statefulStyle as Required<PageButtonStyle<Required<StatefulCSS>>>;
     const buttonsClone = JSON.parse(JSON.stringify(buttons)) as typeof actionButtons;
     buttonsClone.default.backgroundColor = '#e8e8e8';
     buttonsClone.hover.backgroundColor = '#d6d6d6';
@@ -148,7 +149,7 @@ export class PaginationInternalUtils {
   // actionButtons reuse buttons style
   private static mergeButtonsStyleWithActionStyle(pageButtonsStyle: PageButtonStyle) {
     (pageButtonsStyle as unknown as StatefulStyle).actionButtons ??= {};
-    const {buttons, actionButtons} = pageButtonsStyle as Required<PageButtonStyle<Required<StatefulCSSS>>>;
+    const {buttons, actionButtons} = pageButtonsStyle as Required<PageButtonStyle<Required<StatefulCSS>>>;
     // structuredClone does not seem to work properly
     const buttonsClone = JSON.parse(JSON.stringify(buttons)) as typeof actionButtons;
     Object.assign(buttonsClone.default, actionButtons.default);
@@ -158,7 +159,7 @@ export class PaginationInternalUtils {
     buttonsClone.nextText = actionButtons.nextText || '&#62';
     buttonsClone.firstText = actionButtons.firstText || '&#8810';
     buttonsClone.lastText = actionButtons.lastText || '&#8811';
-    if (Browser.IS_FIREFOX) buttonsClone.default = {fontFamily: 'Georgia, serif'}; // first buttond default padding fix
+    if (Browser.IS_FIREFOX) buttonsClone.default.fontFamily ??= 'Georgia, serif'; // first buttond default padding fix
     return buttonsClone;
   }
 
@@ -171,6 +172,9 @@ export class PaginationInternalUtils {
     PaginationInternalUtils.setStatefulCSS(statefulStyle, 'buttons');
     PaginationInternalUtils.setDefaultBackgroundColors(pagination.style.pageButtons.buttons, defButtonsBackgroundColors)
     // actionButtons
+    PaginationInternalUtils.setStatefulCSS(statefulStyle, 'actionButtons');
+    PaginationInternalUtils.setDefaultBackgroundColors(pagination.style.pageButtons.actionButtons,
+      {} as DefaultBackgroundColors);
     const newActionButtons = PaginationInternalUtils.mergeButtonsStyleWithActionStyle(statefulStyle);
     pagination.style.pageButtons.actionButtons = newActionButtons;
     // activeButton

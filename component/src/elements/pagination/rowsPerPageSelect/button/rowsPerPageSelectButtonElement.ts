@@ -4,7 +4,7 @@ import {PaginationInternal} from '../../../../types/paginationInternal';
 import {RowsPerPageOptionsStyle} from '../../../../types/pagination';
 import {ElementStyle} from '../../../../utils/elements/elementStyle';
 import {Browser} from '../../../../utils/browser/browser';
-import {StatefulCSSS} from '../../../../types/cssStyle';
+import {StatefulCSS} from '../../../../types/cssStyle';
 import {ActiveTable} from '../../../../activeTable';
 
 export class RowsPerPageSelectButtonElement {
@@ -14,14 +14,14 @@ export class RowsPerPageSelectButtonElement {
 
   // prettier-ignore
   private static applyStyle(element: HTMLElement, rowsPerPageSelect: RowsPerPageOptionsStyle,
-      elementName: keyof RowsPerPageOptionsStyle, cssState: keyof StatefulCSSS) {
-    const statefulStyle = rowsPerPageSelect[elementName] as StatefulCSSS;
+      elementName: keyof RowsPerPageOptionsStyle, cssState: keyof StatefulCSS) {
+    const statefulStyle = rowsPerPageSelect[elementName] as StatefulCSS;
     ElementStyle.unsetAllCSSStates(element, statefulStyle);
     Object.assign(element.style, statefulStyle[cssState]);
   }
 
   // prettier-ignore
-  public static applyStylesOnElements(button: HTMLElement, cssState: keyof StatefulCSSS,
+  public static applyStylesOnElements(button: HTMLElement, cssState: keyof StatefulCSS,
       rowsPerPageSelect?: RowsPerPageOptionsStyle) {
     if (!rowsPerPageSelect) return;
     if (rowsPerPageSelect.button) {
@@ -37,12 +37,12 @@ export class RowsPerPageSelectButtonElement {
     }
   }
 
-  private static processStatefulStyle(statefulCSS: StatefulCSSS) {
+  private static processStatefulStyle(statefulCSS: StatefulCSS) {
     statefulCSS.hover ??= statefulCSS.default;
     statefulCSS.click ??= statefulCSS.hover;
   }
 
-  private static processAndApplyDefaultStyle(element: HTMLElement, styling?: StatefulCSSS) {
+  private static processAndApplyDefaultStyle(element: HTMLElement, styling?: StatefulCSS) {
     if (styling) {
       RowsPerPageSelectButtonElement.processStatefulStyle(styling);
       Object.assign(element.style, styling.default);

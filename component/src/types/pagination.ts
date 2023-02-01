@@ -1,4 +1,4 @@
-import {CSSStyle, StatefulCSSS} from './cssStyle';
+import {CSSStyle, StatefulCSS} from './cssStyle';
 
 export type PaginationPositionSide =
   | 'top-left'
@@ -19,7 +19,7 @@ export interface PaginationPositions {
   rowsPerPageSelect?: PaginationPosition;
 }
 
-export interface RowsPerPageOptionsStyle<T = StatefulCSSS> {
+export interface RowsPerPageOptionsStyle<T = StatefulCSS> {
   container?: CSSStyle;
   prefixText?: CSSStyle;
   button?: T;
@@ -34,7 +34,7 @@ type ActionButtonStyle<T> = T & {
   lastText?: string;
 };
 
-export interface PageButtonStyle<T = StatefulCSSS> {
+export interface PageButtonStyle<T = StatefulCSS> {
   container?: CSSStyle;
   buttons?: T;
   activeButton?: T;
@@ -45,7 +45,7 @@ export interface PageButtonStyle<T = StatefulCSSS> {
   lastVisibleButtonOverride?: CSSStyle;
 }
 
-export interface PaginationStyle<T = StatefulCSSS> {
+export interface PaginationStyle<T = StatefulCSS> {
   pageButtons: PageButtonStyle<T>;
   numberOfVisibleRows?: CSSStyle;
   rowsPerPageSelect?: RowsPerPageOptionsStyle<T>;

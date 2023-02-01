@@ -1,4 +1,4 @@
-import {NoDimensionCSSStyle, StatefulCSSS} from '../../types/cssStyle';
+import {NoDimensionCSSStyle, StatefulCSS} from '../../types/cssStyle';
 import {GenericObject} from '../../types/genericObject';
 
 export class ElementStyle {
@@ -24,7 +24,7 @@ export class ElementStyle {
     Object.assign(element.style, unsetStyles);
   }
 
-  public static unsetAllCSSStates(buttonElement: HTMLElement, statefulStyle: StatefulCSSS) {
+  public static unsetAllCSSStates(buttonElement: HTMLElement, statefulStyle: StatefulCSS) {
     if (statefulStyle.click) ElementStyle.unsetStyle(buttonElement, statefulStyle.click);
     if (statefulStyle.hover) ElementStyle.unsetStyle(buttonElement, statefulStyle.hover);
     if (statefulStyle.default) ElementStyle.unsetStyle(buttonElement, statefulStyle.default);

@@ -2,7 +2,7 @@ import {RowsPerPageSelectButtonElement} from './rowsPerPageSelectButtonElement';
 import {PaginationInternal} from '../../../../types/paginationInternal';
 import {RowsPerPageDropdown} from '../dropdown/rowsPerPageDropdown';
 import {PaginationStyle} from '../../../../types/pagination';
-import {StatefulCSSS} from '../../../../types/cssStyle';
+import {StatefulCSS} from '../../../../types/cssStyle';
 import {ActiveTable} from '../../../../activeTable';
 import {Dropdown} from '../../../dropdown/dropdown';
 
@@ -30,12 +30,12 @@ export class RowsPerPageSelectButtonEvents {
     setTimeout(() => (pagination.mouseDownOnRowsPerPageButton = false));
   }
 
-  private static buttonMouseLeave(paginationStyle: PaginationStyle<Required<StatefulCSSS>>, event: MouseEvent) {
+  private static buttonMouseLeave(paginationStyle: PaginationStyle<Required<StatefulCSS>>, event: MouseEvent) {
     const button = event.target as HTMLElement;
     RowsPerPageSelectButtonElement.applyStylesOnElements(button, 'default', paginationStyle.rowsPerPageSelect);
   }
 
-  private static buttonMouseEnter(paginationStyle: PaginationStyle<Required<StatefulCSSS>>, event: MouseEvent) {
+  private static buttonMouseEnter(paginationStyle: PaginationStyle<Required<StatefulCSS>>, event: MouseEvent) {
     const button = event.target as HTMLElement;
     RowsPerPageSelectButtonElement.applyStylesOnElements(button, 'hover', paginationStyle.rowsPerPageSelect);
   }

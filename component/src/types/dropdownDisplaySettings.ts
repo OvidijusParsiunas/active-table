@@ -1,6 +1,6 @@
-import {StatefulCSSS, NoDimensionCSSStyle} from './cssStyle';
+import {StatefulCSS, NoDimensionCSSStyle} from './cssStyle';
 
-export type DropdownCellOverlayStyle = Omit<StatefulCSSS<Pick<NoDimensionCSSStyle, 'backgroundColor'>>, 'click'>;
+export type DropdownCellOverlayStyle = Omit<StatefulCSS<Pick<NoDimensionCSSStyle, 'backgroundColor'>>, 'click'>;
 
 export interface DropdownDisplaySettings {
   isAvailable?: boolean; // true by default
