@@ -1,4 +1,4 @@
-import {GenericElementUtils} from '../elements/genericElementUtils';
+import {ElementStyle} from '../elements/elementStyle';
 import {ActiveTable} from '../../activeTable';
 
 export class StickyPropsUtils {
@@ -24,7 +24,7 @@ export class StickyPropsUtils {
     if (at.tableElementRef.style.borderColor) {
       at.tableBodyElementRef.style.borderTopColor = at.tableElementRef.style.borderColor;
     }
-    GenericElementUtils.moveStyles(at.tableElementRef, at.tableBodyElementRef,
+    ElementStyle.moveStyles(at.tableElementRef, at.tableBodyElementRef,
       'borderTop', 'borderTopColor', 'borderTopWidth', 'borderTopStyle');
     at.tableElementRef.style.borderTop = 'unset';
   }

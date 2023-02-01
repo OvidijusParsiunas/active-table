@@ -1,6 +1,5 @@
 import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
 import {CellProcessedTextStyle} from '../../types/processedTextStyle';
-import {GenericElementUtils} from '../elements/genericElementUtils';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
@@ -18,7 +17,7 @@ export class ResetColumnStyles {
 
   private static unsetLastAppliedStyle(processedStyle: CellProcessedTextStyle, textContainerElement: HTMLElement) {
     Object.keys(processedStyle.lastAppliedStyle).forEach((key) => {
-      GenericElementUtils.setStyle(textContainerElement, key, '');
+      ElementStyle.setStyle(textContainerElement, key, '');
     });
   }
 

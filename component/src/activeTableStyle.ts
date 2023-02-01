@@ -409,7 +409,7 @@ export const activeTableStyle = css`
     border: 1px solid #0000004d;
     border-right: unset;
     color: #353535;
-    width: 30px;
+    min-width: 30px;
     height: 25px;
     padding-top: 4px;
     text-align: center;

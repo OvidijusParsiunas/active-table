@@ -104,21 +104,28 @@ export class PaginationInternalUtils {
     delete pagination.rowsPerPageSelect;
   }
 
-  private static setRowsPerPageOptionsStyle(style: IPaginationStyle) {
-    // only adding stateful style for button as it is the only one that has default stategful css
-    const defButtonsBackgroundColors = {def: '', hover: '#f5f5f5', click: '#f5f5f5'};
-    const statefulStyle = style.rowsPerPageSelect as StatefulStyle;
-    PaginationInternalUtils.setStatefulCSS(statefulStyle, defButtonsBackgroundColors, 'button');
+  // prettier-ignore
+  private static setDefaultBackgroundColor(style: Required<StatefulCSSS>, defaultBackgrounds: DefaultBackgroundColors) {
+    const {def, hover, click} = defaultBackgrounds;
+    style.click.backgroundColor ??= click;
+    style.hover.backgroundColor ??= hover;
+    style.default.backgroundColor ??= def;
+  }
+
+  private static setStatefulCSS<T extends StatefulStyle>(style: T, elementType: keyof T) {
+    (style[elementType] as unknown as StatefulStyle) ??= {};
+    // deep copy to allow setDefaultBackgroundColor to overwrite objects
+    style[elementType].click ??= JSON.parse(JSON.stringify(style[elementType].hover || style[elementType].default || {}));
+    style[elementType].hover ??= JSON.parse(JSON.stringify(style[elementType].default || {}));
+    style[elementType].default ??= {};
   }
 
   // prettier-ignore
-  private static setStatefulCSS<T extends StatefulStyle>(style: T, defaultBackgrounds: DefaultBackgroundColors,
-      elementType: keyof T) {
-    (style[elementType] as unknown as StatefulStyle) ??= {};
-    const {def, hover, click} = defaultBackgrounds;
-    style[elementType].click ??= style[elementType].hover || style[elementType].default || {backgroundColor: click};
-    style[elementType].hover ??= style[elementType].default || {backgroundColor: hover};
-    style[elementType].default ??= {backgroundColor: def};
+  private static setRowsPerPageOptionsStyle(style: IPaginationStyle) {
+    PaginationInternalUtils.setStatefulCSS(style.rowsPerPageSelect as StatefulStyle, 'button');
+    const defButtonsBackgroundColors = {def: '', hover: '#f5f5f5', click: '#f5f5f5'};
+    PaginationInternalUtils.setDefaultBackgroundColor(style.rowsPerPageSelect?.button as Required<StatefulCSSS>,
+      defButtonsBackgroundColors);
   }
 
   // activeButtons reuse buttons style
@@ -159,7 +166,8 @@ export class PaginationInternalUtils {
     const statefulStyle = pagination.style.pageButtons as unknown as StatefulStyle;
     // buttons
     const defButtonsBackgroundColors = {def: 'white', hover: '#f5f5f5', click: '#c8c8c8'};
-    PaginationInternalUtils.setStatefulCSS(statefulStyle, defButtonsBackgroundColors, 'buttons');
+    PaginationInternalUtils.setStatefulCSS(statefulStyle, 'buttons');
+    PaginationInternalUtils.setDefaultBackgroundColor(pagination.style.pageButtons.buttons, defButtonsBackgroundColors)
     // actionButtons
     const newActionButtons = PaginationInternalUtils.mergeButtonsStyleWithActionStyle(statefulStyle);
     pagination.style.pageButtons.actionButtons = newActionButtons;

@@ -1,5 +1,4 @@
 import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
-import {GenericElementUtils} from '../elements/genericElementUtils';
 import {PaginationInternal} from '../../types/paginationInternal';
 import {PageButtonStyle} from '../../types/pagination';
 import {ElementStyle} from '../elements/elementStyle';
@@ -46,7 +45,7 @@ export class PaginationVisibleButtonsUtils {
     const isPrecedence = buttonElement.classList.contains(PageButtonElement.PRECEDENCE_ACTIVE_PAGINATION_BUTTON_CLASS);
     if (isPrecedence) precedenceValues.forEach((value) => styleKeys.delete(value));
     styleKeys.forEach((key) => {
-      GenericElementUtils.setStyle(buttonElement, key, edgeStyle[key as keyof typeof edgeStyle] as string);
+      ElementStyle.setStyle(buttonElement, key, edgeStyle[key as keyof typeof edgeStyle] as string);
     });
     if (isLast && isPrecedence) {
       PaginationVisibleButtonsUtils.setBorderPaddingForLastPrecedence(buttonElement, edgeStyle);

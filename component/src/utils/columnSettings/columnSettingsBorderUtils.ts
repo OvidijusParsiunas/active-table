@@ -1,7 +1,7 @@
 import {BordersOverwrittenBySiblings, ColumnDetailsT} from '../../types/columnDetails';
 import {ColumnSettingsAuxBorderUtils} from './columnSettingsAuxBorderUtils';
-import {GenericElementUtils} from '../elements/genericElementUtils';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
+import {ElementStyle} from '../elements/elementStyle';
 import {ActiveTable} from '../../activeTable';
 
 type OverwritableBorderStyle = 'borderLeftWidth' | 'borderRightWidth';
@@ -44,7 +44,7 @@ export class ColumnSettingsBorderUtils {
         && ColumnSettingsBorderUtils.isBorderDisplayed(siblingHeader, siblingBorderStyle)) {
       if (bordersOverwrittenBySiblings) bordersOverwrittenBySiblings[subjectBorder] = true;
       subjectElements.forEach((element) => {
-        GenericElementUtils.setStyle(element, subjectBorderStyle, ColumnSettingsBorderUtils.UNSET_PX);
+        ElementStyle.setStyle(element, subjectBorderStyle, ColumnSettingsBorderUtils.UNSET_PX);
       });
     }
   }

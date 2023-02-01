@@ -2,7 +2,6 @@ import {ProcessedDataTextStyle} from '../columnType/processedDataTextStyle';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
-import {GenericElementUtils} from '../elements/genericElementUtils';
 import {NoDimensionCSSStyle, CSSStyle} from '../../types/cssStyle';
 import {ColumnDetails} from '../columnDetails/columnDetails';
 import {CellElement} from '../../elements/cell/cellElement';
@@ -29,7 +28,7 @@ export class ColumnSettingsStyleUtils {
 
   private static unsetHeaderSettingStyle(headerElement: HTMLElement, style: NoDimensionCSSStyle) {
     Object.keys(style).forEach((styleName) => {
-      GenericElementUtils.setStyle(headerElement, styleName, '');
+      ElementStyle.setStyle(headerElement, styleName, '');
     });
   }
 

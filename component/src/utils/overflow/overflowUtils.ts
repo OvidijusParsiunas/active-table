@@ -1,8 +1,8 @@
 import {StringDimensionUtils, ParsedDimension} from '../tableDimensions/stringDimensionUtils';
-import {GenericElementUtils} from '../elements/genericElementUtils';
 import {TableElement} from '../../elements/table/tableElement';
 import {OverflowInternal} from '../../types/overflowInternal';
 import {TableDimensions} from '../../types/tableDimensions';
+import {ElementStyle} from '../elements/elementStyle';
 import {ActiveTable} from '../../activeTable';
 import {Overflow} from '../../types/overflow';
 import {Browser} from '../browser/browser';
@@ -34,7 +34,7 @@ export class OverflowUtils {
 
   // prettier-ignore
   private static moveBorderToOverflowContainer(overflowContainer: HTMLElement, tableElement: HTMLElement) {
-    GenericElementUtils.moveStyles(tableElement, overflowContainer,
+    ElementStyle.moveStyles(tableElement, overflowContainer,
       'borderRight', 'borderLeft', 'borderTop', 'borderBottom', 'borderRadius',
       'borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomLeftRadius', 'borderBottomRightRadius');
     tableElement.style.border = 'unset';
