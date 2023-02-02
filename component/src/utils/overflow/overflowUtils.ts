@@ -4,7 +4,6 @@ import {OverflowInternal} from '../../types/overflowInternal';
 import {TableDimensions} from '../../types/tableDimensions';
 import {ElementStyle} from '../elements/elementStyle';
 import {ActiveTable} from '../../activeTable';
-import {Overflow} from '../../types/overflow';
 import {Browser} from '../browser/browser';
 
 export class OverflowUtils {
@@ -40,11 +39,11 @@ export class OverflowUtils {
     tableElement.style.border = 'unset';
   }
 
-  private static adjustStyleForScrollbarWidth(overflowContainer: HTMLElement, overflow: Overflow) {
+  private static adjustStyleForScrollbarWidth(overflow: OverflowInternal) {
     if (Browser.IS_SAFARI || Browser.IS_FIREFOX) {
       if (overflow.maxHeight && !overflow.maxWidth) {
         // this is used to not create a horizontal scroll
-        overflowContainer.style.paddingRight = `${OverflowUtils.SCROLLBAR_WIDTH}px`;
+        overflow.overflowContainer.style.paddingRight = `${OverflowUtils.SCROLLBAR_WIDTH}px`;
       }
     }
   }
@@ -61,30 +60,30 @@ export class OverflowUtils {
   }
 
   // prettier-ignore
-  private static getDimensions(at: ActiveTable, overflow: Overflow, overflowInternal: OverflowInternal) {
+  private static getDimensions(at: ActiveTable, overflow: OverflowInternal) {
     const widthResult = StringDimensionUtils.generateNumberDimensionFromClientString(
       at.parentElement as HTMLElement, overflow, 'maxWidth', true);
     widthResult.number -= at.tableDimensions.border.leftWidth + at.tableDimensions.border.rightWidth;
-    if (widthResult.isPercentage) overflowInternal.isWidthPercentage = true;
+    if (widthResult.isPercentage) overflow.isWidthPercentage = true;
     // if heightResult is 0 for a %, the likelyhood is that the parent element does not have height set
     const heightResult = StringDimensionUtils.generateNumberDimensionFromClientString(
       at.parentElement as HTMLElement, overflow, 'maxHeight', false);
     heightResult.number -= at.tableDimensions.border.topWidth + at.tableDimensions.border.bottomWidth;
-    if (heightResult.isPercentage) overflowInternal.isHeightPercentage = true;
+    if (heightResult.isPercentage) overflow.isHeightPercentage = true;
     return {width: widthResult.number, height: heightResult.number};
   }
 
   public static applyDimensions(at: ActiveTable) {
-    const {overflow, overflowInternal} = at;
-    if (!overflow || !overflowInternal) return;
-    const dimensions = OverflowUtils.getDimensions(at, overflow, overflowInternal);
+    const {overflowInternal} = at;
+    if (!overflowInternal) return;
+    const dimensions = OverflowUtils.getDimensions(at, overflowInternal);
     OverflowUtils.setDimensions(overflowInternal.overflowContainer, dimensions);
-    OverflowUtils.adjustStyleForScrollbarWidth(overflowInternal.overflowContainer, overflow);
+    OverflowUtils.adjustStyleForScrollbarWidth(overflowInternal);
   }
 
   public static setupContainer(at: ActiveTable, tableElement: HTMLElement) {
     const overflowContainer = document.createElement('div');
-    at.overflowInternal = {overflowContainer};
+    at.overflowInternal = {overflowContainer, ...at.overflow};
     overflowContainer.id = OverflowUtils.ID;
     OverflowUtils.moveBorderToOverflowContainer(overflowContainer, tableElement);
     overflowContainer.appendChild(tableElement);

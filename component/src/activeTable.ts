@@ -237,7 +237,7 @@ export class ActiveTable extends LitElement {
   overflowInternal: OverflowInternal | null = null;
 
   @property({type: Object})
-  pagination: Pagination | null = null;
+  pagination: Pagination | boolean | null = null;
 
   @state()
   paginationInternal: PaginationInternal = PaginationInternalUtils.getDefault();

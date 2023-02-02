@@ -27,7 +27,8 @@ export class WindowResize {
   }
 
   private static extractDimensionsToObserve(at: ActiveTable) {
-    const postfixes = [at.tableStyle.width, at.tableStyle.maxWidth, at.overflow?.maxHeight, at.overflow?.maxWidth].map(
+    const {tableStyle, overflowInternal} = at;
+    const postfixes = [tableStyle.width, tableStyle.maxWidth, overflowInternal?.maxHeight, overflowInternal?.maxWidth].map(
       (dimension) => WindowResize.extractPostfix(dimension)
     );
     return {

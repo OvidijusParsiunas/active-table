@@ -8,7 +8,7 @@ Divide table rows into a series of pages.
 
 ### `pagination` {#pagination}
 
-- Type: {<br />
+- Type: `boolean` | {<br />
   &nbsp;&nbsp;&nbsp;&nbsp;`rowsPerPage?: number`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`rowsPerPageSelect?: boolean|RowsPerPageSelect`](#RowsPerPageSelect), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`maxNumberOfVisiblePageButtons?: number`, <br />
@@ -48,7 +48,7 @@ import Tabs from '@theme/Tabs';
 
 <TableContainer>
   <active-table
-    pagination='{}'
+    pagination="true"
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
@@ -84,7 +84,7 @@ import Tabs from '@theme/Tabs';
 <TabItem value="js" label="Sample">
 
 ```text
-<active-table pagination='{}'></active-table>
+<active-table pagination="true"></active-table>
 ```
 
 </TabItem>
@@ -92,7 +92,7 @@ import Tabs from '@theme/Tabs';
 
 ```text
 <active-table
-  pagination='{}'
+  pagination="true"
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],

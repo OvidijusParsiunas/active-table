@@ -220,8 +220,9 @@ export class PaginationInternalUtils {
   }
 
   public static process(at: ActiveTable) {
-    const {pagination, paginationInternal} = at;
-    if (!pagination) return;
+    const {paginationInternal} = at;
+    if (!at.pagination) return;
+    const pagination: Pagination = typeof at.pagination === 'boolean' ? {} : at.pagination;
     if (pagination.maxNumberOfVisiblePageButtons !== undefined && pagination.maxNumberOfVisiblePageButtons < 1) {
       pagination.maxNumberOfVisiblePageButtons = 1;
     }
