@@ -16,7 +16,7 @@ Divide table rows into a series of pages.
   &nbsp;&nbsp;&nbsp;&nbsp;`displayFirstLast?: boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`displayNumberOfVisibleRows?: boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`style?: PaginationStyle`](#PaginationStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`positions?: PaginationPositions` <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`positions?: PaginationPositions`](#PaginationPositions) <br />
   }
 - Default: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp;_rowsPerPage: 10_, <br />
@@ -246,7 +246,7 @@ If the defined `rowsPerPage` value (in [`pagination`](#pagination) object) is no
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`rowsPerPageSelect?: RowsPerPageOptionsStyle`](#RowsPerPageOptionsStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`numberOfVisibleRows?: CSSStyle`](./types#CSSStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`pageButtons?: PageButtonStyle` <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`pageButtons?: PageButtonStyle`](#PageButtonStyle) <br />
   }
 
 Styling properties of pagination components. <br />
@@ -816,6 +816,164 @@ Styling for action buttons that facilitates the definition of style for various 
 Action button font family is changed to "Georgia, serif" in Firefox in order to align the symbols at a correct height, however when using text you can
 overwrite it by adding the following property to `default`: _"fontFamily": "Inter, Avenir, Helvetica, Arial, sans-serif"_.
 :::
+
+<LineBreak></LineBreak>
+
+### `PaginationPositions` {#PaginationPositions}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`pageButtons?: PaginationPosition`](#PaginationPosition), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`numberOfVisibleRows?: PaginationPosition`](#PaginationPosition), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`rowsPerPageSelect?: PaginationPosition`](#PaginationPosition) <br />
+  }
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_pageButtons: {side: "bottom-right", "order": 3}_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_numberOfVisibleRows: {side: "bottom-right", "order": 2}_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_rowsPerPageSelect: {side: "bottom-right", "order": 1}_ <br />
+  }
+
+Positions for pagination components.
+
+<TableContainer>
+  <active-table
+    pagination='{
+      "positions": {
+        "pageButtons": { "side": "bottom-middle" },
+        "numberOfVisibleRows": { "side": "top-left", "order": 2 },
+        "rowsPerPageSelect": { "side": "top-left", "order": 1 }
+      },
+      "style": {
+        "pageButtons": {
+          "buttons": {
+            "default": {"color": "steelblue", "border":"1px solid #dedede", "borderRight": "unset"}
+          },
+          "activeButton": {"default": {"backgroundColor": "steelblue", "color": "white", "border":"1px solid steelblue"}},
+          "disabledButtons": {"visibility": "hidden"},
+          "firstVisibleButtonOverride": {"borderTopLeftRadius": "2px", "borderBottomLeftRadius": "2px"},
+          "lastVisibleButtonOverride": {"borderRight": "1px solid #dedede", "borderTopRightRadius": "2px", "borderBottomRightRadius": "2px"},
+          "activeButtonPrecedence": true
+      }},
+      "rowsPerPage": 5
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+> </active-table>
+
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  pagination='{
+    "style": {
+      "pageButtons": {
+        "actionButtons": {
+          "default": {"width": "50px", "fontSize": "15px"},
+          "hover": {"backgroundColor": "#e4ffe4"},
+          "click": {"backgroundColor": "#81d581"},
+          "previousText": "Prev",
+          "nextText": "Next",
+          "firstText": "First",
+          "lastText": "Last"
+      }}
+    "rowsPerPage": 5
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full Code">
+
+```text
+<active-table
+  pagination='{
+    "style": {
+      "pageButtons": {
+        "actionButtons": {
+          "default": {"width": "50px", "fontSize": "15px"},
+          "hover": {"backgroundColor": "#e4ffe4"},
+          "click": {"backgroundColor": "#81d581"},
+          "previousText": "Prev",
+          "nextText": "Next",
+          "firstText": "First",
+          "lastText": "Last"
+      }}
+    "rowsPerPage": 5
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `PaginationPosition` {#PaginationPosition}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`side?:` `"top-left"` | `"top-middle"` | `"top-right"` | `"bottom-left"` | `"bottom-middle"` | `"bottom-right"`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`order?: number` <br />
+  }
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_side: "bottom-right"_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_order: 1_ <br />
+  }
+
+Object defining position properties for a pagination component. `order` is the order position of the component when multiple ones are lined up on the same side.
 
 <LineBreak></LineBreak>
 

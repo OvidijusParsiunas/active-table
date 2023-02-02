@@ -39,8 +39,9 @@ export class PaginationContainerElement {
     }
   }
 
-  private static createContainerColumn(sideClass: string) {
+  private static createContainerColumn(sideClass: string, columnNumber: string) {
     const column = document.createElement('div');
+    column.style.gridColumn = columnNumber;
     column.classList.add(PaginationContainerElement.COLUMN_CLASS, sideClass);
     return column;
   }
@@ -48,11 +49,11 @@ export class PaginationContainerElement {
   private static createContainerElement() {
     const container = document.createElement('div');
     container.classList.add(PaginationContainerElement.CONTAINER_CLASS);
-    const left = PaginationContainerElement.createContainerColumn(PaginationContainerElement.LEFT_COLUMN_CLASS);
+    const left = PaginationContainerElement.createContainerColumn(PaginationContainerElement.LEFT_COLUMN_CLASS, '1');
     container.appendChild(left);
-    const middle = PaginationContainerElement.createContainerColumn(PaginationContainerElement.MIDDLE_COLUMN_CLASS);
+    const middle = PaginationContainerElement.createContainerColumn(PaginationContainerElement.MIDDLE_COLUMN_CLASS, '2');
     container.appendChild(middle);
-    const right = PaginationContainerElement.createContainerColumn(PaginationContainerElement.RIGHT_COLUMN_CLASS);
+    const right = PaginationContainerElement.createContainerColumn(PaginationContainerElement.RIGHT_COLUMN_CLASS, '3');
     container.appendChild(right);
     return container;
   }
@@ -78,8 +79,8 @@ export class PaginationContainerElement {
     const containers: Containers = {};
     const isTopRequired = PaginationContainerElement.isContainerRequired(at.paginationInternal.positions, 'top');
     const isBottomRequired = PaginationContainerElement.isContainerRequired(at.paginationInternal.positions, 'bottom');
-    const {tableElementRef: table} = at;
-    const parentEl = at.overflowInternal?.overflowContainer || table;
+    const {tableElementRef} = at;
+    const parentEl = at.overflowInternal?.overflowContainer || tableElementRef;
     if (!parentEl) return containers;
     if (isTopRequired) {
       const container = PaginationContainerElement.addContainer(parentEl, PaginationContainerElement.TOP_CONTAINER_ID);

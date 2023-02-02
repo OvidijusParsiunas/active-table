@@ -432,6 +432,7 @@ export const activeTableStyle = css`
     padding-top: 2px;
     position: relative;
     color: #1d1d1d;
+    min-width: max-content;
   }
 
   #pagination-number-of-rows-select-text {
@@ -510,7 +511,7 @@ export const activeTableStyle = css`
   .pagination-container-middle-column {
     justify-content: center;
     position: absolute;
-    width: 100%;
+    width: 0px;
   }
 
   .pagination-container-middle-column > div {
