@@ -101,8 +101,8 @@ export class AddNewColumnElement {
   // prettier-ignore
   public static toggle(at: ActiveTable, isInsert: boolean) {
     const {addColumnCellsElementsRef, tableBodyElementRef, columnGroupRef: columnGroup,
-      auxiliaryTableContentInternal: {displayAddColumnCell, cellColors: colors}} = at;
-    if (!displayAddColumnCell || !tableBodyElementRef || !columnGroup) return;
+      auxiliaryTableContentInternal: {displayAddColumn, cellColors: colors}} = at;
+    if (!displayAddColumn || !tableBodyElementRef || !columnGroup) return;
     const canAddMore = MaximumColumns.canAddMore(at);
     // do not toggle if already in the intended state
     if (canAddMore === AddNewColumnElement.isDisplayed(addColumnCellsElementsRef)) return;

@@ -12,14 +12,14 @@ export type IndexColumnT =
     };
 
 export interface AuxiliaryTableContentDisplayProps {
-  displayAddRowCell?: boolean; // true by default
+  displayAddRow?: boolean; // true by default
   // called cells to the client, but cells internally as it is made up of multiple cells
-  displayAddColumnCell?: boolean; // true by default
+  displayAddColumn?: boolean; // true by default
   displayIndexColumn?: IndexColumnT;
 }
 
 export interface AuxiliaryTableContentGenericProps {
-  styleProps?: HoverableStyles;
+  style?: HoverableStyles;
   inheritHeaderStyle?: boolean; // true by default, applied to header only and will not inherit the default header style
 }
 

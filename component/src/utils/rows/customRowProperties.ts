@@ -41,7 +41,7 @@ export class CustomRowProperties {
   private static isAddRowRowSame(etc: ActiveTable) {
     return !!(
       etc.pagination &&
-      etc.auxiliaryTableContentInternal.displayAddRowCell &&
+      etc.auxiliaryTableContentInternal.displayAddRow &&
       PaginationUtils.getLastPossiblePageNumber(etc) !== etc.paginationInternal.activePageNumber
     );
   }

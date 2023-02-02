@@ -40,14 +40,14 @@ export class AuxiliaryTableContentColors {
 
   // prettier-ignore
   private static getHoverColorValue(at: ActiveTable, colorKey: keyof CellStateColorProperties): string {
-    const {auxiliaryTableContentInternal: {styleProps}, defaultCellHoverColors} = at;
-    return styleProps?.hoverColors?.[colorKey] || styleProps?.default?.[colorKey]
+    const {auxiliaryTableContentInternal: {style}, defaultCellHoverColors} = at;
+    return style?.hoverColors?.[colorKey] || style?.default?.[colorKey]
       || at.columnsSettings.cellStyle?.[colorKey] || defaultCellHoverColors[colorKey];
   }
 
   // prettier-ignore
   private static getDefaultColorValue(at: ActiveTable, colorKey: keyof CellStateColorProperties) {
-    return at.auxiliaryTableContentInternal.styleProps?.default?.[colorKey]
+    return at.auxiliaryTableContentInternal.style?.default?.[colorKey]
       || at.columnsSettings.cellStyle?.[colorKey] || '';
   }
 

@@ -10,8 +10,8 @@ export class AuxiliaryTableContentInternalUtils {
 
   public static getDefault(): AuxiliaryTableContentInternal {
     return {
-      displayAddColumnCell: true,
-      displayAddRowCell: true,
+      displayAddColumn: true,
+      displayAddRow: true,
       displayIndexColumn: true,
       cellColors: AuxiliaryTableContentColors.getDefaultCellColors(),
     };

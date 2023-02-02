@@ -60,10 +60,10 @@ export class ColumnSizerOverlayEvents {
   // we need to pass down the sizer element instead of the id as the id can change when columns are inserted/removed
   // prettier-ignore
   public static overlayMouseDown(this: ActiveTable, sizer: HTMLElement) {
-    const {columnsDetails, tableBodyElementRef, auxiliaryTableContentInternal: {displayAddRowCell}} = this;
+    const {columnsDetails, tableBodyElementRef, auxiliaryTableContentInternal: {displayAddRow}} = this;
     const {columnSizer, sizerNumber} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(sizer.id, columnsDetails);
     const {element: sizerElement, styles: sizerStyles} = columnSizer;
-    MovableColumnSizerElement.display(tableBodyElementRef as HTMLElement, columnSizer, displayAddRowCell);
+    MovableColumnSizerElement.display(tableBodyElementRef as HTMLElement, columnSizer, displayAddRow);
     ColumnSizerElement.unsetElementsToDefault(sizerElement, sizerStyles.default.width);
     ColumnSizerElement.setBackgroundImage(sizerElement, sizerStyles.default.backgroundImage);
     this.activeOverlayElements.selectedColumnSizer = SelectedColumnSizer.get(this, sizerNumber);

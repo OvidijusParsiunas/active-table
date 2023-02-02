@@ -33,8 +33,8 @@ export class ColumnSettingsAuxBorderUtils {
     const currentColumn = currentColumnDetails || leftColumnDetails; // when last column removed - use the left one instead
     if (!currentColumn) return;
     const {columnsSettings, addColumnCellsElementsRef,
-      auxiliaryTableContentInternal: {displayAddColumnCell, displayIndexColumn}} = at;
-    if (!rightColumnDetails && displayAddColumnCell) {
+      auxiliaryTableContentInternal: {displayAddColumn, displayIndexColumn}} = at;
+    if (!rightColumnDetails && displayAddColumn) {
       ColumnSettingsAuxBorderUtils.toggleAuxiliaryBorder(
         addColumnCellsElementsRef, currentColumn.elements, 'left', columnsSettings);
     }
