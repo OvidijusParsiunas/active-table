@@ -151,7 +151,7 @@ If the defined `rowsPerPage` value (in [`pagination`](#pagination) object) is no
 <TableContainer>
   <active-table
     pagination='{
-      "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [10, 15, 20, "All"]},
+      "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [10, 20, 30, "All"]},
       "rowsPerPage": 5
     }'
     content='[
@@ -191,7 +191,7 @@ If the defined `rowsPerPage` value (in [`pagination`](#pagination) object) is no
 ```text
 <active-table
   pagination='{
-    "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [10, 15, 20, "All"]},
+    "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [10, 20, 30, "All"]},
     "rowsPerPage": 5
   }'
 ></active-table>
@@ -203,7 +203,7 @@ If the defined `rowsPerPage` value (in [`pagination`](#pagination) object) is no
 ```text
 <active-table
   pagination='{
-    "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [10, 15, 20, "All"]},
+    "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [10, 20, 30, "All"]},
     "rowsPerPage": 5
   }'
   content='[
@@ -415,10 +415,10 @@ Styling properties for the rows per page component elements. `container` is the 
       "style": {
         "rowsPerPageSelect": {
           "container": {"marginRight": "1px"},
-          "prefixText": {"color": "#444444"},
-          "button": {"default":{"backgroundColor": "white", "border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
-          "buttonText": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-          "buttonArrow": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
+          "prefixText": {"color": "#435484"},
+          "button": {"default":{"border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
+          "buttonText": {"default":{"color": "#435484"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
+          "buttonArrow": {"default":{"color": "#435484"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
         }},
       "rowsPerPage": 5
     }'
@@ -462,10 +462,10 @@ Styling properties for the rows per page component elements. `container` is the 
     "style": {
       "rowsPerPageSelect": {
         "container": {"marginRight": "1px"},
-        "prefixText": {"color": "#444444"},
-        "button": {"default":{"backgroundColor": "white", "border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
-        "buttonText": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-        "buttonArrow": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
+        "prefixText": {"color": "#435484"},
+        "button": {"default":{"border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
+        "buttonText": {"default":{"color": "#435484"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
+        "buttonArrow": {"default":{"color": "#435484"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
       }},
     "rowsPerPage": 5
   }'
@@ -481,10 +481,10 @@ Styling properties for the rows per page component elements. `container` is the 
     "style": {
       "rowsPerPageSelect": {
         "container": {"marginRight": "1px"},
-        "prefixText": {"color": "#444444"},
-        "button": {"default":{"backgroundColor": "white", "border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
-        "buttonText": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-        "buttonArrow": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
+        "prefixText": {"color": "#435484"},
+        "button": {"default":{"border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
+        "buttonText": {"default":{"color": "#435484"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
+        "buttonArrow": {"default":{"color": "#435484"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
       }},
     "rowsPerPage": 5
   }'
@@ -538,8 +538,10 @@ Styling properties for the rows per page component elements. `container` is the 
 - Default: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp;_activeButtonPrecedence: false_, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;_actionButtons: uses the buttons property style_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;_disabledButtons: uses the buttons property style_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;_actionButtons: uses the buttons property style_ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_disabledButtons: partially uses the buttons property style_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_actionButtons: partially uses the buttons property style_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_firstVisibleButtonOverride: {borderLeft: '1px solid #0000004d', borderTopLeftRadius: '2px', borderBottomLeftRadius: '2px'}_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_lastVisibleButtonOverride: {borderRight: '1px solid #0000004d', borderTopRightRadius: '2px', borderBottomRightRadius: '2px'}_ <br />
   }
 
 Styling properties for the page buttons component elements. <br />
@@ -547,25 +549,28 @@ Styling properties for the page buttons component elements. <br />
 `buttons` encompasses the buttons with numbers, however its propreties are also reused by `actionButtons`, `disabledButtons` and `actionButtons`. <br />
 `activeButton` is the button with the currently active page number. <br />
 `activeButtonPrecedence` denotes whether its border properties overcomes the sibling border properties (except radius). <br />
-`disabledButtons` are buttons that have no events and cannot be cliced. E.g. buttons when there are no data rows or
+`disabledButtons` are buttons that have no events and cannot be clicked. E.g. buttons when there are no data rows or
 action buttons when the currently active page number is either the first or the last. <br />
 `actionButtons` are buttons that change the currently active page number to next, previous, first and last. <br />
 `firstVisibleButtonOverride` and `lastVisibleButtonOverride` are used for overriding the properties of first or last buttons within the container, e.g. setting
-the border radius or setting the opposite side border property when the `buttons` style border properties are set for the other. Eg. when
-default properties are _"border":"1px solid #dedede", "borderRight": "unset_, set `lastVisibleButtonOverride` with _"borderLeft":"1px solid #dedede"_
+the border radius or setting the opposite side border property when the `buttons` style border properties are set for the other.
+Eg. when
+default properties are _"border": "1px solid #dedede", "borderRight": "unset"_, set `lastVisibleButtonOverride` with _"borderLeft":"1px solid #dedede"_
 as otherwise the last button is not going to have a border on the right.
 
 <TableContainer>
   <active-table
     pagination='{
       "style": {
-        "rowsPerPageSelect": {
-          "container": {"marginRight": "1px"},
-          "prefixText": {"color": "#444444"},
-          "button": {"default":{"backgroundColor": "white", "border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
-          "buttonText": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-          "buttonArrow": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
-        }},
+        "pageButtons": {
+          "buttons": {
+            "default": {"color": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset"}
+          },
+          "activeButton": {"default": {"backgroundColor": "#3682ec", "color": "white", "border":"1px solid #3682ec"}},
+          "firstVisibleButtonOverride": {"borderTopLeftRadius": "5px", "borderBottomLeftRadius": "5px"},
+          "lastVisibleButtonOverride": {"borderRight": "1px solid #dedede", "borderTopRightRadius": "5px", "borderBottomRightRadius": "5px"},
+          "activeButtonPrecedence": true
+      }},
       "rowsPerPage": 5
     }'
     content='[
@@ -606,13 +611,15 @@ as otherwise the last button is not going to have a border on the right.
 <active-table
   pagination='{
     "style": {
-      "rowsPerPageSelect": {
-        "container": {"marginRight": "1px"},
-        "prefixText": {"color": "#444444"},
-        "button": {"default":{"backgroundColor": "white", "border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
-        "buttonText": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-        "buttonArrow": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
-      }},
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset"}
+        },
+        "activeButton": {"default": {"backgroundColor": "#3682ec", "color": "white", "border":"1px solid #3682ec"}},
+        "firstVisibleButtonOverride": {"borderTopLeftRadius": "5px", "borderBottomLeftRadius": "5px"},
+        "lastVisibleButtonOverride": {"borderRight": "1px solid #dedede", "borderTopRightRadius": "5px", "borderBottomRightRadius": "5px"},
+        "activeButtonPrecedence": true
+    }},
     "rowsPerPage": 5
   }'
 ></active-table>
@@ -625,13 +632,15 @@ as otherwise the last button is not going to have a border on the right.
 <active-table
   pagination='{
     "style": {
-      "rowsPerPageSelect": {
-        "container": {"marginRight": "1px"},
-        "prefixText": {"color": "#444444"},
-        "button": {"default":{"backgroundColor": "white", "border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
-        "buttonText": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-        "buttonArrow": {"default":{"color": "black"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
-      }},
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset"}
+        },
+        "activeButton": {"default": {"backgroundColor": "#3682ec", "color": "white", "border":"1px solid #3682ec"}},
+        "firstVisibleButtonOverride": {"borderTopLeftRadius": "5px", "borderBottomLeftRadius": "5px"},
+        "lastVisibleButtonOverride": {"borderRight": "1px solid #dedede", "borderTopRightRadius": "5px", "borderBottomRightRadius": "5px"},
+        "activeButtonPrecedence": true
+    }},
     "rowsPerPage": 5
   }'
   content='[
@@ -673,7 +682,7 @@ When doing this you will additionally need to set `lastVisibleButtonOverride` wi
 :::
 
 :::info
-When using `activeButtonPrecedence`, with thin `buttons` borders (from the tip above), make sure to set that object with "borderRight": "unset" and not "borderLeft" as the css selector limitations only allow
+When using `activeButtonPrecedence`, with thin `buttons` borders (in the tip above), make sure to set that object with "borderRight": "unset" and not "borderLeft" as the css selector limitations only allow
 the active button to unset the left border of the right sibling and not the left.
 :::
 
@@ -755,6 +764,7 @@ Styling for action buttons that facilitates the definition of style for various 
           "firstText": "First",
           "lastText": "Last"
       }}
+    },
     "rowsPerPage": 5
   }'
 ></active-table>
@@ -777,6 +787,7 @@ Styling for action buttons that facilitates the definition of style for various 
           "firstText": "First",
           "lastText": "Last"
       }}
+    },
     "rowsPerPage": 5
   }'
   content='[
@@ -838,21 +849,10 @@ Positions for pagination components.
   <active-table
     pagination='{
       "positions": {
-        "pageButtons": { "side": "bottom-middle" },
-        "numberOfVisibleRows": { "side": "top-left", "order": 2 },
-        "rowsPerPageSelect": { "side": "top-left", "order": 1 }
+        "pageButtons": {"side": "bottom-middle"},
+        "numberOfVisibleRows": {"side": "top-left", "order": 2},
+        "rowsPerPageSelect": {"side": "top-left", "order": 1}
       },
-      "style": {
-        "pageButtons": {
-          "buttons": {
-            "default": {"color": "steelblue", "border":"1px solid #dedede", "borderRight": "unset"}
-          },
-          "activeButton": {"default": {"backgroundColor": "steelblue", "color": "white", "border":"1px solid steelblue"}},
-          "disabledButtons": {"visibility": "hidden"},
-          "firstVisibleButtonOverride": {"borderTopLeftRadius": "2px", "borderBottomLeftRadius": "2px"},
-          "lastVisibleButtonOverride": {"borderRight": "1px solid #dedede", "borderTopRightRadius": "2px", "borderBottomRightRadius": "2px"},
-          "activeButtonPrecedence": true
-      }},
       "rowsPerPage": 5
     }'
     content='[
@@ -892,17 +892,11 @@ Positions for pagination components.
 ```text
 <active-table
   pagination='{
-    "style": {
-      "pageButtons": {
-        "actionButtons": {
-          "default": {"width": "50px", "fontSize": "15px"},
-          "hover": {"backgroundColor": "#e4ffe4"},
-          "click": {"backgroundColor": "#81d581"},
-          "previousText": "Prev",
-          "nextText": "Next",
-          "firstText": "First",
-          "lastText": "Last"
-      }}
+    "positions": {
+      "pageButtons": {"side": "bottom-middle"},
+      "numberOfVisibleRows": {"side": "top-left", "order": 2},
+      "rowsPerPageSelect": {"side": "top-left", "order": 1}
+    },
     "rowsPerPage": 5
   }'
 ></active-table>
@@ -914,17 +908,11 @@ Positions for pagination components.
 ```text
 <active-table
   pagination='{
-    "style": {
-      "pageButtons": {
-        "actionButtons": {
-          "default": {"width": "50px", "fontSize": "15px"},
-          "hover": {"backgroundColor": "#e4ffe4"},
-          "click": {"backgroundColor": "#81d581"},
-          "previousText": "Prev",
-          "nextText": "Next",
-          "firstText": "First",
-          "lastText": "Last"
-      }}
+    "positions": {
+      "pageButtons": {"side": "bottom-middle"},
+      "numberOfVisibleRows": {"side": "top-left", "order": 2},
+      "rowsPerPageSelect": {"side": "top-left", "order": 1}
+    },
     "rowsPerPage": 5
   }'
   content='[
@@ -982,3 +970,520 @@ Object defining position properties for a pagination component. `order` is the o
 - Type: {[`default?: CSSStyle`](./types#CSSStyle), [`hover?: CSSStyle`](./types#CSSStyle), [`click?: CSSStyle`](./types#CSSStyle)}
 
 Object defining styling properties for different mouse states on the element.
+
+<LineBreak></LineBreak>
+
+## More examples
+
+Circle buttons
+
+<TableContainer>
+  <active-table
+    pagination='{
+      "displayFirstLast": false,
+      "style": {
+        "pageButtons": {
+          "buttons": {
+            "default": {"color": "grey", "border":"1px solid #dedede", "marginRight": "5px", "marginTop": "1px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
+          "activeButton": {"default": {"backgroundColor": "#56b3ff", "color": "white", "border":"1px solid #56b3ff"}},
+          "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px"}},
+          "disabledButtons": {"default": {"backgroundColor": "white"}},
+          "firstVisibleButtonOverride": {},
+          "lastVisibleButtonOverride": {}
+      }},
+      "rowsPerPageSelect": false,
+      "displayNumberOfVisibleRows": false,
+      "positions": {"pageButtons": {"side": "bottom-middle"}},
+      "rowsPerPage": 2
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  pagination='{
+    "displayFirstLast": false,
+    "style": {
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "grey", "border":"1px solid #dedede", "marginRight": "5px", "marginTop": "1px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
+        "activeButton": {"default": {"backgroundColor": "#56b3ff", "color": "white", "border":"1px solid #56b3ff"}},
+        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px"}},
+        "disabledButtons": {"default": {"backgroundColor": "white"}},
+        "firstVisibleButtonOverride": {},
+        "lastVisibleButtonOverride": {}
+    }},
+    "rowsPerPageSelect": false,
+    "displayNumberOfVisibleRows": false,
+    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "rowsPerPage": 2
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full Code">
+
+```text
+<active-table
+  pagination='{
+    "displayFirstLast": false,
+    "style": {
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "grey", "border":"1px solid #dedede", "marginRight": "5px", "marginTop": "1px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
+        "activeButton": {"default": {"backgroundColor": "#56b3ff", "color": "white", "border":"1px solid #56b3ff"}},
+        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px"}},
+        "disabledButtons": {"default": {"backgroundColor": "white"}},
+        "firstVisibleButtonOverride": {},
+        "lastVisibleButtonOverride": {}
+    }},
+    "rowsPerPageSelect": false,
+    "displayNumberOfVisibleRows": false,
+    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "rowsPerPage": 2
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+Active circle button
+
+<TableContainer>
+  <active-table
+    pagination='{
+      "style": {
+        "pageButtons": {
+          "buttons": {
+            "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginRight": "5px", "marginTop": "3px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
+          "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white"}},
+          "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+          "disabledButtons": {"default": {"backgroundColor": "white"}},
+          "firstVisibleButtonOverride": {},
+          "lastVisibleButtonOverride": {}
+      }},
+      "rowsPerPageSelect": false,
+      "displayNumberOfVisibleRows": false,
+      "positions": {"pageButtons": {"side": "bottom-middle"}},
+      "rowsPerPage": 2
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+> </active-table>
+
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  pagination='{
+    "style": {
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginRight": "5px", "marginTop": "3px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
+        "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white"}},
+        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+        "disabledButtons": {"default": {"backgroundColor": "white"}},
+        "firstVisibleButtonOverride": {},
+        "lastVisibleButtonOverride": {}
+    }},
+    "rowsPerPageSelect": false,
+    "displayNumberOfVisibleRows": false,
+    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "rowsPerPage": 2
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full Code">
+
+```text
+<active-table
+  pagination='{
+    "style": {
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginRight": "5px", "marginTop": "3px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
+        "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white"}},
+        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+        "disabledButtons": {"default": {"backgroundColor": "white"}},
+        "firstVisibleButtonOverride": {},
+        "lastVisibleButtonOverride": {}
+    }},
+    "rowsPerPageSelect": false,
+    "displayNumberOfVisibleRows": false,
+    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "rowsPerPage": 2
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+Active circle button
+
+<TableContainer>
+  <active-table
+    pagination='{
+      "displayFirstLast": false,
+      "style": {
+        "pageButtons": {
+          "buttons": {
+            "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
+          "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white"}},
+          "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+          "disabledButtons": {"default": {"backgroundColor": "white"}},
+          "firstVisibleButtonOverride": {},
+          "lastVisibleButtonOverride": {}
+      }},
+      "rowsPerPageSelect": false,
+      "displayNumberOfVisibleRows": false,
+      "positions": {"pageButtons": {"side": "bottom-middle"}},
+      "rowsPerPage": 2
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+> </active-table>
+
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  pagination='{
+    "displayFirstLast": false,
+    "style": {
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
+        "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white"}},
+        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+        "disabledButtons": {"default": {"backgroundColor": "white"}},
+        "firstVisibleButtonOverride": {},
+        "lastVisibleButtonOverride": {}
+    }},
+    "rowsPerPageSelect": false,
+    "displayNumberOfVisibleRows": false,
+    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "rowsPerPage": 2
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full Code">
+
+```text
+<active-table
+  pagination='{
+    "displayFirstLast": false,
+    "style": {
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
+        "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white"}},
+        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+        "disabledButtons": {"default": {"backgroundColor": "white"}},
+        "firstVisibleButtonOverride": {},
+        "lastVisibleButtonOverride": {}
+    }},
+    "rowsPerPageSelect": false,
+    "displayNumberOfVisibleRows": false,
+    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "rowsPerPage": 2
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+Grey background button series
+
+<TableContainer>
+  <active-table
+    pagination='{
+      "style": {
+        "pageButtons": {
+          "buttons": {
+            "default": {"color": "grey", "border":"unset", "borderRight": "unset", "backgroundColor":"#ececec", "marginTop": "8px"},
+            "hover": {"backgroundColor":"white"}},
+          "activeButton": {"default": {"backgroundColor": "#0e59ff", "color": "white"}},
+          "disabledButtons": {"backgroundColor": "#ececec"},
+          "firstVisibleButtonOverride": {"borderTopLeftRadius": "5px", "borderBottomLeftRadius": "5px"},
+          "lastVisibleButtonOverride": {"borderTopRightRadius": "5px", "borderBottomRightRadius": "5px"},
+          "activeButtonPrecedence": true
+      }},
+      "rowsPerPageSelect": false,
+      "displayNumberOfVisibleRows": false,
+      "positions": {"pageButtons": {"side": "bottom-middle"}},
+      "rowsPerPage": 2
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+> </active-table>
+
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  pagination='{
+    "style": {
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "grey", "border":"unset", "borderRight": "unset", "backgroundColor":"#ececec", "marginTop": "8px"},
+          "hover": {"backgroundColor":"white"}},
+        "activeButton": {"default": {"backgroundColor": "#0e59ff", "color": "white"}},
+        "disabledButtons": {"backgroundColor": "#ececec"},
+        "firstVisibleButtonOverride": {"borderTopLeftRadius": "5px", "borderBottomLeftRadius": "5px"},
+        "lastVisibleButtonOverride": {"borderTopRightRadius": "5px", "borderBottomRightRadius": "5px"},
+        "activeButtonPrecedence": true
+    }},
+    "rowsPerPageSelect": false,
+    "displayNumberOfVisibleRows": false,
+    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "rowsPerPage": 2
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full Code">
+
+```text
+<active-table
+  pagination='{
+    "style": {
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "grey", "border":"unset", "borderRight": "unset", "backgroundColor":"#ececec", "marginTop": "8px"},
+          "hover": {"backgroundColor":"white"}},
+        "activeButton": {"default": {"backgroundColor": "#0e59ff", "color": "white"}},
+        "disabledButtons": {"backgroundColor": "#ececec"},
+        "firstVisibleButtonOverride": {"borderTopLeftRadius": "5px", "borderBottomLeftRadius": "5px"},
+        "lastVisibleButtonOverride": {"borderTopRightRadius": "5px", "borderBottomRightRadius": "5px"},
+        "activeButtonPrecedence": true
+    }},
+    "rowsPerPageSelect": false,
+    "displayNumberOfVisibleRows": false,
+    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "rowsPerPage": 2
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+Disabled buttons not displayed
+
+<TableContainer>
+  <active-table
+    pagination='{
+      "style": {
+        "pageButtons": {
+          "buttons": {
+            "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
+          "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white", "boxShadow": "rgb(55 55 55 / 17%) 0px 2px 5px 1px"}},
+          "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+          "disabledButtons": {"visibility": "hidden"},
+          "firstVisibleButtonOverride": {},
+          "lastVisibleButtonOverride": {}
+      }},
+      "rowsPerPageSelect": false,
+      "displayNumberOfVisibleRows": false,
+      "positions": {"pageButtons": {"side": "bottom-middle"}},
+      "rowsPerPage": 2
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+> </active-table>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  pagination='{
+    "style": {
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
+        "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white", "boxShadow": "rgb(55 55 55 / 17%) 0px 2px 5px 1px"}},
+        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+        "disabledButtons": {"visibility": "hidden"},
+        "firstVisibleButtonOverride": {},
+        "lastVisibleButtonOverride": {}
+    }},
+    "rowsPerPageSelect": false,
+    "displayNumberOfVisibleRows": false,
+    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "rowsPerPage": 2
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full Code">
+
+```text
+<active-table
+  pagination='{
+    "style": {
+      "pageButtons": {
+        "buttons": {
+          "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
+        "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white", "boxShadow": "rgb(55 55 55 / 17%) 0px 2px 5px 1px"}},
+        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+        "disabledButtons": {"visibility": "hidden"},
+        "firstVisibleButtonOverride": {},
+        "lastVisibleButtonOverride": {}
+    }},
+    "rowsPerPageSelect": false,
+    "displayNumberOfVisibleRows": false,
+    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "rowsPerPage": 2
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+</TableContainer>

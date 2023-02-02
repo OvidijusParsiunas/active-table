@@ -76,9 +76,9 @@ export class PaginationVisibleButtonsUtils {
     pagination.visibleEdgeButtons = [];
   }
 
-  // when the button display prope is false or is not visible in other ways - clientWidth is 0
-  private static isButtonVisible(buttonElement: Element) {
-    return buttonElement.clientWidth > 0;
+  // when the button display property is false - clientWidth is 0
+  private static isButtonVisible(buttonElement: HTMLElement) {
+    return buttonElement.clientWidth > 0 && buttonElement.style.visibility !== 'hidden';
   }
 
   // prettier-ignore
