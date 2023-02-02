@@ -18,12 +18,12 @@ export interface AuxiliaryTableContentDisplayProps {
   displayIndexColumn?: IndexColumnT;
 }
 
-export interface AuxiliaryTableContentGenericProps {
+export interface AuxiliaryTableContentStyleProps {
   style?: HoverableStyles;
-  inheritHeaderStyle?: boolean; // true by default, applied to header only and will not inherit the default header style
+  inheritHeader?: boolean; // true by default, applied to header only and will not inherit the default header style
 }
 
 // REF-22
 // auxiliary content is comprised of index column, add new column column and add new row row
 // to be used by the client
-export type AuxiliaryTableContent = AuxiliaryTableContentGenericProps & AuxiliaryTableContentDisplayProps;
+export type AuxiliaryTableContent = AuxiliaryTableContentStyleProps & AuxiliaryTableContentDisplayProps;

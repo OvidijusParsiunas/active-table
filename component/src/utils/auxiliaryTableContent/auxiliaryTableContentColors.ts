@@ -66,8 +66,8 @@ export class AuxiliaryTableContentColors {
     const {auxiliaryTableContentInternal: {cellColors}} = at;
     cellColors.data = newCellColors;
     cellColors.header = newCellColors;
-    const {auxiliaryTableContentInternal: {inheritHeaderStyle}, columnsSettings: {headerStyles}} = at;
-    if (inheritHeaderStyle === undefined || inheritHeaderStyle === true) {
+    const {auxiliaryTableContentInternal: {inheritHeader}, columnsSettings: {headerStyles}} = at;
+    if (inheritHeader === undefined || inheritHeader === true) {
       AuxiliaryTableContentColors.overwriteHeaderWithInheritedColors(cellColors, headerStyles)
     } else {
       cellColors.data.default.color = 'black';
