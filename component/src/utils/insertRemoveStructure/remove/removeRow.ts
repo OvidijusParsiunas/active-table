@@ -71,7 +71,7 @@ export class RemoveRow {
     const lastRowElement = at.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const removedRowData = RemoveRow.removeRow(at, rowIndex);
     ToggleAdditionElements.update(at, false, AddNewRowElement.toggle);
-    if (at.auxiliaryTableContentInternal.displayIndexColumn) IndexColumn.updateIndexes(at, rowIndex);
+    if (at.frameComponentsInternal.displayIndexColumn) IndexColumn.updateIndexes(at, rowIndex);
     CustomRowProperties.update(at, rowIndex);
     setTimeout(() => RemoveRow.update(at, rowIndex, lastRowElement, lastRowIndex, removedRowData));
   }

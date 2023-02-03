@@ -51,7 +51,7 @@ export class CellEventsReset {
     } else {
       CellEventsReset.setDataCellEvents(at, cellElement as HTMLElement, rowIndex, columnIndex);
     }
-    if (!at.auxiliaryTableContentInternal.displayIndexColumn && columnIndex === 0) {
+    if (!at.frameComponentsInternal.displayIndexColumn && columnIndex === 0) {
       RowDropdownCellOverlayEvents.addCellEvents(at, rowIndex, cellElement);
     }
   }

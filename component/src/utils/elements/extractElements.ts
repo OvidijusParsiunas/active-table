@@ -14,7 +14,7 @@ export class ExtractElements {
   }
 
   public static textRowsArrFromTBody(tableBodyElement: HTMLElement, content: TableContent, startIndex = 0) {
-    // not returning aux rows that contain other utils such as add new row
+    // not returning frame rows that contain other utils such as add new row
     return Array.from(tableBodyElement.children).slice(startIndex, content.length);
   }
 

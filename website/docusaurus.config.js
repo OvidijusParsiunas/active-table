@@ -104,7 +104,7 @@ const config = {
   // // pagination:
   // // // pagination: Pagination | null;
   // // misc:
-  // // // auxiliaryTableContent: AuxiliaryTableContent;
+  // // // frameComponents: FrameComponents;
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */

@@ -28,7 +28,7 @@ export class AddNewRowElement {
 
   // prettier-ignore
   private static createCell(at: ActiveTable) {
-    const {columnsSettings: {cellStyle}, auxiliaryTableContentInternal: {displayAddRow, style}} = at;
+    const {columnsSettings: {cellStyle}, frameComponentsInternal: {displayAddRow, style}} = at;
     const addNewRowCell = CellElement.createContentCell(false, cellStyle, style?.default);
     addNewRowCell.id = AddNewRowElement.ID;
     if (!displayAddRow) {
@@ -54,7 +54,7 @@ export class AddNewRowElement {
 
   // prettier-ignore
   public static toggle(at: ActiveTable) {
-    const {tableBodyElementRef, addRowCellElementRef, auxiliaryTableContentInternal: {displayAddRow}} = at;
+    const {tableBodyElementRef, addRowCellElementRef, frameComponentsInternal: {displayAddRow}} = at;
     if (!addRowCellElementRef?.parentElement || !tableBodyElementRef) return;
     if (displayAddRow) AddNewRowElement.setDisplay(addRowCellElementRef, MaximumRows.canAddMore(at));
     RowElement.toggleLastRowClass(at.shadowRoot as ShadowRoot, addRowCellElementRef.parentElement)

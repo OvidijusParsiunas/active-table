@@ -1,5 +1,5 @@
-import {AuxiliaryTableContentColors} from '../../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
+import {FrameComponentsColors} from '../../../utils/frameComponents/frameComponentsColors';
 import {FullTableOverlayElement} from '../../fullTableOverlay/fullTableOverlayElement';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
@@ -19,10 +19,10 @@ export class RowDropdown {
   // prettier-ignore
   public static hide(at: ActiveTable) {
     const {activeOverlayElements: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element, rowIndex}},
-      auxiliaryTableContentInternal: {cellColors, displayIndexColumn}} = at;
+      frameComponentsInternal: {cellColors, displayIndexColumn}} = at;
     if (!rowDropdown || !fullTableOverlay || !element) return
     Dropdown.hide(rowDropdown, fullTableOverlay);
-    const colors = AuxiliaryTableContentColors.getColorsBasedOnParam(cellColors, rowIndex as number);
+    const colors = FrameComponentsColors.getColorsBasedOnParam(cellColors, rowIndex as number);
     if (displayIndexColumn) CellHighlightUtils.fade(element, colors.default);
     DropdownItemHighlightUtils.fadeCurrentlyHighlighted(at.activeOverlayElements);
     setTimeout(() => {
@@ -33,8 +33,8 @@ export class RowDropdown {
   }
 
   private static focusCell(at: ActiveTable, rowIndex: number, cellElement: HTMLElement) {
-    const {auxiliaryTableContentInternal, focusedElements, columnsDetails} = at;
-    if (auxiliaryTableContentInternal.displayIndexColumn) {
+    const {frameComponentsInternal, focusedElements, columnsDetails} = at;
+    if (frameComponentsInternal.displayIndexColumn) {
       FocusedCellUtils.setIndexCell(focusedElements.cell, cellElement, rowIndex);
     } else {
       FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, 0, columnsDetails[0].settings.types);

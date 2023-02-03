@@ -30,9 +30,9 @@ export class MoveRow {
 
   // prettier-ignore
   private static resetFocusedCell(at: ActiveTable, initialFocusedCell: Required<FocusedCell>) {
-    const {auxiliaryTableContentInternal, focusedElements, columnsDetails} = at;
+    const {frameComponentsInternal, focusedElements, columnsDetails} = at;
     const {element, rowIndex, columnIndex} = initialFocusedCell;
-    if (auxiliaryTableContentInternal.displayIndexColumn) {
+    if (frameComponentsInternal.displayIndexColumn) {
       FocusedCellUtils.setIndexCell(focusedElements.cell, element, columnIndex);
     } else {
       FocusedCellUtils.set(

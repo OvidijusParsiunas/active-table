@@ -527,7 +527,7 @@ Styling details for when an element is in default state and when it is hovered w
 - Type: { `CSSStyle` & `!minWidth` & `!maxWidth` & `!height` & `!minHeight` & `!maxHeight` }
 
 Object containing all `CSSStyle` properties except `minWidth`, `maxWidth`, `height`, `minHeight` and `maxHeight`. <br />
-This object also serves as the default style for auxiliary styles (except for `width`) WORK. <br />
+This object also serves as the default style for frame component styles (except for `width`) WORK. <br />
 The `width` property supports _px_ and _%_ metrics, however when using _%_ - the [`tableStyle`](./table#tableStyle) object should have its `width` property
 also set as otherwise the cells will not be able to calculate a relative width. Additionally, when [`CellStyle`](#CellStyle) - `width` and
 [`tableStyle`](./table#tableStyle) - `width` are defined and `isResizable` in [`ColumnSettings`](#ColumnSettings) is set to _true_, the [`CellStyle`](#CellStyle) - `width`

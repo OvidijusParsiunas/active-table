@@ -38,7 +38,7 @@ export class Sort {
   // cannot safely identify if nothing has been changed, hence need to send out an update for all cells
   // prettier-ignore
   private static update(at: ActiveTable, sortedDataContent: TableContent) {
-    const {tableBodyElementRef, auxiliaryTableContentInternal: {displayIndexColumn}, content, onTableUpdate} = at;
+    const {tableBodyElementRef, frameComponentsInternal: {displayIndexColumn}, content, onTableUpdate} = at;
     const rowElements = (tableBodyElementRef as HTMLElement).children;
     sortedDataContent.forEach((row, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;

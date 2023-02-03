@@ -53,7 +53,7 @@ export class InsertNewCell {
   // prettier-ignore
   private static insert(at: ActiveTable, rowElement: HTMLElement, newCellElement: HTMLElement,
       processedCellText: CellText, isNewText: boolean, rowIndex: number, columnIndex: number) {
-    const {auxiliaryTableContentInternal: {displayIndexColumn}, content, columnsDetails} = at;
+    const {frameComponentsInternal: {displayIndexColumn}, content, columnsDetails} = at;
     const columnDetails = columnsDetails[columnIndex];
     columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
     columnDetails.processedStyle.splice(rowIndex, 0, ProcessedDataTextStyle.getDefaultProcessedTextStyle());
@@ -105,7 +105,7 @@ export class InsertNewCell {
     InsertNewCell.insert(at, rowElement, newCellElement, processedCellText, isNewText, rowIndex, columnIndex);
     InsertNewCell.convertCell(at, rowIndex, columnIndex, newCellElement); // need text set before conversion (checkbox)
     if (rowIndex === 0) {
-      if (at.auxiliaryTableContentInternal.displayAddColumn) ColumnGroupElement.update(at);
+      if (at.frameComponentsInternal.displayAddColumn) ColumnGroupElement.update(at);
       if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true); // REF-11
       ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
     } else {

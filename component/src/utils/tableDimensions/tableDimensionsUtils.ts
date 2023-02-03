@@ -2,8 +2,8 @@ import {TableBorderDimensionsUtils} from '../../elements/table/tableBorderDimens
 import {PossibleStringDimensions, StringDimensionUtils} from './stringDimensionUtils';
 import {IndexColumn} from '../../elements/indexColumn/indexColumn';
 import {UNSET_NUMBER_IDENTIFIER} from '../../consts/unsetNumber';
-import {IndexColumnT} from '../../types/auxiliaryTableContent';
 import {TableDimensions} from '../../types/tableDimensions';
+import {IndexColumnT} from '../../types/frameComponents';
 import {OverflowUtils} from '../overflow/overflowUtils';
 import {TableStyle} from '../../types/tableStyle';
 import {ActiveTable} from '../../activeTable';
@@ -44,7 +44,7 @@ export class TableDimensionsUtils {
   // CAUTION-3
   // prettier-ignore
   public static setTableDimensions(at: ActiveTable) {
-    const {tableStyle, tableDimensions, auxiliaryTableContentInternal: {displayIndexColumn}} = at;
+    const {tableStyle, tableDimensions, frameComponentsInternal: {displayIndexColumn}} = at;
     // width and maxWidth are mutually exclusive and if both are present width is the only one that is used
     if (tableStyle.width !== undefined) {
       TableDimensionsUtils.setDimension(at, 'width');

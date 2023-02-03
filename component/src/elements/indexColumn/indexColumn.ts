@@ -27,7 +27,7 @@ export class IndexColumn {
 
   // prettier-ignore
   private static createCell(at: ActiveTable, isHeader: boolean) {
-    const {tableDimensions, columnsSettings, auxiliaryTableContentInternal: {style, cellColors}} = at;
+    const {tableDimensions, columnsSettings, frameComponentsInternal: {style, cellColors}} = at;
     const cell = CellElement.createBaseCell(isHeader);
     cell.classList.add(IndexColumn.INDEX_CELL_CLASS, GenericElementUtils.NOT_SELECTABLE_CLASS);
     const {displaySettings, canEditHeaderRow} = at.rowDropdown;

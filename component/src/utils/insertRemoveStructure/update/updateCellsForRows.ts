@@ -19,7 +19,7 @@ export class UpdateCellsForRows {
     });
     if (updateType !== CELL_UPDATE_TYPE.REMOVED) {
       const leftMostCell = rowElement.children[0] as HTMLElement;
-      if (at.auxiliaryTableContentInternal.displayIndexColumn) IndexColumnEvents.setEvents(at, leftMostCell, rowIndex);
+      if (at.frameComponentsInternal.displayIndexColumn) IndexColumnEvents.setEvents(at, leftMostCell, rowIndex);
       if (at.rowDropdown.displaySettings.openMethod?.overlayClick) {
         RowDropdownCellOverlayEvents.setOverlayEvents(at, rowIndex, leftMostCell);
       }

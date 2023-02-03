@@ -39,7 +39,7 @@ export class InsertNewRow {
   // prettier-ignore
   private static addCells(at: ActiveTable,
       newRowData: TableRow, newRowElement: HTMLElement, rowIndex: number, isNewText: boolean) {
-    const {auxiliaryTableContentInternal: {displayIndexColumn, displayAddColumn}} = at;
+    const {frameComponentsInternal: {displayIndexColumn, displayAddColumn}} = at;
     if (displayIndexColumn) IndexColumn.createAndPrependToRow(at, newRowElement, rowIndex);
     newRowData.forEach((cellText: CellText, columnIndex: number) => {
       if (isNewText || InsertNewRow.canStartRenderCellBeAdded(at, rowIndex, columnIndex)) {
@@ -79,7 +79,7 @@ export class InsertNewRow {
     InsertNewRow.insertNewRow(at, rowIndex, isNewText, rowData);
     if (isNewText) {
       ToggleAdditionElements.update(at, true, AddNewRowElement.toggle);
-      if (at.auxiliaryTableContentInternal.displayIndexColumn) IndexColumn.updateIndexes(at, rowIndex + 1);
+      if (at.frameComponentsInternal.displayIndexColumn) IndexColumn.updateIndexes(at, rowIndex + 1);
       CustomRowProperties.update(at, rowIndex);
     }
     if (isReplacingHeader) MoveRow.move(at, 0, true); // REF-26

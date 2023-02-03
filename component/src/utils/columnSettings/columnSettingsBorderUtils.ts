@@ -1,5 +1,5 @@
 import {BordersOverwrittenBySiblings, ColumnDetailsT} from '../../types/columnDetails';
-import {ColumnSettingsAuxBorderUtils} from './columnSettingsAuxBorderUtils';
+import {ColumnSettingsFrameBorderUtils} from './columnSettingsFrameBorderUtils';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
 import {ElementStyle} from '../elements/elementStyle';
 import {ActiveTable} from '../../activeTable';
@@ -117,7 +117,7 @@ export class ColumnSettingsBorderUtils {
     ColumnSettingsBorderUtils.resetBorderOverwritingState(currentColumnDetails);
     // overwrite borders preceded by settings style
     ColumnSettingsBorderUtils.unsetBorders(currentColumnDetails, leftColumnDetails, rightColumnDetails);
-    // overwrite auxiliary cell borders preceded by settings style
-    ColumnSettingsAuxBorderUtils.updateAuxiliaryColumns(at, currentColumnDetails, leftColumnDetails, rightColumnDetails);
+    // overwrite frame cell borders preceded by settings style
+    ColumnSettingsFrameBorderUtils.updateFrameColumns(at, currentColumnDetails, leftColumnDetails, rightColumnDetails);
   }
 }

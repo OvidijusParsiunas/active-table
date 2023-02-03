@@ -29,7 +29,7 @@ export class NoContentStubElement {
   // prettier-ignore
   public static display(at: ActiveTable) {
     const {tableBodyElementRef, addColumnCellsElementsRef, addRowCellElementRef,
-      auxiliaryTableContentInternal: {displayAddColumn, displayAddRow}} = at;
+      frameComponentsInternal: {displayAddColumn, displayAddRow}} = at;
     if (!addRowCellElementRef) return;
     const tableBodyElement = tableBodyElementRef as HTMLElement;
     if (displayAddColumn) addColumnCellsElementsRef.splice(0, addColumnCellsElementsRef.length);

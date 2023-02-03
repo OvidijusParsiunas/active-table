@@ -125,7 +125,7 @@ export class UpdateIndexColumnWidth {
   // used when a new column is added to see if wrapping is needed
   // CAUTION-2 - this runs before re-render but stay cautions
   public static wrapTextWhenNarrowColumnsBreached(at: ActiveTable) {
-    if (at.auxiliaryTableContentInternal.displayIndexColumn && UpdateIndexColumnWidth.shouldTextBeWrapped(at)) {
+    if (at.frameComponentsInternal.displayIndexColumn && UpdateIndexColumnWidth.shouldTextBeWrapped(at)) {
       UpdateIndexColumnWidth.update(at, undefined, true);
     }
   }

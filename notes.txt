@@ -144,7 +144,7 @@ to not traverse all of the cells and highlight them individually (as that would 
 and instead utilise the column group element to control its highlight.
 In order for column group column background color toggle to work - the style must only be set on the col element and not on the cell
 elements. An exception to this is the header cell as first of all column group cannot control the 'color' property and secondly
-because auxiliary header elements can inherit the user set header style we must always be manually setting the header style.
+because frame header elements can inherit the user set header style we must always be manually setting the header style.
 Column group is EXCLUSIVELY used for controlling the add column cells' style.
 
 REF-18
@@ -193,8 +193,8 @@ the messages tell them to and absolutely nothing else.
 REF-21
 
 REF-22
-Using auxiliaryTableContentInternal object because the client may choose not to include some properties inside the auxiliaryTableContent
-object such as any of the AuxiliaryTableContentDisplayProps. Hence, this object is used to contain the defaults and use them internally
+Using frameComponentsInternal object because the client may choose not to include some properties inside the frameComponents
+object such as any of the FrameComponentsDisplayProps. Hence, this object is used to contain the defaults and use them internally
 without having to add optional chaining every its used.
 
 REF-23
@@ -202,7 +202,7 @@ If a cell with a border style that was set in the cellStyle property is beside a
 property (cellStyle), their borders will be displayed side by side which does not look appealing. Hence, we unset (0px) the border of
 the cell without the customColumnsSettings border style to make the one with the custom settings border dominant.
 If there are two columns with customColumnsSettings border styles, the right column will be dominant.
-We also do this for auxiliary element borders.
+We also do this for frame element borders.
 
 REF-24
 When the table width/maxWidth is set and there are columns with set widths that exceed the table width, those widths can cause the table

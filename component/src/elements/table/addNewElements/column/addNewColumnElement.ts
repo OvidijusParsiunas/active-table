@@ -1,7 +1,7 @@
 import {StaticTableWidthUtils} from '../../../../utils/tableDimensions/staticTable/staticTableWidthUtils';
 import {ColumnSettingsBorderUtils} from '../../../../utils/columnSettings/columnSettingsBorderUtils';
 import {MaximumColumns} from '../../../../utils/insertRemoveStructure/insert/maximum/maximumColumns';
-import {AuxiliaryContentCellsColors} from '../../../../types/auxiliaryTableContentCellsColors';
+import {FrameComponentsCellsColors} from '../../../../types/frameComponentsCellsColors';
 import {GenericElementUtils} from '../../../../utils/elements/genericElementUtils';
 import {AddNewColumnEvents} from './addNewColumnEvents';
 import {CellElement} from '../../../cell/cellElement';
@@ -49,7 +49,7 @@ export class AddNewColumnElement {
     Object.assign(
       headerCell.style,
       at.columnsSettings.headerStyles?.default,
-      at.auxiliaryTableContentInternal.cellColors.header.default
+      at.frameComponentsInternal.cellColors.header.default
     );
     return headerCell;
   }
@@ -82,7 +82,7 @@ export class AddNewColumnElement {
 
   // prettier-ignore
   private static toggleEachCell(canAddMore: boolean, tableBodyElement: HTMLElement,
-      addColumnCellsElementsRef: HTMLElement[], columnGroupElement: HTMLElement, cellColors: AuxiliaryContentCellsColors) {
+      addColumnCellsElementsRef: HTMLElement[], columnGroupElement: HTMLElement, cellColors: FrameComponentsCellsColors) {
     addColumnCellsElementsRef.forEach((cell, rowIndex) => {
       AddNewColumnElement.setDisplay(cell, canAddMore, tableBodyElement, rowIndex);
     });
@@ -101,7 +101,7 @@ export class AddNewColumnElement {
   // prettier-ignore
   public static toggle(at: ActiveTable, isInsert: boolean) {
     const {addColumnCellsElementsRef, tableBodyElementRef, columnGroupRef: columnGroup,
-      auxiliaryTableContentInternal: {displayAddColumn, cellColors: colors}} = at;
+      frameComponentsInternal: {displayAddColumn, cellColors: colors}} = at;
     if (!displayAddColumn || !tableBodyElementRef || !columnGroup) return;
     const canAddMore = MaximumColumns.canAddMore(at);
     // do not toggle if already in the intended state

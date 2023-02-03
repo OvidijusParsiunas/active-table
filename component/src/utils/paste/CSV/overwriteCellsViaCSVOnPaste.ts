@@ -78,7 +78,7 @@ export class OverwriteCellsViaCSVOnPaste {
   // prettier-ignore
   private static overwriteCell(at: ActiveTable,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, newCellText: string) {
-    const {auxiliaryTableContentInternal: {displayIndexColumn}, columnsDetails} = at;
+    const {frameComponentsInternal: {displayIndexColumn}, columnsDetails} = at;
     const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, !!displayIndexColumn);
     const cellElement = rowElement.children[elementIndex] as HTMLElement;
     const columnDetails = columnsDetails[columnIndex];

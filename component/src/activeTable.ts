@@ -1,10 +1,9 @@
-import {AuxiliaryTableContentInternalUtils} from './utils/auxiliaryTableContent/auxiliaryTableContentInternalUtils';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
 import {OnCellUpdate, OnColumnUpdate, OnTableUpdate, OnColumnWidthsUpdate} from './types/onUpdate';
+import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {CustomColumnsSettings, CustomColumnSettings} from './types/columnsSettings';
-import {AuxiliaryTableContentInternal} from './types/auxiliaryTableContentInternal';
 import {PaginationInternalUtils} from './utils/pagination/paginationInternalUtils';
 import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
@@ -14,10 +13,10 @@ import {PaginationElements} from './elements/pagination/paginationElements';
 import {DynamicCellUpdate} from './utils/dynamicUpdates/dynamicCellUpdate';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
+import {FrameComponentsInternal} from './types/frameComponentsInternal';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
 import {ColumnsSettingsDefault} from './types/columnsSettingsDefault';
-import {AuxiliaryTableContent} from './types/auxiliaryTableContent';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {CellHighlightUtils} from './utils/color/cellHighlightUtils';
 import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
@@ -33,6 +32,7 @@ import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
 import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
+import {FrameComponents} from './types/frameComponents';
 import {ColumnResizerColors} from './types/columnSizer';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
@@ -195,14 +195,14 @@ export class ActiveTable extends LitElement {
   maxRows?: number;
 
   // REF-22 - to be used by the client
-  // auxiliary content is comprised of index column, add new column column and add new row row
-  // Not using AuxiliaryTableContentColors.CELL_COLORS for default value as the '' values will stop logical OR operators
+  // frame components is comprised of index column, add new column column and add new row row
+  // Not using FrameComponentsColors.CELL_COLORS for default value as the '' values will stop logical OR operators
   @property({type: Object})
-  auxiliaryTableContent: AuxiliaryTableContent = {};
+  frameComponents: FrameComponents = {};
 
   // REF-22 - to be used internally
   @state()
-  auxiliaryTableContentInternal: AuxiliaryTableContentInternal = AuxiliaryTableContentInternalUtils.getDefault();
+  frameComponentsInternal: FrameComponentsInternal = FrameComponentsInternalUtils.getDefault();
 
   // this affects the column index and pagination
   @property({
@@ -253,7 +253,7 @@ export class ActiveTable extends LitElement {
     // REF-14
     super.connectedCallback();
     StickyPropsUtils.process(this);
-    AuxiliaryTableContentInternalUtils.set(this.auxiliaryTableContent, this.auxiliaryTableContentInternal);
+    FrameComponentsInternalUtils.set(this.frameComponents, this.frameComponentsInternal);
     DefaultColumnTypes.createDropdownItemsForDefaultTypes();
     RowDropdownSettingsUtil.process(this);
     if (this.pagination) PaginationInternalUtils.process(this);

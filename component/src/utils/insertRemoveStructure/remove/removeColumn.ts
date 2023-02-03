@@ -20,7 +20,7 @@ import {LastColumn} from '../shared/lastColumn';
 
 export class RemoveColumn {
   private static updateAdditionElements(at: ActiveTable) {
-    if (at.auxiliaryTableContentInternal.displayAddColumn) ColumnGroupElement.update(at);
+    if (at.frameComponentsInternal.displayAddColumn) ColumnGroupElement.update(at);
     ToggleAdditionElements.update(at, false, AddNewColumnElement.toggle);
   }
 
@@ -53,7 +53,7 @@ export class RemoveColumn {
 
   private static removeCell(at: ActiveTable, rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
     const lastColumn: ElementDetails = LastColumn.getDetails(at.columnsDetails, rowIndex);
-    RemoveColumn.removeElements(rowElement, columnIndex, !!at.auxiliaryTableContentInternal.displayIndexColumn);
+    RemoveColumn.removeElements(rowElement, columnIndex, !!at.frameComponentsInternal.displayIndexColumn);
     at.content[rowIndex].splice(columnIndex, 1);
     setTimeout(() => {
       const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};

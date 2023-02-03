@@ -5,7 +5,7 @@ import {SizerMoveLimits} from '../../../types/columnSizer';
 import {ActiveTable} from '../../../activeTable';
 
 export class MoveLimits {
-  // Borders of the side cells tend to breach over the limits of the table (when no side auxiliary elements),
+  // Borders of the side cells tend to breach over the limits of the table (when no side frame elements),
   // causing the offsets to give incorrect data and set the limits beyond the table. The breach magnitude is
   // influenced by the sizer start position when cells have borders - which is the very center position of
   // the total of those two borders width.

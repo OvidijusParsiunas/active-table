@@ -1,10 +1,10 @@
 import {OnCellUpdate, OnColumnUpdate, OnTableUpdate, OnColumnWidthsUpdate} from './onUpdate';
 import {DropdownDisplaySettings} from './dropdownDisplaySettings';
 import {ColumnsSettingsDefault} from './columnsSettingsDefault';
-import {AuxiliaryTableContent} from './auxiliaryTableContent';
 import {RowDropdownSettings} from './rowDropdownSettings';
 import {DynamicCellUpdateT} from './dynamicCellUpdateT';
 import {CustomColumnsSettings} from './columnsSettings';
+import {FrameComponents} from './frameComponents';
 import {ColumnResizerColors} from './columnSizer';
 import {RowHoverStyle} from './rowHoverStyle';
 import {TableContent} from './tableContent';
@@ -33,7 +33,7 @@ export interface ActiveTable extends LitElement {
   preserveNarrowColumns?: boolean;
   maxColumns?: number;
   maxRows?: number;
-  auxiliaryTableContent?: AuxiliaryTableContent;
+  frameComponents?: FrameComponents;
   dataStartsAtHeader?: boolean;
   columnResizerColors?: ColumnResizerColors;
   columnDropdownDisplaySettings?: DropdownDisplaySettings;

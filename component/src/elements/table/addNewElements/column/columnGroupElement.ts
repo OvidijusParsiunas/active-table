@@ -7,7 +7,7 @@ import {ActiveTable} from '../../../../activeTable';
 // prettier-ignore
 export class ColumnGroupElement {
   public static update(at: ActiveTable) {
-    const {columnGroupRef, columnsDetails, auxiliaryTableContentInternal: {displayIndexColumn}} = at;
+    const {columnGroupRef, columnsDetails, frameComponentsInternal: {displayIndexColumn}} = at;
     if (!columnGroupRef) return;
     // the first col needs to span all of the columns except the add new column
     const firstCols = columnGroupRef.children[0] as HTMLElement;

@@ -14,7 +14,7 @@ export class AddNewRowEvents {
 
   public static setCellEvents(at: ActiveTable, addNewRowCellElement: HTMLElement) {
     addNewRowCellElement.onclick = InsertNewRow.insertEvent.bind(at);
-    const dataColors = at.auxiliaryTableContentInternal.cellColors.data;
+    const dataColors = at.frameComponentsInternal.cellColors.data;
     addNewRowCellElement.onmouseenter = AddNewRowEvents.mouseEnterCell.bind(this, dataColors);
     addNewRowCellElement.onmouseleave = AddNewRowEvents.mouseLeaveCell.bind(this, dataColors);
   }

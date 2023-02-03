@@ -1,6 +1,6 @@
-import {AuxiliaryTableContentElements} from '../../utils/auxiliaryTableContent/auxiliaryTableContentElements';
-import {AuxiliaryTableContentColors} from '../../utils/auxiliaryTableContent/auxiliaryTableContentColors';
 import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
+import {FrameComponentsElements} from '../../utils/frameComponents/frameComponentsElements';
+import {FrameComponentsColors} from '../../utils/frameComponents/frameComponentsColors';
 import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElements';
 import {StringDimensionUtils} from '../../utils/tableDimensions/stringDimensionUtils';
 import {InitialContentProcessing} from '../../utils/content/initialContentProcessing';
@@ -32,7 +32,7 @@ export class TableElement {
 
   // prettier-ignore
   public static setStaticWidthContentTotal(at: ActiveTable) {
-    const {auxiliaryTableContentInternal: {displayAddColumn, displayIndexColumn}, tableDimensions} = at;
+    const {frameComponentsInternal: {displayAddColumn, displayIndexColumn}, tableDimensions} = at;
     tableDimensions.staticWidth = tableDimensions.border.leftWidth + tableDimensions.border.rightWidth;
     if (displayAddColumn) tableDimensions.staticWidth += AddNewColumnElement.DEFAULT_WIDTH;
     if (displayIndexColumn) tableDimensions.staticWidth += IndexColumn.DEFAULT_WIDTH;
@@ -81,8 +81,8 @@ export class TableElement {
     TableElement.addCells(at);
     TableElement.postProcessColumns(at);
     // new row row
-    AuxiliaryTableContentElements.addAuxiliaryBodyElements(at);
-    if (at.auxiliaryTableContentInternal.displayIndexColumn) UpdateIndexColumnWidth.update(at);
+    FrameComponentsElements.addFrameBodyElements(at);
+    if (at.frameComponentsInternal.displayIndexColumn) UpdateIndexColumnWidth.update(at);
     // needs to be after UpdateIndexColumnWidth.update as the new index column width can impact the add new column display
     ToggleAdditionElements.update(at, true, AddNewColumnElement.toggle);
     CustomRowProperties.update(at);
@@ -105,13 +105,13 @@ export class TableElement {
     return tableElement;
   }
 
-  // CAUTION-4 - add row cell is created and ref assigned here - then it is added post render in addAuxiliaryBodyElements
+  // CAUTION-4 - add row cell is created and ref assigned here - then it is added post render in addFrameBodyElements
   public static createInfrastructureElements(at: ActiveTable) {
-    AuxiliaryTableContentColors.setEventColors(at); // needs to be before the creation of column group element
+    FrameComponentsColors.setEventColors(at); // needs to be before the creation of column group element
     at.tableElementRef = TableElement.createTableElement(at);
-    if (at.auxiliaryTableContentInternal.displayAddColumn) {
+    if (at.frameComponentsInternal.displayAddColumn) {
       // needs to be appended before the body
-      at.columnGroupRef = ColumnGroupElement.create(at.auxiliaryTableContentInternal.cellColors.data);
+      at.columnGroupRef = ColumnGroupElement.create(at.frameComponentsInternal.cellColors.data);
       at.tableElementRef.appendChild(at.columnGroupRef);
     }
     at.tableBodyElementRef = TableElement.createTableBody(at.stickyProps.header);

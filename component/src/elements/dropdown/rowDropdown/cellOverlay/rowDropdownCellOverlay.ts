@@ -38,7 +38,7 @@ export class RowDropdownCellOverlay {
     const rowDropdownCellOverlay = at.rowDropdownCellOverlays[rowIndex].element;
     rowDropdownCellOverlay.style.width = DropdownCellOverlay.VISIBLE_PX;
     const firstColElement = firstColumn.elements[rowIndex];
-    const {displayIndexColumn} = at.auxiliaryTableContentInternal;
+    const {displayIndexColumn} = at.frameComponentsInternal;
     const leftMostElement = (displayIndexColumn ? firstColElement.previousSibling : firstColElement) as HTMLElement;
     const onePercentWidth = leftMostElement.offsetHeight / 100;
     rowDropdownCellOverlay.style.height = `${onePercentWidth * 60}px`;
@@ -65,7 +65,7 @@ export class RowDropdownCellOverlay {
 
   public static add(at: ActiveTable, rowIndex: number, leftMostCell: HTMLElement) {
     const rowDropdownCellOverlay = RowDropdownCellOverlay.create(at.rowDropdown.displaySettings.overlayStyle);
-    const {displayIndexColumn} = at.auxiliaryTableContentInternal;
+    const {displayIndexColumn} = at.frameComponentsInternal;
     const cellDividerElement = RowDropdownCellOverlay.getCellDividerElement(leftMostCell, !!displayIndexColumn);
     cellDividerElement.appendChild(rowDropdownCellOverlay);
     at.rowDropdownCellOverlays.splice(rowIndex, 0, {
