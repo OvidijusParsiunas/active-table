@@ -105,7 +105,7 @@ export class InsertNewCell {
     InsertNewCell.insert(at, rowElement, newCellElement, processedCellText, isNewText, rowIndex, columnIndex);
     InsertNewCell.convertCell(at, rowIndex, columnIndex, newCellElement); // need text set before conversion (checkbox)
     if (rowIndex === 0) {
-      if (at.frameComponentsInternal.displayAddColumn) ColumnGroupElement.update(at);
+      if (at.frameComponentsInternal.displayAddNewColumn) ColumnGroupElement.update(at);
       if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true); // REF-11
       ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
     } else {

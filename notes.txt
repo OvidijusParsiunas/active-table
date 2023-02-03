@@ -193,9 +193,9 @@ the messages tell them to and absolutely nothing else.
 REF-21
 
 REF-22
-Using frameComponentsInternal object because the client may choose not to include some properties inside the frameComponents
-object such as any of the FrameComponentsDisplayProps. Hence, this object is used to contain the defaults and use them internally
-without having to add optional chaining every its used.
+Frame component toggles are exposed as top level boolean properties whereas their state is stored internally within the same object
+because they need to be easily accessible to the client without any nesting due to their importance and at the same time it is
+much simpler to access them from the same object with required properties internally to reduce code complexity.
 
 REF-23
 If a cell with a border style that was set in the cellStyle property is beside a column that has a border set by customColumnsSettings

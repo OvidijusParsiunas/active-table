@@ -20,7 +20,7 @@ import {LastColumn} from '../shared/lastColumn';
 
 export class RemoveColumn {
   private static updateAdditionElements(at: ActiveTable) {
-    if (at.frameComponentsInternal.displayAddColumn) ColumnGroupElement.update(at);
+    if (at.frameComponentsInternal.displayAddNewColumn) ColumnGroupElement.update(at);
     ToggleAdditionElements.update(at, false, AddNewColumnElement.toggle);
   }
 

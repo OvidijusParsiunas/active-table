@@ -166,6 +166,6 @@ export class PaginationUtils {
     PaginationUtils.setCorrectRowsAsVisible(at, buttonNumber);
     PageButtonElement.setActive(at, buttonNumber);
     NumberOfVisibleRowsElement.update(at);
-    if (at.frameComponentsInternal.displayAddRow) PaginationUtils.updateAddRowRow(at);
+    if (at.frameComponentsInternal.displayAddNewRow) PaginationUtils.updateAddRowRow(at);
   }
 }

@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # Columns
 
-Properties related to table rows.
+Properties related to table columns.
 
 ### `maxColumns` {#maxColumns}
 
@@ -76,7 +76,7 @@ widths eventually become too narrow\* and their widths cannot be reduced any fur
 When `preserveNarrowColumns` is `true` and column widths are too narrow\*, the table width will be increased allow new columns to be inserted. <br />
 When `preserveNarrowColumns` is `false` and column widths are too narow\*, no new columns will be allowed to be inserted.
 set to true by default.<br />
-_\*Minimal column size for most browsers is 33px_
+_\*Minimal column size is recognised as 33px_
 
 **Example where preset table width of 300px is exceeded**
 
@@ -120,6 +120,123 @@ _\*Minimal column size for most browsers is 33px_
 :::info
 Please note that when `tableStyle` contains a `width` or `maxWidth` property with a _%_ or _vw_ unit and the window width is changed - if columns
 cannot be reduced any further the excess ones will not be removed even if `preserveNarrowColumns` is set to `false` to prevent loss of data.
+:::
+
+<LineBreak></LineBreak>
+
+### `displayAddNewColumn` {#displayAddNewColumn}
+
+- Type: `boolean`
+- Default: _true_
+
+A toggle for a clickable '+' column on the right which is used to add new empty columns.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    displayAddNewColumn="true"
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table displayAddNewColumn="true"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  displayAddNewColumn="true"
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `displayIndexColumn` {#displayIndexColumn}
+
+- Type: `boolean` | {`wrapIndexCellText: boolean`}
+- Default: _{wrapIndexCellText: false }_
+
+A toggle for the index column on the left. <br />
+When `wrapIndexCellText` is set to _true_, the index column width will be static and any overflowing digits inside its cells will be wrapped within its boundaries. This is
+useful in a scenario where `width`/`maxWidth` is set within [`tableStyle`](./table#tableStyle) and the addition of any more columns would cause the width to be breached
+due to all columns having the mimimal width of _33px_. Hence by keeping index column width narrow - more columns can be added without breaching the set `width`/`maxWidth`.
+If `wrapIndexCellText` is set to _false_ and [`preserveNarrowColumns`](#preserveNarrowColumns) is set to _true_, if the table width is about to be breached,
+it will be automatically set to _true_ and the index width will be set back to the initial width.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    displayIndexColumn='{"wrapIndexCellText": "false"}'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table displayIndexColumn='{"wrapIndexCellText": "false"}'></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  displayIndexColumn='{"wrapIndexCellText": "false"}'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+:::note
+If [`dataStartsAtHeader`](./header#dataStartsAtHeader) is _true_, the index count will start from the header row, otherwise it will start from the first data row. <br />
+:::
+:::note
+Please note that cell unwrapping detection is not supported and once the index column is wrapped via `wrapIndexCellText` it will stay in this
+form for the rest of the session.
 :::
 
 <LineBreak></LineBreak>

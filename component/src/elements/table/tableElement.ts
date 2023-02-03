@@ -32,9 +32,9 @@ export class TableElement {
 
   // prettier-ignore
   public static setStaticWidthContentTotal(at: ActiveTable) {
-    const {frameComponentsInternal: {displayAddColumn, displayIndexColumn}, tableDimensions} = at;
+    const {frameComponentsInternal: {displayAddNewColumn, displayIndexColumn}, tableDimensions} = at;
     tableDimensions.staticWidth = tableDimensions.border.leftWidth + tableDimensions.border.rightWidth;
-    if (displayAddColumn) tableDimensions.staticWidth += AddNewColumnElement.DEFAULT_WIDTH;
+    if (displayAddNewColumn) tableDimensions.staticWidth += AddNewColumnElement.DEFAULT_WIDTH;
     if (displayIndexColumn) tableDimensions.staticWidth += IndexColumn.DEFAULT_WIDTH;
   }
 
@@ -109,7 +109,7 @@ export class TableElement {
   public static createInfrastructureElements(at: ActiveTable) {
     FrameComponentsColors.setEventColors(at); // needs to be before the creation of column group element
     at.tableElementRef = TableElement.createTableElement(at);
-    if (at.frameComponentsInternal.displayAddColumn) {
+    if (at.frameComponentsInternal.displayAddNewColumn) {
       // needs to be appended before the body
       at.columnGroupRef = ColumnGroupElement.create(at.frameComponentsInternal.cellColors.data);
       at.tableElementRef.appendChild(at.columnGroupRef);

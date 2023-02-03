@@ -28,17 +28,17 @@ export class AddNewRowElement {
 
   // prettier-ignore
   private static createCell(at: ActiveTable) {
-    const {columnsSettings: {cellStyle}, frameComponentsInternal: {displayAddRow, style}} = at;
+    const {columnsSettings: {cellStyle}, frameComponentsInternal: {displayAddNewRow, style}} = at;
     const addNewRowCell = CellElement.createContentCell(false, cellStyle, style?.default);
     addNewRowCell.id = AddNewRowElement.ID;
-    if (!displayAddRow) {
+    if (!displayAddNewRow) {
       // if this is not displayed when there is content, always use the stub style - REF-18
       NoContentStubElement.convertToStub(addNewRowCell);
       addNewRowCell.addEventListener('click', AddNewRowElement.setDisplay.bind(this, addNewRowCell, false));
     } else {
       AddNewRowElement.setDefaultStyle(addNewRowCell);
     }
-    AddNewRowElement.setDisplay(addNewRowCell, displayAddRow);
+    AddNewRowElement.setDisplay(addNewRowCell, displayAddNewRow);
     // set to high number to always merge cells in this row
     addNewRowCell.colSpan = AddNewRowElement.DEFAULT_COL_SPAN;
     AddNewRowEvents.setCellEvents(at, addNewRowCell);
@@ -54,9 +54,9 @@ export class AddNewRowElement {
 
   // prettier-ignore
   public static toggle(at: ActiveTable) {
-    const {tableBodyElementRef, addRowCellElementRef, frameComponentsInternal: {displayAddRow}} = at;
+    const {tableBodyElementRef, addRowCellElementRef, frameComponentsInternal: {displayAddNewRow}} = at;
     if (!addRowCellElementRef?.parentElement || !tableBodyElementRef) return;
-    if (displayAddRow) AddNewRowElement.setDisplay(addRowCellElementRef, MaximumRows.canAddMore(at));
+    if (displayAddNewRow) AddNewRowElement.setDisplay(addRowCellElementRef, MaximumRows.canAddMore(at));
     RowElement.toggleLastRowClass(at.shadowRoot as ShadowRoot, addRowCellElementRef.parentElement)
   }
 

@@ -33,8 +33,8 @@ export class ColumnSettingsFrameBorderUtils {
     const currentColumn = currentColumnDetails || leftColumnDetails; // when last column removed - use the left one instead
     if (!currentColumn) return;
     const {columnsSettings, addColumnCellsElementsRef,
-      frameComponentsInternal: {displayAddColumn, displayIndexColumn}} = at;
-    if (!rightColumnDetails && displayAddColumn) {
+      frameComponentsInternal: {displayAddNewColumn, displayIndexColumn}} = at;
+    if (!rightColumnDetails && displayAddNewColumn) {
       ColumnSettingsFrameBorderUtils.toggleFrameBorder(
         addColumnCellsElementsRef, currentColumn.elements, 'left', columnsSettings);
     }

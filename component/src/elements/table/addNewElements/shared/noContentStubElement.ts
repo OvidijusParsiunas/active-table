@@ -29,12 +29,12 @@ export class NoContentStubElement {
   // prettier-ignore
   public static display(at: ActiveTable) {
     const {tableBodyElementRef, addColumnCellsElementsRef, addRowCellElementRef,
-      frameComponentsInternal: {displayAddColumn, displayAddRow}} = at;
+      frameComponentsInternal: {displayAddNewColumn, displayAddNewRow}} = at;
     if (!addRowCellElementRef) return;
     const tableBodyElement = tableBodyElementRef as HTMLElement;
-    if (displayAddColumn) addColumnCellsElementsRef.splice(0, addColumnCellsElementsRef.length);
+    if (displayAddNewColumn) addColumnCellsElementsRef.splice(0, addColumnCellsElementsRef.length);
     NoContentStubElement.removeRows(tableBodyElement);
-    if (displayAddRow) {
+    if (displayAddNewRow) {
       NoContentStubElement.convertToStub(addRowCellElementRef);
       addRowCellElementRef.addEventListener('click', NoContentStubElement.convertFromStub);
     }

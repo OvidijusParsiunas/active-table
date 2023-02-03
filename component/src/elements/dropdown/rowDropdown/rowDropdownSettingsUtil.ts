@@ -1,11 +1,11 @@
 import {DropdownDisplaySettings} from '../../../types/dropdownDisplaySettings';
+import {FrameComponentsInternal} from '../../../types/frameComponentsInternal';
 import {DropdownDisplaySettingsUtil} from '../dropdownDisplaySettingsUtil';
 import {RowDropdownSettings} from '../../../types/rowDropdownSettings';
-import {FrameComponents} from '../../../types/frameComponents';
 import {ActiveTable} from '../../../activeTable';
 
 export class RowDropdownSettingsUtil {
-  private static postprocessOpenMethod(rowSettings: RowDropdownSettings, frameComponents: FrameComponents) {
+  private static postprocessOpenMethod(rowSettings: RowDropdownSettings, frameComponents: FrameComponentsInternal) {
     // when no index column and cell click method is being used, change it to overlay click
     if (!frameComponents.displayIndexColumn && rowSettings.displaySettings.openMethod?.cellClick) {
       delete rowSettings.displaySettings.openMethod?.cellClick;

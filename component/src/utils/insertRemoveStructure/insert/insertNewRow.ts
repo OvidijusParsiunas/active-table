@@ -39,14 +39,14 @@ export class InsertNewRow {
   // prettier-ignore
   private static addCells(at: ActiveTable,
       newRowData: TableRow, newRowElement: HTMLElement, rowIndex: number, isNewText: boolean) {
-    const {frameComponentsInternal: {displayIndexColumn, displayAddColumn}} = at;
+    const {frameComponentsInternal: {displayIndexColumn, displayAddNewColumn}} = at;
     if (displayIndexColumn) IndexColumn.createAndPrependToRow(at, newRowElement, rowIndex);
     newRowData.forEach((cellText: CellText, columnIndex: number) => {
       if (isNewText || InsertNewRow.canStartRenderCellBeAdded(at, rowIndex, columnIndex)) {
         InsertNewCell.insertToRow(at, newRowElement, rowIndex, columnIndex, cellText as string, isNewText);
       }
     });
-    if (displayAddColumn) AddNewColumnElement.createAndAppendToRow(at, newRowElement, rowIndex);
+    if (displayAddNewColumn) AddNewColumnElement.createAndAppendToRow(at, newRowElement, rowIndex);
     setTimeout(() => RowDropdownCellOverlay.add(at, rowIndex, newRowElement.children[0] as HTMLElement));
   }
 

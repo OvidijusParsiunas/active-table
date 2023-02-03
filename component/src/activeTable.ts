@@ -11,6 +11,7 @@ import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {PaginationElements} from './elements/pagination/paginationElements';
 import {DynamicCellUpdate} from './utils/dynamicUpdates/dynamicCellUpdate';
+import {FrameComponentsStyle, IndexColumnT} from './types/frameComponents';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {FrameComponentsInternal} from './types/frameComponentsInternal';
@@ -32,7 +33,6 @@ import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
 import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
-import {FrameComponents} from './types/frameComponents';
 import {ColumnResizerColors} from './types/columnSizer';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
@@ -194,15 +194,29 @@ export class ActiveTable extends LitElement {
   @property({type: Number})
   maxRows?: number;
 
-  // REF-22 - to be used by the client
-  // frame components is comprised of index column, add new column column and add new row row
-  // Not using FrameComponentsColors.CELL_COLORS for default value as the '' values will stop logical OR operators
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  displayAddNewRow = true;
+
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  displayAddNewColumn = true;
+
   @property({type: Object})
-  frameComponents: FrameComponents = {};
+  displayIndexColumn: boolean | IndexColumnT = {wrapIndexCellText: true};
 
   // REF-22 - to be used internally
   @state()
   frameComponentsInternal: FrameComponentsInternal = FrameComponentsInternalUtils.getDefault();
+
+  // REF-22 - to be used by the client
+  // frame components are comprised of index column, add new column column and add new row row
+  @property({type: Object})
+  frameComponentsStyle: FrameComponentsStyle = {};
 
   // this affects the column index and pagination
   @property({
@@ -253,7 +267,7 @@ export class ActiveTable extends LitElement {
     // REF-14
     super.connectedCallback();
     StickyPropsUtils.process(this);
-    FrameComponentsInternalUtils.set(this.frameComponents, this.frameComponentsInternal);
+    FrameComponentsInternalUtils.set(this);
     DefaultColumnTypes.createDropdownItemsForDefaultTypes();
     RowDropdownSettingsUtil.process(this);
     if (this.pagination) PaginationInternalUtils.process(this);
