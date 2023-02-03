@@ -12,7 +12,7 @@ Properties related to table rows.
 - Default: _unset_, but if _style_ is set then _header_ and _addNewRowButton_ are _true_
 
 Custom styling for row mouse hover. `header` property denotes if `style` can be applied to the header row
-and `addNewRowButton` denotes if `style` can be applied to the WORK add new row button if it is displayed.
+and `addNewRowButton` denotes if `style` can be applied to the add new row button if it is displayed.
 
 #### Example
 
@@ -64,7 +64,7 @@ import Tabs from '@theme/Tabs';
 </Tabs>
 
 :::info
-Using this property unsets the default header and frame component hover color properties WORK
+Using this property unsets the default header and [`frameComponentsStyle`](./table#frameComponentsStyle) hover color properties.
 :::
 
 <LineBreak></LineBreak>
@@ -124,7 +124,7 @@ Stripe based styling for rows.
 </Tabs>
 
 :::info
-Using this property unsets the default header and frame component hover color properties WORK
+Using this property unsets the default header and [`frameComponentsStyle`](./table#frameComponentsStyle) hover color properties.
 :::
 
 <LineBreak></LineBreak>
@@ -258,7 +258,8 @@ Maximum number of rows allowed (including header row).
 - Type: `boolean`
 - Default: _true_
 
-A toggle for a clickable '+ New' row at the bottom of the table which is used to add new empty rows.
+A toggle for a clickable '+ New' row at the bottom of the table which is used to add new empty rows. <br />
+You can set the add new row style via [`frameComponentsStyle`](./table#frameComponentsStyle).
 
 #### Example
 

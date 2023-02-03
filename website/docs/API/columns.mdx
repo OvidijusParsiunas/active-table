@@ -11,7 +11,7 @@ Properties related to table columns.
 - Type: `number`
 - Default: _unset_
 
-Maximum number of columns allowed (not including the index and add columns WORK).
+Maximum number of columns allowed (not including the index and add columns column).
 
 #### Example
 
@@ -129,7 +129,8 @@ cannot be reduced any further the excess ones will not be removed even if `prese
 - Type: `boolean`
 - Default: _true_
 
-A toggle for a clickable '+' column on the right which is used to add new empty columns.
+A toggle for a clickable '+' column on the right which is used to add new empty columns. <br />
+You can set the add new column style via [`frameComponentsStyle`](./table#frameComponentsStyle).
 
 #### Example
 
@@ -186,7 +187,8 @@ When `wrapIndexCellText` is set to _true_, the index column width will be static
 useful in a scenario where `width`/`maxWidth` is set within [`tableStyle`](./table#tableStyle) and the addition of any more columns would cause the width to be breached
 due to all columns having the mimimal width of _33px_. Hence by keeping index column width narrow - more columns can be added without breaching the set `width`/`maxWidth`.
 If `wrapIndexCellText` is set to _false_ and [`preserveNarrowColumns`](#preserveNarrowColumns) is set to _true_, if the table width is about to be breached,
-it will be automatically set to _true_ and the index width will be set back to the initial width.
+it will be automatically set to _true_ and the index width will be set back to the initial width. <br />
+You can set the index column style via [`frameComponentsStyle`](./table#frameComponentsStyle).
 
 #### Example
 
@@ -640,7 +642,7 @@ Styling details for header elements in default state and when they are hovered b
 - Type: { `CSSStyle` & `!minWidth` & `!maxWidth` & `!height` & `!minHeight` & `!maxHeight` }
 
 Object containing all `CSSStyle` properties except `minWidth`, `maxWidth`, `height`, `minHeight` and `maxHeight`. <br />
-This object also serves as the default style for frame component styles (except for `width`) WORK. <br />
+This object also serves as the default style for index column, add new column and add new row components. <br />
 The `width` property supports _px_ and _%_ metrics, however when using _%_ - the [`tableStyle`](./table#tableStyle) object should have its `width` property
 also set as otherwise the cells will not be able to calculate a relative width. Additionally, when [`CellStyle`](#CellStyle) - `width` and
 [`tableStyle`](./table#tableStyle) - `width` are defined and `isResizable` in [`ColumnSettings`](#ColumnSettings) is set to _true_, the [`CellStyle`](#CellStyle) - `width`
