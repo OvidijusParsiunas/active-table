@@ -36,21 +36,21 @@ export class AddNewColumnElement {
       GenericElementUtils.NOT_SELECTABLE_CLASS,
       AddNewColumnElement.ADD_COLUMN_CELL_CLASS
     );
-    // backgroundColor controlled by column group - REF-17
-    Object.assign(cell.style, at.columnsSettings.cellStyle, {backgroundColor: ''});
+    Object.assign(cell.style, at.columnsSettings.cellStyle, at.frameComponentsInternal.style?.default, {
+      // backgroundColor controlled by column group - REF-17
+      backgroundColor: '',
+    });
     AddNewColumnEvents.setEvents(at, cell);
     return cell;
   }
 
+  // prettier-ignore
   private static createHeaderCell(at: ActiveTable) {
+    const {columnsSettings: {headerStyles}, frameComponentsInternal: {cellColors, inheritHeaderColors}} = at;
     const headerCell = AddNewColumnElement.createCell(at, true);
     headerCell.style.width = AddNewColumnElement.DEFAULT_WIDTH_PX;
     headerCell.innerText = '+';
-    Object.assign(
-      headerCell.style,
-      at.columnsSettings.headerStyles?.default,
-      at.frameComponentsInternal.cellColors.header.default
-    );
+    Object.assign(headerCell.style, inheritHeaderColors ? headerStyles?.default : {}, cellColors.header.default);
     return headerCell;
   }
 

@@ -98,6 +98,17 @@ import Tabs from '@theme/Tabs';
 Object containing all properties defined in the CSSStyleDeclaration [`specification`](https://webplatform.github.io/docs/css/cssom/CSSStyleDeclaration/CSSStyleDeclaration/)
 as optionals. A TypeScript example can be found in this [link](https://github.com/microsoft/TypeScript-DOM-lib-generator/blob/bf671e99615b06404db7a89fa9ae05bf14a8e47c/baselines/dom.generated.d.ts#L2737).
 
+### `HoverableStyles` {#HoverableStyles}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`default?: NoDimensionCSSStyle`](./types#NoDimensionCSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `hoverColors?`: {`backgroundColor?: string`, `color?: string`}<br />
+  }
+- Default: _unset_
+
+Styling details for when an element is in default state and when it is hovered with a mouse. `hoverColors` object only accepts
+`backgroundColor` and `color` properties.
+
 ### `NoDimensionCSSStyle` {#NoDimensionCSSStyle}
 
 - Type: { [`CSSStyle`](#CSSStyle) & `!width` & `!minWidth` & `!maxWidth` & `!height` & `!minHeight` & `!maxHeight` }

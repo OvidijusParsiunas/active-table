@@ -1,39 +1,19 @@
-import {CellStateColorProperties, CellStateColorsR} from '../../types/cellStateColors';
+import {CellStateColorProperties, CellStateColorsR, DefaultCellHoverColors} from '../../types/cellStateColors';
 import {FrameComponentsCellsColors} from '../../types/frameComponentsCellsColors';
 import {HoverableStyles} from '../../types/hoverableStyles';
 import {ActiveTable} from '../../activeTable';
 
 // frame components are comprised of index column, add new column column and add new row row
 export class FrameComponentsColors {
-  // prettier-ignore
-  private static getInheritedDefaultColr(key: keyof CellStateColorProperties,
-      dataColors: CellStateColorsR, headerStyle?: HoverableStyles) {
-    return headerStyle?.default?.[key] || dataColors.default?.[key];
-  }
-
-  // prettier-ignore
-  private static getInheritedHoverColor(key: keyof CellStateColorProperties,
-      dataColors: CellStateColorsR, headerStyle?: HoverableStyles) {
-    return (
-      headerStyle?.hoverColors?.[key] ||
-      dataColors.hover?.[key] ||
-      FrameComponentsColors.getInheritedDefaultColr(key, dataColors, headerStyle)
-    );
-  }
-
-  // prettier-ignore
-  private static overwriteHeaderWithInheritedColors(cellColors: FrameComponentsCellsColors,
-      headerStyles?: HoverableStyles) {
-    cellColors.header = {
+  private static getInheritedHeaderColors(defaultCellHoverColors: DefaultCellHoverColors, headerStyles?: HoverableStyles) {
+    return {
       default: {
-        backgroundColor: FrameComponentsColors.getInheritedDefaultColr(
-          'backgroundColor', cellColors.data, headerStyles),
-        color: FrameComponentsColors.getInheritedDefaultColr('color', cellColors.data, headerStyles),
+        backgroundColor: headerStyles?.default?.backgroundColor || 'white', // defining style for add new column header
+        color: headerStyles?.default?.color || '',
       },
       hover: {
-        backgroundColor: FrameComponentsColors.getInheritedHoverColor(
-          'backgroundColor', cellColors.data, headerStyles),
-        color: FrameComponentsColors.getInheritedHoverColor('color', cellColors.data, headerStyles),
+        backgroundColor: headerStyles?.hoverColors?.backgroundColor || defaultCellHoverColors.backgroundColor,
+        color: headerStyles?.hoverColors?.color || defaultCellHoverColors.color,
       },
     };
   }
@@ -63,16 +43,10 @@ export class FrameComponentsColors {
         color: FrameComponentsColors.getHoverColorValue(at, 'color'),
       },
     };
-    const {frameComponentsInternal: {cellColors}} = at;
+    const {frameComponentsInternal: {cellColors, inheritHeaderColors}, columnsSettings: {headerStyles}} = at;
     cellColors.data = newCellColors;
-    cellColors.header = newCellColors;
-    const {frameComponentsInternal: {inheritHeader}, columnsSettings: {headerStyles}} = at;
-    if (inheritHeader === undefined || inheritHeader === true) {
-      FrameComponentsColors.overwriteHeaderWithInheritedColors(cellColors, headerStyles)
-    } else {
-      cellColors.data.default.color = 'black';
-      cellColors.header.default.color = 'black';
-    }
+    cellColors.header = inheritHeaderColors ?
+      FrameComponentsColors.getInheritedHeaderColors(at.defaultCellHoverColors, headerStyles) : newCellColors;
   }
 
   public static getColorsBasedOnParam(cellColors: FrameComponentsCellsColors, rowIndex: number): CellStateColorsR {
