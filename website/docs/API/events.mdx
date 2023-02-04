@@ -4,7 +4,7 @@ sidebar_position: 8
 
 # Events
 
-Properties that accept functions that get triggered when an event occurs.
+Properties accepting functions that get triggered on event occurrence.
 
 :::info
 When using these properties take care not to re-render the table component when updating state.
@@ -30,7 +30,7 @@ import {ActiveTable} from 'active-table';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
 
-<TableContainerEvents propertyName={"onCellUpdate"}>
+<TableContainerEvents propertyname={"onCellUpdate"}>
   <active-table
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
@@ -67,11 +67,11 @@ tableReference.setAttribute('onCellUpdate', (cellUpdate) => { console.log(cellUp
 
 - Type: (`tableUpdate: (string|number)[][]`) => `void`
 
-Similarly to [`onCellUpdate`](#onCellUpdate) this is triggered when any cell is updated - however this property returns the full table contents array instead.
+Similarly to [`onCellUpdate`](#onCellUpdate) this is triggered when any cell is updated - however this property returns the full table contents 2D array instead.
 
 #### Example
 
-<TableContainerEvents propertyName={"onContentUpdate"}>
+<TableContainerEvents propertyname={"onContentUpdate"}>
   <active-table
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
@@ -106,22 +106,14 @@ tableReference.setAttribute('onContentUpdate', (tableUpdate) => { console.log(ta
 
 ### `onColumnsUpdate` {#onColumnsUpdate}
 
-- Type: (`columnsUpdate:` { <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`width: number`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`typeName: string`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`cellDropdownItems?: {name: string; backgroundColor?: string}[]`, <br />
-  }[]) => `void`
+- Type: (`columnsUpdate`: [`ColumnDetails`](./types#ColumnDetails)) => `void`
 
 Triggered when column details are updated. This is particularly useful if the user has made changes to columns and you want to recreate them
-in the next session on the initial load. The function argument's array objects represent each column in order from left to right. <br />
-`width` is the column width in pixels. <br />
-`typeName` is the name of the currently active type on the column. <br />
-`cellDropdownItems` contains details about the available cell dropdown items if the active column type is using a [`dropdown`](./columns#CellDropdown)
-(backgroundColor only for label types).
+in the next session on the initial load.
 
 #### Example
 
-<TableContainerEvents propertyName={"onColumnsUpdate"}>
+<TableContainerEvents propertyname={"onColumnsUpdate"}>
   <active-table
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],

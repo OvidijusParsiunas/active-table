@@ -61,3 +61,33 @@
 :root {
   --ifm-code-font-size: 87%;
 }
+
+.example-container {
+  width: 100%;
+  background-color: var(--ifm-table-container-background-color);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding: 25px 18px 18px;
+  box-shadow: rgb(0 0 0 / 10%) 0px 1px 2px 0px;
+  border: var(--ifm-table-container-border);
+  border-bottom: unset;
+}
+
+.method-button {
+  padding: 10px;
+  background-color: rgb(80, 179, 80);
+  border: unset;
+  border-radius: 5px;
+  color: white;
+  font-size: 15px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.method-button:hover {
+  background-color: rgb(82, 198, 82);
+}
+
+.method-button:active {
+  background-color: rgb(71, 213, 71);
+}

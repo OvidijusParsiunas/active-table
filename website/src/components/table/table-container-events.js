@@ -26,12 +26,12 @@ const EventText = React.forwardRef((_, ref) => {
   );
 });
 
-export default function TableContainerEvents({children, propertyName}) {
+export default function TableContainerEvents({children, propertyname}) {
   const tableContainerRef = React.useRef(null);
   const eventTextRef = React.useRef(null);
 
   if (tableContainerRef.current) {
-    tableContainerRef.current.children[0].children[0].children[0][propertyName] = eventTextRef.current?.updateText;
+    tableContainerRef.current.children[0].children[0].children[0][propertyname] = eventTextRef.current?.updateText;
   }
 
   return (
@@ -39,19 +39,7 @@ export default function TableContainerEvents({children, propertyName}) {
       <div ref={tableContainerRef}>
         <TableContainer>{children}</TableContainer>
       </div>
-      <div
-        style={{
-          width: '100%',
-          backgroundColor: 'var(--ifm-table-container-background-color)',
-          borderTopLeftRadius: '5px',
-          borderTopRightRadius: '5px',
-          padding: '18px',
-          paddingTop: '25px',
-          boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.1)',
-          border: 'var(--ifm-table-container-border)',
-          borderBottom: 'unset',
-        }}
-      >
+      <div className="example-container">
         <EventText ref={eventTextRef}></EventText>
       </div>
     </div>

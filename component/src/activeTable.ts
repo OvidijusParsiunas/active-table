@@ -77,7 +77,7 @@ export class ActiveTable extends LitElement {
   getContent = () => JSON.parse(JSON.stringify(this.content));
 
   @property({type: Function})
-  getColumnDetails = () => ColumnDetailsUtils.getAllColumnDetails(this.columnsDetails);
+  getColumnsDetails = () => ColumnDetailsUtils.getAllColumnsDetails(this.columnsDetails);
 
   // REF-20
   // WORK - check if types for this work

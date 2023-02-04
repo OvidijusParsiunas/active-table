@@ -4,7 +4,7 @@ sidebar_position: 9
 
 # Types
 
-Generic object types that are shared by top level properties.
+Object types that are shared by top level properties.
 
 ### `DropdownDisplaySettings` {#DropdownDisplaySettings}
 
@@ -114,3 +114,17 @@ Styling details for when an element is in default state and when it is hovered w
 - Type: { [`CSSStyle`](#CSSStyle) & `!width` & `!minWidth` & `!maxWidth` & `!height` & `!minHeight` & `!maxHeight` }
 
 Object containing all [`CSSStyle`](#CSSStyle) properties except `width`, `minWidth`, `maxWidth`, `height`, `minHeight` and `maxHeight`.
+
+### `ColumnDetails` {#ColumnDetails}
+
+- Type: { <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`width: number`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`typeName: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`cellDropdownItems?: {name: string; backgroundColor?: string}[]` <br />
+  }[]
+
+The array elements represent each column in order from left to right. <br />
+`width` is the column width in pixels. <br />
+`typeName` is the name of the currently active type on the column. <br />
+`cellDropdownItems` contains details about the available cell dropdown items if the active column type is using a [`dropdown`](./columns#CellDropdown)
+(backgroundColor only for label types). <br />

@@ -39,12 +39,12 @@ export class ColumnDetailsUtils {
     return updateDetails;
   }
 
-  public static getAllColumnDetails(columnsDetails: ColumnsDetailsT) {
+  public static getAllColumnsDetails(columnsDetails: ColumnsDetailsT) {
     return columnsDetails.map((columnDetails) => ColumnDetailsUtils.getDetails(columnDetails));
   }
 
   public static fireUpdateEvent(columnsDetails: ColumnsDetailsT, update: OnColumnsUpdate) {
-    const updateDetails = ColumnDetailsUtils.getAllColumnDetails(columnsDetails);
+    const updateDetails = ColumnDetailsUtils.getAllColumnsDetails(columnsDetails);
     update(updateDetails);
   }
 }

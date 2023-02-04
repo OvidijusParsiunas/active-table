@@ -162,7 +162,7 @@ export const activeTableStyle = css`
   }
 
   .column-sizer {
-    z-index: 1;
+    z-index: 1; // need z-index for the sizer to display over header icon
     background-size: 20px 5px;
     position: absolute;
   }
