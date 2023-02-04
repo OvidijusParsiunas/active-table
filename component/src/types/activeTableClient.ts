@@ -1,4 +1,4 @@
-import {OnCellUpdate, OnColumnUpdate, OnTableUpdate, OnColumnWidthsUpdate} from './onUpdate';
+import {OnCellUpdate, OnColumnsUpdate, OnTableUpdate, OnColumnWidthsUpdate} from './onUpdate';
 import {FrameComponentsStyle, IndexColumnT} from './frameComponents';
 import {DropdownDisplaySettings} from './dropdownDisplaySettings';
 import {ColumnsSettingsDefault} from './columnsSettingsDefault';
@@ -18,7 +18,7 @@ import {LitElement} from 'lit';
 export interface ActiveTable extends LitElement {
   content?: TableContent;
   onCellUpdate?: OnCellUpdate;
-  onColumnUpdate?: OnColumnUpdate;
+  onColumnsUpdate?: OnColumnsUpdate;
   onContentUpdate?: OnTableUpdate;
   onColumnWidthsUpdate?: OnColumnWidthsUpdate;
   allowDuplicateHeaders?: boolean;

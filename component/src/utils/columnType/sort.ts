@@ -56,7 +56,7 @@ export class Sort {
       });
     });
     content.splice(1, sortedDataContent.length, ...sortedDataContent);
-    onContentUpdate(content);
+    setTimeout(() => onContentUpdate(JSON.parse(JSON.stringify(at.content))));
   }
 
   private static sortStringsColumnAscending(content: TableContent, columnIndex: number) {

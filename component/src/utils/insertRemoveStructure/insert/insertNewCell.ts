@@ -12,6 +12,7 @@ import {CellDropdown} from '../../../elements/dropdown/cellDropdown/cellDropdown
 import {ColumnDetailsInitial, ColumnDetailsT} from '../../../types/columnDetails';
 import {ProcessedDataTextStyle} from '../../columnType/processedDataTextStyle';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
+import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
 import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
 import {CellElementIndex} from '../../elements/cellElementIndex';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
@@ -88,10 +89,11 @@ export class InsertNewCell {
   // REF-13
   // prettier-ignore
   private static insertInitialColumnDetails(at: ActiveTable, cellText: CellText, columnIndex: number) {
-    const {columnsDetails, customColumnsSettingsInternal, cellDropdownContainer, columnsSettings, onColumnUpdate} = at;
+    const {columnsDetails, customColumnsSettingsInternal, cellDropdownContainer, columnsSettings, onColumnsUpdate} = at;
     const cellDropdown = CellDropdown.createAndAppend(cellDropdownContainer as HTMLElement);
-    const columnDetails = ColumnDetails.createInitial(columnsSettings,
-      cellDropdown, customColumnsSettingsInternal[cellText], columnIndex, at.defaultCellHoverColors, onColumnUpdate);
+    const columnDetails = ColumnDetails.createInitial(columnsSettings, cellDropdown,
+      customColumnsSettingsInternal[cellText], at.defaultCellHoverColors,
+      ColumnDetailsUtils.fireUpdateEvent.bind(this, columnsDetails, onColumnsUpdate));
     columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
   }
 

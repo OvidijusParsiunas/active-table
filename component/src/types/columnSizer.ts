@@ -43,7 +43,7 @@ export interface SelectedColumnSizerT {
   mouseMoveOffset: number;
   // this is to reflect the initial sizer offset to center itself in the cell divider
   initialOffset: number;
-  fireColumnWidthsUpdate: () => void;
+  fireColumnUpdate: () => void; // pre-binded
 }
 
 // called columnResizer for the client - columnSizer in the code

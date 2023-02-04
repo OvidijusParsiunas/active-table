@@ -1,4 +1,4 @@
-import {CellDropdownItems, ColumnUpdateDetails} from '../../types/onUpdate';
+import {CellDropdownItems, ColumnUpdateDetails, OnColumnsUpdate} from '../../types/onUpdate';
 import {ColumnDetailsT, ColumnsDetailsT} from '../../types/columnDetails';
 import {CellDropdownI} from '../../types/cellDropdownInternal';
 import {ColumnsByWidth} from '../../types/columnsByWidth';
@@ -28,14 +28,23 @@ export class ColumnDetailsUtils {
         });
   }
 
-  public static fireUpdateEvent(columnDetails: ColumnDetailsT) {
+  private static getDetails(columnDetails: ColumnDetailsT) {
     const updateDetails: ColumnUpdateDetails = {
-      columnIndex: columnDetails.index,
+      width: columnDetails.elements[0].offsetWidth,
       typeName: columnDetails.activeType.name,
     };
     if (columnDetails.activeType.cellDropdownProps) {
       updateDetails.cellDropdownItems = ColumnDetailsUtils.aggregateItems(columnDetails.cellDropdown);
     }
-    columnDetails.onColumnUpdate(updateDetails);
+    return updateDetails;
+  }
+
+  public static getAllColumnDetails(columnsDetails: ColumnsDetailsT) {
+    return columnsDetails.map((columnDetails) => ColumnDetailsUtils.getDetails(columnDetails));
+  }
+
+  public static fireUpdateEvent(columnsDetails: ColumnsDetailsT, update: OnColumnsUpdate) {
+    const updateDetails = ColumnDetailsUtils.getAllColumnDetails(columnsDetails);
+    update(updateDetails);
   }
 }

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 # Events
@@ -104,24 +104,24 @@ tableReference.setAttribute('onContentUpdate', (tableUpdate) => { console.log(ta
 
 <LineBreak></LineBreak>
 
-### `onColumnUpdate` {#onColumnUpdate}
+### `onColumnsUpdate` {#onColumnsUpdate}
 
-- Type: (`columnUpdate:` { <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`columnIndex: number`, <br />
+- Type: (`columnsUpdate:` { <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`width: number`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`typeName: string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`cellDropdownItems?: {name: string; backgroundColor?: string}[]`, <br />
-  }) => `void`
+  }[]) => `void`
 
-Triggered when column details are updated. This is particularly useful if the user has made changes to the column and you want to recreate them
-in the next session on the initial load. <br />
-`columnIndex` starts with 0 on the first column. <br />
-`typeName` is the name of the currently active type on the column with the corresponding `columnIndex`. <br />
-`cellDropdownItems` contains details about available dropdown items if the column type adds a [`dropdown`](./columns#CellDropdown) to each cell
-(backgroundColor only for label type).
+Triggered when column details are updated. This is particularly useful if the user has made changes to columns and you want to recreate them
+in the next session on the initial load. The function argument's array objects represent each column in order from left to right. <br />
+`width` is the column width in pixels. <br />
+`typeName` is the name of the currently active type on the column. <br />
+`cellDropdownItems` contains details about the available cell dropdown items if the active column type is using a [`dropdown`](./columns#CellDropdown)
+(backgroundColor only for label types).
 
 #### Example
 
-<TableContainerEvents propertyName={"onColumnUpdate"}>
+<TableContainerEvents propertyName={"onColumnsUpdate"}>
   <active-table
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
@@ -139,57 +139,14 @@ in the next session on the initial load. <br />
 <TabItem value="js" label="Sample">
 
 ```text
-tableReference.setAttribute('onColumnUpdate', (columnUpdate) => { console.log(columnUpdate); });
+tableReference.setAttribute('onColumnsUpdate', (columnsUpdate) => { console.log(columnsUpdate); });
 ```
 
 </TabItem>
 <TabItem value="py" label="Full Code">
 
 ```text
-tableReference.setAttribute('onColumnUpdate', (columnUpdate) => { console.log(columnUpdate); });
-```
-
-</TabItem>
-</Tabs>
-
-<LineBreak></LineBreak>
-
-### `onColumnWidthsUpdate` {#onColumnWidthsUpdate}
-
-- Type: (`columnWidthsUpdate: number[]`) => `void`
-
-Triggered when any of the table column widths are updated. This is particularly useful if the user has made changes
-to column widths and you want to recreate them in the next session on the initial load. <br />
-Each array entity represents table column widths in pixels.
-
-#### Example
-
-<TableContainerEvents propertyName={"onColumnWidthsUpdate"}>
-  <active-table
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-></active-table>
-
-</TableContainerEvents>
-
-<Tabs>
-<TabItem value="js" label="Sample">
-
-```text
-tableReference.setAttribute('onColumnWidthsUpdate', (columnWidthsUpdate) => { console.log(columnWidthsUpdate); });
-```
-
-</TabItem>
-<TabItem value="py" label="Full Code">
-
-```text
-tableReference.setAttribute('onColumnWidthsUpdate', (columnWidthsUpdate) => { console.log(columnWidthsUpdate); });
+tableReference.setAttribute('onColumnsUpdate', (columnsUpdate) => { console.log(columnsUpdate); });
 ```
 
 </TabItem>

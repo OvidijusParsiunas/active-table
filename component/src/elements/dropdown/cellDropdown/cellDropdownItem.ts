@@ -58,7 +58,7 @@ export class CellDropdownItem {
       newColor = CellDropdownItem.ACTIVE_ITEM_BACKGROUND_COLOR;
     }
     CellDropdownItem.addItem(at, newItemText, newColor, columnDetails);
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
+    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate));
   }
 
   // prettier-ignore

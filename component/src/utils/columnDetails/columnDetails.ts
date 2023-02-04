@@ -1,11 +1,10 @@
+import {ColumnDetailsInitial, ColumnDetailsNoSizer, ColumnDetailsT} from '../../types/columnDetails';
 import {CellStateColorProperties, DefaultCellHoverColors} from '../../types/cellStateColors';
-import {ColumnDetailsInitial, ColumnDetailsNoSizer} from '../../types/columnDetails';
 import {CellDropdown} from '../../elements/dropdown/cellDropdown/cellDropdown';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
 import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
 import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
-import {OnColumnUpdate} from '../../types/onUpdate';
 
 // REF-13
 export class ColumnDetails {
@@ -43,8 +42,8 @@ export class ColumnDetails {
 
   // prettier-ignore
   public static createInitial(columnsSettings: ColumnsSettingsDefault, cellDropdown: HTMLElement,
-      settings: ColumnSettingsInternal, index: number, defaultCellHoverColors: DefaultCellHoverColors,
-      onColumnUpdate: OnColumnUpdate): ColumnDetailsInitial {
+      settings: ColumnSettingsInternal, defaultCellHoverColors: DefaultCellHoverColors,
+      fireColumnUpdate: ColumnDetailsT['fireColumnUpdate']): ColumnDetailsInitial {
     const columnSettings = settings || columnsSettings;
     return {
       elements: [],
@@ -54,8 +53,7 @@ export class ColumnDetails {
       bordersOverwrittenBySiblings: {},
       activeType: ColumnTypesUtils.getActiveType(columnSettings),
       cellDropdown: CellDropdown.getDefaultObj(cellDropdown),
-      index,
-      onColumnUpdate,
+      fireColumnUpdate,
     };
   }
 

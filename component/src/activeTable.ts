@@ -1,5 +1,4 @@
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
-import {OnCellUpdate, OnColumnUpdate, OnTableUpdate, OnColumnWidthsUpdate} from './types/onUpdate';
 import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
@@ -9,7 +8,9 @@ import {InitialContentProcessing} from './utils/content/initialContentProcessing
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
+import {OnCellUpdate, OnColumnsUpdate, OnTableUpdate} from './types/onUpdate';
 import {PaginationElements} from './elements/pagination/paginationElements';
+import {ColumnDetailsUtils} from './utils/columnDetails/columnDetailsUtils';
 import {DynamicCellUpdate} from './utils/dynamicUpdates/dynamicCellUpdate';
 import {FrameComponentsStyle, IndexColumnT} from './types/frameComponents';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
@@ -72,20 +73,22 @@ export class ActiveTable extends LitElement {
     // ['Neptune', 49528, 102, 14, 1638],
   ];
 
+  @property({type: Function})
+  getContent = () => JSON.parse(JSON.stringify(this.content));
+
+  @property({type: Function})
+  getColumnDetails = () => ColumnDetailsUtils.getAllColumnDetails(this.columnsDetails);
+
   // REF-20
   // WORK - check if types for this work
   @property({converter: LITElementTypeConverters.convertToFunction})
   onCellUpdate: OnCellUpdate = () => {};
 
   @property({converter: LITElementTypeConverters.convertToFunction})
-  onColumnUpdate: OnColumnUpdate = () => {};
-
-  @property({converter: LITElementTypeConverters.convertToFunction})
   onContentUpdate: OnTableUpdate = () => {};
 
-  // REF-35
   @property({converter: LITElementTypeConverters.convertToFunction})
-  onColumnWidthsUpdate: OnColumnWidthsUpdate = () => {};
+  onColumnsUpdate: OnColumnsUpdate = () => {};
 
   @property({
     type: Boolean,

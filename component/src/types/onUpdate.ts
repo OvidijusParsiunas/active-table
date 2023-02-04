@@ -13,12 +13,12 @@ export type OnCellUpdate = (cellUpdate: CellUpdateDetails) => void;
 export type CellDropdownItems = {name: string; backgroundColor?: string}[];
 
 export interface ColumnUpdateDetails {
-  columnIndex: number;
+  width: number;
   typeName: string;
   cellDropdownItems?: CellDropdownItems;
 }
 
-export type OnColumnUpdate = (columnUpdate: ColumnUpdateDetails) => void;
+export type OnColumnsUpdate = (columnsUpdate: ColumnUpdateDetails[]) => void;
 
 export type OnTableUpdate = (tableUpdate: TableContent) => void;
 

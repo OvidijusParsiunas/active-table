@@ -36,11 +36,8 @@ export class InsertNewColumn {
       InsertNewColumn.insertToAllRows(at, columnIndex, columnData);
       ToggleAdditionElements.update(at, true, AddNewColumnElement.toggle);
       setTimeout(() => {
-        at.onContentUpdate(at.content);
-        at.columnsDetails.slice(columnIndex).forEach((columnDetails, index) => {
-          columnDetails.index = columnIndex + index;
-          ColumnDetailsUtils.fireUpdateEvent(columnDetails);
-        });
+        at.onContentUpdate(JSON.parse(JSON.stringify(at.content)));
+        ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate);
       });
     }
   }

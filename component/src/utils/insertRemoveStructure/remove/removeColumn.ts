@@ -83,10 +83,9 @@ export class RemoveColumn {
       InsertRemoveColumnSizer.remove(at, columnIndex);
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, columnIndex);
       if (columnIndex === 0 && at.columnsDetails.length > 0) RowDropdownCellOverlay.resetOverlays(at);
-      at.onContentUpdate(at.content);
-      at.columnsDetails.slice(columnIndex).forEach((columnDetails, index) => {
-        columnDetails.index = columnIndex + index;
-        ColumnDetailsUtils.fireUpdateEvent(columnDetails);
+      setTimeout(() => {
+        at.onContentUpdate(JSON.parse(JSON.stringify(at.content)));
+        ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate);
       });
     });
   }

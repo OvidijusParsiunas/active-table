@@ -25,7 +25,7 @@ export class ChangeColumnType {
       const isUpdated = ChangeColumnType.setInvalidCellToDefault(at, rowIndex, columnIndex);
       if (isUpdated && !updateTableEvent) updateTableEvent = true;
     });
-    if (updateTableEvent) at.onContentUpdate(at.content);
+    if (updateTableEvent) setTimeout(() => at.onContentUpdate(JSON.parse(JSON.stringify(at.content))));
   }
 
   private static setNew(at: ActiveTable, newType: string, columnIndex: number) {
@@ -64,7 +64,7 @@ export class ChangeColumnType {
     }
     ChangeColumnType.setNewStructureBasedOnType(at, columnIndex, newType);
     if (at.displayIconsInHeaders) HeaderIconCellElement.changeHeaderIcon(at.columnsDetails[columnIndex]);
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
+    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate));
   }
 
   // prettier-ignore

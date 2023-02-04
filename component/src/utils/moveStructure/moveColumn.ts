@@ -1,13 +1,13 @@
 import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
-import {ColumnWidthsState} from '../columnDetails/columnWidthsState';
+import {ColumnDetailsUtils} from '../columnDetails/columnDetailsUtils';
 import {FocusedCellUtils} from '../focusedElements/focusedCellUtils';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {ChangeColumnType} from '../columnType/changeColumnType';
+import {CellHighlightUtils} from '../color/cellHighlightUtils';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
 import {ActiveTable} from '../../activeTable';
 import {MoveUtils} from './moveUtils';
-import {CellHighlightUtils} from '../color/cellHighlightUtils';
 
 export class MoveColumn {
   // prettier-ignore
@@ -72,6 +72,6 @@ export class MoveColumn {
     // overwrite sibling column using overwritten content
     MoveColumn.overwrite(at, siblingColumn, siblingIndex, overwritten.overwrittenText,
       overwritten.overwrittenType, overwritten.overwrittenWidth);
-    setTimeout(() => ColumnWidthsState.fireUpdate(at));
+    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate));
   }
 }

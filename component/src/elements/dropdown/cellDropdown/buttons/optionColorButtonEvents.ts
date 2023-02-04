@@ -1,4 +1,3 @@
-import {ColumnDetailsUtils} from '../../../../utils/columnDetails/columnDetailsUtils';
 import {CellDropdownI, LabelDetails} from '../../../../types/cellDropdownInternal';
 import {ColumnDetailsT, ColumnsDetailsT} from '../../../../types/columnDetails';
 import {PickerInputElement} from '../../../../types/pickerInputElement';
@@ -18,7 +17,7 @@ export class OptionColorButtonEvents {
         textElement.style.backgroundColor = labelDetails.colorPickerNewValue.backgroundColor;
       }
     });
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
+    setTimeout(() => columnDetails.fireColumnUpdate());
     delete labelDetails.colorPickerNewValue;
   }
 

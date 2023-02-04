@@ -67,7 +67,7 @@ export class TableElement {
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true); // REF-11
     InitialContentProcessing.postProcess(at.content, at.columnsDetails);
     setTimeout(() => {
-      at.columnsDetails.forEach((columnDetails) => ColumnDetailsUtils.fireUpdateEvent(columnDetails));
+      ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate);
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, at.columnsDetails.length - 1);
     });
   }

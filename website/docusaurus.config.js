@@ -98,7 +98,7 @@ const config = {
   // // // columnResizerColors: ColumnResizerColors;
   // // events:
   // // // onCellUpdate: OnCellUpdate;
-  // // // onColumnUpdate: OnColumnUpdate;
+  // // // onColumnsUpdate: OnColumnsUpdate;
   // // // onContentUpdate: OnTableUpdate;
   // // // onColumnWidthsUpdate: OnColumnWidthsUpdate;
   // // pagination:

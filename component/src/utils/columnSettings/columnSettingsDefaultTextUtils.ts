@@ -17,6 +17,6 @@ export class ColumnSettingsDefaultTextUtils {
       const isUpdated = CellEvents.setCellToDefaultIfNeeded(at, relativeIndex, columnIndex, element, false);
       if (!isCellUpdated && isUpdated) isCellUpdated = true;
     });
-    at.onContentUpdate(at.content);
+    setTimeout(() => at.onContentUpdate(JSON.parse(JSON.stringify(at.content))));
   }
 }
