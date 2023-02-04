@@ -162,6 +162,7 @@ export const activeTableStyle = css`
   }
 
   .column-sizer {
+    z-index: 1;
     background-size: 20px 5px;
     position: absolute;
   }
@@ -174,6 +175,11 @@ export const activeTableStyle = css`
 
   .column-sizer-overlay {
     background-color: #ff000001;
+    z-index: 1;
+  }
+
+  .movable-column-sizer {
+    z-index: 1;
   }
 
   .movable-column-sizer-vertical-line {

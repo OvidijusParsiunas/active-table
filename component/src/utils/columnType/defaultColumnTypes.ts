@@ -49,7 +49,7 @@ export class DefaultColumnTypes {
         svgString: CURRENCY_ICON_SVG_STRING,
         containerStyles: {
           dropdown: {marginLeft: '-2px', marginRight: '4px', marginTop: '1px'},
-          headerCorrections: {marginRight: '3px'},
+          headerCorrections: {marginRight: '3px', marginTop: '2px'},
         },
       },
     },
