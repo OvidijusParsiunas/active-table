@@ -8,7 +8,8 @@ export class StickyPropsUtils {
   public static process(at: ActiveTable) {
     if (typeof at.stickyHeader === 'boolean') {
       at.stickyProps.header = at.stickyHeader;
-    } else if (at.overflowInternal?.maxHeight) {
+    } else if (at.overflow?.maxHeight) {
+      // not using overflowInternal here as it has yet not been processed
       at.stickyProps.header = true;
     }
   }

@@ -1498,9 +1498,10 @@ If the function strings inside `ascendingFunc` or `descendingFunc` contain " or 
 Replaces cell text with a checkbox. <br />
 This type automatically comes with a predefined [`customTextProcessing`](#CustomTextProcessing) property in the [`ColumnType`](#ColumnType) that
 uses _""_, _"0"_, _"00"_ and _"false"_ values to represent the checkbox as unchecked and all the other values as checked. You can overwite it
-with your own `changeTextFunc` function that would return a string of "true" when the checkbox should be checked and "false" when it should
+with your own `changeTextFunc` function that would return a string of _"true"_ when the checkbox should be checked and _"false"_ when it should
 be unchecked. <br />
-The `onCellUpdate` WORK property will return string "true" if the checkbox is checked and "false" if unchecked.
+The [`onCellUpdate`](./events#onCellUpdate) and [`onContentUpdate`](./events#onContentUpdate) properties will return string _"true"_ if the checkbox
+is checked and _"false"_ if unchecked.
 
 #### Example
 

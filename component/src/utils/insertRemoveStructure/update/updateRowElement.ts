@@ -1,8 +1,8 @@
+import {ColumnSizerGenericUtils} from '../../../elements/columnSizer/utils/columnSizerGenericUtils';
+
 export class UpdateRowElement {
-  // WORK - try to not use this
-  // this is required in order to allow the divider and all its elements to inherit its height
-  // it is also more efficient than updating each divider (+ its elements) incremenentally
+  // required to allow the divider and all its elements to inherit its height (in non chrome or firefox browsers)
   public static updateHeaderRowHeight(rowElement: HTMLElement) {
-    rowElement.style.height = `${rowElement.offsetHeight}px`;
+    if (!ColumnSizerGenericUtils.canHeightBeInherited()) rowElement.style.height = `${rowElement.offsetHeight}px`;
   }
 }

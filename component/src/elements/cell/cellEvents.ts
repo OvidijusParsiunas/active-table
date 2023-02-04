@@ -36,7 +36,7 @@ export class CellEvents {
     // however having it here minimizes complexity
     if (rowIndex > 0) ProcessedDataTextStyle.setCellStyle(at, rowIndex, columnIndex);
     // not in timeout as functionality that calls updateCell calls at.onContentUpdate after - should remain that way
-    at.onCellUpdate({text: cellText, rowIndex, columnIndex, updateType: CELL_UPDATE_TYPE.UPDATE});
+    at.onCellUpdate({text: String(cellText), rowIndex, columnIndex, updateType: CELL_UPDATE_TYPE.UPDATE});
     return cellText;
   }
 

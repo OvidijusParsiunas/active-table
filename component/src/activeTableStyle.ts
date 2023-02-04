@@ -51,6 +51,10 @@ export const activeTableStyle = css`
     border-radius: inherit;
   }
 
+  tbody > .row:first-child {
+    position: relative;
+  }
+
   .row > *:first-child {
     border-left: none !important;
   }
@@ -118,7 +122,6 @@ export const activeTableStyle = css`
     position: absolute;
     display: flex;
     justify-content: center;
-    height: inherit;
   }
 
   .cell-divider > * {
@@ -540,7 +543,7 @@ export const activeTableStyle = css`
 
   .sticky-header-body > *:first-child {
     top: 0;
-    position: sticky;
+    position: sticky !important;
   }
 
   .sticky-header-body > *:first-child > th {

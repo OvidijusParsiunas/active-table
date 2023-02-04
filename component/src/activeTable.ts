@@ -52,7 +52,7 @@ import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
 import {LitElement} from 'lit';
 
-// WORK - remove the generated type file and replace with activeTableClient, otherwise use one object for internal state
+// WORK - edit the generated type file and remove private properties, otherwise use one object for internal state
 // WORK - perhaps rename Internal types to use _
 @customElement('active-table')
 export class ActiveTable extends LitElement {
@@ -78,6 +78,8 @@ export class ActiveTable extends LitElement {
 
   @property({type: Function})
   getColumnsDetails = () => ColumnDetailsUtils.getAllColumnsDetails(this.columnsDetails);
+
+  // WORK - generate/parse csv
 
   // REF-20
   // WORK - check if types for this work
