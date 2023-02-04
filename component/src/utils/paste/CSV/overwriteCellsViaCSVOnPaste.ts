@@ -186,7 +186,7 @@ export class OverwriteCellsViaCSVOnPaste {
     if (!OverwriteCellsViaCSVOnPaste.canNewRowsBeCreated(at, CSV, startColumnIndex)) return;
     const dataForNewRows = CSV.slice(numberOfRowsToOverwrite);
     OverwriteCellsViaCSVOnPaste.createNewRows(at, dataForNewRows, startColumnIndex);
-    at.onTableUpdate(at.content);
+    at.onContentUpdate(at.content);
   }
 
   // prettier-ignore

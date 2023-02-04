@@ -32,7 +32,7 @@ export class RemoveRow {
       rowIndex: number, lastRowElement: HTMLElement, lastRowIndex: number, removedRowData: TableRow) {
     const lastRow = {element: lastRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(at, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow); // REF-20
-    at.onTableUpdate(at.content);
+    at.onContentUpdate(at.content);
     if (HasRerendered.check(at.columnsDetails)) return; // CAUTION-2
     if (at.content.length === 0) {
       RemoveRow.removeAllColumnsDetails(at);

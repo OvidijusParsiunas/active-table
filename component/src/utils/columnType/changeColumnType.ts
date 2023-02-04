@@ -25,7 +25,7 @@ export class ChangeColumnType {
       const isUpdated = ChangeColumnType.setInvalidCellToDefault(at, rowIndex, columnIndex);
       if (isUpdated && !updateTableEvent) updateTableEvent = true;
     });
-    if (updateTableEvent) at.onTableUpdate(at.content);
+    if (updateTableEvent) at.onContentUpdate(at.content);
   }
 
   private static setNew(at: ActiveTable, newType: string, columnIndex: number) {

@@ -81,7 +81,7 @@ export class ActiveTable extends LitElement {
   onColumnUpdate: OnColumnUpdate = () => {};
 
   @property({converter: LITElementTypeConverters.convertToFunction})
-  onTableUpdate: OnTableUpdate = () => {};
+  onContentUpdate: OnTableUpdate = () => {};
 
   // REF-35
   @property({converter: LITElementTypeConverters.convertToFunction})
@@ -259,7 +259,7 @@ export class ActiveTable extends LitElement {
   // CAUTION-4
   override render() {
     Render.renderTable(this);
-    this.onTableUpdate(this.content);
+    this.onContentUpdate(this.content);
     new ResizeObserver(ParentResize.resizeCallback.bind(this)).observe(this.parentElement as HTMLElement);
   }
 

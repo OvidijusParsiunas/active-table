@@ -31,11 +31,11 @@ export class CellEvents {
     }
     if (CellEvents.executeUpdateOperation('updateContent', options)) at.content[rowIndex][columnIndex] = cellText; 
     if (options?.element) CellElement.setNewText(at, options.element, cellText, false, false); // CAUTION-1
-    if (CellEvents.executeUpdateOperation('updateTableEvent', options)) at.onTableUpdate(at.content);
+    if (CellEvents.executeUpdateOperation('updateTableEvent', options)) at.onContentUpdate(at.content);
     // slight inefficiency using this here as setCellToDefaultIfNeeded and removeTextIfDefault have already validated text,
     // however having it here minimizes complexity
     if (rowIndex > 0) ProcessedDataTextStyle.setCellStyle(at, rowIndex, columnIndex);
-    // not in timeout as functionality that calls updateCell calls at.onTableUpdate after - should remain that way
+    // not in timeout as functionality that calls updateCell calls at.onContentUpdate after - should remain that way
     at.onCellUpdate({text: cellText, rowIndex, columnIndex, updateType: CELL_UPDATE_TYPE.UPDATE});
     return cellText;
   }

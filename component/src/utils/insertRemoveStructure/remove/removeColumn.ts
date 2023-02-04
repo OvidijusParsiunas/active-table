@@ -83,7 +83,7 @@ export class RemoveColumn {
       InsertRemoveColumnSizer.remove(at, columnIndex);
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, columnIndex);
       if (columnIndex === 0 && at.columnsDetails.length > 0) RowDropdownCellOverlay.resetOverlays(at);
-      at.onTableUpdate(at.content);
+      at.onContentUpdate(at.content);
       at.columnsDetails.slice(columnIndex).forEach((columnDetails, index) => {
         columnDetails.index = columnIndex + index;
         ColumnDetailsUtils.fireUpdateEvent(columnDetails);

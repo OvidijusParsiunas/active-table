@@ -30,7 +30,9 @@ export class DataUtils {
   // prettier-ignore
   public static processCellText(at: ActiveTable, rowIndex: number, columnIndex: number, cellText: CellText) {
     let processedText = typeof cellText === 'string' ? cellText.trim() : cellText;
-    const {activeType: {textValidation, customTextProcessing}, settings: {defaultText}} = at.columnsDetails[columnIndex];
+    const columnsDetails = at.columnsDetails[columnIndex];
+    if (!columnsDetails) return processedText;
+    const {activeType: {textValidation, customTextProcessing}, settings: {defaultText}} = columnsDetails;
     if (rowIndex > 0) {
       if (customTextProcessing?.changeTextFunc) {
         processedText = customTextProcessing.changeTextFunc(String(processedText)); 

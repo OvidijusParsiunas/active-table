@@ -10,9 +10,7 @@ export class ColumnWidthsState {
     if (firstRow) {
       const cellElements = ExtractElements.textCellsArrFromRow(firstRow);
       const columnWidths = cellElements.map((element) => (element as HTMLElement).offsetWidth);
-      at.onColumnWidthsUpdate({
-        columns: columnWidths,
-      });
+      at.onColumnWidthsUpdate(columnWidths);
     }
   }
 }

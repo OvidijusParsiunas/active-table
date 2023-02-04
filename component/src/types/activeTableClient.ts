@@ -19,7 +19,7 @@ export interface ActiveTable extends LitElement {
   content?: TableContent;
   onCellUpdate?: OnCellUpdate;
   onColumnUpdate?: OnColumnUpdate;
-  onTableUpdate?: OnTableUpdate;
+  onContentUpdate?: OnTableUpdate;
   onColumnWidthsUpdate?: OnColumnWidthsUpdate;
   allowDuplicateHeaders?: boolean;
   displayIconsInHeaders?: boolean;

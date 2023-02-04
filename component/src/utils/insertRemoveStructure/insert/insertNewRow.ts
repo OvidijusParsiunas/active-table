@@ -26,7 +26,7 @@ export class InsertNewRow {
     const lastDataRowElement = at.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const lastRowDetails: ElementDetails = {element: lastDataRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(at, rowIndex, CELL_UPDATE_TYPE.ADD, lastRowDetails); // REF-20
-    at.onTableUpdate(at.content);
+    at.onContentUpdate(at.content);
   }
 
   private static canStartRenderCellBeAdded(at: ActiveTable, rowIndex: number, columnIndex: number) {

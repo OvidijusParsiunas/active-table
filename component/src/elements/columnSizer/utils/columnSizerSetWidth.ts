@@ -76,5 +76,6 @@ export class ColumnSizerSetWidth {
     } else {
       ColumnSizerSetWidth.setColumnWidth(selectedColumnSizer, leftHeader);
     }
+    setTimeout(() => selectedColumnSizer.fireColumnWidthsUpdate());
   }
 }

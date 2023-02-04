@@ -7,7 +7,7 @@ sidebar_position: 7
 Properties that accept functions that get triggered when an event occurs.
 
 :::info
-When using any of these take care not to re-render the table component if updating state.
+When using these properties take care not to re-render the table component when updating state.
 :::
 
 ### `onCellUpdate` {#onCellUpdate}
@@ -30,7 +30,7 @@ import {ActiveTable} from 'active-table';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
 
-<TableContainerEvents>
+<TableContainerEvents propertyName={"onCellUpdate"}>
   <active-table
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
@@ -62,3 +62,135 @@ tableReference.setAttribute('onCellUpdate', (cellUpdate) => { console.log(cellUp
 </Tabs>
 
 <LineBreak></LineBreak>
+
+### `onContentUpdate` {#onContentUpdate}
+
+- Type: (`tableUpdate: (string|number)[][]`) => `void`
+
+Similarly to [`onCellUpdate`](#onCellUpdate) this is triggered when any cell is updated - however this property returns the full table contents array instead.
+
+#### Example
+
+<TableContainerEvents propertyName={"onContentUpdate"}>
+  <active-table
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+></active-table>
+
+</TableContainerEvents>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+tableReference.setAttribute('onContentUpdate', (tableUpdate) => { console.log(tableUpdate); });
+```
+
+</TabItem>
+<TabItem value="py" label="Full Code">
+
+```text
+tableReference.setAttribute('onContentUpdate', (tableUpdate) => { console.log(tableUpdate); });
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `onColumnUpdate` {#onColumnUpdate}
+
+- Type: (`columnUpdate:` { <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`columnIndex: number`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`typeName: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`cellDropdownItems?: {name: string; backgroundColor?: string}[]`, <br />
+  }) => `void`
+
+Triggered when column details are updated. This is particularly useful if the user has made changes to the column and you want to recreate them
+in the next session on the initial load. <br />
+`columnIndex` starts with 0 on the first column. <br />
+`typeName` is the name of the currently active type on the column with the corresponding `columnIndex`. <br />
+`cellDropdownItems` contains details about available dropdown items if the column type adds a [`dropdown`](./columns#CellDropdown) to each cell
+(backgroundColor only for label type).
+
+#### Example
+
+<TableContainerEvents propertyName={"onColumnUpdate"}>
+  <active-table
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+></active-table>
+
+</TableContainerEvents>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+tableReference.setAttribute('onColumnUpdate', (columnUpdate) => { console.log(columnUpdate); });
+```
+
+</TabItem>
+<TabItem value="py" label="Full Code">
+
+```text
+tableReference.setAttribute('onColumnUpdate', (columnUpdate) => { console.log(columnUpdate); });
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `onColumnWidthsUpdate` {#onColumnWidthsUpdate}
+
+- Type: (`columnWidthsUpdate: number[]`) => `void`
+
+Triggered when any of the table column widths are updated. This is particularly useful if the user has made changes
+to column widths and you want to recreate them in the next session on the initial load. <br />
+Each array entity represents table column widths in pixels.
+
+#### Example
+
+<TableContainerEvents propertyName={"onColumnWidthsUpdate"}>
+  <active-table
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+></active-table>
+
+</TableContainerEvents>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+tableReference.setAttribute('onColumnWidthsUpdate', (columnWidthsUpdate) => { console.log(columnWidthsUpdate); });
+```
+
+</TabItem>
+<TabItem value="py" label="Full Code">
+
+```text
+tableReference.setAttribute('onColumnWidthsUpdate', (columnWidthsUpdate) => { console.log(columnWidthsUpdate); });
+```
+
+</TabItem>
+</Tabs>

@@ -17,6 +17,6 @@ export class ColumnSettingsDefaultTextUtils {
       const isUpdated = CellEvents.setCellToDefaultIfNeeded(at, relativeIndex, columnIndex, element, false);
       if (!isCellUpdated && isUpdated) isCellUpdated = true;
     });
-    at.onTableUpdate(at.content);
+    at.onContentUpdate(at.content);
   }
 }

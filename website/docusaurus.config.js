@@ -99,7 +99,7 @@ const config = {
   // // events:
   // // // onCellUpdate: OnCellUpdate;
   // // // onColumnUpdate: OnColumnUpdate;
-  // // // onTableUpdate: OnTableUpdate;
+  // // // onContentUpdate: OnTableUpdate;
   // // // onColumnWidthsUpdate: OnColumnWidthsUpdate;
   // // pagination:
   // // // pagination: Pagination | null;

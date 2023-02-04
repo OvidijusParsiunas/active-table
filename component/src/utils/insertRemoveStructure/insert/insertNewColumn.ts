@@ -36,7 +36,7 @@ export class InsertNewColumn {
       InsertNewColumn.insertToAllRows(at, columnIndex, columnData);
       ToggleAdditionElements.update(at, true, AddNewColumnElement.toggle);
       setTimeout(() => {
-        at.onTableUpdate(at.content);
+        at.onContentUpdate(at.content);
         at.columnsDetails.slice(columnIndex).forEach((columnDetails, index) => {
           columnDetails.index = columnIndex + index;
           ColumnDetailsUtils.fireUpdateEvent(columnDetails);
