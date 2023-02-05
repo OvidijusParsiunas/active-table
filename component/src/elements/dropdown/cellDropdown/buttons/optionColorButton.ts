@@ -1,5 +1,5 @@
+import {ColumnDetailsT, ColumnsDetailsT} from '../../../../types/columnDetails';
 import {OptionColorButtonEvents} from './optionColorButtonEvents';
-import {ColumnDetailsT} from '../../../../types/columnDetails';
 import {Browser} from '../../../../utils/browser/browser';
 import {OptionButton} from './optionButton';
 
@@ -58,13 +58,13 @@ export class OptionColorButton {
     return container;
   }
 
-  public static create(columnDetails: ColumnDetailsT) {
+  public static create(columnsDetails: ColumnsDetailsT, columnDetails: ColumnDetailsT) {
     const containerElement = OptionColorButton.createContainer();
     const colorInputElement = OptionColorButton.createInput();
     containerElement.appendChild(colorInputElement);
     const iconElement = OptionColorButton.createButton();
     containerElement.appendChild(iconElement);
-    OptionColorButtonEvents.setEvents(containerElement, colorInputElement, columnDetails);
+    OptionColorButtonEvents.setEvents(containerElement, colorInputElement, columnsDetails, columnDetails);
     return containerElement;
   }
 }

@@ -1,9 +1,9 @@
 import {FocusNextCellFromSelectCell} from '../../../../../utils/focusedElements/focusNextCellFromSelectCell';
 import {CellDropdownItem} from '../../../../dropdown/cellDropdown/cellDropdownItem';
 import {OptionButton} from '../../../../dropdown/cellDropdown/buttons/optionButton';
+import {ColumnDetailsT, ColumnsDetailsT} from '../../../../../types/columnDetails';
 import {CellDropdown} from '../../../../dropdown/cellDropdown/cellDropdown';
 import {ArrowDownIconElement} from '../select/arrowDownIconElement';
-import {ColumnDetailsT} from '../../../../../types/columnDetails';
 import {KEYBOARD_KEY} from '../../../../../consts/keyboardKeys';
 import {DataCellEvents} from '../../../dataCell/dataCellEvents';
 import {CellWithTextEvents} from '../../cellWithTextEvents';
@@ -47,14 +47,14 @@ export class SelectCellTextBaseEvents {
     }
   }
 
-  private static clearTypeSpecificProps(columnDetails: ColumnDetailsT) {
+  private static clearTypeSpecificProps(columnsDetails: ColumnsDetailsT, columnDetails: ColumnDetailsT) {
     const {cellDropdown, activeType} = columnDetails;
     if (!activeType.cellDropdownProps) return;
     if (activeType.cellDropdownProps.isBasicSelect) {
       ArrowDownIconElement.toggle(cellDropdown.displayedCellElement, false);
       delete cellDropdown.displayedCellElement;
     } else {
-      OptionButton.hideAfterColorPickerContainerClose(columnDetails);
+      OptionButton.hideAfterColorPickerContainerClose(columnsDetails, columnDetails);
     }
   }
 
@@ -64,7 +64,7 @@ export class SelectCellTextBaseEvents {
     if (!columnDetails.cellDropdown.itemsDetails[CellElement.getText(textElement)]) {
       SelectCell.finaliseEditedText(at, textElement, columnIndex);
     }
-    SelectCellTextBaseEvents.clearTypeSpecificProps(columnDetails);
+    SelectCellTextBaseEvents.clearTypeSpecificProps(at.columnsDetails, columnDetails);
     DataCellEvents.blur(at, rowIndex, columnIndex, textElement);
   }
 

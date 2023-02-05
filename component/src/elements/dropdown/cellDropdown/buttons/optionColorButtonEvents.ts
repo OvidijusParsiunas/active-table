@@ -1,4 +1,4 @@
-import {CellDropdownI, LabelDetails} from '../../../../types/cellDropdownInternal';
+import {CellDropdownI, ColorPickerNewValue, LabelDetails} from '../../../../types/cellDropdownInternal';
 import {ColumnDetailsT, ColumnsDetailsT} from '../../../../types/columnDetails';
 import {PickerInputElement} from '../../../../types/pickerInputElement';
 import {FocusedElements} from '../../../../types/focusedElements';
@@ -7,25 +7,61 @@ import {OptionColorButton} from './optionColorButton';
 import {OptionButton} from './optionButton';
 
 export class OptionColorButtonEvents {
+  private static updateCellElements(columnDetails: ColumnDetailsT, colorPickerNewValue: ColorPickerNewValue) {
+    const {itemText, backgroundColor} = colorPickerNewValue;
+    columnDetails.elements.slice(1).forEach((element) => {
+      const textElement = element.children[0] as HTMLElement;
+      if (textElement.innerText === itemText) textElement.style.backgroundColor = backgroundColor;
+    });
+  }
+
   // prettier-ignore
-  public static updateColumnLabelColors(columnDetails: ColumnDetailsT, cellElements: HTMLElement[]) {
-    const {cellDropdown: {labelDetails}} = columnDetails;
-    if (!labelDetails || !labelDetails.colorPickerNewValue) return;
-    cellElements.forEach((cellElement) => {
-      const textElement = cellElement.children[0] as HTMLElement;
-      if (textElement.innerText === labelDetails.colorPickerNewValue?.itemText) {
-        textElement.style.backgroundColor = labelDetails.colorPickerNewValue.backgroundColor;
+  private static updateIfUpdatable(columnDetails: ColumnDetailsT, activeTypeName: string,
+      colorPickerNewValue: ColorPickerNewValue) {
+    const {itemText, backgroundColor} = colorPickerNewValue;
+    const itemDetails = columnDetails.cellDropdown.itemsDetails[itemText];
+    if (itemDetails && (!itemDetails.isCustomBackgroundColor || activeTypeName === columnDetails.activeType.name)) {
+      itemDetails.backgroundColor = backgroundColor;
+      OptionColorButtonEvents.updateCellElements(columnDetails, colorPickerNewValue);
+    }
+  }
+
+  // prettier-ignore
+  private static updateElements(columnsDetails: ColumnsDetailsT, activeTypeName: string,
+      colorPickerNewValue: ColorPickerNewValue) {
+    columnsDetails.forEach((columnDetails) => {
+      if (columnDetails.cellDropdown.labelDetails) {
+        OptionColorButtonEvents.updateIfUpdatable(columnDetails, activeTypeName, colorPickerNewValue)
       }
     });
-    setTimeout(() => columnDetails.fireColumnsUpdate());
+  }
+
+  private static updateColorStates(columnDetails: ColumnDetailsT, colorPickerNewValue: ColorPickerNewValue) {
+    const {itemText, backgroundColor} = colorPickerNewValue;
+    // type state
+    columnDetails.activeType.cellDropdownProps?.options?.forEach((option) => {
+      if (option.text === itemText) option.backgroundColor = backgroundColor;
+    });
+    // global color state
+    const existingColors = columnDetails.cellDropdown.labelDetails?.globalItemColors.existingColors;
+    if (existingColors?.[itemText]) existingColors[itemText] = backgroundColor;
+  }
+
+  // prettier-ignore
+  public static updateColumnLabelColors(columnsDetails: ColumnsDetailsT, columnDetails: ColumnDetailsT) {
+    const {cellDropdown: {labelDetails}, activeType} = columnDetails;
+    if (!labelDetails || !labelDetails.colorPickerNewValue) return;
+    OptionColorButtonEvents.updateColorStates(columnDetails, labelDetails.colorPickerNewValue);
+    OptionColorButtonEvents.updateElements(columnsDetails, activeType.name, labelDetails.colorPickerNewValue);
     delete labelDetails.colorPickerNewValue;
+    setTimeout(() => columnDetails.fireColumnsUpdate());
   }
 
   // important to note that mouse/key down events are not fired when clicked on picker
   public static windowEventClosePicker(columnsDetails: ColumnsDetailsT, focusedElements: FocusedElements) {
     if (focusedElements.cellDropdown) {
       const columnIndex = focusedElements.cell.columnIndex as number;
-      OptionButton.hideAfterColorPickerContainerClose(columnsDetails[columnIndex]);
+      OptionButton.hideAfterColorPickerContainerClose(columnsDetails, columnsDetails[columnIndex]);
     }
   }
 
@@ -43,12 +79,12 @@ export class OptionColorButtonEvents {
   }
 
   // prettier-ignore
-  private static mouseDownContainer(columnDetails: ColumnDetailsT, event: MouseEvent) {
-    const {cellDropdown: {labelDetails}, elements} = columnDetails;
+  private static mouseDownContainer(columnsDetails: ColumnsDetailsT, columnDetails: ColumnDetailsT, event: MouseEvent) {
+    const {cellDropdown: {labelDetails}} = columnDetails;
     if (!labelDetails) return;
     if (labelDetails.colorPickerContainer) {
       delete labelDetails.colorPickerContainer;
-      OptionColorButtonEvents.updateColumnLabelColors(columnDetails, elements);
+      OptionColorButtonEvents.updateColumnLabelColors(columnsDetails, columnDetails);
       return;
     }
     const buttonElement = event.target as HTMLElement;
@@ -60,8 +96,10 @@ export class OptionColorButtonEvents {
     setTimeout(() => (labelDetails.colorPickerContainer = containerElement));
   }
 
-  public static setEvents(container: HTMLElement, colorInput: HTMLElement, columnDetails: ColumnDetailsT) {
-    container.onmousedown = OptionColorButtonEvents.mouseDownContainer.bind(this, columnDetails);
+  // prettier-ignore
+  public static setEvents(container: HTMLElement, colorInput: HTMLElement, columnsDetails: ColumnsDetailsT,
+      columnDetails: ColumnDetailsT) {
+    container.onmousedown = OptionColorButtonEvents.mouseDownContainer.bind(this, columnsDetails, columnDetails);
     colorInput.oninput = OptionColorButtonEvents.inputEvent.bind(this, columnDetails.cellDropdown);
   }
 }

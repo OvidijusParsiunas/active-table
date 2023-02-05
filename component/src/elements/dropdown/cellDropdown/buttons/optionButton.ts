@@ -1,6 +1,6 @@
+import {ColumnDetailsT, ColumnsDetailsT} from '../../../../types/columnDetails';
 import {CellDropdownI} from '../../../../types/cellDropdownInternal';
 import {OptionColorButtonEvents} from './optionColorButtonEvents';
-import {ColumnDetailsT} from '../../../../types/columnDetails';
 import {Browser} from '../../../../utils/browser/browser';
 import {OptionDeleteButton} from './optionDeleteButton';
 import {OptionColorButton} from './optionColorButton';
@@ -21,14 +21,14 @@ export class OptionButton {
   }
 
   // prettier-ignore
-  public static hideAfterColorPickerContainerClose(columnDetails: ColumnDetailsT) {
-    const {cellDropdown: {labelDetails}, elements} = columnDetails;
+  public static hideAfterColorPickerContainerClose(columnsDetails: ColumnsDetailsT, columnDetails: ColumnDetailsT) {
+    const {cellDropdown: {labelDetails}} = columnDetails;
     if (labelDetails?.colorPickerContainer) {
       labelDetails.colorPickerContainer.style.display = 'none';
       const deleteButtonContainer = labelDetails.colorPickerContainer.previousElementSibling as HTMLElement;
       deleteButtonContainer.style.display = 'none';
       delete labelDetails.colorPickerContainer;
-      OptionColorButtonEvents.updateColumnLabelColors(columnDetails, elements);
+      OptionColorButtonEvents.updateColumnLabelColors(columnsDetails, columnDetails);
     }
   }
 }

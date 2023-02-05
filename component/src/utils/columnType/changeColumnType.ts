@@ -35,6 +35,7 @@ export class ChangeColumnType {
   }
 
   public static setNewStructureBasedOnType(at: ActiveTable, columnIndex: number, newType: ColumnTypeInternal) {
+    delete at.columnsDetails[columnIndex].cellDropdown.labelDetails;
     if (newType.cellDropdownProps) {
       CellDropdown.setUpDropdown(at, columnIndex);
       SelectCell.convertColumn(at, columnIndex, newType);

@@ -1,13 +1,15 @@
 import {CellDropdownOptionStyle, CellDropdownStyle} from './cellDropdown';
 import {GlobalItemColors} from './itemToColor';
 
+export interface ColorPickerNewValue {
+  itemText: string;
+  backgroundColor: string;
+}
+
 export interface LabelDetails {
   globalItemColors: GlobalItemColors;
   colorPickerContainer?: HTMLElement; // set when picker is opened
-  colorPickerNewValue?: {
-    itemText: string;
-    backgroundColor: string;
-  };
+  colorPickerNewValue?: ColorPickerNewValue;
 }
 
 interface ScrollbarPresence {
@@ -22,6 +24,7 @@ export interface ActiveCellDropdownItems {
 
 interface CellDropdownItemDetails {
   backgroundColor: string;
+  isCustomBackgroundColor: boolean;
   element: HTMLElement;
 }
 
