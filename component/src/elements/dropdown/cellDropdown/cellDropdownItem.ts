@@ -1,5 +1,5 @@
+import {CellDropdownI, ActiveCellDropdownItems, LabelDetails} from '../../../types/cellDropdownInternal';
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
-import {CellDropdownI, ActiveCellDropdownItems} from '../../../types/cellDropdownInternal';
 import {ColumnDetailsUtils} from '../../../utils/columnDetails/columnDetailsUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
@@ -9,6 +9,7 @@ import {OptionDeleteButton} from './buttons/optionDeleteButton';
 import {OptionColorButton} from './buttons/optionColorButton';
 import {ColumnDetailsT} from '../../../types/columnDetails';
 import {LabelOptions} from '../../../types/cellDropdown';
+import {ItemToColor} from '../../../types/itemToColor';
 import {CellDetails} from '../../../types/focusedCell';
 import {Browser} from '../../../utils/browser/browser';
 import {CellElement} from '../../cell/cellElement';
@@ -16,10 +17,6 @@ import {EMPTY_STRING} from '../../../consts/text';
 import {ActiveTable} from '../../../activeTable';
 import {CellEvents} from '../../cell/cellEvents';
 import {DropdownItem} from '../dropdownItem';
-
-interface ItemToColor {
-  [cellText: CellText]: string;
-}
 
 export class CellDropdownItem {
   private static readonly ACTIVE_ITEM_BACKGROUND_COLOR = '#4a69d4';
@@ -49,11 +46,13 @@ export class CellDropdownItem {
     const newItemText = CellElement.getText(textElement);
     if (newItemText === EMPTY_STRING) return;
     let newColor = '';
-    if (labelDetails?.newItemColors) {
-      newColor = color || labelDetails.newItemColors[labelDetails.newItemColors.length - 1]
-        || LabelColorUtils.getLatestPasteleColor();
+    if (labelDetails) {
+      const {globalItemColors: {newColors, existingColors}} = labelDetails;
+      newColor = color || existingColors[newItemText]
+        || newColors[newColors.length - 1] || LabelColorUtils.getLatestPasteleColor();
       textElement.style.backgroundColor = newColor;
-      labelDetails.newItemColors?.pop() || LabelColorUtils.setNewLatestPasteleColor();
+      existingColors[newItemText] ??= newColor;
+      newColors.pop() || LabelColorUtils.setNewLatestPasteleColor();
     } else {
       newColor = CellDropdownItem.ACTIVE_ITEM_BACKGROUND_COLOR;
     }
@@ -69,9 +68,9 @@ export class CellDropdownItem {
       textElement.style.backgroundColor = dropdown.itemsDetails[cellText].backgroundColor;
     } else if (!dropdown.canAddMoreOptions || cellText === EMPTY_STRING || cellText === defaultText) {
       textElement.style.backgroundColor = '';
-    } else {
-      const newItemColors = dropdown.labelDetails?.newItemColors; 
-      textElement.style.backgroundColor = newItemColors?.[newItemColors.length - 1]
+    } else if (dropdown.labelDetails) {
+      const {globalItemColors: {newColors, existingColors}} = dropdown.labelDetails;
+      textElement.style.backgroundColor = existingColors[cellText] || newColors?.[newColors.length - 1]
         || LabelColorUtils.getLatestPasteleColor();
     }
   }
@@ -104,7 +103,7 @@ export class CellDropdownItem {
       CellDropdownItemEvents.blurItem(dropdown, 'matchingWithCellText');
     }
     CellDropdownItem.updateItemColor(itemElement, activeItems);
-    if (updateCellText && dropdown.labelDetails?.newItemColors) {
+    if (updateCellText && dropdown.labelDetails) {
       CellDropdownItem.updateCellTextBgColor(itemElement, textElement, dropdown, defaultText);
     }
   }
@@ -148,7 +147,7 @@ export class CellDropdownItem {
     if (cellDropdown.canAddMoreOptions) {
       const deleteButtonElement = OptionDeleteButton.create(at, columnDetails);
       itemElement.appendChild(deleteButtonElement);
-      if (Browser.IS_COLOR_PICKER_SUPPORTED && cellDropdown.labelDetails?.newItemColors) {
+      if (Browser.IS_COLOR_PICKER_SUPPORTED && cellDropdown.labelDetails) {
         const colorInputElement = OptionColorButton.create(columnDetails);
         itemElement.appendChild(colorInputElement);
       }
@@ -176,27 +175,17 @@ export class CellDropdownItem {
     if (isDefaultTextRemovable) delete itemToColor[defaultText];
   }
 
-  private static changeUserOptionsToItemToColor(userOptions: LabelOptions, newItemColors?: string[]): ItemToColor {
-    return userOptions.reduce<ItemToColor>((itemToColor, option) => {
-      if (newItemColors) {
-        itemToColor[option.text] =
-          option.backgroundColor || newItemColors.pop() || LabelColorUtils.getLatestPasteleColorAndSetNew();
-      } else {
-        itemToColor[option.text] = CellDropdownItem.ACTIVE_ITEM_BACKGROUND_COLOR;
-      }
-      return itemToColor;
-    }, {});
-  }
-
-  // WORK - need a more global object to keep colors consistent between columns
   // prettier-ignore
-  private static aggregateItemToColor(content: TableContent, columnIndex: number, itemToColor: ItemToColor,
-      newItemColors?: string[]) {
-    return content.slice(1).reduce<ItemToColor>((itemToColor, row) => {
+  private static processNewItemsToColor(content: TableContent, columnIndex: number, itemToColor: ItemToColor,
+      labelDetails?: LabelDetails) {
+    content.slice(1).reduce<ItemToColor>((itemToColor, row) => {
       const cellText = row[columnIndex];
       if (cellText !== EMPTY_STRING && !itemToColor[cellText]) {
-        if (newItemColors) {
-          itemToColor[cellText] = newItemColors.pop() || LabelColorUtils.getLatestPasteleColorAndSetNew();
+        if (labelDetails) {
+          const {globalItemColors: {newColors, existingColors}} = labelDetails;
+          itemToColor[cellText] = existingColors[cellText] || newColors.pop()
+            || LabelColorUtils.getLatestPasteleColorAndSetNew(); 
+          existingColors[cellText] ??= itemToColor[cellText];
         } else {
           itemToColor[cellText] = CellDropdownItem.ACTIVE_ITEM_BACKGROUND_COLOR;
         }
@@ -206,18 +195,33 @@ export class CellDropdownItem {
   }
 
   // prettier-ignore
+  private static changeUserOptionsToItemToColor(userOptions: LabelOptions, labelDetails?: LabelDetails): ItemToColor {
+    return userOptions.reduce<ItemToColor>((itemToColor, option) => {
+      if (labelDetails) {
+        const {globalItemColors: {newColors, existingColors}} = labelDetails;
+        itemToColor[option.text] = option.backgroundColor || existingColors[option.text]
+          || newColors.pop() || LabelColorUtils.getLatestPasteleColorAndSetNew();
+        existingColors[option.text] ??= itemToColor[option.text];
+      } else {
+        itemToColor[option.text] = CellDropdownItem.ACTIVE_ITEM_BACKGROUND_COLOR;
+      }
+      return itemToColor;
+    }, {});
+  }
+
+  // prettier-ignore
   public static populateItems(at: ActiveTable, columnIndex: number) {
     const {content, columnsDetails} = at;
     const columnDetails = columnsDetails[columnIndex];
     const {cellDropdown: {labelDetails}, settings: {defaultText, isDefaultTextRemovable}, activeType: {cellDropdownProps}
       } = columnDetails;
     if (!cellDropdownProps) return;
-    let itemToColor: ItemToColor = {}
+    let itemToColor: ItemToColor = {};
     if (cellDropdownProps.options) {
-      itemToColor = CellDropdownItem.changeUserOptionsToItemToColor(cellDropdownProps.options, labelDetails?.newItemColors)
+      itemToColor = CellDropdownItem.changeUserOptionsToItemToColor(cellDropdownProps.options, labelDetails)
     }
     if (cellDropdownProps.canAddMoreOptions) {
-      CellDropdownItem.aggregateItemToColor(content, columnIndex, itemToColor, labelDetails?.newItemColors);
+      CellDropdownItem.processNewItemsToColor(content, columnIndex, itemToColor, labelDetails);
     }
     CellDropdownItem.postProcessItemToColor(isDefaultTextRemovable, itemToColor, defaultText);
     CellDropdownItem.addItems(at, itemToColor, columnDetails);

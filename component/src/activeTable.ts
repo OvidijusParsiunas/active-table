@@ -29,6 +29,7 @@ import {DefaultCellHoverColors} from './types/cellStateColors';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {PaginationInternal} from './types/paginationInternal';
+import {LabelColorUtils} from './utils/color/labelColorUtils';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
@@ -39,6 +40,7 @@ import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
 import {ColumnsDetailsT} from './types/columnDetails';
+import {GlobalItemColors} from './types/itemToColor';
 import {StripedRows} from './utils/rows/stripedRows';
 import {activeTableStyle} from './activeTableStyle';
 import {RowHoverStyle} from './types/rowHoverStyle';
@@ -178,6 +180,9 @@ export class ActiveTable extends LitElement {
 
   @state()
   cellDropdownContainer: HTMLElement | null = null;
+
+  @state()
+  globalItemColors: GlobalItemColors = LabelColorUtils.generateGlobalItemColors();
 
   @property({type: Object})
   rowHoverStyle: RowHoverStyle | null = null;

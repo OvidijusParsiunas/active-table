@@ -2,7 +2,6 @@ import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label
 import {CellDropdownStyle, CellDropdownT} from '../../../types/cellDropdown';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {TableBorderDimensions} from '../../../types/tableBorderDimensions';
-import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {OverflowUtils} from '../../../utils/overflow/overflowUtils';
 import {CellDropdownI} from '../../../types/cellDropdownInternal';
@@ -179,10 +178,10 @@ export class CellDropdown {
 
   // prettier-ignore
   public static setUpDropdown(at: ActiveTable, columnIndex: number) {
-    const {activeType: {cellDropdownProps}, cellDropdown} = at.columnsDetails[columnIndex];
+    const {columnsDetails, globalItemColors} = at;
+    const {activeType: {cellDropdownProps}, cellDropdown} = columnsDetails[columnIndex];
     if (!cellDropdownProps) return;
-    cellDropdown.labelDetails = cellDropdownProps.isBasicSelect ?
-      undefined : {newItemColors: LabelColorUtils.generateDefaultColors()}; // REF-34
+    cellDropdown.labelDetails = cellDropdownProps.isBasicSelect ? undefined : {globalItemColors}; // REF-34
     CellDropdown.setCustomState(cellDropdown, cellDropdownProps)
     CellDropdownItem.populateItems(at, columnIndex);
     if (cellDropdownProps.dropdownStyle) CellDropdown.setCustomStyle(cellDropdown, cellDropdownProps.dropdownStyle);

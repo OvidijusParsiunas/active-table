@@ -1,7 +1,8 @@
 import {CellDropdownOptionStyle, CellDropdownStyle} from './cellDropdown';
+import {GlobalItemColors} from './itemToColor';
 
 export interface LabelDetails {
-  newItemColors: string[]; // REF-34
+  globalItemColors: GlobalItemColors;
   colorPickerContainer?: HTMLElement; // set when picker is opened
   colorPickerNewValue?: {
     itemText: string;
