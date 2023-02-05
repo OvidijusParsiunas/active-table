@@ -28,15 +28,13 @@ export class MoveRow {
     MoveRow.overwrite(at, overwrittenText, siblingIndex);
   }
 
-  // prettier-ignore
   private static resetFocusedCell(at: ActiveTable, initialFocusedCell: Required<FocusedCell>) {
-    const {frameComponentsInternal, focusedElements, columnsDetails} = at;
+    const {frameComponentsInternal, focusedElements} = at;
     const {element, rowIndex, columnIndex} = initialFocusedCell;
     if (frameComponentsInternal.displayIndexColumn) {
       FocusedCellUtils.setIndexCell(focusedElements.cell, element, columnIndex);
     } else {
-      FocusedCellUtils.set(
-        focusedElements.cell, element, rowIndex, columnIndex, columnsDetails[columnIndex].settings.types);
+      FocusedCellUtils.set(focusedElements.cell, element, rowIndex, columnIndex);
     }
   }
 
@@ -48,7 +46,7 @@ export class MoveRow {
     const overwrittenText = MoveRow.overwrite(at, dataRowText, 0);
     // update header row settings
     columnsDetails.forEach((column, columnIndex) => {
-      FocusedCellUtils.set(focusedElements.cell, column.elements[0], 0, columnIndex, column.settings.types);
+      FocusedCellUtils.set(focusedElements.cell, column.elements[0], 0, columnIndex);
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, column.elements[0], columnIndex);
     });
     // overwrite data row using header row

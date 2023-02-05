@@ -285,20 +285,16 @@ The reason why trim() is used is because the new line characters make it difficu
 for other programmatic needs.
 
 CAUTION-2
-When resizing the table, take note of some async code that was waiting to be executed before the resize was triggered:
-It has been identified that when re-render occurs and columnsDetails object is cleared, by the time the async code is executed
-the columnDetails objects will have some properties populated inside the ColumnDetailsInitial type (REF-13), however they will
-not have all properties which we can use to check if re-rendering has occured, and if it has - stop any async processing that
-has been initiated before the re-render.
-If further bugs occur - create and use a 'rendering' flag instead.
+When resizing the table, take note of some async code that was waiting to be executed before the resize was triggered.
 
 CAUTION-3
 Table dimensions have exclusive optional interfaces that are exposed to the client, however they may not be respected, hence the logic
 needs to be cautious when handling the passed in object
 
 CAUTION-4
-Do not set state/property variables after render has occurred as it will trigger full component re-render
-Be careful when assigning element references and instead do them in the connectedCallback method
+Do not set state/property variables after render has occurred as it will trigger full component re-render.
+Be careful when assigning element references and instead do them in the connectedCallback method.
+Exception for at.isRendering.
 
 Accepted behaviour
 

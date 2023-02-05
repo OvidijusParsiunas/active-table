@@ -6,7 +6,7 @@ import {OverflowUtils} from '../overflow/overflowUtils';
 import {ActiveTable} from '../../activeTable';
 
 export class Render {
-  // CAUTION-4 overwriting properties causes the whole table to refresh and subsequently - an infinite render loop
+  // CAUTION-4 overwriting at properties causes the whole table to refresh and subsequently - an infinite render loop
   // prettier-ignore
   private static refreshTableState(at: ActiveTable) {
     at.cellDropdownContainer?.replaceChildren();
@@ -20,6 +20,7 @@ export class Render {
   }
 
   public static renderTable(at: ActiveTable) {
+    at.isRendering = true;
     TableDimensionsUtils.record(at);
     Render.refreshTableState(at);
     if (at.overflowInternal) OverflowUtils.applyDimensions(at);
@@ -27,5 +28,6 @@ export class Render {
     // needs to be in render trigger as user props are not set in the connectedCallback function in Firefox
     TableDimensionsUtils.setTableDimensions(at);
     TableElement.populateBody(at);
+    setTimeout(() => (at.isRendering = false));
   }
 }

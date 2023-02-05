@@ -266,6 +266,13 @@ export class ActiveTable extends LitElement {
   @state()
   paginationInternal: PaginationInternal = PaginationInternalUtils.getDefault();
 
+  @state({
+    hasChanged() {
+      return false;
+    },
+  })
+  isRendering = false;
+
   // CAUTION-4
   override render() {
     Render.renderTable(this);

@@ -1,6 +1,3 @@
-import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
-import {ColumnTypesInternal} from '../../types/columnTypeInternal';
-import {CellElement} from '../../elements/cell/cellElement';
 import {FocusedCell} from '../../types/focusedCell';
 
 export class FocusedCellUtils {
@@ -12,23 +9,18 @@ export class FocusedCellUtils {
     focusedCell.element = cell;
     focusedCell.rowIndex = 0;
     focusedCell.columnIndex = columnIndex;
-    delete focusedCell.typeName;
   }
 
   public static setIndexCell(focusedCell: FocusedCell, cell: HTMLElement, rowIndex: number) {
     focusedCell.element = cell;
     focusedCell.rowIndex = rowIndex;
     delete focusedCell.columnIndex;
-    delete focusedCell.typeName;
   }
 
-  // prettier-ignore
-  public static set(focusedCell: FocusedCell, cellElement: HTMLElement, rowIndex: number, columnIndex: number,
-      types: ColumnTypesInternal) {
+  public static set(focusedCell: FocusedCell, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
     focusedCell.element = cellElement;
     focusedCell.rowIndex = rowIndex;
     focusedCell.columnIndex = columnIndex;
-    focusedCell.typeName = CellTypeTotalsUtils.parseTypeName(CellElement.getText(focusedCell.element), types);
   }
 
   public static incrementColumnIndex(focusedCell: FocusedCell, newColumnIndex: number) {
@@ -41,6 +33,5 @@ export class FocusedCellUtils {
     delete focusedCell.columnIndex;
     delete focusedCell.element;
     delete focusedCell.rowIndex;
-    delete focusedCell.typeName;
   }
 }

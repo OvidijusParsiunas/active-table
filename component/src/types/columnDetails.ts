@@ -1,7 +1,6 @@
 import {ColumnSettingsInternal} from './columnsSettingsInternal';
 import {ColProcessedTextStyle} from './processedTextStyle';
 import {ColumnTypeInternal} from './columnTypeInternal';
-import {AUXILIARY_CELL_TYPE} from '../enums/cellType';
 import {CellDropdownI} from './cellDropdownInternal';
 import {CellStateColors} from './cellStateColors';
 import {ColumnSizerT} from './columnSizer';
@@ -15,16 +14,11 @@ export interface BordersOverwrittenBySiblings {
   right?: boolean;
 }
 
-export type CellTypeTotals = {
-  [key in string]: number;
-} & {[AUXILIARY_CELL_TYPE.Undefined]: number};
-
 export interface ColumnDetailsT {
   elements: HTMLElement[];
   processedStyle: ColProcessedTextStyle; // style added via validation
   columnSizer: ColumnSizerT;
   activeType: ColumnTypeInternal;
-  cellTypeTotals: CellTypeTotals;
   cellDropdown: CellDropdownI;
   columnDropdownCellOverlay: HTMLElement;
   settings: ColumnSettingsInternal;

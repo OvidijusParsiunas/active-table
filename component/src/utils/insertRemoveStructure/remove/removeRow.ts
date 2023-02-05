@@ -1,25 +1,15 @@
 import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
-import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
 import {IndexColumn} from '../../../elements/indexColumn/indexColumn';
 import {CustomRowProperties} from '../../rows/customRowProperties';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {PaginationUtils} from '../../pagination/paginationUtils';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
-import {CellText, TableRow} from '../../../types/tableContent';
-import {ColumnsDetailsT} from '../../../types/columnDetails';
-import {HasRerendered} from '../../render/hasRerendered';
 import {MoveRow} from '../../moveStructure/moveRow';
 import {ActiveTable} from '../../../activeTable';
 import {RemoveColumn} from './removeColumn';
 
 export class RemoveRow {
-  private static updateColumnDetails(removedRowData: TableRow, columnsDetails: ColumnsDetailsT) {
-    removedRowData.forEach((cellText: CellText, columnIndex: number) => {
-      CellTypeTotalsUtils.decrementCellType(columnsDetails[columnIndex], cellText as string); // CAUTION-2
-    });
-  }
-
   // when the last row has been removed, there are no more columns
   private static removeAllColumnsDetails(at: ActiveTable) {
     const {columnsDetails} = at;
@@ -27,18 +17,12 @@ export class RemoveRow {
     columnsDetails.splice(0, columnsDetails.length);
   }
 
-  // prettier-ignore
-  private static update(at: ActiveTable,
-      rowIndex: number, lastRowElement: HTMLElement, lastRowIndex: number, removedRowData: TableRow) {
+  private static update(at: ActiveTable, rowIndex: number, lastRowElement: HTMLElement, lastRowIndex: number) {
     const lastRow = {element: lastRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(at, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow); // REF-20
     setTimeout(() => at.onContentUpdate(JSON.parse(JSON.stringify(at.content))));
-    if (HasRerendered.check(at.columnsDetails)) return; // CAUTION-2
-    if (at.content.length === 0) {
-      RemoveRow.removeAllColumnsDetails(at);
-    } else {
-      RemoveRow.updateColumnDetails(removedRowData, at.columnsDetails);
-    }
+    if (at.isRendering) return;
+    if (at.content.length === 0) RemoveRow.removeAllColumnsDetails(at);
     at.addColumnCellsElementsRef.splice(rowIndex, 1);
   }
 
@@ -69,10 +53,10 @@ export class RemoveRow {
     rowIndex = RemoveRow.changeRowIndexIfRemoveHeaderWithDataBelow(at, rowIndex);
     const lastRowIndex = at.content.length - 1;
     const lastRowElement = at.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
-    const removedRowData = RemoveRow.removeRow(at, rowIndex);
+    RemoveRow.removeRow(at, rowIndex);
     ToggleAdditionElements.update(at, false, AddNewRowElement.toggle);
     if (at.frameComponentsInternal.displayIndexColumn) IndexColumn.updateIndexes(at, rowIndex);
     CustomRowProperties.update(at, rowIndex);
-    setTimeout(() => RemoveRow.update(at, rowIndex, lastRowElement, lastRowIndex, removedRowData));
+    setTimeout(() => RemoveRow.update(at, rowIndex, lastRowElement, lastRowIndex));
   }
 }

@@ -2,7 +2,6 @@ import {OverwriteCellsViaCSVOnPaste} from '../../../utils/paste/CSV/overwriteCel
 import {UserKeyEventsStateUtils} from '../../../utils/userEventsState/userEventsStateUtils';
 import {DateCellInputElement} from '../cellsWithTextDiv/dateCell/dateCellInputElement';
 import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
-import {CellTypeTotalsUtils} from '../../../utils/columnType/cellTypeTotalsUtils';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {CaretDisplayFix} from '../../../utils/browser/caretDisplayFix';
@@ -72,14 +71,7 @@ export class DataCellEvents {
   public static blur(at: ActiveTable, rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
     if (CaretDisplayFix.isIssueBrowser()) CaretDisplayFix.removeContentEditable(textContainerElement);
     CellEvents.setCellToDefaultIfNeeded(at, rowIndex, columnIndex, textContainerElement);
-    const oldType = at.focusedElements.cell.typeName;
     FocusedCellUtils.purge(at.focusedElements.cell);
-    setTimeout(() => {
-      const columnDetails = at.columnsDetails[columnIndex];
-      const newType = CellTypeTotalsUtils.parseTypeName(
-        CellElement.getText(textContainerElement), columnDetails.settings.types);
-      CellTypeTotalsUtils.changeCellType(columnDetails, oldType, newType); // CAUTION-2
-    });
   }
 
   private static blurCell(this: ActiveTable, rowIndex: number, columnIndex: number, event: Event) {
@@ -100,15 +92,13 @@ export class DataCellEvents {
     CellEvents.removeTextIfDefault(at, rowIndex, columnIndex, textContainerElement);
   }
 
-  // prettier-ignore
   private static focusCell(this: ActiveTable, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const cellElement = event.target as HTMLElement;
     DataCellEvents.prepareText(this, rowIndex, columnIndex, cellElement);
-    const {userKeyEventsState, focusedElements, columnsDetails} = this;
+    const {userKeyEventsState, focusedElements} = this;
     // REF-7
     if (userKeyEventsState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
-    FocusedCellUtils.set(
-      focusedElements.cell, cellElement, rowIndex, columnIndex, columnsDetails[columnIndex].settings.types);
+    FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, columnIndex);
   }
 
   public static setEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {

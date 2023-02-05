@@ -15,12 +15,11 @@ export class CellWithTextEvents {
   // prettier-ignore
   public static focusText(this: ActiveTable, rowIndex: number, columnIndex: number,
       focusCallback: FocusCallback | null, event: FocusEvent) {
-    const {focusedElements: {cell}, columnsDetails} = this;
     const textElement = event.target as HTMLElement;
     const cellElement = CellElement.getCellElement(textElement);
     DataCellEvents.prepareText(this, rowIndex, columnIndex, textElement);
     focusCallback?.(this, columnIndex, cellElement);
-    FocusedCellUtils.set(cell, cellElement, rowIndex, columnIndex, columnsDetails[columnIndex].settings.types);
+    FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex);
     if (this.userKeyEventsState[KEYBOARD_KEY.TAB]) {
       // contrary to this being called on mouseDownCell - this does not retrigger focus event
       CaretPosition.setToEndOfText(this, textElement);

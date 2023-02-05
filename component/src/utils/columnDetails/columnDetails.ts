@@ -3,7 +3,6 @@ import {CellStateColorProperties, DefaultCellHoverColors} from '../../types/cell
 import {CellDropdown} from '../../elements/dropdown/cellDropdown/cellDropdown';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
-import {CellTypeTotalsUtils} from '../columnType/cellTypeTotalsUtils';
 import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 
 // REF-13
@@ -60,10 +59,7 @@ export class ColumnDetails {
   // prettier-ignore
   public static updateWithNoSizer(columnDetails: ColumnDetailsInitial,
       columnDropdownCellOverlay: HTMLElement): ColumnDetailsNoSizer {
-    const newObject: Omit<ColumnDetailsNoSizer, keyof ColumnDetailsInitial> = {
-      cellTypeTotals: CellTypeTotalsUtils.createObj(columnDetails.settings.types),
-      columnDropdownCellOverlay,
-    };
+    const newObject: Omit<ColumnDetailsNoSizer, keyof ColumnDetailsInitial> = {columnDropdownCellOverlay};
     Object.assign(columnDetails, newObject);
     return columnDetails as ColumnDetailsNoSizer;
   }

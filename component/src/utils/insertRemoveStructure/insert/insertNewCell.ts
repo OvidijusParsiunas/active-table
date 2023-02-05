@@ -13,7 +13,6 @@ import {ColumnDetailsInitial, ColumnDetailsT} from '../../../types/columnDetails
 import {ProcessedDataTextStyle} from '../../columnType/processedDataTextStyle';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
-import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
 import {CellElementIndex} from '../../elements/cellElementIndex';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
@@ -33,9 +32,7 @@ export class InsertNewCell {
   }
 
   // please note that this is run twice in firefox due to the render function being triggered twice
-  // prettier-ignore
-  private static updateColumnDetailsAndSizers(
-      at: ActiveTable, rowIndex: number, columnIndex: number, text: CellText, isNewText: boolean) {
+  private static updateColumnDetailsAndSizers(at: ActiveTable, rowIndex: number, columnIndex: number, isNewText: boolean) {
     const columnDetails = at.columnsDetails[columnIndex];
     if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
     if (rowIndex === 0) {
@@ -46,8 +43,6 @@ export class InsertNewCell {
         InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, columnIndex);
         UpdateIndexColumnWidth.wrapTextWhenNarrowColumnsBreached(at); // REF-19
       }
-    } else {
-      CellTypeTotalsUtils.incrementCellType(columnDetails, text); // CAUTION-2
     }
   }
 
@@ -113,6 +108,6 @@ export class InsertNewCell {
     } else {
       ProcessedDataTextStyle.setCellStyle(at, rowIndex, columnIndex); // custom style will be applied in cellEvents
     }
-    setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(at, rowIndex, columnIndex, processedCellText, isNewText));
+    setTimeout(() => InsertNewCell.updateColumnDetailsAndSizers(at, rowIndex, columnIndex, isNewText));
   }
 }

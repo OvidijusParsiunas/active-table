@@ -33,11 +33,11 @@ export class RowDropdown {
   }
 
   private static focusCell(at: ActiveTable, rowIndex: number, cellElement: HTMLElement) {
-    const {frameComponentsInternal, focusedElements, columnsDetails} = at;
+    const {frameComponentsInternal, focusedElements} = at;
     if (frameComponentsInternal.displayIndexColumn) {
       FocusedCellUtils.setIndexCell(focusedElements.cell, cellElement, rowIndex);
     } else {
-      FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, 0, columnsDetails[0].settings.types);
+      FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, 0);
     }
   }
 

@@ -4,7 +4,6 @@ import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColum
 import {CellDropdown} from '../../../elements/dropdown/cellDropdown/cellDropdown';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {ColumnSettingsUtils} from '../../columnSettings/columnSettingsUtils';
-import {CellTypeTotalsUtils} from '../../columnType/cellTypeTotalsUtils';
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
 import {DataUtils} from '../../insertRemoveStructure/shared/dataUtils';
 import {CaretPosition} from '../../focusedElements/caretPosition';
@@ -53,8 +52,8 @@ export class OverwriteCellsViaCSVOnPaste {
   }
 
   private static changeColumnSettings(at: ActiveTable, columnIndex: number) {
-    const {elements, settings} = at.columnsDetails[columnIndex];
-    FocusedCellUtils.set(at.focusedElements.cell, elements[0], 0, columnIndex, settings.types);
+    const {elements} = at.columnsDetails[columnIndex];
+    FocusedCellUtils.set(at.focusedElements.cell, elements[0], 0, columnIndex);
     ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, elements[0], columnIndex);
   }
 
@@ -86,20 +85,13 @@ export class OverwriteCellsViaCSVOnPaste {
       || rowIndex > 0 && !columnDetails.settings.isCellTextEditable) return;
      // this is to allow duplicate headers to be identified
     if (rowIndex === 0) CellElement.setNewText(at, cellElement, newCellText, false, false);
-    const oldType = CellTypeTotalsUtils.parseTypeName(CellElement.getText(cellElement), columnDetails.settings.types);
-    const processedNewCellText = CellEvents.updateCell(
-      at, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
+    CellEvents.updateCell(at, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
     if (columnDetails.activeType.cellDropdownProps) {
       SelectCell.finaliseEditedText(at, cellElement.children[0] as HTMLElement, columnIndex, true);
     } else if (Browser.IS_INPUT_DATE_SUPPORTED && columnDetails.activeType.calendar) {
       DateCellInputElement.updateInputBasedOnTextDiv(cellElement, columnDetails.activeType);
     }
     if (rowIndex === 0) OverwriteCellsViaCSVOnPaste.changeColumnSettings(at, columnIndex);
-    setTimeout(() => {
-      // CAUTION-2
-      const newType = CellTypeTotalsUtils.parseTypeName(processedNewCellText, columnDetails.settings.types);
-      CellTypeTotalsUtils.changeCellType(columnDetails, oldType, newType);
-    });
   }
 
   // prettier-ignore
@@ -121,14 +113,6 @@ export class OverwriteCellsViaCSVOnPaste {
   }
 
   // prettier-ignore
-  private static processFocusedCell(at: ActiveTable, columnIndex: number, cellElement: HTMLElement) {
-    const text = CellElement.getText(cellElement);
-    at.focusedElements.cell.typeName = CellTypeTotalsUtils.parseTypeName(
-      text, at.columnsDetails[columnIndex].settings.types);
-    OverwriteCellsViaCSVOnPaste.setCaretToEndAndHighlightIfSelect(at, cellElement, columnIndex);
-  }
-
-  // prettier-ignore
   private static overwriteExistingCells(
       at: ActiveTable, dataToOverwriteRows: CSV, startRowIndex: number, startColumnIndex: number) {
     const dataForNewColumns: CSV = [];
@@ -142,7 +126,7 @@ export class OverwriteCellsViaCSVOnPaste {
       dataForNewColumns.push(overflowData);
     });
     const focusedElement = at.focusedElements.cell.element as HTMLElement; // REF-15
-    setTimeout(() => OverwriteCellsViaCSVOnPaste.processFocusedCell(at, startColumnIndex, focusedElement));
+    setTimeout(() => OverwriteCellsViaCSVOnPaste.setCaretToEndAndHighlightIfSelect(at, focusedElement, startColumnIndex));
     return dataForNewColumns;
   }
 
@@ -189,12 +173,10 @@ export class OverwriteCellsViaCSVOnPaste {
     setTimeout(() => at.onContentUpdate(JSON.parse(JSON.stringify(at.content))));
   }
 
-  // prettier-ignore
   private static focusOriginalCellAfterProcess(at: ActiveTable, process: () => void) {
     const {element, rowIndex, columnIndex} = at.focusedElements.cell as Required<FocusedCell>;
     process();
-    FocusedCellUtils.set(
-      at.focusedElements.cell, element, rowIndex, columnIndex, at.columnsDetails[columnIndex].settings.types);
+    FocusedCellUtils.set(at.focusedElements.cell, element, rowIndex, columnIndex);
   }
 
   // prettier-ignore
