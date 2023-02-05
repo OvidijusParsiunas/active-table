@@ -17,7 +17,7 @@ export class SelectedColumnSizer {
       // this is to reflect the initial sizer offset to center itself in the cell divider
       initialOffset: columnSizerOffset,
       mouseMoveOffset: columnSizerOffset,
-      fireColumnUpdate: ColumnDetailsUtils.fireUpdateEvent.bind(this, at.columnsDetails, at.onColumnsUpdate),
+      fireColumnsUpdate: ColumnDetailsUtils.fireUpdateEvent.bind(this, at.columnsDetails, at.onColumnsUpdate),
     };
   }
 

@@ -17,7 +17,7 @@ export class OptionColorButtonEvents {
         textElement.style.backgroundColor = labelDetails.colorPickerNewValue.backgroundColor;
       }
     });
-    setTimeout(() => columnDetails.fireColumnUpdate());
+    setTimeout(() => columnDetails.fireColumnsUpdate());
     delete labelDetails.colorPickerNewValue;
   }
 
@@ -54,7 +54,8 @@ export class OptionColorButtonEvents {
     const buttonElement = event.target as HTMLElement;
     const {containerElement, dropdownItemElement} = OptionColorButton.extractRelativeParentElements(buttonElement);
     const inputElement = buttonElement.previousSibling as PickerInputElement;
-    inputElement.value = RGBAToHex.convert(dropdownItemElement.style.backgroundColor);
+    // using getComputedStyle because if custom backgroundColor is 'red', that's what .style.backgroundColor will return 
+    inputElement.value = RGBAToHex.convert(getComputedStyle(dropdownItemElement).backgroundColor);
     inputElement.showPicker();
     setTimeout(() => (labelDetails.colorPickerContainer = containerElement));
   }

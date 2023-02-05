@@ -43,7 +43,7 @@ export class ColumnDetails {
   // prettier-ignore
   public static createInitial(columnsSettings: ColumnsSettingsDefault, cellDropdown: HTMLElement,
       settings: ColumnSettingsInternal, defaultCellHoverColors: DefaultCellHoverColors,
-      fireColumnUpdate: ColumnDetailsT['fireColumnUpdate']): ColumnDetailsInitial {
+      fireColumnsUpdate: ColumnDetailsT['fireColumnsUpdate']): ColumnDetailsInitial {
     const columnSettings = settings || columnsSettings;
     return {
       elements: [],
@@ -53,7 +53,7 @@ export class ColumnDetails {
       bordersOverwrittenBySiblings: {},
       activeType: ColumnTypesUtils.getActiveType(columnSettings),
       cellDropdown: CellDropdown.getDefaultObj(cellDropdown),
-      fireColumnUpdate,
+      fireColumnsUpdate,
     };
   }
 

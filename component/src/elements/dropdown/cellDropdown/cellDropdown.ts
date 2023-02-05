@@ -18,7 +18,7 @@ import {Dropdown} from '../dropdown';
 
 export class CellDropdown {
   private static readonly CELL_DROPDOWN_CLASS = 'cell-dropdown';
-  private static readonly MAX_HEIGHT_PX = '150px';
+  private static readonly MAX_HEIGHT_PX = '145px';
   private static readonly MIN_WIDTH = 70;
   private static readonly MAX_WIDTH = 200;
 

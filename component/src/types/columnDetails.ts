@@ -30,7 +30,7 @@ export interface ColumnDetailsT {
   settings: ColumnSettingsInternal;
   headerStateColors: CellStateColors;
   bordersOverwrittenBySiblings: BordersOverwrittenBySiblings;
-  fireColumnUpdate: () => void; // pre-binded
+  fireColumnsUpdate: () => void; // pre-binded
 }
 
 // REF-13
@@ -43,7 +43,7 @@ export type ColumnDetailsInitial = Pick<
   | 'settings'
   | 'headerStateColors'
   | 'bordersOverwrittenBySiblings'
-  | 'fireColumnUpdate'
+  | 'fireColumnsUpdate'
 >;
 
 // REF-13
