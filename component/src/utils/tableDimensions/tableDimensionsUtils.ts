@@ -51,7 +51,6 @@ export class TableDimensionsUtils {
     } else if (tableStyle.maxWidth !== undefined) {
       TableDimensionsUtils.setDimension(at, 'maxWidth');
     }
-    StringDimensionUtils.removeAllDimensions(tableStyle);
     // else the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
     TableDimensionsUtils.setPreserveNarrowColumnsProp(at, tableDimensions);
     TableDimensionsUtils.setIsColumnIndexCellTextWrapped(tableDimensions, displayIndexColumn);
