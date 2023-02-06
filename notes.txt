@@ -110,9 +110,9 @@ a timeout - asynchronously adding all the other necessary details except the siz
 proceeding to create the sizer and adding it to the object, thus completing the creation of the column details object.
 
 REF-14
-When calling super.connectedCallback() in the 'override connectedCallback' method - Firefox was initially found to call
-the 'override render' twice - where the first render did not have the popylated properties that were passed by client.
-This has been prevented by calling super.connectedCallback() inside a timeout.
+In Firefox - a synchronous call for super.connectedCallback() was causing the render lifecycle method to be triggered twice.
+The first render method also did not have the passed in client properties. This behaviour was fixed by calling
+super.connectedCallback() inside a timeout.
 
 REF-15
 It has been identified that when contentEditable is changed, chrome can fire a blur event on text. This was problematic for
@@ -186,7 +186,7 @@ of implementing their array splice functionality incorrectly which would leave t
 2. In state management solutions such as Redux - reducers should be pure functions and not something that would maintain existing
 state. Hence incentivising users to implement array splicing and addition logic for state manipulation is something that we want
 to avoid.
-3. The simplicty, messages that are sent out denote exactly what cells need to be changed and not making the user solve the problem
+3. The simplicity, messages that are sent out denote exactly what cells need to be changed and not making the user solve the problem
 of what else needs to be changed when one has been deleted/inserted at a particular table index. Hence, they should do exactly what
 the messages tell them to and absolutely nothing else.
 

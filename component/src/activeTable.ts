@@ -48,11 +48,11 @@ import {TableContent} from './types/tableContent';
 import {StripedRowsT} from './types/stripedRows';
 import {StickyProps} from './types/stickyProps';
 import {Browser} from './utils/browser/browser';
+import {LitElement, PropertyValues} from 'lit';
 import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
-import {LitElement} from 'lit';
 
 // WORK - edit the generated type file and remove private properties, otherwise use one object for internal state
 // WORK - perhaps rename Internal types to use _
@@ -61,19 +61,6 @@ export class ActiveTable extends LitElement {
   static override styles = [activeTableStyle];
 
   public static ELEMENT_TAG = 'ACTIVE-TABLE';
-
-  @property({type: Object})
-  tableStyle: TableStyle = {};
-
-  @property({type: Array})
-  content: TableContent = [
-    // ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
-    // ['Earth', 12756, 5.97, 1, 5514],
-    // ['Mars', 6792, 0.642, 2, 3934],
-    // ['Jupiter', 142984, 1898, 79, 1326],
-    // ['Saturn', 120536, 568, 82, 687],
-    // ['Neptune', 49528, 102, 14, 1638],
-  ];
 
   @property({type: Function})
   getContent = () => JSON.parse(JSON.stringify(this.content));
@@ -92,6 +79,19 @@ export class ActiveTable extends LitElement {
 
   @property({converter: LITElementTypeConverters.convertToFunction})
   onColumnsUpdate: OnColumnsUpdate = () => {};
+
+  @property({type: Array})
+  content: TableContent = [
+    // ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+    // ['Earth', 12756, 5.97, 1, 5514],
+    // ['Mars', 6792, 0.642, 2, 3934],
+    // ['Jupiter', 142984, 1898, 79, 1326],
+    // ['Saturn', 120536, 568, 82, 687],
+    // ['Neptune', 49528, 102, 14, 1638],
+  ];
+
+  @property({type: Object})
+  tableStyle: TableStyle = {};
 
   @property({
     type: Boolean,
@@ -279,9 +279,7 @@ export class ActiveTable extends LitElement {
     new ResizeObserver(ParentResize.resizeCallback.bind(this)).observe(this.parentElement as HTMLElement);
   }
 
-  private onConnect() {
-    // REF-14
-    super.connectedCallback();
+  override update(changedProperties: PropertyValues) {
     StickyPropsUtils.process(this);
     FrameComponentsInternalUtils.set(this);
     DefaultColumnTypes.createDropdownItemsForDefaultTypes();
@@ -298,14 +296,15 @@ export class ActiveTable extends LitElement {
     WindowElement.setEvents(this);
     ColumnSettingsUtils.setUpInternalSettings(this);
     this.spellcheck = this.spellCheck;
+    super.update(changedProperties);
   }
 
   override connectedCallback() {
     // REF-14
     if (Browser.IS_FIREFOX) {
-      setTimeout(() => this.onConnect());
+      setTimeout(() => super.connectedCallback()); // WORK - see if the firefox issue can be fixed
     } else {
-      this.onConnect();
+      super.connectedCallback();
     }
   }
 

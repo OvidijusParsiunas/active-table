@@ -7,6 +7,7 @@ import {CSSStyle} from '../../types/cssStyle';
 import {StripedRows} from './stripedRows';
 
 export class CustomRowProperties {
+  // WORK - does not inherit radius in firefox
   // prettier-ignore
   private static setHoverEvents(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number,
       lastRowIndex: number, defaultStyle?: CSSStyle) {
