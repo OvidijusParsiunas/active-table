@@ -64,7 +64,7 @@ export class ChangeColumnType {
       ChangeColumnType.setInvalidCellsToDefault(at, columnIndex);
     }
     ChangeColumnType.setNewStructureBasedOnType(at, columnIndex, newType);
-    if (at.displayIconsInHeaders) HeaderIconCellElement.changeHeaderIcon(at.columnsDetails[columnIndex]);
+    if (at.displayHeaderIcons) HeaderIconCellElement.changeHeaderIcon(at.columnsDetails[columnIndex]);
     setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate));
   }
 

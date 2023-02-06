@@ -84,7 +84,7 @@ const config = {
   // // // stickyHeader: boolean;
   // // // dataStartsAtHeader: boolean;
   // // // allowDuplicateHeaders: boolean;
-  // // // displayIconsInHeaders: boolean;
+  // // // displayHeaderIcons: boolean;
   // // rows:
   // // // rowHoverStyle: RowHoverStyle;
   // // // stripedRows: StripedRowsT | boolean;
@@ -100,7 +100,6 @@ const config = {
   // // // onCellUpdate: OnCellUpdate;
   // // // onColumnsUpdate: OnColumnsUpdate;
   // // // onContentUpdate: OnTableUpdate;
-  // // // onColumnWidthsUpdate: OnColumnWidthsUpdate;
   // // pagination:
   // // // pagination: Pagination | null;
   // // misc:

@@ -60,7 +60,7 @@ export class InsertNewCell {
 
   private static convertCell(at: ActiveTable, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
     const columnDetails = at.columnsDetails[columnIndex];
-    if (rowIndex === 0 && at.displayIconsInHeaders) {
+    if (rowIndex === 0 && at.displayHeaderIcons) {
       HeaderIconCellElement.setHeaderIconStructure(at, newCellElement, columnIndex);
     }
     if (!columnDetails.activeType) return;

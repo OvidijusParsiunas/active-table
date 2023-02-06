@@ -1,4 +1,4 @@
-import {OnCellUpdate, OnColumnsUpdate, OnTableUpdate, OnColumnWidthsUpdate} from './onUpdate';
+import {OnCellUpdate, OnColumnsUpdate, OnTableUpdate, ColumnUpdateDetails} from './onUpdate';
 import {FrameComponentsStyle, IndexColumnT} from './frameComponents';
 import {DropdownDisplaySettings} from './dropdownDisplaySettings';
 import {ColumnsSettingsDefault} from './columnsSettingsDefault';
@@ -17,12 +17,8 @@ import {LitElement} from 'lit';
 // This interface is to be used exclusively by the client
 export interface ActiveTable extends LitElement {
   content?: TableContent;
-  onCellUpdate?: OnCellUpdate;
-  onColumnsUpdate?: OnColumnsUpdate;
-  onContentUpdate?: OnTableUpdate;
-  onColumnWidthsUpdate?: OnColumnWidthsUpdate;
   allowDuplicateHeaders?: boolean;
-  displayIconsInHeaders?: boolean;
+  displayHeaderIcons?: boolean;
   spellCheck?: boolean;
   stickyHeader?: boolean | undefined;
   updateCell?: DynamicCellUpdateT;
@@ -44,6 +40,11 @@ export interface ActiveTable extends LitElement {
   stripedRows?: StripedRowsT | boolean;
   overflow?: Overflow;
   pagination?: Pagination;
+  getContent: () => TableContent;
+  getColumnsDetails: () => ColumnUpdateDetails[];
+  onCellUpdate?: OnCellUpdate;
+  onColumnsUpdate?: OnColumnsUpdate;
+  onContentUpdate?: OnTableUpdate;
 }
 
 declare global {

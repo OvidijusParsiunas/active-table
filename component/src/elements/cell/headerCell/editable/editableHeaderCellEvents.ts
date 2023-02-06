@@ -16,7 +16,7 @@ export class EditableHeaderCellEvents {
     // important to note that this is still using data cell input event
     cellElement.onmouseenter = HeaderCellEvents.mouseEnterCell.bind(at, columnIndex);
     cellElement.onmouseleave = HeaderCellEvents.mouseLeaveCell.bind(at, columnIndex);
-    if (at.displayIconsInHeaders) {
+    if (at.displayHeaderIcons) {
       cellElement.onfocus = () => {};
       cellElement.onblur = () => {};
       cellElement.onmousedown = CellWithTextEvents.mouseDown.bind(at, null);

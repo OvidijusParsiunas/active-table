@@ -84,7 +84,6 @@ export class ActiveTable extends LitElement {
   // WORK - generate/parse csv
 
   // REF-20
-  // WORK - check if types for this work
   @property({converter: LITElementTypeConverters.convertToFunction})
   onCellUpdate: OnCellUpdate = () => {};
 
@@ -104,7 +103,7 @@ export class ActiveTable extends LitElement {
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  displayIconsInHeaders = true;
+  displayHeaderIcons = true;
 
   @property({
     type: Boolean,
