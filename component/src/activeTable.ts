@@ -1,4 +1,5 @@
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
+import {ColumnUpdateDetails, OnCellUpdate, OnColumnsUpdate, OnTableUpdate} from './types/onUpdate';
 import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
@@ -8,7 +9,6 @@ import {InitialContentProcessing} from './utils/content/initialContentProcessing
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
-import {OnCellUpdate, OnColumnsUpdate, OnTableUpdate} from './types/onUpdate';
 import {PaginationElements} from './elements/pagination/paginationElements';
 import {ColumnDetailsUtils} from './utils/columnDetails/columnDetailsUtils';
 import {DynamicCellUpdate} from './utils/dynamicUpdates/dynamicCellUpdate';
@@ -63,10 +63,10 @@ export class ActiveTable extends LitElement {
   public static ELEMENT_TAG = 'ACTIVE-TABLE';
 
   @property({type: Function})
-  getContent = () => JSON.parse(JSON.stringify(this.content));
+  getContent: () => TableContent = () => JSON.parse(JSON.stringify(this.content));
 
   @property({type: Function})
-  getColumnsDetails = () => ColumnDetailsUtils.getAllColumnsDetails(this.columnsDetails);
+  getColumnsDetails: () => ColumnUpdateDetails[] = () => ColumnDetailsUtils.getAllColumnsDetails(this.columnsDetails);
 
   // WORK - generate/parse csv
 

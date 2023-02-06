@@ -1,35 +1,49 @@
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import styles from './index.module.css';
-import Link from '@docusaurus/Link';
+import {TableWrapper} from '../components/table/table-wrapper';
 import Layout from '@theme/Layout';
 import React from 'react';
-import clsx from 'clsx';
 
-function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+function LeftPanel() {
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <h1 className="hero__title">{siteConfig.title}</h1>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link className="button button--secondary button--lg" to="/docs/API/how-to">
-            Docusaurus Tutorial - 5min ⏱️
-          </Link>
-        </div>
+    <div id="left-panel">
+      <h1 id="colored-header">Active Table</h1>
+      <h1 id="sub-header">Framework agnostic table component for editable data experience</h1>
+      <div style={{marginTop: '30px'}}>
+        <button className="header-button">Install</button>
+        <button className="header-button">Documentation</button>
       </div>
-    </header>
+    </div>
+  );
+}
+
+function RightPanel() {
+  return (
+    <div id="right-panel">
+      {/* WORK - can remove this div once the right-panel id can be used to determine width */}
+      <div style={{width: '100%'}}>
+        <TableWrapper
+          tableStyle={{borderRadius: '5px', width: '100%'}}
+          content={[
+            ['Planet', 'Diameter', 'Mass', 'Moons'],
+            ['Earth', 12756, 5.97, 1],
+            ['Mars', 6792, 0.642, 2],
+            ['Jupiter', 142984, 1898, 79],
+            ['Saturn', 120536, 568, 82],
+            ['Neptune', 49528, 102, 14],
+          ]}
+        ></TableWrapper>
+      </div>
+    </div>
   );
 }
 
 export default function Home() {
-  const {siteConfig} = useDocusaurusContext();
   return (
-    <Layout title={`Hello from ${siteConfig.title}`} description="Description will go into a meta tag in <head />">
-      <HomepageHeader />
+    <Layout description="Fully customisable editable table component">
       <main>
-        <HomepageFeatures />
+        <div style={{height: '100vh'}}>
+          <LeftPanel></LeftPanel>
+          <RightPanel></RightPanel>
+        </div>
       </main>
     </Layout>
   );
