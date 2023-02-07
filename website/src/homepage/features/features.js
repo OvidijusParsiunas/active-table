@@ -1,5 +1,7 @@
 import {TableWrapper} from '../../components/table/table-wrapper';
-import {ResponsiveFeature} from './responsiveFeature';
+import {Customization} from './customization';
+import {Responsive} from './responsive';
+import {Scrollbar} from './scrollbar';
 import React from 'react';
 import './features.css';
 
@@ -41,7 +43,8 @@ function ColumnTypes() {
     <div style={{display: 'flex', marginTop: '80px'}}>
       <div style={{float: 'left', width: '50%'}}>
         <div className={'feature-text feature-text-size'}>
-          Active table offers a variety of column types and an API to create your own custom ones
+          Active table offers a variety of out of the box column types and an extensive API to create custom ones that
+          incl. custom sorting, validation, selection options and more.
         </div>
       </div>
       <div style={{float: 'right', width: '50%'}}>
@@ -67,8 +70,10 @@ export function Features() {
     <div id="features-container">
       <h1 className="colored-sub-header">Main Features</h1>
       <ColumnTypes></ColumnTypes>
-      <ResponsiveFeature></ResponsiveFeature>
+      <Scrollbar></Scrollbar>
       <Pagination></Pagination>
+      <Responsive></Responsive>
+      <Customization></Customization>
     </div>
   );
 }

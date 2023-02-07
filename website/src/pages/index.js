@@ -55,11 +55,7 @@ export default function Home() {
           <StartPage></StartPage>
           <Features></Features>
         </div>
-        <div>Dynamic update</div>
-        <div>Customization - API</div>
-        <div>Overflow</div>
-        <div>Striped rows</div>
-        <div>Toggle everything</div>
+        <div style={{marginTop: '20px'}}>Dynamic update</div>
         by Ovidijus Parsiunas
       </main>
     </Layout>

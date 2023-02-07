@@ -68,7 +68,7 @@ function Resizer(props) {
   );
 }
 
-export function ResponsiveFeature() {
+export function Responsive() {
   const mouseClick = {isClicked: false, offset: 0};
   const leftTableRef = React.useRef(null);
   const rightTableRef = React.useRef(null);
@@ -79,7 +79,7 @@ export function ResponsiveFeature() {
       onMouseUp={mouseUp.bind(this, mouseClick)}
     >
       <div style={{textAlign: 'center'}} className="feature-text-size">
-        Responsive
+        Responsive design
       </div>
       <div style={{display: 'flex', marginTop: '20px'}}>
         <div style={{float: 'left', width: 'calc(50% - 20px)'}} ref={leftTableRef}>
