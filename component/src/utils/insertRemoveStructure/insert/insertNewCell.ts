@@ -22,12 +22,12 @@ import {DataUtils} from '../shared/dataUtils';
 
 export class InsertNewCell {
   // prettier-ignore
-  private static insertElementsToRow(rowElement: HTMLElement, newCellElement: HTMLElement, columnIndex: number,
-      displayIndexColumn: boolean) {
+  private static insertElementsToRow(rowElement: HTMLElement, newCellElement: HTMLElement, rowIndex: number,
+      columnIndex: number, displayIndexColumn: boolean) {
     // if child is undefined, the element is added at the end
     const childIndex = CellElementIndex.getViaColumnIndex(columnIndex, displayIndexColumn);
     rowElement.insertBefore(newCellElement, rowElement.children[childIndex]);
-    const newCellDividerElement = CellDividerElement.create();
+    const newCellDividerElement = CellDividerElement.create(rowIndex);
     rowElement.insertBefore(newCellDividerElement, rowElement.children[childIndex + 1]);
   }
 
@@ -53,7 +53,7 @@ export class InsertNewCell {
     const columnDetails = columnsDetails[columnIndex];
     columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
     columnDetails.processedStyle.splice(rowIndex, 0, ProcessedDataTextStyle.getDefaultProcessedTextStyle());
-    InsertNewCell.insertElementsToRow(rowElement, newCellElement, columnIndex, !!displayIndexColumn);
+    InsertNewCell.insertElementsToRow(rowElement, newCellElement, rowIndex, columnIndex, !!displayIndexColumn);
     // cannot place in a timeout as at.content length is used to get last row index
     content[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
   }
