@@ -29,8 +29,10 @@ export class AddNewColumnEvents {
   public static setEvents(at: ActiveTable, cellElement: HTMLElement): void {
     const {columnGroupRef: columnGroup, addColumnCellsElementsRef: ref, frameComponentsInternal: {cellColors}} = at;
     if (!columnGroup) return;
-    cellElement.onmouseenter = AddNewColumnEvents.toggleColor.bind(this, columnGroup, true, ref, cellColors);
-    cellElement.onmouseleave = AddNewColumnEvents.toggleColor.bind(this, columnGroup, false, ref, cellColors);
+    if (!at.stripedRowsInternal) {
+      cellElement.onmouseenter = AddNewColumnEvents.toggleColor.bind(this, columnGroup, true, ref, cellColors);
+      cellElement.onmouseleave = AddNewColumnEvents.toggleColor.bind(this, columnGroup, false, ref, cellColors);
+    }
     cellElement.onclick = InsertNewColumn.insertEvent.bind(at);
   }
 }
