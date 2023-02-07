@@ -1,4 +1,5 @@
 import {TableWrapper} from '../components/table/table-wrapper';
+import {Features} from '../homepage/features/features';
 import Layout from '@theme/Layout';
 import React from 'react';
 
@@ -29,9 +30,19 @@ function RightPanel() {
             ['Jupiter', 142984, 1898, 79],
             ['Saturn', 120536, 568, 82],
             ['Neptune', 49528, 102, 14],
+            ['Mercury', 4879, 0.33, 0],
           ]}
         ></TableWrapper>
       </div>
+    </div>
+  );
+}
+
+function StartPage() {
+  return (
+    <div id="start-page">
+      <LeftPanel></LeftPanel>
+      <RightPanel></RightPanel>
     </div>
   );
 }
@@ -40,10 +51,16 @@ export default function Home() {
   return (
     <Layout description="Fully customisable editable table component">
       <main>
-        <div style={{height: '100vh'}}>
-          <LeftPanel></LeftPanel>
-          <RightPanel></RightPanel>
+        <div id="homepage-content">
+          <StartPage></StartPage>
+          <Features></Features>
         </div>
+        <div>Dynamic update</div>
+        <div>Customization - API</div>
+        <div>Overflow</div>
+        <div>Striped rows</div>
+        <div>Toggle everything</div>
+        by Ovidijus Parsiunas
       </main>
     </Layout>
   );
