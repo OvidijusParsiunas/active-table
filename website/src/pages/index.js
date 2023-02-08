@@ -10,7 +10,6 @@ function LeftPanel() {
       <h1 id="sub-header">Framework agnostic table component for editable data experience</h1>
       <div style={{marginTop: '30px'}}>
         <button className="header-button">Install</button>
-        <button className="header-button">Documentation</button>
       </div>
     </div>
   );

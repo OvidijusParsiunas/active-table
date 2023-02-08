@@ -6,13 +6,15 @@ import {Overflow} from './overflow';
 import React from 'react';
 import './features.css';
 
+//  In the future - move this section to its own webpage and replace it with reviews-statistics-comments etc.
+
 function ColumnTypes() {
   return (
     <div style={{display: 'flex', marginTop: '80px'}}>
       <div style={{float: 'left', width: '50%'}}>
         <div className={'feature-text feature-text-size'}>
-          Active table offers a variety of column types and an extensive API to create custom ones with custom sorting,
-          validation, selection options and more.
+          Active table offers a variety of <b>column types</b> and an extensive API to create custom ones with custom
+          sorting, validation, selection options and more.
         </div>
       </div>
       <div style={{float: 'right', width: '50%'}}>
@@ -20,7 +22,23 @@ function ColumnTypes() {
           <TableWrapper
             tableStyle={{borderRadius: '5px', width: '100%'}}
             customColumnsSettings={[
-              {headerName: 'Name', activeTypeName: 'Label'},
+              {
+                headerName: 'Name',
+                activeTypeName: 'Name',
+                customColumnTypes: [
+                  {
+                    name: 'Name',
+                    label: {
+                      options: [
+                        {text: 'Peter', backgroundColor: '#cdfef7'},
+                        {text: 'John', backgroundColor: '#d6ffbd'},
+                        {text: 'Gregg', backgroundColor: '#afdffd'},
+                        {text: 'Jeff', backgroundColor: '#adcaff'},
+                      ],
+                    },
+                  },
+                ],
+              },
               {headerName: 'Date of Birth', activeTypeName: 'Date d-m-y'},
               {headerName: 'Verified', activeTypeName: 'Checkbox'},
               {

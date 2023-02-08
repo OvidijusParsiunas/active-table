@@ -94,7 +94,9 @@ export function DynamicUpdates() {
         </div>
       </div>
       <div style={{float: 'left', width: '50%'}}>
-        <div className={'feature-text feature-text-size'}>Stream data and update table cells dynamically.</div>
+        <div className={'feature-text feature-text-size'}>
+          Stream data and <b>update cells</b> dynamically.
+        </div>
       </div>
     </div>
   );

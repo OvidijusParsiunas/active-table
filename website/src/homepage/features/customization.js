@@ -4,9 +4,7 @@ import React from 'react';
 export function Customization() {
   return (
     <div style={{marginTop: '80px'}}>
-      <div style={{textAlign: 'center'}} className="feature-text-size">
-        Your table, your style
-      </div>
+      <div className="feature-style">Your table, your style</div>
       <div style={{display: 'flex', marginTop: '30px'}}>
         <div style={{float: 'left', width: '50%'}}>
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
@@ -79,7 +77,7 @@ export function Customization() {
                         borderRadius: '20px',
                       },
                     },
-                    activeButton: {default: {backgroundColor: '#2e72fd', color: 'white', border: '1px solid #2e72fd'}},
+                    activeButton: {default: {backgroundColor: '#45a6e6', color: 'white', border: '1px solid #45a6e6'}},
                     actionButtons: {default: {fontSize: '13px', paddingTop: '7px', height: '24px'}},
                     disabledButtons: {default: {backgroundColor: 'white'}},
                     firstVisibleButtonOverride: {},

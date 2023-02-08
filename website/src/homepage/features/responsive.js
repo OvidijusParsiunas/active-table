@@ -78,9 +78,7 @@ export function Responsive() {
       onMouseMove={mouseMoving.bind(this, mouseClick, leftTableRef, rightTableRef)}
       onMouseUp={mouseUp.bind(this, mouseClick)}
     >
-      <div style={{textAlign: 'center'}} className="feature-text-size">
-        Responsive design
-      </div>
+      <div className="feature-style">Responsive design</div>
       <div style={{display: 'flex', marginTop: '20px'}}>
         <div style={{float: 'left', width: 'calc(50% - 20px)'}} ref={leftTableRef}>
           <div style={{width: '90%', float: 'right', display: 'flex'}}>

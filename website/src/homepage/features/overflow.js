@@ -4,9 +4,7 @@ import React from 'react';
 export function Overflow() {
   return (
     <div style={{marginTop: '120px'}}>
-      <div style={{textAlign: 'center'}} className="feature-text-size">
-        Data consolidation
-      </div>
+      <div className="feature-style">Data consolidation</div>
       <div style={{display: 'flex', marginTop: '30px'}}>
         <div style={{float: 'left', width: '50%'}}>
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
