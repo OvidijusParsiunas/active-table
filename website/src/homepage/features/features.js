@@ -1,4 +1,5 @@
 import {TableWrapper} from '../../components/table/table-wrapper';
+import {DynamicUpdates} from './dynamicUpdates';
 import {Customization} from './customization';
 import {Responsive} from './responsive';
 import {Scrollbar} from './scrollbar';
@@ -51,12 +52,29 @@ function ColumnTypes() {
         <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
           <TableWrapper
             tableStyle={{borderRadius: '5px', width: '100%'}}
+            customColumnsSettings={[
+              {headerName: 'Name', activeTypeName: 'Label'},
+              {headerName: 'Date of Birth', activeTypeName: 'Date d-m-y'},
+              {headerName: 'Verified', activeTypeName: 'Checkbox'},
+              {
+                headerName: 'Hobby',
+                activeTypeName: 'Hobbies',
+                customColumnTypes: [
+                  {
+                    name: 'Hobbies',
+                    iconSettings: {reusableIconName: 'Select'},
+                    select: {options: ['Fishing', 'Soccer', 'Reading']},
+                  },
+                ],
+              },
+              {headerName: 'Balance', activeTypeName: 'Currency'},
+            ]}
             content={[
-              ['Planet', 'Diameter', 'Mass', 'Moons'],
-              ['Earth', 12756, 5.97, 1],
-              ['Mars', 6792, 0.642, 2],
-              ['Jupiter', 142984, 1898, 79],
-              ['Neptune', 49528, 102, 14],
+              ['Name', 'Date of Birth', 'Hobby', 'Verified'],
+              ['Peter', '12-08-1992', 'Fishing', '$20.00'],
+              ['John', '14-10-2012', 'Soccer', 'false'],
+              ['Gregg', '05-02-1975', 'Reading', '$80.00'],
+              ['Jeff', '24-04-2015', 'Soccer', 'false'],
             ]}
           ></TableWrapper>
         </div>
@@ -70,6 +88,7 @@ export function Features() {
     <div id="features-container">
       <h1 className="colored-sub-header">Main Features</h1>
       <ColumnTypes></ColumnTypes>
+      <DynamicUpdates></DynamicUpdates>
       <Scrollbar></Scrollbar>
       <Pagination></Pagination>
       <Responsive></Responsive>

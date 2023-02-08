@@ -22,14 +22,8 @@ export function Customization() {
               rowHoverStyle={{style: {backgroundColor: '#e7f5ff'}}}
               frameComponentsStyle={{inheritHeaderColors: true}}
               displayAddNewColumn={false}
-              overflow={{maxHeight: '259px'}}
               content={[
                 ['Planet', 'Diameter', 'Mass', 'Moons'],
-                ['Earth', 12756, 5.97, 1],
-                ['Mars', 6792, 0.642, 2],
-                ['Jupiter', 142984, 1898, 79],
-                ['Neptune', 49528, 102, 14],
-                ['Neptune', 49528, 102, 14],
                 ['Earth', 12756, 5.97, 1],
                 ['Mars', 6792, 0.642, 2],
                 ['Jupiter', 142984, 1898, 79],

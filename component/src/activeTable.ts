@@ -30,6 +30,7 @@ import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {PaginationInternal} from './types/paginationInternal';
 import {LabelColorUtils} from './utils/color/labelColorUtils';
+import {DynamicCellUpdateT} from './types/dynamicCellUpdateT';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
@@ -56,6 +57,7 @@ import {Overflow} from './types/overflow';
 
 // WORK - edit the generated type file and remove private properties, otherwise use one object for internal state
 // WORK - perhaps rename Internal types to use _
+// WORK - make sure border is calculated when setting width to be 100%
 @customElement('active-table')
 export class ActiveTable extends LitElement {
   static override styles = [activeTableStyle];
@@ -67,6 +69,11 @@ export class ActiveTable extends LitElement {
 
   @property({type: Function})
   getColumnsDetails: () => ColumnUpdateDetails[] = () => ColumnDetailsUtils.getAllColumnsDetails(this.columnsDetails);
+
+  @property({type: Function})
+  updateCell: (update: DynamicCellUpdateT) => void = (update: DynamicCellUpdateT) => {
+    DynamicCellUpdate.updateText(this, update);
+  };
 
   // WORK - generate/parse csv
 
@@ -99,6 +106,7 @@ export class ActiveTable extends LitElement {
   })
   allowDuplicateHeaders = true;
 
+  // WORK - perhaps this should be in colum settings
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
@@ -124,12 +132,6 @@ export class ActiveTable extends LitElement {
   // (using object to be able to set values without re-rendering the component)
   @state()
   stickyProps: StickyProps = {header: false};
-
-  // set as boolean to not update on initial render
-  @property({
-    type: Object,
-  })
-  updateCell = true;
 
   @property({type: Object})
   columnsSettings: ColumnsSettingsDefault = {};
@@ -306,16 +308,6 @@ export class ActiveTable extends LitElement {
     } else {
       super.connectedCallback();
     }
-  }
-
-  // using shouldUpdate instead of .hasChanged lifecycle property on the updateCell property because it cannot access
-  // 'this' variable - which we need to udpate the cell
-  override shouldUpdate(dynamicUpdate: Map<string, unknown>): boolean {
-    if (dynamicUpdate.has('updateCell') && typeof this.updateCell === 'object') {
-      DynamicCellUpdate.updateText(this, this.updateCell);
-      return false; // does not cause a re-render
-    }
-    return true;
   }
 }
 

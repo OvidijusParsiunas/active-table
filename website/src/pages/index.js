@@ -55,7 +55,6 @@ export default function Home() {
           <StartPage></StartPage>
           <Features></Features>
         </div>
-        <div style={{marginTop: '20px'}}>Dynamic update</div>
         by Ovidijus Parsiunas
       </main>
     </Layout>

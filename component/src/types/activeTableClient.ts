@@ -21,7 +21,6 @@ export interface ActiveTable extends LitElement {
   displayHeaderIcons?: boolean;
   spellCheck?: boolean;
   stickyHeader?: boolean | undefined;
-  updateCell?: DynamicCellUpdateT;
   columnsSettings?: ColumnsSettingsDefault;
   customColumnsSettings?: CustomColumnsSettings;
   tableStyle?: TableStyle;
@@ -42,6 +41,7 @@ export interface ActiveTable extends LitElement {
   pagination?: Pagination;
   getContent: () => TableContent;
   getColumnsDetails: () => ColumnUpdateDetails[];
+  updateCell: (update: DynamicCellUpdateT) => void;
   onCellUpdate?: OnCellUpdate;
   onColumnsUpdate?: OnColumnsUpdate;
   onContentUpdate?: OnTableUpdate;
