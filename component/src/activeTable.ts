@@ -266,7 +266,7 @@ export class ActiveTable extends LitElement {
   @property({type: Object})
   overflow: Overflow | null = null;
 
-  @property({type: Object})
+  @property({type: String})
   defaultText?: CellText = EMPTY_STRING;
 
   @property({
