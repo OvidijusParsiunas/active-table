@@ -10,7 +10,7 @@ import {StringDimension} from './dimensions';
 type TransformedClientProps = Omit<
   SetRequired<
     CustomColumnSettings<NoDimensionCSSStyle>,
-    'defaultText' | 'isDefaultTextRemovable' | 'isCellTextEditable' | 'isHeaderTextEditable' | 'isResizable'
+    'defaultText' | 'isDefaultTextRemovable' | 'isCellTextEditable' | 'isHeaderTextEditable' | 'isColumnResizable'
   >,
   'headerName'
 >;
@@ -28,7 +28,7 @@ export interface WidthsI {
 }
 
 export type ColumnSettingsInternal = TransformedClientProps & {
-  dropdown: ColumnDropdownSettings;
+  columnDropdown: ColumnDropdownSettings;
   // encompasses processed types available for the column
   // the reason why this is here is because this is processed once and settings is then added to column details
   types: ColumnTypesInternal;

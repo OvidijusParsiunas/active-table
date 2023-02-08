@@ -140,7 +140,7 @@ export class OverwriteCellsViaCSVOnPaste {
   private static insertColumnsInsideIfCantInsertRight(at: ActiveTable, CSV: CSV, startColumnIndex: number) {
     const columnsToBeOverwritten = at.columnsDetails.slice(startColumnIndex);
     const indexOfNoRightInsertionColumn = columnsToBeOverwritten.findIndex((columnDetails) => {
-      return columnDetails.settings.dropdown.isInsertRightAvailable === false;
+      return columnDetails.settings.columnDropdown.isInsertRightAvailable === false;
     });
     // if can insert right for all proceeding, no need to augment csv or table
     if (indexOfNoRightInsertionColumn === -1) return;

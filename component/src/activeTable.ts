@@ -1,14 +1,15 @@
+import {CustomColumnsSettings, CustomColumnSettings, DimensionalCSSStyle} from './types/columnsSettings';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
 import {ColumnUpdateDetails, OnCellUpdate, OnColumnsUpdate, OnTableUpdate} from './types/onUpdate';
 import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
-import {CustomColumnsSettings, CustomColumnSettings} from './types/columnsSettings';
 import {PaginationInternalUtils} from './utils/pagination/paginationInternalUtils';
 import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
+import {ColumnDropdownSettingsDefault} from './types/columnDropdownSettings';
 import {PaginationElements} from './elements/pagination/paginationElements';
 import {ColumnDetailsUtils} from './utils/columnDetails/columnDetailsUtils';
 import {DynamicCellUpdate} from './utils/dynamicUpdates/dynamicCellUpdate';
@@ -17,14 +18,15 @@ import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {FrameComponentsInternal} from './types/frameComponentsInternal';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
-import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
 import {ColumnsSettingsDefault} from './types/columnsSettingsDefault';
+import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {CellHighlightUtils} from './utils/color/cellHighlightUtils';
 import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
 import {customElement, property, state} from 'lit/decorators.js';
 import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {StripedRowsInternal} from './types/stripedRowsInternal';
+import {DEFAULT_COLUMN_TYPES} from './enums/defaultColumnTypes';
 import {DefaultCellHoverColors} from './types/cellStateColors';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
@@ -32,20 +34,23 @@ import {PaginationInternal} from './types/paginationInternal';
 import {LabelColorUtils} from './utils/color/labelColorUtils';
 import {DynamicCellUpdateT} from './types/dynamicCellUpdateT';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
+import {CellText, TableContent} from './types/tableContent';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
+import {ColumnType, ColumnTypes} from './types/columnType';
 import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
 import {ColumnResizerColors} from './types/columnSizer';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
+import {HeaderIconStyle} from './types/headerIconStyle';
+import {HoverableStyles} from './types/hoverableStyles';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {GlobalItemColors} from './types/itemToColor';
 import {StripedRows} from './utils/rows/stripedRows';
 import {activeTableStyle} from './activeTableStyle';
 import {RowHoverStyle} from './types/rowHoverStyle';
-import {TableContent} from './types/tableContent';
 import {StripedRowsT} from './types/stripedRows';
 import {StickyProps} from './types/stickyProps';
 import {Browser} from './utils/browser/browser';
@@ -53,6 +58,7 @@ import {LitElement, PropertyValues} from 'lit';
 import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
+import {EMPTY_STRING} from './consts/text';
 import {Overflow} from './types/overflow';
 
 // WORK - edit the generated type file and remove private properties, otherwise use one object for internal state
@@ -126,14 +132,15 @@ export class ActiveTable extends LitElement {
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  stickyHeader: boolean | undefined;
+  stickyHeader?: boolean;
 
   // setting header to true if above is undefined and vertical overflow is present
   // (using object to be able to set values without re-rendering the component)
   @state()
   stickyProps: StickyProps = {header: false};
 
-  @property({type: Object})
+  // REF-21
+  @state()
   columnsSettings: ColumnsSettingsDefault = {};
 
   @property({type: Array<CustomColumnSettings>})
@@ -255,8 +262,60 @@ export class ActiveTable extends LitElement {
   @state()
   stripedRowsInternal: StripedRowsInternal | null = null;
 
+  // WORK - remove nulls and replace with undefined?
   @property({type: Object})
   overflow: Overflow | null = null;
+
+  @property({type: Object})
+  defaultText?: CellText = EMPTY_STRING;
+
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  isDefaultTextRemovable?: boolean = true;
+
+  @property({type: Object})
+  cellStyle?: DimensionalCSSStyle;
+
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  isCellTextEditable? = true;
+
+  @property({type: Object})
+  headerStyles?: HoverableStyles;
+
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  isHeaderTextEditable? = true; // uses isCellTextEditable by default
+
+  @property({type: Object})
+  headerIconStyle?: HeaderIconStyle;
+
+  // if no width is defined this will simply just not show the sizer
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  isColumnResizable?: boolean = true;
+
+  @property({type: Array<DEFAULT_COLUMN_TYPES>})
+  availableDefaultColumnTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
+
+  @property({type: Array<ColumnType>})
+  customColumnTypes?: ColumnTypes; // additional custom column types
+
+  // If not provided defaultActiveTypeName will default to first of the following:
+  // First type to not have validation/First available type/'Text'
+  @property({type: String})
+  defaultActiveTypeName?: string;
+
+  @property({type: Object})
+  columnDropdown?: ColumnDropdownSettingsDefault;
 
   @state()
   overflowInternal: OverflowInternal | null = null;
@@ -283,6 +342,7 @@ export class ActiveTable extends LitElement {
 
   override update(changedProperties: PropertyValues) {
     StickyPropsUtils.process(this);
+    ColumnSettingsUtils.setUpInternalSettings(this);
     FrameComponentsInternalUtils.set(this);
     DefaultColumnTypes.createDropdownItemsForDefaultTypes();
     RowDropdownSettingsUtil.process(this);
@@ -296,7 +356,6 @@ export class ActiveTable extends LitElement {
     if (this.pagination) PaginationElements.create(this);
     InitialContentProcessing.preProcess(this);
     WindowElement.setEvents(this);
-    ColumnSettingsUtils.setUpInternalSettings(this);
     this.spellcheck = this.spellCheck;
     super.update(changedProperties);
   }

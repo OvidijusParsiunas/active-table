@@ -66,8 +66,8 @@ export class InsertRemoveColumnSizer {
   }
 
   private static isNotResizable(columnDetails: ColumnDetailsT) {
-    const {widths, isResizable} = columnDetails.settings;
-    return widths?.staticWidth !== undefined || !isResizable;
+    const {widths, isColumnResizable} = columnDetails.settings;
+    return widths?.staticWidth !== undefined || !isColumnResizable;
   }
 
   // REF-13

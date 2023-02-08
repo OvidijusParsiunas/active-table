@@ -91,7 +91,6 @@ const config = {
   // // // rowDropdown: RowDropdownSettings;
   // // // maxRows?: number;
   // // columns:
-  // // // columnsSettings: ColumnsSettingsDefault;
   // // // customColumnsSettings: CustomColumnsSettings;
   // // // preserveNarrowColumns: boolean;
   // // // maxColumns?: number;

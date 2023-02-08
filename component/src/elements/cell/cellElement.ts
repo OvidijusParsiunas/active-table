@@ -142,7 +142,7 @@ export class CellElement {
   public static createCellElement(at: ActiveTable, text: CellText, colIndex: number, isHeader: boolean) {
     const {columnsSettings: {cellStyle, headerStyles}, columnsDetails} = at;
     const columnDetails = columnsDetails[colIndex];
-    const isOpenViaCellClick = at.columnsSettings.dropdown?.displaySettings?.openMethod?.cellClick;
+    const isOpenViaCellClick = at.columnsSettings.columnDropdown?.displaySettings?.openMethod?.cellClick;
     const cellElement = CellElement.createContentCell(isHeader, cellStyle,
       isHeader ? headerStyles?.default : {}, isOpenViaCellClick);
     const {settings} = columnDetails;

@@ -81,7 +81,7 @@ Stripe based styling for rows.
 <TableContainer>
   <active-table
     stripedRows='{"odd": {"backgroundColor": ""}, "even": {"backgroundColor": "#ebebeb7a"}}'
-    columnsSettings='{"cellStyle": {"borderBottom": "unset"}}'
+    cellStyle='{"borderBottom": "unset"}'
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
@@ -108,7 +108,7 @@ Stripe based styling for rows.
 ```text
 <active-table
   stripedRows='{"odd": {"backgroundColor": ""}, "even": {"backgroundColor": "#ebebeb7a"}}'
-  columnsSettings='{"cellStyle": {"borderBottom": "unset"}}'
+  cellStyle='{"borderBottom": "unset"}'
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
@@ -158,7 +158,7 @@ header row when set to `false`.
 <TableContainer>
   <active-table
     rowDropdown='{"displaySettings":{"isAvailable": true, "openMethod": {"overlayClick": true}}, "canEditHeaderRow": false}'
-    columnsSettings='{"dropdown":{"displaySettings":{"isAvailable": true, "openMethod": {"overlayClick": true } } } }'
+    columnDropdown='{"displaySettings":{"isAvailable": true, "openMethod": {"overlayClick": true }}}'
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],

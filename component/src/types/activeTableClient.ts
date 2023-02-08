@@ -1,6 +1,5 @@
 import {OnCellUpdate, OnColumnsUpdate, OnTableUpdate, ColumnUpdateDetails} from './onUpdate';
 import {FrameComponentsStyle, IndexColumnT} from './frameComponents';
-import {DropdownDisplaySettings} from './dropdownDisplaySettings';
 import {ColumnsSettingsDefault} from './columnsSettingsDefault';
 import {RowDropdownSettings} from './rowDropdownSettings';
 import {DynamicCellUpdateT} from './dynamicCellUpdateT';
@@ -34,7 +33,6 @@ export interface ActiveTable extends LitElement {
   frameComponentsStyle?: FrameComponentsStyle;
   dataStartsAtHeader?: boolean;
   columnResizerColors?: ColumnResizerColors;
-  columnDropdownDisplaySettings?: DropdownDisplaySettings;
   rowDropdown?: RowDropdownSettings;
   stripedRows?: StripedRowsT | boolean;
   overflow?: Overflow;

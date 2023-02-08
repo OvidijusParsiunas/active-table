@@ -16,22 +16,22 @@ export class OptionColorButtonEvents {
   }
 
   // prettier-ignore
-  private static updateIfUpdatable(columnDetails: ColumnDetailsT, activeTypeName: string,
+  private static updateIfUpdatable(columnDetails: ColumnDetailsT, defaultActiveTypeName: string,
       colorPickerNewValue: ColorPickerNewValue) {
     const {itemText, backgroundColor} = colorPickerNewValue;
     const itemDetails = columnDetails.cellDropdown.itemsDetails[itemText];
-    if (itemDetails && (!itemDetails.isCustomBackgroundColor || activeTypeName === columnDetails.activeType.name)) {
+    if (itemDetails && (!itemDetails.isCustomBackgroundColor || defaultActiveTypeName === columnDetails.activeType.name)) {
       itemDetails.backgroundColor = backgroundColor;
       OptionColorButtonEvents.updateCellElements(columnDetails, colorPickerNewValue);
     }
   }
 
   // prettier-ignore
-  private static updateElements(columnsDetails: ColumnsDetailsT, activeTypeName: string,
+  private static updateElements(columnsDetails: ColumnsDetailsT, defaultActiveTypeName: string,
       colorPickerNewValue: ColorPickerNewValue) {
     columnsDetails.forEach((columnDetails) => {
       if (columnDetails.cellDropdown.labelDetails) {
-        OptionColorButtonEvents.updateIfUpdatable(columnDetails, activeTypeName, colorPickerNewValue)
+        OptionColorButtonEvents.updateIfUpdatable(columnDetails, defaultActiveTypeName, colorPickerNewValue)
       }
     });
   }

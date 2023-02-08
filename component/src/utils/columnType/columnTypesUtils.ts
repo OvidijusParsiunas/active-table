@@ -23,8 +23,8 @@ export class ColumnTypesUtils {
       if (type) return type;
     }
     // if there is no previous type or it is not found in new settings - use the one the user has set
-    if (settings.activeTypeName) {
-      const type = ColumnTypesUtils.getTypeByName(settings.types, settings.activeTypeName);
+    if (settings.defaultActiveTypeName) {
+      const type = ColumnTypesUtils.getTypeByName(settings.types, settings.defaultActiveTypeName);
       if (type) return type;
     }
     return undefined;
@@ -33,7 +33,7 @@ export class ColumnTypesUtils {
   public static getActiveType(settings: ColumnSettingsInternal, previousTypeName?: string): ColumnTypeInternal {
     const activeType = ColumnTypesUtils.getTypeBasedOnProperties(settings, previousTypeName);
     if (activeType) return activeType;
-    // if activeTypeName is not provided, default to first of the following:
+    // if defaultActiveTypeName is not provided, default to first of the following:
     // First type to not have validation/First available type/'Text'
     const noValidationType = settings.types.find((type) => !type.textValidation.func);
     if (noValidationType) return noValidationType;
@@ -168,9 +168,9 @@ export class ColumnTypesUtils {
 
   private static getAvailableTypes(settings: ColumnSettingsInternal): ColumnTypes {
     let columnTypes = [...DefaultColumnTypes.DEFAULT_TYPES];
-    const {defaultColumnTypes, customColumnTypes} = settings;
-    if (defaultColumnTypes) {
-      const lowerCaseDefaultNames = defaultColumnTypes.map((typeName) => typeName.toLocaleLowerCase());
+    const {availableDefaultColumnTypes, customColumnTypes} = settings;
+    if (availableDefaultColumnTypes) {
+      const lowerCaseDefaultNames = availableDefaultColumnTypes.map((typeName) => typeName.toLocaleLowerCase());
       columnTypes = columnTypes.filter((type) => {
         return lowerCaseDefaultNames.indexOf(type.name.toLocaleLowerCase() as DEFAULT_COLUMN_TYPES) > -1;
       });

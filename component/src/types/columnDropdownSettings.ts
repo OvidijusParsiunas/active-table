@@ -1,3 +1,5 @@
+import {DropdownDisplaySettings} from './dropdownDisplaySettings';
+
 export interface ColumnDropdownSettings {
   isSortAvailable?: boolean; // true by default
   isDeleteAvailable?: boolean; // true by default
@@ -8,3 +10,6 @@ export interface ColumnDropdownSettings {
   isInsertRightAvailable?: boolean; // true by default
   isMoveAvailable?: boolean; // true by default
 }
+
+// displaySettings is only available for default columns for UX consistency
+export type ColumnDropdownSettingsDefault = {displaySettings: DropdownDisplaySettings} & ColumnDropdownSettings;

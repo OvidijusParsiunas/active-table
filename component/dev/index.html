@@ -41,26 +41,30 @@
           // element.setAttribute('content', `[[${myValue[0]}],[${myValue[1]}]]`);
           element.setAttribute('tableStyle', JSON.stringify({border: '20px solid black'}));
           element.setAttribute(
-            'columnsSettings',
-            JSON.stringify({
-              cellStyle: {borderRight: '4px solid grey', borderLeft: '8px solid red', backgroundColor: 'blue'},
-              defaultText: '-',
-              customColumnTypes: [
-                {
-                  name: 'Custom type 1',
-                  textValidation: {
-                    func: `(cellText) => {
+            'cellStyle',
+            JSON.stringify({borderRight: '4px solid grey', borderLeft: '8px solid red', backgroundColor: 'blue'})
+          );
+          element.setAttribute('defaultText', '-');
+          element.setAttribute(
+            'customColumnTypes',
+            JSON.stringify([
+              {
+                name: 'Custom type 1',
+                textValidation: {
+                  func: `(cellText) => {
                       return !isNaN(cellText)
                     }`,
-                    setTextToDefaultOnFail: false,
-                    failedStyle: {backgroundColor: 'yellow'},
-                  },
+                  setTextToDefaultOnFail: false,
+                  failedStyle: {backgroundColor: 'yellow'},
                 },
-              ],
-              isDefaultTextRemovable: false,
-              headerStyles: {
-                // default: {color: 'grey', paddingTop: '12px', paddingBottom: '12px'},
               },
+            ])
+          );
+          element.setAttribute('isDefaultTextRemovable', 'false');
+          element.setAttribute(
+            'headerStyles',
+            JSON.stringify({
+              default: {color: 'grey', paddingTop: '12px', paddingBottom: '12px'},
             })
           );
           element.setAttribute(
@@ -112,7 +116,7 @@
                 ],
                 isInsertLeftAvailable: false,
                 isInsertRightAvailable: false,
-                activeTypeName: 'Custom type 2',
+                defaultActiveTypeName: 'Custom type 2',
               },
               {
                 headerName: 'Diameter',
@@ -130,7 +134,7 @@
                   },
                 },
                 isDefaultTextRemovable: false,
-                // defaultColumnTypes: ['number'],
+                // availableDefaultColumnTypes: ['number'],
                 customColumnTypes: [
                   {
                     name: 'Custom type 2',
@@ -164,7 +168,7 @@
                   // },
                 ],
                 isMoveAvailable: true,
-                activeTypeName: 'Custom type 2',
+                defaultActiveTypeName: 'Custom type 2',
                 isHeaderTextEditable: true,
                 headerIconStyle: {
                   filterColor:
@@ -206,7 +210,7 @@
                     },
                   },
                 ],
-                activeTypeName: 'Custom type 3',
+                defaultActiveTypeName: 'Custom type 3',
                 // headerStyles: {
                 //   default: {
                 //     border: '1px solid green',
@@ -283,7 +287,6 @@
           //     addNewRowButton: true,
           //   })
           // );
-          // element.setAttribute('columnDropdownDisplaySettings', JSON.stringify({isAvailable: true}));
           // element.setAttribute(
           //   'columnResizerColors',
           //   JSON.stringify({hover: {backgroundColor: 'red'}, click: {backgroundColor: 'green'}})

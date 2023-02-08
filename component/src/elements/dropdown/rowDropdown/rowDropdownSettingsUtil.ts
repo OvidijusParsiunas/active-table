@@ -31,7 +31,7 @@ export class RowDropdownSettingsUtil {
     rowDropdown.canEditHeaderRow ??= true;
     rowDropdown.isDeleteAvailable ??= true;
     rowDropdown.displaySettings ??= {};
-    RowDropdownSettingsUtil.preprocessOpenMethod(rowDropdown, columnsSettings.dropdown?.displaySettings);
+    RowDropdownSettingsUtil.preprocessOpenMethod(rowDropdown, columnsSettings.columnDropdown?.displaySettings);
     DropdownDisplaySettingsUtil.process(rowDropdown.displaySettings);
     RowDropdownSettingsUtil.postprocessOpenMethod(rowDropdown, frameComponentsInternal);
   }

@@ -10,12 +10,10 @@ export function Customization() {
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
             <TableWrapper
               tableStyle={{width: '100%'}}
-              columnsSettings={{
-                headerStyles: {default: {backgroundColor: '#5686b7', color: 'white'}},
-                headerIconStyle: {
-                  filterColor:
-                    'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
-                },
+              headerStyles={{default: {backgroundColor: '#5686b7', color: 'white'}}}
+              headerIconStyle={{
+                filterColor:
+                  'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
               }}
               rowHoverStyle={{style: {backgroundColor: '#e7f5ff'}}}
               frameComponentsStyle={{inheritHeaderColors: true}}
@@ -34,12 +32,10 @@ export function Customization() {
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
             <TableWrapper
               tableStyle={{borderRadius: '5px', width: '100%'}}
-              columnsSettings={{
-                headerStyles: {default: {backgroundColor: '#52555b', color: 'white'}},
-                headerIconStyle: {
-                  filterColor:
-                    'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
-                },
+              headerStyles={{default: {backgroundColor: '#52555b', color: 'white'}}}
+              headerIconStyle={{
+                filterColor:
+                  'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
               }}
               stripedRows={{odd: {backgroundColor: ''}, even: {backgroundColor: '#ebebeb7a'}}}
               frameComponentsStyle={{inheritHeaderColors: true}}
@@ -59,9 +55,7 @@ export function Customization() {
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
             <TableWrapper
               tableStyle={{width: '100%', borderRadius: '3px', borderBottom: 'unset'}}
-              columnsSettings={{
-                headerStyles: {default: {backgroundColor: '#f9f9f9'}},
-              }}
+              headerStyles={{default: {backgroundColor: '#f9f9f9'}}}
               pagination={{
                 style: {
                   pageButtons: {

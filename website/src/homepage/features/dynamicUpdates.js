@@ -45,9 +45,9 @@ export function DynamicUpdates() {
               },
               {
                 headerName: 'Change',
-                activeTypeName: 'Change',
+                defaultActiveTypeName: 'Change',
                 cellStyle: {fontWeight: '500'},
-                dropdown: {isSortAvailable: false},
+                columnDropdown: {isSortAvailable: false},
                 customColumnTypes: [
                   {
                     name: 'Change',
@@ -62,25 +62,23 @@ export function DynamicUpdates() {
               },
               {
                 headerName: 'Current',
-                defaultColumnTypes: ['Currency'],
+                availableDefaultColumnTypes: ['Currency'],
                 cellStyle: {fontWeight: '500'},
-                dropdown: {isSortAvailable: false},
+                columnDropdown: {isSortAvailable: false},
               },
               {
                 headerName: 'Last',
                 cellStyle: {fontWeight: '500', color: 'grey'},
                 headerStyles: {default: {color: '#575757'}},
-                defaultColumnTypes: ['Currency'],
-                dropdown: {isSortAvailable: false},
+                availableDefaultColumnTypes: ['Currency'],
+                columnDropdown: {isSortAvailable: false},
               },
             ]}
             stripedRows={{odd: {backgroundColor: ''}, even: {backgroundColor: '#eeeeee7a'}}}
-            columnsSettings={{
-              cellStyle: {paddingLeft: '10px'},
-              isCellTextEditable: false,
-              defaultColumnTypes: [],
-              dropdown: {displaySettings: {openMethod: {overlayClick: true}}},
-            }}
+            cellStyle={{paddingLeft: '10px'}}
+            isCellTextEditable={false}
+            availableDefaultColumnTypes={[]}
+            columnDropdown={{displaySettings: {openMethod: {overlayClick: true}}}}
             displayHeaderIcons={false}
             content={[
               ['Stock', 'Current', 'Last', 'Change', 'Yield'],

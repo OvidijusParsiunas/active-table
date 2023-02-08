@@ -50,7 +50,7 @@ export class ColumnDropdownItem {
   private static setUpInputElement(at: ActiveTable,
       columnIndex: number, cellElement: HTMLElement, inputItem: HTMLElement, dropdownElement: HTMLElement) {
     const {isCellTextEditable, isHeaderTextEditable} = at.columnsDetails[columnIndex].settings;
-    if (at.columnsSettings.dropdown?.displaySettings.openMethod?.overlayClick ||
+    if (at.columnsSettings.columnDropdown?.displaySettings.openMethod?.overlayClick ||
         (ObjectUtils.areValuesFullyDefined(isHeaderTextEditable) ? !isHeaderTextEditable : !isCellTextEditable)) {
       DropdownItem.toggleItem(inputItem, false);
     } else {
@@ -64,13 +64,13 @@ export class ColumnDropdownItem {
     ColumnTypeDropdown.setUp(at, dropdownElement, columnIndex);
     const items = Array.from(dropdownElement.children) as HTMLElement[];
     ColumnDropdownItem.setUpInputElement(at, columnIndex, cellElement, items[0], dropdownElement);
-    ColumnDropdownItem.toggleItems(at.columnsDetails[columnIndex].settings.dropdown, items);
+    ColumnDropdownItem.toggleItems(at.columnsDetails[columnIndex].settings.columnDropdown, items);
     ColumnDropdownItem.updateItemsStyle(at, columnIndex, dropdownElement);
     ColumnDropdownItemEvents.setItemEvents(at, columnIndex, dropdownElement);
   }
 
   private static updateMoveColumnItemsStyle(at: ActiveTable, colIndex: number, items: HTMLElement[]) {
-    const {isMoveAvailable} = at.columnsDetails[colIndex].settings.dropdown;
+    const {isMoveAvailable} = at.columnsDetails[colIndex].settings.columnDropdown;
     if (!isMoveAvailable) return;
     DropdownItem.toggleUsability(items[8], true);
     DropdownItem.toggleUsability(items[9], true);
