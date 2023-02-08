@@ -11,6 +11,7 @@ export type IndexColumnT =
       wrapIndexCellText: boolean; // false by default
     };
 
+// WORK - when header style is set and this style is set, the top left cell hover still takes effect
 // REF-22
 // frame components are comprised of index column, add new column column and add new row row
 // to be used by the client

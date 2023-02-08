@@ -173,3 +173,8 @@
   margin-top: 5px;
   background-color: rgb(212, 212, 212);
 }
+
+.custom-button {
+  background-color: #2e72fd !important;
+  margin-right: unset !important;
+}

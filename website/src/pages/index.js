@@ -54,6 +54,13 @@ export default function Home() {
         <div id="homepage-content">
           <StartPage></StartPage>
           <Features></Features>
+          <div
+            style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '120px', marginBottom: '120px'}}
+          >
+            <button className={'header-button custom-button'} style={{backgroundColor: 'blue'}}>
+              Explore API for more
+            </button>
+          </div>
         </div>
         by Ovidijus Parsiunas
       </main>

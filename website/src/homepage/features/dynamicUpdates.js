@@ -14,7 +14,7 @@ function updateCell(tableElement) {
     } else if (columnIndex === 3) {
       newText = `${((Math.round(Math.random()) ? 1 : -1) * Math.round(Math.random() * 1.5 * 10)) / 10}%`;
     } else {
-      newText = `${Math.round(Math.random() * 1.5 * 10) / 10}Mbps`;
+      newText = `${Math.round(Math.random() * 2.5 * 10) / 10}%`;
     }
     tableElement.updateCell({newText, rowIndex, columnIndex});
     updateCell(tableElement);
@@ -30,12 +30,9 @@ export function DynamicUpdates() {
   });
 
   return (
-    <div style={{display: 'flex', marginTop: '80px'}}>
-      <div style={{float: 'left', width: '50%'}}>
-        <div className={'feature-text feature-text-size'}>Update the table programmatically.</div>
-      </div>
+    <div style={{display: 'flex', marginTop: '120px'}}>
       <div style={{float: 'right', width: '50%'}}>
-        <div ref={dynamicUpdateTableContainer} style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
+        <div ref={dynamicUpdateTableContainer} style={{width: '85%', float: 'right', marginRight: '10px'}}>
           <TableWrapper
             tableStyle={{borderRadius: '5px', width: '100%'}}
             displayIndexColumn={false}
@@ -50,13 +47,13 @@ export function DynamicUpdates() {
                 headerName: 'Change',
                 activeTypeName: 'Change',
                 cellStyle: {fontWeight: '500'},
+                dropdown: {isSortAvailable: false},
                 customColumnTypes: [
                   {
                     name: 'Change',
                     customTextProcessing: {
                       changeStyleFunc: (cellText) => {
                         const percentageNumber = Number.parseFloat(cellText);
-                        console.log(percentageNumber);
                         return {color: percentageNumber >= 0 ? 'green' : 'red'};
                       },
                     },
@@ -65,23 +62,28 @@ export function DynamicUpdates() {
               },
               {
                 headerName: 'Current',
+                defaultColumnTypes: ['Currency'],
                 cellStyle: {fontWeight: '500'},
+                dropdown: {isSortAvailable: false},
               },
               {
                 headerName: 'Last',
                 cellStyle: {fontWeight: '500', color: 'grey'},
                 headerStyles: {default: {color: '#575757'}},
+                defaultColumnTypes: ['Currency'],
+                dropdown: {isSortAvailable: false},
               },
             ]}
             stripedRows={{odd: {backgroundColor: ''}, even: {backgroundColor: '#eeeeee7a'}}}
             columnsSettings={{
               cellStyle: {paddingLeft: '10px'},
               isCellTextEditable: false,
+              defaultColumnTypes: [],
               dropdown: {displaySettings: {openMethod: {overlayClick: true}}},
             }}
             displayHeaderIcons={false}
             content={[
-              ['Stock', 'Current', 'Last', 'Change', 'Network'],
+              ['Stock', 'Current', 'Last', 'Change', 'Yield'],
               ['JPA', '4.5%', '1400MB', '0.2MB/s', '1.2Mbps'],
               ['REFR', '2.5%', '800MB', '0.1MB/s', '0.5Mbps'],
               ['CORA', '5.5%', '1000MB', '1.4MB/s', '0.7Mbps'],
@@ -90,6 +92,9 @@ export function DynamicUpdates() {
             ]}
           ></TableWrapper>
         </div>
+      </div>
+      <div style={{float: 'left', width: '50%'}}>
+        <div className={'feature-text feature-text-size'}>Stream data and update table cells dynamically.</div>
       </div>
     </div>
   );

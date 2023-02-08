@@ -11,6 +11,7 @@ export class RowElement {
     return rowElement;
   }
 
+  // WORK - may need to toggle this for pagination
   private static moveClassToLastVisibleRow(lastVisibleRow: Element, currentOwnerRow: HTMLElement | null) {
     if (currentOwnerRow) currentOwnerRow.id = '';
     lastVisibleRow.id = RowElement.LAST_VISIBLE_ROW_ID;

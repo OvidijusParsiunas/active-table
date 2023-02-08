@@ -32,6 +32,7 @@ export const activeTableStyle = css`
     border-top-left-radius: inherit;
   }
 
+  /* WORK - when add new column not present and pagination is on - this does not work */
   tbody > .row:first-child > *:last-child {
     border-top-right-radius: inherit;
   }

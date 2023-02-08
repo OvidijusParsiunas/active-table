@@ -7,6 +7,7 @@ import {Optional} from '../../../types/utilityTypes';
 import {ActiveTable} from '../../../activeTable';
 import {PX} from '../../../types/dimensions';
 
+// WORK - is not 100% size when there is no border-right
 export class ColumnSizer {
   public static shouldWidthBeIncreased(widthPx: number) {
     return widthPx > 4;

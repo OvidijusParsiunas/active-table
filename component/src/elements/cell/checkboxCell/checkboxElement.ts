@@ -1,3 +1,4 @@
+// TO-DO - checkbox icon should be a button that highlight/unhighlights all select boxes
 export class CheckboxElement {
   private static createCheckbox(isCellTextEditable: boolean) {
     const checkbox = document.createElement('input');
