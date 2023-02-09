@@ -79,7 +79,7 @@ const config = {
   // // content:
   // // // content: TableContent;
   // // // spellCheck: boolean;
-  // // // updateCell: DynamicCellUpdateT;
+  // // // updateCell: ProgrammaticCellUpdateT;
   // // header:
   // // // stickyHeader: boolean;
   // // // dataStartsAtHeader: boolean;

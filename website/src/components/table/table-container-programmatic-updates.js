@@ -20,13 +20,13 @@ function updateCell(tableElement) {
   }, 100);
 }
 
-export default function TableContainerDynamicUpdates({children}) {
-  const dynamicUpdateTableContainer = React.useRef(null);
-  if (dynamicUpdateTableContainer.current) {
-    setTimeout(() => updateCell(dynamicUpdateTableContainer.current.children[0].children[0].children[0]));
+export default function TableContainerProgrammaticUpdates({children}) {
+  const programmaticUpdateTableContainer = React.useRef(null);
+  if (programmaticUpdateTableContainer.current) {
+    setTimeout(() => updateCell(programmaticUpdateTableContainer.current.children[0].children[0].children[0]));
   }
   return (
-    <div ref={dynamicUpdateTableContainer}>
+    <div ref={programmaticUpdateTableContainer}>
       <TableContainer>{children}</TableContainer>
     </div>
   );

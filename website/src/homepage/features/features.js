@@ -1,5 +1,5 @@
 import {TableWrapper} from '../../components/table/table-wrapper';
-import {DynamicUpdates} from './dynamicUpdates';
+import {ProgrammaticUpdates} from './programmaticUpdates';
 import {Customization} from './customization';
 import {Responsive} from './responsive';
 import {Overflow} from './overflow';
@@ -73,7 +73,7 @@ export function Features() {
     <div id="features-container">
       <h1 className="colored-sub-header">Main Features</h1>
       <ColumnTypes></ColumnTypes>
-      <DynamicUpdates></DynamicUpdates>
+      <ProgrammaticUpdates></ProgrammaticUpdates>
       <Responsive></Responsive>
       <Overflow></Overflow>
       <Customization></Customization>

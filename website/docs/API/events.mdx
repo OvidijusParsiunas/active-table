@@ -19,7 +19,8 @@ When using these properties take care not to re-render the table component when 
   &nbsp;&nbsp;&nbsp;&nbsp;`updateType: "add"|"update"|"remove"` <br />
   }) => `void`
 
-Triggered when any content within the table has changed.
+Triggered when any content within the table has changed. Both `rowIndex` and `columnIndex` begin at _0_
+where it is the header row for `rowIndex` and the left-most column for `columnIndex`.
 
 #### Example
 

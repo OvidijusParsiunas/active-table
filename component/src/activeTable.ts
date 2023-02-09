@@ -3,6 +3,7 @@ import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOv
 import {ColumnUpdateDetails, OnCellUpdate, OnColumnsUpdate, OnTableUpdate} from './types/onUpdate';
 import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
+import {ProgrammaticCellUpdate} from './utils/programmaticUpdates/programmaticCellUpdate';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {PaginationInternalUtils} from './utils/pagination/paginationInternalUtils';
 import {InitialContentProcessing} from './utils/content/initialContentProcessing';
@@ -12,12 +13,12 @@ import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {ColumnDropdownSettingsDefault} from './types/columnDropdownSettings';
 import {PaginationElements} from './elements/pagination/paginationElements';
 import {ColumnDetailsUtils} from './utils/columnDetails/columnDetailsUtils';
-import {DynamicCellUpdate} from './utils/dynamicUpdates/dynamicCellUpdate';
 import {FrameComponentsStyle, IndexColumnT} from './types/frameComponents';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {FrameComponentsInternal} from './types/frameComponentsInternal';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
+import {ProgrammaticCellUpdateT} from './types/programmaticCellUpdateT';
 import {ColumnsSettingsDefault} from './types/columnsSettingsDefault';
 import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
@@ -32,7 +33,6 @@ import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {PaginationInternal} from './types/paginationInternal';
 import {LabelColorUtils} from './utils/color/labelColorUtils';
-import {DynamicCellUpdateT} from './types/dynamicCellUpdateT';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
 import {CellText, TableContent} from './types/tableContent';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
@@ -77,8 +77,8 @@ export class ActiveTable extends LitElement {
   getColumnsDetails: () => ColumnUpdateDetails[] = () => ColumnDetailsUtils.getAllColumnsDetails(this.columnsDetails);
 
   @property({type: Function})
-  updateCell: (update: DynamicCellUpdateT) => void = (update: DynamicCellUpdateT) => {
-    DynamicCellUpdate.updateText(this, update);
+  updateCell: (update: ProgrammaticCellUpdateT) => void = (update: ProgrammaticCellUpdateT) => {
+    ProgrammaticCellUpdate.updateText(this, update);
   };
 
   // WORK - generate/parse csv

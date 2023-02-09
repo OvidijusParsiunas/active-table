@@ -21,18 +21,18 @@ function updateCell(tableElement) {
   }, 10);
 }
 
-export function DynamicUpdates() {
-  const dynamicUpdateTableContainer = React.useRef(null);
+export function ProgrammaticUpdates() {
+  const programmaticUpdateTableContainer = React.useRef(null);
   setTimeout(() => {
-    if (dynamicUpdateTableContainer.current) {
-      setTimeout(() => updateCell(dynamicUpdateTableContainer.current.children[0]));
+    if (programmaticUpdateTableContainer.current) {
+      setTimeout(() => updateCell(programmaticUpdateTableContainer.current.children[0]));
     }
   });
 
   return (
     <div style={{display: 'flex', marginTop: '120px'}}>
       <div style={{float: 'right', width: '50%'}}>
-        <div ref={dynamicUpdateTableContainer} style={{width: '85%', float: 'right', marginRight: '10px'}}>
+        <div ref={programmaticUpdateTableContainer} style={{width: '85%', float: 'right', marginRight: '10px'}}>
           <TableWrapper
             tableStyle={{borderRadius: '5px', width: '100%'}}
             displayIndexColumn={false}
@@ -93,7 +93,7 @@ export function DynamicUpdates() {
       </div>
       <div style={{float: 'left', width: '50%'}}>
         <div className={'feature-text feature-text-size'}>
-          Stream data and <b>update cells</b> dynamically without any manual input. Editable properties can also be
+          Stream data and <b>update cells</b> programmatically without any manual input. Editable properties can also be
           preconfigured to optimise user experience.
         </div>
       </div>

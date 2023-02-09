@@ -1,8 +1,8 @@
 import {OnCellUpdate, OnColumnsUpdate, OnTableUpdate, ColumnUpdateDetails} from './onUpdate';
 import {FrameComponentsStyle, IndexColumnT} from './frameComponents';
+import {ProgrammaticCellUpdateT} from './programmaticCellUpdateT';
 import {ColumnsSettingsDefault} from './columnsSettingsDefault';
 import {RowDropdownSettings} from './rowDropdownSettings';
-import {DynamicCellUpdateT} from './dynamicCellUpdateT';
 import {CustomColumnsSettings} from './columnsSettings';
 import {ColumnResizerColors} from './columnSizer';
 import {RowHoverStyle} from './rowHoverStyle';
@@ -39,7 +39,7 @@ export interface ActiveTable extends LitElement {
   pagination?: Pagination;
   getContent: () => TableContent;
   getColumnsDetails: () => ColumnUpdateDetails[];
-  updateCell: (update: DynamicCellUpdateT) => void;
+  updateCell: (update: ProgrammaticCellUpdateT) => void;
   onCellUpdate?: OnCellUpdate;
   onColumnsUpdate?: OnColumnsUpdate;
   onContentUpdate?: OnTableUpdate;
