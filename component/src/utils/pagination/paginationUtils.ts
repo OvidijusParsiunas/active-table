@@ -121,7 +121,7 @@ export class PaginationUtils {
       PaginationUtils.updateRowsOnRemoval(at, rowIndex);
     }
     PaginationPageActionButtonUtils.toggleActionButtons(at);
-    PaginationVisibleButtonsUtils.setStateAndStyles(paginationInternal);
+    PaginationVisibleButtonsUtils.setStateAndStyles(at);
     setTimeout(() => NumberOfVisibleRowsElement.update(at));
   }
 

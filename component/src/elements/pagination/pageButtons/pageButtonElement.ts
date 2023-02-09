@@ -85,7 +85,7 @@ export class PageButtonElement {
     const {newActiveButton, numberButtons} = PageButtonElement.setNewActive(paginationInternal, buttonNumber);
     PageButtonStyle.setActive(newActiveButton, pageButtons, previousActiveButton);
     PaginationPageActionButtonUtils.toggleActionButtons(at);
-    PaginationVisibleButtonsUtils.setStateAndStyles(paginationInternal);
+    PaginationVisibleButtonsUtils.setStateAndStyles(at);
     // REF-30
     if (clickedPageNumberButton) {
       PageButtonElement.programmaticMouseEnterTrigger(numberButtons, paginationInternal, previousLocationOfNewIndex);

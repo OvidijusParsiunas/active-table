@@ -57,7 +57,7 @@ export class AddNewRowElement {
     const {tableBodyElementRef, addRowCellElementRef, frameComponentsInternal: {displayAddNewRow}} = at;
     if (!addRowCellElementRef?.parentElement || !tableBodyElementRef) return;
     if (displayAddNewRow) AddNewRowElement.setDisplay(addRowCellElementRef, MaximumRows.canAddMore(at));
-    RowElement.toggleLastRowClass(at.shadowRoot as ShadowRoot, addRowCellElementRef.parentElement)
+    RowElement.toggleLastRowClass(at)
   }
 
   public static isAddNewRowRow(rowElement: HTMLElement) {

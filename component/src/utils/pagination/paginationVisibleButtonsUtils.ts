@@ -1,8 +1,10 @@
 import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
+import {RowElement} from '../../elements/table/addNewElements/row/rowElement';
 import {PaginationInternal} from '../../types/paginationInternal';
 import {PageButtonStyle} from '../../types/pagination';
 import {ElementStyle} from '../elements/elementStyle';
 import {CSSStyle} from '../../types/cssStyle';
+import {ActiveTable} from '../../activeTable';
 
 // this is used for overriding first and last visible button styling
 export class PaginationVisibleButtonsUtils {
@@ -101,17 +103,19 @@ export class PaginationVisibleButtonsUtils {
     pagination.visibleEdgeButtons = [firstVisibleButton, lastVisibleButton]
   }
 
-  public static setStateAndStyles(pagination: PaginationInternal) {
-    const buttons = Array.from(pagination.buttonContainer.children) as HTMLElement[];
+  public static setStateAndStyles(at: ActiveTable) {
+    const {paginationInternal, displayAddNewRow} = at;
+    const buttons = Array.from(paginationInternal.buttonContainer.children) as HTMLElement[];
     const firstVisibleIndex = buttons.findIndex(PaginationVisibleButtonsUtils.isButtonVisible);
     if (firstVisibleIndex === -1) {
       // when triggered on initial render where buttons have yet not been generated
       setTimeout(() => {
         const firstVisibleIndex = buttons.findIndex(PaginationVisibleButtonsUtils.isButtonVisible);
-        PaginationVisibleButtonsUtils.set(buttons, firstVisibleIndex, pagination);
+        PaginationVisibleButtonsUtils.set(buttons, firstVisibleIndex, paginationInternal);
       });
     } else {
-      PaginationVisibleButtonsUtils.set(buttons, firstVisibleIndex, pagination);
+      PaginationVisibleButtonsUtils.set(buttons, firstVisibleIndex, paginationInternal);
     }
+    if (!displayAddNewRow) RowElement.toggleLastRowClass(at);
   }
 }

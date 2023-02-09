@@ -70,7 +70,7 @@ export class PageButtonContainerElement {
 
   public static addInitialElements(at: ActiveTable, containers: Containers) {
     PageButtonContainerElement.repopulateButtons(at);
-    PaginationVisibleButtonsUtils.setStateAndStyles(at.paginationInternal);
+    PaginationVisibleButtonsUtils.setStateAndStyles(at);
     const {positions, buttonContainer} = at.paginationInternal;
     PaginationContainerElement.addToContainer(positions.pageButtons.side, containers, buttonContainer);
   }

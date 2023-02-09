@@ -112,7 +112,6 @@ export class ActiveTable extends LitElement {
   })
   allowDuplicateHeaders = true;
 
-  // WORK - perhaps this should be in colum settings
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,

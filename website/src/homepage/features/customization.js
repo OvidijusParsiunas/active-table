@@ -55,7 +55,7 @@ export function Customization() {
         <div style={{width: '50%'}}>
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
             <TableWrapper
-              tableStyle={{width: '100%', borderRadius: '3px', borderBottom: 'unset'}}
+              tableStyle={{width: '100%', borderRadius: '3px'}}
               headerStyles={{default: {backgroundColor: '#eeeeee'}}}
               pagination={{
                 style: {
@@ -86,7 +86,7 @@ export function Customization() {
                 rowsPerPage: 4,
               }}
               rowHoverStyle={{style: {backgroundColor: '#f7f7f7'}}}
-              frameComponentsStyle={{inheritHeaderColors: true, style: {backgroundColor: '#fbfbfb'}}}
+              frameComponentsStyle={{inheritHeaderColors: true, style: {default: {backgroundColor: '#fafafa'}}}}
               displayAddNewRow={false}
               displayAddNewColumn={false}
               content={[
