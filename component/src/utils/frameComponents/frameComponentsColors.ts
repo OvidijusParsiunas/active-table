@@ -5,7 +5,6 @@ import {ActiveTable} from '../../activeTable';
 
 // frame components are comprised of index column, add new column column and add new row row
 export class FrameComponentsColors {
-  // WORK - make table background white and see the top left cell
   private static getInheritedHeaderColors(defaultCellHoverColors: DefaultCellHoverColors, headerStyles?: HoverableStyles) {
     return {
       default: {

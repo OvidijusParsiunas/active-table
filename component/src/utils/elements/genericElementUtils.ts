@@ -13,10 +13,6 @@ export class GenericElementUtils {
     return !!element.parentElement;
   }
 
-  public static isParentWidthUndetermined(width: string) {
-    return width === '' || width === 'fit-content' || width === 'min-content' || width === 'max-content';
-  }
-
   public static isFirstChildInParent(element: HTMLElement) {
     return element.parentElement?.firstChild === element;
   }

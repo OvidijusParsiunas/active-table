@@ -7,7 +7,6 @@ import {Optional} from '../../../types/utilityTypes';
 import {ActiveTable} from '../../../activeTable';
 import {PX} from '../../../types/dimensions';
 
-// WORK - is not 100% size when there is no border-right
 export class ColumnSizer {
   public static shouldWidthBeIncreased(widthPx: number) {
     return widthPx > 4;
@@ -17,11 +16,11 @@ export class ColumnSizer {
   private static getBackgroundImage(totalCellBorderWidth: number,
       leftCellLeft: number, beforeLeftCellRight: number | undefined, isLastCell: boolean, tableElement?: HTMLElement) {
     // REF-1
-    // for last column sizer
+    // for last column sizer:
     // the strategy is to have a filled column sizer background image if the table has no border or even if it does
     // and the cells do not as they will too have filled backgrounds, hence this will maintain the consistency
     // empty background image if both cells and table have borders
-    // for first to second last column sizer
+    // for first to second last column sizer:
     // filled background if no border and empty if present
     if (isLastCell && tableElement) {
       if (Number.parseInt(getComputedStyle(tableElement).borderRightWidth) > 0

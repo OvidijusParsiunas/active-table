@@ -32,8 +32,8 @@ export const activeTableStyle = css`
     border-top-left-radius: inherit;
   }
 
-  /* WORK - when add new column not present and pagination is on - this does not work */
-  tbody > .row:first-child > *:last-child {
+  /* using last-of-type as the last element is a divider which does not help with corner rounding */
+  tbody > .row:first-child > .cell:last-of-type {
     border-top-right-radius: inherit;
   }
 
@@ -41,7 +41,7 @@ export const activeTableStyle = css`
     border-bottom-left-radius: inherit;
   }
 
-  #last-visible-row > *:last-child {
+  #last-visible-row > .cell:last-of-type {
     border-bottom-right-radius: inherit;
   }
 
@@ -49,6 +49,7 @@ export const activeTableStyle = css`
     color: rgba(0, 0, 0, 0.87);
     font-size: 13px;
     font-weight: 400;
+    /* the following is not supported in Firefox (on rows), hence rowHoverStyle will not have the border */
     border-radius: inherit;
   }
 
@@ -166,7 +167,8 @@ export const activeTableStyle = css`
   }
 
   .column-sizer {
-    z-index: 1; // need z-index for the sizer to display over header icon
+    /* need z-index for the sizer to display over header icon */
+    z-index: 1;
     background-size: 20px 5px;
     position: absolute;
   }

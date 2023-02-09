@@ -4,7 +4,7 @@ import {SVGIconUtils} from '../../../../../utils/svgIcons/svgIconUtils';
 export class ArrowDownIconElement {
   public static readonly ARROW_ICON_CLASS = 'arrow-down-icon';
   private static readonly ARROW_ICON_CONTAINER_CLASS = 'arrow-down-icon-container';
-  // WORK - this can potentially be reused
+  // this is only called once when there are multiple ActiveTable components in same window
   private static readonly ARROW_ICON_ELEMENT = ArrowDownIconElement.createSVG();
 
   // WORK - flip the arrow icon when dropdown is open

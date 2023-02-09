@@ -20,11 +20,8 @@ export class StringDimensionUtils {
     // if true then holds an unlimited size
     // when this is used for column, this condition should be false
     if (extractedNumber > 100) extractedNumber = 100;
-    // WORK - parent width is also undetermined when using id/class - computed style?
-    if (isWidth && GenericElementUtils.isParentWidthUndetermined(parentElement.style.width)) {
-      return {number: 0, isPercentage: false};
-    }
-    const offset = isWidth ? parentElement.offsetWidth : parentElement.offsetHeight;
+    // if getBoundingClientRect does not work - use getComputedStyle instead
+    const offset = isWidth ? parentElement.getBoundingClientRect().width : parentElement.offsetHeight;
     const dimension = offset * (extractedNumber / 100);
     return { number: StringDimensionUtils.processDimension(dimension, minimalDimension), isPercentage: true };
   }
