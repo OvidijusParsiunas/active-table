@@ -5,6 +5,7 @@ import {CellElementIndex} from '../elements/cellElementIndex';
 import {Calendar} from '../../types/calendarFunctionality';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {TextValidation} from '../../types/textValidation';
+import {ColumnTypesUtils} from './columnTypesUtils';
 import {RegexUtils} from '../regex/regexUtils';
 import {ActiveTable} from '../../activeTable';
 import {Sorting} from '../../types/sorting';
@@ -45,14 +46,15 @@ export class Sort {
       const rowChildren = rowElements[relativeRowIndex].children;
       row.forEach((cell, columnIndex) => {
         const elementColumnIndex = CellElementIndex.getViaColumnIndex(columnIndex, !!displayIndexColumn);
+        const cellElement = rowChildren[elementColumnIndex] as HTMLElement;
         // the reason why updateContent property is set to false is because we do not want to overwrite content array
         // cells as their row references are still the same with the sortedDataContent, hence upon attempting to
         // overwrite the content array cells, sortedDataContent cells are also overwritten. This is problematic because
         // sortedDataContent rows are in a different order, hence the cells to be traversed can already be overwritten
         // by the earlier cells
         CellEvents.updateCell(at, cell as string, relativeRowIndex, columnIndex,
-          { processText: false, element: rowChildren[elementColumnIndex] as HTMLElement,
-            updateTableEvent: false, updateContent: false });
+          { processText: false, element: cellElement, updateTableEvent: false, updateContent: false });
+        ColumnTypesUtils.updateRelatedElements(at, rowIndex, columnIndex, cellElement);
       });
     });
     content.splice(1, sortedDataContent.length, ...sortedDataContent);

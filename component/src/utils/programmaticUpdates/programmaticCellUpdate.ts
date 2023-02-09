@@ -1,6 +1,7 @@
 import {ColumnDropdown} from '../../elements/dropdown/columnDropdown/columnDropdown';
-import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
 import {ProgrammaticCellUpdateT} from '../../types/programmaticCellUpdateT';
+import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
+import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 import {CellElement} from '../../elements/cell/cellElement';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {Dropdown} from '../../elements/dropdown/dropdown';
@@ -15,6 +16,7 @@ export class ProgrammaticCellUpdate {
     const element = at.columnsDetails[columnIndex]?.elements[rowIndex];
     if (!element || newText === CellElement.getText(element)) return;
     CellEvents.updateCell(at, newText, rowIndex, columnIndex, {element, processText: rowIndex > 0});
+    ColumnTypesUtils.updateRelatedElements(at, rowIndex, columnIndex, element);
     if (rowIndex === 0) {
       if (Dropdown.isDisplayed(at.activeOverlayElements.columnDropdown)) ColumnDropdown.processTextAndHide(at);
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, element, columnIndex);

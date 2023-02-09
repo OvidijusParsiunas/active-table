@@ -21,7 +21,7 @@ export class CellEvents {
     return options?.[operation] === undefined || options[operation] === true;
   }
 
-  // this is mostly handled by operations that do not insert new cells as those handle the instructions below
+  // this is directly handled by operations that do not insert new cells as those handle the instructions below
   // in a different order asynchronously for maximum efficiency
   // prettier-ignore
   public static updateCell(at: ActiveTable,

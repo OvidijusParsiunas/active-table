@@ -19,19 +19,19 @@ export class LabelCellTextElement {
 
   // prettier-ignore
   public static finaliseEditedText(at: ActiveTable, textElement: HTMLElement, columnIndex: number,
-    processMatching = false) {
-  const columnDetails = at.columnsDetails[columnIndex];
-  const {cellDropdown, activeType: {cellDropdownProps}, settings: {defaultText, isDefaultTextRemovable}} = columnDetails;
-  const color = cellDropdown.itemsDetails[CellElement.getText(textElement)]?.backgroundColor;
-  if (CellElement.getText(textElement) === EMPTY_STRING
-      || (isDefaultTextRemovable && CellElement.getText(textElement) === defaultText)) {
-    textElement.style.backgroundColor = '';
-  } else if (processMatching && color) {
-    textElement.style.backgroundColor = color;
-     // not using staticItems state as this method may be called before it is available, if not, then refactor
-  } else if (cellDropdownProps?.canAddMoreOptions) {
-    // if a label is deleted and then added with an already existing text element, use its current background
-    CellDropdownItem.addNewItem(at, textElement, columnDetails, textElement.style.backgroundColor);
+      processMatching = false) {
+    const columnDetails = at.columnsDetails[columnIndex];
+    const {cellDropdown, activeType: {cellDropdownProps}, settings: {defaultText, isDefaultTextRemovable}} = columnDetails;
+    const color = cellDropdown.itemsDetails[CellElement.getText(textElement)]?.backgroundColor;
+    if (CellElement.getText(textElement) === EMPTY_STRING
+        || (isDefaultTextRemovable && CellElement.getText(textElement) === defaultText)) {
+      textElement.style.backgroundColor = '';
+    } else if (processMatching && color) {
+      textElement.style.backgroundColor = color;
+      // not using staticItems state as this method may be called before it is available, if not, then refactor
+    } else if (cellDropdownProps?.canAddMoreOptions) {
+      // if a label is deleted and then added with an already existing text element, use its current background
+      CellDropdownItem.addNewItem(at, textElement, columnDetails, textElement.style.backgroundColor);
+    }
   }
-}
 }

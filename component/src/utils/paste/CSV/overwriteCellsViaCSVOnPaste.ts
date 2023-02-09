@@ -1,11 +1,10 @@
-import {DateCellInputElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellInputElement';
-import {SelectCell} from '../../../elements/cell/cellsWithTextDiv/selectCell/selectCell';
 import {InsertNewColumn} from '../../insertRemoveStructure/insert/insertNewColumn';
 import {CellDropdown} from '../../../elements/dropdown/cellDropdown/cellDropdown';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {ColumnSettingsUtils} from '../../columnSettings/columnSettingsUtils';
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
 import {DataUtils} from '../../insertRemoveStructure/shared/dataUtils';
+import {ColumnTypesUtils} from '../../columnType/columnTypesUtils';
 import {CaretPosition} from '../../focusedElements/caretPosition';
 import {CellElementIndex} from '../../elements/cellElementIndex';
 import {TableRow, CellText} from '../../../types/tableContent';
@@ -18,7 +17,6 @@ import {ArrayUtils} from '../../array/arrayUtils';
 import {EMPTY_STRING} from '../../../consts/text';
 import {ActiveTable} from '../../../activeTable';
 import {CSVRow, CSV} from '../../../types/CSV';
-import {Browser} from '../../browser/browser';
 
 export class OverwriteCellsViaCSVOnPaste {
   // prettier-ignore
@@ -86,11 +84,7 @@ export class OverwriteCellsViaCSVOnPaste {
      // this is to allow duplicate headers to be identified
     if (rowIndex === 0) CellElement.setNewText(at, cellElement, newCellText, false, false);
     CellEvents.updateCell(at, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
-    if (columnDetails.activeType.cellDropdownProps) {
-      SelectCell.finaliseEditedText(at, cellElement.children[0] as HTMLElement, columnIndex, true);
-    } else if (Browser.IS_INPUT_DATE_SUPPORTED && columnDetails.activeType.calendar) {
-      DateCellInputElement.updateInputBasedOnTextDiv(cellElement, columnDetails.activeType);
-    }
+    ColumnTypesUtils.updateRelatedElements(at, rowIndex, columnIndex, cellElement);
     if (rowIndex === 0) OverwriteCellsViaCSVOnPaste.changeColumnSettings(at, columnIndex);
   }
 

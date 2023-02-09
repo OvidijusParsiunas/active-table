@@ -1,13 +1,18 @@
 import {ColumnTypeInternal, ColumnTypesInternal, CellDropdownPropertiesI} from '../../types/columnTypeInternal';
+import {DateCellInputElement} from '../../elements/cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {CheckboxValidationFunc} from '../../elements/cell/checkboxCell/checkboxValidationFunc';
 import {DropdownButtonItemConf} from '../../elements/dropdown/dropdownButtonItemConf';
+import {SelectCell} from '../../elements/cell/cellsWithTextDiv/selectCell/selectCell';
 import {ColumnType, ColumnTypes, ColumnIconSettings} from '../../types/columnType';
+import {CellDropdown} from '../../elements/dropdown/cellDropdown/cellDropdown';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
 import {DefaultColumnTypes} from './defaultColumnTypes';
 import {CellText} from '../../types/tableContent';
 import {ObjectUtils} from '../object/objectUtils';
+import {ActiveTable} from '../../activeTable';
+import {Browser} from '../browser/browser';
 import {Validation} from './validation';
 
 export class ColumnTypesUtils {
@@ -184,5 +189,19 @@ export class ColumnTypesUtils {
     const {isDefaultTextRemovable, defaultText} = settings;
     const types = ColumnTypesUtils.getAvailableTypes(settings);
     return ColumnTypesUtils.process(types, isDefaultTextRemovable, defaultText);
+  }
+
+  // updates label color, date input etc.
+  // prettier-ignore
+  public static updateRelatedElements(at: ActiveTable, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
+    const {columnsDetails, tableDimensions} = at;
+    const columnDetails = columnsDetails[columnIndex];
+    if (columnDetails.activeType.cellDropdownProps && rowIndex > 0) {
+      CellDropdown.updateCellDropdown(cellElement,
+        columnDetails.cellDropdown, tableDimensions.border, columnDetails.settings.defaultText, true);
+      SelectCell.finaliseEditedText(at, cellElement.children[0] as HTMLElement, columnIndex, true);
+    } else if (Browser.IS_INPUT_DATE_SUPPORTED && columnDetails.activeType.calendar) {
+      DateCellInputElement.updateInputBasedOnTextDiv(cellElement, columnDetails.activeType);
+    }
   }
 }
