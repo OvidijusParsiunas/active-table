@@ -93,7 +93,8 @@ export function DynamicUpdates() {
       </div>
       <div style={{float: 'left', width: '50%'}}>
         <div className={'feature-text feature-text-size'}>
-          Stream data and <b>update cells</b> dynamically.
+          Stream data and <b>update cells</b> dynamically without any manual input. Editable properties can also be
+          preconfigured to optimise user experience.
         </div>
       </div>
     </div>

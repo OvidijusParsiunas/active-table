@@ -4,7 +4,7 @@ import React from 'react';
 export function Overflow() {
   return (
     <div style={{marginTop: '120px'}}>
-      <div className="feature-style">Data consolidation</div>
+      <div className="feature-style">Structure management</div>
       <div style={{display: 'flex', marginTop: '30px'}}>
         <div style={{float: 'left', width: '50%'}}>
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>

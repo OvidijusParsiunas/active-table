@@ -91,37 +91,20 @@ export class Sort {
   }
 
   // prettier-ignore
-  private static validateAndSort(cellText1: string, cellText2: string, sortFunc: Sorting[keyof Sorting],
+  private static validateAndSort(cellText1: string, cellText2: string, sorting: Sorting,
       validate: TextValidation['func'], isAsc: boolean) {
     const parseResult = Sort.parseComparedText(cellText1, cellText2, isAsc, Sort.validateType.bind(this, validate));
     if (typeof parseResult === 'number') return parseResult;
+    const sortFunc = isAsc ? sorting.ascendingFunc : sorting.descendingFunc;
     return sortFunc(parseResult[0], parseResult[1]);
   }
 
   private static sortViaSortFuncs(type: ColumnTypeInternal, dataContent: TableContent, colIndex: number, isAsc: boolean) {
     const {sorting, textValidation} = type;
     if (!sorting) return;
-    if (isAsc) {
-      dataContent.sort((a: TableRow, b: TableRow) =>
-        Sort.validateAndSort(
-          a[colIndex] as string,
-          b[colIndex] as string,
-          sorting.ascendingFunc,
-          textValidation.func,
-          isAsc
-        )
-      );
-    } else {
-      dataContent.sort((a: TableRow, b: TableRow) =>
-        Sort.validateAndSort(
-          b[colIndex] as string,
-          a[colIndex] as string,
-          sorting.descendingFunc,
-          textValidation.func,
-          isAsc
-        )
-      );
-    }
+    dataContent.sort((a: TableRow, b: TableRow) =>
+      Sort.validateAndSort(a[colIndex] as string, b[colIndex] as string, sorting, textValidation.func, isAsc)
+    );
   }
 
   private static compareDates(ymd1: [number], ymd2: [number]) {

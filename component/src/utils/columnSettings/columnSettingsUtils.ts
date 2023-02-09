@@ -131,11 +131,11 @@ export class ColumnSettingsUtils {
     columnsSettings.columnDropdown = at.columnDropdown || {displaySettings: defaultDisplaySettings};
     columnsSettings.columnDropdown.displaySettings ??= defaultDisplaySettings;
     DropdownDisplaySettingsUtil.process(columnsSettings.columnDropdown.displaySettings);
-    columnsSettings.columnDropdown.isSortAvailable = at.columnDropdown?.isSortAvailable || true;
-    columnsSettings.columnDropdown.isDeleteAvailable = at.columnDropdown?.isDeleteAvailable || true;
-    columnsSettings.columnDropdown.isInsertLeftAvailable = at.columnDropdown?.isInsertRightAvailable || true;
-    columnsSettings.columnDropdown.isInsertRightAvailable = at.columnDropdown?.isInsertRightAvailable || true;
-    columnsSettings.columnDropdown.isMoveAvailable = at.columnDropdown?.isMoveAvailable || true;
+    columnsSettings.columnDropdown.isSortAvailable ??= true;
+    columnsSettings.columnDropdown.isDeleteAvailable ??= true;
+    columnsSettings.columnDropdown.isInsertLeftAvailable ??= true;
+    columnsSettings.columnDropdown.isInsertRightAvailable ??= true;
+    columnsSettings.columnDropdown.isMoveAvailable ??= true;
   }
 
   private static setDefaultGenericProperties(at: ActiveTable) {
@@ -145,7 +145,8 @@ export class ColumnSettingsUtils {
     columnsSettings.cellStyle = at.cellStyle;
     columnsSettings.isCellTextEditable = at.isCellTextEditable;
     columnsSettings.headerStyles = at.headerStyles;
-    columnsSettings.isHeaderTextEditable = at.isHeaderTextEditable || columnsSettings.isCellTextEditable;
+    columnsSettings.isHeaderTextEditable =
+      at.isHeaderTextEditable !== undefined ? at.isHeaderTextEditable : columnsSettings.isCellTextEditable;
     columnsSettings.headerIconStyle = at.headerIconStyle;
     columnsSettings.isColumnResizable = at.isColumnResizable;
   }

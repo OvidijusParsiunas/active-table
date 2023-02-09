@@ -148,10 +148,10 @@ Using this property unsets the default header and [`frameComponentsStyle`](./tab
   &nbsp;&nbsp;&nbsp;&nbsp; _isHeaderRowEditable: true_, <br />
   }
 
-Row dropdown settings. If `openMethod` is set to `cellClick` - simply click on the left-most cell of the table which will open
-the dropdown, equally if `openMethod` is `overlayClick` - hover over the left-most cell and click on the overlay. The `canEditHeaderRow`
-property denotes whether this dropdown can be used to change the header row e.g. move or delete it, therefore it does not open on
-header row when set to `false`.
+Row dropdown settings. If `displaySettings` object's `openMethod` property has `cellClick` set to _true_ - simply click on the left-most
+row cell to open the dropdown. If `openMethod` is `overlayClick` - hover over the left-most cell and click on the overlay.
+The `canEditHeaderRow` property denotes whether this dropdown can be used to change the header row e.g. move or delete it, therefore
+it does not open on header row when set to `false`.
 
 #### Example
 

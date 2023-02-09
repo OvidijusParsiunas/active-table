@@ -291,7 +291,7 @@ export class ActiveTable extends LitElement {
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  isHeaderTextEditable? = true; // uses isCellTextEditable by default
+  isHeaderTextEditable?: boolean; // uses isCellTextEditable by default
 
   @property({type: Object})
   headerIconStyle?: HeaderIconStyle;
@@ -309,6 +309,7 @@ export class ActiveTable extends LitElement {
   @property({type: Array<ColumnType>})
   customColumnTypes?: ColumnTypes; // additional custom column types
 
+  // WORK - rename to defaultColumnTypeName
   // If not provided defaultActiveTypeName will default to first of the following:
   // First type to not have validation/First available type/'Text'
   @property({type: String})

@@ -70,8 +70,8 @@ import Tabs from '@theme/Tabs';
 - Default: _true_
 
 When [`tableStyle`](./table#tableStyle) is set with a `width` or `maxWidth` property to limit its size, the insertion of new columns will
-cause all existing column widths to automatically be reduced to make space for the new ones (except columns set with `isResizable` as _false_
-inside [`cellStyle`](#CellStyle) of the [`customColumnsSettings`](#customColumnsSettings) object). This can however become problematic when existing column
+cause all existing column widths to automatically be reduced to make space for the new ones (except columns set with `isColumnResizable` as _false_
+inside [`cellStyle`](#cellStyle) of the [`customColumnsSettings`](#customColumnsSettings) object). This can however become problematic when existing column
 widths eventually become too narrow\* and their widths cannot be reduced any further. <br />
 When `preserveNarrowColumns` is `true` and column widths are too narrow\*, the table width will be increased allow new columns to be inserted. <br />
 When `preserveNarrowColumns` is `false` and column widths are too narow\*, no new columns will be allowed to be inserted.
@@ -297,37 +297,80 @@ Column width resizer overlay background color style for hover and click events.
 
 <LineBreak></LineBreak>
 
-### `columnsSettings` {#columnsSettings}
+### `defaultText` {#defaultText}
 
-- Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`ColumnSettings`](#ColumnSettings),<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `dropdown?`: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[`ColumnDropdownSettings`](#ColumnDropdownSettings), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[`displaySettings?: DropdownDisplaySettings`](./types#DropdownDisplaySettings)<br />
-  }}
+- Type: `string|number`
+- Default: _""_
 
-Default settings for all columns.
+Replacement text that is displayed when cell has no text or its type validation has failed. <br />
 
 #### Example
 
 <TableContainer>
   <active-table
-    columnsSettings='{
-      "defaultText": "-",
-      "isHeaderTextEditable": false,
-      "dropdown": {
-        "isSortAvailable": false,
-        "displaySettings": {
-          "openMethod": {
-            "overlayClick": true
-            }}}}'
+    defaultText="-"
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["", 12756, 5.97, 1, 5514],
-      ["", 6792, 0.642, 2, 3934],
-      ["", 142984, 1898, 79, 1326],
-      ["", 120536, 568, 82, 687],
-      ["", 49528, 102, 14, 1638]]'
+      ["", "", 5.97, 1, 5514],
+      ["", "", 0.642, 2, 3934],
+      ["", "", 1898, 79, 1326],
+      ["", "", 568, 82, 687],
+      ["", "", 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<LineBreak></LineBreak>
+
+### `isDefaultTextRemovable` {#isDefaultTextRemovable}
+
+- Type: `boolean`
+- Default: _true_
+
+Removes default text when a cell containg one is focused.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    defaultText="Click"
+    isDefaultTextRemovable="true"
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["", "", 5.97, 1, 5514],
+      ["", "", 0.642, 2, 3934],
+      ["", "", 1898, 79, 1326],
+      ["", "", 568, 82, 687],
+      ["", "", 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<LineBreak></LineBreak>
+
+### `cellStyle` {#cellStyle}
+
+- Type: { `CSSStyle` & `!minWidth` & `!maxWidth` & `!height` & `!minHeight` & `!maxHeight` }
+
+Defines the default style for table cells. <br />
+This object contais all `CSSStyle` properties except `minWidth`, `maxWidth`, `height`, `minHeight` and `maxHeight`. <br />
+The `width` property supports _px_ and _%_ measurements, however when using _%_ - the [`tableStyle`](./table#tableStyle) object should have its `width` property
+also set as otherwise the cells will not be able to calculate a relative width. Additionally, when [`cellStyle`](#cellStyle) - `width` and
+[`tableStyle`](./table#tableStyle) - `width` are defined and [`isColumnResizable`](#isColumnResizable) is set to _true_, the [`cellStyle`](#cellStyle) - `width`
+will be overriden to reach the set table `width`, hence to prevent this make sure to set [`isColumnResizable`](#isColumnResizable) to _false_.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    cellStyle='{"borderBottom": "1px solid black", "borderRight": "1px solid black"}'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
     tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
   ></active-table>
 </TableContainer>
@@ -337,15 +380,7 @@ Default settings for all columns.
 
 ```text
 <active-table
-  columnsSettings='{
-    "defaultText": "-",
-    "isHeaderTextEditable": false,
-    "dropdown": {
-      "isSortAvailable": false,
-      "displaySettings": {
-        "openMethod": {
-          "overlayClick": true
-  }}}}'
+  cellStyle='{"borderBottom": "1px solid black", "borderRight": "1px solid black"}'
 ></active-table>
 ```
 
@@ -354,22 +389,157 @@ Default settings for all columns.
 
 ```text
 <active-table
-  columnsSettings='{
-    "defaultText": "-",
-    "isHeaderTextEditable": false,
-    "dropdown": {
-      "isSortAvailable": false,
-      "displaySettings": {
-        "openMethod": {
-          "overlayClick": true
-  }}}}'
+  cellStyle='{"borderBottom": "1px solid black", "borderRight": "1px solid black"}'
   content='[
-    ["", "Diameter", "Mass", "Moons", "Density"],
-    ["", 12756, 5.97, 1, 5514],
-    ["", 6792, 0.642, 2, 3934],
-    ["", 142984, 1898, 79, 1326],
-    ["", 120536, 568, 82, 687],
-    ["", 49528, 102, 14, 1638]]'
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+If you wish to set the header cell style please use the [`headerStyles`](#headerStyles) property and the style of the frame components (index, add new column,
+new row) can be set via the [`frameComponentsStyle`](./table#frameComponentsStyle) property.
+:::
+
+<LineBreak></LineBreak>
+
+### `isCellTextEditable` {#isCellTextEditable}
+
+- Type: `boolean`
+- Default: _true_
+
+Controls if cell text can be edited for both data and header cells. This property is superseded by [`isHeaderTextEditable`](#isHeaderTextEditable) for header cells.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    isCellTextEditable="false"
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<LineBreak></LineBreak>
+
+### `isColumnResizable` {#isColumnResizable}
+
+- Type: `boolean`
+- Default: _true_
+
+Determines if columns can be resized via the use of the overlay between header cells. When `width` is defined in [`cellStyle`](#cellStyle)
+and [`tableStyle`](./table#tableStyle) properties, and this is set to _true_ - the column `width` will be automatically overwritten to
+meet the set table `width`. However if this is set to _false_, columns will permanently hold the initially set `width`.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    isColumnResizable="true"
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<LineBreak></LineBreak>
+
+### `headerStyles` {#headerStyles}
+
+- Type: [`HoverableStyles`](./types#HoverableStyles)
+- Default: _unset_
+
+Styling details for the header elements in default state and when they are hovered by the mouse. To enable the frame
+component columns (index and add new column) to inherit the header style, set `inheritHeaderColors` property
+in [`frameComponentsStyle`](./table#frameComponentsStyle) to _true_.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    headerStyles='{
+      "default": {
+        "backgroundColor": "#efefef",
+        "borderBottom": "unset",
+        "fontWeight": "800",
+        "fontSize": "15px"
+      },
+      "hoverColors": {
+        "backgroundColor": "#d2d2d2"
+      }
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  headerStyles='{
+      "default": {
+        "backgroundColor": "#efefef",
+        "borderBottom": "unset",
+        "fontWeight": "800",
+        "fontSize": "15px"
+      },
+      "hoverColors": {
+        "backgroundColor": "#d2d2d2"
+      }
+    }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  headerStyles='{
+      "default": {
+        "backgroundColor": "#efefef",
+        "borderBottom": "unset",
+        "fontWeight": "800",
+        "fontSize": "15px"
+      },
+      "hoverColors": {
+        "backgroundColor": "#d2d2d2"
+      }
+    }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
   tableStyle='{"borderRadius":"2px"}'
 ></active-table>
 ```
@@ -379,15 +549,249 @@ Default settings for all columns.
 
 <LineBreak></LineBreak>
 
+### `isHeaderTextEditable` {#isHeaderTextEditable}
+
+- Type: `boolean`
+- Default: _true_
+
+Controls if cell text can be edited for header cells.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    isHeaderTextEditable="false"
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<LineBreak></LineBreak>
+
+### `headerIconStyle` {#HeaderIconStyle}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `filterColor?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `scale?`: {`x?: number`, `y?: number`}<br />
+  }
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _iconFilterColor: 'brightness(0) saturate(100%) invert(34%) sepia(0%) saturate(1075%) hue-rotate(211deg) brightness(96%) contrast(90%)'_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _scale: {x: 1.1, y: 1.1}_<br />
+  }
+
+Styling details for the column header icons. The color is set by using the `filterColor` property which requires
+a [filter](https://developer.mozilla.org/en-US/docs/Web/CSS/filter) string (the reason for this is because the icon is an SVG element)
+that can be retrieved using the [cssfilterconverter](https://cssfilterconverter.com/) tool . Use `scale` to resize the icon dimensions.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    headerIconStyle='{
+      "filterColor": "brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)",
+      "scale": {"x": 1.5, "y": 1.5}
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  headerIconStyle='{
+    "filterColor": "brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)",
+    "scale": {"x": 1.5, "y": 1.5}
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  headerIconStyle='{
+    "filterColor": "brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)",
+    "scale": {"x": 1.5, "y": 1.5}
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `availableDefaultColumnTypes` {#availableDefaultColumnTypes}
+
+- Type: [`DEFAULT_COLUMN_TYPES[]`](#DEFAULT_COLUMN_TYPES)
+- Default: _["Text", "Number", "Currency", "Date d-m-y", "Date m-d-y", "Checkbox", "Select", "Label"]_
+
+Used to overwrite the available default column types. If array is set to empty (_[]_) and there are no [`custom types`](#ColumnType), the default type
+will be automatically set to _"Text"_.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    availableDefaultColumnTypes='["Number"]'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["1", 12756, 5.97, 1, 5514],
+      ["2", 6792, 0.642, 2, 3934],
+      ["3", 142984, 1898, 79, 1326],
+      ["4", 120536, 568, 82, 687],
+      ["5", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<LineBreak></LineBreak>
+
+### `customColumnTypes` {#customColumnTypes}
+
+- Type: [`ColumnType[]`](#ColumnType)
+- Default: _[]_
+
+An array of custom column types which are automatically appended to the [`availableDefaultColumnTypes`](#availableDefaultColumnTypes) types array.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    availableDefaultColumnTypes="[]"
+    customColumnTypes='[{
+      "name": "Custom type",
+      "select": {
+        "options": ["Pass", "Fail"],
+        "canAddMoreOptions": false
+      },
+      "iconSettings": {
+        "reusableIconName": "select"
+      }}]'
+    content='[
+      ["Category 1", "Category 2", "Category 3", "Category 4", "Category 5"],
+      ["Pass", "Pass", "Fail", "Fail", "Fail"],
+      ["Fail", "Pass", "Pass", "Fail", "Fail"],
+      ["Fail", "Pass", "Pass", "Pass", "Fail"],
+      ["Pass", "Fail", "Fail", "Pass", "Pass"],
+      ["Pass", "Fail", "Fail", "Fail", "Fail"]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<LineBreak></LineBreak>
+
+### `defaultActiveTypeName` {#defaultActiveTypeName}
+
+- Type: `string`
+- Default: _"First available type to not have validation -> First available type -> "Text","_
+
+Nname for the default column type.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    defaultActiveTypeName="Label"
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<LineBreak></LineBreak>
+
+### `columnDropdown` {#columnDropdown}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`displaySettings?: DropdownDisplaySettings`](./types#DropdownDisplaySettings), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`ColumnDropdownSettings`](#ColumnDropdownSettings) <br />
+  } <br />
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _displaySettings: {isAvailable: true, openMethod: {cellClick: true}}_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isSortAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isDeleteAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isInsertLeftAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isInsertRightAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isMoveAvailable: true_, <br />
+  }
+
+Settings for the column dropdown. If `displaySettings` object's `openMethod` property has `cellClick` set to _true_ - open the dropdown by clicking
+on the header cell. If `openMethod` has `overlayClick` set to _true_ - hover over the header cell, then click on the overlay component that will
+appear over it.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    columnDropdown='{
+      "displaySettings": {
+        "openMethod": {"overlayClick": true}},
+      "isSortAvailable": false,
+      "isMoveAvailable": false
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<LineBreak></LineBreak>
+
 ### `customColumnsSettings` {#customColumnsSettings}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`headerName: string`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`ColumnSettings`](#ColumnSettings),<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`dropdown?: ColumnDropdownSettings`](#ColumnDropdownSettings) <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `headerName: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `defaultText?: string|number`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isDefaultTextRemovable?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`cellStyle?: cellStyle`](#cellStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isCellTextEditable?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isColumnResizable?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`headerStyles?: headerStyles`](#headerStyles), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isHeaderTextEditable?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`headerIconStyle?: HeaderIconStyle`](#HeaderIconStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`availableDefaultColumnTypes?: DEFAULT_COLUMN_TYPES[]`](#DEFAULT_COLUMN_TYPES), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`customColumnTypes?: ColumnType[]`](#ColumnType), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `defaultActiveTypeName?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`columnDropdown?: ColumnDropdownSettings`](#ColumnDropdownSettings) <br />
   }[]
 
-Custom settings for columns that have a header text that matches the `headerName` string.
+Custom override properties for columns with a header text that matches the `headerName` string. Any properties that have not been set will
+automatically inherit their values from the corresponding ones set directly on the component (except `headerName`).
 
 #### Example
 
@@ -395,9 +799,9 @@ Custom settings for columns that have a header text that matches the `headerName
   <active-table
     customColumnsSettings='[
       { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
-      { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "activeTypeName": "number", "isHeaderTextEditable": false },
-      { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "activeTypeName": "Select", "isHeaderTextEditable": false },
-      { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "activeTypeName": "Date d-m-y", "isHeaderTextEditable": false }
+      { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "defaultActiveTypeName": "number", "isHeaderTextEditable": false },
+      { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "defaultActiveTypeName": "Select", "isHeaderTextEditable": false },
+      { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "defaultActiveTypeName": "Date d-m-y", "isHeaderTextEditable": false }
     ]'
     content='[
       ["Planet", "Number", "Shape", "Date Created"],
@@ -417,9 +821,9 @@ Custom settings for columns that have a header text that matches the `headerName
 <active-table
   customColumnsSettings='[
     { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
-    { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "activeTypeName": "number", "isHeaderTextEditable": false },
-    { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "activeTypeName": "Select", "isHeaderTextEditable": false },
-    { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "activeTypeName": "Date d-m-y", "isHeaderTextEditable": false }
+    { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "defaultActiveTypeName": "number", "isHeaderTextEditable": false },
+    { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "defaultActiveTypeName": "Select", "isHeaderTextEditable": false },
+    { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "defaultActiveTypeName": "Date d-m-y", "isHeaderTextEditable": false }
   ]'
 ></active-table>
 ```
@@ -431,9 +835,9 @@ Custom settings for columns that have a header text that matches the `headerName
 <active-table
   customColumnsSettings='[
     { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
-    { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "activeTypeName": "number", "isHeaderTextEditable": false },
-    { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "activeTypeName": "Select", "isHeaderTextEditable": false },
-    { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "activeTypeName": "Date d-m-y", "isHeaderTextEditable": false }
+    { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "defaultActiveTypeName": "number", "isHeaderTextEditable": false },
+    { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "defaultActiveTypeName": "Select", "isHeaderTextEditable": false },
+    { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "defaultActiveTypeName": "Date d-m-y", "isHeaderTextEditable": false }
   ]'
   content='[
     ["Planet", "Number", "Shape", "Date Created"],
@@ -449,351 +853,9 @@ Custom settings for columns that have a header text that matches the `headerName
 </TabItem>
 </Tabs>
 
-<LineBreak></LineBreak>
-
 ## Types
 
-Object types that are shared by [`columnsSettings`](#columnsSettings) and [`customColumnsSettings`](#customColumnsSettings) properties:
-
-### `ColumnSettings` {#ColumnSettings}
-
-- Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `defaultText?: string|number`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `isDefaultTextRemovable?: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `isCellTextEditable?: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `isHeaderTextEditable?: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`cellStyle?: CellStyle`](#CellStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `isResizable?: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`headerStyles?: HoverableStyles`](#HoverableStyles), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`headerIconStyle?: HeaderIconStyle`](#HeaderIconStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`defaultColumnTypes?: DEFAULT_COLUMN_TYPES[]`](#DEFAULT_COLUMN_TYPES), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`customColumnTypes?: ColumnType[]`](#ColumnType), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `activeTypeName?: string`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`dropdown?: ColumnDropdownSettingsDisplay`](#ColumnDropdownSettings) <br />
-  }
-- Default: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _defaultText: ""_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _isDefaultTextRemovable: true_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _isCellTextEditable: true_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _isHeaderTextEditable: true_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _isResizable: true_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _defaultColumnTypes: ["Text", "Number", "Currency", "Date d-m-y", "Date m-d-y", "Checkbox", "Select", "Label"]_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _activeTypeName: First type to not have validation -> First available type -> "Text"_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _dropdown: {displaySettings: {isAvailable: true, openMethod: {cellClick: true}}_, <br />
-  }
-
-`defaultText` is text that is displayed when there is the cell has no text or if its type validation fails. <br />
-`isDefaultTextRemovable` removes the default text when the cell is focused. <br />
-`isCellTextEditable` defines if cell text can be edited and applies to both data and header cells, but is superseded by
-`isHeaderTextEditable` for header cells. <br />
-`cellStyle` defines the cell style and applies to both data and header cells, but is superseded by `headerStyles` for
-header cells which defines styling for default and mouse hover states. <br />
-`headerIconStyle` is used to overwrite the style of the header icon if present ([`displayHeaderIcons`](./header#displayHeaderIcons)). <br />
-`isResizable` determines if the column can be resized by using the overlay between header cells. <br />
-`defaultColumnTypes` overwrites the available default column types (_use [] to remove all_) and `customColumnTypes` defines additional custom
-column types. <br />
-`activeTypeName` is the name for the initial on-render type of the column. <br />
-
-#### Example
-
-<TableContainer>
-  <active-table
-    columnsSettings='{
-      "isCellTextEditable": false,
-      "defaultColumnTypes": ["Text"]
-    }'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
-</TableContainer>
-
-<Tabs>
-<TabItem value="js" label="Sample">
-
-```text
-<active-table
-  columnsSettings='{
-    "isCellTextEditable": false,
-    "defaultColumnTypes": ["Text"]
-  }'
-></active-table>
-```
-
-</TabItem>
-<TabItem value="py" label="Full code">
-
-```text
-<active-table
-  columnsSettings='{
-    "isCellTextEditable": false,
-    "defaultColumnTypes": ["Text"]
-  }'
-  content='[
-    ["Planet", "Diameter", "Mass", "Moons", "Density"],
-    ["Earth", 12756, 5.97, 1, 5514],
-    ["Mars", 6792, 0.642, 2, 3934],
-    ["Jupiter", 142984, 1898, 79, 1326],
-    ["Saturn", 120536, 568, 82, 687],
-    ["Neptune", 49528, 102, 14, 1638]]'
-  tableStyle='{"borderRadius":"2px"}'
-></active-table>
-```
-
-</TabItem>
-</Tabs>
-
-<LineBreak></LineBreak>
-
-### `HoverableStyles` {#HoverableStyles}
-
-- Type: [`HoverableStyles`](./types#HoverableStyles)
-- Default: _unset_
-
-Styling details for header elements in default state and when they are hovered by the mouse.
-
-#### Example
-
-<TableContainer>
-  <active-table
-    columnsSettings='{
-      "headerStyles": {
-        "default": {
-          "backgroundColor": "#e7e7e7",
-          "borderBottom": "unset",
-          "fontWeight": "800",
-          "fontSize": "15px"
-        },
-        "hoverColors": {
-          "backgroundColor": "#d2d2d2"
-        }
-    }}'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
-</TableContainer>
-
-<Tabs>
-<TabItem value="js" label="Sample">
-
-```text
-<active-table
-  columnsSettings='{
-    "headerStyles": {
-      "default": {
-        "backgroundColor": "#e7e7e7",
-        "borderBottom": "unset",
-        "fontWeight": "800",
-        "fontSize": "15px"
-      },
-      "hoverColors": {
-        "backgroundColor": "#d2d2d2"
-      }
-  }}'
-></active-table>
-```
-
-</TabItem>
-<TabItem value="py" label="Full code">
-
-```text
-<active-table
-  columnsSettings='{
-    "headerStyles": {
-      "default": {
-        "backgroundColor": "#e7e7e7",
-        "borderBottom": "unset",
-        "fontWeight": "800",
-        "fontSize": "15px"
-      },
-      "hoverColors": {
-        "backgroundColor": "#d2d2d2"
-      }
-  }}'
-  content='[
-    ["Planet", "Diameter", "Mass", "Moons", "Density"],
-    ["Earth", 12756, 5.97, 1, 5514],
-    ["Mars", 6792, 0.642, 2, 3934],
-    ["Jupiter", 142984, 1898, 79, 1326],
-    ["Saturn", 120536, 568, 82, 687],
-    ["Neptune", 49528, 102, 14, 1638]]'
-  tableStyle='{"borderRadius":"2px"}'
-></active-table>
-```
-
-</TabItem>
-</Tabs>
-
-<LineBreak></LineBreak>
-
-### `CellStyle` {#CellStyle}
-
-- Type: { `CSSStyle` & `!minWidth` & `!maxWidth` & `!height` & `!minHeight` & `!maxHeight` }
-
-Object containing all `CSSStyle` properties except `minWidth`, `maxWidth`, `height`, `minHeight` and `maxHeight`. <br />
-This object also serves as the default style for index column, add new column and add new row components. <br />
-The `width` property supports _px_ and _%_ metrics, however when using _%_ - the [`tableStyle`](./table#tableStyle) object should have its `width` property
-also set as otherwise the cells will not be able to calculate a relative width. Additionally, when [`CellStyle`](#CellStyle) - `width` and
-[`tableStyle`](./table#tableStyle) - `width` are defined and `isResizable` in [`ColumnSettings`](#ColumnSettings) is set to _true_, the [`CellStyle`](#CellStyle) - `width`
-will be overriden to reach the set table `width`, hence to prevent this make sure to set `isResizable` to _false_.
-
-#### Example
-
-<TableContainer>
-  <active-table
-    columnsSettings='{
-      "cellStyle": { "borderRight": "1px solid grey", "width": "110px" },
-      "isResizable": false
-    }'
-    customColumnsSettings='[
-      { "headerName": "Moons", "isResizable": true },
-      { "headerName": "Density", "isResizable": true }
-    ]'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
-</TableContainer>
-
-<Tabs>
-<TabItem value="js" label="Sample">
-
-```text
-<active-table
-  columnsSettings='{
-    "cellStyle": { "borderBottom": "1px solid grey", "borderLeft": "unset", "width": "110px" },
-    "isResizable": false
-  }'
-  customColumnsSettings='[
-    { "headerName": "Moons", "isResizable": true },
-    { "headerName": "Density", "isResizable": true }
-  ]'
-></active-table>
-```
-
-</TabItem>
-<TabItem value="py" label="Full code">
-
-```text
-<active-table
-  columnsSettings='{
-    "cellStyle": { "borderBottom": "1px solid grey", "width": "110px" },
-    "isResizable": false
-  }'
-  customColumnsSettings='[
-    { "headerName": "Moons", "isResizable": true },
-    { "headerName": "Density", "isResizable": true }
-  ]'
-  content='[
-    ["Planet", "Diameter", "Mass", "Moons", "Density"],
-    ["Earth", 12756, 5.97, 1, 5514],
-    ["Mars", 6792, 0.642, 2, 3934],
-    ["Jupiter", 142984, 1898, 79, 1326],
-    ["Saturn", 120536, 568, 82, 687],
-    ["Neptune", 49528, 102, 14, 1638]]'
-  tableStyle='{"borderRadius":"2px"}'
-></active-table>
-```
-
-</TabItem>
-</Tabs>
-
-:::info
-These styles are automatically applied to the data and the header cells, if you wish to set the header cell style please use
-the `headerStyles` property of the [`ColumnSettings`](#ColumnSettings) object.
-:::
-
-<LineBreak></LineBreak>
-
-### `HeaderIconStyle` {#HeaderIconStyle}
-
-- Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `filterColor?: string`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `scale?`: {`x?: number`, `y?: number`}<br />
-  }
-- Default: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _iconFilterColor: 'brightness(0) saturate(100%) invert(34%) sepia(0%) saturate(1075%) hue-rotate(211deg) brightness(96%) contrast(90%)'_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; _scale: {x: 1.1, y: 1.1}_<br />
-  }
-
-Styling details for the column header icon. The color is set by using the `filterColor` property which requires
-a [filter](https://developer.mozilla.org/en-US/docs/Web/CSS/filter) string that can be retrieved using the [cssfilterconverter](https://cssfilterconverter.com/)
-tool (the reason for this is because the icon is an SVG element). Use `scale` to resize the icon dimensions.
-
-#### Example
-
-<TableContainer>
-  <active-table
-    columnsSettings='{
-      "headerIconStyle": {
-        "filterColor": "brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)",
-        "scale": {"x": 1.5, "y": 1.5}
-    }}'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
-</TableContainer>
-
-<Tabs>
-<TabItem value="js" label="Sample">
-
-```text
-<active-table
-  columnsSettings='{
-    "headerIconStyle": {
-      "filterColor": "brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)",
-      "scale": {"x": 1.5, "y": 1.5}
-  }}'
-></active-table>
-```
-
-</TabItem>
-<TabItem value="py" label="Full code">
-
-```text
-<active-table
-  columnsSettings='{
-    "headerIconStyle": {
-      "filterColor": "brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)",
-      "scale": {"x": 1.5, "y": 1.5}
-  }}'
-  content='[
-    ["Planet", "Diameter", "Mass", "Moons", "Density"],
-    ["Earth", 12756, 5.97, 1, 5514],
-    ["Mars", 6792, 0.642, 2, 3934],
-    ["Jupiter", 142984, 1898, 79, 1326],
-    ["Saturn", 120536, 568, 82, 687],
-    ["Neptune", 49528, 102, 14, 1638]]'
-  tableStyle='{"borderRadius":"2px"}'
-></active-table>
-```
-
-</TabItem>
-</Tabs>
-
-<LineBreak></LineBreak>
+Shared property types related to the column:
 
 ### `ColumnType` {#ColumnType}
 
@@ -843,17 +905,15 @@ if the function returns `false`. <br />
 
 <TableContainer>
   <active-table
-    columnsSettings='{
-      "customColumnTypes":[
-        {
-          "name": "Custom type",
-          "textValidation": {
-            "func": "(cellText) => Number(cellText) > 20",
-            "setTextToDefaultOnFail":false,
-            "failedStyle":{"color":"red"}
-      }}],
-      "activeTypeName": "Custom type"
-    }'
+    customColumnTypes='[
+      {
+        "name": "Custom type",
+        "textValidation": {
+          "func": "(cellText) => Number(cellText) > 20",
+          "setTextToDefaultOnFail":false,
+          "failedStyle":{"color":"red"}
+    }}]'
+    defaultActiveTypeName="Custom type"
     content='[
       ["Gravity", "Diameter", "Mass", "Moons", "Density"],
       [9.8, 12756, 5.97, 1, 5514],
@@ -870,16 +930,14 @@ if the function returns `false`. <br />
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom type",
-        "textValidation": {
-          "func": "(cellText) => Number(cellText) > 20",
-          "setTextToDefaultOnFail":false,
-          "failedStyle":{"color":"red"}
-    }}]
-  }'
+  customColumnTypes='[
+    {
+      "name": "Custom type",
+      "textValidation": {
+        "func": "(cellText) => Number(cellText) > 20",
+        "setTextToDefaultOnFail":false,
+        "failedStyle":{"color":"red"}
+  }}]'
 ></active-table>
 ```
 
@@ -888,17 +946,15 @@ if the function returns `false`. <br />
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom type",
-        "textValidation": {
-          "func": "(cellText) => Number(cellText) > 20",
-          "setTextToDefaultOnFail":false,
-          "failedStyle":{"color":"red"}
-    }}],
-    "activeTypeName": "Custom type"
-  }'
+  customColumnTypes='[
+    {
+      "name": "Custom type",
+      "textValidation": {
+        "func": "(cellText) => Number(cellText) > 20",
+        "setTextToDefaultOnFail":false,
+        "failedStyle":{"color":"red"}
+  }}]'
+  defaultActiveTypeName="Custom type"
   content='[
     ["Gravity", "Diameter", "Mass", "Moons", "Density"],
     [9.8, 12756, 5.97, 1, 5514],
@@ -935,21 +991,19 @@ need to be converted into strings as otherwise they will be removed when passed 
 
 <TableContainer>
   <active-table
-    columnsSettings='{
-      "customColumnTypes":[
-        {
-          "name": "Custom type",
-          "customTextProcessing": {
-            "changeTextFunc": "(cellText) => `$${Number(cellText.replace(/[^0-9.-]+/g,\"\"))}`",
-            "changeStyleFunc": "(cellText) => {
-              const moneyNumber = Number(cellText.replace(/[^0-9.-]+/g,\"\"));
-              if (moneyNumber < 20) return {backgroundColor: `#ff3232`};
-              if (moneyNumber < 100) return {backgroundColor: `#ffff00`};
-              return {backgroundColor: `#00ac00`};
-            }"
-        }}],
-      "activeTypeName": "Custom type"
-    }'
+    customColumnTypes='[
+      {
+        "name": "Custom type",
+        "customTextProcessing": {
+          "changeTextFunc": "(cellText) => `$${Number(cellText.replace(/[^0-9.-]+/g,\"\"))}`",
+          "changeStyleFunc": "(cellText) => {
+            const moneyNumber = Number(cellText.replace(/[^0-9.-]+/g,\"\"));
+            if (moneyNumber < 20) return {backgroundColor: `#ff3232`};
+            if (moneyNumber < 100) return {backgroundColor: `#ffff00`};
+            return {backgroundColor: `#00ac00`};
+          }"
+      }}]'
+    defaultActiveTypeName="Custom type"
     content='[
       ["Gravity", "Diameter", "Mass", "Moons", "Density"],
       [9.8, 12756, 5.97, 1, 5514],
@@ -966,20 +1020,18 @@ need to be converted into strings as otherwise they will be removed when passed 
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom type",
-        "customTextProcessing": {
-          "changeTextFunc": "(cellText) => `$${Number(cellText.replace(/[^0-9.-]+/g,\"\"))}`",
-          "changeStyleFunc": "(cellText) => {
-            const moneyNumber = Number(cellText.replace(/[^0-9.-]+/g,\"\"));
-            if (moneyNumber < 20) return {backgroundColor: `#ff3232`};
-            if (moneyNumber < 100) return {backgroundColor: `#ffff00`};
-            return {backgroundColor: `#00ac00`};
-          }"
-      }}]
-  }'
+  customColumnTypes='[
+  {
+    "name": "Custom type",
+    "customTextProcessing": {
+      "changeTextFunc": "(cellText) => `$${Number(cellText.replace(/[^0-9.-]+/g,\"\"))}`",
+      "changeStyleFunc": "(cellText) => {
+        const moneyNumber = Number(cellText.replace(/[^0-9.-]+/g,\"\"));
+        if (moneyNumber < 20) return {backgroundColor: `#ff3232`};
+        if (moneyNumber < 100) return {backgroundColor: `#ffff00`};
+        return {backgroundColor: `#00ac00`};
+      }"
+  }}]'
 ></active-table>
 ```
 
@@ -988,21 +1040,19 @@ need to be converted into strings as otherwise they will be removed when passed 
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom type",
-        "customTextProcessing": {
-          "changeTextFunc": "(cellText) => `$${Number(cellText.replace(/[^0-9.-]+/g,\"\"))}`",
-          "changeStyleFunc": "(cellText) => {
-            const moneyNumber = Number(cellText.replace(/[^0-9.-]+/g,\"\"));
-            if (moneyNumber < 20) return {backgroundColor: `#ff3232`};
-            if (moneyNumber < 100) return {backgroundColor: `#ffff00`};
-            return {backgroundColor: `#00ac00`};
-          }"
-      }}],
-    "activeTypeName": "Custom type"
-  }'
+  customColumnTypes='[
+  {
+    "name": "Custom type",
+    "customTextProcessing": {
+      "changeTextFunc": "(cellText) => `$${Number(cellText.replace(/[^0-9.-]+/g,\"\"))}`",
+      "changeStyleFunc": "(cellText) => {
+        const moneyNumber = Number(cellText.replace(/[^0-9.-]+/g,\"\"));
+        if (moneyNumber < 20) return {backgroundColor: `#ff3232`};
+        if (moneyNumber < 100) return {backgroundColor: `#ffff00`};
+        return {backgroundColor: `#00ac00`};
+      }"
+  }}]'
+  defaultActiveTypeName="Custom type"
   content='[
     ["Gravity", "Diameter", "Mass", "Moons", "Density"],
     [9.8, 12756, 5.97, 1, 5514],
@@ -1040,16 +1090,14 @@ It is IMPORTANT to note that both functions need to be converted into strings as
 
 <TableContainer>
   <active-table
-    columnsSettings='{
-      "customColumnTypes":[
-        {
-          "name": "Custom type",
-          "sorting": {
-            "ascendingFunc": "(cellText1, cellText2) => Number(cellText1) - Number(cellText2)",
-            "descendingFunc": "(cellText1, cellText2) => Number(cellText2) - Number(cellText1)"
-        }}],
-      "activeTypeName": "Custom type"
-    }'
+    customColumnTypes='[
+      {
+        "name": "Custom type",
+        "sorting": {
+          "ascendingFunc": "(cellText1, cellText2) => Number(cellText1) - Number(cellText2)",
+          "descendingFunc": "(cellText1, cellText2) => Number(cellText2) - Number(cellText1)"
+    }}]'
+    defaultActiveTypeName="Custom type"
     content='[
       ["Gravity", "Diameter", "Mass", "Moons", "Density"],
       [9.8, 12756, 5.97, 1, 5514],
@@ -1066,15 +1114,13 @@ It is IMPORTANT to note that both functions need to be converted into strings as
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom type",
-        "sorting": {
-          "ascendingFunc": "(cellText1, cellText2) => Number(cellText1) - Number(cellText2)",
-          "descendingFunc": "(cellText1, cellText2) => Number(cellText2) - Number(cellText1)"
-      }}]
-  }'
+  customColumnTypes='[
+    {
+      "name": "Custom type",
+      "sorting": {
+        "ascendingFunc": "(cellText1, cellText2) => Number(cellText1) - Number(cellText2)",
+        "descendingFunc": "(cellText1, cellText2) => Number(cellText2) - Number(cellText1)"
+  }}]'
 ></active-table>
 ```
 
@@ -1083,16 +1129,14 @@ It is IMPORTANT to note that both functions need to be converted into strings as
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom type",
-        "sorting": {
-          "ascendingFunc": "(cellText1, cellText2) => Number(cellText1) - Number(cellText2)",
-          "descendingFunc": "(cellText1, cellText2) => Number(cellText2) - Number(cellText1)"
-      }}],
-    "activeTypeName": "Custom type"
-  }'
+  customColumnTypes='[
+    {
+      "name": "Custom type",
+      "sorting": {
+        "ascendingFunc": "(cellText1, cellText2) => Number(cellText1) - Number(cellText2)",
+        "descendingFunc": "(cellText1, cellText2) => Number(cellText2) - Number(cellText1)"
+  }}]'
+  defaultActiveTypeName="Custom type"
   content='[
     ["Gravity", "Diameter", "Mass", "Moons", "Density"],
     [9.8, 12756, 5.97, 1, 5514],
@@ -1119,7 +1163,7 @@ If the function strings inside `ascendingFunc` or `descendingFunc` contain " or 
   &nbsp;&nbsp;&nbsp;&nbsp; [`reusableIconName?: DEFAULT_COLUMN_TYPES`](#DEFAULT_COLUMN_TYPES), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `svgString?: string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `containerStyles?`: { <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [`dropdown?: CSSStyle`](./types#CSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [`columnDropdown?: CSSStyle`](./types#CSSStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [`headerCorrections?: CSSStyle`](./types#CSSStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;}}
 
@@ -1127,25 +1171,23 @@ Defines column type icon properties. <br />
 `reusableIconName` allows the icon to reuse of the existing default type icons. <br />
 `svgString` is the full svg element string containing all DOM tags. Make sure to escape the quotes - change " to \" (An easy way to do this is to
 stringify it using JSON.stringify()). If the string is defined directly in HTML, you will need to escape the first less than (<) character by replacing it with `&lt`. <br />
-`containerStyles` allows the icon dimensions to be customised when displayed in the `dropdown` and in the header. By default, the `dropdown` dimension
+`containerStyles` allows the icon dimensions to be customised when displayed in the `columnDropdown` and in the header. By default, the `columnDropdown` dimension
 properties are also used for the header however if they don't fit the `headerCorrections` object can be used to change them.
 
 #### Example calendar icon
 
 <TableContainer>
   <active-table
-    columnsSettings='{
-      "customColumnTypes":[
-        {
-          "name": "Custom type",
-          "iconSettings": {
-            "svgString": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"10px\" viewBox=\"0 0 10 10\" version=\"1.1\">\n<g id=\"surface1\">\n<path style=\" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;\" d=\"M 1.070312 9.285156 L 8.929688 9.285156 L 8.929688 3.570312 L 1.070312 3.570312 Z M 3.214844 2.5 L 3.214844 0.894531 C 3.214844 0.839844 3.199219 0.796875 3.164062 0.765625 C 3.128906 0.730469 3.085938 0.714844 3.035156 0.714844 L 2.679688 0.714844 C 2.625 0.714844 2.582031 0.730469 2.550781 0.765625 C 2.515625 0.796875 2.5 0.839844 2.5 0.894531 L 2.5 2.5 C 2.5 2.550781 2.515625 2.59375 2.550781 2.628906 C 2.582031 2.660156 2.625 2.679688 2.679688 2.679688 L 3.035156 2.679688 C 3.085938 2.679688 3.128906 2.660156 3.164062 2.628906 C 3.199219 2.59375 3.214844 2.550781 3.214844 2.5 Z M 7.5 2.5 L 7.5 0.894531 C 7.5 0.839844 7.484375 0.796875 7.449219 0.765625 C 7.417969 0.730469 7.375 0.714844 7.320312 0.714844 L 6.964844 0.714844 C 6.914062 0.714844 6.871094 0.730469 6.835938 0.765625 C 6.800781 0.796875 6.785156 0.839844 6.785156 0.894531 L 6.785156 2.5 C 6.785156 2.550781 6.800781 2.59375 6.835938 2.628906 C 6.871094 2.660156 6.914062 2.679688 6.964844 2.679688 L 7.320312 2.679688 C 7.375 2.679688 7.417969 2.660156 7.449219 2.628906 C 7.484375 2.59375 7.5 2.550781 7.5 2.5 Z M 9.644531 2.144531 L 9.644531 9.285156 C 9.644531 9.480469 9.570312 9.648438 9.429688 9.789062 C 9.289062 9.929688 9.121094 10 8.929688 10 L 1.070312 10 C 0.878906 10 0.710938 9.929688 0.570312 9.789062 C 0.429688 9.648438 0.355469 9.480469 0.355469 9.285156 L 0.355469 2.144531 C 0.355469 1.949219 0.429688 1.78125 0.570312 1.640625 C 0.710938 1.5 0.878906 1.429688 1.070312 1.429688 L 1.785156 1.429688 L 1.785156 0.894531 C 1.785156 0.648438 1.875 0.4375 2.046875 0.261719 C 2.222656 0.0859375 2.433594 0 2.679688 0 L 3.035156 0 C 3.28125 0 3.492188 0.0859375 3.667969 0.261719 C 3.839844 0.4375 3.929688 0.648438 3.929688 0.894531 L 3.929688 1.429688 L 6.070312 1.429688 L 6.070312 0.894531 C 6.070312 0.648438 6.160156 0.4375 6.332031 0.261719 C 6.507812 0.0859375 6.71875 0 6.964844 0 L 7.320312 0 C 7.566406 0 7.777344 0.0859375 7.953125 0.261719 C 8.125 0.4375 8.214844 0.648438 8.214844 0.894531 L 8.214844 1.429688 L 8.929688 1.429688 C 9.121094 1.429688 9.289062 1.5 9.429688 1.640625 C 9.570312 1.78125 9.644531 1.949219 9.644531 2.144531 Z M 9.644531 2.144531 \"/>\n</g>\n</svg>",
-            "containerStyles": {
-              "dropdown": {"marginLeft": "1.25px", "marginRight": "8px", "marginTop": "-2px"},
-              "headerCorrections": {"marginTop": "0px"}
-        }}}],
-      "activeTypeName": "Custom type"
-    }'
+    customColumnTypes='[
+    {
+      "name": "Custom type",
+      "iconSettings": {
+        "svgString": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"10px\" viewBox=\"0 0 10 10\" version=\"1.1\">\n<g id=\"surface1\">\n<path style=\" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;\" d=\"M 1.070312 9.285156 L 8.929688 9.285156 L 8.929688 3.570312 L 1.070312 3.570312 Z M 3.214844 2.5 L 3.214844 0.894531 C 3.214844 0.839844 3.199219 0.796875 3.164062 0.765625 C 3.128906 0.730469 3.085938 0.714844 3.035156 0.714844 L 2.679688 0.714844 C 2.625 0.714844 2.582031 0.730469 2.550781 0.765625 C 2.515625 0.796875 2.5 0.839844 2.5 0.894531 L 2.5 2.5 C 2.5 2.550781 2.515625 2.59375 2.550781 2.628906 C 2.582031 2.660156 2.625 2.679688 2.679688 2.679688 L 3.035156 2.679688 C 3.085938 2.679688 3.128906 2.660156 3.164062 2.628906 C 3.199219 2.59375 3.214844 2.550781 3.214844 2.5 Z M 7.5 2.5 L 7.5 0.894531 C 7.5 0.839844 7.484375 0.796875 7.449219 0.765625 C 7.417969 0.730469 7.375 0.714844 7.320312 0.714844 L 6.964844 0.714844 C 6.914062 0.714844 6.871094 0.730469 6.835938 0.765625 C 6.800781 0.796875 6.785156 0.839844 6.785156 0.894531 L 6.785156 2.5 C 6.785156 2.550781 6.800781 2.59375 6.835938 2.628906 C 6.871094 2.660156 6.914062 2.679688 6.964844 2.679688 L 7.320312 2.679688 C 7.375 2.679688 7.417969 2.660156 7.449219 2.628906 C 7.484375 2.59375 7.5 2.550781 7.5 2.5 Z M 9.644531 2.144531 L 9.644531 9.285156 C 9.644531 9.480469 9.570312 9.648438 9.429688 9.789062 C 9.289062 9.929688 9.121094 10 8.929688 10 L 1.070312 10 C 0.878906 10 0.710938 9.929688 0.570312 9.789062 C 0.429688 9.648438 0.355469 9.480469 0.355469 9.285156 L 0.355469 2.144531 C 0.355469 1.949219 0.429688 1.78125 0.570312 1.640625 C 0.710938 1.5 0.878906 1.429688 1.070312 1.429688 L 1.785156 1.429688 L 1.785156 0.894531 C 1.785156 0.648438 1.875 0.4375 2.046875 0.261719 C 2.222656 0.0859375 2.433594 0 2.679688 0 L 3.035156 0 C 3.28125 0 3.492188 0.0859375 3.667969 0.261719 C 3.839844 0.4375 3.929688 0.648438 3.929688 0.894531 L 3.929688 1.429688 L 6.070312 1.429688 L 6.070312 0.894531 C 6.070312 0.648438 6.160156 0.4375 6.332031 0.261719 C 6.507812 0.0859375 6.71875 0 6.964844 0 L 7.320312 0 C 7.566406 0 7.777344 0.0859375 7.953125 0.261719 C 8.125 0.4375 8.214844 0.648438 8.214844 0.894531 L 8.214844 1.429688 L 8.929688 1.429688 C 9.121094 1.429688 9.289062 1.5 9.429688 1.640625 C 9.570312 1.78125 9.644531 1.949219 9.644531 2.144531 Z M 9.644531 2.144531 \"/>\n</g>\n</svg>",
+        "containerStyles": {
+          "dropdown": {"marginLeft": "1.25px", "marginRight": "8px", "marginTop": "-2px"},
+          "headerCorrections": {"marginTop": "0px"}
+    }}}]'
+    defaultActiveTypeName="Custom type"
     content='[
       ["Gravity", "Diameter", "Mass", "Moons", "Density"],
       [9.8, 12756, 5.97, 1, 5514],
@@ -1162,15 +1204,15 @@ properties are also used for the header however if they don't fit the `headerCor
 
 ```text
 <active-table
-  "customColumnTypes":[
-    {
-      "name": "Custom type",
-      "iconSettings": {
-        "svgString": "&lt?xml version=\"1.0\" encoding=\"UTF-8\"?>\n <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"10px\" viewBox=\"0 0 10 10\" version=\"1.1\">\n<g id=\"surface1\">\n<path style=\" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;\" d=\"M 1.070312 9.285156 L 8.929688 9.285156 L 8.929688 3.570312 L 1.070312 3.570312 Z M 3.214844 2.5 L 3.214844 0.894531 C 3.214844 0.839844 3.199219 0.796875 3.164062 0.765625 C 3.128906 0.730469 3.085938 0.714844 3.035156 0.714844 L 2.679688 0.714844 C 2.625 0.714844 2.582031 0.730469 2.550781 0.765625 C 2.515625 0.796875 2.5 0.839844 2.5 0.894531 L 2.5 2.5 C 2.5 2.550781 2.515625 2.59375 2.550781 2.628906 C 2.582031 2.660156 2.625 2.679688 2.679688 2.679688 L 3.035156 2.679688 C 3.085938 2.679688 3.128906 2.660156 3.164062 2.628906 C 3.199219 2.59375 3.214844 2.550781 3.214844 2.5 Z M 7.5 2.5 L 7.5 0.894531 C 7.5 0.839844 7.484375 0.796875 7.449219 0.765625 C 7.417969 0.730469 7.375 0.714844 7.320312 0.714844 L 6.964844 0.714844 C 6.914062 0.714844 6.871094 0.730469 6.835938 0.765625 C 6.800781 0.796875 6.785156 0.839844 6.785156 0.894531 L 6.785156 2.5 C 6.785156 2.550781 6.800781 2.59375 6.835938 2.628906 C 6.871094 2.660156 6.914062 2.679688 6.964844 2.679688 L 7.320312 2.679688 C 7.375 2.679688 7.417969 2.660156 7.449219 2.628906 C 7.484375 2.59375 7.5 2.550781 7.5 2.5 Z M 9.644531 2.144531 L 9.644531 9.285156 C 9.644531 9.480469 9.570312 9.648438 9.429688 9.789062 C 9.289062 9.929688 9.121094 10 8.929688 10 L 1.070312 10 C 0.878906 10 0.710938 9.929688 0.570312 9.789062 C 0.429688 9.648438 0.355469 9.480469 0.355469 9.285156 L 0.355469 2.144531 C 0.355469 1.949219 0.429688 1.78125 0.570312 1.640625 C 0.710938 1.5 0.878906 1.429688 1.070312 1.429688 L 1.785156 1.429688 L 1.785156 0.894531 C 1.785156 0.648438 1.875 0.4375 2.046875 0.261719 C 2.222656 0.0859375 2.433594 0 2.679688 0 L 3.035156 0 C 3.28125 0 3.492188 0.0859375 3.667969 0.261719 C 3.839844 0.4375 3.929688 0.648438 3.929688 0.894531 L 3.929688 1.429688 L 6.070312 1.429688 L 6.070312 0.894531 C 6.070312 0.648438 6.160156 0.4375 6.332031 0.261719 C 6.507812 0.0859375 6.71875 0 6.964844 0 L 7.320312 0 C 7.566406 0 7.777344 0.0859375 7.953125 0.261719 C 8.125 0.4375 8.214844 0.648438 8.214844 0.894531 L 8.214844 1.429688 L 8.929688 1.429688 C 9.121094 1.429688 9.289062 1.5 9.429688 1.640625 C 9.570312 1.78125 9.644531 1.949219 9.644531 2.144531 Z M 9.644531 2.144531 \"/>\n</g>\n</svg>",
-        "containerStyles": {
-          "dropdown": {"marginLeft": "1.25px", "marginRight": "8px", "marginTop": "-2px"},
-          "headerCorrections": {"marginTop": "0px"}
-    }}}]
+  customColumnTypes='[
+  {
+    "name": "Custom type",
+    "iconSettings": {
+      "svgString": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"10px\" viewBox=\"0 0 10 10\" version=\"1.1\">\n<g id=\"surface1\">\n<path style=\" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;\" d=\"M 1.070312 9.285156 L 8.929688 9.285156 L 8.929688 3.570312 L 1.070312 3.570312 Z M 3.214844 2.5 L 3.214844 0.894531 C 3.214844 0.839844 3.199219 0.796875 3.164062 0.765625 C 3.128906 0.730469 3.085938 0.714844 3.035156 0.714844 L 2.679688 0.714844 C 2.625 0.714844 2.582031 0.730469 2.550781 0.765625 C 2.515625 0.796875 2.5 0.839844 2.5 0.894531 L 2.5 2.5 C 2.5 2.550781 2.515625 2.59375 2.550781 2.628906 C 2.582031 2.660156 2.625 2.679688 2.679688 2.679688 L 3.035156 2.679688 C 3.085938 2.679688 3.128906 2.660156 3.164062 2.628906 C 3.199219 2.59375 3.214844 2.550781 3.214844 2.5 Z M 7.5 2.5 L 7.5 0.894531 C 7.5 0.839844 7.484375 0.796875 7.449219 0.765625 C 7.417969 0.730469 7.375 0.714844 7.320312 0.714844 L 6.964844 0.714844 C 6.914062 0.714844 6.871094 0.730469 6.835938 0.765625 C 6.800781 0.796875 6.785156 0.839844 6.785156 0.894531 L 6.785156 2.5 C 6.785156 2.550781 6.800781 2.59375 6.835938 2.628906 C 6.871094 2.660156 6.914062 2.679688 6.964844 2.679688 L 7.320312 2.679688 C 7.375 2.679688 7.417969 2.660156 7.449219 2.628906 C 7.484375 2.59375 7.5 2.550781 7.5 2.5 Z M 9.644531 2.144531 L 9.644531 9.285156 C 9.644531 9.480469 9.570312 9.648438 9.429688 9.789062 C 9.289062 9.929688 9.121094 10 8.929688 10 L 1.070312 10 C 0.878906 10 0.710938 9.929688 0.570312 9.789062 C 0.429688 9.648438 0.355469 9.480469 0.355469 9.285156 L 0.355469 2.144531 C 0.355469 1.949219 0.429688 1.78125 0.570312 1.640625 C 0.710938 1.5 0.878906 1.429688 1.070312 1.429688 L 1.785156 1.429688 L 1.785156 0.894531 C 1.785156 0.648438 1.875 0.4375 2.046875 0.261719 C 2.222656 0.0859375 2.433594 0 2.679688 0 L 3.035156 0 C 3.28125 0 3.492188 0.0859375 3.667969 0.261719 C 3.839844 0.4375 3.929688 0.648438 3.929688 0.894531 L 3.929688 1.429688 L 6.070312 1.429688 L 6.070312 0.894531 C 6.070312 0.648438 6.160156 0.4375 6.332031 0.261719 C 6.507812 0.0859375 6.71875 0 6.964844 0 L 7.320312 0 C 7.566406 0 7.777344 0.0859375 7.953125 0.261719 C 8.125 0.4375 8.214844 0.648438 8.214844 0.894531 L 8.214844 1.429688 L 8.929688 1.429688 C 9.121094 1.429688 9.289062 1.5 9.429688 1.640625 C 9.570312 1.78125 9.644531 1.949219 9.644531 2.144531 Z M 9.644531 2.144531 \"/>\n</g>\n</svg>",
+      "containerStyles": {
+        "dropdown": {"marginLeft": "1.25px", "marginRight": "8px", "marginTop": "-2px"},
+        "headerCorrections": {"marginTop": "0px"}
+  }}}]'
   }'
 ></active-table>
 ```
@@ -1180,17 +1222,16 @@ properties are also used for the header however if they don't fit the `headerCor
 
 ```text
 <active-table
-  "customColumnTypes":[
-    {
-      "name": "Custom type",
-      "iconSettings": {
-        "svgString": "&lt?xml version=\"1.0\" encoding=\"UTF-8\"?>\n <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"10px\" viewBox=\"0 0 10 10\" version=\"1.1\">\n<g id=\"surface1\">\n<path style=\" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;\" d=\"M 1.070312 9.285156 L 8.929688 9.285156 L 8.929688 3.570312 L 1.070312 3.570312 Z M 3.214844 2.5 L 3.214844 0.894531 C 3.214844 0.839844 3.199219 0.796875 3.164062 0.765625 C 3.128906 0.730469 3.085938 0.714844 3.035156 0.714844 L 2.679688 0.714844 C 2.625 0.714844 2.582031 0.730469 2.550781 0.765625 C 2.515625 0.796875 2.5 0.839844 2.5 0.894531 L 2.5 2.5 C 2.5 2.550781 2.515625 2.59375 2.550781 2.628906 C 2.582031 2.660156 2.625 2.679688 2.679688 2.679688 L 3.035156 2.679688 C 3.085938 2.679688 3.128906 2.660156 3.164062 2.628906 C 3.199219 2.59375 3.214844 2.550781 3.214844 2.5 Z M 7.5 2.5 L 7.5 0.894531 C 7.5 0.839844 7.484375 0.796875 7.449219 0.765625 C 7.417969 0.730469 7.375 0.714844 7.320312 0.714844 L 6.964844 0.714844 C 6.914062 0.714844 6.871094 0.730469 6.835938 0.765625 C 6.800781 0.796875 6.785156 0.839844 6.785156 0.894531 L 6.785156 2.5 C 6.785156 2.550781 6.800781 2.59375 6.835938 2.628906 C 6.871094 2.660156 6.914062 2.679688 6.964844 2.679688 L 7.320312 2.679688 C 7.375 2.679688 7.417969 2.660156 7.449219 2.628906 C 7.484375 2.59375 7.5 2.550781 7.5 2.5 Z M 9.644531 2.144531 L 9.644531 9.285156 C 9.644531 9.480469 9.570312 9.648438 9.429688 9.789062 C 9.289062 9.929688 9.121094 10 8.929688 10 L 1.070312 10 C 0.878906 10 0.710938 9.929688 0.570312 9.789062 C 0.429688 9.648438 0.355469 9.480469 0.355469 9.285156 L 0.355469 2.144531 C 0.355469 1.949219 0.429688 1.78125 0.570312 1.640625 C 0.710938 1.5 0.878906 1.429688 1.070312 1.429688 L 1.785156 1.429688 L 1.785156 0.894531 C 1.785156 0.648438 1.875 0.4375 2.046875 0.261719 C 2.222656 0.0859375 2.433594 0 2.679688 0 L 3.035156 0 C 3.28125 0 3.492188 0.0859375 3.667969 0.261719 C 3.839844 0.4375 3.929688 0.648438 3.929688 0.894531 L 3.929688 1.429688 L 6.070312 1.429688 L 6.070312 0.894531 C 6.070312 0.648438 6.160156 0.4375 6.332031 0.261719 C 6.507812 0.0859375 6.71875 0 6.964844 0 L 7.320312 0 C 7.566406 0 7.777344 0.0859375 7.953125 0.261719 C 8.125 0.4375 8.214844 0.648438 8.214844 0.894531 L 8.214844 1.429688 L 8.929688 1.429688 C 9.121094 1.429688 9.289062 1.5 9.429688 1.640625 C 9.570312 1.78125 9.644531 1.949219 9.644531 2.144531 Z M 9.644531 2.144531 \"/>\n</g>\n</svg>",
-        "containerStyles": {
-          "dropdown": {"marginLeft": "1.25px", "marginRight": "8px", "marginTop": "-2px"},
-          "headerCorrections": {"marginTop": "0px"}
-    }}}],
-    "activeTypeName": "Custom type"
-  }'
+  customColumnTypes='[
+  {
+    "name": "Custom type",
+    "iconSettings": {
+      "svgString": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"10px\" viewBox=\"0 0 10 10\" version=\"1.1\">\n<g id=\"surface1\">\n<path style=\" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;\" d=\"M 1.070312 9.285156 L 8.929688 9.285156 L 8.929688 3.570312 L 1.070312 3.570312 Z M 3.214844 2.5 L 3.214844 0.894531 C 3.214844 0.839844 3.199219 0.796875 3.164062 0.765625 C 3.128906 0.730469 3.085938 0.714844 3.035156 0.714844 L 2.679688 0.714844 C 2.625 0.714844 2.582031 0.730469 2.550781 0.765625 C 2.515625 0.796875 2.5 0.839844 2.5 0.894531 L 2.5 2.5 C 2.5 2.550781 2.515625 2.59375 2.550781 2.628906 C 2.582031 2.660156 2.625 2.679688 2.679688 2.679688 L 3.035156 2.679688 C 3.085938 2.679688 3.128906 2.660156 3.164062 2.628906 C 3.199219 2.59375 3.214844 2.550781 3.214844 2.5 Z M 7.5 2.5 L 7.5 0.894531 C 7.5 0.839844 7.484375 0.796875 7.449219 0.765625 C 7.417969 0.730469 7.375 0.714844 7.320312 0.714844 L 6.964844 0.714844 C 6.914062 0.714844 6.871094 0.730469 6.835938 0.765625 C 6.800781 0.796875 6.785156 0.839844 6.785156 0.894531 L 6.785156 2.5 C 6.785156 2.550781 6.800781 2.59375 6.835938 2.628906 C 6.871094 2.660156 6.914062 2.679688 6.964844 2.679688 L 7.320312 2.679688 C 7.375 2.679688 7.417969 2.660156 7.449219 2.628906 C 7.484375 2.59375 7.5 2.550781 7.5 2.5 Z M 9.644531 2.144531 L 9.644531 9.285156 C 9.644531 9.480469 9.570312 9.648438 9.429688 9.789062 C 9.289062 9.929688 9.121094 10 8.929688 10 L 1.070312 10 C 0.878906 10 0.710938 9.929688 0.570312 9.789062 C 0.429688 9.648438 0.355469 9.480469 0.355469 9.285156 L 0.355469 2.144531 C 0.355469 1.949219 0.429688 1.78125 0.570312 1.640625 C 0.710938 1.5 0.878906 1.429688 1.070312 1.429688 L 1.785156 1.429688 L 1.785156 0.894531 C 1.785156 0.648438 1.875 0.4375 2.046875 0.261719 C 2.222656 0.0859375 2.433594 0 2.679688 0 L 3.035156 0 C 3.28125 0 3.492188 0.0859375 3.667969 0.261719 C 3.839844 0.4375 3.929688 0.648438 3.929688 0.894531 L 3.929688 1.429688 L 6.070312 1.429688 L 6.070312 0.894531 C 6.070312 0.648438 6.160156 0.4375 6.332031 0.261719 C 6.507812 0.0859375 6.71875 0 6.964844 0 L 7.320312 0 C 7.566406 0 7.777344 0.0859375 7.953125 0.261719 C 8.125 0.4375 8.214844 0.648438 8.214844 0.894531 L 8.214844 1.429688 L 8.929688 1.429688 C 9.121094 1.429688 9.289062 1.5 9.429688 1.640625 C 9.570312 1.78125 9.644531 1.949219 9.644531 2.144531 Z M 9.644531 2.144531 \"/>\n</g>\n</svg>",
+      "containerStyles": {
+        "dropdown": {"marginLeft": "1.25px", "marginRight": "8px", "marginTop": "-2px"},
+        "headerCorrections": {"marginTop": "0px"}
+  }}}]'
+  defaultActiveTypeName="Custom type"
   content='[
     ["Gravity", "Diameter", "Mass", "Moons", "Density"],
     [9.8, 12756, 5.97, 1, 5514],
@@ -1246,18 +1287,16 @@ Styling properties for the select and label dropdowns.
 
 <TableContainer>
   <active-table
-    columnsSettings='{
-      "customColumnTypes":[
-        {
-          "name": "Custom select type",
-          "select": {
-            "dropdownStyle": {"border": "0.5px solid #00000066"},
-            "optionStyle": {"textColor": "#606060"},
-            "options": ["Elephant", "Tiger", "Giraffe"],
-            "canAddMoreOptions": false
-          }}],
-      "activeTypeName": "Custom select type"
-    }'
+    customColumnTypes='[
+      {
+        "name": "Custom select type",
+        "select": {
+          "dropdownStyle": {"border": "0.5px solid #00000066"},
+          "optionStyle": {"textColor": "#606060"},
+          "options": ["Elephant", "Tiger", "Giraffe"],
+          "canAddMoreOptions": false
+      }}]'
+    defaultActiveTypeName="Custom select type"
     content='[
       ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
       ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
@@ -1273,18 +1312,15 @@ Styling properties for the select and label dropdowns.
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom select type",
-        "select": {
-          "dropdownStyle": {"border": "0.5px solid #00000066"},
-          "optionStyle": {"textColor": "#606060"},
-          "options": ["Elephant", "Tiger", "Giraffe"],
-          "canAddMoreOptions": false
-        }}]
-    }'
-  }'
+  customColumnTypes='[
+    {
+      "name": "Custom select type",
+      "select": {
+        "dropdownStyle": {"border": "0.5px solid #00000066"},
+        "optionStyle": {"textColor": "#606060"},
+        "options": ["Elephant", "Tiger", "Giraffe"],
+        "canAddMoreOptions": false
+      }}]'
 ></active-table>
 ```
 
@@ -1293,24 +1329,22 @@ Styling properties for the select and label dropdowns.
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom select type",
-        "select": {
-          "dropdownStyle": {"border": "0.5px solid #00000066"},
-          "optionStyle": {"textColor": "#606060"},
-          "options": ["Elephant", "Tiger", "Giraffe"],
-          "canAddMoreOptions": false
-        }}],
-      "activeTypeName": "Custom select type"
-    }'
-    content='[
-      ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
-      ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
-      ["Tiger", "Elephant", "Tiger", "Tiger", "Giraffe"],
-      ["Giraffe", "Tiger", "Invalid animal", "Elephant", "Invalid animal"],
-      ["Invalid animal", "Tiger", "Giraffe", "Invalid animal", "Tiger"]]'
+  customColumnTypes='[
+    {
+      "name": "Custom select type",
+      "select": {
+        "dropdownStyle": {"border": "0.5px solid #00000066"},
+        "optionStyle": {"textColor": "#606060"},
+        "options": ["Elephant", "Tiger", "Giraffe"],
+        "canAddMoreOptions": false
+    }}]'
+  defaultActiveTypeName="Custom select type"
+  content='[
+    ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
+    ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
+    ["Tiger", "Elephant", "Tiger", "Tiger", "Giraffe"],
+    ["Giraffe", "Tiger", "Invalid animal", "Elephant", "Invalid animal"],
+    ["Invalid animal", "Tiger", "Giraffe", "Invalid animal", "Tiger"]]'
   tableStyle='{"borderRadius":"2px"}'
 ></active-table>
 ```
@@ -1327,16 +1361,14 @@ Styling properties for the select and label dropdowns.
 
 <TableContainer>
   <active-table
-    columnsSettings='{
-      "customColumnTypes":[
-        {
-          "name": "Custom label type",
-          "label": {
-            "options": [{"text":"Elephant", "backgroundColor": "#4ddd3878"}, {"text":"Tiger", "backgroundColor": "#ff606082"}, {"text":"Giraffe", "backgroundColor": "#ff940f8f"}],
-            "canAddMoreOptions": true
-          }}],
-      "activeTypeName": "Custom label type"
-    }'
+    customColumnTypes='[
+      {
+        "name": "Custom label type",
+        "label": {
+          "options": [{"text":"Elephant", "backgroundColor": "#4ddd3878"}, {"text":"Tiger", "backgroundColor": "#ff606082"}, {"text":"Giraffe", "backgroundColor": "#ff940f8f"}],
+          "canAddMoreOptions": true
+      }}]'
+    defaultActiveTypeName="Custom label type"
     content='[
       ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
       ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
@@ -1352,16 +1384,13 @@ Styling properties for the select and label dropdowns.
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom label type",
-        "label": {
-          "options": [{"text":"Elephant", "backgroundColor": "#4ddd3878"}, {"text":"Tiger", "backgroundColor": "#ff606082"}, {"text":"Giraffe", "backgroundColor": "#ff940f8f"}],
-          "canAddMoreOptions": true
-        }}]
-    }'
-  }'
+  customColumnTypes='[
+    {
+      "name": "Custom label type",
+      "label": {
+        "options": [{"text":"Elephant", "backgroundColor": "#4ddd3878"}, {"text":"Tiger", "backgroundColor": "#ff606082"}, {"text":"Giraffe", "backgroundColor": "#ff940f8f"}],
+        "canAddMoreOptions": true
+    }}]'
 ></active-table>
 ```
 
@@ -1370,23 +1399,21 @@ Styling properties for the select and label dropdowns.
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom label type",
-        "label": {
-          "options": [{"text":"Elephant", "backgroundColor": "#4ddd3878"}, {"text":"Tiger", "backgroundColor": "#ff606082"}, {"text":"Giraffe", "backgroundColor": "#ff940f8f"}],
-          "canAddMoreOptions": true
-        }}],
-      "activeTypeName": "Custom label type"
-    }'
-    content='[
-      ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
-      ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
-      ["Tiger", "Elephant", "Tiger", "Tiger", "Giraffe"],
-      ["Giraffe", "Tiger", "Elephant", "Elephant", "Kangaroo"],
-      ["Goose", "Elephant", "Giraffe", "Whale", "Tiger"]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  customColumnTypes='[
+    {
+      "name": "Custom label type",
+      "label": {
+        "options": [{"text":"Elephant", "backgroundColor": "#4ddd3878"}, {"text":"Tiger", "backgroundColor": "#ff606082"}, {"text":"Giraffe", "backgroundColor": "#ff940f8f"}],
+        "canAddMoreOptions": true
+    }}]'
+  defaultActiveTypeName="Custom label type"
+  content='[
+    ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
+    ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
+    ["Tiger", "Elephant", "Tiger", "Tiger", "Giraffe"],
+    ["Giraffe", "Tiger", "Elephant", "Elephant", "Kangaroo"],
+    ["Goose", "Elephant", "Giraffe", "Whale", "Tiger"]]'
+  tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
   tableStyle='{"borderRadius":"2px"}'
 ></active-table>
 ```
@@ -1421,16 +1448,14 @@ for a custom [`Calendar`](#Calendar) type).
 
 <TableContainer>
   <active-table
-    columnsSettings='{
-      "customColumnTypes":[
-        {
-          "name": "Custom d/m/y type",
-          "calendar": {
-            "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
-            "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
-          }}],
-      "activeTypeName": "Custom d/m/y type"
-    }'
+    customColumnTypes='[
+      {
+        "name": "Custom d/m/y type",
+        "calendar": {
+          "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
+          "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
+      }}]'
+    defaultActiveTypeName="Custom d/m/y type"
     content='[
       ["Date 1", "Date 2", "Date 3", "Date 4"],
       ["3/2/2052", "4/2/1993", "6/12/2012", "2/2/2012"],
@@ -1445,15 +1470,14 @@ for a custom [`Calendar`](#Calendar) type).
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom d/m/y type",
-        "calendar": {
-          "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
-          "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
-    }}]
-  }'
+  customColumnTypes='[
+    {
+      "name": "Custom d/m/y type",
+      "calendar": {
+        "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
+        "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
+    }}]'
+  defaultActiveTypeName="Custom d/m/y type"
 ></active-table>
 ```
 
@@ -1462,16 +1486,14 @@ for a custom [`Calendar`](#Calendar) type).
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom d/m/y type",
-        "calendar": {
-          "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
-          "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
-    }}],
-    "activeTypeName": "Custom d/m/y type"
-  }'
+  customColumnTypes='[
+    {
+      "name": "Custom d/m/y type",
+      "calendar": {
+        "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
+        "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
+    }}]'
+  defaultActiveTypeName="Custom d/m/y type"
   content='[
     ["Date 1", "Date 2", "Date 3", "Date 4"],
     ["3/2/2052", "4/2/1993", "6/12/2012", "2/2/2012"],
@@ -1512,14 +1534,12 @@ is checked and _"false"_ if unchecked.
 
 <TableContainer>
   <active-table
-    columnsSettings='{
-      "customColumnTypes":[
-        {
-          "name": "Custom checkbox type",
-          "checkbox": true
-        }],
-      "activeTypeName": "Custom checkbox type"
-    }'
+    customColumnTypes='[
+      {
+        "name": "Custom checkbox type",
+        "checkbox": true
+      }]'
+    defaultActiveTypeName="Custom checkbox type"
     content='[
       ["Criteria 1", "Criteria 2", "Criteria 3", "Criteria 4"],
       ["positive", "true", "positive", "false"],
@@ -1534,13 +1554,12 @@ is checked and _"false"_ if unchecked.
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom checkbox type",
-        "checkbox": true
-      }]
-  }'
+  customColumnTypes='[
+    {
+      "name": "Custom checkbox type",
+      "checkbox": true
+    }]'
+  defaultActiveTypeName="Custom checkbox type"
 ></active-table>
 ```
 
@@ -1549,14 +1568,12 @@ is checked and _"false"_ if unchecked.
 
 ```text
 <active-table
-  columnsSettings='{
-    "customColumnTypes":[
-      {
-        "name": "Custom d/m/y type",
-        "checkbox": true
-      }],
-    "activeTypeName": "Custom d/m/y type"
-  }'
+  customColumnTypes='[
+    {
+      "name": "Custom checkbox type",
+      "checkbox": true
+    }]'
+  defaultActiveTypeName="Custom checkbox type"
   content='[
     ["Criteria 1", "Criteria 2", "Criteria 3", "Criteria 4"],
     ["positive", "true", "positive", "false"],
@@ -1598,13 +1615,12 @@ Default column type names.
 
 <TableContainer>
   <active-table
-    columnsSettings='{
-      "dropdown": {
-        "isSortAvailable": false,
-        "isDeleteAvailable": true,
-        "isInsertLeftAvailable": false,
-        "isInsertRightAvailable": true
-      }}'
+    columnDropdown='{
+      "isSortAvailable": false,
+      "isDeleteAvailable": true,
+      "isInsertLeftAvailable": false,
+      "isInsertRightAvailable": true
+    }'
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
@@ -1621,13 +1637,12 @@ Default column type names.
 
 ```text
 <active-table
-  columnsSettings='{
-    "dropdown": {
-      "isSortAvailable": false,
-      "isDeleteAvailable": true,
-      "isInsertLeftAvailable": false,
-      "isInsertRightAvailable": true
-    }}'
+  columnDropdown='{
+    "isSortAvailable": false,
+    "isDeleteAvailable": true,
+    "isInsertLeftAvailable": false,
+    "isInsertRightAvailable": true
+  }'
 ></active-table>
 ```
 
@@ -1636,13 +1651,12 @@ Default column type names.
 
 ```text
 <active-table
-  columnsSettings='{
-    "dropdown": {
-      "isSortAvailable": false,
-      "isDeleteAvailable": true,
-      "isInsertLeftAvailable": false,
-      "isInsertRightAvailable": true
-    }}'
+  columnDropdown='{
+    "isSortAvailable": false,
+    "isDeleteAvailable": true,
+    "isInsertLeftAvailable": false,
+    "isInsertRightAvailable": true
+  }'
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],

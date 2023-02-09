@@ -17,5 +17,6 @@ export type IndexColumnT =
 // to be used by the client
 export interface FrameComponentsStyle {
   style?: HoverableStyles;
+  // WORK - maybe should be true by default
   inheritHeaderColors?: boolean; // true by default, applied to header only and will not inherit the default header style
 }
