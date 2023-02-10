@@ -19,7 +19,7 @@ import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {FrameComponentsInternal} from './types/frameComponentsInternal';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {ProgrammaticCellUpdateT} from './types/programmaticCellUpdateT';
-import {ColumnsSettingsDefault} from './types/columnsSettingsDefault';
+import {DefaultColumnsSettings} from './types/columnsSettingsDefault';
 import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {CellHighlightUtils} from './utils/color/cellHighlightUtils';
@@ -58,7 +58,6 @@ import {LitElement, PropertyValues} from 'lit';
 import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
-import {EMPTY_STRING} from './consts/text';
 import {Overflow} from './types/overflow';
 
 // WORK - edit the generated type file and remove private properties, otherwise use one object for internal state
@@ -139,13 +138,13 @@ export class ActiveTable extends LitElement {
 
   // REF-21
   @state()
-  _columnsSettingsDefault: ColumnsSettingsDefault = {};
+  _defaultColumnsSettings: DefaultColumnsSettings = {} as DefaultColumnsSettings; // populated in setDefaultColumnsSettings
 
   @property({type: Array<CustomColumnSettings>})
   customColumnsSettings: CustomColumnsSettings = [];
 
   @state()
-  customColumnsSettingsInternal: ColumnsSettingsMap = {};
+  _customColumnsSettings: ColumnsSettingsMap = {};
 
   // this contains all cell elements, if there is a need to access cell elements outside the context of columns
   // create an entirely new state object and access elements from there as we don't want to store all elements
@@ -265,13 +264,13 @@ export class ActiveTable extends LitElement {
   overflow: Overflow | null = null;
 
   @property({type: String})
-  defaultText?: CellText = EMPTY_STRING;
+  defaultText?: CellText;
 
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  isDefaultTextRemovable?: boolean = true;
+  isDefaultTextRemovable?: boolean;
 
   @property({type: Object})
   cellStyle?: DimensionalCSSStyle;
@@ -280,7 +279,7 @@ export class ActiveTable extends LitElement {
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  isCellTextEditable? = true;
+  isCellTextEditable?: boolean;
 
   @property({type: Object})
   headerStyles?: HoverableStyles;
@@ -299,7 +298,7 @@ export class ActiveTable extends LitElement {
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
   })
-  isColumnResizable?: boolean = true;
+  isColumnResizable?: boolean;
 
   @property({type: Array<DEFAULT_COLUMN_TYPES>})
   availableDefaultColumnTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here

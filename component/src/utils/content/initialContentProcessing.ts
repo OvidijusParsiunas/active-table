@@ -51,12 +51,12 @@ export class InitialContentProcessing {
   }
 
   public static preProcess(at: ActiveTable) {
-    const {content, maxRows, allowDuplicateHeaders, _columnsSettingsDefault} = at;
+    const {content, maxRows, allowDuplicateHeaders, _defaultColumnsSettings} = at;
     InitialContentProcessing.removeRowsExceedingLimit(content, maxRows);
     const maxRowLength = InitialContentProcessing.getMaxRowLength(content);
     InitialContentProcessing.makeAllContentRowsSameLength(content, maxRowLength);
     if (!allowDuplicateHeaders && content.length > 0) {
-      InitialContentProcessing.removeDuplicateHeaders(content, _columnsSettingsDefault.defaultText);
+      InitialContentProcessing.removeDuplicateHeaders(content, _defaultColumnsSettings.defaultText);
     }
   }
 }

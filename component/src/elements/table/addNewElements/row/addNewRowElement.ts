@@ -28,7 +28,7 @@ export class AddNewRowElement {
 
   // prettier-ignore
   private static createCell(at: ActiveTable) {
-    const {_columnsSettingsDefault: {cellStyle}, frameComponentsInternal: {displayAddNewRow, style}} = at;
+    const {_defaultColumnsSettings: {cellStyle}, frameComponentsInternal: {displayAddNewRow, style}} = at;
     const addNewRowCell = CellElement.createContentCell(false, cellStyle, style?.default);
     addNewRowCell.id = AddNewRowElement.ID;
     if (!displayAddNewRow) {

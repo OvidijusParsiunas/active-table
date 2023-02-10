@@ -36,7 +36,7 @@ export class AddNewColumnElement {
       GenericElementUtils.NOT_SELECTABLE_CLASS,
       AddNewColumnElement.ADD_COLUMN_CELL_CLASS
     );
-    Object.assign(cell.style, at._columnsSettingsDefault.cellStyle, at.frameComponentsInternal.style?.default, {
+    Object.assign(cell.style, at._defaultColumnsSettings.cellStyle, at.frameComponentsInternal.style?.default, {
       // backgroundColor controlled by column group - REF-17
       backgroundColor: '',
     });
@@ -46,7 +46,7 @@ export class AddNewColumnElement {
 
   // prettier-ignore
   private static createHeaderCell(at: ActiveTable) {
-    const {_columnsSettingsDefault: {headerStyles}, frameComponentsInternal: {cellColors, inheritHeaderColors}} = at;
+    const {_defaultColumnsSettings: {headerStyles}, frameComponentsInternal: {cellColors, inheritHeaderColors}} = at;
     const headerCell = AddNewColumnElement.createCell(at, true);
     headerCell.style.width = AddNewColumnElement.DEFAULT_WIDTH_PX;
     headerCell.innerText = '+';

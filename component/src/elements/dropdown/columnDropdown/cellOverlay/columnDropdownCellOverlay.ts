@@ -64,7 +64,7 @@ export class ColumnDropdownCellOverlay {
   }
 
   public static add(at: ActiveTable, columnIndex: number) {
-    const overlayStyle = at._columnsSettingsDefault.columnDropdown?.displaySettings.overlayStyle;
+    const overlayStyle = at._defaultColumnsSettings.columnDropdown?.displaySettings.overlayStyle;
     const columnDropdownCellOverlay = ColumnDropdownCellOverlay.create(overlayStyle);
     const headerCell = at.columnsDetails[columnIndex].elements[0];
     const cellDividerElement = headerCell.nextSibling as HTMLElement;

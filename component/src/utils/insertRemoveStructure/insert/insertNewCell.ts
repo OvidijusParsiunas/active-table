@@ -83,11 +83,10 @@ export class InsertNewCell {
   // REF-13
   // prettier-ignore
   private static insertInitialColumnDetails(at: ActiveTable, cellText: CellText, columnIndex: number) {
-    const {columnsDetails, customColumnsSettingsInternal, cellDropdownContainer,
-      _columnsSettingsDefault, onColumnsUpdate} = at;
+    const {columnsDetails, _customColumnsSettings, cellDropdownContainer, _defaultColumnsSettings, onColumnsUpdate} = at;
     const cellDropdown = CellDropdown.createAndAppend(cellDropdownContainer as HTMLElement);
-    const columnDetails = ColumnDetails.createInitial(_columnsSettingsDefault, cellDropdown,
-      customColumnsSettingsInternal[cellText], at.defaultCellHoverColors,
+    const columnDetails = ColumnDetails.createInitial(_defaultColumnsSettings, cellDropdown,
+      _customColumnsSettings[cellText], at.defaultCellHoverColors,
       ColumnDetailsUtils.fireUpdateEvent.bind(this, columnsDetails, onColumnsUpdate));
     columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
   }

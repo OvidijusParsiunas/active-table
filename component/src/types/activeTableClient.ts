@@ -1,7 +1,7 @@
 import {OnCellUpdate, OnColumnsUpdate, OnTableUpdate, ColumnUpdateDetails} from './onUpdate';
 import {FrameComponentsStyle, IndexColumnT} from './frameComponents';
 import {ProgrammaticCellUpdateT} from './programmaticCellUpdateT';
-import {ColumnsSettingsDefault} from './columnsSettingsDefault';
+import {DefaultColumnsSettings} from './columnsSettingsDefault';
 import {RowDropdownSettings} from './rowDropdownSettings';
 import {CustomColumnsSettings} from './columnsSettings';
 import {ColumnResizerColors} from './columnSizer';
@@ -20,7 +20,7 @@ export interface ActiveTable extends LitElement {
   displayHeaderIcons?: boolean;
   spellCheck?: boolean;
   stickyHeader?: boolean | undefined;
-  columnsSettings?: ColumnsSettingsDefault;
+  columnsSettings?: DefaultColumnsSettings;
   customColumnsSettings?: CustomColumnsSettings;
   tableStyle?: TableStyle;
   rowHoverStyle?: RowHoverStyle;

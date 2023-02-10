@@ -1,6 +1,6 @@
 import {ColumnDropdownSettingsDefault} from './columnDropdownSettings';
-import {CustomColumnSettings} from './columnsSettings';
+import {ColumnSettingsInternal} from './columnsSettingsInternal';
 
-export type ColumnsSettingsDefault = Omit<CustomColumnSettings, 'headerName'> & {
-  columnDropdown?: ColumnDropdownSettingsDefault;
+export type DefaultColumnsSettings = ColumnSettingsInternal & {
+  columnDropdown: ColumnDropdownSettingsDefault;
 };

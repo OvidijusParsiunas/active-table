@@ -27,7 +27,7 @@ export class IndexColumn {
 
   // prettier-ignore
   private static createCell(at: ActiveTable, isHeader: boolean) {
-    const {tableDimensions, _columnsSettingsDefault,
+    const {tableDimensions, _defaultColumnsSettings,
       frameComponentsInternal: {style, cellColors, inheritHeaderColors}} = at;
     const cell = CellElement.createBaseCell(isHeader);
     cell.classList.add(IndexColumn.INDEX_CELL_CLASS, GenericElementUtils.NOT_SELECTABLE_CLASS);
@@ -37,9 +37,9 @@ export class IndexColumn {
     if (!tableDimensions.isColumnIndexCellTextWrapped) {
       cell.classList.add(IndexColumn.INDEX_CELL_OVERFLOW_CLASS); // REF-19
     }
-    Object.assign(cell.style, _columnsSettingsDefault.cellStyle, style?.default || {});
+    Object.assign(cell.style, _defaultColumnsSettings.cellStyle, style?.default || {});
     if (isHeader) Object.assign(cell.style,
-      inheritHeaderColors ? _columnsSettingsDefault.headerStyles?.default : {}, cellColors.header.default);
+      inheritHeaderColors ? _defaultColumnsSettings.headerStyles?.default : {}, cellColors.header.default);
     return cell;
   }
 

@@ -1,6 +1,6 @@
 import {ProcessedDataTextStyle} from '../columnType/processedDataTextStyle';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
-import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
+import {DefaultColumnsSettings} from '../../types/columnsSettingsDefault';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {NoDimensionCSSStyle, CSSStyle} from '../../types/cssStyle';
 import {ColumnDetails} from '../columnDetails/columnDetails';
@@ -21,7 +21,7 @@ export class ColumnSettingsStyleUtils {
     const newHeaderStyle = settings.cellStyle || settings.headerStyles?.default;
     if (newHeaderStyle) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, elements[0], true);
     const newStyleSettings = newHeaderStyle ? settings : undefined;
-    columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(at._columnsSettingsDefault,
+    columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(at._defaultColumnsSettings,
       newStyleSettings, at.defaultCellHoverColors);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [elements[0]]);
   }
@@ -34,7 +34,7 @@ export class ColumnSettingsStyleUtils {
 
   // prettier-ignore
   private static resetHeaderStyleToDefault(columnElements: HTMLElement[],
-      settings: ColumnSettingsInternal, columnsSettings: ColumnsSettingsDefault) {
+      settings: ColumnSettingsInternal, columnsSettings: DefaultColumnsSettings) {
     if (settings.headerStyles?.default) {
       ColumnSettingsStyleUtils.unsetHeaderSettingStyle(columnElements[0], settings.headerStyles.default);
     }
@@ -47,9 +47,9 @@ export class ColumnSettingsStyleUtils {
   private static changeHeaderStyleFunc(this: ActiveTable, columnIndex: number, oldSettings: ColumnSettingsInternal) {
     const columnDetails = this.columnsDetails[columnIndex];
     const {elements, settings: {isHeaderTextEditable}} = columnDetails;
-    ColumnSettingsStyleUtils.resetHeaderStyleToDefault(elements, oldSettings, this._columnsSettingsDefault);
+    ColumnSettingsStyleUtils.resetHeaderStyleToDefault(elements, oldSettings, this._defaultColumnsSettings);
     ColumnSettingsStyleUtils.setNewHeaderStyle(this, columnDetails);
-    const cellClickDropdownOpen = this._columnsSettingsDefault.columnDropdown?.displaySettings.openMethod?.cellClick;
+    const cellClickDropdownOpen = this._defaultColumnsSettings.columnDropdown?.displaySettings.openMethod?.cellClick;
     const isEditable = !cellClickDropdownOpen && isHeaderTextEditable;
     CellElement.prepContentEditable(CellElement.getTextElement(elements[0]),
       Boolean(isEditable), cellClickDropdownOpen);

@@ -1,5 +1,5 @@
 import {BordersOverwrittenBySiblings, ColumnDetailsT} from '../../types/columnDetails';
-import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
+import {DefaultColumnsSettings} from '../../types/columnsSettingsDefault';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {ExtractElements} from '../elements/extractElements';
 import {ResetColumnStyles} from './resetColumnStyles';
@@ -9,7 +9,7 @@ import {ActiveTable} from '../../activeTable';
 export class ColumnSettingsFrameBorderUtils {
   // prettier-ignore
   private static toggleFrameBorder(frameElements: HTMLElement[], columnElements: HTMLElement[],
-      subjectBorder: keyof BordersOverwrittenBySiblings, columnsSettings: ColumnsSettingsDefault) {
+      subjectBorder: keyof BordersOverwrittenBySiblings, columnsSettings: DefaultColumnsSettings) {
     if (frameElements.length > 0) {
       // subject is the frame column and sibling is the data column
       const {subjectBorderStyle, siblingBorderStyle} = ColumnSettingsBorderUtils.getColumnBorderStyles(subjectBorder);
@@ -32,16 +32,16 @@ export class ColumnSettingsFrameBorderUtils {
       leftColumnDetails: ColumnDetailsT, rightColumnDetails: ColumnDetailsT) {
     const currentColumn = currentColumnDetails || leftColumnDetails; // when last column removed - use the left one instead
     if (!currentColumn) return;
-    const {_columnsSettingsDefault: columnsSettingsDef, addColumnCellsElementsRef,
+    const {_defaultColumnsSettings: defColumnsSettings, addColumnCellsElementsRef,
       frameComponentsInternal: {displayAddNewColumn, displayIndexColumn}} = at;
     if (!rightColumnDetails && displayAddNewColumn) {
       ColumnSettingsFrameBorderUtils.toggleFrameBorder(
-        addColumnCellsElementsRef, currentColumn.elements, 'left', columnsSettingsDef);
+        addColumnCellsElementsRef, currentColumn.elements, 'left', defColumnsSettings);
     }
     if (!leftColumnDetails && displayIndexColumn) {
       const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.content, 0);
       const indexCells = rowElements.map((row) => row.children[0]) as HTMLElement[];
-      ColumnSettingsFrameBorderUtils.toggleFrameBorder(indexCells, currentColumn.elements, 'right', columnsSettingsDef);
+      ColumnSettingsFrameBorderUtils.toggleFrameBorder(indexCells, currentColumn.elements, 'right', defColumnsSettings);
     }
   }
 }

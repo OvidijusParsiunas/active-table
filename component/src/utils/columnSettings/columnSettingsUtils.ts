@@ -8,7 +8,7 @@ import {CustomColumnsSettings, CustomColumnSettings} from '../../types/columnsSe
 import {ColumnSettingsDefaultTextUtils} from './columnSettingsDefaultTextUtils';
 import {StringDimensionUtils} from '../tableDimensions/stringDimensionUtils';
 import {ColumnDropdownSettings} from '../../types/columnDropdownSettings';
-import {ColumnsSettingsDefault} from '../../types/columnsSettingsDefault';
+import {DefaultColumnsSettings} from '../../types/columnsSettingsDefault';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
 import {ColumnSettingsWidthUtils} from './columnSettingsWidthUtils';
@@ -17,6 +17,7 @@ import {ResetColumnStructure} from './resetColumnStructure';
 import {CellElement} from '../../elements/cell/cellElement';
 import {GenericObject} from '../../types/genericObject';
 import {ActiveTable} from '../../activeTable';
+import {EMPTY_STRING} from '../../consts/text';
 
 export class ColumnSettingsUtils {
   private static updateSizer(at: ActiveTable, columnIndex: number) {
@@ -56,12 +57,11 @@ export class ColumnSettingsUtils {
 
   // prettier-ignore
   public static parseSettingsChange(at: ActiveTable) {
-    const {customColumnsSettingsInternal, columnsDetails,
-      focusedElements: {cell: {element: cellElement, columnIndex}}} = at;
+    const {_customColumnsSettings, columnsDetails, focusedElements: {cell: {element: cellElement, columnIndex}}} = at;
     const columnDetails = columnsDetails[columnIndex as number];
     const oldSettings = columnDetails.settings;
-    const newSettings = customColumnsSettingsInternal[CellElement.getText(cellElement as HTMLElement)]
-      || at._columnsSettingsDefault;
+    const newSettings = _customColumnsSettings[CellElement.getText(cellElement as HTMLElement)]
+      || at._defaultColumnsSettings;
     return { oldSettings, newSettings, areSettingsDifferent: oldSettings !== newSettings }; 
   }
 
@@ -95,21 +95,21 @@ export class ColumnSettingsUtils {
     StringDimensionUtils.removeAllDimensions(cellStyle);
   }
 
-  private static createInternalSettings(settings: CustomColumnSettings, defSettings: ColumnsSettingsDefault) {
+  private static createInternalSettings(settings: CustomColumnSettings, defSettings: DefaultColumnsSettings) {
     const internalSettings = settings as unknown as ColumnSettingsInternal;
     if (ColumnSettingsStyleUtils.doesSettingHaveSideBorderStyle(internalSettings)) {
       internalSettings.stylePrecedence = true; // REF-23
     }
     ColumnSettingsUtils.setDropdownSettings(settings.columnDropdown, defSettings.columnDropdown);
     Object.keys(defSettings).forEach((key: string) => {
-      (internalSettings as unknown as GenericObject)[key] ??= defSettings[key as keyof ColumnsSettingsDefault] as string;
+      (internalSettings as unknown as GenericObject)[key] ??= defSettings[key as keyof DefaultColumnsSettings] as string;
     });
     internalSettings.types = ColumnTypesUtils.getProcessedTypes(internalSettings);
     ColumnSettingsUtils.processCellDimensions(settings); // here to first inherit isColumnResizable if not set by user
     return internalSettings;
   }
 
-  private static createInternalMap(customSettings: CustomColumnsSettings, defaultSettings: ColumnsSettingsDefault) {
+  private static createInternalMap(customSettings: CustomColumnsSettings, defaultSettings: DefaultColumnsSettings) {
     return customSettings.reduce<ColumnsSettingsMap>((settingsMap, clientSettings) => {
       settingsMap[clientSettings.headerName] = ColumnSettingsUtils.createInternalSettings(clientSettings, defaultSettings);
       return settingsMap;
@@ -117,44 +117,42 @@ export class ColumnSettingsUtils {
   }
 
   private static setDefaultTypeProperties(at: ActiveTable) {
-    const {_columnsSettingsDefault} = at;
-    const internalSettings = _columnsSettingsDefault as unknown as ColumnSettingsInternal;
-    _columnsSettingsDefault.availableDefaultColumnTypes = at.availableDefaultColumnTypes;
-    _columnsSettingsDefault.customColumnTypes = at.customColumnTypes;
-    _columnsSettingsDefault.defaultColumnTypeName = at.defaultColumnTypeName;
-    internalSettings.types = ColumnTypesUtils.getProcessedTypes(internalSettings);
+    const {_defaultColumnsSettings} = at;
+    _defaultColumnsSettings.availableDefaultColumnTypes = at.availableDefaultColumnTypes;
+    _defaultColumnsSettings.customColumnTypes = at.customColumnTypes;
+    _defaultColumnsSettings.defaultColumnTypeName = at.defaultColumnTypeName;
+    _defaultColumnsSettings.types = ColumnTypesUtils.getProcessedTypes(_defaultColumnsSettings);
   }
 
   private static setDefaultDropdownProperties(at: ActiveTable) {
-    const {_columnsSettingsDefault} = at;
+    const {_defaultColumnsSettings} = at;
     const defaultDisplaySettings = {openMethod: {cellClick: true}};
-    _columnsSettingsDefault.columnDropdown = at.columnDropdown || {displaySettings: defaultDisplaySettings};
-    _columnsSettingsDefault.columnDropdown.displaySettings ??= defaultDisplaySettings;
-    DropdownDisplaySettingsUtil.process(_columnsSettingsDefault.columnDropdown.displaySettings);
-    _columnsSettingsDefault.columnDropdown.isSortAvailable ??= true;
-    _columnsSettingsDefault.columnDropdown.isDeleteAvailable ??= true;
-    _columnsSettingsDefault.columnDropdown.isInsertLeftAvailable ??= true;
-    _columnsSettingsDefault.columnDropdown.isInsertRightAvailable ??= true;
-    _columnsSettingsDefault.columnDropdown.isMoveAvailable ??= true;
+    _defaultColumnsSettings.columnDropdown = at.columnDropdown || {displaySettings: defaultDisplaySettings};
+    _defaultColumnsSettings.columnDropdown.displaySettings ??= defaultDisplaySettings;
+    DropdownDisplaySettingsUtil.process(_defaultColumnsSettings.columnDropdown.displaySettings);
+    _defaultColumnsSettings.columnDropdown.isSortAvailable ??= true;
+    _defaultColumnsSettings.columnDropdown.isDeleteAvailable ??= true;
+    _defaultColumnsSettings.columnDropdown.isInsertLeftAvailable ??= true;
+    _defaultColumnsSettings.columnDropdown.isInsertRightAvailable ??= true;
+    _defaultColumnsSettings.columnDropdown.isMoveAvailable ??= true;
   }
 
   private static setDefaultGenericProperties(at: ActiveTable) {
-    const {_columnsSettingsDefault} = at;
-    _columnsSettingsDefault.defaultText = at.defaultText;
-    _columnsSettingsDefault.isDefaultTextRemovable = at.isDefaultTextRemovable;
-    _columnsSettingsDefault.cellStyle = at.cellStyle;
-    _columnsSettingsDefault.isCellTextEditable = at.isCellTextEditable;
-    _columnsSettingsDefault.headerStyles = at.headerStyles;
-    _columnsSettingsDefault.isHeaderTextEditable =
-      at.isHeaderTextEditable !== undefined ? at.isHeaderTextEditable : _columnsSettingsDefault.isCellTextEditable;
-    _columnsSettingsDefault.headerIconStyle = at.headerIconStyle;
-    _columnsSettingsDefault.isColumnResizable = at.isColumnResizable;
+    const {_defaultColumnsSettings} = at;
+    _defaultColumnsSettings.defaultText = at.defaultText ?? EMPTY_STRING;
+    _defaultColumnsSettings.isDefaultTextRemovable = at.isDefaultTextRemovable ?? true;
+    _defaultColumnsSettings.cellStyle = at.cellStyle;
+    _defaultColumnsSettings.isCellTextEditable = at.isCellTextEditable ?? true;
+    _defaultColumnsSettings.headerStyles = at.headerStyles;
+    _defaultColumnsSettings.isHeaderTextEditable = at.isHeaderTextEditable ?? _defaultColumnsSettings.isCellTextEditable;
+    _defaultColumnsSettings.headerIconStyle = at.headerIconStyle;
+    _defaultColumnsSettings.isColumnResizable = at.isColumnResizable ?? true;
   }
 
   private static setDefaultColumnsSettings(at: ActiveTable) {
-    const {_columnsSettingsDefault} = at;
+    const {_defaultColumnsSettings} = at;
     ColumnSettingsUtils.setDefaultGenericProperties(at);
-    ColumnSettingsUtils.processCellDimensions(_columnsSettingsDefault as CustomColumnSettings);
+    ColumnSettingsUtils.processCellDimensions(_defaultColumnsSettings as unknown as CustomColumnSettings);
     ColumnSettingsUtils.setDefaultDropdownProperties(at);
     ColumnSettingsUtils.setDefaultTypeProperties(at);
   }
@@ -163,9 +161,9 @@ export class ColumnSettingsUtils {
   public static setUpInternalSettings(at: ActiveTable) {
     ColumnSettingsUtils.setDefaultColumnsSettings(at);
     // WORK - does this not force a re-render?????
-    at.customColumnsSettingsInternal = ColumnSettingsUtils.createInternalMap(
+    at._customColumnsSettings = ColumnSettingsUtils.createInternalMap(
       at.customColumnsSettings,
-      at._columnsSettingsDefault
+      at._defaultColumnsSettings
     );
   }
 }

@@ -22,13 +22,11 @@ export class FrameComponentsColors {
   private static getHoverColorValue(at: ActiveTable, colorKey: keyof CellStateColorProperties): string {
     const {frameComponentsInternal: {style}, defaultCellHoverColors} = at;
     return style?.hoverColors?.[colorKey] || style?.default?.[colorKey]
-      || at._columnsSettingsDefault.cellStyle?.[colorKey] || defaultCellHoverColors[colorKey];
+      || at._defaultColumnsSettings.cellStyle?.[colorKey] || defaultCellHoverColors[colorKey];
   }
 
-  // prettier-ignore
   private static getDefaultColorValue(at: ActiveTable, colorKey: keyof CellStateColorProperties) {
-    return at.frameComponentsInternal.style?.default?.[colorKey]
-      || at._columnsSettingsDefault.cellStyle?.[colorKey] || '';
+    return at.frameComponentsInternal.style?.default?.[colorKey] || at._defaultColumnsSettings.cellStyle?.[colorKey] || '';
   }
 
   // prettier-ignore
@@ -43,7 +41,7 @@ export class FrameComponentsColors {
         color: FrameComponentsColors.getHoverColorValue(at, 'color'),
       },
     };
-    const {frameComponentsInternal: {cellColors, inheritHeaderColors}, _columnsSettingsDefault: {headerStyles}} = at;
+    const {frameComponentsInternal: {cellColors, inheritHeaderColors}, _defaultColumnsSettings: {headerStyles}} = at;
     cellColors.data = newCellColors;
     cellColors.header = inheritHeaderColors ?
       FrameComponentsColors.getInheritedHeaderColors(at.defaultCellHoverColors, headerStyles) : newCellColors;
