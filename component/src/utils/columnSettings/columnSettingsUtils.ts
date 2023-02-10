@@ -160,7 +160,6 @@ export class ColumnSettingsUtils {
   // REF-21
   public static setUpInternalSettings(at: ActiveTable) {
     ColumnSettingsUtils.setDefaultColumnsSettings(at);
-    // WORK - does this not force a re-render?????
     at._customColumnsSettings = ColumnSettingsUtils.createInternalMap(
       at.customColumnsSettings,
       at._defaultColumnsSettings

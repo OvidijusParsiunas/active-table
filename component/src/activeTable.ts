@@ -62,10 +62,6 @@ import {Overflow} from './types/overflow';
 
 @customElement('active-table')
 export class ActiveTable extends LitElement {
-  static override styles = [activeTableStyle];
-
-  public static ELEMENT_TAG = 'ACTIVE-TABLE';
-
   @property({type: Function})
   getContent: () => TableContent = () => JSON.parse(JSON.stringify(this.content));
 
@@ -129,66 +125,11 @@ export class ActiveTable extends LitElement {
   })
   stickyHeader?: boolean;
 
-  // setting header to true if above is undefined and vertical overflow is present
-  // (using object to be able to set values without re-rendering the component)
-  @state()
-  _stickyProps: StickyProps = {header: false};
-
-  // REF-21
-  @state()
-  _defaultColumnsSettings: DefaultColumnsSettings = {} as DefaultColumnsSettings; // populated in setDefaultColumnsSettings
-
   @property({type: Array<CustomColumnSettings>})
   customColumnsSettings: CustomColumnsSettings = [];
 
-  @state()
-  _customColumnsSettings: ColumnsSettingsMap = {};
-
-  // this contains all cell elements, if there is a need to access cell elements outside the context of columns
-  // create an entirely new state object and access elements from there as we don't want to store all elements
-  // multiple times, and use this instead for data exclusively on columns, such as width at.
-  @state()
-  _columnsDetails: ColumnsDetailsT = [];
-
-  @state()
-  _tableElementRef: HTMLElement | null = null;
-
-  @state()
-  _tableBodyElementRef: HTMLElement | null = null;
-
-  @state()
-  _addRowCellElementRef: HTMLElement | null = null;
-
-  // the reason why keeping ref of all the add column cells and not column index cells is because this can be toggled
-  @state()
-  _addColumnCellsElementsRef: HTMLElement[] = [];
-
-  @state()
-  _columnGroupRef: HTMLElement | null = null;
-
-  @state()
-  _focusedElements: FocusedElements = FocusedElementsUtils.createEmpty();
-
-  @state()
-  _hoveredElements: HoveredElements = {};
-
-  @state()
-  _activeOverlayElements: ActiveOverlayElements = ActiveOverlayElementsUtils.createNew();
-
-  @state()
-  _userKeyEventsState: UserKeyEventsState = UserKeyEventsStateUtils.createNew();
-
-  @state()
-  _tableDimensions: TableDimensions = TableDimensionsUtils.getDefault();
-
-  @state()
-  _cellDropdownContainer: HTMLElement | null = null;
-
-  @state()
-  _globalItemColors: GlobalItemColors = LabelColorUtils.generateGlobalItemColors();
-
   @property({type: Object})
-  rowHoverStyle: RowHoverStyle | null = null;
+  rowHoverStyle?: RowHoverStyle;
 
   // when true - the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
   // this property is not used internally and is being set/used in tableDimensions as it is overriden when resizing
@@ -197,9 +138,6 @@ export class ActiveTable extends LitElement {
     converter: LITElementTypeConverters.convertToBoolean,
   })
   preserveNarrowColumns = true;
-
-  @state()
-  _defaultCellHoverColors: DefaultCellHoverColors = CellHighlightUtils.getDefaultHoverProperties();
 
   @property({type: Number})
   maxColumns?: number;
@@ -222,10 +160,6 @@ export class ActiveTable extends LitElement {
   @property({type: Object})
   displayIndexColumn: boolean | IndexColumnT = {wrapIndexCellText: true};
 
-  // REF-22 - to be used internally
-  @state()
-  _frameComponents: FrameComponentsInternal = FrameComponentsInternalUtils.getDefault();
-
   // REF-22 - to be used by the client
   // frame components are comprised of index column, add new column column and add new row row
   @property({type: Object})
@@ -245,21 +179,13 @@ export class ActiveTable extends LitElement {
   @property({type: Object})
   rowDropdown: RowDropdownSettings = {displaySettings: {isAvailable: true, openMethod: {cellClick: true}}};
 
-  // column dropdown overlays are stored inside ColumnDetailsT columnDropdownCellOverlay
-  @state()
-  _rowDropdownCellOverlays: RowDropdownCellOverlays = [];
-
   // if using pagination with user defined rowsPerPageSelect, the options need to have an even number or otherwise
   // two rows could have same color (as rows are hidden and not removed)
   @property({type: Object})
-  stripedRows: StripedRowsT | boolean | null = null;
+  stripedRows?: StripedRowsT | boolean;
 
-  @state()
-  _stripedRows: StripedRowsInternal | null = null;
-
-  // WORK - remove nulls and replace with undefined?
   @property({type: Object})
-  overflow: Overflow | null = null;
+  overflow?: Overflow;
 
   @property({type: String})
   defaultText?: CellText;
@@ -312,11 +238,80 @@ export class ActiveTable extends LitElement {
   @property({type: Object})
   columnDropdown?: ColumnDropdownSettingsDefault;
 
-  @state()
-  _overflow: OverflowInternal | null = null;
-
   @property({type: Object})
-  pagination: Pagination | boolean | null = null;
+  pagination?: Pagination | boolean;
+
+  // setting header to true if above is undefined and vertical overflow is present
+  // (using object to be able to set values without re-rendering the component)
+  @state()
+  _stickyProps: StickyProps = {header: false};
+
+  // REF-21
+  @state()
+  _defaultColumnsSettings: DefaultColumnsSettings = {} as DefaultColumnsSettings; // populated in setDefaultColumnsSettings
+
+  @state()
+  _customColumnsSettings: ColumnsSettingsMap = {};
+
+  // this contains all cell elements, if there is a need to access cell elements outside the context of columns
+  // create an entirely new state object and access elements from there as we don't want to store all elements
+  // multiple times, and use this instead for data exclusively on columns, such as width at.
+  @state()
+  _columnsDetails: ColumnsDetailsT = [];
+
+  @state()
+  _tableElementRef?: HTMLElement;
+
+  @state()
+  _tableBodyElementRef?: HTMLElement;
+
+  @state()
+  _addRowCellElementRef?: HTMLElement;
+
+  // the reason why keeping ref of all the add column cells and not column index cells is because this can be toggled
+  @state()
+  _addColumnCellsElementsRef: HTMLElement[] = [];
+
+  @state()
+  _columnGroupRef?: HTMLElement;
+
+  @state()
+  _focusedElements: FocusedElements = FocusedElementsUtils.createEmpty();
+
+  @state()
+  _hoveredElements: HoveredElements = {};
+
+  @state()
+  _activeOverlayElements: ActiveOverlayElements = ActiveOverlayElementsUtils.createNew();
+
+  @state()
+  _userKeyEventsState: UserKeyEventsState = UserKeyEventsStateUtils.createNew();
+
+  @state()
+  _tableDimensions: TableDimensions = TableDimensionsUtils.getDefault();
+
+  @state()
+  _cellDropdownContainer?: HTMLElement;
+
+  @state()
+  _globalItemColors: GlobalItemColors = LabelColorUtils.generateGlobalItemColors();
+
+  @state()
+  _defaultCellHoverColors: DefaultCellHoverColors = CellHighlightUtils.getDefaultHoverProperties();
+
+  // REF-22 - to be used internally
+  @state()
+  _frameComponents: FrameComponentsInternal = FrameComponentsInternalUtils.getDefault();
+
+  // column dropdown overlays are stored inside ColumnDetailsT columnDropdownCellOverlay
+  @state()
+  _rowDropdownCellOverlays: RowDropdownCellOverlays = [];
+
+  @state()
+  _stripedRows?: StripedRowsInternal;
+
+  @state()
+  _overflow?: OverflowInternal;
 
   // cannot be used as an indicator for pagination as this is always defined
   @state()
@@ -329,14 +324,18 @@ export class ActiveTable extends LitElement {
   })
   _isRendering = false;
 
+  static _ELEMENT_TAG = 'ACTIVE-TABLE';
+
+  static override styles = [activeTableStyle];
+
   // CAUTION-4
-  override render() {
+  protected override render() {
     Render.renderTable(this);
     this.onContentUpdate(this.content);
     new ResizeObserver(ParentResize.resizeCallback.bind(this)).observe(this.parentElement as HTMLElement);
   }
 
-  override update(changedProperties: PropertyValues) {
+  protected override update(changedProperties: PropertyValues) {
     StickyPropsUtils.process(this);
     ColumnSettingsUtils.setUpInternalSettings(this);
     FrameComponentsInternalUtils.set(this);

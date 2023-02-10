@@ -6,7 +6,7 @@ import {OverflowUtils} from '../overflow/overflowUtils';
 import {ActiveTable} from '../../activeTable';
 
 export class Render {
-  // CAUTION-4 overwriting at properties causes the whole table to refresh and subsequently - an infinite render loop
+  // CAUTION-4 overwriting @properties causes the whole table to refresh and subsequently - an infinite render loop
   // prettier-ignore
   private static refreshTableState(at: ActiveTable) {
     at._cellDropdownContainer?.replaceChildren();

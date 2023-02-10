@@ -59,7 +59,7 @@ export class WindowEvents {
     // inside it, hence if the user clicks inside the element, the elements inside will
     // handle the click event instead (full table overlay element for column dropdown)
     // and table element for the other closable elements  
-    if ((event.target as HTMLElement).tagName === ActiveTable.ELEMENT_TAG) return;
+    if ((event.target as HTMLElement).tagName === ActiveTable._ELEMENT_TAG) return;
     const {_activeOverlayElements: {columnDropdown, rowDropdown}, _focusedElements} = this
     // if the user clicks outside of the shadow dom and a dropdown is open, close it
     if (Dropdown.isDisplayed(rowDropdown)) {
