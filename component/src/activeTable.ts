@@ -63,7 +63,6 @@ import {Overflow} from './types/overflow';
 
 // WORK - edit the generated type file and remove private properties, otherwise use one object for internal state
 // WORK - perhaps rename Internal types to use _
-// WORK - make sure border is calculated when setting width to be 100%
 @customElement('active-table')
 export class ActiveTable extends LitElement {
   static override styles = [activeTableStyle];
@@ -308,11 +307,10 @@ export class ActiveTable extends LitElement {
   @property({type: Array<ColumnType>})
   customColumnTypes?: ColumnTypes; // additional custom column types
 
-  // WORK - rename to defaultColumnTypeName
-  // If not provided defaultActiveTypeName will default to first of the following:
+  // If not provided defaultColumnTypeName will default to first of the following:
   // First type to not have validation/First available type/'Text'
   @property({type: String})
-  defaultActiveTypeName?: string;
+  defaultColumnTypeName?: string;
 
   @property({type: Object})
   columnDropdown?: ColumnDropdownSettingsDefault;

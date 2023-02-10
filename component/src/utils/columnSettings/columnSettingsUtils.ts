@@ -121,7 +121,7 @@ export class ColumnSettingsUtils {
     const internalSettings = columnsSettings as unknown as ColumnSettingsInternal;
     columnsSettings.availableDefaultColumnTypes = at.availableDefaultColumnTypes;
     columnsSettings.customColumnTypes = at.customColumnTypes;
-    columnsSettings.defaultActiveTypeName = at.defaultActiveTypeName;
+    columnsSettings.defaultColumnTypeName = at.defaultColumnTypeName;
     internalSettings.types = ColumnTypesUtils.getProcessedTypes(internalSettings);
   }
 

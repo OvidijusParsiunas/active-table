@@ -10,7 +10,8 @@ export class FrameComponentsInternalUtils {
     frameComponentsInternal.displayAddNewRow = at.displayAddNewRow;
     frameComponentsInternal.displayIndexColumn = at.displayIndexColumn;
     frameComponentsInternal.style = frameComponentsStyle.style;
-    frameComponentsInternal.inheritHeaderColors = frameComponentsStyle.inheritHeaderColors;
+    frameComponentsInternal.inheritHeaderColors =
+      frameComponentsStyle.inheritHeaderColors !== undefined ? frameComponentsStyle.inheritHeaderColors : true;
   }
 
   public static getDefault(): FrameComponentsInternal {

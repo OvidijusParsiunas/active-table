@@ -45,7 +45,7 @@ export function ProgrammaticUpdates() {
               },
               {
                 headerName: 'Change',
-                defaultActiveTypeName: 'Change',
+                defaultColumnTypeName: 'Change',
                 cellStyle: {fontWeight: '500'},
                 columnDropdown: {isSortAvailable: false},
                 customColumnTypes: [

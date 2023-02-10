@@ -74,14 +74,14 @@ export function Responsive() {
   const rightTableRef = React.useRef(null);
   return (
     <div
-      style={{marginTop: '120px'}}
+      style={{marginTop: '120px', paddingLeft: '4%', paddingRight: '4%'}}
       onMouseMove={mouseMoving.bind(this, mouseClick, leftTableRef, rightTableRef)}
       onMouseUp={mouseUp.bind(this, mouseClick)}
     >
       <div className="feature-style">Responsive design</div>
       <div style={{display: 'flex', marginTop: '20px'}}>
         <div style={{float: 'left', width: 'calc(50% - 20px)'}} ref={leftTableRef}>
-          <div style={{width: '90%', float: 'right', display: 'flex'}}>
+          <div style={{width: '100%', float: 'right', display: 'flex'}}>
             <TableWrapper
               tableStyle={{borderRadius: '5px', width: '100%'}}
               content={[
@@ -96,7 +96,7 @@ export function Responsive() {
         </div>
         <Resizer mouseClick={mouseClick}></Resizer>
         <div style={{float: 'right', width: 'calc(50% - 20px)'}} ref={rightTableRef}>
-          <div style={{width: '90%', float: 'left', display: 'flex'}}>
+          <div style={{width: '100%', float: 'left', display: 'flex'}}>
             <TableWrapper
               tableStyle={{borderRadius: '5px', width: '100%'}}
               content={[

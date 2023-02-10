@@ -24,7 +24,7 @@ function ColumnTypes() {
             customColumnsSettings={[
               {
                 headerName: 'Name',
-                defaultActiveTypeName: 'Name',
+                defaultColumnTypeName: 'Name',
                 customColumnTypes: [
                   {
                     name: 'Name',
@@ -39,11 +39,11 @@ function ColumnTypes() {
                   },
                 ],
               },
-              {headerName: 'Date of Birth', defaultActiveTypeName: 'Date d-m-y'},
-              {headerName: 'Verified', defaultActiveTypeName: 'Checkbox'},
+              {headerName: 'Date of Birth', defaultColumnTypeName: 'Date d-m-y'},
+              {headerName: 'Verified', defaultColumnTypeName: 'Checkbox'},
               {
                 headerName: 'Hobby',
-                defaultActiveTypeName: 'Hobbies',
+                defaultColumnTypeName: 'Hobbies',
                 customColumnTypes: [
                   {
                     name: 'Hobbies',
@@ -52,7 +52,7 @@ function ColumnTypes() {
                   },
                 ],
               },
-              {headerName: 'Balance', defaultActiveTypeName: 'Currency'},
+              {headerName: 'Balance', defaultColumnTypeName: 'Currency'},
             ]}
             content={[
               ['Name', 'Date of Birth', 'Hobby', 'Verified'],

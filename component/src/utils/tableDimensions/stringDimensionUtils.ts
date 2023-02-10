@@ -1,4 +1,3 @@
-import {GenericElementUtils} from '../elements/genericElementUtils';
 import {VH, VW} from '../../consts/windowDimensionPostfixes';
 import {FullStringDimension} from '../../types/dimensions';
 import {PropertiesOfType} from '../../types/utilityTypes';

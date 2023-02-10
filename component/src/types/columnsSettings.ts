@@ -24,9 +24,9 @@ interface Parent<CellStyle> {
   headerIconStyle?: HeaderIconStyle;
   availableDefaultColumnTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
   customColumnTypes?: ColumnTypes; // additional custom column types
-  // If not provided defaultActiveTypeName will default to first of the following:
+  // If not provided defaultColumnTypeName will default to first of the following:
   // First type to not have validation/First available type/'Text'
-  defaultActiveTypeName?: string;
+  defaultColumnTypeName?: string;
   columnDropdown?: ColumnDropdownSettings;
 }
 

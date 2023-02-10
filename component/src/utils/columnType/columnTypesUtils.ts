@@ -28,8 +28,8 @@ export class ColumnTypesUtils {
       if (type) return type;
     }
     // if there is no previous type or it is not found in new settings - use the one the user has set
-    if (settings.defaultActiveTypeName) {
-      const type = ColumnTypesUtils.getTypeByName(settings.types, settings.defaultActiveTypeName);
+    if (settings.defaultColumnTypeName) {
+      const type = ColumnTypesUtils.getTypeByName(settings.types, settings.defaultColumnTypeName);
       if (type) return type;
     }
     return undefined;
@@ -38,7 +38,7 @@ export class ColumnTypesUtils {
   public static getActiveType(settings: ColumnSettingsInternal, previousTypeName?: string): ColumnTypeInternal {
     const activeType = ColumnTypesUtils.getTypeBasedOnProperties(settings, previousTypeName);
     if (activeType) return activeType;
-    // if defaultActiveTypeName is not provided, default to first of the following:
+    // if defaultColumnTypeName is not provided, default to first of the following:
     // First type to not have validation/First available type/'Text'
     const noValidationType = settings.types.find((type) => !type.textValidation.func);
     if (noValidationType) return noValidationType;
