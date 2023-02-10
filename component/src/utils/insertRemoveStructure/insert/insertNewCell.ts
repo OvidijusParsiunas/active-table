@@ -31,10 +31,9 @@ export class InsertNewCell {
     rowElement.insertBefore(newCellDividerElement, rowElement.children[childIndex + 1]);
   }
 
-  // please note that this is run twice in firefox due to the render function being triggered twice
   private static updateColumnDetailsAndSizers(at: ActiveTable, rowIndex: number, columnIndex: number, isNewText: boolean) {
     const columnDetails = at.columnsDetails[columnIndex];
-    if (!columnDetails) return; // because column maximum kicks in during second render function trigger in firefox
+    if (!columnDetails) return;
     if (rowIndex === 0) {
       const columnDropdownCellOverlay = ColumnDropdownCellOverlay.add(at, columnIndex);
       ColumnDetails.updateWithNoSizer(columnDetails as ColumnDetailsInitial, columnDropdownCellOverlay); // REF-13
@@ -84,9 +83,10 @@ export class InsertNewCell {
   // REF-13
   // prettier-ignore
   private static insertInitialColumnDetails(at: ActiveTable, cellText: CellText, columnIndex: number) {
-    const {columnsDetails, customColumnsSettingsInternal, cellDropdownContainer, columnsSettings, onColumnsUpdate} = at;
+    const {columnsDetails, customColumnsSettingsInternal, cellDropdownContainer,
+      _columnsSettingsDefault, onColumnsUpdate} = at;
     const cellDropdown = CellDropdown.createAndAppend(cellDropdownContainer as HTMLElement);
-    const columnDetails = ColumnDetails.createInitial(columnsSettings, cellDropdown,
+    const columnDetails = ColumnDetails.createInitial(_columnsSettingsDefault, cellDropdown,
       customColumnsSettingsInternal[cellText], at.defaultCellHoverColors,
       ColumnDetailsUtils.fireUpdateEvent.bind(this, columnsDetails, onColumnsUpdate));
     columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);

@@ -140,9 +140,9 @@ export class CellElement {
 
   // prettier-ignore
   public static createCellElement(at: ActiveTable, text: CellText, colIndex: number, isHeader: boolean) {
-    const {columnsSettings: {cellStyle, headerStyles}, columnsDetails} = at;
+    const {_columnsSettingsDefault: {cellStyle, headerStyles}, columnsDetails} = at;
     const columnDetails = columnsDetails[colIndex];
-    const isOpenViaCellClick = at.columnsSettings.columnDropdown?.displaySettings?.openMethod?.cellClick;
+    const isOpenViaCellClick = at._columnsSettingsDefault.columnDropdown?.displaySettings?.openMethod?.cellClick;
     const cellElement = CellElement.createContentCell(isHeader, cellStyle,
       isHeader ? headerStyles?.default : {}, isOpenViaCellClick);
     const {settings} = columnDetails;
@@ -151,7 +151,7 @@ export class CellElement {
     const isEditable = isHeader ? !isOpenViaCellClick && settings.isHeaderTextEditable : settings.isCellTextEditable;
     CellElement.prepContentEditable(cellElement, Boolean(isEditable), isOpenViaCellClick);
     // overwritten again if static table
-    if (isHeader) CellElement.setColumnWidth(at, cellElement, settings, at.columnsSettings as WidthsI);
+    if (isHeader) CellElement.setColumnWidth(at, cellElement, settings, at._columnsSettingsDefault as WidthsI);
     CellElement.setNewText(at, cellElement, text, true, false);
     return cellElement;
   }

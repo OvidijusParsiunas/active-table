@@ -70,13 +70,13 @@ export class ProcessedDataTextStyle {
       const isValid = validationFunc(text);
       if (overwrite || processedStyle.isValid !== isValid) {
         wasValidationStyleSet = ProcessedDataTextStyle.setStyle(isValid, columnDetails, processedStyle,
-          customTextProcessing, textContainerElement, at.columnsSettings);
+          customTextProcessing, textContainerElement, at._columnsSettingsDefault);
         processedStyle.isValid = isValid;
       }
     }
     if (!wasValidationStyleSet && customTextProcessing?.changeStyleFunc) { // REF-3
       ProcessedDataTextStyle.setCustomStyle(customTextProcessing.changeStyleFunc, text, columnDetails, processedStyle,
-        textContainerElement, at.columnsSettings);
+        textContainerElement, at._columnsSettingsDefault);
     }
   }
 
@@ -94,7 +94,7 @@ export class ProcessedDataTextStyle {
     columnDetails.elements.slice(1).forEach((element, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
       const processedStyle = columnDetails.processedStyle[relativeRowIndex];
-      ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, element, at.columnsSettings, oldCellStyle);
+      ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, element, at._columnsSettingsDefault, oldCellStyle);
     });
   }
 

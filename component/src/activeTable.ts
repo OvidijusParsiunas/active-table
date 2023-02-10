@@ -139,7 +139,7 @@ export class ActiveTable extends LitElement {
 
   // REF-21
   @state()
-  columnsSettings: ColumnsSettingsDefault = {};
+  _columnsSettingsDefault: ColumnsSettingsDefault = {};
 
   @property({type: Array<CustomColumnSettings>})
   customColumnsSettings: CustomColumnsSettings = [];
@@ -321,6 +321,7 @@ export class ActiveTable extends LitElement {
   @property({type: Object})
   pagination: Pagination | boolean | null = null;
 
+  // cannot be used as an indicator for pagination as this is always defined
   @state()
   paginationInternal: PaginationInternal = PaginationInternalUtils.getDefault();
 

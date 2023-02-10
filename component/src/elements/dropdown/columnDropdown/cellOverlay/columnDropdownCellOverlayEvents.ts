@@ -16,13 +16,13 @@ export class ColumnDropdownCellOverlayEvents {
     ColumnDropdownCellOverlay.hide(this, columnDetails);
     delete this.hoveredElements.headerCell;
     ColumnDropdownCellOverlay.resetDefaultColor(
-      columnDetails.columnDropdownCellOverlay, this.columnsSettings.columnDropdown?.displaySettings);
+      columnDetails.columnDropdownCellOverlay, this._columnsSettingsDefault.columnDropdown?.displaySettings);
   }
 
   private static mouseEnter(this: ActiveTable, columnDetails: ColumnDetailsT) {
     const headerCellElement = columnDetails.elements[0];
     this.hoveredElements.headerCell = headerCellElement;
-    ColumnDropdownCellOverlay.setHoverColor(columnDetails, this.columnsSettings.columnDropdown?.displaySettings);
+    ColumnDropdownCellOverlay.setHoverColor(columnDetails, this._columnsSettingsDefault.columnDropdown?.displaySettings);
   }
 
   public static setEvents(at: ActiveTable, columnIndex: number) {

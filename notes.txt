@@ -193,7 +193,7 @@ the messages tell them to and absolutely nothing else.
 REF-21
 The columnsSettings property serves as a one for all default columns settings object that has aggregated all the column related top
 level properties and processed them for use internally. Previously, this was a property that was defined by the client, however
-the fact that the use of the columnsSettings named served as an abstraction for column related properties - it made it more difficult
+the fact that the use of the columnsSettings name served as an abstraction for column related properties - it made it more difficult
 for the client to intuitively access them without adding much thought, hence they were spread out as top level properties.
 The customColumnsSettings property has remained the same. 
 

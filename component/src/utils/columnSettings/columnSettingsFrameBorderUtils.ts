@@ -32,16 +32,16 @@ export class ColumnSettingsFrameBorderUtils {
       leftColumnDetails: ColumnDetailsT, rightColumnDetails: ColumnDetailsT) {
     const currentColumn = currentColumnDetails || leftColumnDetails; // when last column removed - use the left one instead
     if (!currentColumn) return;
-    const {columnsSettings, addColumnCellsElementsRef,
+    const {_columnsSettingsDefault: columnsSettingsDef, addColumnCellsElementsRef,
       frameComponentsInternal: {displayAddNewColumn, displayIndexColumn}} = at;
     if (!rightColumnDetails && displayAddNewColumn) {
       ColumnSettingsFrameBorderUtils.toggleFrameBorder(
-        addColumnCellsElementsRef, currentColumn.elements, 'left', columnsSettings);
+        addColumnCellsElementsRef, currentColumn.elements, 'left', columnsSettingsDef);
     }
     if (!leftColumnDetails && displayIndexColumn) {
       const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.content, 0);
       const indexCells = rowElements.map((row) => row.children[0]) as HTMLElement[];
-      ColumnSettingsFrameBorderUtils.toggleFrameBorder(indexCells, currentColumn.elements, 'right', columnsSettings);
+      ColumnSettingsFrameBorderUtils.toggleFrameBorder(indexCells, currentColumn.elements, 'right', columnsSettingsDef);
     }
   }
 }

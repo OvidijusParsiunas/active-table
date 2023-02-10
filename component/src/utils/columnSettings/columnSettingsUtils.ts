@@ -61,7 +61,7 @@ export class ColumnSettingsUtils {
     const columnDetails = columnsDetails[columnIndex as number];
     const oldSettings = columnDetails.settings;
     const newSettings = customColumnsSettingsInternal[CellElement.getText(cellElement as HTMLElement)]
-      || at.columnsSettings;
+      || at._columnsSettingsDefault;
     return { oldSettings, newSettings, areSettingsDifferent: oldSettings !== newSettings }; 
   }
 
@@ -117,44 +117,44 @@ export class ColumnSettingsUtils {
   }
 
   private static setDefaultTypeProperties(at: ActiveTable) {
-    const {columnsSettings} = at;
-    const internalSettings = columnsSettings as unknown as ColumnSettingsInternal;
-    columnsSettings.availableDefaultColumnTypes = at.availableDefaultColumnTypes;
-    columnsSettings.customColumnTypes = at.customColumnTypes;
-    columnsSettings.defaultColumnTypeName = at.defaultColumnTypeName;
+    const {_columnsSettingsDefault} = at;
+    const internalSettings = _columnsSettingsDefault as unknown as ColumnSettingsInternal;
+    _columnsSettingsDefault.availableDefaultColumnTypes = at.availableDefaultColumnTypes;
+    _columnsSettingsDefault.customColumnTypes = at.customColumnTypes;
+    _columnsSettingsDefault.defaultColumnTypeName = at.defaultColumnTypeName;
     internalSettings.types = ColumnTypesUtils.getProcessedTypes(internalSettings);
   }
 
   private static setDefaultDropdownProperties(at: ActiveTable) {
-    const {columnsSettings} = at;
+    const {_columnsSettingsDefault} = at;
     const defaultDisplaySettings = {openMethod: {cellClick: true}};
-    columnsSettings.columnDropdown = at.columnDropdown || {displaySettings: defaultDisplaySettings};
-    columnsSettings.columnDropdown.displaySettings ??= defaultDisplaySettings;
-    DropdownDisplaySettingsUtil.process(columnsSettings.columnDropdown.displaySettings);
-    columnsSettings.columnDropdown.isSortAvailable ??= true;
-    columnsSettings.columnDropdown.isDeleteAvailable ??= true;
-    columnsSettings.columnDropdown.isInsertLeftAvailable ??= true;
-    columnsSettings.columnDropdown.isInsertRightAvailable ??= true;
-    columnsSettings.columnDropdown.isMoveAvailable ??= true;
+    _columnsSettingsDefault.columnDropdown = at.columnDropdown || {displaySettings: defaultDisplaySettings};
+    _columnsSettingsDefault.columnDropdown.displaySettings ??= defaultDisplaySettings;
+    DropdownDisplaySettingsUtil.process(_columnsSettingsDefault.columnDropdown.displaySettings);
+    _columnsSettingsDefault.columnDropdown.isSortAvailable ??= true;
+    _columnsSettingsDefault.columnDropdown.isDeleteAvailable ??= true;
+    _columnsSettingsDefault.columnDropdown.isInsertLeftAvailable ??= true;
+    _columnsSettingsDefault.columnDropdown.isInsertRightAvailable ??= true;
+    _columnsSettingsDefault.columnDropdown.isMoveAvailable ??= true;
   }
 
   private static setDefaultGenericProperties(at: ActiveTable) {
-    const {columnsSettings} = at;
-    columnsSettings.defaultText = at.defaultText;
-    columnsSettings.isDefaultTextRemovable = at.isDefaultTextRemovable;
-    columnsSettings.cellStyle = at.cellStyle;
-    columnsSettings.isCellTextEditable = at.isCellTextEditable;
-    columnsSettings.headerStyles = at.headerStyles;
-    columnsSettings.isHeaderTextEditable =
-      at.isHeaderTextEditable !== undefined ? at.isHeaderTextEditable : columnsSettings.isCellTextEditable;
-    columnsSettings.headerIconStyle = at.headerIconStyle;
-    columnsSettings.isColumnResizable = at.isColumnResizable;
+    const {_columnsSettingsDefault} = at;
+    _columnsSettingsDefault.defaultText = at.defaultText;
+    _columnsSettingsDefault.isDefaultTextRemovable = at.isDefaultTextRemovable;
+    _columnsSettingsDefault.cellStyle = at.cellStyle;
+    _columnsSettingsDefault.isCellTextEditable = at.isCellTextEditable;
+    _columnsSettingsDefault.headerStyles = at.headerStyles;
+    _columnsSettingsDefault.isHeaderTextEditable =
+      at.isHeaderTextEditable !== undefined ? at.isHeaderTextEditable : _columnsSettingsDefault.isCellTextEditable;
+    _columnsSettingsDefault.headerIconStyle = at.headerIconStyle;
+    _columnsSettingsDefault.isColumnResizable = at.isColumnResizable;
   }
 
   private static setDefaultColumnsSettings(at: ActiveTable) {
-    const {columnsSettings} = at;
+    const {_columnsSettingsDefault} = at;
     ColumnSettingsUtils.setDefaultGenericProperties(at);
-    ColumnSettingsUtils.processCellDimensions(columnsSettings as CustomColumnSettings);
+    ColumnSettingsUtils.processCellDimensions(_columnsSettingsDefault as CustomColumnSettings);
     ColumnSettingsUtils.setDefaultDropdownProperties(at);
     ColumnSettingsUtils.setDefaultTypeProperties(at);
   }
@@ -162,6 +162,10 @@ export class ColumnSettingsUtils {
   // REF-21
   public static setUpInternalSettings(at: ActiveTable) {
     ColumnSettingsUtils.setDefaultColumnsSettings(at);
-    at.customColumnsSettingsInternal = ColumnSettingsUtils.createInternalMap(at.customColumnsSettings, at.columnsSettings);
+    // WORK - does this not force a re-render?????
+    at.customColumnsSettingsInternal = ColumnSettingsUtils.createInternalMap(
+      at.customColumnsSettings,
+      at._columnsSettingsDefault
+    );
   }
 }

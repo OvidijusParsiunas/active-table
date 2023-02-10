@@ -24,14 +24,14 @@ export class RowDropdownSettingsUtil {
   }
 
   public static process(at: ActiveTable) {
-    const {rowDropdown, frameComponentsInternal, columnsSettings} = at;
+    const {rowDropdown, frameComponentsInternal, _columnsSettingsDefault} = at;
     rowDropdown.isInsertUpAvailable ??= true;
     rowDropdown.isInsertDownAvailable ??= true;
     rowDropdown.isMoveAvailable ??= true;
     rowDropdown.canEditHeaderRow ??= true;
     rowDropdown.isDeleteAvailable ??= true;
     rowDropdown.displaySettings ??= {};
-    RowDropdownSettingsUtil.preprocessOpenMethod(rowDropdown, columnsSettings.columnDropdown?.displaySettings);
+    RowDropdownSettingsUtil.preprocessOpenMethod(rowDropdown, _columnsSettingsDefault.columnDropdown?.displaySettings);
     DropdownDisplaySettingsUtil.process(rowDropdown.displaySettings);
     RowDropdownSettingsUtil.postprocessOpenMethod(rowDropdown, frameComponentsInternal);
   }
