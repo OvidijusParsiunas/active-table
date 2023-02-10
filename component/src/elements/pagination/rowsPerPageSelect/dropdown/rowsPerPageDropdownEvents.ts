@@ -6,8 +6,8 @@ import {ActiveTable} from '../../../../activeTable';
 
 export class RowsPerPageDropdownEvents {
   public static windowOnMouseDown(at: ActiveTable) {
-    if (!at.paginationInternal.mouseDownOnRowsPerPageButton) {
-      RowsPerPageDropdown.hide(at.paginationInternal.rowsPerPageDropdown as HTMLElement);
+    if (!at._pagination.mouseDownOnRowsPerPageButton) {
+      RowsPerPageDropdown.hide(at._pagination.rowsPerPageDropdown as HTMLElement);
     }
   }
 
@@ -16,8 +16,8 @@ export class RowsPerPageDropdownEvents {
   // instead we need to focus it programmatically here. Once focused, the actual dropdown events can take over.
   // prettier-ignore
   public static windowOnKeyDown(at: ActiveTable, event: KeyboardEvent) {
-    const {shadowRoot, paginationInternal} = at;
-    const dropdownElement = paginationInternal.rowsPerPageDropdown as HTMLElement;
+    const {shadowRoot, _pagination} = at;
+    const dropdownElement = _pagination.rowsPerPageDropdown as HTMLElement;
     if (event.key === KEYBOARD_KEY.ESCAPE || event.key === KEYBOARD_KEY.ENTER) {
       RowsPerPageDropdown.hide(dropdownElement);
     } else if (!shadowRoot?.activeElement) {

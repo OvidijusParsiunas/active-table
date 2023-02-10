@@ -11,7 +11,7 @@ export class MoveRow {
   // prettier-ignore
   private static overwrite(at: ActiveTable, sourceText: string[], targetIndex: number) {
     const overwrittenText: string[] = [];
-    at.columnsDetails.forEach((columnDetails, columnIndex) => {
+    at._columnsDetails.forEach((columnDetails, columnIndex) => {
       const overwrittenDataText = MoveUtils.setNewElementText(at, sourceText[columnIndex],
         columnDetails.elements[targetIndex], columnIndex, targetIndex);
       overwrittenText.push(overwrittenDataText);
@@ -20,8 +20,7 @@ export class MoveRow {
   }
 
   private static moveDataRows(at: ActiveTable, targetRowIndex: number, siblingIndex: number) {
-    const {columnsDetails} = at;
-    const siblingRowText = columnsDetails.map(({elements}) => CellElement.getText(elements[siblingIndex]));
+    const siblingRowText = at._columnsDetails.map(({elements}) => CellElement.getText(elements[siblingIndex]));
     // overwrite current row using sibling row
     const overwrittenText = MoveRow.overwrite(at, siblingRowText, targetRowIndex);
     // overwrite sibling row using overwritten row
@@ -29,24 +28,24 @@ export class MoveRow {
   }
 
   private static resetFocusedCell(at: ActiveTable, initialFocusedCell: Required<FocusedCell>) {
-    const {frameComponentsInternal, focusedElements} = at;
+    const {_frameComponents, _focusedElements} = at;
     const {element, rowIndex, columnIndex} = initialFocusedCell;
-    if (frameComponentsInternal.displayIndexColumn) {
-      FocusedCellUtils.setIndexCell(focusedElements.cell, element, columnIndex);
+    if (_frameComponents.displayIndexColumn) {
+      FocusedCellUtils.setIndexCell(_focusedElements.cell, element, columnIndex);
     } else {
-      FocusedCellUtils.set(focusedElements.cell, element, rowIndex, columnIndex);
+      FocusedCellUtils.set(_focusedElements.cell, element, rowIndex, columnIndex);
     }
   }
 
   private static moveHeaderToDataRow(at: ActiveTable) {
-    const {columnsDetails, focusedElements} = at;
-    const initialFocusedCell = {...focusedElements.cell} as Required<FocusedCell>;
-    const dataRowText = columnsDetails.map(({elements}) => CellElement.getText(elements[1]));
+    const {_columnsDetails, _focusedElements} = at;
+    const initialFocusedCell = {..._focusedElements.cell} as Required<FocusedCell>;
+    const dataRowText = _columnsDetails.map(({elements}) => CellElement.getText(elements[1]));
     // overwrite header row using data row
     const overwrittenText = MoveRow.overwrite(at, dataRowText, 0);
     // update header row settings
-    columnsDetails.forEach((column, columnIndex) => {
-      FocusedCellUtils.set(focusedElements.cell, column.elements[0], 0, columnIndex);
+    _columnsDetails.forEach((column, columnIndex) => {
+      FocusedCellUtils.set(_focusedElements.cell, column.elements[0], 0, columnIndex);
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, column.elements[0], columnIndex);
     });
     // overwrite data row using header row

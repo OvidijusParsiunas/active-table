@@ -15,14 +15,14 @@ export class PaginationUpdatePageButtons {
   }
 
   public static updateOnRowRemove(at: ActiveTable) {
-    const numberButtons = PaginationUtils.getPageNumberButtons(at.paginationInternal);
+    const numberButtons = PaginationUtils.getPageNumberButtons(at._pagination);
     const lastNumberButton = numberButtons[numberButtons.length - 1];
     if (Number(lastNumberButton.innerText) > PaginationUtils.getLastPossiblePageNumber(at)) {
       if (numberButtons.length > 1) {
         PaginationUpdatePageButtons.removeLastNumberButton(at, numberButtons);
       }
     } else if (at.content.length < (at.dataStartsAtHeader ? 1 : 2)) {
-      PageButtonElement.setDisabled(at.paginationInternal);
+      PageButtonElement.setDisabled(at._pagination);
     }
   }
 
@@ -38,11 +38,11 @@ export class PaginationUpdatePageButtons {
   public static updateOnRowInsert(at: ActiveTable) {
     const expectedItemsBeforeInsert = at.dataStartsAtHeader ? 0 : 1;
     if (at.content.length === expectedItemsBeforeInsert) {
-      PageButtonElement.unsetDisabled(at.paginationInternal);
+      PageButtonElement.unsetDisabled(at._pagination);
     } else {
-      const numberButtons = PaginationUtils.getPageNumberButtons(at.paginationInternal);
+      const numberButtons = PaginationUtils.getPageNumberButtons(at._pagination);
       // if number of buttons is at limit - updateOnNewActive will handle it
-      if (numberButtons.length < at.paginationInternal.maxNumberOfVisiblePageButtons) {
+      if (numberButtons.length < at._pagination.maxNumberOfVisiblePageButtons) {
         PaginationUpdatePageButtons.addNewNumberButtonAtEndIfNeeded(at, numberButtons);
       }
     }
@@ -50,7 +50,7 @@ export class PaginationUpdatePageButtons {
 
   // prettier-ignore
   private static shiftLeftwards(at: ActiveTable, numberButtons: HTMLElement[], firstNonLeftShiftNumber: number) {
-    const {activePageNumber} = at.paginationInternal;
+    const {activePageNumber} = at._pagination;
     const firstVisibleButton = numberButtons[0];
     const firstVisibleButtonNumber = Number(firstVisibleButton.innerText);
     // if buttons [1,2,3,4] - clicking 1,2,3 should not change anything
@@ -74,7 +74,7 @@ export class PaginationUpdatePageButtons {
   // prettier-ignore
   private static shiftRightwards(at: ActiveTable,
       numberButtons: HTMLElement[], lastVisibleButtonNumber: number, lastNonRightShiftNumber: number) {
-    const {activePageNumber} = at.paginationInternal;
+    const {activePageNumber} = at._pagination;
     const lastButtonNumber = PaginationUtils.getLastPossiblePageNumber(at);
     // if buttons [3,4,5,6] when there are 6 possible buttons - clicking 5,6 should not change anything
     // however if [2,3,4,5] - clicking 5 shifts to the right
@@ -96,8 +96,8 @@ export class PaginationUpdatePageButtons {
   }
 
   public static updateOnNewActive(at: ActiveTable) {
-    const numberButtons = PaginationUtils.getPageNumberButtons(at.paginationInternal);
-    const {activePageNumber, maxNumberOfVisiblePageButtons} = at.paginationInternal;
+    const numberButtons = PaginationUtils.getPageNumberButtons(at._pagination);
+    const {activePageNumber, maxNumberOfVisiblePageButtons} = at._pagination;
     if (numberButtons.length < maxNumberOfVisiblePageButtons) return;
     const lastVisibleButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
     // number that should not trigger shift to the right

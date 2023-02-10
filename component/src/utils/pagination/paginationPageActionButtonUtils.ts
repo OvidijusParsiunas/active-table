@@ -17,7 +17,7 @@ export class PaginationPageActionButtonUtils {
 
   // prettier-ignore
   private static toggleRightButtons(at: ActiveTable, buttons: HTMLElement[], halfOfActionButtons: number) {
-    const {activePageNumber, style} = at.paginationInternal;
+    const {activePageNumber, style} = at._pagination;
     const lastPageNumber = PaginationUtils.getLastPossiblePageNumber(at);
     const callback = activePageNumber === lastPageNumber
       ? PaginationPageActionButtonUtils.setButtonAsDisabled : PaginationPageActionButtonUtils.setButtonAsEnabled;
@@ -35,7 +35,7 @@ export class PaginationPageActionButtonUtils {
   }
 
   public static toggleActionButtons(at: ActiveTable) {
-    const {activePageNumber, style, numberOfActionButtons, buttonContainer} = at.paginationInternal;
+    const {activePageNumber, style, numberOfActionButtons, buttonContainer} = at._pagination;
     const buttons = Array.from(buttonContainer.children) as HTMLElement[];
     const halfOfActionButtons = numberOfActionButtons / 2;
     PaginationPageActionButtonUtils.toggleLeftButtons(buttons, activePageNumber, halfOfActionButtons, style);

@@ -7,7 +7,7 @@ export class DataCellElement {
   private static setCellDataStructure(at: ActiveTable, cellElement: HTMLElement, columnIndex: number) {
     // overwrites all previous cell content
     cellElement.innerText = CellElement.getTextElement(cellElement).innerText; // CAUTION-1
-    const {isCellTextEditable} = at.columnsDetails[columnIndex].settings;
+    const {isCellTextEditable} = at._columnsDetails[columnIndex].settings;
     CellElement.prepContentEditable(cellElement, isCellTextEditable);
   }
 

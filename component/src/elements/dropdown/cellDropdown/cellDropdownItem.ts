@@ -1,4 +1,4 @@
-import {CellDropdownI, ActiveCellDropdownItems, LabelDetails} from '../../../types/cellDropdownInternal';
+import {_CellDropdown, ActiveCellDropdownItems, LabelDetails} from '../../../types/cellDropdownInternal';
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
 import {ColumnDetailsUtils} from '../../../utils/columnDetails/columnDetailsUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
@@ -41,7 +41,7 @@ export class CellDropdownItem {
     const newText = CellElement.getText(activeItemElement.children[0] as HTMLElement);
     CellDropdownItem.updateCellElementIfNotUpdated(at, newText, rowIndex, columnIndex, textElement);
     if (LabelCellTextElement.isLabelText(textElement)) {
-      textElement.style.backgroundColor = at.columnsDetails[columnIndex]
+      textElement.style.backgroundColor = at._columnsDetails[columnIndex]
         .cellDropdown.itemsDetails[newText]?.backgroundColor;
     }
   }
@@ -63,12 +63,12 @@ export class CellDropdownItem {
       newColor = CellDropdownItem.ACTIVE_ITEM_BACKGROUND_COLOR;
     }
     CellDropdownItem.addItem(at, newItemText, newColor, columnDetails);
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate));
+    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at._columnsDetails, at.onColumnsUpdate));
   }
 
   // prettier-ignore
   private static updateCellTextBgColor(itemElement: HTMLElement | undefined, textElement: HTMLElement,
-      dropdown: CellDropdownI, defaultText: CellText) {
+      dropdown: _CellDropdown, defaultText: CellText) {
     const cellText = CellElement.getText(textElement);
     if (itemElement) {
       textElement.style.backgroundColor = dropdown.itemsDetails[cellText].backgroundColor;
@@ -98,7 +98,7 @@ export class CellDropdownItem {
   }
 
   // prettier-ignore
-  public static attemptHighlightMatchingItemWithCell(textElement: HTMLElement, dropdown: CellDropdownI,
+  public static attemptHighlightMatchingItemWithCell(textElement: HTMLElement, dropdown: _CellDropdown,
       defaultText: CellText, updateCellText: boolean, matchingCellElement?: HTMLElement) {
     const {activeItems, itemsDetails} = dropdown;
     const targetText = CellElement.getText(textElement);
@@ -116,8 +116,8 @@ export class CellDropdownItem {
 
   // prettier-ignore
   private static setItemOnCell(at: ActiveTable, item: HTMLElement) {
-    const {element, rowIndex, columnIndex} = at.focusedElements.cell as CellDetails;
-    const {cellDropdown, settings: {defaultText}} = at.columnsDetails[columnIndex];
+    const {element, rowIndex, columnIndex} = at._focusedElements.cell as CellDetails;
+    const {cellDropdown, settings: {defaultText}} = at._columnsDetails[columnIndex];
     const textElement = element.children[0] as HTMLElement;
     const itemText = CellElement.getText(item.children[0] as HTMLElement);
     CellDropdownItem.updateCellElementIfNotUpdated(at, itemText, rowIndex, columnIndex, textElement);
@@ -134,8 +134,8 @@ export class CellDropdownItem {
     if (siblingItem) {
       CellDropdownItem.setItemOnCell(at, siblingItem);
     } else {
-      const {columnIndex} = at.focusedElements.cell as CellDetails;
-      const dropdownElement = at.columnsDetails[columnIndex].cellDropdown.element as HTMLElement;
+      const {columnIndex} = at._focusedElements.cell as CellDetails;
+      const dropdownElement = at._columnsDetails[columnIndex].cellDropdown.element as HTMLElement;
       if (sibling === 'nextSibling') {
         const firstItem = dropdownElement.children[0] as HTMLElement;
         if (firstItem) CellDropdownItem.setItemOnCell(at, firstItem);
@@ -154,7 +154,7 @@ export class CellDropdownItem {
       const deleteButtonElement = OptionDeleteButton.create(at, columnDetails);
       itemElement.appendChild(deleteButtonElement);
       if (Browser.IS_COLOR_PICKER_SUPPORTED && cellDropdown.labelDetails) {
-        const colorInputElement = OptionColorButton.create(at.columnsDetails, columnDetails);
+        const colorInputElement = OptionColorButton.create(at._columnsDetails, columnDetails);
         itemElement.appendChild(colorInputElement);
       }
     }
@@ -218,8 +218,8 @@ export class CellDropdownItem {
 
   // prettier-ignore
   public static populateItems(at: ActiveTable, columnIndex: number) {
-    const {content, columnsDetails} = at;
-    const columnDetails = columnsDetails[columnIndex];
+    const {content, _columnsDetails} = at;
+    const columnDetails = _columnsDetails[columnIndex];
     const {cellDropdown: {labelDetails}, settings: {defaultText, isDefaultTextRemovable}, activeType: {cellDropdownProps}
       } = columnDetails;
     if (!cellDropdownProps) return;

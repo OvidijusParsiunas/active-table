@@ -5,7 +5,7 @@ import {ActiveTable} from '../../../../../activeTable';
 export class PreviousPageButtonElement {
   // prettier-ignore
   public static create(at: ActiveTable) {
-    const {pageButtons} = at.paginationInternal.style;
+    const {pageButtons} = at._pagination.style;
     const previousButtonElement = PageButtonElement.create(pageButtons.actionButtons.previousText as string,
       pageButtons, true);
     setTimeout(() => PreviousPageButtonEvents.setEvents(at, previousButtonElement));

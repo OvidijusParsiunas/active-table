@@ -4,7 +4,7 @@ import {PageButtonStyle} from '../../pageButtonStyle';
 
 export class PreviousPageButtonEvents {
   private static buttonMouseUp(this: ActiveTable, event: MouseEvent) {
-    const {activePageNumber, style} = this.paginationInternal;
+    const {activePageNumber, style} = this._pagination;
     if (activePageNumber === 1) return;
     PaginationUtils.displayRowsForDifferentButton(this, activePageNumber - 1);
     const buttonElement = event.target as HTMLElement;

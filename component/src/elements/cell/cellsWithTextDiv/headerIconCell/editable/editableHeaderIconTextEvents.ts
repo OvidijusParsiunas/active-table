@@ -20,7 +20,7 @@ export class EditableHeaderIconTextEvents {
   }
 
   public static setEvents(at: ActiveTable, textElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (!at.columnsDetails[columnIndex].settings.isHeaderTextEditable) return;
+    if (!at._columnsDetails[columnIndex].settings.isHeaderTextEditable) return;
     textElement.onfocus = CellWithTextEvents.focusText.bind(at, rowIndex, columnIndex, null);
     textElement.onblur = EditableHeaderIconTextEvents.blurText.bind(at, rowIndex, columnIndex);
     textElement.onkeydown = EditableHeaderIconTextEvents.keyDownOnText.bind(at, rowIndex, columnIndex);

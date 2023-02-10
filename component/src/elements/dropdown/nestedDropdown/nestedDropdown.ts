@@ -43,9 +43,9 @@ export class NestedDropdown {
   // prettier-ignore
   private static correctPositionForOverflow(at: ActiveTable,
       nestedDropdownElement: HTMLElement, parentDropdownElement: HTMLElement) {
-    const {tableElementRef, overflowInternal} = at;
-    if (!tableElementRef || !overflowInternal) return;
-    if (tableElementRef.offsetWidth !== overflowInternal.overflowContainer.scrollWidth) {
+    const {_tableElementRef, _overflow} = at;
+    if (!_tableElementRef || !_overflow) return;
+    if (_tableElementRef.offsetWidth !== _overflow.overflowContainer.scrollWidth) {
       nestedDropdownElement.style.left = `-${parentDropdownElement.style.width}`;
       if (nestedDropdownElement.getBoundingClientRect().x < 0) {
         nestedDropdownElement.style.left = '';
@@ -58,10 +58,10 @@ export class NestedDropdown {
     const parentDropdownElement = (event.target as HTMLElement).parentElement as HTMLElement;
     nestedDropdownElement.style.left = parentDropdownElement.style.width;
     nestedDropdownElement.style.display = parentDropdownElement.style.display;
-    if (this.overflowInternal && OverflowUtils.isOverflowElement(this.overflowInternal.overflowContainer)) {
+    if (this._overflow && OverflowUtils.isOverflowElement(this._overflow.overflowContainer)) {
       NestedDropdown.correctPositionForOverflow(this, nestedDropdownElement, parentDropdownElement);
     } else {
-      NestedDropdown.correctPosition(nestedDropdownElement, parentDropdownElement, this.tableDimensions.border);
+      NestedDropdown.correctPosition(nestedDropdownElement, parentDropdownElement, this._tableDimensions.border);
     }
   }
 }

@@ -39,8 +39,8 @@ export class Sort {
   // cannot safely identify if nothing has been changed, hence need to send out an update for all cells
   // prettier-ignore
   private static update(at: ActiveTable, sortedDataContent: TableContent) {
-    const {tableBodyElementRef, frameComponentsInternal: {displayIndexColumn}, content, onContentUpdate} = at;
-    const rowElements = (tableBodyElementRef as HTMLElement).children;
+    const {_tableBodyElementRef, _frameComponents: {displayIndexColumn}, content, onContentUpdate} = at;
+    const rowElements = (_tableBodyElementRef as HTMLElement).children;
     sortedDataContent.forEach((row, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
       const rowChildren = rowElements[relativeRowIndex].children;
@@ -135,7 +135,7 @@ export class Sort {
 
   public static sortColumn(at: ActiveTable, columnIndex: number, isAsc: boolean) {
     const dataContent = at.content.slice(1);
-    const {activeType} = at.columnsDetails[columnIndex];
+    const {activeType} = at._columnsDetails[columnIndex];
     if (activeType.calendar) {
       Sort.sortDates(activeType, dataContent, columnIndex, isAsc);
     } else if (activeType.sorting) {

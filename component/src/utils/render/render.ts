@@ -9,25 +9,25 @@ export class Render {
   // CAUTION-4 overwriting at properties causes the whole table to refresh and subsequently - an infinite render loop
   // prettier-ignore
   private static refreshTableState(at: ActiveTable) {
-    at.cellDropdownContainer?.replaceChildren();
-    at.columnsDetails.splice(0, at.columnsDetails.length);
-    at.tableDimensions.indexColumnWidth = IndexColumn.DEFAULT_WIDTH;
-    at.addColumnCellsElementsRef.splice(0, at.addColumnCellsElementsRef.length);
-    if (at.overflowInternal) {
+    at._cellDropdownContainer?.replaceChildren();
+    at._columnsDetails.splice(0, at._columnsDetails.length);
+    at._tableDimensions.indexColumnWidth = IndexColumn.DEFAULT_WIDTH;
+    at._addColumnCellsElementsRef.splice(0, at._addColumnCellsElementsRef.length);
+    if (at._overflow) {
        // unsetBorderDimensions unsets dimensions so need this every render
-       at.tableDimensions.border = TableBorderDimensionsUtils.generateUsingElement(at.overflowInternal.overflowContainer);
+       at._tableDimensions.border = TableBorderDimensionsUtils.generateUsingElement(at._overflow.overflowContainer);
     }
   }
 
   public static renderTable(at: ActiveTable) {
-    at.isRendering = true;
+    at._isRendering = true;
     TableDimensionsUtils.record(at);
     Render.refreshTableState(at);
-    if (at.overflowInternal) OverflowUtils.applyDimensions(at);
+    if (at._overflow) OverflowUtils.applyDimensions(at);
     TableElement.setStaticWidthContentTotal(at);
     // needs to be in render trigger as user props are not set in the connectedCallback function in Firefox
     TableDimensionsUtils.setTableDimensions(at);
     TableElement.populateBody(at);
-    setTimeout(() => (at.isRendering = false));
+    setTimeout(() => (at._isRendering = false));
   }
 }

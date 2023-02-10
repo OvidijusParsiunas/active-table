@@ -1,4 +1,4 @@
-import {CellDropdownI, ColorPickerNewValue, LabelDetails} from '../../../../types/cellDropdownInternal';
+import {_CellDropdown, ColorPickerNewValue, LabelDetails} from '../../../../types/cellDropdownInternal';
 import {ColumnDetailsT, ColumnsDetailsT} from '../../../../types/columnDetails';
 import {PickerInputElement} from '../../../../types/pickerInputElement';
 import {FocusedElements} from '../../../../types/focusedElements';
@@ -65,7 +65,7 @@ export class OptionColorButtonEvents {
     }
   }
 
-  private static inputEvent(dropdown: CellDropdownI, event: Event) {
+  private static inputEvent(dropdown: _CellDropdown, event: Event) {
     const inputElement = event.target as HTMLInputElement;
     const {textElement, dropdownItemElement} = OptionColorButton.extractRelativeParentElements(inputElement);
     const itemText = textElement.textContent as string;

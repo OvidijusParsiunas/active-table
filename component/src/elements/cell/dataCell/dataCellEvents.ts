@@ -18,7 +18,7 @@ export class DataCellEvents {
   public static keyDownCell(this: ActiveTable, event: KeyboardEvent) {
     // REF-7
     if (event.key === KEYBOARD_KEY.TAB) {
-      UserKeyEventsStateUtils.temporarilyIndicateEvent(this.userKeyEventsState, KEYBOARD_KEY.TAB);
+      UserKeyEventsStateUtils.temporarilyIndicateEvent(this._userKeyEventsState, KEYBOARD_KEY.TAB);
     }
   }
 
@@ -32,13 +32,13 @@ export class DataCellEvents {
     if (DateCellInputElement.isInputElement(textContainerElement)) return;
     const text = CellElement.getText(textContainerElement);
     // sanitizePastedTextContent causes inputType to no longer be insertFromPaste, hence using this instead
-    if (!this.userKeyEventsState[KEYBOARD_EVENT.PASTE]) {
+    if (!this._userKeyEventsState[KEYBOARD_EVENT.PASTE]) {
       const isUndo = inputEvent.inputType === UNDO_INPUT_TYPE;
       CellElement.setNewText(this, textContainerElement, text, false, isUndo, false);
-      const columnDetails = this.columnsDetails[columnIndex];
+      const columnDetails = this._columnsDetails[columnIndex];
       if (columnDetails.activeType.cellDropdownProps && rowIndex > 0) {
         CellDropdown.updateCellDropdown(textContainerElement,
-          columnDetails.cellDropdown, this.tableDimensions.border, columnDetails.settings.defaultText, true);
+          columnDetails.cellDropdown, this._tableDimensions.border, columnDetails.settings.defaultText, true);
       }
       CellEvents.updateCell(this, text, rowIndex, columnIndex, {processText: false});
     }
@@ -46,21 +46,21 @@ export class DataCellEvents {
 
   // prettier-ignore
   private static pasteCell(this: ActiveTable, rowIndex: number, columnIndex: number, event: ClipboardEvent) {
-    UserKeyEventsStateUtils.temporarilyIndicateEvent(this.userKeyEventsState, KEYBOARD_EVENT.PASTE);
+    UserKeyEventsStateUtils.temporarilyIndicateEvent(this._userKeyEventsState, KEYBOARD_EVENT.PASTE);
     PasteUtils.sanitizePastedTextContent(event);
     const clipboardText = PasteUtils.extractClipboardText(event);
     if (OverwriteCellsViaCSVOnPaste.isCSVData(clipboardText)) {
       OverwriteCellsViaCSVOnPaste.overwrite(this, clipboardText, event, rowIndex, columnIndex);
     } else {
       const targetElement = event.target as HTMLElement;
-      const {cellDropdown, settings: {defaultText}, activeType} = this.columnsDetails[columnIndex];
+      const {cellDropdown, settings: {defaultText}, activeType} = this._columnsDetails[columnIndex];
       const {calendar, cellDropdownProps} = activeType;
       // if the user has deleted all text in calendar/select/label cell - targetElement can be the <br> tag
       const containerElement = calendar || cellDropdownProps
         ? (targetElement.parentElement as HTMLElement) : targetElement;
       setTimeout(() => {
         if (cellDropdownProps) CellDropdown.updateCellDropdown(
-          containerElement, cellDropdown, this.tableDimensions.border, defaultText, true);
+          containerElement, cellDropdown, this._tableDimensions.border, defaultText, true);
         CellEvents.updateCell(this, CellElement.getText(containerElement), rowIndex, columnIndex, {processText: false});
       });
     }
@@ -71,7 +71,7 @@ export class DataCellEvents {
   public static blur(at: ActiveTable, rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
     if (CaretDisplayFix.isIssueBrowser()) CaretDisplayFix.removeContentEditable(textContainerElement);
     CellEvents.setCellToDefaultIfNeeded(at, rowIndex, columnIndex, textContainerElement);
-    FocusedCellUtils.purge(at.focusedElements.cell);
+    FocusedCellUtils.purge(at._focusedElements.cell);
   }
 
   private static blurCell(this: ActiveTable, rowIndex: number, columnIndex: number, event: Event) {
@@ -95,10 +95,10 @@ export class DataCellEvents {
   private static focusCell(this: ActiveTable, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const cellElement = event.target as HTMLElement;
     DataCellEvents.prepareText(this, rowIndex, columnIndex, cellElement);
-    const {userKeyEventsState, focusedElements} = this;
+    const {_userKeyEventsState, _focusedElements} = this;
     // REF-7
-    if (userKeyEventsState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
-    FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, columnIndex);
+    if (_userKeyEventsState[KEYBOARD_KEY.TAB]) CaretPosition.setToEndOfText(this, cellElement);
+    FocusedCellUtils.set(_focusedElements.cell, cellElement, rowIndex, columnIndex);
   }
 
   public static setEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {

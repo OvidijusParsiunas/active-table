@@ -32,10 +32,10 @@ export class TableElement {
 
   // prettier-ignore
   public static setStaticWidthContentTotal(at: ActiveTable) {
-    const {frameComponentsInternal: {displayAddNewColumn, displayIndexColumn}, tableDimensions} = at;
-    tableDimensions.staticWidth = tableDimensions.border.leftWidth + tableDimensions.border.rightWidth;
-    if (displayAddNewColumn) tableDimensions.staticWidth += AddNewColumnElement.DEFAULT_WIDTH;
-    if (displayIndexColumn) tableDimensions.staticWidth += IndexColumn.DEFAULT_WIDTH;
+    const {_frameComponents: {displayAddNewColumn, displayIndexColumn}, _tableDimensions} = at;
+    _tableDimensions.staticWidth = _tableDimensions.border.leftWidth + _tableDimensions.border.rightWidth;
+    if (displayAddNewColumn) _tableDimensions.staticWidth += AddNewColumnElement.DEFAULT_WIDTH;
+    if (displayIndexColumn) _tableDimensions.staticWidth += IndexColumn.DEFAULT_WIDTH;
   }
 
   // prettier-ignore
@@ -44,7 +44,7 @@ export class TableElement {
     // full table overlay for column dropdown
     const fullTableOverlay = FullTableOverlayElement.create(at);
     activeOverlayElements.fullTableOverlay = fullTableOverlay;
-    (at.overflowInternal?.overflowContainer || tableElement).appendChild(fullTableOverlay);
+    (at._overflow?.overflowContainer || tableElement).appendChild(fullTableOverlay);
     // column dropdown
     const columnDropdownElement = ColumnDropdown.create(at);
     tableElement.appendChild(columnDropdownElement);
@@ -65,16 +65,16 @@ export class TableElement {
 
   private static postProcessColumns(at: ActiveTable) {
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true); // REF-11
-    InitialContentProcessing.postProcess(at.content, at.columnsDetails);
+    InitialContentProcessing.postProcess(at.content, at._columnsDetails);
     setTimeout(() => {
-      ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate);
-      InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, at.columnsDetails.length - 1);
+      ColumnDetailsUtils.fireUpdateEvent(at._columnsDetails, at.onColumnsUpdate);
+      InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, at._columnsDetails.length - 1);
     });
   }
 
   public static populateBody(at: ActiveTable) {
     // removes all the current children
-    at.tableBodyElementRef?.replaceChildren();
+    at._tableBodyElementRef?.replaceChildren();
     // needs to be set before inserting the cells to prevent adding columns when too small
     StaticTableWidthUtils.setTableWidth(at);
     // header/data
@@ -82,7 +82,7 @@ export class TableElement {
     TableElement.postProcessColumns(at);
     // new row row
     FrameComponentsElements.addFrameBodyElements(at);
-    if (at.frameComponentsInternal.displayIndexColumn) UpdateIndexColumnWidth.update(at);
+    if (at._frameComponents.displayIndexColumn) UpdateIndexColumnWidth.update(at);
     // needs to be after UpdateIndexColumnWidth.update as the new index column width can impact the add new column display
     ToggleAdditionElements.update(at, true, AddNewColumnElement.toggle);
     CustomRowProperties.update(at);
@@ -108,19 +108,19 @@ export class TableElement {
   // CAUTION-4 - add row cell is created and ref assigned here - then it is added post render in addFrameBodyElements
   public static createInfrastructureElements(at: ActiveTable) {
     FrameComponentsColors.setEventColors(at); // needs to be before the creation of column group element
-    at.tableElementRef = TableElement.createTableElement(at);
-    if (at.frameComponentsInternal.displayAddNewColumn) {
+    at._tableElementRef = TableElement.createTableElement(at);
+    if (at._frameComponents.displayAddNewColumn) {
       // needs to be appended before the body
-      at.columnGroupRef = ColumnGroupElement.create(at.frameComponentsInternal.cellColors.data);
-      at.tableElementRef.appendChild(at.columnGroupRef);
+      at._columnGroupRef = ColumnGroupElement.create(at._frameComponents.cellColors.data);
+      at._tableElementRef.appendChild(at._columnGroupRef);
     }
-    at.tableBodyElementRef = TableElement.createTableBody(at.stickyProps.header);
-    at.addRowCellElementRef = AddNewRowElement.create(at); // REF-18
-    at.tableElementRef.appendChild(at.tableBodyElementRef);
-    at.cellDropdownContainer = CellDropdown.createContainerElement();
-    at.tableElementRef.appendChild(at.cellDropdownContainer);
-    if (!at.overflow && at.stickyProps.header) StickyPropsUtils.moveTopBorderToHeaderCells(at);
-    at.tableDimensions.border = TableBorderDimensionsUtils.generateUsingElement(at.tableElementRef as HTMLElement);
-    return at.tableElementRef;
+    at._tableBodyElementRef = TableElement.createTableBody(at._stickyProps.header);
+    at._addRowCellElementRef = AddNewRowElement.create(at); // REF-18
+    at._tableElementRef.appendChild(at._tableBodyElementRef);
+    at._cellDropdownContainer = CellDropdown.createContainerElement();
+    at._tableElementRef.appendChild(at._cellDropdownContainer);
+    if (!at.overflow && at._stickyProps.header) StickyPropsUtils.moveTopBorderToHeaderCells(at);
+    at._tableDimensions.border = TableBorderDimensionsUtils.generateUsingElement(at._tableElementRef as HTMLElement);
+    return at._tableElementRef;
   }
 }

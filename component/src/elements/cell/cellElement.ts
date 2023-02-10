@@ -7,7 +7,7 @@ import {GenericElementUtils} from '../../utils/elements/genericElementUtils';
 import {CellTextElement} from './cellsWithTextDiv/text/cellTextElement';
 import {CheckboxCellElement} from './checkboxCell/checkboxCellElement';
 import {CaretDisplayFix} from '../../utils/browser/caretDisplayFix';
-import {WidthsI} from '../../types/columnsSettingsInternal';
+import {_Widths} from '../../types/columnsSettingsInternal';
 import {NoDimensionCSSStyle} from '../../types/cssStyle';
 import {CellText} from '../../types/tableContent';
 import {ActiveTable} from '../../activeTable';
@@ -125,23 +125,23 @@ export class CellElement {
   }
 
   // REF-36
-  private static setColumnWidth(at: ActiveTable, cellElement: HTMLElement, customWidths?: WidthsI, defWidths?: WidthsI) {
-    if (!at.tableElementRef) return;
+  private static setColumnWidth(at: ActiveTable, cellElement: HTMLElement, customWidths?: _Widths, defWidths?: _Widths) {
+    if (!at._tableElementRef) return;
     const widths = customWidths?.widths || defWidths?.widths;
     if (widths?.staticWidth) {
       ColumnSettingsWidthUtils.updateColumnWidth(at, cellElement, widths, true);
     } else if (widths?.initialWidth) {
-      const result = ColumnSettingsWidthUtils.getSettingsWidthNumber(at.tableElementRef, widths, false);
+      const result = ColumnSettingsWidthUtils.getSettingsWidthNumber(at._tableElementRef, widths, false);
       cellElement.style.width = `${result.number}px`;
     } else {
-      cellElement.style.width = `${at.tableDimensions.newColumnWidth}px`;
+      cellElement.style.width = `${at._tableDimensions.newColumnWidth}px`;
     }
   }
 
   // prettier-ignore
   public static createCellElement(at: ActiveTable, text: CellText, colIndex: number, isHeader: boolean) {
-    const {_defaultColumnsSettings: {cellStyle, headerStyles}, columnsDetails} = at;
-    const columnDetails = columnsDetails[colIndex];
+    const {_defaultColumnsSettings: {cellStyle, headerStyles}, _columnsDetails} = at;
+    const columnDetails = _columnsDetails[colIndex];
     const isOpenViaCellClick = at._defaultColumnsSettings.columnDropdown?.displaySettings?.openMethod?.cellClick;
     const cellElement = CellElement.createContentCell(isHeader, cellStyle,
       isHeader ? headerStyles?.default : {}, isOpenViaCellClick);
@@ -151,7 +151,7 @@ export class CellElement {
     const isEditable = isHeader ? !isOpenViaCellClick && settings.isHeaderTextEditable : settings.isCellTextEditable;
     CellElement.prepContentEditable(cellElement, Boolean(isEditable), isOpenViaCellClick);
     // overwritten again if static table
-    if (isHeader) CellElement.setColumnWidth(at, cellElement, settings, at._defaultColumnsSettings as WidthsI);
+    if (isHeader) CellElement.setColumnWidth(at, cellElement, settings, at._defaultColumnsSettings as _Widths);
     CellElement.setNewText(at, cellElement, text, true, false);
     return cellElement;
   }

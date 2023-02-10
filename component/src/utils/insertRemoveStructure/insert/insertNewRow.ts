@@ -23,7 +23,7 @@ export class InsertNewRow {
   // note of this if editing any of the logic below
   private static bindAndfireCellUpdates(at: ActiveTable, rowIndex: number) {
     const lastRowIndex = at.content.length - 1;
-    const lastDataRowElement = at.tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
+    const lastDataRowElement = at._tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const lastRowDetails: ElementDetails = {element: lastDataRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(at, rowIndex, CELL_UPDATE_TYPE.ADD, lastRowDetails); // REF-20
     setTimeout(() => at.onContentUpdate(JSON.parse(JSON.stringify(at.content))));
@@ -33,13 +33,13 @@ export class InsertNewRow {
     if (rowIndex === 0) {
       return MaximumColumns.canAddMore(at);
     }
-    return at.columnsDetails[columnIndex];
+    return at._columnsDetails[columnIndex];
   }
 
   // prettier-ignore
   private static addCells(at: ActiveTable,
       newRowData: TableRow, newRowElement: HTMLElement, rowIndex: number, isNewText: boolean) {
-    const {frameComponentsInternal: {displayIndexColumn, displayAddNewColumn}} = at;
+    const {_frameComponents: {displayIndexColumn, displayAddNewColumn}} = at;
     if (displayIndexColumn) IndexColumn.createAndPrependToRow(at, newRowElement, rowIndex);
     newRowData.forEach((cellText: CellText, columnIndex: number) => {
       if (isNewText || InsertNewRow.canStartRenderCellBeAdded(at, rowIndex, columnIndex)) {
@@ -64,7 +64,7 @@ export class InsertNewRow {
     const newRowData = rowData || DataUtils.createEmptyStringDataArray(at.content[0]?.length || 1);
     const newRowElement = RowElement.create();
     if (at.pagination) InsertNewRow.updagePagination(at, rowIndex, isNewText, newRowElement);
-    at.tableBodyElementRef?.insertBefore(newRowElement, at.tableBodyElementRef.children[rowIndex]);
+    at._tableBodyElementRef?.insertBefore(newRowElement, at._tableBodyElementRef.children[rowIndex]);
     // don't need a timeout as addition of row with new text is not expensive
     if (isNewText) at.content.splice(rowIndex, 0, []);
     InsertNewRow.addCells(at, newRowData, newRowElement, rowIndex, isNewText);
@@ -74,12 +74,12 @@ export class InsertNewRow {
   // isNewText indicates whether rowData is already in the content state or if it needs to be added
   public static insert(at: ActiveTable, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
     if (!MaximumRows.canAddMore(at)) return;
-    const isReplacingHeader = isNewText && rowIndex === 0 && at.columnsDetails.length > 0;
+    const isReplacingHeader = isNewText && rowIndex === 0 && at._columnsDetails.length > 0;
     if (isReplacingHeader) rowIndex = 1; // REF-26
     InsertNewRow.insertNewRow(at, rowIndex, isNewText, rowData);
     if (isNewText) {
       ToggleAdditionElements.update(at, true, AddNewRowElement.toggle);
-      if (at.frameComponentsInternal.displayIndexColumn) IndexColumn.updateIndexes(at, rowIndex + 1);
+      if (at._frameComponents.displayIndexColumn) IndexColumn.updateIndexes(at, rowIndex + 1);
       CustomRowProperties.update(at, rowIndex);
     }
     if (isReplacingHeader) MoveRow.move(at, 0, true); // REF-26

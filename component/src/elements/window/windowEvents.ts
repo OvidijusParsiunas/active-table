@@ -17,42 +17,42 @@ import {Dropdown} from '../dropdown/dropdown';
 export class WindowEvents {
   // prettier-ignore
   public static onKeyDown(this: ActiveTable, event: KeyboardEvent) {
-    if (Dropdown.isDisplayed(this.paginationInternal.rowsPerPageDropdown)) {
+    if (Dropdown.isDisplayed(this._pagination.rowsPerPageDropdown)) {
       RowsPerPageDropdownEvents.windowOnKeyDown.bind(this)(this, event);
     }
-    if (Dropdown.isDisplayed(this.activeOverlayElements.rowDropdown)) {
+    if (Dropdown.isDisplayed(this._activeOverlayElements.rowDropdown)) {
       RowDropdownEvents.windowOnKeyDown(this, event);
     }
-    const {rowIndex, columnIndex, element} = this.focusedElements.cell;
+    const {rowIndex, columnIndex, element} = this._focusedElements.cell;
     if (rowIndex === undefined || columnIndex === undefined) return;
-    if (rowIndex === 0 && !Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
+    if (rowIndex === 0 && !Dropdown.isDisplayed(this._activeOverlayElements.columnDropdown)) {
     if (event.key === KEYBOARD_KEY.ESCAPE) {
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, element as HTMLElement, columnIndex);
       return;
     }
     // workaround for when opened dropdown does not have a focused item
-    } else if (Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown) && !this.shadowRoot?.activeElement) {
-      ColumnDropdownEvents.onKeyDown.bind(this)(this.activeOverlayElements.columnDropdown as HTMLElement, event);
+    } else if (Dropdown.isDisplayed(this._activeOverlayElements.columnDropdown) && !this.shadowRoot?.activeElement) {
+      ColumnDropdownEvents.onKeyDown.bind(this)(this._activeOverlayElements.columnDropdown as HTMLElement, event);
       return;
     }
-    if (this.columnsDetails[columnIndex].activeType.cellDropdownProps) {
+    if (this._columnsDetails[columnIndex].activeType.cellDropdownProps) {
       SelectCellTextBaseEvents.keyDownText(this, rowIndex, columnIndex, event);
     }
   }
 
   public static onKeyUp(this: ActiveTable, event: KeyboardEvent) {
     if (event.key === KEYBOARD_KEY.ESCAPE) {
-      OptionColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements); // picker stops key down
+      OptionColorButtonEvents.windowEventClosePicker(this._columnsDetails, this._focusedElements); // picker stops key down
       DateCellInputEvents.escapeKeyInput(this);
     } else if (event.key === KEYBOARD_KEY.ENTER) {
-      OptionColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements); // picker stops key down
+      OptionColorButtonEvents.windowEventClosePicker(this._columnsDetails, this._focusedElements); // picker stops key down
     }
   }
 
   // prettier-ignore
   public static onMouseDown(this: ActiveTable, event: MouseEvent) {
-    OptionColorButtonEvents.windowEventClosePicker(this.columnsDetails, this.focusedElements);
-    if (Dropdown.isDisplayed(this.paginationInternal.rowsPerPageDropdown)) {
+    OptionColorButtonEvents.windowEventClosePicker(this._columnsDetails, this._focusedElements);
+    if (Dropdown.isDisplayed(this._pagination.rowsPerPageDropdown)) {
       RowsPerPageDropdownEvents.windowOnMouseDown.bind(this)(this);
     }
     // window event.target can only identify the parent element in shadow dom, not elements
@@ -60,7 +60,7 @@ export class WindowEvents {
     // handle the click event instead (full table overlay element for column dropdown)
     // and table element for the other closable elements  
     if ((event.target as HTMLElement).tagName === ActiveTable.ELEMENT_TAG) return;
-    const {activeOverlayElements: {columnDropdown, rowDropdown}, focusedElements} = this
+    const {_activeOverlayElements: {columnDropdown, rowDropdown}, _focusedElements} = this
     // if the user clicks outside of the shadow dom and a dropdown is open, close it
     if (Dropdown.isDisplayed(rowDropdown)) {
       RowDropdown.hide(this);
@@ -69,19 +69,19 @@ export class WindowEvents {
       ColumnDropdown.processTextAndHide(this);
     // cell blur will not activate when the dropdown has been clicked and will not close if its scrollbar or padding are
     // clicked, if clicked elsewhere on the window we close the dropdown programmatically as follows
-    } else if (focusedElements.cellDropdown) {
+    } else if (_focusedElements.cellDropdown) {
       CellWithTextEvents.programmaticBlur(this);
-    } else if (this.activeOverlayElements.datePickerCell) {
-      DateCellInputElement.toggle(this.activeOverlayElements.datePickerCell, false);
-      delete this.activeOverlayElements.datePickerCell;
+    } else if (this._activeOverlayElements.datePickerCell) {
+      DateCellInputElement.toggle(this._activeOverlayElements.datePickerCell, false);
+      delete this._activeOverlayElements.datePickerCell;
     }
   }
 
   public static onMouseUp(this: ActiveTable) {
-    if (this.activeOverlayElements.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseUp(this);
+    if (this._activeOverlayElements.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseUp(this);
   }
 
   public static onMouseMove(this: ActiveTable, event: MouseEvent) {
-    if (this.activeOverlayElements.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseMove(this, event.movementX);
+    if (this._activeOverlayElements.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseMove(this, event.movementX);
   }
 }

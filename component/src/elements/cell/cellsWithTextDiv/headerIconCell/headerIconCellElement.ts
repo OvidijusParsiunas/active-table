@@ -56,7 +56,7 @@ export class HeaderIconCellElement {
   }
 
   public static setHeaderIconStructure(at: ActiveTable, cellElement: HTMLElement, columnIndex: number) {
-    const {activeType, settings} = at.columnsDetails[columnIndex];
+    const {activeType, settings} = at._columnsDetails[columnIndex];
     const svgIconElement = HeaderIconCellElement.createSVG(activeType.dropdownItem.settings.iconSettings, settings);
     const openViaCellClick = at._defaultColumnsSettings.columnDropdown?.displaySettings?.openMethod?.cellClick;
     const isHeaderTextEditable = settings.isHeaderTextEditable && !openViaCellClick;

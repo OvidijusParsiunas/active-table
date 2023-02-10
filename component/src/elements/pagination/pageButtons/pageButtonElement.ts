@@ -75,20 +75,20 @@ export class PageButtonElement {
 
   // prettier-ignore
   public static setActive(at: ActiveTable, buttonNumber: number) {
-    const {paginationInternal} = at;
-    const {style: {pageButtons}, clickedPageNumberButton} = paginationInternal;
+    const {_pagination} = at;
+    const {style: {pageButtons}, clickedPageNumberButton} = _pagination;
     const {previousActiveButton, previousLocationOfNewIndex} = PageButtonElement.unsetPreviousActive(
-      paginationInternal, buttonNumber);
-    PaginationVisibleButtonsUtils.unsetStateAndStyles(at.paginationInternal);
-    paginationInternal.activePageNumber = buttonNumber;
+      _pagination, buttonNumber);
+    PaginationVisibleButtonsUtils.unsetStateAndStyles(at._pagination);
+    _pagination.activePageNumber = buttonNumber;
     PaginationUpdatePageButtons.updateOnNewActive(at);
-    const {newActiveButton, numberButtons} = PageButtonElement.setNewActive(paginationInternal, buttonNumber);
+    const {newActiveButton, numberButtons} = PageButtonElement.setNewActive(_pagination, buttonNumber);
     PageButtonStyle.setActive(newActiveButton, pageButtons, previousActiveButton);
     PaginationPageActionButtonUtils.toggleActionButtons(at);
     PaginationVisibleButtonsUtils.setStateAndStyles(at);
     // REF-30
     if (clickedPageNumberButton) {
-      PageButtonElement.programmaticMouseEnterTrigger(numberButtons, paginationInternal, previousLocationOfNewIndex);
+      PageButtonElement.programmaticMouseEnterTrigger(numberButtons, _pagination, previousLocationOfNewIndex);
     }
   }
 

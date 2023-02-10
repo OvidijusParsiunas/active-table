@@ -56,7 +56,7 @@ export class RowsPerPageDropdown {
 
   public static create(at: ActiveTable, optionsButton: HTMLElement) {
     const dropdownElement = Dropdown.createBase();
-    RowsPerPageDropdown.setWidth(dropdownElement, at.paginationInternal);
+    RowsPerPageDropdown.setWidth(dropdownElement, at._pagination);
     RowsPerPageDropdownItem.populate(at, dropdownElement, optionsButton);
     RowsPerPageDropdownEvents.set(at, dropdownElement);
     return dropdownElement;

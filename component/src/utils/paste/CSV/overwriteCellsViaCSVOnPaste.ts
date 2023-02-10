@@ -40,7 +40,7 @@ export class OverwriteCellsViaCSVOnPaste {
 
   // prettier-ignore
   private static createNewRows(at: ActiveTable, dataForNewRows: CSV, startColumnIndex: number) {
-    const processedDataForNewRows = OverwriteCellsViaCSVOnPaste.removeDataThatIsNotEditableFromNewRows(at.columnsDetails,
+    const processedDataForNewRows = OverwriteCellsViaCSVOnPaste.removeDataThatIsNotEditableFromNewRows(at._columnsDetails,
       dataForNewRows, startColumnIndex);
     processedDataForNewRows.forEach((rowData: CSVRow) => {
       const newRowData = OverwriteCellsViaCSVOnPaste.createRowDataArrayWithEmptyCells(
@@ -50,14 +50,14 @@ export class OverwriteCellsViaCSVOnPaste {
   }
 
   private static changeColumnSettings(at: ActiveTable, columnIndex: number) {
-    const {elements} = at.columnsDetails[columnIndex];
-    FocusedCellUtils.set(at.focusedElements.cell, elements[0], 0, columnIndex);
+    const {elements} = at._columnsDetails[columnIndex];
+    FocusedCellUtils.set(at._focusedElements.cell, elements[0], 0, columnIndex);
     ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, elements[0], columnIndex);
   }
 
   private static processNewColumn(at: ActiveTable) {
-    const lastColumnIndex = at.columnsDetails.length - 1;
-    CellEvents.setCellToDefaultIfNeeded(at, 0, lastColumnIndex, at.columnsDetails[lastColumnIndex].elements[0], false);
+    const lastColumnIndex = at._columnsDetails.length - 1;
+    CellEvents.setCellToDefaultIfNeeded(at, 0, lastColumnIndex, at._columnsDetails[lastColumnIndex].elements[0], false);
     OverwriteCellsViaCSVOnPaste.changeColumnSettings(at, lastColumnIndex);
   }
 
@@ -75,10 +75,10 @@ export class OverwriteCellsViaCSVOnPaste {
   // prettier-ignore
   private static overwriteCell(at: ActiveTable,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, newCellText: string) {
-    const {frameComponentsInternal: {displayIndexColumn}, columnsDetails} = at;
+    const {_frameComponents: {displayIndexColumn}, _columnsDetails} = at;
     const elementIndex = CellElementIndex.getViaColumnIndex(columnIndex, !!displayIndexColumn);
     const cellElement = rowElement.children[elementIndex] as HTMLElement;
-    const columnDetails = columnsDetails[columnIndex];
+    const columnDetails = _columnsDetails[columnIndex];
     if ((rowIndex === 0 && !columnDetails.settings.isHeaderTextEditable)
       || rowIndex > 0 && !columnDetails.settings.isCellTextEditable) return;
      // this is to allow duplicate headers to be identified
@@ -99,10 +99,10 @@ export class OverwriteCellsViaCSVOnPaste {
 
   // prettier-ignore
   private static setCaretToEndAndHighlightIfSelect(at: ActiveTable, cellElement: HTMLElement, columnIndex: number) {
-    const {activeType, cellDropdown, settings: {defaultText}} = at.columnsDetails[columnIndex];
+    const {activeType, cellDropdown, settings: {defaultText}} = at._columnsDetails[columnIndex];
     CaretPosition.setToEndOfText(at, cellElement);
     if (activeType.cellDropdownProps) {
-      CellDropdown.updateCellDropdown(cellElement, cellDropdown, at.tableDimensions.border, defaultText, true);
+      CellDropdown.updateCellDropdown(cellElement, cellDropdown, at._tableDimensions.border, defaultText, true);
     }
   }
 
@@ -112,27 +112,27 @@ export class OverwriteCellsViaCSVOnPaste {
     const dataForNewColumns: CSV = [];
     dataToOverwriteRows.forEach((dataToOverwriteRow: CSVRow, CSVRowIndex: number) => {
       const relativeRowIndex = startRowIndex + CSVRowIndex;
-      const rowElement = at.tableBodyElementRef?.children[relativeRowIndex] as HTMLElement;
+      const rowElement = at._tableBodyElementRef?.children[relativeRowIndex] as HTMLElement;
       const numberOfCellsToOverwrite = at.content[0].length - startColumnIndex;
       const overwriteData = dataToOverwriteRow.slice(0, numberOfCellsToOverwrite);
       OverwriteCellsViaCSVOnPaste.overwriteRowData(at, overwriteData, relativeRowIndex, startColumnIndex, rowElement);
       const overflowData = dataToOverwriteRow.slice(numberOfCellsToOverwrite);
       dataForNewColumns.push(overflowData);
     });
-    const focusedElement = at.focusedElements.cell.element as HTMLElement; // REF-15
+    const focusedElement = at._focusedElements.cell.element as HTMLElement; // REF-15
     setTimeout(() => OverwriteCellsViaCSVOnPaste.setCaretToEndAndHighlightIfSelect(at, focusedElement, startColumnIndex));
     return dataForNewColumns;
   }
 
   // no new rows should be created if no columns that are to be overwritten/created allow text edit
   private static canNewRowsBeCreated(at: ActiveTable, CSV: CSV, startColumnIndex: number) {
-    return at.columnsDetails
+    return at._columnsDetails
       .slice(startColumnIndex, startColumnIndex + CSV[0].length)
       .find((columnDetails) => columnDetails.settings.isCellTextEditable);
   }
 
   private static insertColumnsInsideIfCantInsertRight(at: ActiveTable, CSV: CSV, startColumnIndex: number) {
-    const columnsToBeOverwritten = at.columnsDetails.slice(startColumnIndex);
+    const columnsToBeOverwritten = at._columnsDetails.slice(startColumnIndex);
     const indexOfNoRightInsertionColumn = columnsToBeOverwritten.findIndex((columnDetails) => {
       return columnDetails.settings.columnDropdown.isInsertRightAvailable === false;
     });
@@ -168,9 +168,9 @@ export class OverwriteCellsViaCSVOnPaste {
   }
 
   private static focusOriginalCellAfterProcess(at: ActiveTable, process: () => void) {
-    const {element, rowIndex, columnIndex} = at.focusedElements.cell as Required<FocusedCell>;
+    const {element, rowIndex, columnIndex} = at._focusedElements.cell as Required<FocusedCell>;
     process();
-    FocusedCellUtils.set(at.focusedElements.cell, element, rowIndex, columnIndex);
+    FocusedCellUtils.set(at._focusedElements.cell, element, rowIndex, columnIndex);
   }
 
   // prettier-ignore

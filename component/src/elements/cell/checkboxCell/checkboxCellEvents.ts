@@ -21,7 +21,7 @@ export class CheckboxCellEvents {
   }
 
   public static setEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (!at.columnsDetails[columnIndex].settings.isCellTextEditable) return;
+    if (!at._columnsDetails[columnIndex].settings.isCellTextEditable) return;
     // important to note that this is still using data events that have not be overwritten here
     // onblur/onfocus do not work for firefox, hence using textElement and keeping it consistent across browsers
     cellElement.onblur = () => {};

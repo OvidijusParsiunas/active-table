@@ -72,17 +72,17 @@ export class InsertRemoveColumnSizer {
 
   // REF-13
   public static insert(at: ActiveTable, columnIndex: number) {
-    const {columnsDetails} = at;
-    if (InsertRemoveColumnSizer.isNotResizable(columnsDetails[columnIndex])) return;
-    if (at.tableDimensions.width !== undefined) {
-      columnIndex = InsertRemoveColumnSizer.getNewColumnIndexIfWidthSet(at.columnsDetails, columnIndex);
-      if (columnIndex === -1 || InsertRemoveColumnSizer.isNotResizable(columnsDetails[columnIndex])) return;
+    const {_columnsDetails} = at;
+    if (InsertRemoveColumnSizer.isNotResizable(_columnsDetails[columnIndex])) return;
+    if (at._tableDimensions.width !== undefined) {
+      columnIndex = InsertRemoveColumnSizer.getNewColumnIndexIfWidthSet(at._columnsDetails, columnIndex);
+      if (columnIndex === -1 || InsertRemoveColumnSizer.isNotResizable(_columnsDetails[columnIndex])) return;
     } else {
       // only dynamic width tables have a sizer on the last column - hence only their styles need to be changed
-      InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex, at.tableElementRef as HTMLElement);
+      InsertRemoveColumnSizer.updatePrevious(_columnsDetails, columnIndex, at._tableElementRef as HTMLElement);
     }
-    InsertRemoveColumnSizer.insertAtIndex(at, at.columnsDetails[columnIndex], columnIndex);
-    InsertRemoveColumnSizer.updateIdsOfAllSubsequent(columnsDetails, columnIndex + 1);
+    InsertRemoveColumnSizer.insertAtIndex(at, _columnsDetails[columnIndex], columnIndex);
+    InsertRemoveColumnSizer.updateIdsOfAllSubsequent(_columnsDetails, columnIndex + 1);
   }
 
   // this is only used for when table width is static, otherwise it is removed directly with the column
@@ -104,23 +104,23 @@ export class InsertRemoveColumnSizer {
   }
 
   public static remove(at: ActiveTable, columnIndex: number) {
-    const {tableDimensions, columnsDetails, tableElementRef} = at;
-    if (tableDimensions.width !== undefined) {
-      columnIndex = InsertRemoveColumnSizer.removeIfLastColumn(columnsDetails, columnIndex);
+    const {_tableDimensions, _columnsDetails, _tableElementRef} = at;
+    if (_tableDimensions.width !== undefined) {
+      columnIndex = InsertRemoveColumnSizer.removeIfLastColumn(_columnsDetails, columnIndex);
     }
-    InsertRemoveColumnSizer.updatePrevious(columnsDetails, columnIndex, tableElementRef as HTMLElement);
-    InsertRemoveColumnSizer.updateIdsOfAllSubsequent(columnsDetails, columnIndex);
+    InsertRemoveColumnSizer.updatePrevious(_columnsDetails, columnIndex, _tableElementRef as HTMLElement);
+    InsertRemoveColumnSizer.updateIdsOfAllSubsequent(_columnsDetails, columnIndex);
   }
 
   // This is used to cleanup sizers for columns that have or had static widths because they do not have sizers,
   // additionally when the table width is set the last column that is not static also does not have a sizer.
   public static cleanUpCustomColumnSizers(at: ActiveTable, changedColumnIndex: number) {
-    const {tableDimensions, columnsDetails} = at;
-    if (tableDimensions.width === undefined) return;
+    const {_tableDimensions, _columnsDetails} = at;
+    if (_tableDimensions.width === undefined) return;
     let isLastDynamicColumnFound = false;
     // traversing backwards
-    for (let i = columnsDetails.length - 1; i >= 0; i -= 1) {
-      const columnDetails = columnsDetails[i];
+    for (let i = _columnsDetails.length - 1; i >= 0; i -= 1) {
+      const columnDetails = _columnsDetails[i];
       // if the column has a width or it is the last column, it should not have a sizer
       if (InsertRemoveColumnSizer.isNotResizable(columnDetails)) {
         if (columnDetails.columnSizer) InsertRemoveColumnSizer.removeSizer(columnDetails);
@@ -133,7 +133,7 @@ export class InsertRemoveColumnSizer {
         if (i < changedColumnIndex) break;
       } else {
         // if column does not have settings and it is not last, it should have a sizer
-        if (!columnDetails.columnSizer && columnsDetails.length - 1 !== i) {
+        if (!columnDetails.columnSizer && _columnsDetails.length - 1 !== i) {
           InsertRemoveColumnSizer.insertAtIndex(at, columnDetails, i);
         }
         // if the last dynamic column has already been identified and we are beyond the changed index, can exit

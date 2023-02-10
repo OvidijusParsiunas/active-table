@@ -14,7 +14,7 @@ export class DateCellTextEvents {
 
   private static inputText(this: ActiveTable, columnIndex: number, event: Event) {
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
-      const {activeType} = this.columnsDetails[columnIndex];
+      const {activeType} = this._columnsDetails[columnIndex];
       const cellElement = CellElement.getCellElement(event.target as HTMLElement);
       DateCellInputElement.updateInputBasedOnTextDiv(cellElement, activeType);
     }
@@ -26,7 +26,7 @@ export class DateCellTextEvents {
   }
 
   public static setEvents(at: ActiveTable, textElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (!at.columnsDetails[columnIndex].settings.isCellTextEditable) return;
+    if (!at._columnsDetails[columnIndex].settings.isCellTextEditable) return;
     textElement.onfocus = CellWithTextEvents.focusText.bind(at, rowIndex, columnIndex, null);
     textElement.onblur = DateCellTextEvents.blurText.bind(at, rowIndex, columnIndex);
     textElement.oninput = DateCellTextEvents.inputText.bind(at, columnIndex);

@@ -9,7 +9,7 @@ import {ActiveTable} from '../../../../activeTable';
 
 export class SelectCell {
   public static convertCell(at: ActiveTable, columnIndex: number, cellElement: HTMLElement) {
-    const columnDetails = at.columnsDetails[columnIndex];
+    const columnDetails = at._columnsDetails[columnIndex];
     if (columnDetails.activeType.cellDropdownProps?.isBasicSelect) {
       SelectCellElement.setCellSelectStructure(at, cellElement, columnIndex);
     } else {
@@ -26,7 +26,7 @@ export class SelectCell {
   }
 
   public static setEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    const {activeType} = at.columnsDetails[columnIndex];
+    const {activeType} = at._columnsDetails[columnIndex];
     if (activeType.cellDropdownProps?.isBasicSelect) {
       SelectCellEvents.setEvents(at, cellElement, rowIndex, columnIndex);
     } else {
@@ -37,7 +37,7 @@ export class SelectCell {
   // prettier-ignore
   public static finaliseEditedText(at: ActiveTable, textElement: HTMLElement, columnIndex: number,
       processMatching = false) {
-    const {activeType} = at.columnsDetails[columnIndex];
+    const {activeType} = at._columnsDetails[columnIndex];
     if (activeType.cellDropdownProps?.isBasicSelect) {
       SelectCellTextElement.finaliseEditedText(at, textElement, columnIndex);
     } else {

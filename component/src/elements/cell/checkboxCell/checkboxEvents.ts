@@ -7,12 +7,12 @@ import {CellEvents} from '../cellEvents';
 export class CheckboxEvents {
   // REF-29
   private static focusCheckbox(this: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (!Browser.IS_SAFARI) FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex);
+    if (!Browser.IS_SAFARI) FocusedCellUtils.set(this._focusedElements.cell, cellElement, rowIndex, columnIndex);
   }
 
   // REF-29
   private static blurCheckbox(this: ActiveTable) {
-    if (!Browser.IS_SAFARI) FocusedCellUtils.purge(this.focusedElements.cell);
+    if (!Browser.IS_SAFARI) FocusedCellUtils.purge(this._focusedElements.cell);
   }
 
   private static changeValueCheckbox(this: ActiveTable, rowIndex: number, columnIndex: number, event: Event) {

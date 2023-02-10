@@ -5,18 +5,18 @@ import {RowDropdown} from '../rowDropdown';
 export class RowDropdownCellOverlayEvents {
   private static mouseLeave(this: ActiveTable, rowIndex: number, rowDropdownCellOverlay: HTMLElement) {
     RowDropdownCellOverlay.hide(this, rowIndex);
-    delete this.hoveredElements.leftMostCell;
+    delete this._hoveredElements.leftMostCell;
     RowDropdownCellOverlay.resetDefaultColor(this.rowDropdown.displaySettings, rowDropdownCellOverlay);
   }
 
   private static mouseEnter(this: ActiveTable, leftMostCell: HTMLElement, rowDropdownCellOverlay: HTMLElement) {
-    this.hoveredElements.leftMostCell = leftMostCell;
+    this._hoveredElements.leftMostCell = leftMostCell;
     RowDropdownCellOverlay.setHoverColor(this.rowDropdown.displaySettings, rowDropdownCellOverlay);
   }
 
   // prettier-ignore
   public static setOverlayEvents(at: ActiveTable, rowIndex: number, leftMostCell: HTMLElement) {
-    const rowDropdownCellOverlay = at.rowDropdownCellOverlays[rowIndex].element;
+    const rowDropdownCellOverlay = at._rowDropdownCellOverlays[rowIndex].element;
     rowDropdownCellOverlay.onmouseenter = RowDropdownCellOverlayEvents.mouseEnter.bind(
       at, leftMostCell, rowDropdownCellOverlay);
     rowDropdownCellOverlay.onmouseleave = RowDropdownCellOverlayEvents.mouseLeave.bind(
@@ -26,12 +26,12 @@ export class RowDropdownCellOverlayEvents {
 
   private static cellMouseLeave(this: ActiveTable, rowIndex: number) {
     RowDropdownCellOverlay.hide(this, rowIndex);
-    delete this.hoveredElements.leftMostCell;
+    delete this._hoveredElements.leftMostCell;
   }
 
   private static cellMouseEnter(this: ActiveTable, rowIndex: number, leftMostCell: HTMLElement) {
     RowDropdownCellOverlay.display(this, rowIndex);
-    this.hoveredElements.leftMostCell = leftMostCell;
+    this._hoveredElements.leftMostCell = leftMostCell;
   }
 
   // This method is adding more events to existing cells instead of overwriting them, the reason for using this approach is
@@ -42,7 +42,7 @@ export class RowDropdownCellOverlayEvents {
   public static addCellEvents(at: ActiveTable, rowIndex: number, leftMostCell: HTMLElement) {
     const {displaySettings, canEditHeaderRow} = at.rowDropdown;
     if (!displaySettings.isAvailable || (!canEditHeaderRow && rowIndex === 0)) return;
-    const overlayProperties = at.rowDropdownCellOverlays[rowIndex];
+    const overlayProperties = at._rowDropdownCellOverlays[rowIndex];
     if (overlayProperties?.cellElement) {
       const {cellElement, enter, leave} = overlayProperties;
       // need to use the element that has been added with the events as upon inserting a new row at, the new row index

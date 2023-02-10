@@ -12,10 +12,10 @@ export class DateCellElement {
   public static setCellDateStructure(at: ActiveTable, cellElement: HTMLElement, columnIndex: number) {
     ConvertCellTypeUtils.preprocessCell(cellElement);
     cellElement.style.cursor = 'text';
-    const {isCellTextEditable} = at.columnsDetails[columnIndex].settings;
+    const {isCellTextEditable} = at._columnsDetails[columnIndex].settings;
     const textElement = DateCellTextElement.setCellTextAsAnElement(cellElement, isCellTextEditable);
     if (Browser.IS_INPUT_DATE_SUPPORTED) DateCellInputElement.addDateInputElement(
-      cellElement, textElement, at.columnsDetails[columnIndex].activeType);
+      cellElement, textElement, at._columnsDetails[columnIndex].activeType);
   }
 
   public static setColumnDateStructure(at: ActiveTable, columnIndex: number) {

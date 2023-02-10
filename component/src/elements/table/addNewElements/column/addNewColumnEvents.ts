@@ -27,11 +27,11 @@ export class AddNewColumnEvents {
 
   // prettier-ignore
   public static setEvents(at: ActiveTable, cellElement: HTMLElement): void {
-    const {columnGroupRef: columnGroup, addColumnCellsElementsRef: ref, frameComponentsInternal: {cellColors}} = at;
-    if (!columnGroup) return;
-    if (!at.stripedRowsInternal) {
-      cellElement.onmouseenter = AddNewColumnEvents.toggleColor.bind(this, columnGroup, true, ref, cellColors);
-      cellElement.onmouseleave = AddNewColumnEvents.toggleColor.bind(this, columnGroup, false, ref, cellColors);
+    const {_columnGroupRef, _addColumnCellsElementsRef: ref, _frameComponents: {cellColors}} = at;
+    if (!_columnGroupRef) return;
+    if (!at._stripedRows) {
+      cellElement.onmouseenter = AddNewColumnEvents.toggleColor.bind(this, _columnGroupRef, true, ref, cellColors);
+      cellElement.onmouseleave = AddNewColumnEvents.toggleColor.bind(this, _columnGroupRef, false, ref, cellColors);
     }
     cellElement.onclick = InsertNewColumn.insertEvent.bind(at);
   }

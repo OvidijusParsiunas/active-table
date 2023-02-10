@@ -34,11 +34,11 @@ export class MoveLimits {
   }
 
   private static getRightLimit(at: ActiveTable, rightHeader?: HTMLElement) {
-    if (at.tableDimensions.width !== undefined) {
+    if (at._tableDimensions.width !== undefined) {
       // there is always a resizable header on right of a sizer when table width is set
       return Number.parseFloat((rightHeader as HTMLElement).style.width);
-    } else if (at.tableDimensions.maxWidth !== undefined && at.tableElementRef) {
-      return MoveLimits.getRightLimitForMaxWidth(at.tableElementRef, at.tableDimensions, rightHeader);
+    } else if (at._tableDimensions.maxWidth !== undefined && at._tableElementRef) {
+      return MoveLimits.getRightLimitForMaxWidth(at._tableElementRef, at._tableDimensions, rightHeader);
     }
     return MoveLimits.getRightLimitDynamicWidthTable();
   }

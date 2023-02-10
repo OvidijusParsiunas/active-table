@@ -30,13 +30,13 @@ export class RowsPerPageSelectElement {
 
   // prettier-ignore
   public static create(at: ActiveTable, containers: Containers) {
-    const rowsPerPageOptionsContainer = RowsPerPageSelectElement.createContainer(at.paginationInternal);
-    rowsPerPageOptionsContainer.appendChild(RowsPerPageSelectElement.createText(at.paginationInternal));
+    const rowsPerPageOptionsContainer = RowsPerPageSelectElement.createContainer(at._pagination);
+    rowsPerPageOptionsContainer.appendChild(RowsPerPageSelectElement.createText(at._pagination));
     const optionsButton = RowsPerPageSelectButtonElement.create(at);
     rowsPerPageOptionsContainer.appendChild(optionsButton);
-    at.paginationInternal.rowsPerPageDropdown = RowsPerPageDropdown.create(at, optionsButton);
-    rowsPerPageOptionsContainer.appendChild(at.paginationInternal.rowsPerPageDropdown);
-    PaginationContainerElement.addToContainer(at.paginationInternal.positions.rowsPerPageSelect.side,
+    at._pagination.rowsPerPageDropdown = RowsPerPageDropdown.create(at, optionsButton);
+    rowsPerPageOptionsContainer.appendChild(at._pagination.rowsPerPageDropdown);
+    PaginationContainerElement.addToContainer(at._pagination.positions.rowsPerPageSelect.side,
       containers, rowsPerPageOptionsContainer);
     return rowsPerPageOptionsContainer;
   }

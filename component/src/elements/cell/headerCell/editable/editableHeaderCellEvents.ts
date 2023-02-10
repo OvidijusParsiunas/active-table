@@ -8,8 +8,8 @@ import {CellElement} from '../../cellElement';
 export class EditableHeaderCellEvents {
   private static mouseClickCell(this: ActiveTable, columnIndex: number, event: MouseEvent) {
     const cellElement = event.target as HTMLElement;
-    FocusedCellUtils.purge(this.focusedElements.cell);
-    setTimeout(() => FocusedCellUtils.setHeaderCell(this.focusedElements.cell, cellElement, columnIndex));
+    FocusedCellUtils.purge(this._focusedElements.cell);
+    setTimeout(() => FocusedCellUtils.setHeaderCell(this._focusedElements.cell, cellElement, columnIndex));
   }
 
   public static setEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {

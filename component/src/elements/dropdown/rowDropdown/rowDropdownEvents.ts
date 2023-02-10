@@ -10,17 +10,17 @@ export class RowDropdownEvents {
   // instead we need to focus it programmatically here. Once focused, the actual dropdown events can take over.
   // prettier-ignore
   public static windowOnKeyDown(at: ActiveTable, event: KeyboardEvent) {
-    const {activeOverlayElements: {rowDropdown, fullTableOverlay}, shadowRoot} = at;
-    if (at.focusedElements.rowDropdown || !rowDropdown || !fullTableOverlay) return;
+    const {_activeOverlayElements: {rowDropdown, fullTableOverlay}, shadowRoot} = at;
+    if (at._focusedElements.rowDropdown || !rowDropdown || !fullTableOverlay) return;
     if (event.key === KEYBOARD_KEY.ENTER || event.key === KEYBOARD_KEY.ESCAPE) {
       RowDropdown.hide(at);
     } else if (!shadowRoot?.activeElement) {
       if (event.key === KEYBOARD_KEY.TAB || event.key === KEYBOARD_KEY.ARROW_DOWN) {
         event.preventDefault();
-        at.focusedElements.rowDropdown = rowDropdown;
+        at._focusedElements.rowDropdown = rowDropdown;
         DropdownItemNavigation.focusSiblingItem(rowDropdown.children[0] as HTMLElement, rowDropdown, true, true);
       } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
-        at.focusedElements.rowDropdown = rowDropdown;
+        at._focusedElements.rowDropdown = rowDropdown;
         DropdownItemNavigation.focusSiblingItem(
           rowDropdown.children[rowDropdown.children.length - 1] as HTMLElement, rowDropdown, false, true);
       }

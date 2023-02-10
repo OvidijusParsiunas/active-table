@@ -6,7 +6,7 @@ import {Browser} from '../browser/browser';
 
 export class FocusNextColumnCellFromTextDiv {
   private static focusDifferentColumnCell(at: ActiveTable, columnIndex: number, rowIndex: number) {
-    const {elements, activeType, settings} = at.columnsDetails[columnIndex];
+    const {elements, activeType, settings} = at._columnsDetails[columnIndex];
     const cellElement = elements[rowIndex];
     if (
       !settings.isCellTextEditable ||
@@ -28,20 +28,20 @@ export class FocusNextColumnCellFromTextDiv {
   }
 
   private static focusOrBlurNextRowFirstCell(at: ActiveTable, rowIndex: number) {
-    const firstColumn = at.columnsDetails[0];
+    const firstColumn = at._columnsDetails[0];
     const nextRowIndex = rowIndex + 1;
     const nextRowFirstCell = firstColumn.elements[nextRowIndex];
     if (nextRowFirstCell) {
       FocusNextColumnCellFromTextDiv.focusDifferentColumnCell(at, 0, nextRowIndex);
     } else {
-      const focusedCell = at.focusedElements.cell.element as HTMLElement;
+      const focusedCell = at._focusedElements.cell.element as HTMLElement;
       // if no next cell - blur current as the dropdown will be closed but the cursor would otherwise stay
       (focusedCell.children[0] as HTMLElement).blur();
     }
   }
 
   public static focusOrBlurNext(at: ActiveTable, columnIndex: number, rowIndex: number) {
-    const nextColumn = at.columnsDetails[columnIndex + 1];
+    const nextColumn = at._columnsDetails[columnIndex + 1];
     if (nextColumn) {
       FocusNextColumnCellFromTextDiv.focusDifferentColumnCell(at, columnIndex + 1, rowIndex);
     } else {

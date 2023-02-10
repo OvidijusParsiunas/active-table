@@ -21,7 +21,7 @@ export class CellEventsReset {
   }
 
   private static setDataCellEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    const {settings, activeType} = at.columnsDetails[columnIndex];
+    const {settings, activeType} = at._columnsDetails[columnIndex];
     if (!settings.isCellTextEditable) return;
     DataCellEvents.setEvents(at, cellElement, rowIndex, columnIndex);
     const {cellDropdownProps, calendar, checkbox} = activeType;
@@ -51,7 +51,7 @@ export class CellEventsReset {
     } else {
       CellEventsReset.setDataCellEvents(at, cellElement as HTMLElement, rowIndex, columnIndex);
     }
-    if (!at.frameComponentsInternal.displayIndexColumn && columnIndex === 0) {
+    if (!at._frameComponents.displayIndexColumn && columnIndex === 0) {
       RowDropdownCellOverlayEvents.addCellEvents(at, rowIndex, cellElement);
     }
   }

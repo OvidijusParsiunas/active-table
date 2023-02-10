@@ -49,7 +49,7 @@ export class ColumnDropdownItem {
   // prettier-ignore
   private static setUpInputElement(at: ActiveTable,
       columnIndex: number, cellElement: HTMLElement, inputItem: HTMLElement, dropdownElement: HTMLElement) {
-    const {isCellTextEditable, isHeaderTextEditable} = at.columnsDetails[columnIndex].settings;
+    const {isCellTextEditable, isHeaderTextEditable} = at._columnsDetails[columnIndex].settings;
     if (at._defaultColumnsSettings.columnDropdown?.displaySettings.openMethod?.overlayClick ||
         (ObjectUtils.areValuesFullyDefined(isHeaderTextEditable) ? !isHeaderTextEditable : !isCellTextEditable)) {
       DropdownItem.toggleItem(inputItem, false);
@@ -64,20 +64,20 @@ export class ColumnDropdownItem {
     ColumnTypeDropdown.setUp(at, dropdownElement, columnIndex);
     const items = Array.from(dropdownElement.children) as HTMLElement[];
     ColumnDropdownItem.setUpInputElement(at, columnIndex, cellElement, items[0], dropdownElement);
-    ColumnDropdownItem.toggleItems(at.columnsDetails[columnIndex].settings.columnDropdown, items);
+    ColumnDropdownItem.toggleItems(at._columnsDetails[columnIndex].settings.columnDropdown, items);
     ColumnDropdownItem.updateItemsStyle(at, columnIndex, dropdownElement);
     ColumnDropdownItemEvents.setItemEvents(at, columnIndex, dropdownElement);
   }
 
   private static updateMoveColumnItemsStyle(at: ActiveTable, colIndex: number, items: HTMLElement[]) {
-    const {isMoveAvailable} = at.columnsDetails[colIndex].settings.columnDropdown;
+    const {isMoveAvailable} = at._columnsDetails[colIndex].settings.columnDropdown;
     if (!isMoveAvailable) return;
     DropdownItem.toggleUsability(items[8], true);
     DropdownItem.toggleUsability(items[9], true);
     if (colIndex === 0) {
       DropdownItem.toggleUsability(items[8], false);
     }
-    if (colIndex === at.columnsDetails.length - 1) {
+    if (colIndex === at._columnsDetails.length - 1) {
       DropdownItem.toggleUsability(items[9], false);
     }
   }

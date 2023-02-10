@@ -17,7 +17,7 @@ export class RowDropdownItem {
     if (rowIndex === 0 || (rowIndex === 1 && !canEditHeaderRow)) {
       DropdownItem.toggleUsability(items[2], false);
     }
-    if (rowIndex === at.columnsDetails[0].elements.length - 1 || (rowIndex === 0 && !canEditHeaderRow)) {
+    if (rowIndex === at._columnsDetails[0].elements.length - 1 || (rowIndex === 0 && !canEditHeaderRow)) {
       DropdownItem.toggleUsability(items[3], false);
     }
   }

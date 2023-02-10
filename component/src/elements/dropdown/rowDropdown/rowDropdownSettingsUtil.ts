@@ -24,7 +24,7 @@ export class RowDropdownSettingsUtil {
   }
 
   public static process(at: ActiveTable) {
-    const {rowDropdown, frameComponentsInternal, _defaultColumnsSettings} = at;
+    const {rowDropdown, _frameComponents, _defaultColumnsSettings} = at;
     rowDropdown.isInsertUpAvailable ??= true;
     rowDropdown.isInsertDownAvailable ??= true;
     rowDropdown.isMoveAvailable ??= true;
@@ -33,6 +33,6 @@ export class RowDropdownSettingsUtil {
     rowDropdown.displaySettings ??= {};
     RowDropdownSettingsUtil.preprocessOpenMethod(rowDropdown, _defaultColumnsSettings.columnDropdown?.displaySettings);
     DropdownDisplaySettingsUtil.process(rowDropdown.displaySettings);
-    RowDropdownSettingsUtil.postprocessOpenMethod(rowDropdown, frameComponentsInternal);
+    RowDropdownSettingsUtil.postprocessOpenMethod(rowDropdown, _frameComponents);
   }
 }

@@ -5,13 +5,12 @@ import {ActiveTable} from '../../activeTable';
 // frame components are comprised of index column, add new column column and add new row row
 export class FrameComponentsInternalUtils {
   public static set(at: ActiveTable) {
-    const {frameComponentsStyle, frameComponentsInternal} = at;
-    frameComponentsInternal.displayAddNewColumn = at.displayAddNewColumn;
-    frameComponentsInternal.displayAddNewRow = at.displayAddNewRow;
-    frameComponentsInternal.displayIndexColumn = at.displayIndexColumn;
-    frameComponentsInternal.style = frameComponentsStyle.style;
-    frameComponentsInternal.inheritHeaderColors =
-      frameComponentsStyle.inheritHeaderColors !== undefined ? frameComponentsStyle.inheritHeaderColors : true;
+    const {frameComponentsStyle, _frameComponents} = at;
+    _frameComponents.displayAddNewColumn = at.displayAddNewColumn;
+    _frameComponents.displayAddNewRow = at.displayAddNewRow;
+    _frameComponents.displayIndexColumn = at.displayIndexColumn;
+    _frameComponents.style = frameComponentsStyle.style;
+    _frameComponents.inheritHeaderColors = frameComponentsStyle.inheritHeaderColors ?? true;
   }
 
   public static getDefault(): FrameComponentsInternal {

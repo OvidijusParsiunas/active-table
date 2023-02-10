@@ -18,7 +18,7 @@ export class OptionDeleteButtonEvents {
     } else {
       CellDropdownScrollbar.setProperties(cellDropdown);
     }
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(this.columnsDetails, this.onColumnsUpdate));
+    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(this._columnsDetails, this.onColumnsUpdate));
   }
 
   public static addEvents(at: ActiveTable, columnDetails: ColumnDetailsT, buttonElement: HTMLElement) {

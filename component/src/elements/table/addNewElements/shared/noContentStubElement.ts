@@ -28,17 +28,17 @@ export class NoContentStubElement {
 
   // prettier-ignore
   public static display(at: ActiveTable) {
-    const {tableBodyElementRef, addColumnCellsElementsRef, addRowCellElementRef,
-      frameComponentsInternal: {displayAddNewColumn, displayAddNewRow}} = at;
-    if (!addRowCellElementRef) return;
-    const tableBodyElement = tableBodyElementRef as HTMLElement;
-    if (displayAddNewColumn) addColumnCellsElementsRef.splice(0, addColumnCellsElementsRef.length);
+    const {_tableBodyElementRef, _addColumnCellsElementsRef, _addRowCellElementRef,
+      _frameComponents: {displayAddNewColumn, displayAddNewRow}} = at;
+    if (!_addRowCellElementRef) return;
+    const tableBodyElement = _tableBodyElementRef as HTMLElement;
+    if (displayAddNewColumn) _addColumnCellsElementsRef.splice(0, _addColumnCellsElementsRef.length);
     NoContentStubElement.removeRows(tableBodyElement);
     if (displayAddNewRow) {
-      NoContentStubElement.convertToStub(addRowCellElementRef);
-      addRowCellElementRef.addEventListener('click', NoContentStubElement.convertFromStub);
+      NoContentStubElement.convertToStub(_addRowCellElementRef);
+      _addRowCellElementRef.addEventListener('click', NoContentStubElement.convertFromStub);
     }
-    AddNewRowElement.setDisplay(addRowCellElementRef, true);
+    AddNewRowElement.setDisplay(_addRowCellElementRef, true);
     
   }
 }

@@ -19,7 +19,7 @@ export class SelectCellTextBaseEvents {
   // keydown events will no longer be fired through the cell text - however we need to maintain the same behaviour
   // prettier-ignore
   public static keyDownText(at: ActiveTable, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
-    const {cellDropdown: {activeItems, canAddMoreOptions}, elements} = at.columnsDetails[columnIndex];
+    const {cellDropdown: {activeItems, canAddMoreOptions}, elements} = at._columnsDetails[columnIndex];
     if (event.key === KEYBOARD_KEY.ESCAPE) {
       CellWithTextEvents.programmaticBlur(at);
     } else if (event.key === KEYBOARD_KEY.TAB) {
@@ -40,7 +40,7 @@ export class SelectCellTextBaseEvents {
 
   private static displayDropdown(at: ActiveTable, columnIndex: number, cellElement: HTMLElement) {
     const isDisplayed = CellDropdown.display(at, columnIndex, cellElement);
-    const {activeType, cellDropdown} = at.columnsDetails[columnIndex];
+    const {activeType, cellDropdown} = at._columnsDetails[columnIndex];
     if (activeType.cellDropdownProps?.isBasicSelect && isDisplayed) {
       cellDropdown.displayedCellElement = cellElement;
       ArrowDownIconElement.toggle(cellElement, true);
@@ -59,17 +59,17 @@ export class SelectCellTextBaseEvents {
   }
 
   public static blurring(at: ActiveTable, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
-    const columnDetails = at.columnsDetails[columnIndex];
+    const columnDetails = at._columnsDetails[columnIndex];
     Dropdown.hide(columnDetails.cellDropdown.element);
     if (!columnDetails.cellDropdown.itemsDetails[CellElement.getText(textElement)]) {
       SelectCell.finaliseEditedText(at, textElement, columnIndex);
     }
-    SelectCellTextBaseEvents.clearTypeSpecificProps(at.columnsDetails, columnDetails);
+    SelectCellTextBaseEvents.clearTypeSpecificProps(at._columnsDetails, columnDetails);
     DataCellEvents.blur(at, rowIndex, columnIndex, textElement);
   }
 
   public static blurText(this: ActiveTable, rowIndex: number, columnIndex: number, event: Event) {
-    if (!this.focusedElements.cellDropdown) {
+    if (!this._focusedElements.cellDropdown) {
       SelectCellTextBaseEvents.blurring(this, rowIndex, columnIndex, event.target as HTMLElement);
     }
   }

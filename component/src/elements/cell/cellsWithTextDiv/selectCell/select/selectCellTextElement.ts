@@ -8,14 +8,14 @@ export class SelectCellTextElement {
   private static readonly TEXT_CLASS = 'select-cell-text';
 
   public static setCellTextAsAnElement(at: ActiveTable, cellElement: HTMLElement, columnIndex: number) {
-    const {isCellTextEditable} = at.columnsDetails[columnIndex].settings;
+    const {isCellTextEditable} = at._columnsDetails[columnIndex].settings;
     const textElement = CellTextElement.setCellTextAsAnElement(cellElement, isCellTextEditable);
     textElement.classList.add(SelectCellTextElement.TEXT_CLASS);
   }
 
   // prettier-ignore
   public static finaliseEditedText(at: ActiveTable, textElement: HTMLElement, columnIndex: number) {
-    const columnDetails = at.columnsDetails[columnIndex];
+    const columnDetails = at._columnsDetails[columnIndex];
     const {cellDropdown, activeType, settings} = columnDetails;
     const text = CellElement.getText(textElement);
     const isPresent = !!cellDropdown.itemsDetails[text]?.backgroundColor;

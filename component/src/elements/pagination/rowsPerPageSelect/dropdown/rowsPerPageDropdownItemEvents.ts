@@ -5,7 +5,7 @@ import {ActiveTable} from '../../../../activeTable';
 
 export class RowsPerPageDropdownItemEvents {
   private static itemMouseDown(this: ActiveTable, optionsButton: HTMLElement, event: MouseEvent) {
-    const {rowsPerPageDropdown, rowsPerPage} = this.paginationInternal;
+    const {rowsPerPageDropdown, rowsPerPage} = this._pagination;
     const dropdown = rowsPerPageDropdown as HTMLElement;
     const newRowsPerPage = (event.target as HTMLElement).innerText;
     if (rowsPerPage !== Number(newRowsPerPage)) {

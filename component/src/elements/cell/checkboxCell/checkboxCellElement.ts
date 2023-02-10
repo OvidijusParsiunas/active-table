@@ -43,7 +43,7 @@ export class CheckboxCellElement {
 
   // prettier-ignore
   private static setCellTextAsAnElement(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    const {settings: {isCellTextEditable}} = at.columnsDetails[columnIndex];
+    const {settings: {isCellTextEditable}} = at._columnsDetails[columnIndex];
     const text = CellElement.getText(cellElement);
     CheckboxElement.setCellTextAsCheckbox(cellElement, isCellTextEditable);
     cellElement.contentEditable = 'false';

@@ -20,14 +20,17 @@ import {LastColumn} from '../shared/lastColumn';
 
 export class RemoveColumn {
   private static updateAdditionElements(at: ActiveTable) {
-    if (at.frameComponentsInternal.displayAddNewColumn) ColumnGroupElement.update(at);
+    if (at._frameComponents.displayAddNewColumn) ColumnGroupElement.update(at);
     ToggleAdditionElements.update(at, false, AddNewColumnElement.toggle);
   }
 
   public static reduceStaticWidthTotal(at: ActiveTable, settings: ColumnSettingsInternal) {
     if (settings.widths?.staticWidth) {
-      const {number} = ColumnSettingsWidthUtils.getSettingsWidthNumber(at.tableElementRef as HTMLElement, settings.widths);
-      TableElement.changeStaticWidthTotal(at.tableDimensions, -number);
+      const {number} = ColumnSettingsWidthUtils.getSettingsWidthNumber(
+        at._tableElementRef as HTMLElement,
+        settings.widths
+      );
+      TableElement.changeStaticWidthTotal(at._tableDimensions, -number);
     }
   }
 
@@ -52,8 +55,8 @@ export class RemoveColumn {
   }
 
   private static removeCell(at: ActiveTable, rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    const lastColumn: ElementDetails = LastColumn.getDetails(at.columnsDetails, rowIndex);
-    RemoveColumn.removeElements(rowElement, columnIndex, !!at.frameComponentsInternal.displayIndexColumn);
+    const lastColumn: ElementDetails = LastColumn.getDetails(at._columnsDetails, rowIndex);
+    RemoveColumn.removeElements(rowElement, columnIndex, !!at._frameComponents.displayIndexColumn);
     at.content[rowIndex].splice(columnIndex, 1);
     setTimeout(() => {
       const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};
@@ -62,13 +65,13 @@ export class RemoveColumn {
   }
 
   private static removeCellFromAllRows(at: ActiveTable, columnIndex: number) {
-    const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.content);
+    const rowElements = ExtractElements.textRowsArrFromTBody(at._tableBodyElementRef as HTMLElement, at.content);
     rowElements.forEach((rowElement: Node, rowIndex: number) => {
       RemoveColumn.removeCell(at, rowElement as HTMLElement, rowIndex, columnIndex);
     });
     RemoveColumn.cleanUpContent(at.content);
     // needs to be after getDetails but before changeWidthsBasedOnColumnInsertRemove
-    const removedColumnDetails = at.columnsDetails.splice(columnIndex, 1)[0];
+    const removedColumnDetails = at._columnsDetails.splice(columnIndex, 1)[0];
     RemoveColumn.updateTableDimensions(at, removedColumnDetails.settings);
     return removedColumnDetails;
   }
@@ -82,10 +85,10 @@ export class RemoveColumn {
       removedColumnDetails.cellDropdown.element.remove();
       InsertRemoveColumnSizer.remove(at, columnIndex);
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, columnIndex);
-      if (columnIndex === 0 && at.columnsDetails.length > 0) RowDropdownCellOverlay.resetOverlays(at);
+      if (columnIndex === 0 && at._columnsDetails.length > 0) RowDropdownCellOverlay.resetOverlays(at);
       setTimeout(() => {
         at.onContentUpdate(JSON.parse(JSON.stringify(at.content)));
-        ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate);
+        ColumnDetailsUtils.fireUpdateEvent(at._columnsDetails, at.onColumnsUpdate);
       });
     });
   }

@@ -32,7 +32,7 @@ export class InsertNewCell {
   }
 
   private static updateColumnDetailsAndSizers(at: ActiveTable, rowIndex: number, columnIndex: number, isNewText: boolean) {
-    const columnDetails = at.columnsDetails[columnIndex];
+    const columnDetails = at._columnsDetails[columnIndex];
     if (!columnDetails) return;
     if (rowIndex === 0) {
       const columnDropdownCellOverlay = ColumnDropdownCellOverlay.add(at, columnIndex);
@@ -48,8 +48,8 @@ export class InsertNewCell {
   // prettier-ignore
   private static insert(at: ActiveTable, rowElement: HTMLElement, newCellElement: HTMLElement,
       processedCellText: CellText, isNewText: boolean, rowIndex: number, columnIndex: number) {
-    const {frameComponentsInternal: {displayIndexColumn}, content, columnsDetails} = at;
-    const columnDetails = columnsDetails[columnIndex];
+    const {_frameComponents: {displayIndexColumn}, content, _columnsDetails} = at;
+    const columnDetails = _columnsDetails[columnIndex];
     columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
     columnDetails.processedStyle.splice(rowIndex, 0, ProcessedDataTextStyle.getDefaultProcessedTextStyle());
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, rowIndex, columnIndex, !!displayIndexColumn);
@@ -58,7 +58,7 @@ export class InsertNewCell {
   }
 
   private static convertCell(at: ActiveTable, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
-    const columnDetails = at.columnsDetails[columnIndex];
+    const columnDetails = at._columnsDetails[columnIndex];
     if (rowIndex === 0 && at.displayHeaderIcons) {
       HeaderIconCellElement.setHeaderIconStructure(at, newCellElement, columnIndex);
     }
@@ -83,12 +83,12 @@ export class InsertNewCell {
   // REF-13
   // prettier-ignore
   private static insertInitialColumnDetails(at: ActiveTable, cellText: CellText, columnIndex: number) {
-    const {columnsDetails, _customColumnsSettings, cellDropdownContainer, _defaultColumnsSettings, onColumnsUpdate} = at;
-    const cellDropdown = CellDropdown.createAndAppend(cellDropdownContainer as HTMLElement);
+    const {_columnsDetails, _customColumnsSettings, _cellDropdownContainer, _defaultColumnsSettings, onColumnsUpdate} = at;
+    const cellDropdown = CellDropdown.createAndAppend(_cellDropdownContainer as HTMLElement);
     const columnDetails = ColumnDetails.createInitial(_defaultColumnsSettings, cellDropdown,
-      _customColumnsSettings[cellText], at.defaultCellHoverColors,
-      ColumnDetailsUtils.fireUpdateEvent.bind(this, columnsDetails, onColumnsUpdate));
-    columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
+      _customColumnsSettings[cellText], at._defaultCellHoverColors,
+      ColumnDetailsUtils.fireUpdateEvent.bind(this, _columnsDetails, onColumnsUpdate));
+      _columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
   }
 
   // isNewText indicates whether rowData is already in the content state or if it needs to be added
@@ -101,7 +101,7 @@ export class InsertNewCell {
     InsertNewCell.insert(at, rowElement, newCellElement, processedCellText, isNewText, rowIndex, columnIndex);
     InsertNewCell.convertCell(at, rowIndex, columnIndex, newCellElement); // need text set before conversion (checkbox)
     if (rowIndex === 0) {
-      if (at.frameComponentsInternal.displayAddNewColumn) ColumnGroupElement.update(at);
+      if (at._frameComponents.displayAddNewColumn) ColumnGroupElement.update(at);
       if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true); // REF-11
       ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
     } else {

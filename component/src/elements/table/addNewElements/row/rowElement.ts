@@ -18,8 +18,8 @@ export class RowElement {
   }
 
   private static toggleNonAddRow(at: ActiveTable, addNewRowElement: HTMLElement, lastMarkedRow: HTMLElement | null) {
-    if (at.pagination && at.paginationInternal) {
-      const lastVisibleElement = at.paginationInternal.visibleRows[at.paginationInternal.visibleRows.length - 1];
+    if (at.pagination && at._pagination) {
+      const lastVisibleElement = at._pagination.visibleRows[at._pagination.visibleRows.length - 1];
       if (lastVisibleElement) return RowElement.moveClassToLastVisibleRow(lastVisibleElement, lastMarkedRow);
     }
     const {previousElementSibling} = addNewRowElement;
@@ -33,7 +33,7 @@ export class RowElement {
   // its isDisplayed method to help assign the last-visible row id to the correct row
   public static toggleLastRowClass(at: ActiveTable) {
     const shadowRoot = at.shadowRoot as ShadowRoot;
-    const addNewRowElement = (at.addRowCellElementRef as HTMLElement).parentElement as HTMLElement;
+    const addNewRowElement = (at._addRowCellElementRef as HTMLElement).parentElement as HTMLElement;
     const lastMarkedRow = shadowRoot.getElementById(RowElement.LAST_VISIBLE_ROW_ID);
     if (AddNewRowElement.isDisplayed(addNewRowElement.children[0] as HTMLElement)) {
       if (addNewRowElement.id !== RowElement.LAST_VISIBLE_ROW_ID) {

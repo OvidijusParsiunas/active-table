@@ -15,16 +15,16 @@ export class StripedRows {
   }
 
   public static process(at: ActiveTable) {
-    const {stripedRows, defaultCellHoverColors} = at;
+    const {stripedRows, _defaultCellHoverColors} = at;
     if (!stripedRows) return;
     if (typeof stripedRows === 'boolean') {
-      at.stripedRowsInternal = StripedRows.DEFAULT_PROPERTIES;
+      at._stripedRows = StripedRows.DEFAULT_PROPERTIES;
     } else {
-      at.stripedRowsInternal = {
+      at._stripedRows = {
         even: stripedRows.even || StripedRows.DEFAULT_PROPERTIES.even,
         odd: stripedRows.odd || StripedRows.DEFAULT_PROPERTIES.odd,
       };
     }
-    CellHighlightUtils.unsetDefaultHoverProperties(defaultCellHoverColors);
+    CellHighlightUtils.unsetDefaultHoverProperties(_defaultCellHoverColors);
   }
 }

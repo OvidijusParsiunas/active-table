@@ -12,17 +12,16 @@ export class RowsPerPageDropdownItemUtil {
   }
 
   private static getNewRowsPerPage(at: ActiveTable, newRowsPerPage: string) {
-    const {paginationInternal, content, dataStartsAtHeader} = at;
-    if (paginationInternal.isAllRowsOptionSelected) {
+    const {_pagination, content, dataStartsAtHeader} = at;
+    if (_pagination.isAllRowsOptionSelected) {
       return dataStartsAtHeader ? content.length : content.length - 1;
     }
     return Number(newRowsPerPage);
   }
 
   public static setNewRowsPerPage(at: ActiveTable, optionsButton: HTMLElement, newRowsPerPage: string) {
-    at.paginationInternal.isAllRowsOptionSelected =
-      newRowsPerPage.toLocaleLowerCase() === RowsPerPageDropdownItem.ALL_ITEM_TEXT;
-    at.paginationInternal.rowsPerPage = RowsPerPageDropdownItemUtil.getNewRowsPerPage(at, newRowsPerPage);
+    at._pagination.isAllRowsOptionSelected = newRowsPerPage.toLocaleLowerCase() === RowsPerPageDropdownItem.ALL_ITEM_TEXT;
+    at._pagination.rowsPerPage = RowsPerPageDropdownItemUtil.getNewRowsPerPage(at, newRowsPerPage);
     RowsPerPageDropdownItemUtil.updateRowsAndPaginationComponents(at, optionsButton, newRowsPerPage);
   }
 }

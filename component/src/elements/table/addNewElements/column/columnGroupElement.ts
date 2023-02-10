@@ -7,14 +7,14 @@ import {ActiveTable} from '../../../../activeTable';
 // prettier-ignore
 export class ColumnGroupElement {
   public static update(at: ActiveTable) {
-    const {columnGroupRef, columnsDetails, frameComponentsInternal: {displayIndexColumn}} = at;
-    if (!columnGroupRef) return;
+    const {_columnGroupRef, _columnsDetails, _frameComponents: {displayIndexColumn}} = at;
+    if (!_columnGroupRef) return;
     // the first col needs to span all of the columns except the add new column
-    const firstCols = columnGroupRef.children[0] as HTMLElement;
+    const firstCols = _columnGroupRef.children[0] as HTMLElement;
     // cannot simply overwrite span and need to instead replace the element
     const newFirstCols = document.createElement('col');
-    newFirstCols.span = CellElementIndex.getViaColumnIndex(columnsDetails.length, !!displayIndexColumn);
-    columnGroupRef.replaceChild(newFirstCols, firstCols);
+    newFirstCols.span = CellElementIndex.getViaColumnIndex(_columnsDetails.length, !!displayIndexColumn);
+    _columnGroupRef.replaceChild(newFirstCols, firstCols);
   }
 
   public static create(dataCellColors: CellStateColorsR) {

@@ -16,12 +16,12 @@ import {InsertNewCell} from './insertNewCell';
 export class InsertNewColumn {
   private static updateColumns(at: ActiveTable, rowElement: HTMLElement, rowIndex: number, columnIndex: number) {
     const rowDetails: ElementDetails = {element: rowElement, index: rowIndex};
-    const lastColumn: ElementDetails = LastColumn.getDetails(at.columnsDetails, rowIndex);
+    const lastColumn: ElementDetails = LastColumn.getDetails(at._columnsDetails, rowIndex);
     UpdateCellsForColumns.rebindAndFireUpdates(at, rowDetails, columnIndex, CELL_UPDATE_TYPE.ADD, lastColumn);
   }
 
   private static insertToAllRows(at: ActiveTable, columnIndex: number, columnData?: TableRow) {
-    const rowElements = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.content);
+    const rowElements = ExtractElements.textRowsArrFromTBody(at._tableBodyElementRef as HTMLElement, at.content);
     rowElements.forEach((rowElement: Node, rowIndex: number) => {
       const cellText = columnData ? columnData[rowIndex] : EMPTY_STRING;
       InsertNewCell.insertToRow(at, rowElement as HTMLElement, rowIndex, columnIndex, cellText as string, true);
@@ -32,17 +32,17 @@ export class InsertNewColumn {
   // columnData is in a row format to populate the column by iterating through each row
   public static insert(at: ActiveTable, columnIndex: number, columnData?: TableRow) {
     if (MaximumColumns.canAddMore(at)) {
-      FocusedCellUtils.incrementColumnIndex(at.focusedElements.cell, columnIndex);
+      FocusedCellUtils.incrementColumnIndex(at._focusedElements.cell, columnIndex);
       InsertNewColumn.insertToAllRows(at, columnIndex, columnData);
       ToggleAdditionElements.update(at, true, AddNewColumnElement.toggle);
       setTimeout(() => {
         at.onContentUpdate(JSON.parse(JSON.stringify(at.content)));
-        ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate);
+        ColumnDetailsUtils.fireUpdateEvent(at._columnsDetails, at.onColumnsUpdate);
       });
     }
   }
 
   public static insertEvent(this: ActiveTable) {
-    InsertNewColumn.insert(this, this.columnsDetails.length);
+    InsertNewColumn.insert(this, this._columnsDetails.length);
   }
 }

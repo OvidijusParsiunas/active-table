@@ -1,6 +1,6 @@
 import {ColumnDropdownCellOverlay} from '../../elements/dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlay';
 import {HeaderIconCellElement} from '../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
-import {ColumnSettingsInternal, ColumnsSettingsMap, ColumnWidthsI} from '../../types/columnsSettingsInternal';
+import {ColumnSettingsInternal, ColumnsSettingsMap, _ColumnWidths} from '../../types/columnsSettingsInternal';
 import {AddNewColumnElement} from '../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../elements/columnSizer/utils/insertRemoveColumnSizer';
 import {DropdownDisplaySettingsUtil} from '../../elements/dropdown/dropdownDisplaySettingsUtil';
@@ -21,26 +21,26 @@ import {EMPTY_STRING} from '../../consts/text';
 
 export class ColumnSettingsUtils {
   private static updateSizer(at: ActiveTable, columnIndex: number) {
-    const {columnsDetails, tableElementRef} = at;
-    if (!tableElementRef) return;
-    const {columnSizer} = columnsDetails[columnIndex];
+    const {_columnsDetails, _tableElementRef} = at;
+    if (!_tableElementRef) return;
+    const {columnSizer} = _columnsDetails[columnIndex];
     // if not needed - cleanUpCustomColumnSizers will remove it (however it would not insert it otherwise)
     if (!columnSizer) InsertRemoveColumnSizer.insert(at, columnIndex);
     InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, columnIndex);
     if (columnSizer) {
-      InsertRemoveColumnSizer.updateSizer(columnSizer, columnsDetails, columnIndex, tableElementRef);
+      InsertRemoveColumnSizer.updateSizer(columnSizer, _columnsDetails, columnIndex, _tableElementRef);
     }
     const previousColumnIndex = columnIndex - 1;
-    if (columnIndex > 0 && columnsDetails[previousColumnIndex].columnSizer) {
-      const {columnSizer: previousColumnSizer} = columnsDetails[previousColumnIndex];
-      InsertRemoveColumnSizer.updateSizer(previousColumnSizer, columnsDetails, previousColumnIndex, tableElementRef);
+    if (columnIndex > 0 && _columnsDetails[previousColumnIndex].columnSizer) {
+      const {columnSizer: previousColumnSizer} = _columnsDetails[previousColumnIndex];
+      InsertRemoveColumnSizer.updateSizer(previousColumnSizer, _columnsDetails, previousColumnIndex, _tableElementRef);
     }
   }
 
   // prettier-ignore
   private static change(at: ActiveTable, headerElement: HTMLElement, columnIndex: number,
       oldSettings: ColumnSettingsInternal, newSettings: ColumnSettingsInternal, onColumnMove: boolean) {
-    const columnDetails = at.columnsDetails[columnIndex];
+    const columnDetails = at._columnsDetails[columnIndex];
     ColumnSettingsDefaultTextUtils.unsetDefaultText(at, columnDetails, columnIndex);
     columnDetails.settings = newSettings;
     columnDetails.activeType = ColumnTypesUtils.getActiveType(newSettings, columnDetails.activeType.name);
@@ -50,15 +50,15 @@ export class ColumnSettingsUtils {
     ColumnSettingsStyleUtils.changeStyleFunc(at, columnIndex, oldSettings);
     ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
     ColumnSettingsUtils.updateSizer(at, columnIndex);
-    if (at.displayHeaderIcons) HeaderIconCellElement.changeHeaderIcon(at.columnsDetails[columnIndex]);
+    if (at.displayHeaderIcons) HeaderIconCellElement.changeHeaderIcon(at._columnsDetails[columnIndex]);
     ColumnDropdownCellOverlay.updateIfDisplayed(columnDetails);
     AddNewColumnElement.toggle(at, true);
   }
 
   // prettier-ignore
   public static parseSettingsChange(at: ActiveTable) {
-    const {_customColumnsSettings, columnsDetails, focusedElements: {cell: {element: cellElement, columnIndex}}} = at;
-    const columnDetails = columnsDetails[columnIndex as number];
+    const {_customColumnsSettings, _columnsDetails, _focusedElements: {cell: {element: cellElement, columnIndex}}} = at;
+    const columnDetails = _columnsDetails[columnIndex as number];
     const oldSettings = columnDetails.settings;
     const newSettings = _customColumnsSettings[CellElement.getText(cellElement as HTMLElement)]
       || at._defaultColumnsSettings;
@@ -86,8 +86,8 @@ export class ColumnSettingsUtils {
     if (!cellStyle) return;
     const internalSettings = settings as unknown as ColumnSettingsInternal;
     if (cellStyle.width) {
-      const key: keyof ColumnWidthsI = settings.isColumnResizable === false ? 'staticWidth' : 'initialWidth';
-      internalSettings.widths = {[key]: cellStyle.width} as unknown as ColumnWidthsI;
+      const key: keyof _ColumnWidths = settings.isColumnResizable === false ? 'staticWidth' : 'initialWidth';
+      internalSettings.widths = {[key]: cellStyle.width} as unknown as _ColumnWidths;
       // when customSetting does not have width set and is resizable, but default settings have a static width set
     } else if (internalSettings.widths && settings.isColumnResizable && internalSettings.widths.staticWidth) {
       internalSettings.widths = {initialWidth: internalSettings.widths.staticWidth};

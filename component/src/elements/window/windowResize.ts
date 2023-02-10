@@ -11,9 +11,9 @@ interface DimensionsToObserve {
 export class WindowResize {
   // prettier-ignore
   private static resize(this: ActiveTable, observe: DimensionsToObserve) {
-    const {tableDimensions} = this;
-    if ((observe.width && window.innerWidth !== tableDimensions.recordedWindowWidth)
-        || (observe.height && window.innerHeight !== tableDimensions.recordedWindowHeight)) {
+    const {_tableDimensions} = this;
+    if ((observe.width && window.innerWidth !== _tableDimensions.recordedWindowWidth)
+        || (observe.height && window.innerHeight !== _tableDimensions.recordedWindowHeight)) {
       Render.renderTable(this);
     }
   }
@@ -27,9 +27,9 @@ export class WindowResize {
   }
 
   private static extractDimensionsToObserve(at: ActiveTable) {
-    const {tableStyle, overflowInternal} = at;
-    const postfixes = [tableStyle.width, tableStyle.maxWidth, overflowInternal?.maxHeight, overflowInternal?.maxWidth].map(
-      (dimension) => WindowResize.extractPostfix(dimension)
+    const {tableStyle, _overflow} = at;
+    const postfixes = [tableStyle.width, tableStyle.maxWidth, _overflow?.maxHeight, _overflow?.maxWidth].map((dimension) =>
+      WindowResize.extractPostfix(dimension)
     );
     return {
       width: !!postfixes.find((entry) => entry === VW),

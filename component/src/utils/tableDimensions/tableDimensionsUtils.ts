@@ -30,21 +30,21 @@ export class TableDimensionsUtils {
 
   // prettier-ignore
   private static setDimension(at: ActiveTable, key: keyof PossibleStringDimensions<TableStyle>) {
-    const {tableStyle, tableDimensions, tableElementRef, parentElement} = at;
-    if (!tableElementRef || !parentElement) return;
+    const {tableStyle, _tableDimensions, _tableElementRef, parentElement} = at;
+    if (!_tableElementRef || !parentElement) return;
     const numberDimension = StringDimensionUtils.generateNumberDimensionFromClientString(
       parentElement, tableStyle, key, true, TableDimensionsUtils.MINIMAL_TABLE_WIDTH);
     if (numberDimension.number > 0) {
-      if (at.overflow) OverflowUtils.processNumberDimension(tableDimensions, numberDimension);
-      tableDimensions[key] = numberDimension.number;
-      tableDimensions.isPercentage = numberDimension.isPercentage;
+      if (at.overflow) OverflowUtils.processNumberDimension(_tableDimensions, numberDimension);
+      _tableDimensions[key] = numberDimension.number;
+      _tableDimensions.isPercentage = numberDimension.isPercentage;
     }
   }
 
   // CAUTION-3
   // prettier-ignore
   public static setTableDimensions(at: ActiveTable) {
-    const {tableStyle, tableDimensions, frameComponentsInternal: {displayIndexColumn}} = at;
+    const {tableStyle, _tableDimensions, _frameComponents: {displayIndexColumn}} = at;
     // width and maxWidth are mutually exclusive and if both are present width is the only one that is used
     if (tableStyle.width !== undefined) {
       TableDimensionsUtils.setDimension(at, 'width');
@@ -52,12 +52,12 @@ export class TableDimensionsUtils {
       TableDimensionsUtils.setDimension(at, 'maxWidth');
     }
     // else the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
-    TableDimensionsUtils.setPreserveNarrowColumnsProp(at, tableDimensions);
-    TableDimensionsUtils.setIsColumnIndexCellTextWrapped(tableDimensions, displayIndexColumn);
+    TableDimensionsUtils.setPreserveNarrowColumnsProp(at, _tableDimensions);
+    TableDimensionsUtils.setIsColumnIndexCellTextWrapped(_tableDimensions, displayIndexColumn);
   }
 
   public static hasSetTableWidthBeenBreached(at: ActiveTable) {
-    const {width, maxWidth} = at.tableDimensions;
+    const {width, maxWidth} = at._tableDimensions;
     const tableOffset = at.offsetWidth;
     const setWidth = width || maxWidth;
     if (setWidth) {
@@ -68,10 +68,10 @@ export class TableDimensionsUtils {
   }
 
   public static record(at: ActiveTable) {
-    at.tableDimensions.recordedParentWidth = (at.parentElement as HTMLElement).offsetWidth;
-    at.tableDimensions.recordedParentHeight = (at.parentElement as HTMLElement).offsetHeight;
-    at.tableDimensions.recordedWindowWidth = window.innerWidth;
-    at.tableDimensions.recordedWindowHeight = window.innerHeight;
+    at._tableDimensions.recordedParentWidth = (at.parentElement as HTMLElement).offsetWidth;
+    at._tableDimensions.recordedParentHeight = (at.parentElement as HTMLElement).offsetHeight;
+    at._tableDimensions.recordedWindowWidth = window.innerWidth;
+    at._tableDimensions.recordedWindowHeight = window.innerHeight;
   }
 
   public static getDefault() {

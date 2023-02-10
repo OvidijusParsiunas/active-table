@@ -7,13 +7,13 @@ type SetEvents = (at: ActiveTable, cellElement: HTMLElement, rowIndex: number, c
 
 export class CellStructureUtils {
   public static setColumn(at: ActiveTable, columnIndex: number, setStructure: SetStructure, setEvents: SetEvents) {
-    const {elements} = at.columnsDetails[columnIndex];
+    const {elements} = at._columnsDetails[columnIndex];
     elements.slice(1).forEach((cellElement: HTMLElement, dataRowIndex: number) => {
       const relativeRowIndex = dataRowIndex + 1;
       setStructure(at, cellElement, columnIndex, relativeRowIndex);
       // event setter should not be in a timeout because if column width is wide and column type dropdown is closed
       // after the user selected a new type, if mouse is on the same column - mouse enter event will be fired
-      if (at.columnsDetails[columnIndex].settings.isCellTextEditable) {
+      if (at._columnsDetails[columnIndex].settings.isCellTextEditable) {
         setEvents(at, cellElement, relativeRowIndex, columnIndex);
       }
     });

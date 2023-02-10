@@ -19,7 +19,7 @@ export class UpdateCellsForRows {
     });
     if (updateType !== CELL_UPDATE_TYPE.REMOVED) {
       const leftMostCell = rowElement.children[0] as HTMLElement;
-      if (at.frameComponentsInternal.displayIndexColumn) IndexColumnEvents.setEvents(at, leftMostCell, rowIndex);
+      if (at._frameComponents.displayIndexColumn) IndexColumnEvents.setEvents(at, leftMostCell, rowIndex);
       if (at.rowDropdown.displaySettings.openMethod?.overlayClick) {
         RowDropdownCellOverlayEvents.setOverlayEvents(at, rowIndex, leftMostCell);
       }
@@ -27,13 +27,13 @@ export class UpdateCellsForRows {
   }
 
   private static updateLastRow(at: ActiveTable, updateType: CELL_UPDATE_TYPE, lastRow: ElementDetails) {
-    if (at.tableBodyElementRef?.children) {
+    if (at._tableBodyElementRef?.children) {
       UpdateCellsForRows.updateRowCells(at, lastRow.element, lastRow.index, updateType);
     }
   }
 
   private static updateLowerBeforeLastRows(at: ActiveTable, startRowIndex: number, lastRowIndex: number) {
-    const tableBodyChildren = at.tableBodyElementRef?.children;
+    const tableBodyChildren = at._tableBodyElementRef?.children;
     if (tableBodyChildren) {
       const lowerRows = Array.from(tableBodyChildren).slice(startRowIndex, lastRowIndex);
       lowerRows.forEach((row: Node, lowerRowIndex: number) => {

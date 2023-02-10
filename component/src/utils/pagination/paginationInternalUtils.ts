@@ -37,22 +37,22 @@ export class PaginationInternalUtils {
   }
 
   private static setFirstOptionAsRowsPerPage(at: ActiveTable) {
-    const {paginationInternal, content, dataStartsAtHeader} = at;
-    const firstItemText = paginationInternal.rowsPerPageOptionsItemText[0];
+    const {_pagination, content, dataStartsAtHeader} = at;
+    const firstItemText = _pagination.rowsPerPageOptionsItemText[0];
     if (firstItemText.toLocaleLowerCase() === RowsPerPageDropdownItem.ALL_ITEM_TEXT) {
-      paginationInternal.isAllRowsOptionSelected = true;
-      paginationInternal.rowsPerPage = dataStartsAtHeader ? content.length : content.length - 1;
+      _pagination.isAllRowsOptionSelected = true;
+      _pagination.rowsPerPage = dataStartsAtHeader ? content.length : content.length - 1;
     } else {
-      paginationInternal.rowsPerPage = Number(firstItemText);
+      _pagination.rowsPerPage = Number(firstItemText);
     }
   }
 
   private static processRowsPerPage(at: ActiveTable, pagination: Pagination) {
     const {rowsPerPageSelect} = pagination;
     // the user might set rowsPerPage as string (even if we need type) so this makes sure its a string
-    at.paginationInternal.rowsPerPage = Number.parseInt(String(at.paginationInternal.rowsPerPage));
+    at._pagination.rowsPerPage = Number.parseInt(String(at._pagination.rowsPerPage));
     if (rowsPerPageSelect || rowsPerPageSelect === undefined) {
-      const {rowsPerPageOptionsItemText, rowsPerPage} = at.paginationInternal;
+      const {rowsPerPageOptionsItemText, rowsPerPage} = at._pagination;
       if (!rowsPerPageOptionsItemText.find((value) => value === String(rowsPerPage))) {
         const rowsPerPageNumber = Number.parseInt(String(rowsPerPage));
         if (isNaN(rowsPerPageNumber)) {
@@ -84,12 +84,12 @@ export class PaginationInternalUtils {
     const pagination = at.pagination as Pagination;
     const {rowsPerPageSelect} = pagination;
     if (rowsPerPageSelect || rowsPerPageSelect === undefined) {
-      const defaultOptions = (at.paginationInternal.rowsPerPageSelect as RowsPerPageSelect).options;
+      const defaultOptions = (at._pagination.rowsPerPageSelect as RowsPerPageSelect).options;
       let options = (rowsPerPageSelect === undefined || rowsPerPageSelect === true
         || !rowsPerPageSelect.options || rowsPerPageSelect.options.length === 0
           ? defaultOptions : rowsPerPageSelect.options) as (number|string)[];
       if (at.stripedRows) options = PaginationInternalUtils.changeOptionNumberToEven(options);
-      at.paginationInternal.rowsPerPageOptionsItemText = options
+      at._pagination.rowsPerPageOptionsItemText = options
         .map((option) => PaginationInternalUtils.processOptionsItemText(option));
     }
   }
@@ -98,7 +98,7 @@ export class PaginationInternalUtils {
     const pagination = at.pagination as Pagination;
     const {rowsPerPageSelect} = pagination;
     if (rowsPerPageSelect !== undefined && typeof rowsPerPageSelect !== 'boolean' && rowsPerPageSelect.prefixText) {
-      (at.paginationInternal.rowsPerPageSelect as RowsPerPageSelect).prefixText = rowsPerPageSelect.prefixText;
+      (at._pagination.rowsPerPageSelect as RowsPerPageSelect).prefixText = rowsPerPageSelect.prefixText;
     }
     PaginationInternalUtils.setRowsPerPageOptionsText(at);
     delete pagination.rowsPerPageSelect;
@@ -220,16 +220,16 @@ export class PaginationInternalUtils {
   }
 
   public static process(at: ActiveTable) {
-    const {paginationInternal} = at;
+    const {_pagination} = at;
     if (!at.pagination) return;
     const pagination: Pagination = typeof at.pagination === 'boolean' ? {} : at.pagination;
     if (pagination.maxNumberOfVisiblePageButtons !== undefined && pagination.maxNumberOfVisiblePageButtons < 1) {
       pagination.maxNumberOfVisiblePageButtons = 1;
     }
-    PaginationInternalUtils.processPosition(pagination, paginationInternal);
-    PaginationInternalUtils.processStyle(pagination, paginationInternal);
+    PaginationInternalUtils.processPosition(pagination, _pagination);
+    PaginationInternalUtils.processStyle(pagination, _pagination);
     if (pagination.rowsPerPageSelect !== false) PaginationInternalUtils.processRowsPerPageOptions(at);
-    Object.assign(paginationInternal, pagination);
+    Object.assign(_pagination, pagination);
     if (pagination.displayNumberOfVisibleRows !== false) PaginationInternalUtils.processRowsPerPage(at, pagination);
   }
 

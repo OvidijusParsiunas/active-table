@@ -30,13 +30,13 @@ export class MaximumColumns {
 
   // prettier-ignore
   public static canAddMore(at: ActiveTable) {
-    const {tableElementRef, columnsDetails, tableDimensions, maxColumns} = at;
-    const numberOfColumns = columnsDetails.length;
+    const {_tableElementRef, _columnsDetails, _tableDimensions, maxColumns} = at;
+    const numberOfColumns = _columnsDetails.length;
     if ((maxColumns !== undefined && maxColumns > 0 && maxColumns === numberOfColumns)
-      || MaximumColumns.isStaticContentBreachingSetTableWidth(tableDimensions)) return false;
-    const tableElement = tableElementRef as HTMLElement;
-    if (MaximumColumns.ignoreMinimalColumnWidthCheck(tableDimensions, tableElement, numberOfColumns)) return true;
-    const totalColumnsWidth = tableElement.offsetWidth - tableDimensions.staticWidth;
+      || MaximumColumns.isStaticContentBreachingSetTableWidth(_tableDimensions)) return false;
+    const tableElement = _tableElementRef as HTMLElement;
+    if (MaximumColumns.ignoreMinimalColumnWidthCheck(_tableDimensions, tableElement, numberOfColumns)) return true;
+    const totalColumnsWidth = tableElement.offsetWidth - _tableDimensions.staticWidth;
     return totalColumnsWidth / (numberOfColumns + 1) >= ColumnDetails.MINIMAL_COLUMN_WIDTH;
   }
 }

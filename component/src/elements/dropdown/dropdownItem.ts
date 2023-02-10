@@ -48,7 +48,7 @@ export class DropdownItem {
     inputElement.classList.add(DropdownItem.DROPDOWN_INPUT_CLASS);
     itemElement.appendChild(inputElement);
     dropdownElement.appendChild(itemElement);
-    DropdownItemEvents.addItemEvents(at.activeOverlayElements, inputElement);
+    DropdownItemEvents.addItemEvents(at._activeOverlayElements, inputElement);
   }
 
   // REF-10
@@ -105,7 +105,7 @@ export class DropdownItem {
   public static addButtonItem(at: ActiveTable, dropdown: HTMLElement,
       itemSettings: Optional<DropdownButtonItemSettings, 'iconSettings'>, ...classNames: string[]) {
     const buttonElement = DropdownItem.createButtonItemNoEvents(dropdown, itemSettings, ...classNames);
-    DropdownItemEvents.addItemEvents(at.activeOverlayElements, buttonElement);
+    DropdownItemEvents.addItemEvents(at._activeOverlayElements, buttonElement);
     return buttonElement;
   }
 
@@ -121,7 +121,7 @@ export class DropdownItem {
     elements.forEach((element) => {
       element.tabIndex = dropdownElement.children.length;
       dropdownElement.appendChild(element);
-      DropdownItemEvents.addItemEvents(at.activeOverlayElements, element);
+      DropdownItemEvents.addItemEvents(at._activeOverlayElements, element);
     });
   }
 

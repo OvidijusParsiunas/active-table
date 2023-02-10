@@ -15,11 +15,11 @@ export class PaginationUtils {
 
   // prettier-ignore
   public static getLastPossiblePageNumber(at: ActiveTable, isBeforeInsert = false) {
-    const {content, paginationInternal, dataStartsAtHeader} = at;
-    if (paginationInternal.isAllRowsOptionSelected) return 1;
+    const {content, _pagination, dataStartsAtHeader} = at;
+    if (_pagination.isAllRowsOptionSelected) return 1;
     const contentLength = dataStartsAtHeader ? content.length + 1 : content.length;
     const numberOfRows = isBeforeInsert ? contentLength : contentLength - 1;
-    return Math.max(Math.ceil(numberOfRows / paginationInternal.rowsPerPage), 1);
+    return Math.max(Math.ceil(numberOfRows / _pagination.rowsPerPage), 1);
   }
 
   public static getPageNumberButtons(pagination: PaginationInternal) {
@@ -30,7 +30,7 @@ export class PaginationUtils {
   }
 
   public static getRelativeRowIndexes(at: ActiveTable, rowIndex = 0) {
-    const {activePageNumber, rowsPerPage, isAllRowsOptionSelected} = at.paginationInternal;
+    const {activePageNumber, rowsPerPage, isAllRowsOptionSelected} = at._pagination;
     let maxVisibleRowIndex = isAllRowsOptionSelected ? at.content.length + 1 : activePageNumber * rowsPerPage;
     if (!at.dataStartsAtHeader) maxVisibleRowIndex += 1;
     const minVisibleRowIndex = maxVisibleRowIndex - rowsPerPage;
@@ -59,7 +59,7 @@ export class PaginationUtils {
 
   // changes to the page that the row was moved to
   public static updateOnRowMove(at: ActiveTable, rowIndex: number) {
-    const {activePageNumber} = at.paginationInternal;
+    const {activePageNumber} = at._pagination;
     const {maxVisibleRowIndex, minVisibleRowIndex} = PaginationUtils.getRelativeRowIndexes(at, rowIndex);
     if (maxVisibleRowIndex <= rowIndex) {
       PaginationUtils.displayRowsForDifferentButton(at, activePageNumber + 1);
@@ -69,7 +69,7 @@ export class PaginationUtils {
   }
 
   private static updateRowsOnRemoval(at: ActiveTable, rowIndex: number) {
-    const {visibleRows, activePageNumber} = at.paginationInternal;
+    const {visibleRows, activePageNumber} = at._pagination;
     const {visibleRowIndex} = PaginationUtils.getRelativeRowIndexes(at, rowIndex);
     visibleRows.splice(visibleRowIndex, 1);
     if (visibleRows.length > 0) {
@@ -93,11 +93,11 @@ export class PaginationUtils {
   }
 
   private static updateRowsOnNewInsert(at: ActiveTable, rowIndex: number, newRowElement: HTMLElement) {
-    const {rowsPerPage, visibleRows, activePageNumber, isAllRowsOptionSelected} = at.paginationInternal;
+    const {rowsPerPage, visibleRows, activePageNumber, isAllRowsOptionSelected} = at._pagination;
     const {maxVisibleRowIndex, visibleRowIndex} = PaginationUtils.getRelativeRowIndexes(at, rowIndex);
     if (maxVisibleRowIndex > rowIndex) {
       if (visibleRows.length === rowsPerPage && !isAllRowsOptionSelected) {
-        PaginationUtils.hideLastVisibleRow(at.paginationInternal);
+        PaginationUtils.hideLastVisibleRow(at._pagination);
       }
       visibleRows.splice(visibleRowIndex, 0, newRowElement);
     } else {
@@ -109,9 +109,9 @@ export class PaginationUtils {
 
   // prettier-ignore
   public static updateOnRowChange(at: ActiveTable, rowIndex: number, newRowElement?: HTMLElement) {
-    const {dataStartsAtHeader, content, paginationInternal} = at;
+    const {dataStartsAtHeader, content, _pagination} = at;
     if (!dataStartsAtHeader && rowIndex === 0 && content.length === 0) return;
-    PaginationVisibleButtonsUtils.unsetStateAndStyles(paginationInternal);
+    PaginationVisibleButtonsUtils.unsetStateAndStyles(_pagination);
     // buttons need to be updated first as displayRowsForDifferentButton will use them to toggle the side buttons
     if (newRowElement) {
       PaginationUpdatePageButtons.updateOnRowInsert(at);
@@ -127,27 +127,27 @@ export class PaginationUtils {
 
   public static initialRowUpdates(at: ActiveTable, rowIndex: number, newRowElement: HTMLElement) {
     const dataRowIndex = at.dataStartsAtHeader ? rowIndex + 1 : rowIndex;
-    if (dataRowIndex > at.paginationInternal.rowsPerPage) {
+    if (dataRowIndex > at._pagination.rowsPerPage) {
       PaginationUtils.hideRow(newRowElement);
     } else if (dataRowIndex > 0) {
-      at.paginationInternal.visibleRows.push(newRowElement);
+      at._pagination.visibleRows.push(newRowElement);
     }
   }
 
   // REF-32
   private static updateAddRowRow(at: ActiveTable) {
-    if (at.stripedRowsInternal && at.tableBodyElementRef && at.addRowCellElementRef) {
-      const addRowRowElement = at.addRowCellElementRef.parentElement as HTMLElement;
-      const rowIndex = (Array.from(at.tableBodyElementRef.children) as HTMLElement[]).length - 1;
-      const isAddRowEven = PaginationUtils.getLastPossiblePageNumber(at) !== at.paginationInternal.activePageNumber;
+    if (at._stripedRows && at._tableBodyElementRef && at._addRowCellElementRef) {
+      const addRowRowElement = at._addRowCellElementRef.parentElement as HTMLElement;
+      const rowIndex = (Array.from(at._tableBodyElementRef.children) as HTMLElement[]).length - 1;
+      const isAddRowEven = PaginationUtils.getLastPossiblePageNumber(at) !== at._pagination.activePageNumber;
       CustomRowProperties.updateRow(at, addRowRowElement, rowIndex, rowIndex, isAddRowEven);
     }
   }
 
   // prettier-ignore
   private static setCorrectRowsAsVisible(at: ActiveTable, buttonNumber: number) {
-    const {paginationInternal: {rowsPerPage, visibleRows}, tableBodyElementRef, content} = at;
-    const tableRows = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, content);
+    const {_pagination: {rowsPerPage, visibleRows}, _tableBodyElementRef, content} = at;
+    const tableRows = ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content);
     let startingRowIndex = rowsPerPage * (buttonNumber - 1);
     if (!at.dataStartsAtHeader) startingRowIndex += 1; 
     tableRows.slice(startingRowIndex, startingRowIndex + rowsPerPage).forEach((rowElement) => {
@@ -162,10 +162,10 @@ export class PaginationUtils {
   }
 
   public static displayRowsForDifferentButton(at: ActiveTable, buttonNumber: number) {
-    PaginationUtils.hideAllRows(at.paginationInternal);
+    PaginationUtils.hideAllRows(at._pagination);
     PaginationUtils.setCorrectRowsAsVisible(at, buttonNumber);
     PageButtonElement.setActive(at, buttonNumber);
     NumberOfVisibleRowsElement.update(at);
-    if (at.frameComponentsInternal.displayAddNewRow) PaginationUtils.updateAddRowRow(at);
+    if (at._frameComponents.displayAddNewRow) PaginationUtils.updateAddRowRow(at);
   }
 }

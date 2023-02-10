@@ -32,8 +32,8 @@ interface CellDropdownItemsDetails {
   [itemText: string]: CellDropdownItemDetails;
 }
 
-// using I to detone internal type
-export interface CellDropdownI {
+// using _ as CellDropdown is a class name and CellDropdownT is already used for client select objects
+export interface _CellDropdown {
   itemsDetails: CellDropdownItemsDetails;
   activeItems: ActiveCellDropdownItems; // items that exhibit certain behaviours
   element: HTMLElement; // REF-8

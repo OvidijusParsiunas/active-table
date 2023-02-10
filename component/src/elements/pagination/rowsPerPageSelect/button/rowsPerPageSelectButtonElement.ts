@@ -91,9 +91,9 @@ export class RowsPerPageSelectButtonElement {
   }
 
   public static create(at: ActiveTable) {
-    const optionsButton = RowsPerPageSelectButtonElement.createOptionsButton(at.paginationInternal);
-    optionsButton.appendChild(RowsPerPageSelectButtonElement.createButtonText(at.paginationInternal));
-    optionsButton.appendChild(RowsPerPageSelectButtonElement.createButtonArrow(at.paginationInternal));
+    const optionsButton = RowsPerPageSelectButtonElement.createOptionsButton(at._pagination);
+    optionsButton.appendChild(RowsPerPageSelectButtonElement.createButtonText(at._pagination));
+    optionsButton.appendChild(RowsPerPageSelectButtonElement.createButtonArrow(at._pagination));
     RowsPerPageSelectButtonEvents.setEvents(at, optionsButton);
     return optionsButton;
   }

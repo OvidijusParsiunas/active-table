@@ -1,5 +1,5 @@
 import {ColumnDetailsT, ColumnsDetailsT} from '../../../../types/columnDetails';
-import {CellDropdownI} from '../../../../types/cellDropdownInternal';
+import {_CellDropdown} from '../../../../types/cellDropdownInternal';
 import {OptionColorButtonEvents} from './optionColorButtonEvents';
 import {Browser} from '../../../../utils/browser/browser';
 import {OptionDeleteButton} from './optionDeleteButton';
@@ -9,7 +9,7 @@ export class OptionButton {
   public static readonly BUTTON_CONTAINER_CLASS = 'cell-drodown-option-button-container';
   public static readonly BUTTON_CLASS = 'cell-drodown-option-button';
 
-  public static changeVisibility(event: MouseEvent, dropdown: CellDropdownI, displayOnDropdown?: HTMLElement) {
+  public static changeVisibility(event: MouseEvent, dropdown: _CellDropdown, displayOnDropdown?: HTMLElement) {
     if (event.isTrusted) {
       const itemElement = event.target as HTMLElement;
       const rightSideDelta = dropdown.scrollbarPresence.vertical ? 31 : 16;

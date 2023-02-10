@@ -11,7 +11,7 @@ export class SelectCellElement {
     ConvertCellTypeUtils.preprocessCell(cellElement);
     SelectCellTextElement.setCellTextAsAnElement(at, cellElement, columnIndex);
     cellElement.appendChild(ArrowDownIconElement.get());
-    SelectCell.setPointerCursorIfCantAdd(cellElement, at.columnsDetails[columnIndex].activeType);
+    SelectCell.setPointerCursorIfCantAdd(cellElement, at._columnsDetails[columnIndex].activeType);
   }
 
   public static setColumnSelectStructure(at: ActiveTable, columnIndex: number) {

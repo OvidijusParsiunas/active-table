@@ -9,26 +9,26 @@ import {CellEvents} from '../cellEvents';
 
 export class HeaderCellEvents {
   public static mouseEnterCell(this: ActiveTable, columnIndex: number, event: MouseEvent) {
-    if (!this.activeOverlayElements.selectedColumnSizer) {
-      const columnDetails = this.columnsDetails[columnIndex];
+    if (!this._activeOverlayElements.selectedColumnSizer) {
+      const columnDetails = this._columnsDetails[columnIndex];
       const cellElement = event.target as HTMLElement;
       CellHighlightUtils.highlight(cellElement, columnDetails.headerStateColors?.hover);
-      ColumnSizerCellEvents.cellMouseEnter(this.columnsDetails, columnIndex);
+      ColumnSizerCellEvents.cellMouseEnter(this._columnsDetails, columnIndex);
       const openViaOverlayClick = this._defaultColumnsSettings.columnDropdown?.displaySettings?.openMethod?.overlayClick;
       if (openViaOverlayClick) ColumnDropdownCellOverlay.display(columnDetails);
-      this.hoveredElements.headerCell = cellElement;
+      this._hoveredElements.headerCell = cellElement;
     }
   }
 
   public static mouseLeaveCell(this: ActiveTable, columnIndex: number, event: MouseEvent) {
-    if (!Dropdown.isDisplayed(this.activeOverlayElements.columnDropdown)) {
-      CellHighlightUtils.fade(event.target as HTMLElement, this.columnsDetails[columnIndex].headerStateColors?.default);
-      ColumnDropdownCellOverlay.hide(this, this.columnsDetails[columnIndex]);
+    if (!Dropdown.isDisplayed(this._activeOverlayElements.columnDropdown)) {
+      CellHighlightUtils.fade(event.target as HTMLElement, this._columnsDetails[columnIndex].headerStateColors?.default);
+      ColumnDropdownCellOverlay.hide(this, this._columnsDetails[columnIndex]);
       const openViaOverlayClick = this._defaultColumnsSettings.columnDropdown?.displaySettings?.openMethod?.overlayClick;
-      if (openViaOverlayClick) delete this.hoveredElements.headerCell;
+      if (openViaOverlayClick) delete this._hoveredElements.headerCell;
     }
-    if (!this.activeOverlayElements.selectedColumnSizer) {
-      ColumnSizerCellEvents.cellMouseLeave(this.columnsDetails, columnIndex);
+    if (!this._activeOverlayElements.selectedColumnSizer) {
+      ColumnSizerCellEvents.cellMouseLeave(this._columnsDetails, columnIndex);
     }
   }
 
@@ -37,7 +37,7 @@ export class HeaderCellEvents {
     CellEvents.removeTextIfDefault(this, 0, columnIndex, cellElement);
     const openViaCellClick = this._defaultColumnsSettings.columnDropdown?.displaySettings?.openMethod?.cellClick;
     if (openViaCellClick) ColumnDropdown.display(this, columnIndex);
-    setTimeout(() => FocusedCellUtils.setHeaderCell(this.focusedElements.cell, cellElement, columnIndex));
+    setTimeout(() => FocusedCellUtils.setHeaderCell(this._focusedElements.cell, cellElement, columnIndex));
   }
 
   public static setEvents(at: ActiveTable, cellElement: HTMLElement, columnIndex: number) {

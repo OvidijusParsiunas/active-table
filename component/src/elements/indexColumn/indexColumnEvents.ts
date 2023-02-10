@@ -8,14 +8,14 @@ import {Dropdown} from '../dropdown/dropdown';
 export class IndexColumnEvents {
   private static mouseEnterCell(this: ActiveTable, rowIndex: number, event: MouseEvent) {
     const cellElement = event.target as HTMLElement;
-    const {cellColors} = this.frameComponentsInternal;
+    const {cellColors} = this._frameComponents;
     const colors = FrameComponentsColors.getColorsBasedOnParam(cellColors, rowIndex);
     CellHighlightUtils.highlight(cellElement, colors.hover);
   }
 
   private static mouseLeaveCell(this: ActiveTable, rowIndex: number, event: MouseEvent) {
-    if (!Dropdown.isDisplayed(this.activeOverlayElements.rowDropdown)) {
-      const {cellColors} = this.frameComponentsInternal;
+    if (!Dropdown.isDisplayed(this._activeOverlayElements.rowDropdown)) {
+      const {cellColors} = this._frameComponents;
       const colors = FrameComponentsColors.getColorsBasedOnParam(cellColors, rowIndex);
       CellHighlightUtils.fade(event.target as HTMLElement, colors.default);
     }

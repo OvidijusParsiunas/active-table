@@ -9,13 +9,13 @@ import {Dropdown} from '../../../dropdown/dropdown';
 export class RowsPerPageSelectButtonEvents {
   // prettier-ignore
   private static buttonClick(this: ActiveTable, event: MouseEvent) {
-    const dropdownElement = this.paginationInternal.rowsPerPageDropdown as HTMLElement;
+    const dropdownElement = this._pagination.rowsPerPageDropdown as HTMLElement;
     if (Dropdown.isDisplayed(dropdownElement)) {
       Dropdown.hide(dropdownElement);
     } else {
       const buttonElement = event.target as HTMLElement;
       RowsPerPageDropdown.display(buttonElement, dropdownElement,
-        this.paginationInternal.dropdownWidth, this.tableDimensions.border);
+        this._pagination.dropdownWidth, this._tableDimensions.border);
     }
   }
 
@@ -41,10 +41,10 @@ export class RowsPerPageSelectButtonEvents {
   }
 
   public static setEvents(at: ActiveTable, optionsButton: HTMLElement) {
-    optionsButton.onmouseenter = RowsPerPageSelectButtonEvents.buttonMouseEnter.bind(this, at.paginationInternal.style);
-    optionsButton.onmouseleave = RowsPerPageSelectButtonEvents.buttonMouseLeave.bind(this, at.paginationInternal.style);
-    optionsButton.onmousedown = RowsPerPageSelectButtonEvents.buttonMouseDown.bind(this, at.paginationInternal);
-    optionsButton.onmouseup = RowsPerPageSelectButtonEvents.buttonMouseEnter.bind(this, at.paginationInternal.style);
+    optionsButton.onmouseenter = RowsPerPageSelectButtonEvents.buttonMouseEnter.bind(this, at._pagination.style);
+    optionsButton.onmouseleave = RowsPerPageSelectButtonEvents.buttonMouseLeave.bind(this, at._pagination.style);
+    optionsButton.onmousedown = RowsPerPageSelectButtonEvents.buttonMouseDown.bind(this, at._pagination);
+    optionsButton.onmouseup = RowsPerPageSelectButtonEvents.buttonMouseEnter.bind(this, at._pagination.style);
     optionsButton.onclick = RowsPerPageSelectButtonEvents.buttonClick.bind(at);
   }
 }

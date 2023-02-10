@@ -4,7 +4,7 @@ import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {TableBorderDimensions} from '../../../types/tableBorderDimensions';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
 import {OverflowUtils} from '../../../utils/overflow/overflowUtils';
-import {CellDropdownI} from '../../../types/cellDropdownInternal';
+import {_CellDropdown} from '../../../types/cellDropdownInternal';
 import {CellDropdownItemEvents} from './cellDropdownItemEvents';
 import {CellDropdownScrollbar} from './cellDropdownScrollbar';
 import {CellDropdownEvents} from './cellDropdownEvents';
@@ -99,7 +99,7 @@ export class CellDropdown {
   }
 
   // prettier-ignore
-  public static updateCellDropdown(textContainerElement: HTMLElement, dropdown: CellDropdownI,
+  public static updateCellDropdown(textContainerElement: HTMLElement, dropdown: _CellDropdown,
       borderDimensions: TableBorderDimensions, defaultText: CellText, updateCellText: boolean,
       matchingCellElement?: HTMLElement) {
     const textElement = CellElement.getTextElement(textContainerElement);
@@ -110,7 +110,7 @@ export class CellDropdown {
     }
   }
 
-  private static focusItemOnDropdownOpen(textElement: HTMLElement, dropdown: CellDropdownI, defaultText: CellText) {
+  private static focusItemOnDropdownOpen(textElement: HTMLElement, dropdown: _CellDropdown, defaultText: CellText) {
     // the updateCellText parameter is set to false for a case where the user clicks on a select/label cell which has
     // its text with a background color but one for a select/label that has been deleted, hence we do not want to
     // highlight it with a new background color
@@ -132,7 +132,7 @@ export class CellDropdown {
     }
   }
 
-  private static getWidth(cellElement: HTMLElement, dropdown: CellDropdownI, dropdownStyle?: CellDropdownStyle) {
+  private static getWidth(cellElement: HTMLElement, dropdown: _CellDropdown, dropdownStyle?: CellDropdownStyle) {
     if (dropdownStyle?.width) return Number.parseInt(dropdownStyle.width);
     if (!dropdown.labelDetails) return Math.max(cellElement.offsetWidth - 2, CellDropdown.MIN_WIDTH);
     const textContainerElement = cellElement.children[0] as HTMLElement;
@@ -141,7 +141,7 @@ export class CellDropdown {
 
   // prettier-ignore
   public static display(at: ActiveTable, columnIndex: number, cellElement: HTMLElement) {
-    const {cellDropdown, settings: {defaultText}, activeType: {cellDropdownProps}} = at.columnsDetails[columnIndex];
+    const {cellDropdown, settings: {defaultText}, activeType: {cellDropdownProps}} = at._columnsDetails[columnIndex];
     const {element: dropdownEl, itemsDetails} = cellDropdown;
     if (Object.keys(itemsDetails).length > 0 && cellDropdownProps) {
       CellDropdownEvents.set(at, dropdownEl);
@@ -152,7 +152,7 @@ export class CellDropdown {
       dropdownEl.scrollLeft = 0;
       CellDropdown.correctWidthForOverflow(dropdownEl);
       CellDropdownScrollbar.setProperties(cellDropdown);
-      CellDropdown.setPosition(dropdownEl, cellElement, at.tableDimensions.border);
+      CellDropdown.setPosition(dropdownEl, cellElement, at._tableDimensions.border);
       const textElement = cellElement.children[0] as HTMLElement;
       CellDropdown.focusItemOnDropdownOpen(textElement, cellDropdown, defaultText);
       return true;
@@ -160,7 +160,7 @@ export class CellDropdown {
     return false;
   }
 
-  private static setCustomStyle(cellDropdown: CellDropdownI, dropdownStyle: CellDropdownStyle) {
+  private static setCustomStyle(cellDropdown: _CellDropdown, dropdownStyle: CellDropdownStyle) {
     const {paddingTop, paddingBottom, marginTop, marginLeft, border, textAlign} = dropdownStyle;
     cellDropdown.element.style.paddingTop = paddingTop || Dropdown.DROPDOWN_VERTICAL_PX;
     cellDropdown.element.style.paddingBottom = paddingBottom || Dropdown.DROPDOWN_VERTICAL_PX;
@@ -170,7 +170,7 @@ export class CellDropdown {
     cellDropdown.element.style.textAlign = textAlign || 'left';
   }
 
-  private static setCustomState(cellDropdown: CellDropdownI, cellDropdownType: CellDropdownT) {
+  private static setCustomState(cellDropdown: _CellDropdown, cellDropdownType: CellDropdownT) {
     cellDropdown.customDropdownStyle = cellDropdownType.dropdownStyle;
     cellDropdown.customItemStyle = cellDropdownType.optionStyle;
     cellDropdown.canAddMoreOptions = !!cellDropdownType.canAddMoreOptions;
@@ -178,10 +178,11 @@ export class CellDropdown {
 
   // prettier-ignore
   public static setUpDropdown(at: ActiveTable, columnIndex: number) {
-    const {columnsDetails, globalItemColors} = at;
-    const {activeType: {cellDropdownProps}, cellDropdown} = columnsDetails[columnIndex];
+    const {_columnsDetails, _globalItemColors} = at;
+    const {activeType: {cellDropdownProps}, cellDropdown} = _columnsDetails[columnIndex];
     if (!cellDropdownProps) return;
-    cellDropdown.labelDetails = cellDropdownProps.isBasicSelect ? undefined : {globalItemColors}; // REF-34
+     // REF-34
+    cellDropdown.labelDetails = cellDropdownProps.isBasicSelect ? undefined : {globalItemColors: _globalItemColors};
     CellDropdown.setCustomState(cellDropdown, cellDropdownProps)
     CellDropdownItem.populateItems(at, columnIndex);
     if (cellDropdownProps.dropdownStyle) CellDropdown.setCustomStyle(cellDropdown, cellDropdownProps.dropdownStyle);
@@ -196,7 +197,7 @@ export class CellDropdown {
     return dropdownElement;
   }
 
-  public static getDefaultObj(dropdownElement: HTMLElement): CellDropdownI {
+  public static getDefaultObj(dropdownElement: HTMLElement): _CellDropdown {
     return {
       itemsDetails: {},
       activeItems: {},

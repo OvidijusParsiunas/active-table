@@ -8,15 +8,15 @@ export class FullTableOverlayElement {
   // at offsets is a bug fix for a situation where the user was able to click the table border, focus and unfocus a cell
   // and therefore not allow the column dropdown to close because there is nothing focused
   public static display(at: ActiveTable) {
-    const fullTableOverlay = at.activeOverlayElements.fullTableOverlay as HTMLElement;
+    const fullTableOverlay = at._activeOverlayElements.fullTableOverlay as HTMLElement;
     fullTableOverlay.style.width = `${at.offsetWidth}px`;
     fullTableOverlay.style.height = `${at.offsetHeight}px`;
-    if (at.overflowInternal?.overflowContainer) {
+    if (at._overflow?.overflowContainer) {
       fullTableOverlay.style.top = `${at.offsetTop}px`;
       fullTableOverlay.style.left = `${at.offsetLeft}px`;
     } else {
-      fullTableOverlay.style.top = `-${Browser.IS_FIREFOX ? 0 : at.tableDimensions.border.topWidth}px`;
-      fullTableOverlay.style.left = `-${Browser.IS_FIREFOX ? 0 : at.tableDimensions.border.leftWidth}px`;
+      fullTableOverlay.style.top = `-${Browser.IS_FIREFOX ? 0 : at._tableDimensions.border.topWidth}px`;
+      fullTableOverlay.style.left = `-${Browser.IS_FIREFOX ? 0 : at._tableDimensions.border.leftWidth}px`;
     }
     Dropdown.display(fullTableOverlay);
   }

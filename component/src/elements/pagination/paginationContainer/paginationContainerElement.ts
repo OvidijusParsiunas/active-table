@@ -77,10 +77,10 @@ export class PaginationContainerElement {
   // we add a top and a bottom container if they are required
   public static addPaginationContainers(at: ActiveTable) {
     const containers: Containers = {};
-    const isTopRequired = PaginationContainerElement.isContainerRequired(at.paginationInternal.positions, 'top');
-    const isBottomRequired = PaginationContainerElement.isContainerRequired(at.paginationInternal.positions, 'bottom');
-    const {tableElementRef} = at;
-    const parentEl = at.overflowInternal?.overflowContainer || tableElementRef;
+    const isTopRequired = PaginationContainerElement.isContainerRequired(at._pagination.positions, 'top');
+    const isBottomRequired = PaginationContainerElement.isContainerRequired(at._pagination.positions, 'bottom');
+    const {_tableElementRef} = at;
+    const parentEl = at._overflow?.overflowContainer || _tableElementRef;
     if (!parentEl) return containers;
     if (isTopRequired) {
       const container = PaginationContainerElement.addContainer(parentEl, PaginationContainerElement.TOP_CONTAINER_ID);

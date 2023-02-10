@@ -21,16 +21,16 @@ export class DataUtils {
   // prettier-ignore
   private static shouldBeSetToDefault(at: ActiveTable,
       text: CellText, defaultText: CellText, rowIndex: number, textValidation: TextValidation) {
-    const {allowDuplicateHeaders, columnsDetails} = at;
+    const {allowDuplicateHeaders, _columnsDetails} = at;
     return DataUtils.isTextEmpty(defaultText, text)
-      || (rowIndex === 0 && (!allowDuplicateHeaders && NumberOfIdenticalCells.get(text, columnsDetails) > 1))
+      || (rowIndex === 0 && (!allowDuplicateHeaders && NumberOfIdenticalCells.get(text, _columnsDetails) > 1))
       || (rowIndex > 0 && !(textValidation.func === undefined || textValidation.func(String(text))));
   }
 
   // prettier-ignore
   public static processCellText(at: ActiveTable, rowIndex: number, columnIndex: number, cellText: CellText) {
     let processedText = typeof cellText === 'string' ? cellText.trim() : cellText;
-    const columnsDetails = at.columnsDetails[columnIndex];
+    const columnsDetails = at._columnsDetails[columnIndex];
     if (!columnsDetails) return processedText;
     const {activeType: {textValidation, customTextProcessing}, settings: {defaultText}} = columnsDetails;
     if (rowIndex > 0) {

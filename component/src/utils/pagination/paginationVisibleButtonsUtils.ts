@@ -104,17 +104,17 @@ export class PaginationVisibleButtonsUtils {
   }
 
   public static setStateAndStyles(at: ActiveTable) {
-    const {paginationInternal, displayAddNewRow} = at;
-    const buttons = Array.from(paginationInternal.buttonContainer.children) as HTMLElement[];
+    const {_pagination, displayAddNewRow} = at;
+    const buttons = Array.from(_pagination.buttonContainer.children) as HTMLElement[];
     const firstVisibleIndex = buttons.findIndex(PaginationVisibleButtonsUtils.isButtonVisible);
     if (firstVisibleIndex === -1) {
       // when triggered on initial render where buttons have yet not been generated
       setTimeout(() => {
         const firstVisibleIndex = buttons.findIndex(PaginationVisibleButtonsUtils.isButtonVisible);
-        PaginationVisibleButtonsUtils.set(buttons, firstVisibleIndex, paginationInternal);
+        PaginationVisibleButtonsUtils.set(buttons, firstVisibleIndex, _pagination);
       });
     } else {
-      PaginationVisibleButtonsUtils.set(buttons, firstVisibleIndex, paginationInternal);
+      PaginationVisibleButtonsUtils.set(buttons, firstVisibleIndex, _pagination);
     }
     if (!displayAddNewRow) RowElement.toggleLastRowClass(at);
   }

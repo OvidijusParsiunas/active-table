@@ -58,7 +58,7 @@ export class CellEvents {
   // prettier-ignore
   public static removeTextIfDefault(at: ActiveTable,
       rowIndex: number, columnIndex: number, textContainerElement: HTMLElement) {
-    const {isDefaultTextRemovable, defaultText} = at.columnsDetails[columnIndex].settings;
+    const {isDefaultTextRemovable, defaultText} = at._columnsDetails[columnIndex].settings;
     if (!isDefaultTextRemovable) return;
     if (defaultText !== EMPTY_STRING && defaultText === CellElement.getText(textContainerElement)) {
       CellEvents.updateCell(at, EMPTY_STRING, rowIndex, columnIndex,

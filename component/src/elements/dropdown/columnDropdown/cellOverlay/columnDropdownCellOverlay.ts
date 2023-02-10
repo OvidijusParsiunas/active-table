@@ -24,9 +24,9 @@ export class ColumnDropdownCellOverlay {
 
   public static hide(at: ActiveTable, columnDetails: ColumnDetailsT) {
     const {columnDropdownCellOverlay} = columnDetails;
-    const currentHeader = at.hoveredElements.headerCell;
+    const currentHeader = at._hoveredElements.headerCell;
     setTimeout(() => {
-      if (currentHeader !== at.hoveredElements.headerCell) {
+      if (currentHeader !== at._hoveredElements.headerCell) {
         columnDropdownCellOverlay.style.height = DropdownCellOverlay.HIDDEN_PX;
       }
     });
@@ -66,7 +66,7 @@ export class ColumnDropdownCellOverlay {
   public static add(at: ActiveTable, columnIndex: number) {
     const overlayStyle = at._defaultColumnsSettings.columnDropdown?.displaySettings.overlayStyle;
     const columnDropdownCellOverlay = ColumnDropdownCellOverlay.create(overlayStyle);
-    const headerCell = at.columnsDetails[columnIndex].elements[0];
+    const headerCell = at._columnsDetails[columnIndex].elements[0];
     const cellDividerElement = headerCell.nextSibling as HTMLElement;
     cellDividerElement.appendChild(columnDropdownCellOverlay);
     return columnDropdownCellOverlay;

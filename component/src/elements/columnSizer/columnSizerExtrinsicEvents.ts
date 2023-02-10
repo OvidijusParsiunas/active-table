@@ -17,13 +17,13 @@ export class ColumnSizerExtrinsicEvents {
 
   // prettier-ignore
   public static windowMouseMove(at: ActiveTable, newXMovement: number) {
-    const {activeOverlayElements: {selectedColumnSizer}, columnsDetails} = at;
+    const {_activeOverlayElements: {selectedColumnSizer}, _columnsDetails} = at;
     if (selectedColumnSizer) {
       const {moveLimits, element} = selectedColumnSizer;
       selectedColumnSizer.mouseMoveOffset += newXMovement;
       if (selectedColumnSizer.mouseMoveOffset >= moveLimits.left
           && selectedColumnSizer.mouseMoveOffset <= moveLimits.right) {
-        ColumnSizerExtrinsicEvents.moveMovableElement(element, columnsDetails, selectedColumnSizer.mouseMoveOffset);
+        ColumnSizerExtrinsicEvents.moveMovableElement(element, _columnsDetails, selectedColumnSizer.mouseMoveOffset);
       }
     }
   }
@@ -37,12 +37,12 @@ export class ColumnSizerExtrinsicEvents {
 
   // prettier-ignore
   private static mouseUp(at: ActiveTable) {
-    const {activeOverlayElements, columnsDetails, tableDimensions, tableElementRef} = at;
+    const {_activeOverlayElements: activeOverlayElements, _columnsDetails, _tableDimensions, _tableElementRef} = at;
     const selectedColumnSizer = activeOverlayElements.selectedColumnSizer as SelectedColumnSizerT;
     const {columnSizer, headerCell, sizerNumber} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(
-      selectedColumnSizer.element.id, columnsDetails);
-    ColumnSizerExtrinsicEvents.setWidth(selectedColumnSizer, tableElementRef as HTMLElement, tableDimensions,
-      headerCell, ColumnSizerGenericUtils.findNextResizableColumnHeader(columnsDetails, sizerNumber));
+      selectedColumnSizer.element.id, _columnsDetails);
+    ColumnSizerExtrinsicEvents.setWidth(selectedColumnSizer, _tableElementRef as HTMLElement, _tableDimensions,
+      headerCell, ColumnSizerGenericUtils.findNextResizableColumnHeader(_columnsDetails, sizerNumber));
     MovableColumnSizerElement.hide(columnSizer.movableElement);
     UpdateRowElement.updateHeaderRowHeight(columnSizer.element.parentElement?.parentElement as HTMLElement);
   }
@@ -73,10 +73,10 @@ export class ColumnSizerExtrinsicEvents {
   // prettier-ignore
   public static windowMouseUp(at: ActiveTable) {
     const {columnSizer} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(
-      (at.activeOverlayElements.selectedColumnSizer as SelectedColumnSizerT).element.id, at.columnsDetails);
+      (at._activeOverlayElements.selectedColumnSizer as SelectedColumnSizerT).element.id, at._columnsDetails);
     ColumnSizerExtrinsicEvents.mouseUp(at);
     ColumnSizerExtrinsicEvents.mouseUpNotOnSizer(columnSizer);
-    delete at.activeOverlayElements.selectedColumnSizer;
+    delete at._activeOverlayElements.selectedColumnSizer;
   }
 
   private static mouseUpOnSizer(columnSizer: ColumnSizerT) {
@@ -91,9 +91,9 @@ export class ColumnSizerExtrinsicEvents {
   // this method is used to get what exact element was clicked on as window events just returns the component as the target
   // prettier-ignore
   public static tableMouseUp(at: ActiveTable, target: HTMLElement) {
-    const selectedColumnSizer = at.activeOverlayElements.selectedColumnSizer as SelectedColumnSizerT;
+    const selectedColumnSizer = at._activeOverlayElements.selectedColumnSizer as SelectedColumnSizerT;
     const {columnSizer} = ColumnSizerGenericUtils.getSizerDetailsViaElementId(
-      selectedColumnSizer.element.id, at.columnsDetails);
+      selectedColumnSizer.element.id, at._columnsDetails);
     ColumnSizerExtrinsicEvents.mouseUp(at);
     // when autorise happens - the sizer usually moves out of the cursor area
     if (MovableColumnSizerElement.isMovableColumnSizer(target) && !selectedColumnSizer.wasAutoresized) {
@@ -101,6 +101,6 @@ export class ColumnSizerExtrinsicEvents {
     } else {
       ColumnSizerExtrinsicEvents.mouseUpNotOnSizer(columnSizer);
     }
-    delete at.activeOverlayElements.selectedColumnSizer;
+    delete at._activeOverlayElements.selectedColumnSizer;
   }
 }

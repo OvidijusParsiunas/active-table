@@ -17,7 +17,7 @@ export class CellDropdownEvents {
     // target is dropdown when clicked on top/bottom paddding
     if (targetElement.classList.contains(Dropdown.DROPDOWN_CLASS)
       || targetElement.classList.contains(OptionButton.BUTTON_CLASS)) return;
-    const {rowIndex, columnIndex, element: cellElement} = this.focusedElements.cell as CellDetails;
+    const {rowIndex, columnIndex, element: cellElement} = this._focusedElements.cell as CellDetails;
     const itemElement = targetElement.classList.contains(DropdownItem.DROPDOWN_ITEM_CLASS)
       ? targetElement : targetElement.parentElement;
     CellDropdownItem.selectExistingItem(this, itemElement as HTMLElement, rowIndex, columnIndex,
@@ -32,7 +32,7 @@ export class CellDropdownEvents {
   }
 
   public static set(at: ActiveTable, dropdownElement: HTMLElement) {
-    dropdownElement.onmousedown = CellDropdownEvents.mouseDown.bind(this, at.focusedElements, dropdownElement);
+    dropdownElement.onmousedown = CellDropdownEvents.mouseDown.bind(this, at._focusedElements, dropdownElement);
     dropdownElement.onclick = CellDropdownEvents.click.bind(at);
   }
 }

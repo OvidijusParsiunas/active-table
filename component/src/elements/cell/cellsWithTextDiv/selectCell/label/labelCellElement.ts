@@ -10,10 +10,10 @@ export class LabelCellElement {
   // prettier-ignore
   public static setCellLabelStructure(at: ActiveTable, cellElement: HTMLElement, columnIndex: number) {
     ConvertCellTypeUtils.preprocessCell(cellElement);
-    const {cellDropdown: {itemsDetails}, settings: {isCellTextEditable}} = at.columnsDetails[columnIndex];
+    const {cellDropdown: {itemsDetails}, settings: {isCellTextEditable}} = at._columnsDetails[columnIndex];
     const backgroundColor = itemsDetails[CellElement.getText(cellElement)]?.backgroundColor || '';
     LabelCellTextElement.setCellTextAsAnElement(cellElement, backgroundColor, isCellTextEditable as boolean);
-    SelectCell.setPointerCursorIfCantAdd(cellElement, at.columnsDetails[columnIndex].activeType)
+    SelectCell.setPointerCursorIfCantAdd(cellElement, at._columnsDetails[columnIndex].activeType)
   }
 
   public static setColumnLabelStructure(at: ActiveTable, columnIndex: number) {

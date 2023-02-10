@@ -102,12 +102,12 @@ export class ColumnSizer {
 
   // prettier-ignore
   public static create(at: ActiveTable, sizerIndex: number) {
-    const {columnsDetails, tableElementRef, columnResizerColors} = at;
+    const {_columnsDetails, _tableElementRef, columnResizerColors} = at;
     const columnSizerElement = ColumnSizerElement.create(sizerIndex, columnResizerColors.hover);
     const movableColumnSizer = MovableColumnSizerElement.create(columnResizerColors);
     const overlayElement = ColumnSizerOverlayElement.create();
-    const columnSizer = ColumnSizer.createObject(columnSizerElement, columnsDetails, sizerIndex,
-      tableElementRef as HTMLElement, overlayElement, movableColumnSizer, columnResizerColors);
+    const columnSizer = ColumnSizer.createObject(columnSizerElement, _columnsDetails, sizerIndex,
+      _tableElementRef as HTMLElement, overlayElement, movableColumnSizer, columnResizerColors);
     ColumnSizerOverlayElement.applyEvents(at, columnSizer);
     return columnSizer;
   }

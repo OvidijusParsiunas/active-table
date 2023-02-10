@@ -11,20 +11,20 @@ import {IndexColumn} from './indexColumn';
 
 export class UpdateIndexColumnWidth {
   private static wrapColumnTextAndGetDefaultWidth(at: ActiveTable) {
-    const {tableBodyElementRef, content, tableDimensions} = at;
-    ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, content).forEach((row) => {
+    const {_tableBodyElementRef, content, _tableDimensions} = at;
+    ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content).forEach((row) => {
       const indexCell = row.children[0] as HTMLElement;
       indexCell.classList.remove(IndexColumn.INDEX_CELL_OVERFLOW_CLASS);
     });
-    tableDimensions.isColumnIndexCellTextWrapped = true;
+    _tableDimensions.isColumnIndexCellTextWrapped = true;
     ToggleAdditionElements.update(at, true, AddNewColumnElement.toggle);
     return IndexColumn.DEFAULT_WIDTH;
   }
 
   private static changeTableWidths(at: ActiveTable, newWidth: number) {
-    const difference = newWidth - at.tableDimensions.indexColumnWidth;
-    at.tableDimensions.indexColumnWidth = newWidth;
-    TableElement.changeStaticWidthTotal(at.tableDimensions, difference);
+    const difference = newWidth - at._tableDimensions.indexColumnWidth;
+    at._tableDimensions.indexColumnWidth = newWidth;
+    TableElement.changeStaticWidthTotal(at._tableDimensions, difference);
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true);
   }
 
@@ -41,7 +41,7 @@ export class UpdateIndexColumnWidth {
   }
 
   private static shouldTextBeWrapped(at: ActiveTable) {
-    return !at.tableDimensions.isColumnIndexCellTextWrapped && TableDimensionsUtils.hasSetTableWidthBeenBreached(at);
+    return !at._tableDimensions.isColumnIndexCellTextWrapped && TableDimensionsUtils.hasSetTableWidthBeenBreached(at);
   }
 
   private static changeWidth(at: ActiveTable, firstRow: HTMLElement, newWidth: number) {
@@ -74,7 +74,7 @@ export class UpdateIndexColumnWidth {
   // checking if the cells width is overflown and if so - increase its width (cannot decrease the width)
   private static updateColumnWidthWhenOverflow(at: ActiveTable, firstRow: HTMLElement, lastCell: HTMLElement) {
     const indexColumnWidth = UpdateIndexColumnWidth.getIndexColumnWidth(firstRow, lastCell);
-    if (at.tableDimensions.indexColumnWidth !== indexColumnWidth && indexColumnWidth !== 0) {
+    if (at._tableDimensions.indexColumnWidth !== indexColumnWidth && indexColumnWidth !== 0) {
       // Firefox does not include lastCell paddingRight (4px) when setting the new width
       const newWidth = indexColumnWidth + (Browser.IS_FIREFOX ? 4 : 0);
       if (Browser.IS_SAFARI) {
@@ -89,7 +89,7 @@ export class UpdateIndexColumnWidth {
   // and instead the lastCell width is changed automatically, all we do here is check if the expected width
   // (at.tableDimensions.indexColumnWidth) is different to the actual one and if so, we change it to actual
   private static checkAutoColumnWidthUpdate(at: ActiveTable, lastCell: HTMLElement) {
-    if (lastCell.offsetWidth !== at.tableDimensions.indexColumnWidth) {
+    if (lastCell.offsetWidth !== at._tableDimensions.indexColumnWidth) {
       let newWidth = lastCell.offsetWidth;
       if (at.offsetWidth !== at.scrollWidth) {
         newWidth = UpdateIndexColumnWidth.wrapColumnTextAndGetDefaultWidth(at);
@@ -99,13 +99,13 @@ export class UpdateIndexColumnWidth {
   }
 
   private static updatedBasedOnTableStyle(at: ActiveTable, lastCell: HTMLElement, forceWrap = false) {
-    const firstRow = at.paginationInternal.visibleRows[0];
+    const firstRow = at._pagination.visibleRows[0];
     if (forceWrap) {
       UpdateIndexColumnWidth.forceWrap(at, firstRow);
       // when 'block' display style is not set on the table
-    } else if (at.tableDimensions.preserveNarrowColumns || at.tableDimensions.maxWidth !== undefined) {
+    } else if (at._tableDimensions.preserveNarrowColumns || at._tableDimensions.maxWidth !== undefined) {
       UpdateIndexColumnWidth.updateColumnWidthWhenOverflow(at, firstRow, lastCell);
-    } else if (at.tableDimensions.width !== undefined) {
+    } else if (at._tableDimensions.width !== undefined) {
       UpdateIndexColumnWidth.checkAutoColumnWidthUpdate(at, lastCell);
     }
   }
@@ -113,10 +113,10 @@ export class UpdateIndexColumnWidth {
   // used when a new row is added
   // forceWrap - REF-19
   public static update(at: ActiveTable, textRowsArr?: Element[], forceWrap = false) {
-    if (at.tableDimensions.isColumnIndexCellTextWrapped) return;
+    if (at._tableDimensions.isColumnIndexCellTextWrapped) return;
     if (!textRowsArr) {
-      const {tableBodyElementRef, content} = at;
-      textRowsArr = ExtractElements.textRowsArrFromTBody(tableBodyElementRef as HTMLElement, content);
+      const {_tableBodyElementRef, content} = at;
+      textRowsArr = ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content);
     }
     const lastCell = textRowsArr[textRowsArr.length - 1]?.children[0] as HTMLElement;
     if (lastCell) UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, lastCell, forceWrap);
@@ -125,7 +125,7 @@ export class UpdateIndexColumnWidth {
   // used when a new column is added to see if wrapping is needed
   // CAUTION-2 - this runs before re-render but stay cautions
   public static wrapTextWhenNarrowColumnsBreached(at: ActiveTable) {
-    if (at.frameComponentsInternal.displayIndexColumn && UpdateIndexColumnWidth.shouldTextBeWrapped(at)) {
+    if (at._frameComponents.displayIndexColumn && UpdateIndexColumnWidth.shouldTextBeWrapped(at)) {
       UpdateIndexColumnWidth.update(at, undefined, true);
     }
   }

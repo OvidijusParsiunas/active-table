@@ -60,7 +60,7 @@ export class ProcessedDataTextStyle {
 
   // prettier-ignore
   public static setCellStyle(at: ActiveTable, rowIndex: number, columnIndex: number, overwrite = false) {
-    const columnDetails = at.columnsDetails[columnIndex];
+    const columnDetails = at._columnsDetails[columnIndex];
     const textContainerElement = columnDetails.elements[rowIndex];
     const processedStyle = columnDetails.processedStyle[rowIndex];
     const text = CellElement.getText(textContainerElement);
@@ -81,7 +81,7 @@ export class ProcessedDataTextStyle {
   }
 
   private static setStyleOnColumn(at: ActiveTable, columnIndex: number) {
-    const columnDetails = at.columnsDetails[columnIndex];
+    const columnDetails = at._columnsDetails[columnIndex];
     columnDetails.elements.slice(1).forEach((element, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
       ProcessedDataTextStyle.setCellStyle(at, relativeRowIndex, columnIndex, true);
@@ -90,7 +90,7 @@ export class ProcessedDataTextStyle {
   }
 
   private static unsetStyleOnColumn(at: ActiveTable, columnIndex: number, oldCellStyle?: NoDimensionCSSStyle) {
-    const columnDetails = at.columnsDetails[columnIndex];
+    const columnDetails = at._columnsDetails[columnIndex];
     columnDetails.elements.slice(1).forEach((element, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
       const processedStyle = columnDetails.processedStyle[relativeRowIndex];
@@ -112,7 +112,7 @@ export class ProcessedDataTextStyle {
   // this is used for a case where the default style has been set and need to reapply the processed style
   // without having to rerun the validation/changeStyleFunc functions
   public static reapplyCellsStyle(at: ActiveTable, columnIndex: number) {
-    const columnDetails = at.columnsDetails[columnIndex];
+    const columnDetails = at._columnsDetails[columnIndex];
     const {textValidation: { func: validationFunc }, customTextProcessing} = columnDetails.activeType;
     if (validationFunc || customTextProcessing?.changeStyleFunc) {
       columnDetails.elements.slice(1).forEach((element, rowIndex) => {

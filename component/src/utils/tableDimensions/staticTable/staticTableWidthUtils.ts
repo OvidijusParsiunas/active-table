@@ -27,19 +27,19 @@ export class StaticTableWidthUtils {
   // temporarily set the width at the start in order to help the MaximumColumns class to determine what columns fit
   // prettier-ignore
   public static toggleWidthUsingMaxWidth(at: ActiveTable, isSetValue: boolean) {
-    const {tableElementRef, tableDimensions: {maxWidth, preserveNarrowColumns}} = at;
-    if (tableElementRef && maxWidth !== undefined) {
-      tableElementRef.style.width = isSetValue ? `${maxWidth}px` : ''; // '' defaults width back to min-content
-      StaticTableWidthUtils.togglePreserveNarrowColumns(isSetValue, tableElementRef, preserveNarrowColumns); // REF-11
+    const {_tableElementRef, _tableDimensions: {maxWidth, preserveNarrowColumns}} = at;
+    if (_tableElementRef && maxWidth !== undefined) {
+      _tableElementRef.style.width = isSetValue ? `${maxWidth}px` : ''; // '' defaults width back to min-content
+      StaticTableWidthUtils.togglePreserveNarrowColumns(isSetValue, _tableElementRef, preserveNarrowColumns); // REF-11
     }
   }
 
   // prettier-ignore
   public static setTableWidth(at: ActiveTable) {
-    const {tableDimensions: {preserveNarrowColumns, width}, tableElementRef} = at;
-    if (tableElementRef && width !== undefined) {
-      tableElementRef.style.width = `${width}px`;
-      StaticTableWidthUtils.togglePreserveNarrowColumns(true, tableElementRef, preserveNarrowColumns); // REF-11
+    const {_tableDimensions: {preserveNarrowColumns, width}, _tableElementRef} = at;
+    if (_tableElementRef && width !== undefined) {
+      _tableElementRef.style.width = `${width}px`;
+      StaticTableWidthUtils.togglePreserveNarrowColumns(true, _tableElementRef, preserveNarrowColumns); // REF-11
     }
   }
 
@@ -77,18 +77,18 @@ export class StaticTableWidthUtils {
   }
 
   public static changeWidthsBasedOnColumnInsertRemove(at: ActiveTable, isInsert: boolean) {
-    const {tableElementRef: table, tableDimensions: td, columnsDetails, onColumnsUpdate} = at;
+    const {_tableElementRef: table, _tableDimensions: td, _columnsDetails, onColumnsUpdate} = at;
     if (!table) return;
     const {width, maxWidth, staticWidth} = td;
     if (width !== undefined) {
-      const colsByWidth = StaticTableWidthUtils.resetColumnSizes(columnsDetails, width, td);
-      StaticTableWidthUtils.changeTableWidthForNonDynamicColumns(columnsDetails, colsByWidth, table, width, staticWidth);
+      const colsByWidth = StaticTableWidthUtils.resetColumnSizes(_columnsDetails, width, td);
+      StaticTableWidthUtils.changeTableWidthForNonDynamicColumns(_columnsDetails, colsByWidth, table, width, staticWidth);
       // isInsert check was initially not needed as this was not getting called when a column had been removed, however
       // it has been identified that the table offsetWidth does not immediately update when the column widths are very
       // narrow (even above the minimal column limit set by the MINIMAL_COLUMN_WIDTH variable), hence it was added
     } else if (isInsert && StaticTable.isTableAtMaxWidth(table, td)) {
-      StaticTableWidthUtils.resetColumnSizes(columnsDetails, maxWidth as number, td);
+      StaticTableWidthUtils.resetColumnSizes(_columnsDetails, maxWidth as number, td);
     }
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(columnsDetails, onColumnsUpdate));
+    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(_columnsDetails, onColumnsUpdate));
   }
 }

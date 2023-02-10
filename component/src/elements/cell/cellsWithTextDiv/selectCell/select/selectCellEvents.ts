@@ -8,17 +8,17 @@ import {CellElement} from '../../../cellElement';
 
 export class SelectCellEvents {
   private static mouseLeaveCell(this: ActiveTable, columnIndex: number, event: MouseEvent) {
-    delete this.hoveredElements.selectCell;
+    delete this._hoveredElements.selectCell;
     const cellElement = event.target as HTMLElement;
-    const {cellDropdown} = this.columnsDetails[columnIndex];
+    const {cellDropdown} = this._columnsDetails[columnIndex];
     if (!Dropdown.isDisplayed(cellDropdown.element) || cellDropdown.displayedCellElement !== cellElement) {
       ArrowDownIconElement.toggle(cellElement, false);
     }
   }
 
   private static mouseEnterCell(this: ActiveTable, event: MouseEvent) {
-    this.hoveredElements.selectCell = event.target as HTMLElement;
-    ArrowDownIconElement.toggle(this.hoveredElements.selectCell, true);
+    this._hoveredElements.selectCell = event.target as HTMLElement;
+    ArrowDownIconElement.toggle(this._hoveredElements.selectCell, true);
   }
 
   private static mouseDownCell(this: ActiveTable, event: MouseEvent) {
@@ -32,7 +32,7 @@ export class SelectCellEvents {
   }
 
   public static setEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (!at.columnsDetails[columnIndex].settings.isCellTextEditable) return;
+    if (!at._columnsDetails[columnIndex].settings.isCellTextEditable) return;
     // important to note that this is still using data events that have not be overwritten here
     // onblur/onfocus do not work for firefox, hence using textElement and keeping it consistent across browsers
     cellElement.onblur = () => {};

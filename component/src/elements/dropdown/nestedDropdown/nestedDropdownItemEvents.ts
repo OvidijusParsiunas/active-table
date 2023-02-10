@@ -11,7 +11,7 @@ export class NestedDropdownItemEvents {
     // upon hovering the item again - the above would not fire mouse enter as the dropdown is within the item element
     const itemContent = element.children[1] as HTMLElement;
     itemContent.addEventListener('mouseenter',
-      DropdownItemHighlightUtils.highlightNew.bind(this, at.activeOverlayElements, element)
+      DropdownItemHighlightUtils.highlightNew.bind(this, at._activeOverlayElements, element)
     );
   }
 }

@@ -9,13 +9,13 @@ export class PaginationElements {
 
   public static create(at: ActiveTable) {
     const containers = PaginationContainerElement.addPaginationContainers(at);
-    at.paginationInternal.buttonContainer = PageButtonContainerElement.create(at);
+    at._pagination.buttonContainer = PageButtonContainerElement.create(at);
     PageButtonContainerElement.addInitialElements(at, containers);
-    if (at.paginationInternal.rowsPerPageOptionsItemText) {
+    if (at._pagination.rowsPerPageOptionsItemText) {
       RowsPerPageSelectElement.create(at, containers);
     }
-    if (at.paginationInternal.displayNumberOfVisibleRows) {
-      at.paginationInternal.numberOfVisibleRowsElement = NumberOfVisibleRowsElement.create(at, containers);
+    if (at._pagination.displayNumberOfVisibleRows) {
+      at._pagination.numberOfVisibleRowsElement = NumberOfVisibleRowsElement.create(at, containers);
     }
   }
 }

@@ -22,12 +22,12 @@ export class RowsPerPageDropdownItem {
   }
 
   public static populate(at: ActiveTable, dropdownElement: HTMLElement, optionsButton: HTMLElement) {
-    at.paginationInternal.rowsPerPageOptionsItemText.forEach((itemText) => {
+    at._pagination.rowsPerPageOptionsItemText.forEach((itemText) => {
       const itemsSettings = {text: String(itemText)};
       const item = DropdownItem.addButtonItem(at, dropdownElement, itemsSettings, RowsPerPageDropdownItem.ITEM_CLASS);
       RowsPerPageDropdownItemEvents.setEvents(at, item, optionsButton);
     });
-    const activeItemText = String(at.paginationInternal.rowsPerPage);
+    const activeItemText = String(at._pagination.rowsPerPage);
     RowsPerPageDropdownItem.setActive(Array.from(dropdownElement.children) as HTMLElement[], activeItemText);
   }
 }

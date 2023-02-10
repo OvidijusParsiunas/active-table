@@ -17,7 +17,7 @@ export class PageButtonContainerElement {
   private static setStyle(at: ActiveTable) {
     const minNumberOfButtonsToBeActive = at.dataStartsAtHeader ? 1 : 2;
     if (at.content.length < minNumberOfButtonsToBeActive) {
-      PageButtonElement.setDisabled(at.paginationInternal);
+      PageButtonElement.setDisabled(at._pagination);
     } else {
       PageButtonElement.setActive(at, 1);
     }
@@ -26,7 +26,7 @@ export class PageButtonContainerElement {
   private static addNumberButtons(at: ActiveTable) {
     // the reason why 1 button is required when it should be 0 is because we hide it and show it when a row is added
     const requiredNumberOfButtons = PaginationUtils.getLastPossiblePageNumber(at);
-    const {maxNumberOfVisiblePageButtons, buttonContainer} = at.paginationInternal;
+    const {maxNumberOfVisiblePageButtons, buttonContainer} = at._pagination;
     for (let i = 0; i < Math.min(requiredNumberOfButtons, maxNumberOfVisiblePageButtons); i += 1) {
       const buttonElement = PageNumberButtonElement.create(at, i + 1);
       buttonContainer.appendChild(buttonElement);
@@ -39,19 +39,19 @@ export class PageButtonContainerElement {
   }
 
   private static addButtons(at: ActiveTable) {
-    const {displayPrevNext, displayFirstLast} = at.paginationInternal;
+    const {displayPrevNext, displayFirstLast} = at._pagination;
     if (displayFirstLast) {
-      PageButtonContainerElement.addButton(at.paginationInternal, FirstPageButtonElement.create(at));
+      PageButtonContainerElement.addButton(at._pagination, FirstPageButtonElement.create(at));
     }
     if (displayPrevNext) {
-      PageButtonContainerElement.addButton(at.paginationInternal, PreviousPageButtonElement.create(at));
+      PageButtonContainerElement.addButton(at._pagination, PreviousPageButtonElement.create(at));
     }
     PageButtonContainerElement.addNumberButtons(at);
     if (displayPrevNext) {
-      PageButtonContainerElement.addButton(at.paginationInternal, NextPageButtonElement.create(at));
+      PageButtonContainerElement.addButton(at._pagination, NextPageButtonElement.create(at));
     }
     if (displayFirstLast) {
-      PageButtonContainerElement.addButton(at.paginationInternal, LastPageButtonElement.create(at));
+      PageButtonContainerElement.addButton(at._pagination, LastPageButtonElement.create(at));
     }
   }
 
@@ -62,8 +62,8 @@ export class PageButtonContainerElement {
   }
 
   public static repopulateButtons(at: ActiveTable) {
-    PageButtonContainerElement.resetState(at.paginationInternal);
-    at.paginationInternal.buttonContainer.replaceChildren();
+    PageButtonContainerElement.resetState(at._pagination);
+    at._pagination.buttonContainer.replaceChildren();
     PageButtonContainerElement.addButtons(at);
     PageButtonContainerElement.setStyle(at);
   }
@@ -71,17 +71,17 @@ export class PageButtonContainerElement {
   public static addInitialElements(at: ActiveTable, containers: Containers) {
     PageButtonContainerElement.repopulateButtons(at);
     PaginationVisibleButtonsUtils.setStateAndStyles(at);
-    const {positions, buttonContainer} = at.paginationInternal;
+    const {positions, buttonContainer} = at._pagination;
     PaginationContainerElement.addToContainer(positions.pageButtons.side, containers, buttonContainer);
   }
 
   public static create(at: ActiveTable) {
     const buttonContainerElement = document.createElement('div');
     buttonContainerElement.id = PageButtonContainerElement.PAGINATION_BUTTON_CONTAINER_ID;
-    const {style, positions} = at.paginationInternal;
+    const {style, positions} = at._pagination;
     buttonContainerElement.style.order = String(positions.pageButtons.order);
     Object.assign(buttonContainerElement.style, style.pageButtons.container);
-    PageButtonContainerEvents.setEvents(buttonContainerElement, at.paginationInternal);
+    PageButtonContainerEvents.setEvents(buttonContainerElement, at._pagination);
     return buttonContainerElement;
   }
 }

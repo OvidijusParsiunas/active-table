@@ -7,26 +7,27 @@ export class StickyPropsUtils {
 
   public static process(at: ActiveTable) {
     if (typeof at.stickyHeader === 'boolean') {
-      at.stickyProps.header = at.stickyHeader;
+      at._stickyProps.header = at.stickyHeader;
+      // not using _overflow as an indicator as it has yet not been processed
     } else if (at.overflow?.maxHeight) {
-      // not using overflowInternal here as it has yet not been processed
-      at.stickyProps.header = true;
+      at._stickyProps.header = true;
     }
   }
 
   // REF-37
   // prettier-ignore
   public static moveTopBorderToHeaderCells(at: ActiveTable) {
-    if (!at.tableElementRef || !at.tableBodyElementRef) return;
-    at.tableBodyElementRef.classList.add(StickyPropsUtils.NO_OVERFLOW_STICKY_HEADER_BODY_CLASS);
-    if (at.tableElementRef.style.border) {
-      at.tableBodyElementRef.style.borderTop = at.tableElementRef.style.border;
+    const {_tableElementRef, _tableBodyElementRef} = at;
+    if (!_tableElementRef || !_tableBodyElementRef) return;
+    _tableBodyElementRef.classList.add(StickyPropsUtils.NO_OVERFLOW_STICKY_HEADER_BODY_CLASS);
+    if (_tableElementRef.style.border) {
+      _tableBodyElementRef.style.borderTop = _tableElementRef.style.border;
     }
-    if (at.tableElementRef.style.borderColor) {
-      at.tableBodyElementRef.style.borderTopColor = at.tableElementRef.style.borderColor;
+    if (_tableElementRef.style.borderColor) {
+      _tableBodyElementRef.style.borderTopColor = _tableElementRef.style.borderColor;
     }
-    ElementStyle.moveStyles(at.tableElementRef, at.tableBodyElementRef,
+    ElementStyle.moveStyles(_tableElementRef, _tableBodyElementRef,
       'borderTop', 'borderTopColor', 'borderTopWidth', 'borderTopStyle');
-    at.tableElementRef.style.borderTop = 'unset';
+    _tableElementRef.style.borderTop = 'unset';
   }
 }

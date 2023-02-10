@@ -22,7 +22,7 @@ export class ColumnTypeDropdown {
   }
 
   public static setUp(at: ActiveTable, dropdownEl: HTMLElement, columnIndex: number): string | void {
-    const {activeType, settings} = at.columnsDetails[columnIndex];
+    const {activeType, settings} = at._columnsDetails[columnIndex];
     const itemElement = dropdownEl.getElementsByClassName(ColumnTypeDropdown.COLUMN_TYPE_ITEM_CLASS)[0] as HTMLElement;
     ColumnTypeDropdown.setupParentItemContent(itemElement, activeType);
     if (settings.types.length < 2) return (itemElement.style.pointerEvents = 'none');
@@ -37,6 +37,6 @@ export class ColumnTypeDropdown {
     NestedDropdownItemEvents.addEvents(at, buttonElement);
     const nestedDropdown = NestedDropdown.create(); // items added every time column dropdown is opened (setUp)
     buttonElement.appendChild(nestedDropdown);
-    at.activeOverlayElements.columnTypeDropdown = nestedDropdown;
+    at._activeOverlayElements.columnTypeDropdown = nestedDropdown;
   }
 }

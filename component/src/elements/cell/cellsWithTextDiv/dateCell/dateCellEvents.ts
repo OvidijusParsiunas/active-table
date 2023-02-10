@@ -9,24 +9,24 @@ import {ActiveTable} from '../../../../activeTable';
 export class DateCellEvents {
   private static mouseLeaveCell(this: ActiveTable, event: MouseEvent) {
     // this needs to be here as otherwise it would not be called due to the return statement below
-    delete this.hoveredElements.dateCell;
+    delete this._hoveredElements.dateCell;
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
       const cellElement = event.target as HTMLElement;
       // if the date picker is opened, do not hide container
-      if (this.activeOverlayElements.datePickerCell === cellElement) return;
+      if (this._activeOverlayElements.datePickerCell === cellElement) return;
       DateCellInputElement.toggle(cellElement, false);
     }
   }
 
   private static mouseEnterCell(this: ActiveTable, event: MouseEvent) {
-    this.hoveredElements.dateCell = event.target as HTMLElement;
+    this._hoveredElements.dateCell = event.target as HTMLElement;
     if (Browser.IS_INPUT_DATE_SUPPORTED) {
-      DateCellInputElement.toggle(this.hoveredElements.dateCell, true);
+      DateCellInputElement.toggle(this._hoveredElements.dateCell, true);
     }
   }
 
   public static setEvents(at: ActiveTable, cellElement: HTMLElement, rowIndex: number, columnIndex: number) {
-    if (!at.columnsDetails[columnIndex].settings.isCellTextEditable) return;
+    if (!at._columnsDetails[columnIndex].settings.isCellTextEditable) return;
     // important to note that this is still using data events that have not be overwritten here
     // onblur/onfocus do not work for firefox, hence using them on text element to keep it consistent across browsers
     cellElement.onblur = () => {};

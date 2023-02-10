@@ -60,8 +60,6 @@ import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
 
-// WORK - edit the generated type file and remove private properties, otherwise use one object for internal state
-// WORK - perhaps rename Internal types to use _
 @customElement('active-table')
 export class ActiveTable extends LitElement {
   static override styles = [activeTableStyle];
@@ -72,7 +70,7 @@ export class ActiveTable extends LitElement {
   getContent: () => TableContent = () => JSON.parse(JSON.stringify(this.content));
 
   @property({type: Function})
-  getColumnsDetails: () => ColumnUpdateDetails[] = () => ColumnDetailsUtils.getAllColumnsDetails(this.columnsDetails);
+  getColumnsDetails: () => ColumnUpdateDetails[] = () => ColumnDetailsUtils.getAllColumnsDetails(this._columnsDetails);
 
   @property({type: Function})
   updateCell: (update: ProgrammaticCellUpdateT) => void = (update: ProgrammaticCellUpdateT) => {
@@ -134,7 +132,7 @@ export class ActiveTable extends LitElement {
   // setting header to true if above is undefined and vertical overflow is present
   // (using object to be able to set values without re-rendering the component)
   @state()
-  stickyProps: StickyProps = {header: false};
+  _stickyProps: StickyProps = {header: false};
 
   // REF-21
   @state()
@@ -150,44 +148,44 @@ export class ActiveTable extends LitElement {
   // create an entirely new state object and access elements from there as we don't want to store all elements
   // multiple times, and use this instead for data exclusively on columns, such as width at.
   @state()
-  columnsDetails: ColumnsDetailsT = [];
+  _columnsDetails: ColumnsDetailsT = [];
 
   @state()
-  tableElementRef: HTMLElement | null = null;
+  _tableElementRef: HTMLElement | null = null;
 
   @state()
-  tableBodyElementRef: HTMLElement | null = null;
+  _tableBodyElementRef: HTMLElement | null = null;
 
   @state()
-  addRowCellElementRef: HTMLElement | null = null;
+  _addRowCellElementRef: HTMLElement | null = null;
 
   // the reason why keeping ref of all the add column cells and not column index cells is because this can be toggled
   @state()
-  addColumnCellsElementsRef: HTMLElement[] = [];
+  _addColumnCellsElementsRef: HTMLElement[] = [];
 
   @state()
-  columnGroupRef: HTMLElement | null = null;
+  _columnGroupRef: HTMLElement | null = null;
 
   @state()
-  focusedElements: FocusedElements = FocusedElementsUtils.createEmpty();
+  _focusedElements: FocusedElements = FocusedElementsUtils.createEmpty();
 
   @state()
-  hoveredElements: HoveredElements = {};
+  _hoveredElements: HoveredElements = {};
 
   @state()
-  activeOverlayElements: ActiveOverlayElements = ActiveOverlayElementsUtils.createNew();
+  _activeOverlayElements: ActiveOverlayElements = ActiveOverlayElementsUtils.createNew();
 
   @state()
-  userKeyEventsState: UserKeyEventsState = UserKeyEventsStateUtils.createNew();
+  _userKeyEventsState: UserKeyEventsState = UserKeyEventsStateUtils.createNew();
 
   @state()
-  tableDimensions: TableDimensions = TableDimensionsUtils.getDefault();
+  _tableDimensions: TableDimensions = TableDimensionsUtils.getDefault();
 
   @state()
-  cellDropdownContainer: HTMLElement | null = null;
+  _cellDropdownContainer: HTMLElement | null = null;
 
   @state()
-  globalItemColors: GlobalItemColors = LabelColorUtils.generateGlobalItemColors();
+  _globalItemColors: GlobalItemColors = LabelColorUtils.generateGlobalItemColors();
 
   @property({type: Object})
   rowHoverStyle: RowHoverStyle | null = null;
@@ -201,7 +199,7 @@ export class ActiveTable extends LitElement {
   preserveNarrowColumns = true;
 
   @state()
-  defaultCellHoverColors: DefaultCellHoverColors = CellHighlightUtils.getDefaultHoverProperties();
+  _defaultCellHoverColors: DefaultCellHoverColors = CellHighlightUtils.getDefaultHoverProperties();
 
   @property({type: Number})
   maxColumns?: number;
@@ -226,7 +224,7 @@ export class ActiveTable extends LitElement {
 
   // REF-22 - to be used internally
   @state()
-  frameComponentsInternal: FrameComponentsInternal = FrameComponentsInternalUtils.getDefault();
+  _frameComponents: FrameComponentsInternal = FrameComponentsInternalUtils.getDefault();
 
   // REF-22 - to be used by the client
   // frame components are comprised of index column, add new column column and add new row row
@@ -249,7 +247,7 @@ export class ActiveTable extends LitElement {
 
   // column dropdown overlays are stored inside ColumnDetailsT columnDropdownCellOverlay
   @state()
-  rowDropdownCellOverlays: RowDropdownCellOverlays = [];
+  _rowDropdownCellOverlays: RowDropdownCellOverlays = [];
 
   // if using pagination with user defined rowsPerPageSelect, the options need to have an even number or otherwise
   // two rows could have same color (as rows are hidden and not removed)
@@ -257,7 +255,7 @@ export class ActiveTable extends LitElement {
   stripedRows: StripedRowsT | boolean | null = null;
 
   @state()
-  stripedRowsInternal: StripedRowsInternal | null = null;
+  _stripedRows: StripedRowsInternal | null = null;
 
   // WORK - remove nulls and replace with undefined?
   @property({type: Object})
@@ -315,21 +313,21 @@ export class ActiveTable extends LitElement {
   columnDropdown?: ColumnDropdownSettingsDefault;
 
   @state()
-  overflowInternal: OverflowInternal | null = null;
+  _overflow: OverflowInternal | null = null;
 
   @property({type: Object})
   pagination: Pagination | boolean | null = null;
 
   // cannot be used as an indicator for pagination as this is always defined
   @state()
-  paginationInternal: PaginationInternal = PaginationInternalUtils.getDefault();
+  _pagination: PaginationInternal = PaginationInternalUtils.getDefault();
 
   @state({
     hasChanged() {
       return false;
     },
   })
-  isRendering = false;
+  _isRendering = false;
 
   // CAUTION-4
   override render() {
@@ -346,11 +344,11 @@ export class ActiveTable extends LitElement {
     RowDropdownSettingsUtil.process(this);
     if (this.pagination) PaginationInternalUtils.process(this);
     if (this.stripedRows) StripedRows.process(this);
-    if (this.rowHoverStyle) RowHoverEvents.process(this.rowHoverStyle, this.defaultCellHoverColors);
+    if (this.rowHoverStyle) RowHoverEvents.process(this.rowHoverStyle, this._defaultCellHoverColors);
     const tableElement = TableElement.createInfrastructureElements(this);
     if (this.overflow) OverflowUtils.setupContainer(this, tableElement); // must not be after BORDER_DIMENSIONS is set
-    TableElement.addOverlayElements(this, tableElement, this.activeOverlayElements);
-    this.shadowRoot?.appendChild(this.overflowInternal?.overflowContainer || tableElement);
+    TableElement.addOverlayElements(this, tableElement, this._activeOverlayElements);
+    this.shadowRoot?.appendChild(this._overflow?.overflowContainer || tableElement);
     if (this.pagination) PaginationElements.create(this);
     InitialContentProcessing.preProcess(this);
     WindowElement.setEvents(this);

@@ -19,22 +19,22 @@ export class CellWithTextEvents {
     const cellElement = CellElement.getCellElement(textElement);
     DataCellEvents.prepareText(this, rowIndex, columnIndex, textElement);
     focusCallback?.(this, columnIndex, cellElement);
-    FocusedCellUtils.set(this.focusedElements.cell, cellElement, rowIndex, columnIndex);
-    if (this.userKeyEventsState[KEYBOARD_KEY.TAB]) {
+    FocusedCellUtils.set(this._focusedElements.cell, cellElement, rowIndex, columnIndex);
+    if (this._userKeyEventsState[KEYBOARD_KEY.TAB]) {
       // contrary to this being called on mouseDownCell - this does not retrigger focus event
       CaretPosition.setToEndOfText(this, textElement);
     }
   }
 
   public static programmaticBlur(at: ActiveTable) {
-    const {rowIndex, columnIndex, element} = at.focusedElements.cell as CellDetails;
+    const {rowIndex, columnIndex, element} = at._focusedElements.cell as CellDetails;
     const textElement = CellElement.getTextElement(element);
     textElement.blur();
     // the above will not trigger the SelectCellEvents.blur functionality if dropdown has been focused, but will blur
     // the element in the dom, the following will trigger the required programmatic functionality
-    if (at.focusedElements.cellDropdown) {
+    if (at._focusedElements.cellDropdown) {
       SelectCellTextBaseEvents.blurring(at, rowIndex, columnIndex, textElement);
-      delete at.focusedElements.cellDropdown;
+      delete at._focusedElements.cellDropdown;
     }
   }
 

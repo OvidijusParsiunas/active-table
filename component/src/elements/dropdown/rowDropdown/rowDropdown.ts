@@ -18,26 +18,26 @@ import {Dropdown} from '../dropdown';
 export class RowDropdown {
   // prettier-ignore
   public static hide(at: ActiveTable) {
-    const {activeOverlayElements: {rowDropdown, fullTableOverlay}, focusedElements: {cell: {element, rowIndex}},
-      frameComponentsInternal: {cellColors, displayIndexColumn}} = at;
+    const {_activeOverlayElements: {rowDropdown, fullTableOverlay}, _focusedElements: {cell: {element, rowIndex}},
+      _frameComponents: {cellColors, displayIndexColumn}} = at;
     if (!rowDropdown || !fullTableOverlay || !element) return
     Dropdown.hide(rowDropdown, fullTableOverlay);
     const colors = FrameComponentsColors.getColorsBasedOnParam(cellColors, rowIndex as number);
     if (displayIndexColumn) CellHighlightUtils.fade(element, colors.default);
-    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(at.activeOverlayElements);
+    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(at._activeOverlayElements);
     setTimeout(() => {
       // in a timeout because upon pressing esc/enter key on dropdown, the window event is fired after which checks it
-      delete at.focusedElements.rowDropdown;
-      FocusedCellUtils.purge(at.focusedElements.cell);
+      delete at._focusedElements.rowDropdown;
+      FocusedCellUtils.purge(at._focusedElements.cell);
     });
   }
 
   private static focusCell(at: ActiveTable, rowIndex: number, cellElement: HTMLElement) {
-    const {frameComponentsInternal, focusedElements} = at;
-    if (frameComponentsInternal.displayIndexColumn) {
-      FocusedCellUtils.setIndexCell(focusedElements.cell, cellElement, rowIndex);
+    const {_frameComponents, _focusedElements} = at;
+    if (_frameComponents.displayIndexColumn) {
+      FocusedCellUtils.setIndexCell(_focusedElements.cell, cellElement, rowIndex);
     } else {
-      FocusedCellUtils.set(focusedElements.cell, cellElement, rowIndex, 0);
+      FocusedCellUtils.set(_focusedElements.cell, cellElement, rowIndex, 0);
     }
   }
 
@@ -56,19 +56,19 @@ export class RowDropdown {
 
   private static getLeft(at: ActiveTable, cellElement: HTMLElement) {
     const cellClick = at.rowDropdown.displaySettings.openMethod?.cellClick as boolean;
-    return `${ElementOffset.processWidth(cellClick ? cellElement.offsetWidth : 5, at.tableDimensions.border)}px`;
+    return `${ElementOffset.processWidth(cellClick ? cellElement.offsetWidth : 5, at._tableDimensions.border)}px`;
   }
 
   private static displayAndSetPosition(at: ActiveTable, cellElement: HTMLElement, dropdown: HTMLElement) {
-    const initialTopValue: PX = `${ElementOffset.processTop(cellElement.offsetTop, at.tableDimensions.border)}px`;
+    const initialTopValue: PX = `${ElementOffset.processTop(cellElement.offsetTop, at._tableDimensions.border)}px`;
     dropdown.style.top = initialTopValue;
     dropdown.style.left = RowDropdown.getLeft(at, cellElement);
     // needs to be displayed here to evalute if in view port
     Dropdown.display(dropdown);
-    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdown, at.tableDimensions.border);
+    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdown, at._tableDimensions.border);
     if (!visibilityDetails.isFullyVisible) {
       if (visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
-        RowDropdown.correctPositionWhenBottomOverflow(at.tableDimensions, dropdown, initialTopValue);
+        RowDropdown.correctPositionWhenBottomOverflow(at._tableDimensions, dropdown, initialTopValue);
       }
     }
   }
@@ -76,8 +76,8 @@ export class RowDropdown {
   // prettier-ignore
   private static setOverflowPosition(at: ActiveTable, cellElement: HTMLElement, dropdown: HTMLElement,
       overflowElement: HTMLElement) {
-    if (at.stickyProps.header && cellElement.tagName === CellElement.HEADER_TAG) {
-      if (at.overflowInternal) {
+    if (at._stickyProps.header && cellElement.tagName === CellElement.HEADER_TAG) {
+      if (at._overflow) {
         dropdown.style.top = `${overflowElement.scrollTop}px`;
       } else {
         const rowOffset = (cellElement.parentElement as HTMLElement).offsetTop;
@@ -85,7 +85,7 @@ export class RowDropdown {
         dropdown.style.top = `${rowOffset + borderTopWidth}px`; // REF-37
       }
     } else {
-      dropdown.style.top = `${ElementOffset.processTop(cellElement.offsetTop, at.tableDimensions.border)}px`;
+      dropdown.style.top = `${ElementOffset.processTop(cellElement.offsetTop, at._tableDimensions.border)}px`;
     }
     dropdown.style.left = RowDropdown.getLeft(at, cellElement);
   }
@@ -98,23 +98,23 @@ export class RowDropdown {
   }
 
   private static displayAndSetPositionOverflow(at: ActiveTable, cellElement: HTMLElement, dropdown: HTMLElement) {
-    const {tableElementRef, overflowInternal, stickyProps} = at;
-    if (!tableElementRef || !overflowInternal?.overflowContainer) return;
-    RowDropdown.setOverflowPosition(at, cellElement, dropdown, overflowInternal.overflowContainer);
+    const {_tableElementRef, _overflow, _stickyProps} = at;
+    if (!_tableElementRef || !_overflow?.overflowContainer) return;
+    RowDropdown.setOverflowPosition(at, cellElement, dropdown, _overflow.overflowContainer);
     // needs to be displayed here to evalute if overflow
     Dropdown.display(dropdown);
-    const isStickyCell = stickyProps.header && cellElement.tagName === CellElement.HEADER_TAG;
-    if (tableElementRef.offsetHeight !== overflowInternal.overflowContainer.scrollHeight && !isStickyCell) {
-      dropdown.style.top = `${tableElementRef.offsetHeight - dropdown.offsetHeight}px`;
+    const isStickyCell = _stickyProps.header && cellElement.tagName === CellElement.HEADER_TAG;
+    if (_tableElementRef.offsetHeight !== _overflow.overflowContainer.scrollHeight && !isStickyCell) {
+      dropdown.style.top = `${_tableElementRef.offsetHeight - dropdown.offsetHeight}px`;
     }
   }
 
   public static display(this: ActiveTable, rowIndex: number, cellElement: HTMLElement) {
-    const dropdownElement = this.activeOverlayElements.rowDropdown as HTMLElement;
+    const dropdownElement = this._activeOverlayElements.rowDropdown as HTMLElement;
     RowDropdownItem.update(this, dropdownElement, rowIndex);
-    if (this.overflowInternal?.overflowContainer) {
+    if (this._overflow?.overflowContainer) {
       RowDropdown.displayAndSetPositionOverflow(this, cellElement, dropdownElement);
-    } else if (this.stickyProps.header) {
+    } else if (this._stickyProps.header) {
       RowDropdown.displayAndSetPositionForSticky(this, cellElement, dropdownElement);
     } else {
       RowDropdown.displayAndSetPosition(this, cellElement, dropdownElement);

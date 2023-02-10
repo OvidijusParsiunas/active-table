@@ -1,7 +1,7 @@
 import {ColumnSettingsInternal} from './columnsSettingsInternal';
 import {ColProcessedTextStyle} from './processedTextStyle';
 import {ColumnTypeInternal} from './columnTypeInternal';
-import {CellDropdownI} from './cellDropdownInternal';
+import {_CellDropdown} from './cellDropdownInternal';
 import {CellStateColors} from './cellStateColors';
 import {ColumnSizerT} from './columnSizer';
 import {Optional} from './utilityTypes';
@@ -19,7 +19,7 @@ export interface ColumnDetailsT {
   processedStyle: ColProcessedTextStyle; // style added via validation
   columnSizer: ColumnSizerT;
   activeType: ColumnTypeInternal;
-  cellDropdown: CellDropdownI;
+  cellDropdown: _CellDropdown;
   columnDropdownCellOverlay: HTMLElement;
   settings: ColumnSettingsInternal;
   headerStateColors: CellStateColors;

@@ -22,7 +22,7 @@ export class ColumnSettingsStyleUtils {
     if (newHeaderStyle) ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, elements[0], true);
     const newStyleSettings = newHeaderStyle ? settings : undefined;
     columnDetails.headerStateColors = ColumnDetails.createHeaderStateColors(at._defaultColumnsSettings,
-      newStyleSettings, at.defaultCellHoverColors);
+      newStyleSettings, at._defaultCellHoverColors);
     ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [elements[0]]);
   }
 
@@ -45,7 +45,7 @@ export class ColumnSettingsStyleUtils {
 
   // prettier-ignore
   private static changeHeaderStyleFunc(this: ActiveTable, columnIndex: number, oldSettings: ColumnSettingsInternal) {
-    const columnDetails = this.columnsDetails[columnIndex];
+    const columnDetails = this._columnsDetails[columnIndex];
     const {elements, settings: {isHeaderTextEditable}} = columnDetails;
     ColumnSettingsStyleUtils.resetHeaderStyleToDefault(elements, oldSettings, this._defaultColumnsSettings);
     ColumnSettingsStyleUtils.setNewHeaderStyle(this, columnDetails);

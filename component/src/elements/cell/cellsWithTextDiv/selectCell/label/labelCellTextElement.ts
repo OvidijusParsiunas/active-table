@@ -20,7 +20,7 @@ export class LabelCellTextElement {
   // prettier-ignore
   public static finaliseEditedText(at: ActiveTable, textElement: HTMLElement, columnIndex: number,
       processMatching = false) {
-    const columnDetails = at.columnsDetails[columnIndex];
+    const columnDetails = at._columnsDetails[columnIndex];
     const {cellDropdown, activeType: {cellDropdownProps}, settings: {defaultText, isDefaultTextRemovable}} = columnDetails;
     const color = cellDropdown.itemsDetails[CellElement.getText(textElement)]?.backgroundColor;
     if (CellElement.getText(textElement) === EMPTY_STRING

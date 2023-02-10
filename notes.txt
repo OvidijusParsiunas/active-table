@@ -263,8 +263,8 @@ setting events on the conversion of each cell. The reason for that is after a ce
 CellEventsReset method, hence remvoving redundant call.
 
 REF-34
-To make sure that label colors vary, each label type contains a starter array of predefined colors which will be used before random
-ones are going to be generated.
+To make sure that label colors vary, _globalItemColors property contains a reference to a default array of predefined colors which will
+be used before random ones are going to be generated.
 
 REF-35
 The reason why we do not store column widths in the column details state is because there are multiple areas that affect them and

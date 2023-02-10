@@ -15,7 +15,7 @@ import {ActiveTable} from '../../activeTable';
 export class ChangeColumnType {
   private static setInvalidCellToDefault(at: ActiveTable, rowIndex: number, columnIndex: number) {
     const relativeRowIndex = rowIndex + 1;
-    const cellElement = at.columnsDetails[columnIndex].elements[relativeRowIndex];
+    const cellElement = at._columnsDetails[columnIndex].elements[relativeRowIndex];
     return CellEvents.setCellToDefaultIfNeeded(at, relativeRowIndex, columnIndex, cellElement, false);
   }
 
@@ -29,13 +29,13 @@ export class ChangeColumnType {
   }
 
   private static setNew(at: ActiveTable, newType: string, columnIndex: number) {
-    const columnDetails = at.columnsDetails[columnIndex];
+    const columnDetails = at._columnsDetails[columnIndex];
     columnDetails.activeType = columnDetails.settings.types.find((type) => type.name === newType) as ColumnTypeInternal;
     return columnDetails.activeType;
   }
 
   public static setNewStructureBasedOnType(at: ActiveTable, columnIndex: number, newType: ColumnTypeInternal) {
-    delete at.columnsDetails[columnIndex].cellDropdown.labelDetails;
+    delete at._columnsDetails[columnIndex].cellDropdown.labelDetails;
     if (newType.cellDropdownProps) {
       CellDropdown.setUpDropdown(at, columnIndex);
       SelectCell.convertColumn(at, columnIndex, newType);
@@ -57,20 +57,20 @@ export class ChangeColumnType {
   }
 
   private static resetAndChangeFunc(at: ActiveTable, newTypeName: string, columnIndex: number) {
-    const columnDetails = at.columnsDetails[columnIndex];
+    const columnDetails = at._columnsDetails[columnIndex];
     if (columnDetails.activeType.checkbox) ChangeColumnType.resetCheckboxElements(columnDetails);
     const newType = ChangeColumnType.setNew(at, newTypeName, columnIndex);
     if (newType.textValidation.func && newType.textValidation.setTextToDefaultOnFail) {
       ChangeColumnType.setInvalidCellsToDefault(at, columnIndex);
     }
     ChangeColumnType.setNewStructureBasedOnType(at, columnIndex, newType);
-    if (at.displayHeaderIcons) HeaderIconCellElement.changeHeaderIcon(at.columnsDetails[columnIndex]);
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate));
+    if (at.displayHeaderIcons) HeaderIconCellElement.changeHeaderIcon(at._columnsDetails[columnIndex]);
+    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at._columnsDetails, at.onColumnsUpdate));
   }
 
   // prettier-ignore
   public static change(this: ActiveTable, newTypeName: string, columnIndex: number) {
-    const previousType = this.columnsDetails[columnIndex].activeType;
+    const previousType = this._columnsDetails[columnIndex].activeType;
     if (newTypeName !== previousType.name) {
       ProcessedDataTextStyle.resetDataCellsStyle(this, columnIndex,
         ChangeColumnType.resetAndChangeFunc.bind(this, this, newTypeName, columnIndex));

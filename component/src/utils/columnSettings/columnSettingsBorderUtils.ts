@@ -100,16 +100,16 @@ export class ColumnSettingsBorderUtils {
     if (subjectColumn?.bordersOverwrittenBySiblings[subjectBorder]) {
       subjectColumn.bordersOverwrittenBySiblings[subjectBorder] = false;
       // not necessarily changing the style, but need to run this as there are a lot of styles unset and a lot being set
-      ColumnSettingsStyleUtils.changeStyleFunc(at, columnIndex, at.columnsDetails[columnIndex].settings);
+      ColumnSettingsStyleUtils.changeStyleFunc(at, columnIndex, at._columnsDetails[columnIndex].settings);
     }
   }
 
   // REF-23
   public static updateSiblingColumns(at: ActiveTable, columnIndex: number) {
-    const {columnsDetails} = at;
-    const currentColumnDetails = columnsDetails[columnIndex];
-    const leftColumnDetails = columnsDetails[columnIndex - 1];
-    const rightColumnDetails = columnsDetails[columnIndex + 1];
+    const {_columnsDetails} = at;
+    const currentColumnDetails = _columnsDetails[columnIndex];
+    const leftColumnDetails = _columnsDetails[columnIndex - 1];
+    const rightColumnDetails = _columnsDetails[columnIndex + 1];
     // reset sibling columns if their borders were previously overwritten
     ColumnSettingsBorderUtils.resetIfBorderOverwritten(at, columnIndex + 1, rightColumnDetails, 'left');
     ColumnSettingsBorderUtils.resetIfBorderOverwritten(at, columnIndex - 1, leftColumnDetails, 'right');

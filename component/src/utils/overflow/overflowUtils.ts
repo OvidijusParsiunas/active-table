@@ -63,27 +63,27 @@ export class OverflowUtils {
   private static getDimensions(at: ActiveTable, overflow: OverflowInternal) {
     const widthResult = StringDimensionUtils.generateNumberDimensionFromClientString(
       at.parentElement as HTMLElement, overflow, 'maxWidth', true);
-    widthResult.number -= at.tableDimensions.border.leftWidth + at.tableDimensions.border.rightWidth;
+    widthResult.number -= at._tableDimensions.border.leftWidth + at._tableDimensions.border.rightWidth;
     if (widthResult.isPercentage) overflow.isWidthPercentage = true;
     // if heightResult is 0 for a %, the likelyhood is that the parent element does not have height set
     const heightResult = StringDimensionUtils.generateNumberDimensionFromClientString(
       at.parentElement as HTMLElement, overflow, 'maxHeight', false);
-    heightResult.number -= at.tableDimensions.border.topWidth + at.tableDimensions.border.bottomWidth;
+    heightResult.number -= at._tableDimensions.border.topWidth + at._tableDimensions.border.bottomWidth;
     if (heightResult.isPercentage) overflow.isHeightPercentage = true;
     return {width: widthResult.number, height: heightResult.number};
   }
 
   public static applyDimensions(at: ActiveTable) {
-    const {overflowInternal} = at;
-    if (!overflowInternal) return;
-    const dimensions = OverflowUtils.getDimensions(at, overflowInternal);
-    OverflowUtils.setDimensions(overflowInternal.overflowContainer, dimensions);
-    OverflowUtils.adjustStyleForScrollbarWidth(overflowInternal);
+    const {_overflow} = at;
+    if (!_overflow) return;
+    const dimensions = OverflowUtils.getDimensions(at, _overflow);
+    OverflowUtils.setDimensions(_overflow.overflowContainer, dimensions);
+    OverflowUtils.adjustStyleForScrollbarWidth(_overflow);
   }
 
   public static setupContainer(at: ActiveTable, tableElement: HTMLElement) {
     const overflowContainer = document.createElement('div');
-    at.overflowInternal = {overflowContainer, ...at.overflow};
+    at._overflow = {overflowContainer, ...at.overflow};
     overflowContainer.id = OverflowUtils.ID;
     OverflowUtils.moveBorderToOverflowContainer(overflowContainer, tableElement);
     overflowContainer.appendChild(tableElement);

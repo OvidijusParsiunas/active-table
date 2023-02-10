@@ -13,6 +13,6 @@ export class ResetColumnStructure {
     });
     ChangeColumnType.setNewStructureBasedOnType(at, columnIndex, activeType);
     ColumnSettingsBorderUtils.resetBorderOverwritingState(columnDetails);
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate));
+    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at._columnsDetails, at.onColumnsUpdate));
   }
 }

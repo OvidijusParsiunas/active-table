@@ -22,11 +22,11 @@ export class CustomRowProperties {
   }
 
   private static setStyle(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, isAddRowEven: boolean) {
-    if (etc.stripedRowsInternal) {
+    if (etc._stripedRows) {
       if (isAddRowEven && AddNewRowElement.isAddNewRowRow(rowElement)) {
         rowIndex = Number(!etc.dataStartsAtHeader); // REF-32
       }
-      return StripedRows.setRowStyle(rowElement, rowIndex, etc.stripedRowsInternal);
+      return StripedRows.setRowStyle(rowElement, rowIndex, etc._stripedRows);
     }
     return undefined;
   }
@@ -42,16 +42,16 @@ export class CustomRowProperties {
   private static isAddRowRowSame(etc: ActiveTable) {
     return !!(
       etc.pagination &&
-      etc.frameComponentsInternal.displayAddNewRow &&
-      PaginationUtils.getLastPossiblePageNumber(etc) !== etc.paginationInternal.activePageNumber
+      etc._frameComponents.displayAddNewRow &&
+      PaginationUtils.getLastPossiblePageNumber(etc) !== etc._pagination.activePageNumber
     );
   }
 
   // this can be considered to be wasteful if no striped rows are used and we are resetting the same row events
   // every time this is called, however we are still traversing all rows from startIndex for code simplicity
   public static update(etc: ActiveTable, startIndex = 0) {
-    if (!etc.tableBodyElementRef) return;
-    const rows = Array.from(etc.tableBodyElementRef.children) as HTMLElement[];
+    if (!etc._tableBodyElementRef) return;
+    const rows = Array.from(etc._tableBodyElementRef.children) as HTMLElement[];
     const isAddRowEven = CustomRowProperties.isAddRowRowSame(etc);
     const lastRowIndex = rows.length - 1;
     rows.slice(startIndex).forEach((rowElement, rowIndex) => {

@@ -50,7 +50,7 @@ export class MoveColumn {
   private static firstChangeSettingsIfSettingsChanged(at: ActiveTable, columnIndex: number) {
     const {areSettingsDifferent} = ColumnSettingsUtils.parseSettingsChange(at);
     if (areSettingsDifferent) {
-      const currentColumn = at.columnsDetails[columnIndex];
+      const currentColumn = at._columnsDetails[columnIndex];
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, currentColumn.elements[0], columnIndex);
     }
   }
@@ -58,19 +58,19 @@ export class MoveColumn {
   // prettier-ignore
   public static move(at: ActiveTable, columnIndex: number, isToRight: boolean) {
     MoveColumn.firstChangeSettingsIfSettingsChanged(at, columnIndex);
-    const currentColumn = at.columnsDetails[columnIndex];
+    const currentColumn = at._columnsDetails[columnIndex];
     CellHighlightUtils.fade(currentColumn.elements[0], currentColumn?.headerStateColors.default);
     const siblingIndex = isToRight ? columnIndex + 1 : columnIndex - 1;
-    const siblingColumn = at.columnsDetails[siblingIndex];
+    const siblingColumn = at._columnsDetails[siblingIndex];
     const siblingColumnText = siblingColumn.elements.map((element) => CellElement.getText(element));
     const siblingColumnWidth = siblingColumn.elements[0].style.width;
     // overwrite current column using sibling column
     const overwritten = MoveColumn.overwrite(at, currentColumn, columnIndex, siblingColumnText,
       siblingColumn.activeType, siblingColumnWidth);
-    FocusedCellUtils.set(at.focusedElements.cell, siblingColumn.elements[0], 0, siblingIndex);
+    FocusedCellUtils.set(at._focusedElements.cell, siblingColumn.elements[0], 0, siblingIndex);
     // overwrite sibling column using overwritten content
     MoveColumn.overwrite(at, siblingColumn, siblingIndex, overwritten.overwrittenText,
       overwritten.overwrittenType, overwritten.overwrittenWidth);
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at.columnsDetails, at.onColumnsUpdate));
+    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at._columnsDetails, at.onColumnsUpdate));
   }
 }

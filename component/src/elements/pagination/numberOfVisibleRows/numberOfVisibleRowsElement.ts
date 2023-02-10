@@ -19,15 +19,15 @@ export class NumberOfVisibleRowsElement {
   }
 
   public static update(at: ActiveTable) {
-    const {paginationInternal, content, dataStartsAtHeader} = at;
-    const {numberOfVisibleRowsElement, isAllRowsOptionSelected} = paginationInternal;
+    const {_pagination, content, dataStartsAtHeader} = at;
+    const {numberOfVisibleRowsElement, isAllRowsOptionSelected} = _pagination;
     if (!numberOfVisibleRowsElement) return;
     // using max as when there are no contents on startup - dataRowsLength is -1
     const dataRowsLength = Math.max(dataStartsAtHeader ? content.length : content.length - 1, 0);
     if (isAllRowsOptionSelected) {
       NumberOfVisibleRowsElement.updateForAllRows(numberOfVisibleRowsElement, dataRowsLength);
     } else {
-      NumberOfVisibleRowsElement.updateForRelativeRowNumber(at.paginationInternal, dataRowsLength);
+      NumberOfVisibleRowsElement.updateForRelativeRowNumber(at._pagination, dataRowsLength);
     }
   }
 
@@ -35,7 +35,7 @@ export class NumberOfVisibleRowsElement {
     const numberOfVisibleRowsElement = document.createElement('div');
     numberOfVisibleRowsElement.id = NumberOfVisibleRowsElement.ID;
     numberOfVisibleRowsElement.classList.add(PaginationElements.PAGINATION_TEXT_COMPONENT_CLASS);
-    const {style, positions} = at.paginationInternal;
+    const {style, positions} = at._pagination;
     numberOfVisibleRowsElement.style.order = String(positions.numberOfVisibleRows.order);
     Object.assign(numberOfVisibleRowsElement.style, style.numberOfVisibleRows);
     PaginationContainerElement.addToContainer(positions.numberOfVisibleRows.side, containers, numberOfVisibleRowsElement);

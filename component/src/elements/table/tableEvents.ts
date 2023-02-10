@@ -26,23 +26,23 @@ export class TableEvents {
   // programmatically as follows
   // prettier-ignore
   private static closeCellDropdown(at: ActiveTable, targetElement: HTMLElement) {
-    const {focusedElements} = at;
-    if (focusedElements.cellDropdown && !Dropdown.isPartOfDropdownElement(targetElement)
+    const {_focusedElements} = at;
+    if (_focusedElements.cellDropdown && !Dropdown.isPartOfDropdownElement(targetElement)
         && !targetElement.classList.contains(OptionColorButton.COLOR_BUTTON_CLASS)
-        && focusedElements.cell.element !== CellElement.getCellElement(targetElement)) {
+        && _focusedElements.cell.element !== CellElement.getCellElement(targetElement)) {
       CellWithTextEvents.programmaticBlur(at);
     }
   }
 
   public static onMouseDown(this: ActiveTable, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
-    UserKeyEventsStateUtils.temporarilyIndicateEvent(this.userKeyEventsState, MOUSE_EVENT.DOWN);
+    UserKeyEventsStateUtils.temporarilyIndicateEvent(this._userKeyEventsState, MOUSE_EVENT.DOWN);
     TableEvents.closeCellDropdown(this, targetElement);
-    TableEvents.closeDatePicker(this.activeOverlayElements, event.target as HTMLElement);
+    TableEvents.closeDatePicker(this._activeOverlayElements, event.target as HTMLElement);
   }
 
   public static onMouseUp(this: ActiveTable, event: MouseEvent) {
-    if (this.activeOverlayElements.selectedColumnSizer) {
+    if (this._activeOverlayElements.selectedColumnSizer) {
       ColumnSizerExtrinsicEvents.tableMouseUp(this, event.target as HTMLElement);
     }
   }

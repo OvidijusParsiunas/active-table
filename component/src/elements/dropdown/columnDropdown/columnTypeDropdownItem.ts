@@ -26,8 +26,8 @@ export class ColumnTypeDropdownItem {
 
   // the items are repopulated every time column dropdown is opened
   public static setUp(at: ActiveTable, columnIndex: number) {
-    const {columnTypeDropdown} = at.activeOverlayElements;
-    const columnDetails = at.columnsDetails[columnIndex];
+    const {columnTypeDropdown} = at._activeOverlayElements;
+    const columnDetails = at._columnsDetails[columnIndex];
     const elements = columnDetails.settings.types.map((type) => type.dropdownItem.element) as HTMLElement[];
     DropdownItem.addButtonItemElements(at, columnTypeDropdown as HTMLElement, elements);
     ColumnTypeDropdownItemEvents.set(at, elements, columnIndex);

@@ -8,7 +8,7 @@ export class FrameComponentsElements {
   // CAUTION-4
   public static addFrameBodyElements(at: ActiveTable) {
     // add new row element - REF-18 (the row element has already been created and cell added to it)
-    at.tableBodyElementRef?.appendChild(at.addRowCellElementRef?.parentElement as HTMLElement);
+    at._tableBodyElementRef?.appendChild(at._addRowCellElementRef?.parentElement as HTMLElement);
     ToggleAdditionElements.update(at, true, AddNewRowElement.toggle);
   }
 }

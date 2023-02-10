@@ -24,21 +24,21 @@ export class RowDropdownCellOverlay {
   }
 
   public static hide(at: ActiveTable, rowIndex: number) {
-    const currentIndexCell = at.hoveredElements.leftMostCell;
+    const currentIndexCell = at._hoveredElements.leftMostCell;
     setTimeout(() => {
-      if (currentIndexCell !== at.hoveredElements.leftMostCell) {
-        const overlayElement = at.rowDropdownCellOverlays[rowIndex].element;
+      if (currentIndexCell !== at._hoveredElements.leftMostCell) {
+        const overlayElement = at._rowDropdownCellOverlays[rowIndex].element;
         overlayElement.style.width = DropdownCellOverlay.HIDDEN_PX;
       }
     });
   }
 
   public static display(at: ActiveTable, rowIndex: number) {
-    const firstColumn = at.columnsDetails[0];
-    const rowDropdownCellOverlay = at.rowDropdownCellOverlays[rowIndex].element;
+    const firstColumn = at._columnsDetails[0];
+    const rowDropdownCellOverlay = at._rowDropdownCellOverlays[rowIndex].element;
     rowDropdownCellOverlay.style.width = DropdownCellOverlay.VISIBLE_PX;
     const firstColElement = firstColumn.elements[rowIndex];
-    const {displayIndexColumn} = at.frameComponentsInternal;
+    const {displayIndexColumn} = at._frameComponents;
     const leftMostElement = (displayIndexColumn ? firstColElement.previousSibling : firstColElement) as HTMLElement;
     const onePercentWidth = leftMostElement.offsetHeight / 100;
     rowDropdownCellOverlay.style.height = `${onePercentWidth * 60}px`;
@@ -65,10 +65,10 @@ export class RowDropdownCellOverlay {
 
   public static add(at: ActiveTable, rowIndex: number, leftMostCell: HTMLElement) {
     const rowDropdownCellOverlay = RowDropdownCellOverlay.create(at.rowDropdown.displaySettings.overlayStyle);
-    const {displayIndexColumn} = at.frameComponentsInternal;
+    const {displayIndexColumn} = at._frameComponents;
     const cellDividerElement = RowDropdownCellOverlay.getCellDividerElement(leftMostCell, !!displayIndexColumn);
     cellDividerElement.appendChild(rowDropdownCellOverlay);
-    at.rowDropdownCellOverlays.splice(rowIndex, 0, {
+    at._rowDropdownCellOverlays.splice(rowIndex, 0, {
       element: rowDropdownCellOverlay,
       // these events are stubs and will be replaced by real ones in RowDropdownCellOverlayEvents.addCellEvents
       enter: () => {},
@@ -78,8 +78,8 @@ export class RowDropdownCellOverlay {
 
   public static resetOverlays(at: ActiveTable) {
     if (!at.rowDropdown.displaySettings.openMethod?.overlayClick) return;
-    at.rowDropdownCellOverlays.splice(0, at.rowDropdownCellOverlays.length);
-    const rows = ExtractElements.textRowsArrFromTBody(at.tableBodyElementRef as HTMLElement, at.content);
+    at._rowDropdownCellOverlays.splice(0, at._rowDropdownCellOverlays.length);
+    const rows = ExtractElements.textRowsArrFromTBody(at._tableBodyElementRef as HTMLElement, at.content);
     rows.forEach((rowElement, rowIndex) => {
       const leftMostCell = rowElement.children[0] as HTMLElement;
       RowDropdownCellOverlay.add(at, rowIndex, leftMostCell);
