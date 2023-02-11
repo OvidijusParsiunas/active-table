@@ -170,7 +170,9 @@ row's `backgroundColor` and text `color`.
     frameComponentsStyle='{
       "style": {
         "default": {"backgroundColor": "#f5f5f5"},
-        "hoverColors": {"backgroundColor": "#dedede"}}}'
+        "hoverColors": {"backgroundColor": "#dedede"}},
+      "inheritHeaderColors": false
+    }'
     content='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
@@ -190,7 +192,9 @@ row's `backgroundColor` and text `color`.
   frameComponentsStyle='{
     "style": {
       "default": {"backgroundColor": "#f5f5f5"},
-      "hoverColors": {"backgroundColor": "#dedede"}}}'
+      "hoverColors": {"backgroundColor": "#dedede"}},
+    "inheritHeaderColors": false
+  }'
 ></active-table>
 ```
 
@@ -200,9 +204,11 @@ row's `backgroundColor` and text `color`.
 ```text
 <active-table
   frameComponentsStyle='{
-  "style": {
-    "default": {"backgroundColor": "#f5f5f5"},
-    "hoverColors": {"backgroundColor": "#dedede"}}}'
+    "style": {
+      "default": {"backgroundColor": "#f5f5f5"},
+      "hoverColors": {"backgroundColor": "#dedede"}},
+    "inheritHeaderColors": false
+  }'
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],

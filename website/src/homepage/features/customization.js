@@ -53,8 +53,8 @@ export function Customization() {
         <div style={{width: '50%'}}>
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
             <TableWrapper
-              tableStyle={{width: '100%', borderRadius: '3px'}}
-              headerStyles={{default: {backgroundColor: '#e5e5e5', borderBottom: 'unset'}}}
+              tableStyle={{width: '100%', borderRadius: '8px', border: 'unset'}}
+              cellStyle={{borderRight: 'unset', color: 'white'}}
               pagination={{
                 style: {
                   pageButtons: {
@@ -74,9 +74,9 @@ export function Customization() {
                       default: {
                         paddingTop: '5px',
                         marginTop: '5px',
-                        backgroundColor: '#525252',
+                        backgroundColor: '#434343',
                         color: 'white',
-                        border: '1px solid #525252',
+                        border: '1px solid #434343',
                         height: '26px',
                         minWidth: '31px',
                       },
@@ -93,8 +93,12 @@ export function Customization() {
                 positions: {pageButtons: {side: 'bottom-middle'}},
                 rowsPerPage: 4,
               }}
-              rowHoverStyle={{style: {backgroundColor: '#f7f7f7'}}}
-              frameComponentsStyle={{style: {default: {backgroundColor: '#fafafa'}}}}
+              stripedRows={{odd: {backgroundColor: '#4f4f4f'}, even: {backgroundColor: '#373737'}}}
+              headerIconStyle={{
+                filterColor:
+                  'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
+              }}
+              headerStyles={{default: {backgroundColor: '#2d2d2d'}}}
               displayAddNewRow={false}
               displayAddNewColumn={false}
               content={[

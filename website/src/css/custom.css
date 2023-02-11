@@ -6,9 +6,10 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-table-container-background-color: #f9fcffd6;
+  --ifm-table-container-background-color: #ffffff;
   --ifm-table-container-border: 0.5px solid #eeeeee;
-  --ifm-color-primary: #2e8555;
+  --ifm-color-primary: #3584d3;
+  --ifm-link-color: #114674;
   --ifm-color-primary-dark: #29784c;
   --ifm-color-primary-darker: #277148;
   --ifm-color-primary-darkest: #205d3b;
@@ -17,13 +18,16 @@
   --ifm-color-primary-lightest: #3cad6e;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --feature-title: #3f3f3f;
+  --code-background-color: #f0f0f0;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
   --ifm-table-container-background-color: #282a36;
   --ifm-table-container-border: unset;
-  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary: #5da9f6;
+  --ifm-link-color: #c8e6ff;
   --ifm-color-primary-dark: #21af90;
   --ifm-color-primary-darker: #1fa588;
   --ifm-color-primary-darkest: #1a8870;
@@ -31,6 +35,50 @@
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --feature-title: white;
+  --code-background-color: #3c3c3c;
+}
+
+.theme-doc-sidebar-container {
+  border-right: unset !important;
+}
+
+.menu__link {
+  border-radius: 5px !important;
+}
+
+.menu__link:hover {
+  background-color: #6161610d;
+}
+
+.menu__link--active {
+  background-color: #6161610d !important;
+}
+
+.menu__list {
+  width: 200px !important;
+}
+
+.navbar__link--active {
+  color: var(--feature-title) !important;
+}
+
+.navbar__link--active:hover {
+  color: var(--ifm-color-primary) !important;
+}
+
+.menu {
+  width: fit-content !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+code {
+  border: 1px solid rgb(240, 240, 240) !important;
+  background-color: var(--code-background-color);
+  padding: 1.5px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 .tabs {
@@ -87,13 +135,10 @@
 
 .example-container {
   width: 100%;
-  background-color: var(--ifm-table-container-background-color);
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  padding: 25px 18px 18px;
-  box-shadow: rgb(0 0 0 / 10%) 0px 1px 2px 0px;
-  border: var(--ifm-table-container-border);
-  border-bottom: unset;
+  padding: 18px 18px 18px;
+  border: unset;
 }
 
 .method-button {
@@ -186,5 +231,14 @@
   text-align: center;
   font-size: 25px;
   font-weight: 700;
-  color: #3f3f3f;
+  color: var(--feature-title);
+}
+
+.navbar__title {
+  background: -webkit-linear-gradient(0deg, rgb(86, 155, 224), #2e60bd);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-top: -1px;
+  font-size: 20px;
 }

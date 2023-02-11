@@ -36,7 +36,7 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/OvidijusParsiunas/active-table',
+          editUrl: 'https://github.com/OvidijusParsiunas/active-table/tree/main/website',
         },
         // blog: {
         //   showReadingTime: true,
@@ -73,58 +73,111 @@ const config = {
   // Introduction - this should be the homepage
   // Installation
   // API
+
   // // table:
-  // // // tableStyle: TableStyle;
-  // // // overflow: Overflow | null;
+  // tableStyle
+  // overflow
+  // frameComponentsStyle
+
   // // content:
-  // // // content: TableContent;
-  // // // spellCheck: boolean;
-  // // // updateCell: ProgrammaticCellUpdateT;
+  // content
+  // defaultText
+  // isDefaultTextRemovable
+  // cellStyle
+  // isCellTextEditable
+  // spellCheck
+
   // // header:
-  // // // stickyHeader: boolean;
-  // // // dataStartsAtHeader: boolean;
-  // // // allowDuplicateHeaders: boolean;
-  // // // displayHeaderIcons: boolean;
+  // headerStyles
+  // isHeaderTextEditable
+  // allowDuplicateHeaders
+  // displayHeaderIcons
+  // headerIconStyle
+  // stickyHeader
+  // dataStartsAtHeader
+
   // // rows:
-  // // // rowHoverStyle: RowHoverStyle;
-  // // // stripedRows: StripedRowsT | boolean;
-  // // // rowDropdown: RowDropdownSettings;
-  // // // maxRows?: number;
+  // rowHoverStyle
+  // stripedRows
+  // rowDropdown
+  // maxRows
+  // displayAddNewRow
+
   // // columns:
-  // // // customColumnsSettings: CustomColumnsSettings;
-  // // // preserveNarrowColumns: boolean;
-  // // // maxColumns?: number;
-  // // // columnResizerColors: ColumnResizerColors;
-  // // events:
-  // // // onCellUpdate: OnCellUpdate;
-  // // // onColumnsUpdate: OnColumnsUpdate;
-  // // // onContentUpdate: OnTableUpdate;
+  // isColumnResizable
+  // columnResizerColors
+  // columnDropdown
+  // customColumnsSettings
+  // maxColumns
+  // preserveNarrowColumns
+  // displayAddNewColumn
+  // displayIndexColumn
+  // availableDefaultColumnTypes
+  // customColumnTypes
+  // defaultColumnTypeName
+  // Types
+  // ColumnType
+  // TextValidation
+  // CustomTextProcessing
+  // Sorting
+  // IconSettings
+  // CellDropdown
+  // Calendar
+  // Checkbox
+  // DEFAULT_COLUMN_TYPES
+  // ColumnDropdownSettings
+
   // // pagination:
-  // // // pagination: Pagination | null;
-  // // misc:
-  // // // frameComponents: FrameComponents;
+  // pagination
+  // Types
+  // RowsPerPageSelect
+  // PaginationStyle
+  // RowsPerPageOptionsStyle
+  // PageButtonStyle
+  // ActionButtonStyle
+  // PaginationPositions
+  // PaginationPosition
+  // StatefulCSS
+  // More examples
+
+  // // methods:
+  // getContent
+  // getColumnsDetails
+  // updateCell
+
+  // // events:
+  // onCellUpdate
+  // onContentUpdate
+  // onColumnsUpdate
+
+  // // types:
+  // DropdownDisplaySettings
+  // CSSStyle
+  // HoverableStyles
+  // NoDimensionCSSStyle
+  // ColumnDetails
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
         title: 'Active Table',
-        logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
-        },
+        // logo: {
+        //   alt: 'My Site Logo',
+        //   src: 'img/logo.svg',
+        // },
         items: [
-          {
-            type: 'doc',
-            docId: 'Intro/getting-started',
-            position: 'left',
-            label: 'Intro',
-          },
+          // {
+          //   type: 'doc',
+          //   docId: 'Intro/getting-started',
+          //   position: 'left',
+          //   label: 'Intro',
+          // },
           {
             type: 'doc',
             docId: 'API/how-to',
             position: 'left',
-            label: 'API',
+            label: 'Documentation',
           },
           // {to: '/blog', label: 'Blog', position: 'left'},
           {
