@@ -4,6 +4,44 @@ sidebar_position: 1
 
 # Installation
 
+Install the package relevant to your framework of choice via [npm](https://www.npmjs.com/).
+
+React: <br />
+
+```
+npm install active-table/react
+```
+
+Live Example <br />
+
+Solid <br />
+
+```
+npm install active-table/react
+```
+
+Live Example <br />
+
+Svelte <br />
+
+```
+npm install active-table/react
+```
+
+Live Example <br />
+
+Vue <br />
+
+```
+npm install active-table/react
+```
+
+Live Example <br />
+
+Or use a CDN for Vanilla JavaScript
+
+Vanilla JavaScript <br />
+
 Values must be passed into the element as **attributes**, this is achieved by using one of the following approaches:
 
 #### 1. Assign values directly into the DOM element
