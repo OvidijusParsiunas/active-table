@@ -44,8 +44,8 @@ export function Overflow() {
                 ['Uranus', 51118, 86.8, 27],
                 ['Pluto', 2376, 0.013, 5],
                 ['Moon', 3475, 0.073, 0],
-                ['Neptune', 49528, 102, 14],
-                ['Mercury', 4879, 0.33, 0],
+                ['Earth', 12756, 5.97, 1],
+                ['Mars', 6792, 0.642, 2],
               ]}
             ></TableWrapper>
           </div>
