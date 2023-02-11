@@ -65,7 +65,7 @@ import Tabs from '@theme/Tabs';
 
 :::info
 Using this property unsets the default header and [`frameComponentsStyle`](./table#frameComponentsStyle) hover color properties.
-If the component is set with a [`cellStyle`](./column#cellStyle) property - this will be overriden.
+If the component is set with a [`cellStyle`](./content#cellStyle) property - this will be overriden.
 :::
 
 <LineBreak></LineBreak>
@@ -126,7 +126,7 @@ Stripe based styling for rows.
 
 :::info
 Using this property unsets the default header and [`frameComponentsStyle`](./table#frameComponentsStyle) hover color properties.
-If the component is set with a [`cellStyle`](./column#cellStyle) property - this will be overriden.
+If the component is set with a [`cellStyle`](./content#cellStyle) property - this will be overriden.
 :::
 
 <LineBreak></LineBreak>
@@ -150,10 +150,10 @@ If the component is set with a [`cellStyle`](./column#cellStyle) property - this
   &nbsp;&nbsp;&nbsp;&nbsp; _isHeaderRowEditable: true_, <br />
   }
 
-Row dropdown settings. If `displaySettings` object's `openMethod` property has `cellClick` set to _true_ - simply click on the left-most
-row cell to open the dropdown. If `openMethod` is `overlayClick` - hover over the left-most cell and click on the overlay.
+Row dropdown settings. If [`displaySettings`](./types#DropdownDisplaySettings) object's `openMethod` property has `cellClick` set to _true_ - simply click on the left-most
+row cell to open the dropdown. If `openMethod` is `overlayClick` - hover over the left-most cell and click on the overlay. <br />
 The `canEditHeaderRow` property denotes whether this dropdown can be used to change the header row e.g. move or delete it, therefore
-it does not open on header row when set to `false`.
+it does not open on header row when set to _false_.
 
 #### Example
 

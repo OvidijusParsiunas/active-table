@@ -13,7 +13,7 @@ When using these properties take care not to re-render the table component when 
 ### `onCellUpdate` {#onCellUpdate}
 
 - Type: (`cellUpdate:` { <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`text: CellText`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`text: string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`rowIndex: number`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`columnIndex: number`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`updateType: "add"|"update"|"remove"` <br />
@@ -24,7 +24,6 @@ where it is the header row for `rowIndex` and the left-most column for `columnIn
 
 #### Example
 
-import TableContainer from '@site/src/components/table/table-container';
 import TableContainerEvents from '@site/src/components/table/table-container-events';
 import LineBreak from '@site/src/components/markdown/line-break';
 import {ActiveTable} from 'active-table';

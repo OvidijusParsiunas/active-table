@@ -17,7 +17,7 @@ function updateCell(tableElement) {
     }
     tableElement.updateCell({newText, rowIndex, columnIndex});
     updateCell(tableElement);
-  }, 100);
+  }, 40);
 }
 
 export default function TableContainerProgrammaticUpdates({children}) {

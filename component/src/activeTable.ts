@@ -196,6 +196,7 @@ export class ActiveTable extends LitElement {
   })
   isDefaultTextRemovable?: boolean;
 
+  // WORK - percentage width should not be allowed
   @property({type: Object})
   cellStyle?: DimensionalCSSStyle;
 
@@ -362,6 +363,12 @@ export class ActiveTable extends LitElement {
     } else {
       super.connectedCallback();
     }
+  }
+
+  // this is used to prevent a bug where the update method is called again (and adds another table) when a new property is
+  // added - e.g. an event listener method
+  override shouldUpdate(): boolean {
+    return !this._tableElementRef;
   }
 }
 

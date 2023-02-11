@@ -71,10 +71,6 @@ const config = {
     }),
   ],
 
-  // Introduction - this should be the homepage
-  // Installation
-  // API
-
   // // table:
   // tableStyle
   // overflow
@@ -113,20 +109,22 @@ const config = {
   // preserveNarrowColumns
   // displayAddNewColumn
   // displayIndexColumn
+  // Types
+  // CellDropdown
+  // ColumnDropdownSettings
+
+  // // column type:
+  // defaultColumnTypeName
   // availableDefaultColumnTypes
   // customColumnTypes
-  // defaultColumnTypeName
-  // Types
   // ColumnType
   // TextValidation
   // CustomTextProcessing
   // Sorting
   // IconSettings
-  // CellDropdown
   // Calendar
   // Checkbox
   // DEFAULT_COLUMN_TYPES
-  // ColumnDropdownSettings
 
   // // pagination:
   // pagination
@@ -176,7 +174,7 @@ const config = {
           // },
           {
             type: 'doc',
-            docId: 'API/how-to',
+            docId: 'API/introduction',
             position: 'left',
             label: 'Documentation',
           },

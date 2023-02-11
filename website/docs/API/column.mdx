@@ -1,0 +1,531 @@
+---
+sidebar_position: 4
+---
+
+# Column
+
+Properties related to table columns.
+
+### `isColumnResizable` {#isColumnResizable}
+
+- Type: `boolean`
+- Default: _true_
+
+Determines if columns can be resized via the use of the overlay between header cells. When `width` is defined in [`cellStyle`](./content#cellStyle)
+and [`tableStyle`](./table#tableStyle) properties, and this is set to _true_ - the column `width` will be automatically overwritten to
+meet the set table `width`. However if this is set to _false_, columns will permanently hold the initially set `width`.
+
+#### Example
+
+import TableContainer from '@site/src/components/table/table-container';
+import LineBreak from '@site/src/components/markdown/line-break';
+import {ActiveTable} from 'active-table';
+import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs';
+
+<TableContainer>
+  <active-table
+    isColumnResizable="true"
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<LineBreak></LineBreak>
+
+### `columnResizerColors` {#columnResizerColors}
+
+- Type: { `hover?: string`, `click?: string` }
+- Default: { _hover: #808080_, _click: #4668ed_ }
+
+Column width resizer overlay background color style for hover and click events.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    columnResizerColors='{ "hover": "#87ddff", "click": "#369cfd" }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnResizerColors='{ "hover": "#87ddff", "click": "#369cfd" }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnResizerColors='{ "hover": "#87ddff", "click": "#369cfd" }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `columnDropdown` {#columnDropdown}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`displaySettings?: DropdownDisplaySettings`](./types#DropdownDisplaySettings), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`ColumnDropdownSettings`](#ColumnDropdownSettings) <br />
+  } <br />
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _displaySettings: {isAvailable: true, openMethod: {cellClick: true}}_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isSortAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isDeleteAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isInsertLeftAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isInsertRightAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isMoveAvailable: true_, <br />
+  }
+
+Settings for the column dropdown. If `displaySettings` object's `openMethod` property has `cellClick` set to _true_ - open the dropdown by clicking
+on the header cell. If `openMethod` has `overlayClick` set to _true_ - hover over the header cell, then click on the overlay component that will
+appear over it.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    columnDropdown='{
+      "displaySettings": {
+        "openMethod": {"overlayClick": true}},
+      "isSortAvailable": false,
+      "isMoveAvailable": false
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<LineBreak></LineBreak>
+
+### `customColumnsSettings` {#customColumnsSettings}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `headerName: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`defaultText?: string|number`](./content#defaultText), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`isDefaultTextRemovable?: boolean`](./content#isDefaultTextRemovable), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`cellStyle?: cellStyle`](./content#cellStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`isCellTextEditable?: boolean`](./content#isCellTextEditable), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`isColumnResizable?: boolean`](#isColumnResizable), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`headerStyles?: headerStyles`](./header#headerStyles), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`isHeaderTextEditable?: boolean`](./header#isHeaderTextEditable), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`headerIconStyle?: HeaderIconStyle`](./header#HeaderIconStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`defaultColumnTypeName?: string`](./columnType#defaultColumnTypeName), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`availableDefaultColumnTypes?: DEFAULT_COLUMN_TYPES[]`](./columnType#availableDefaultColumnTypes), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`customColumnTypes?: ColumnType[]`](./columnType#customColumnTypes), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`columnDropdown?: ColumnDropdownSettings`](#ColumnDropdownSettings) <br />
+  }[]
+
+Custom override properties for columns with a header text that matches the `headerName` string. Any properties that have not been set will
+automatically inherit their values from the corresponding ones set directly on the component (except `headerName`).
+
+#### Example
+
+<TableContainer>
+  <active-table
+    customColumnsSettings='[
+      { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
+      { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "defaultColumnTypeName": "number", "isHeaderTextEditable": false },
+      { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "defaultColumnTypeName": "Select", "isHeaderTextEditable": false },
+      { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "defaultColumnTypeName": "Date d-m-y", "isHeaderTextEditable": false }
+    ]'
+    content='[
+      ["Planet", "Number", "Shape", "Date Created"],
+      ["", 12756, "Sphere", "01-02-2012"],
+      ["", 6792, "Dinosaur", "14-05-1990"],
+      ["", 142984, "Triangle", "04-12-2020"],
+      ["", 120536, "Square", "23-10-2008"],
+      ["", 49528, "Flat", "19-02-2006"]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  customColumnsSettings='[
+    { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
+    { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "defaultColumnTypeName": "number", "isHeaderTextEditable": false },
+    { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "defaultColumnTypeName": "Select", "isHeaderTextEditable": false },
+    { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "defaultColumnTypeName": "Date d-m-y", "isHeaderTextEditable": false }
+  ]'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  customColumnsSettings='[
+    { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
+    { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "defaultColumnTypeName": "number", "isHeaderTextEditable": false },
+    { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "defaultColumnTypeName": "Select", "isHeaderTextEditable": false },
+    { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "defaultColumnTypeName": "Date d-m-y", "isHeaderTextEditable": false }
+  ]'
+  content='[
+    ["Planet", "Number", "Shape", "Date Created"],
+    ["", 12756, "Sphere", "01-02-2012"],
+    ["", 6792, "Dinosaur", "14-05-1990"],
+    ["", 142984, "Triangle", "04-12-2020"],
+    ["", 120536, "Square", "23-10-2008"],
+    ["", 49528, "Flat", "19-02-2006"]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `maxColumns` {#maxColumns}
+
+- Type: `number`
+- Default: _unset_
+
+Maximum number of columns allowed (not including the index and add columns column).
+
+#### Example
+
+<TableContainer>
+  <active-table
+    maxColumns="4"
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table maxColumns="4"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  maxColumns="4"
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `preserveNarrowColumns` {#preserveNarrowColumns}
+
+- Type: `boolean`
+- Default: _true_
+
+When [`tableStyle`](./table#tableStyle) is set with a `width` or `maxWidth` property to limit its size, the insertion of new columns will
+cause all existing column widths to automatically be reduced to make space for the new ones (except columns set with `isColumnResizable` as _false_
+inside [`cellStyle`](./content#cellStyle) of the [`customColumnsSettings`](#customColumnsSettings) object). This can however become problematic when existing column
+widths eventually become too narrow\* and their widths cannot be reduced any further. <br />
+When `preserveNarrowColumns` is _true_ and column widths are too narrow\*, the table width will be increased allow new columns to be inserted. <br />
+When `preserveNarrowColumns` is _false_ and column widths are too narow\*, no new columns will be allowed to be inserted.
+set to true by default.<br />
+_\*Minimal column size is recognised as 33px_
+
+**Example where preset table width of 300px is exceeded**
+
+<TableContainer>
+  <active-table
+    content='[
+      ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"],
+      ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"]]'
+    tableStyle='{"width":"300px", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  preserveNarrowColumns="true"
+  tableStyle='{"width":"300px"}'
+  content='[
+    ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"],
+    ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"]]'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+    content='[
+      ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"],
+      ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"]]'
+    tableStyle='{"width":"300px", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+Please note that when [`tableStyle`](./table#tableStyle) contains a `width` or `maxWidth` property with a _%_ or _vw_ unit and the window width is changed - if columns
+cannot be reduced any further the excess ones will not be removed even if `preserveNarrowColumns` is set to _false_ to prevent loss of data.
+:::
+
+<LineBreak></LineBreak>
+
+### `displayAddNewColumn` {#displayAddNewColumn}
+
+- Type: `boolean`
+- Default: _true_
+
+A toggle for a clickable '+' column on the right which is used to add new empty columns. <br />
+You can set the add new column style via [`frameComponentsStyle`](./table#frameComponentsStyle).
+
+#### Example
+
+<TableContainer>
+  <active-table
+    displayAddNewColumn="true"
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table displayAddNewColumn="true"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  displayAddNewColumn="true"
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `displayIndexColumn` {#displayIndexColumn}
+
+- Type: `boolean` | {`wrapIndexCellText: boolean`}
+- Default: _{wrapIndexCellText: false }_
+
+A toggle for the index column on the left. <br />
+When `wrapIndexCellText` is set to _true_, the index column width will be static and any overflowing digits inside its cells will be wrapped within its boundaries. This is
+useful in a scenario where `width`/`maxWidth` is set within [`tableStyle`](./table#tableStyle) and the addition of any more columns would cause the width to be breached
+due to all columns having the mimimal width of _33px_. Hence by keeping index column width narrow - more columns can be added without breaching the set `width`/`maxWidth`.
+If `wrapIndexCellText` is set to _false_ and [`preserveNarrowColumns`](#preserveNarrowColumns) is set to _true_, if the table width is about to be breached,
+it will be automatically set to _true_ and the index width will be set back to the initial width. <br />
+You can set the index column style via [`frameComponentsStyle`](./table#frameComponentsStyle).
+
+#### Example
+
+<TableContainer>
+  <active-table
+    displayIndexColumn='{"wrapIndexCellText": "false"}'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table displayIndexColumn='{"wrapIndexCellText": "false"}'></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  displayIndexColumn='{"wrapIndexCellText": "false"}'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+:::note
+If [`dataStartsAtHeader`](./header#dataStartsAtHeader) is _true_, the index count will start from the header row, otherwise it will start from the first data row. <br />
+:::
+:::note
+Please note that cell unwrapping detection is not supported and once the index column is wrapped via `wrapIndexCellText` it will stay in this
+form for the rest of the session.
+:::
+
+<LineBreak></LineBreak>
+
+## Types
+
+Shared object property types related to columns:
+
+### `ColumnDropdownSettings` {#ColumnDropdownSettings}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isSortAvailable?: boolean`,<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isDeleteAvailable?: boolean`,<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isInsertLeftAvailable?: boolean`,<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isInsertRightAvailable?: boolean`,<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`isMoveAvailable?: boolean`<br />
+  }
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isSortAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isDeleteAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isInsertLeftAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isInsertRightAvailable: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; _isMoveAvailable: true_ <br />
+  }
+
+#### Example
+
+<TableContainer>
+  <active-table
+    columnDropdown='{
+      "isSortAvailable": false,
+      "isDeleteAvailable": true,
+      "isInsertLeftAvailable": false,
+      "isInsertRightAvailable": true
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample">
+
+```text
+<active-table
+  columnDropdown='{
+    "isSortAvailable": false,
+    "isDeleteAvailable": true,
+    "isInsertLeftAvailable": false,
+    "isInsertRightAvailable": true
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<active-table
+  columnDropdown='{
+    "isSortAvailable": false,
+    "isDeleteAvailable": true,
+    "isInsertLeftAvailable": false,
+    "isInsertRightAvailable": true
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>

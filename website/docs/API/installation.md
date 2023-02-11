@@ -1,8 +1,8 @@
 ---
-sidebar_position: 0
+sidebar_position: 1
 ---
 
-# How to
+# Installation
 
 Values must be passed into the element as **attributes**, this is achieved by using one of the following approaches:
 

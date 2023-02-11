@@ -1,8 +1,8 @@
 import {CELL_UPDATE_TYPE} from '../enums/onUpdateCellType';
-import {CellText, TableContent} from './tableContent';
+import {TableContent} from './tableContent';
 
 interface CellUpdateDetails {
-  text: CellText;
+  text: string;
   rowIndex: number;
   columnIndex: number;
   updateType: CELL_UPDATE_TYPE;
