@@ -1,19 +1,25 @@
-import {CellStateColorProperties, CellStateColorsR, DefaultCellHoverColors} from '../../types/cellStateColors';
+import {CellStateColorProperties, CellStateColorsR} from '../../types/cellStateColors';
 import {FrameComponentsCellsColors} from '../../types/frameComponentsCellsColors';
-import {HoverableStyles} from '../../types/hoverableStyles';
 import {ActiveTable} from '../../activeTable';
 
 // frame components are comprised of index column, add new column column and add new row row
 export class FrameComponentsColors {
-  private static getInheritedHeaderColors(defaultCellHoverColors: DefaultCellHoverColors, headerStyles?: HoverableStyles) {
+  // prettier-ignore
+  private static getInheritedHeaderColors(at: ActiveTable) {
+    const {_stripedRows, _defaultColumnsSettings: {headerStyles, cellStyle}} = at;
+    // Defined for add new column header when undefined
+    // When rows are striped - cell background colors overwrite them (by convention), thus default should not be defined
+    const defaultBackgroundColor = _stripedRows ? '' : 'white';
     return {
       default: {
-        backgroundColor: headerStyles?.default?.backgroundColor || 'white', // defining style for add new column header
-        color: headerStyles?.default?.color || '',
+        backgroundColor: headerStyles?.default?.backgroundColor || cellStyle?.backgroundColor || defaultBackgroundColor,
+        color: headerStyles?.default?.color || cellStyle?.color || '',
       },
       hover: {
-        backgroundColor: headerStyles?.hoverColors?.backgroundColor || defaultCellHoverColors.backgroundColor,
-        color: headerStyles?.hoverColors?.color || defaultCellHoverColors.color,
+        backgroundColor: headerStyles?.hoverColors?.backgroundColor || headerStyles?.default?.backgroundColor
+          || cellStyle?.backgroundColor || at._defaultCellHoverColors.backgroundColor,
+        color: headerStyles?.hoverColors?.color || headerStyles?.default?.color
+          || cellStyle?.color || at._defaultCellHoverColors.color,
       },
     };
   }
@@ -41,10 +47,9 @@ export class FrameComponentsColors {
         color: FrameComponentsColors.getHoverColorValue(at, 'color'),
       },
     };
-    const {_frameComponents: {cellColors, inheritHeaderColors}, _defaultColumnsSettings: {headerStyles}} = at;
+    const {_frameComponents: {cellColors, inheritHeaderColors}} = at;
     cellColors.data = newCellColors;
-    cellColors.header = inheritHeaderColors ?
-      FrameComponentsColors.getInheritedHeaderColors(at._defaultCellHoverColors, headerStyles) : newCellColors;
+    cellColors.header = inheritHeaderColors ? FrameComponentsColors.getInheritedHeaderColors(at) : newCellColors;
   }
 
   public static getColorsBasedOnParam(cellColors: FrameComponentsCellsColors, rowIndex: number): CellStateColorsR {

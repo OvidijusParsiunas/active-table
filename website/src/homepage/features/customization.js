@@ -17,7 +17,6 @@ export function Customization() {
                   'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
               }}
               stripedRows={{odd: {backgroundColor: ''}, even: {backgroundColor: '#edf7ff'}}}
-              frameComponentsStyle={{inheritHeaderColors: true}}
               displayAddNewColumn={false}
               content={[
                 ['Planet', 'Diameter', 'Mass', 'Moons'],
@@ -39,7 +38,6 @@ export function Customization() {
                   'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
               }}
               stripedRows={{odd: {backgroundColor: ''}, even: {backgroundColor: '#ebebeb7a'}}}
-              frameComponentsStyle={{inheritHeaderColors: true}}
               content={[
                 ['Planet', 'Diameter', 'Mass', 'Moons'],
                 ['Earth', 12756, 5.97, 1],
@@ -56,7 +54,7 @@ export function Customization() {
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
             <TableWrapper
               tableStyle={{width: '100%', borderRadius: '3px'}}
-              headerStyles={{default: {backgroundColor: '#eeeeee'}}}
+              headerStyles={{default: {backgroundColor: '#e5e5e5', borderBottom: 'unset'}}}
               pagination={{
                 style: {
                   pageButtons: {
@@ -65,15 +63,25 @@ export function Customization() {
                         color: 'grey',
                         border: '1px solid #dedede',
                         marginRight: '5px',
-                        marginTop: '5px',
-                        height: '26px',
-                        width: '31px',
-                        paddingTop: '5px',
+                        marginTop: '7px',
+                        height: '23px',
+                        minWidth: '25px',
+                        paddingTop: '3px',
                         borderRadius: '20px',
                       },
                     },
-                    activeButton: {default: {backgroundColor: '#525252', color: 'white', border: '1px solid #525252'}},
-                    actionButtons: {default: {fontSize: '13px', paddingTop: '7px', height: '24px'}},
+                    activeButton: {
+                      default: {
+                        paddingTop: '5px',
+                        marginTop: '5px',
+                        backgroundColor: '#525252',
+                        color: 'white',
+                        border: '1px solid #525252',
+                        height: '26px',
+                        minWidth: '31px',
+                      },
+                    },
+                    actionButtons: {default: {fontSize: '13px', paddingTop: '4px', height: '22px'}},
                     disabledButtons: {default: {backgroundColor: 'white'}},
                     firstVisibleButtonOverride: {},
                     lastVisibleButtonOverride: {},
@@ -86,7 +94,7 @@ export function Customization() {
                 rowsPerPage: 4,
               }}
               rowHoverStyle={{style: {backgroundColor: '#f7f7f7'}}}
-              frameComponentsStyle={{inheritHeaderColors: true, style: {default: {backgroundColor: '#fafafa'}}}}
+              frameComponentsStyle={{style: {default: {backgroundColor: '#fafafa'}}}}
               displayAddNewRow={false}
               displayAddNewColumn={false}
               content={[

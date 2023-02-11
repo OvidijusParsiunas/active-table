@@ -546,7 +546,8 @@ Styling properties for the rows per page component elements. `container` is the 
 
 Styling properties for the page buttons component elements. <br />
 `container` is the parent element that encapsulates all of the buttons. <br />
-`buttons` encompasses the buttons with numbers, however its propreties are also reused by `actionButtons`, `disabledButtons` and `actionButtons`. <br />
+`buttons` is used to style the buttons with numbers, however its properties are also reused by `actionButtons`, `disabledButtons` and `actionButtons`. Use the _TIPs_ below to help
+style them correctly. <br />
 `activeButton` is the button with the currently active page number. <br />
 `activeButtonPrecedence` denotes whether its border properties overcomes the sibling border properties (except radius). <br />
 `disabledButtons` are buttons that have no events and cannot be clicked. E.g. buttons when there are no data rows or
@@ -555,7 +556,7 @@ action buttons when the currently active page number is either the first or the 
 `firstVisibleButtonOverride` and `lastVisibleButtonOverride` are used for overriding the properties of first or last buttons within the container, e.g. setting
 the border radius or setting the opposite side border property when the `buttons` style border properties are set for the other.
 Eg. when
-default properties are _"border": "1px solid #dedede", "borderRight": "unset"_, set `lastVisibleButtonOverride` with _"borderLeft":"1px solid #dedede"_
+default properties are _"border": "1px solid #dedede", "borderRight": "unset"_, set `lastVisibleButtonOverride` with \_"borderLeft":"1px solid #dedede"\_
 as otherwise the last button is not going to have a border on the right.
 
 <TableContainer>
@@ -564,8 +565,9 @@ as otherwise the last button is not going to have a border on the right.
       "style": {
         "pageButtons": {
           "buttons": {
-            "default": {"color": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset"}
-          },
+            "default": {
+              "color": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset", "minWidth": "30px"
+          }},
           "activeButton": {"default": {"backgroundColor": "#3682ec", "color": "white", "border":"1px solid #3682ec"}},
           "firstVisibleButtonOverride": {"borderTopLeftRadius": "5px", "borderBottomLeftRadius": "5px"},
           "lastVisibleButtonOverride": {"borderRight": "1px solid #dedede", "borderTopRightRadius": "5px", "borderBottomRightRadius": "5px"},
@@ -613,8 +615,9 @@ as otherwise the last button is not going to have a border on the right.
     "style": {
       "pageButtons": {
         "buttons": {
-          "default": {"color": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset"}
-        },
+          "default": {
+            "color": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset", "minWidth": "30px"
+        }},
         "activeButton": {"default": {"backgroundColor": "#3682ec", "color": "white", "border":"1px solid #3682ec"}},
         "firstVisibleButtonOverride": {"borderTopLeftRadius": "5px", "borderBottomLeftRadius": "5px"},
         "lastVisibleButtonOverride": {"borderRight": "1px solid #dedede", "borderTopRightRadius": "5px", "borderBottomRightRadius": "5px"},
@@ -634,8 +637,9 @@ as otherwise the last button is not going to have a border on the right.
     "style": {
       "pageButtons": {
         "buttons": {
-          "default": {"color": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset"}
-        },
+          "default": {
+            "color": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset", "minWidth": "30px"
+        }},
         "activeButton": {"default": {"backgroundColor": "#3682ec", "color": "white", "border":"1px solid #3682ec"}},
         "firstVisibleButtonOverride": {"borderTopLeftRadius": "5px", "borderBottomLeftRadius": "5px"},
         "lastVisibleButtonOverride": {"borderRight": "1px solid #dedede", "borderTopRightRadius": "5px", "borderBottomRightRadius": "5px"},
@@ -677,12 +681,17 @@ as otherwise the last button is not going to have a border on the right.
 </Tabs>
 
 :::tip
-When setting button side borders on `buttons`, use "border":"value" with "borderRight": "unset" as otherwise all buttons will have full borders - causing them to look thick.
-When doing this you will additionally need to set `lastVisibleButtonOverride` with a "borderLeft":"value" as the rightmost button would not have a right border.
+When setting button widths, use _"minWidth"_ instead of _"width"_ to override the defaults and it is additionally useful to automatically expand
+the button widths in situations when their numbers contain multiple digits that surpass the currently defined width dimensions.
+:::
+
+:::tip
+When buttons are grouped next to each other and they have borders, set _"borderRight": "unset"_ in the `buttons` property to create an appearance of a thin border.
+When doing this you will additionally need to set _"borderLeft":"value here"_ on `lastVisibleButtonOverride` as the rightmost button would not have a right border.
 :::
 
 :::info
-When using `activeButtonPrecedence`, with thin `buttons` borders (in the tip above), make sure to set that object with "borderRight": "unset" and not "borderLeft" as the css selector limitations only allow
+When using `activeButtonPrecedence`, with thin `buttons` borders (in the tip above), make sure to use _"borderRight": "unset"_ and not _"borderLeft"_ as the css selector limitations only allow
 the active button to unset the left border of the right sibling and not the left.
 :::
 

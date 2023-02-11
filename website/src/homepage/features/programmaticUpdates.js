@@ -82,19 +82,19 @@ export function ProgrammaticUpdates() {
             displayHeaderIcons={false}
             content={[
               ['Stock', 'Current', 'Last', 'Change', 'Yield'],
-              ['JPA', '4.5%', '1400MB', '0.2MB/s', '1.2Mbps'],
-              ['REFR', '2.5%', '800MB', '0.1MB/s', '0.5Mbps'],
-              ['CORA', '5.5%', '1000MB', '1.4MB/s', '0.7Mbps'],
-              ['SOR', '1.5%', '1200MB', '1.2MB/s', '0.2Mbps'],
-              ['LCRDA', '3.5%', '400MB', '0.8MB/s', '0.5Mbps'],
+              ['JPA', '88.22', '$85.73', '-0.1%', '1.4%'],
+              ['REFR', '$18.52', '$88', '1.5%', '0.4%'],
+              ['CORA', '$69.08', '$84.46', '0%', '1.6%'],
+              ['SOR', '$46.84', '$48.69', '0.9%', '2.4%'],
+              ['LCRDA', '$20.25', '$29.3', '0.4%', '0.8%'],
             ]}
           ></TableWrapper>
         </div>
       </div>
       <div style={{float: 'left', width: '50%'}}>
         <div className={'feature-text feature-text-size'}>
-          Stream data and <b>update cells</b> programmatically without any manual input. Editable properties can also be
-          preconfigured to optimise user experience.
+          Stream data and <b>update cells</b> programmatically without any manual input. Maximimise user experience by
+          preconfiguring reactive on-text change styling.
         </div>
       </div>
     </div>
