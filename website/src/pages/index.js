@@ -1,5 +1,6 @@
 import {TableWrapper} from '../components/table/table-wrapper';
 import {Features} from '../homepage/features/features';
+import {readdAutoNavToggle} from '../nav/autoNavToggle';
 import Layout from '@theme/Layout';
 import React from 'react';
 
@@ -39,14 +40,27 @@ function RightPanel() {
 
 function StartPage() {
   return (
-    <div id="start-page">
-      <LeftPanel></LeftPanel>
-      <RightPanel></RightPanel>
+    <div id="start-page" style={{position: 'relative', width: '100%'}}>
+      <div
+        id="start-page-content"
+        style={{
+          position: 'absolute',
+          marginTop: 0,
+          marginBottom: 0,
+          top: '50%',
+          marginLeft: '55px',
+          marginRight: '55px',
+        }}
+      >
+        <LeftPanel></LeftPanel>
+        <RightPanel></RightPanel>
+      </div>
     </div>
   );
 }
 
 export default function Home() {
+  readdAutoNavToggle();
   return (
     <Layout description="Fully customisable editable table component">
       <main>

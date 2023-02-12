@@ -121,8 +121,6 @@ code {
 }
 
 #start-page {
-  padding-left: 55px;
-  padding-right: 55px;
   height: 600px;
   padding-top: 1%;
   /* prevents panels below from moving to the side if the user adds new rows to the table */
@@ -166,17 +164,32 @@ code {
 
 #left-panel {
   float: left;
-  padding-top: 60px;
   width: 50%;
 }
 
 #colored-header {
+  font-weight: 800;
+  font-size: 3.75rem;
+  background-image: linear-gradient(to right, rgb(104, 159, 214), rgb(44, 97, 150), rgb(56, 114, 172), rgb(104, 159, 214));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: color-change 700s linear infinite;
+}
+
+/* #colored-header {
   background: -webkit-linear-gradient(20deg, rgb(86, 155, 224), #333);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 800;
   font-size: 3.75rem;
+} */
+
+@keyframes color-change {
+  to {
+    background-position: 4500vh;
+  }
 }
 
 #sub-header {
@@ -201,7 +214,7 @@ code {
 #right-panel {
   float: right;
   padding-left: 5px;
-  padding-top: 80px;
+  padding-top: 20px;
   text-align: center;
   width: 50%;
 }
@@ -245,4 +258,34 @@ code {
   -webkit-text-fill-color: transparent;
   margin-top: -1px;
   font-size: 20px;
+}
+
+.navbar--fixed-top {
+  box-shadow: unset;
+}
+
+.navbar--fixed-top.scrolled {
+  background-color: green !important;
+}
+
+#start-page-content {
+  transform: translateY(-60%);
+}
+
+@media (max-height: 500px) {
+  #start-page-content {
+    transform: translateY(-50%) !important;
+  }
+}
+
+@media (max-height: 620px) {
+  #start-page-content {
+    transform: translateY(-55%) !important;
+  }
+}
+
+@media (max-height: 800px) {
+  #start-page {
+    height: calc(100vh - 60px);
+  }
 }
