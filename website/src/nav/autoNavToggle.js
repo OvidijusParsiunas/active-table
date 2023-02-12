@@ -14,9 +14,9 @@ export function readdAutoNavToggle() {
     const navBars = document.getElementsByClassName('navbar--fixed-top');
     if (navBars[0]) {
       const navbar = navBars[0];
-      onScroll(navbar);
-      window.toggleNavOnScroll = onScroll.bind(this, navbar);
-      window.addEventListener('scroll', toggleNavOnScroll);
+      toggleNavOnScroll(navbar);
+      window.toggleNavOnScroll = toggleNavOnScroll.bind(this, navbar);
+      window.addEventListener('scroll', window.toggleNavOnScroll);
     }
   }, 2);
 }
