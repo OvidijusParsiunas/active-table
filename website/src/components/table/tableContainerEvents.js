@@ -8,6 +8,7 @@ const EventText = React.forwardRef((_, ref) => {
     const closureEventsText = [];
     return {
       updateText: (argument) => {
+        if (!ref.current) return;
         if (closureEventsText.length > 3) closureEventsText.pop();
         closureEventsText.unshift(argument);
         setEventsText([...closureEventsText]);
