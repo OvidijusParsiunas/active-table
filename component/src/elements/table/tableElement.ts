@@ -24,6 +24,7 @@ import {IndexColumn} from '../indexColumn/indexColumn';
 import {TableRow} from '../../types/tableContent';
 import {ActiveTable} from '../../activeTable';
 import {TableEvents} from './tableEvents';
+import {MaximumColumns} from '../../utils/insertRemoveStructure/insert/maximum/maximumColumns';
 
 export class TableElement {
   public static changeStaticWidthTotal(tableDimensions: TableDimensions, delta: number) {
@@ -58,6 +59,7 @@ export class TableElement {
   }
 
   private static addCells(at: ActiveTable) {
+    if (!MaximumColumns.canAddMore(at)) return;
     StaticTableWidthUtils.toggleWidthUsingMaxWidth(at, true);
     at.content.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(at, rowIndex, false, row));
     StaticTableWidthUtils.toggleWidthUsingMaxWidth(at, false);

@@ -6,7 +6,11 @@ import {ActiveTable} from '../../activeTable';
 export class InitialContentProcessing {
   private static cleanupContentThatDidNotGetAdded(contents: TableContent, columnsDetails: ColumnsDetailsT) {
     if (contents[0]?.length - columnsDetails.length > 0) contents.forEach((row) => row.splice(columnsDetails.length));
-    if (contents.length > columnsDetails[0]?.elements.length) contents.splice(columnsDetails[0].elements.length);
+    if (columnsDetails.length === 0) {
+      contents.splice(0, contents.length);
+    } else if (contents.length > columnsDetails[0].elements.length) {
+      contents.splice(columnsDetails[0].elements.length);
+    }
   }
 
   public static postProcess(content: TableContent, columnsDetails: ColumnsDetailsT) {
