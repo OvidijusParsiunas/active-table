@@ -1,4 +1,4 @@
-import {TableWrapper} from '../../components/table/table-wrapper';
+import {TableWrapper} from '../../components/table/tableWrapper';
 import React from 'react';
 
 function mouseMoving(mouseClick, leftTableRef, rightTableRef, event) {

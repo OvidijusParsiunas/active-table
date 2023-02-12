@@ -1,4 +1,4 @@
-import TableContainer from '@site/src/components/table/table-container';
+import TableContainer, {extractChildTableElement} from '@site/src/components/table/tableContainer';
 import React from 'react';
 
 // using child to prevent table re-render
@@ -31,7 +31,16 @@ export default function TableContainerEvents({children, propertyname}) {
   const eventTextRef = React.useRef(null);
 
   if (tableContainerRef.current) {
-    tableContainerRef.current.children[0].children[0].children[0][propertyname] = eventTextRef.current?.updateText;
+    const syncReference = tableContainerRef.current;
+    setTimeout(() => {
+      if (tableContainerRef.current && eventTextRef.current) {
+        const activeTableReference = extractChildTableElement(tableContainerRef.current.children[0]);
+        activeTableReference[propertyname] = eventTextRef.current?.updateText;
+      } else {
+        const activeTableReference = extractChildTableElement(syncReference.children[0]);
+        activeTableReference[propertyname] = () => {};
+      }
+    });
   }
 
   return (

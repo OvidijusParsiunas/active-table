@@ -1,4 +1,4 @@
-import TableContainer from '@site/src/components/table/table-container';
+import TableContainer, {extractChildTableElement} from '@site/src/components/table/tableContainer';
 import React from 'react';
 
 // using child to prevent table re-render
@@ -32,7 +32,8 @@ export default function TableContainerMethods({children, propertyname}) {
   const updateText = eventTextRef.current?.updateText; // stored in a reference for closure to work
 
   const click = () => {
-    const content = tableContainerRef.current.children[0].children[0].children[0][propertyname]();
+    const activeTableReference = extractChildTableElement(tableContainerRef.current.children[0]);
+    const content = activeTableReference[propertyname]();
     updateText(content);
   };
 

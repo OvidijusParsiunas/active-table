@@ -1,6 +1,6 @@
-import {TableWrapper} from '../components/table/table-wrapper';
-import {Features} from '../homepage/features/features';
+import {TableWrapper} from '../components/table/tableWrapper';
 import {readdAutoNavToggle} from '../nav/autoNavToggle';
+import {Features} from '../homepage/features/features';
 import Layout from '@theme/Layout';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import TableContainer from '@site/src/components/table/table-container';
+import TableContainer, {extractChildTableElement} from '@site/src/components/table/tableContainer';
 import React from 'react';
 
 function updateCell(tableElement) {
@@ -15,7 +15,7 @@ function updateCell(tableElement) {
     } else {
       newText = `${Math.round(Math.random() * 1.5 * 10) / 10}Mbps`;
     }
-    tableElement.updateCell({newText, rowIndex, columnIndex});
+    tableElement?.updateCell({newText, rowIndex, columnIndex});
     updateCell(tableElement);
   }, 40);
 }
@@ -23,7 +23,10 @@ function updateCell(tableElement) {
 export default function TableContainerProgrammaticUpdates({children}) {
   const programmaticUpdateTableContainer = React.useRef(null);
   if (programmaticUpdateTableContainer.current) {
-    setTimeout(() => updateCell(programmaticUpdateTableContainer.current.children[0].children[0].children[0]));
+    setTimeout(() => {
+      const activeTableReference = extractChildTableElement(programmaticUpdateTableContainer.current?.children[0]);
+      updateCell(activeTableReference);
+    });
   }
   return (
     <div ref={programmaticUpdateTableContainer}>
