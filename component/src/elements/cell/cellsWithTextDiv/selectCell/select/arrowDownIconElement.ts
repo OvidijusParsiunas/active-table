@@ -7,11 +7,18 @@ export class ArrowDownIconElement {
   // this is only called once when there are multiple ActiveTable components in same window
   private static readonly ARROW_ICON_ELEMENT = ArrowDownIconElement.createSVG();
 
-  // WORK - flip the arrow icon when dropdown is open
   public static toggle(cellElement: HTMLElement | undefined, isDisplay: boolean) {
     if (!cellElement) return;
-    const inputContainer = cellElement.children[1] as HTMLElement;
-    inputContainer.style.display = isDisplay ? 'block' : 'none';
+    const container = cellElement.children[1] as HTMLElement;
+    container.style.display = isDisplay ? 'block' : 'none';
+    const svgIcon = container.children[0] as HTMLElement;
+    if (!isDisplay && svgIcon.style.filter) svgIcon.style.filter = '';
+  }
+
+  public static setActive(cellElement: HTMLElement) {
+    const container = cellElement.children[1].children[0] as HTMLElement;
+    container.style.filter = `brightness(0) saturate(100%) invert(24%) sepia(73%) saturate(631%)
+      hue-rotate(171deg) brightness(98%) contrast(98%)`;
   }
 
   // need a container to allow absolute positioning for the icon

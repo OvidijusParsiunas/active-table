@@ -44,6 +44,7 @@ export class SelectCellTextBaseEvents {
     if (activeType.cellDropdownProps?.isBasicSelect && isDisplayed) {
       cellDropdown.displayedCellElement = cellElement;
       ArrowDownIconElement.toggle(cellElement, true);
+      ArrowDownIconElement.setActive(cellElement);
     }
   }
 
