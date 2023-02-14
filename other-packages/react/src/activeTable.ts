@@ -1,12 +1,10 @@
+import {ActiveTable as ActiveTableCore} from 'active-table';
 import {createComponent} from '@lit-labs/react';
-import {ActiveTable} from 'active-table';
 import * as React from 'react';
 
-// TO-DO use react package for this
-// Remove @lit-labs/react from package
-export const TableWrapper = createComponent({
+export const ActiveTable = createComponent({
   tagName: 'active-table',
-  elementClass: ActiveTable,
+  elementClass: ActiveTableCore,
   react: React,
   events: {
     onactivate: 'activate',

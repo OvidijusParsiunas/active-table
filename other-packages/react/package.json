@@ -1,0 +1,46 @@
+{
+  "name": "active-table-react",
+  "version": "0.0.6",
+  "description": "Active Table wrapper for React",
+  "main": "./dist/activeTable.js",
+  "module": "./dist/activeTable.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "table",
+    "editable",
+    "edit",
+    "react",
+    "javascript",
+    "typescript",
+    "component",
+    "web-components",
+    "lit",
+    "lit-element"
+  ],
+  "author": "Ovidijus Parsiunas",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OvidijusParsiunas/active-table.git"
+  },
+  "bugs": {
+    "url": "https://github.com/OvidijusParsiunas/active-table/issues"
+  },
+  "homepage": "https://github.com/OvidijusParsiunas/active-table",
+  "license": "ISC",
+  "dependencies": {
+    "@lit-labs/react": "^1.1.1",
+    "active-table": "^0.0.180",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "typescript": "^4.9.5"
+  },
+  "files": [
+    "dist/**/*"
+  ]
+}
