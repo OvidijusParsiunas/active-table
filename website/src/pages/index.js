@@ -10,7 +10,9 @@ function LeftPanel() {
       <h1 id="colored-header">Active Table</h1>
       <h1 id="sub-header">Framework agnostic table component for editable data experience</h1>
       <div style={{marginTop: '30px'}}>
-        <button className="header-button">Install</button>
+        <a id="install-button" className="header-button" href="docs/API/introduction">
+          Install
+        </a>
       </div>
     </div>
   );
@@ -70,9 +72,9 @@ export default function Home() {
           <div
             style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '120px', marginBottom: '120px'}}
           >
-            <button className={'header-button custom-button'} style={{backgroundColor: 'blue'}}>
+            <a className={'header-button custom-button'} href="docs/API/introduction">
               Explore API for more
-            </button>
+            </a>
           </div>
         </div>
         by Ovidijus Parsiunas

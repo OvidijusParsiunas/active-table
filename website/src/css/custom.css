@@ -19,7 +19,8 @@
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --feature-title: #3f3f3f;
-  --code-background-color: #f0f0f0;
+  --text-code-background-color: #f0f0f0;
+  --code-background: #fbfbfb;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -36,7 +37,8 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
   --feature-title: white;
-  --code-background-color: #3c3c3c;
+  --text-code-background-color: #3c3c3c;
+  --code-background: #282a36;
 }
 
 .theme-doc-sidebar-container {
@@ -79,7 +81,7 @@
 
 code {
   border: 1px solid rgb(240, 240, 240) !important;
-  background-color: var(--code-background-color);
+  background-color: var(--text-code-background-color);
   padding: 1.5px;
   padding-left: 4px;
   padding-right: 4px;
@@ -192,6 +194,10 @@ code {
   }
 }
 
+.prism-code {
+  background-color: var(--code-background);
+}
+
 #sub-header {
   font-weight: 800;
   font-size: 2.7rem;
@@ -199,16 +205,29 @@ code {
 
 .header-button {
   background-color: rgb(57, 60, 65);
-  color: white;
+  color: white !important;
   border: unset;
-  padding-left: 28px;
-  padding-right: 28px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-radius: 5px;
-  font-size: 1.15rem;
-  font-weight: 500;
-  margin-right: 30px;
+  padding-left: 28px !important;
+  padding-right: 28px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  border-radius: 5px !important;
+  font-size: 1.15rem !important;
+  margin-right: 30px !important;
+  transition: 0.1s !important;
+  text-decoration: none !important;
+}
+
+#install-button {
+  font-weight: 500 !important;
+}
+
+#install-button:hover {
+  background-color: rgb(68, 72, 82) !important;
+}
+
+#install-button:active {
+  background-color: rgb(51, 54, 59) !important;
 }
 
 #right-panel {
@@ -237,11 +256,20 @@ code {
 }
 
 .custom-button {
-  background-color: #393c41 !important;
+  background-color: #1c2d4b !important;
   margin-right: unset !important;
-  height: 50px;
-  font-size: 20px;
-  font-weight: 600;
+  height: 50px !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  padding-top: 8px !important;
+}
+
+.custom-button:hover {
+  background-color: #24385c !important;
+}
+
+.custom-button:active {
+  background-color: rgb(30, 44, 71) !important;
 }
 
 .feature-style {
@@ -262,10 +290,6 @@ code {
 
 .navbar--fixed-top {
   box-shadow: unset;
-}
-
-.navbar--fixed-top.scrolled {
-  background-color: green !important;
 }
 
 #start-page-content {
