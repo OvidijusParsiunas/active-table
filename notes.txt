@@ -308,3 +308,9 @@ and cause the column widths to be reset (or be even smaller if using maxWidth as
 not breach the maxWdith threshold). Because we do not record column widths in-state, there is currently no way to track back what the
 original widths were and they will be forced to reset.
 TO-DO can potentially keep track of the column widths and reset them correctly in the future
+
+Updating package version Checklist:
+
+Update Webpage
+Update CDN references - in doc Install and VanillaJS Live Example sections.
+Update Live Examples

@@ -4,58 +4,20 @@ sidebar_position: 1
 
 # Installation
 
-Install the package relevant to your framework of choice via [npm](https://www.npmjs.com/).
+Install the component via [npm](https://www.npmjs.com/):
 
-React: <br />
+```
+npm install active-table
+```
+
+For React, install the following instead: <br />
 
 ```
 npm install active-table/react
 ```
 
-Live Example <br />
-
-Solid <br />
+Access the component via CDN:
 
 ```
-npm install active-table/react
+https://unpkg.com/active-table@0.0.179/dist/activeTable.bundled.js
 ```
-
-Live Example <br />
-
-Svelte <br />
-
-```
-npm install active-table/react
-```
-
-Live Example <br />
-
-Vue <br />
-
-```
-npm install active-table/react
-```
-
-Live Example <br />
-
-Or use a CDN for Vanilla JavaScript
-
-Vanilla JavaScript <br />
-
-Values must be passed into the element as **attributes**, this is achieved by using one of the following approaches:
-
-#### 1. Assign values directly into the DOM element
-
-#### 2. Assign values via JavaScript
-
-https://stackoverflow.com/questions/58169882/call-litelement-method-from-outside-the-element/75202031#75202031
-
-\*Please note that all values must be assigned at the same time, otherwise any later assignments will cause the table to re-render or throw an errror.
-
-#### 3. Combination of both
-
-\*Please note that values via JavaScript must be assigned as soon as the element is available on the dom, otherwise any later assignments will cause the table
-to re-render or throw an errror.
-
-import {readdAutoNavToggle} from '@site/src/nav/autoNavToggle';
-readdAutoNavToggle();
