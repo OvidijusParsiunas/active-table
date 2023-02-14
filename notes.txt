@@ -314,3 +314,5 @@ Updating package version Checklist:
 Update Webpage
 Update CDN references - in doc Install and VanillaJS Live Example sections.
 Update Live Examples
+Update React wrapper
+Update React wrapper version and React live
