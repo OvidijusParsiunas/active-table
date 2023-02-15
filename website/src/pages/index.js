@@ -10,7 +10,7 @@ function LeftPanel() {
       <h1 id="colored-header">Active Table</h1>
       <h1 id="sub-header">Framework agnostic table component for editable data experience</h1>
       <div style={{marginTop: '30px'}}>
-        <a id="install-button" className="header-button" href="docs/API/introduction">
+        <a id="install-button" className="header-button" href="docs/API/installation">
           Install
         </a>
       </div>
@@ -72,12 +72,22 @@ export default function Home() {
           <div
             style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '120px', marginBottom: '120px'}}
           >
-            <a className={'header-button custom-button'} href="docs/API/introduction">
+            <a className={'header-button custom-button'} href="docs/API/columnType">
               Explore API for more
             </a>
           </div>
         </div>
-        by Ovidijus Parsiunas
+        <div id="footer">
+          Built by{' '}
+          <a href="https://github.com/OvidijusParsiunas" target="_blank">
+            Ovidijus Parsiunas
+          </a>
+          . Source code is available on{' '}
+          <a href="https://github.com/OvidijusParsiunas/active-table" target="_blank">
+            GitHub
+          </a>
+          .
+        </div>
       </main>
     </Layout>
   );

@@ -215,10 +215,6 @@ if the function returns _false_. <br />
 </TabItem>
 </Tabs>
 
-:::info
-If the function string inside `func` contains " or \ characters make sure to escape them by prefixing them with **\\** e.g. \" and \\\
-:::
-
 <LineBreak></LineBreak>
 
 ### `CustomTextProcessing` {#CustomTextProcessing}
@@ -313,10 +309,6 @@ need to be converted into strings as otherwise they will be removed when passed 
 </TabItem>
 </Tabs>
 
-:::info
-If the function strings inside `changeTextFunc` or `changeStyleFunc` contain " or \ characters make sure to escape them by prefixing them with **\\** e.g. \" and \\\
-:::
-
 <LineBreak></LineBreak>
 
 ### `Sorting` {#Sorting}
@@ -396,10 +388,6 @@ It is IMPORTANT to note that both functions need to be converted into strings as
 
 </TabItem>
 </Tabs>
-
-:::info
-If the function strings inside `ascendingFunc` or `descendingFunc` contain " or \ characters make sure to escape them by prefixing them with **\\** e.g. \" and \\\
-:::
 
 <LineBreak></LineBreak>
 
@@ -757,9 +745,6 @@ The above code serves as an example and the `toYMDFunc` function will break if c
 always analyze the incoming `cellText` value format and return a default value if it is not what was expected. Additionally, it is highly
 recommended to supplement `calendar` with the use of [`textValidation`](#TextValidation) and [`customTextProcessing`](#CustomTextProcessing)
 properties to make sure cell text is always in the correct format.
-:::
-:::info
-If the function strings inside `ascendingFunc` or `descendingFunc` contain " or \ characters make sure to escape them by prefixing them with **\\** e.g. \" and \\\
 :::
 
 <LineBreak></LineBreak>
