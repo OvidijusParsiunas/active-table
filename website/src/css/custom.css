@@ -20,7 +20,9 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --feature-title: #3f3f3f;
   --text-code-background-color: #f0f0f0;
+  --text-code-border-color: rgb(240, 240, 240);
   --code-background: #fbfbfb;
+  --footer-text-color: #4f4f4f;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -37,8 +39,10 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
   --feature-title: white;
+  --text-code-border-color: #282a36;
   --text-code-background-color: #3c3c3c;
   --code-background: #282a36;
+  --footer-text-color: white;
 }
 
 .theme-doc-sidebar-container {
@@ -80,7 +84,7 @@
 }
 
 code {
-  border: 1px solid rgb(240, 240, 240) !important;
+  border: 1px solid var(--text-code-border-color) !important;
   background-color: var(--text-code-background-color);
   padding: 1.5px;
   padding-left: 4px;
@@ -97,17 +101,15 @@ code {
 
 .margin-top--md {
   margin-top: 0px !important;
-  border: var(--ifm-table-container-border);
   border-top: 1px solid #dadde1;
 }
 
-.theme-code-block {
-  border-top-left-radius: 0px !important;
-  border-top-right-radius: 0px !important;
+.margin-top--md .language-text {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
 }
 
-.language-text {
-  background-color: var(--ifm-table-container-background-color);
+.margin-top--md code {
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
 }
@@ -147,21 +149,22 @@ code {
 
 .method-button {
   padding: 10px;
-  background-color: rgb(71, 180, 219);
+  background-color: #3b8ddf;
   border: unset;
   border-radius: 5px;
   color: white;
   font-size: 15px;
   margin-bottom: 10px;
   cursor: pointer;
+  transition: 0.1s;
 }
 
 .method-button:hover {
-  background-color: rgb(93, 200, 238);
+  background-color: #4b99e7;
 }
 
 .method-button:active {
-  background-color: rgb(108, 184, 212);
+  background-color: #3f90e0;
 }
 
 #left-panel {
@@ -224,7 +227,7 @@ code {
 }
 
 #install-button:hover {
-  background-color: rgb(68, 72, 82) !important;
+  background-color: rgb(76, 81, 92) !important;
 }
 
 #install-button:active {
@@ -266,11 +269,11 @@ code {
 }
 
 .custom-button:hover {
-  background-color: #24385c !important;
+  background-color: #2b4169 !important;
 }
 
 .custom-button:active {
-  background-color: rgb(30, 44, 71) !important;
+  background-color: #223558 !important;
 }
 
 .feature-style {
@@ -326,7 +329,7 @@ html[data-theme='dark'] .header-github-link:before {
   padding-top: 10px;
   padding-bottom: 5px;
   font-size: 14px;
-  color: #4f4f4f;
+  color: var(--footer-text-color);
 }
 
 @media (max-height: 500px) {

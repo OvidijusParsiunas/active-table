@@ -10,7 +10,10 @@ export function Customization() {
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
             <TableWrapper
               tableStyle={{width: '100%'}}
-              headerStyles={{default: {backgroundColor: '#5686b7', color: 'white'}}}
+              headerStyles={{
+                default: {backgroundColor: '#5686b7', color: 'white'},
+                hoverColors: {backgroundColor: '#4978a8'},
+              }}
               cellStyle={{borderBottom: 'unset'}}
               headerIconStyle={{
                 filterColor:
@@ -32,7 +35,10 @@ export function Customization() {
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
             <TableWrapper
               tableStyle={{borderRadius: '5px', width: '100%'}}
-              headerStyles={{default: {backgroundColor: '#52555b', color: 'white'}}}
+              headerStyles={{
+                default: {backgroundColor: '#52555b', color: 'white'},
+                hoverColors: {backgroundColor: '#484b50'},
+              }}
               headerIconStyle={{
                 filterColor:
                   'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
@@ -85,7 +91,7 @@ export function Customization() {
                 filterColor:
                   'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
               }}
-              headerStyles={{default: {backgroundColor: '#08183a'}}}
+              headerStyles={{default: {backgroundColor: '#08183a'}, hoverColors: {backgroundColor: '#0a1e47'}}}
               displayAddNewRow={false}
               displayAddNewColumn={false}
               content={[
@@ -158,7 +164,7 @@ export function Customization() {
                 filterColor:
                   'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
               }}
-              headerStyles={{default: {backgroundColor: '#2d2d2d'}}}
+              headerStyles={{default: {backgroundColor: '#2d2d2d'}, hoverColors: {backgroundColor: '#353535'}}}
               displayAddNewRow={false}
               displayAddNewColumn={false}
               content={[
