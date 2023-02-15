@@ -1,4 +1,4 @@
-import {CellDropdownItems, ColumnUpdateDetails, OnColumnsUpdate} from '../../types/onUpdate';
+import {CellDropdownItems, ColumnUpdateDetails} from '../../types/onUpdate';
 import {ColumnDetailsT, ColumnsDetailsT} from '../../types/columnDetails';
 import {_CellDropdown} from '../../types/cellDropdownInternal';
 import {ColumnsByWidth} from '../../types/columnsByWidth';
@@ -41,10 +41,5 @@ export class ColumnDetailsUtils {
 
   public static getAllColumnsDetails(columnsDetails: ColumnsDetailsT) {
     return columnsDetails.map((columnDetails) => ColumnDetailsUtils.getDetails(columnDetails));
-  }
-
-  public static fireUpdateEvent(columnsDetails: ColumnsDetailsT, update: OnColumnsUpdate) {
-    const updateDetails = ColumnDetailsUtils.getAllColumnsDetails(columnsDetails);
-    update(updateDetails);
   }
 }

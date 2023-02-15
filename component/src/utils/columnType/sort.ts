@@ -6,6 +6,7 @@ import {Calendar} from '../../types/calendarFunctionality';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {TextValidation} from '../../types/textValidation';
 import {ColumnTypesUtils} from './columnTypesUtils';
+import {FireEvents} from '../events/fireEvents';
 import {RegexUtils} from '../regex/regexUtils';
 import {ActiveTable} from '../../activeTable';
 import {Sorting} from '../../types/sorting';
@@ -39,7 +40,7 @@ export class Sort {
   // cannot safely identify if nothing has been changed, hence need to send out an update for all cells
   // prettier-ignore
   private static update(at: ActiveTable, sortedDataContent: TableContent) {
-    const {_tableBodyElementRef, _frameComponents: {displayIndexColumn}, content, onContentUpdate} = at;
+    const {_tableBodyElementRef, _frameComponents: {displayIndexColumn}, content} = at;
     const rowElements = (_tableBodyElementRef as HTMLElement).children;
     sortedDataContent.forEach((row, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
@@ -58,7 +59,7 @@ export class Sort {
       });
     });
     content.splice(1, sortedDataContent.length, ...sortedDataContent);
-    setTimeout(() => onContentUpdate(JSON.parse(JSON.stringify(at.content))));
+    setTimeout(() => FireEvents.onContentUpdate(at));
   }
 
   private static sortStringsColumnAscending(content: TableContent, columnIndex: number) {

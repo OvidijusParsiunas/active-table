@@ -4,12 +4,12 @@ import {CheckboxCellElement} from '../../elements/cell/checkboxCell/checkboxCell
 import {SelectCell} from '../../elements/cell/cellsWithTextDiv/selectCell/selectCell';
 import {CellDropdown} from '../../elements/dropdown/cellDropdown/cellDropdown';
 import {DataCellElement} from '../../elements/cell/dataCell/dataCellElement';
-import {ColumnDetailsUtils} from '../columnDetails/columnDetailsUtils';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {ProcessedDataTextStyle} from './processedDataTextStyle';
 import {CellElement} from '../../elements/cell/cellElement';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {ColumnDetailsT} from '../../types/columnDetails';
+import {FireEvents} from '../events/fireEvents';
 import {ActiveTable} from '../../activeTable';
 
 export class ChangeColumnType {
@@ -25,7 +25,7 @@ export class ChangeColumnType {
       const isUpdated = ChangeColumnType.setInvalidCellToDefault(at, rowIndex, columnIndex);
       if (isUpdated && !updateTableEvent) updateTableEvent = true;
     });
-    if (updateTableEvent) setTimeout(() => at.onContentUpdate(JSON.parse(JSON.stringify(at.content))));
+    if (updateTableEvent) setTimeout(() => FireEvents.onContentUpdate(at));
   }
 
   private static setNew(at: ActiveTable, newType: string, columnIndex: number) {
@@ -65,7 +65,7 @@ export class ChangeColumnType {
     }
     ChangeColumnType.setNewStructureBasedOnType(at, columnIndex, newType);
     if (at.displayHeaderIcons) HeaderIconCellElement.changeHeaderIcon(at._columnsDetails[columnIndex]);
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at._columnsDetails, at.onColumnsUpdate));
+    setTimeout(() => FireEvents.onColumnsUpdate(at));
   }
 
   // prettier-ignore

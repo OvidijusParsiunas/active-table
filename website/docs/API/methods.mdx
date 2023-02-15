@@ -4,7 +4,7 @@ sidebar_position: 10
 
 # Methods
 
-Methods that can be called directly on the Active Table element.
+Method properties that can be called directly on the Active Table element.
 
 :::info
 Make sure the Active Table component has been fully rendered on the DOM before using these.
@@ -42,19 +42,10 @@ readdAutoNavToggle();
 </TableContainerMethods>
 
 <Tabs>
-<TabItem value="js" label="Sample code">
+<TabItem value="js" label="Code">
 
 ```text
-tableReference.setAttribute('onCellUpdate', (cellUpdate) => { console.log(cellUpdate); });
-```
-
-</TabItem>
-<TabItem value="py" label="Full code">
-
-```text
-<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
-
-tableReference.setAttribute('onCellUpdate', (cellUpdate) => { console.log(cellUpdate); });
+tableElementRef.getContent();
 ```
 
 </TabItem>
@@ -64,7 +55,7 @@ tableReference.setAttribute('onCellUpdate', (cellUpdate) => { console.log(cellUp
 
 ### `getColumnsDetails` {#getColumnsDetails}
 
-- Type: [`() => ColumnsDetails`](./types#ColumnsDetails)
+- Type: [`() => ColumnsDetails`](./sharedTypes#ColumnsDetails)
 
 Returns details related to existing columns - `width`, `typeName` and `cellDropdownItems` (if the column type contains a dropdown). This is particularly useful if the user has made changes to columns and you want to recreate them
 in the next session on the initial load.
@@ -86,19 +77,10 @@ in the next session on the initial load.
 </TableContainerMethods>
 
 <Tabs>
-<TabItem value="js" label="Sample code">
+<TabItem value="js" label="Code">
 
 ```text
-tableReference.setAttribute('onCellUpdate', (cellUpdate) => { console.log(cellUpdate); });
-```
-
-</TabItem>
-<TabItem value="py" label="Full code">
-
-```text
-<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
-
-tableReference.setAttribute('onCellUpdate', (cellUpdate) => { console.log(cellUpdate); });
+tableElementRef.getColumnsDetails();
 ```
 
 </TabItem>
@@ -132,7 +114,7 @@ at _0_ where it is the header row for `rowIndex` and the left-most column for `c
 <TabItem value="js" label="Sample code">
 
 ```text
-tableReference.updateCell({newText: "sample text", rowIndex: 1, columnIndex: 1});
+tableElementRef.updateCell({newText: "sample text", rowIndex: 1, columnIndex: 1});
 ```
 
 </TabItem>
@@ -171,14 +153,10 @@ tableReference.updateCell({newText: "sample text", rowIndex: 1, columnIndex: 1})
       updateCell(tableElement);
     }, 100);
   }
-  const activeTableElementRef = document.getElementById('active-table');
-  updateCell(activeTableElementRef);
+  const tableElementRef = document.getElementById('active-table');
+  updateCell(tableElementRef);
 </script>
 ```
 
 </TabItem>
 </Tabs>
-
-:::info
-This property should be set as an attribute via JavaScript - see WORK.
-:::

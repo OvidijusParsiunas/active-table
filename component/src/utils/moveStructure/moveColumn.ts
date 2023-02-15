@@ -1,11 +1,11 @@
 import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
-import {ColumnDetailsUtils} from '../columnDetails/columnDetailsUtils';
 import {FocusedCellUtils} from '../focusedElements/focusedCellUtils';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {ChangeColumnType} from '../columnType/changeColumnType';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
+import {FireEvents} from '../events/fireEvents';
 import {ActiveTable} from '../../activeTable';
 import {MoveUtils} from './moveUtils';
 
@@ -71,6 +71,6 @@ export class MoveColumn {
     // overwrite sibling column using overwritten content
     MoveColumn.overwrite(at, siblingColumn, siblingIndex, overwritten.overwrittenText,
       overwritten.overwrittenType, overwritten.overwrittenWidth);
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at._columnsDetails, at.onColumnsUpdate));
+    setTimeout(() => FireEvents.onColumnsUpdate(at));
   }
 }

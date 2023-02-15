@@ -134,7 +134,7 @@ more than one of these is provided - only the first one will be used in that ord
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp; `func: ((cellText: string) => boolean) as string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `setTextToDefaultOnFail?: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`failedStyle?: NoDimensionCSSStyle`](./types#NoDimensionCSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`failedStyle?: NoDimensionCSSStyle`](./sharedTypes#NoDimensionCSSStyle), <br />
   }
 - Default: { _setTextToDefaultOnFail: true_ }
 
@@ -223,7 +223,7 @@ if the function returns _false_. <br />
 
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp; `changeTextFunc?: ((cellText: string) => string|number) as string`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`changeStyleFunc?: ((cellText: string) => NoDimensionCSSStyle) as string`](./types#NoDimensionCSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`changeStyleFunc?: ((cellText: string) => NoDimensionCSSStyle) as string`](./sharedTypes#NoDimensionCSSStyle), <br />
   }
 
 Augments cell after its text is changed. `changeTextFunc` is a function that processes cell text and
@@ -403,8 +403,8 @@ It is IMPORTANT to note that both functions need to be converted into strings as
   &nbsp;&nbsp;&nbsp;&nbsp; [`reusableIconName?: DEFAULT_COLUMN_TYPES`](#DEFAULT_COLUMN_TYPES), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `svgString?: string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `containerStyles?`: { <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [`columnDropdown?: CSSStyle`](./types#CSSStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [`headerCorrections?: CSSStyle`](./types#CSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [`columnDropdown?: CSSStyle`](./sharedTypes#CSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [`headerCorrections?: CSSStyle`](./sharedTypes#CSSStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;}}
 
 Defines column type icon properties. <br />

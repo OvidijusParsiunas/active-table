@@ -1,6 +1,7 @@
 import {ProcessedDataTextStyle} from '../../utils/columnType/processedDataTextStyle';
 import {DataUtils} from '../../utils/insertRemoveStructure/shared/dataUtils';
 import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
+import {FireEvents} from '../../utils/events/fireEvents';
 import {CellText} from '../../types/tableContent';
 import {EMPTY_STRING} from '../../consts/text';
 import {ActiveTable} from '../../activeTable';
@@ -36,7 +37,7 @@ export class CellEvents {
     // however having it here minimizes complexity
     if (rowIndex > 0) ProcessedDataTextStyle.setCellStyle(at, rowIndex, columnIndex);
     // not in timeout as functionality that calls updateCell calls at.onContentUpdate after - should remain that way
-    at.onCellUpdate({text: String(cellText), rowIndex, columnIndex, updateType: CELL_UPDATE_TYPE.UPDATE});
+    FireEvents.onCellUpdate(at, cellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
     return cellText;
   }
 

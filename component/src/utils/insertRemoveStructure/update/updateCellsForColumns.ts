@@ -3,6 +3,7 @@ import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
+import {FireEvents} from '../../events/fireEvents';
 import {ActiveTable} from '../../../activeTable';
 
 export class UpdateCellsForColumns {
@@ -12,7 +13,7 @@ export class UpdateCellsForColumns {
     if (updateType !== CELL_UPDATE_TYPE.REMOVED) {
       CellEventsReset.reset(at, cellElement as HTMLElement, rowIndex, columnIndex); // REF-33
     }
-    at.onCellUpdate({text: CellElement.getText(cellElement as HTMLElement), rowIndex, columnIndex, updateType});
+    FireEvents.onCellUpdate(at, CellElement.getText(cellElement as HTMLElement), rowIndex, columnIndex, updateType);
   }
 
   // prettier-ignore

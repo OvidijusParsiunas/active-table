@@ -6,6 +6,7 @@ import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {PaginationUtils} from '../../pagination/paginationUtils';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {MoveRow} from '../../moveStructure/moveRow';
+import {FireEvents} from '../../events/fireEvents';
 import {ActiveTable} from '../../../activeTable';
 import {RemoveColumn} from './removeColumn';
 
@@ -20,7 +21,7 @@ export class RemoveRow {
   private static update(at: ActiveTable, rowIndex: number, lastRowElement: HTMLElement, lastRowIndex: number) {
     const lastRow = {element: lastRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(at, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow); // REF-20
-    setTimeout(() => at.onContentUpdate(JSON.parse(JSON.stringify(at.content))));
+    setTimeout(() => FireEvents.onContentUpdate(at));
     if (at._isRendering) return;
     if (at.content.length === 0) RemoveRow.removeAllColumnsDetails(at);
     at._addColumnCellsElementsRef.splice(rowIndex, 1);

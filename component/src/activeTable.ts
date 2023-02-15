@@ -1,6 +1,6 @@
 import {CustomColumnsSettings, CustomColumnSettings, DimensionalCSSStyle} from './types/columnsSettings';
+import {ColumnUpdateDetails, OnCellUpdate, OnColumnsUpdate, OnContentUpdate} from './types/onUpdate';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
-import {ColumnUpdateDetails, OnCellUpdate, OnColumnsUpdate, OnTableUpdate} from './types/onUpdate';
 import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {ProgrammaticCellUpdate} from './utils/programmaticUpdates/programmaticCellUpdate';
@@ -80,7 +80,7 @@ export class ActiveTable extends LitElement {
   onCellUpdate: OnCellUpdate = () => {};
 
   @property({converter: LITElementTypeConverters.convertToFunction})
-  onContentUpdate: OnTableUpdate = () => {};
+  onContentUpdate: OnContentUpdate = () => {};
 
   @property({converter: LITElementTypeConverters.convertToFunction})
   onColumnsUpdate: OnColumnsUpdate = () => {};
@@ -196,7 +196,6 @@ export class ActiveTable extends LitElement {
   })
   isDefaultTextRemovable?: boolean;
 
-  // WORK - percentage width should not be allowed
   @property({type: Object})
   cellStyle?: DimensionalCSSStyle;
 
@@ -369,6 +368,12 @@ export class ActiveTable extends LitElement {
   // added - e.g. an event listener method
   override shouldUpdate(): boolean {
     return !this._tableElementRef;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'active-table': ActiveTable;
   }
 }
 

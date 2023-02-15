@@ -4,22 +4,22 @@ sidebar_position: 11
 
 # Events
 
-WORK - should also emit events
-
-Properties accepting functions that get triggered on event occurrence.
+Events can be observed in two ways, either by assigning a function to a property or by listening to custom events fired from the element.
 
 :::info
-When using these properties take care not to re-render the table component when updating parent state.
+Take care not to re-render the component when using event information to update parent state.
 :::
 
 ### `onCellUpdate` {#onCellUpdate}
 
-- Type: (`cellUpdate:` { <br />
+- Function: (`cellUpdate:` `Body`) => `void`
+- Event: `cell-update`
+- Body: { <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`text: string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`rowIndex: number`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`columnIndex: number`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`updateType: "add"|"update"|"remove"` <br />
-  }) => `void`
+  }
 
 Triggered when any content within the table has changed. Both `rowIndex` and `columnIndex` begin at _0_
 where it is the header row for `rowIndex` and the left-most column for `columnIndex`.
@@ -49,19 +49,19 @@ readdAutoNavToggle();
 </TableContainerEvents>
 
 <Tabs>
-<TabItem value="js" label="Sample code">
+<TabItem value="js" label="Function">
 
 ```text
-tableReference.setAttribute('onCellUpdate', (cellUpdate) => { console.log(cellUpdate); });
+tableElementRef.onCellUpdate = (cellUpdate) => { console.log(cellUpdate); });
 ```
 
 </TabItem>
-<TabItem value="py" label="Full code">
+<TabItem value="py" label="Event">
 
 ```text
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
-tableReference.setAttribute('onCellUpdate', (cellUpdate) => { console.log(cellUpdate); });
+tableElementRef.addEventListener('cell-update', (cellUpdate) => { console.log(cellUpdate.detail); });
 ```
 
 </TabItem>
@@ -71,7 +71,9 @@ tableReference.setAttribute('onCellUpdate', (cellUpdate) => { console.log(cellUp
 
 ### `onContentUpdate` {#onContentUpdate}
 
-- Type: (`tableUpdate: (string|number)[][]`) => `void`
+- Function: (`contentUpdate:` `Body`) => `void`
+- Event: `content-update`
+- Body: `(string|number)[][]`
 
 Similarly to [`onCellUpdate`](#onCellUpdate) this is triggered when any cell is updated - however this property returns the full table contents 2D array instead.
 
@@ -92,19 +94,19 @@ Similarly to [`onCellUpdate`](#onCellUpdate) this is triggered when any cell is 
 </TableContainerEvents>
 
 <Tabs>
-<TabItem value="js" label="Sample code">
+<TabItem value="js" label="Function">
 
 ```text
-tableReference.setAttribute('onContentUpdate', (tableUpdate) => { console.log(tableUpdate); });
+tableElementRef.onContentUpdate = (contentUpdate) => { console.log(contentUpdate); };
 ```
 
 </TabItem>
-<TabItem value="py" label="Full code">
+<TabItem value="py" label="Event">
 
 ```text
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
-tableReference.setAttribute('onContentUpdate', (tableUpdate) => { console.log(tableUpdate); });
+tableElementRef.addEventListener('content-update', (contentUpdate) => { console.log(contentUpdate.detail); });
 ```
 
 </TabItem>
@@ -114,7 +116,9 @@ tableReference.setAttribute('onContentUpdate', (tableUpdate) => { console.log(ta
 
 ### `onColumnsUpdate` {#onColumnsUpdate}
 
-- Type: (`columnsUpdate`: [`ColumnsDetails`](./types#ColumnsDetails)) => `void`
+- Function: (`columnsUpdate:` `Body`) => `void`
+- Event: `columns-update`
+- Body: [`ColumnsDetails`](./sharedTypes#ColumnsDetails)
 
 Triggered when column details are updated. This is particularly useful if the user has made changes to columns and you want to recreate them
 in the next session on the initial load.
@@ -136,19 +140,19 @@ in the next session on the initial load.
 </TableContainerEvents>
 
 <Tabs>
-<TabItem value="js" label="Sample code">
+<TabItem value="js" label="Function">
 
 ```text
-tableReference.setAttribute('onColumnsUpdate', (columnsUpdate) => { console.log(columnsUpdate); });
+tableElementRef.onColumnsUpdate = (columnsUpdate) => { console.log(columnsUpdate); };
 ```
 
 </TabItem>
-<TabItem value="py" label="Full code">
+<TabItem value="py" label="Event">
 
 ```text
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
-tableReference.setAttribute('onColumnsUpdate', (columnsUpdate) => { console.log(columnsUpdate); });
+tableElementRef.addEventListener('columns-update', (columnsUpdate) => { console.log(columnsUpdate.detail); });
 ```
 
 </TabItem>

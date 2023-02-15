@@ -7,7 +7,6 @@ import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTab
 import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
 import {ColumnSettingsWidthUtils} from '../../columnSettings/columnSettingsWidthUtils';
 import {ColumnSettingsInternal} from '../../../types/columnsSettingsInternal';
-import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {TableElement} from '../../../elements/table/tableElement';
 import {CellElementIndex} from '../../elements/cellElementIndex';
@@ -15,6 +14,7 @@ import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
 import {TableContent} from '../../../types/tableContent';
+import {FireEvents} from '../../events/fireEvents';
 import {ActiveTable} from '../../../activeTable';
 import {LastColumn} from '../shared/lastColumn';
 
@@ -87,8 +87,8 @@ export class RemoveColumn {
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, columnIndex);
       if (columnIndex === 0 && at._columnsDetails.length > 0) RowDropdownCellOverlay.resetOverlays(at);
       setTimeout(() => {
-        at.onContentUpdate(JSON.parse(JSON.stringify(at.content)));
-        ColumnDetailsUtils.fireUpdateEvent(at._columnsDetails, at.onColumnsUpdate);
+        FireEvents.onContentUpdate(at);
+        FireEvents.onColumnsUpdate(at);
       });
     });
   }

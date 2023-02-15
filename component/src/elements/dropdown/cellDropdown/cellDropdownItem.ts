@@ -1,12 +1,12 @@
 import {_CellDropdown, ActiveCellDropdownItems, LabelDetails} from '../../../types/cellDropdownInternal';
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
-import {ColumnDetailsUtils} from '../../../utils/columnDetails/columnDetailsUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
 import {CellText, TableContent} from '../../../types/tableContent';
 import {CellDropdownItemEvents} from './cellDropdownItemEvents';
 import {OptionDeleteButton} from './buttons/optionDeleteButton';
 import {OptionColorButton} from './buttons/optionColorButton';
+import {FireEvents} from '../../../utils/events/fireEvents';
 import {ColumnDetailsT} from '../../../types/columnDetails';
 import {LabelOptions} from '../../../types/cellDropdown';
 import {CellDetails} from '../../../types/focusedCell';
@@ -63,7 +63,7 @@ export class CellDropdownItem {
       newColor = CellDropdownItem.ACTIVE_ITEM_BACKGROUND_COLOR;
     }
     CellDropdownItem.addItem(at, newItemText, newColor, columnDetails);
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(at._columnsDetails, at.onColumnsUpdate));
+    setTimeout(() => FireEvents.onColumnsUpdate(at));
   }
 
   // prettier-ignore

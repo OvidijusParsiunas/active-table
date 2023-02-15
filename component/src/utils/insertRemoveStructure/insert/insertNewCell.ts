@@ -12,11 +12,11 @@ import {CellDropdown} from '../../../elements/dropdown/cellDropdown/cellDropdown
 import {ColumnDetailsInitial, ColumnDetailsT} from '../../../types/columnDetails';
 import {ProcessedDataTextStyle} from '../../columnType/processedDataTextStyle';
 import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
-import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
 import {CellElementIndex} from '../../elements/cellElementIndex';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {CellText} from '../../../types/tableContent';
+import {FireEvents} from '../../events/fireEvents';
 import {ActiveTable} from '../../../activeTable';
 import {DataUtils} from '../shared/dataUtils';
 
@@ -83,11 +83,10 @@ export class InsertNewCell {
   // REF-13
   // prettier-ignore
   private static insertInitialColumnDetails(at: ActiveTable, cellText: CellText, columnIndex: number) {
-    const {_columnsDetails, _customColumnsSettings, _cellDropdownContainer, _defaultColumnsSettings, onColumnsUpdate} = at;
+    const {_columnsDetails, _customColumnsSettings, _cellDropdownContainer, _defaultColumnsSettings} = at;
     const cellDropdown = CellDropdown.createAndAppend(_cellDropdownContainer as HTMLElement);
     const columnDetails = ColumnDetails.createInitial(_defaultColumnsSettings, cellDropdown,
-      _customColumnsSettings[cellText], at._defaultCellHoverColors,
-      ColumnDetailsUtils.fireUpdateEvent.bind(this, _columnsDetails, onColumnsUpdate));
+      _customColumnsSettings[cellText], at._defaultCellHoverColors, FireEvents.onColumnsUpdate.bind(this, at));
       _columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
   }
 

@@ -12,6 +12,7 @@ import {CellText, TableRow} from '../../../types/tableContent';
 import {ElementDetails} from '../../../types/elementDetails';
 import {MaximumColumns} from './maximum/maximumColumns';
 import {MoveRow} from '../../moveStructure/moveRow';
+import {FireEvents} from '../../events/fireEvents';
 import {MaximumRows} from './maximum/maximumRows';
 import {ActiveTable} from '../../../activeTable';
 import {InsertNewCell} from './insertNewCell';
@@ -26,7 +27,7 @@ export class InsertNewRow {
     const lastDataRowElement = at._tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const lastRowDetails: ElementDetails = {element: lastDataRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(at, rowIndex, CELL_UPDATE_TYPE.ADD, lastRowDetails); // REF-20
-    setTimeout(() => at.onContentUpdate(JSON.parse(JSON.stringify(at.content))));
+    setTimeout(() => FireEvents.onContentUpdate(at));
   }
 
   private static canStartRenderCellBeAdded(at: ActiveTable, rowIndex: number, columnIndex: number) {

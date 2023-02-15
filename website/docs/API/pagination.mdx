@@ -251,7 +251,7 @@ If the defined `rowsPerPage` value (in [`pagination`](#pagination) object) is no
 
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`rowsPerPageSelect?: RowsPerPageOptionsStyle`](#RowsPerPageOptionsStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`numberOfVisibleRows?: CSSStyle`](./types#CSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`numberOfVisibleRows?: CSSStyle`](./sharedTypes#CSSStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`pageButtons?: PageButtonStyle`](#PageButtonStyle) <br />
   }
 
@@ -408,8 +408,8 @@ When number of visible rows text contains digits that are in the 100s+, it is ad
 ### `RowsPerPageOptionsStyle` {#RowsPerPageOptionsStyle}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`container?: CSSStyle`](./types#CSSStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`prefixText?: CSSStyle`](./types#CSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`container?: CSSStyle`](./sharedTypes#CSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`prefixText?: CSSStyle`](./sharedTypes#CSSStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`button?: StatefulCSS`](#StatefulCSS), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`buttonText?: StatefulCSS`](#StatefulCSS), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`buttonArrow?: StatefulCSS`](#StatefulCSS) <br />
@@ -536,14 +536,14 @@ Styling properties for the rows per page component elements. `container` is the 
 ### `PageButtonStyle` {#PageButtonStyle}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`container?: CSSStyle`](./types#CSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`container?: CSSStyle`](./sharedTypes#CSSStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`buttons?: StatefulCSS`](#StatefulCSS), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`activeButton?: StatefulCSS`](#StatefulCSS), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`activeButtonPrecedence?: boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`disabledButtons?: StatefulCSS`](#StatefulCSS), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`actionButtons?: ActionButtonStyle`](#ActionButtonStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`firstVisibleButtonOverride?: CSSStyle`](./types#CSSStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`lastVisibleButtonOverride?: CSSStyle`](./types#CSSStyle) <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`firstVisibleButtonOverride?: CSSStyle`](./sharedTypes#CSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`lastVisibleButtonOverride?: CSSStyle`](./sharedTypes#CSSStyle) <br />
   }
 - Default: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp;_activeButtonPrecedence: false_, <br />
@@ -992,7 +992,7 @@ Object defining position properties for a pagination component. `order` is the o
 
 ### `StatefulCSS` {#StatefulCSS}
 
-- Type: {[`default?: CSSStyle`](./types#CSSStyle), [`hover?: CSSStyle`](./types#CSSStyle), [`click?: CSSStyle`](./types#CSSStyle)}
+- Type: {[`default?: CSSStyle`](./sharedTypes#CSSStyle), [`hover?: CSSStyle`](./sharedTypes#CSSStyle), [`click?: CSSStyle`](./sharedTypes#CSSStyle)}
 
 Object defining styling properties for different mouse states on the element.
 

@@ -1,6 +1,6 @@
-import {ColumnDetailsUtils} from '../../../../utils/columnDetails/columnDetailsUtils';
 import {CellWithTextEvents} from '../../../cell/cellsWithTextDiv/cellWithTextEvents';
 import {CellDropdownScrollbar} from '../cellDropdownScrollbar';
+import {FireEvents} from '../../../../utils/events/fireEvents';
 import {ColumnDetailsT} from '../../../../types/columnDetails';
 import {CellElement} from '../../../cell/cellElement';
 import {ActiveTable} from '../../../../activeTable';
@@ -18,7 +18,7 @@ export class OptionDeleteButtonEvents {
     } else {
       CellDropdownScrollbar.setProperties(cellDropdown);
     }
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(this._columnsDetails, this.onColumnsUpdate));
+    setTimeout(() => FireEvents.onColumnsUpdate(this));
   }
 
   public static addEvents(at: ActiveTable, columnDetails: ColumnDetailsT, buttonElement: HTMLElement) {

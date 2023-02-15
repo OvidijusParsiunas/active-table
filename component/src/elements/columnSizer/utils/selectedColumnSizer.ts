@@ -1,6 +1,6 @@
-import {ColumnDetailsUtils} from '../../../utils/columnDetails/columnDetailsUtils';
 import {ColumnSizerT, SelectedColumnSizerT} from '../../../types/columnSizer';
 import {ColumnSizerGenericUtils} from './columnSizerGenericUtils';
+import {FireEvents} from '../../../utils/events/fireEvents';
 import {ActiveTable} from '../../../activeTable';
 import {MoveLimits} from './moveLimits';
 
@@ -17,7 +17,7 @@ export class SelectedColumnSizer {
       // this is to reflect the initial sizer offset to center itself in the cell divider
       initialOffset: columnSizerOffset,
       mouseMoveOffset: columnSizerOffset,
-      fireColumnsUpdate: ColumnDetailsUtils.fireUpdateEvent.bind(this, at._columnsDetails, at.onColumnsUpdate),
+      fireColumnsUpdate: FireEvents.onColumnsUpdate.bind(this, at),
     };
   }
 

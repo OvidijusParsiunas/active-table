@@ -1,5 +1,6 @@
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {ColumnDetailsT} from '../../types/columnDetails';
+import {FireEvents} from '../events/fireEvents';
 import {ActiveTable} from '../../activeTable';
 
 export class ColumnSettingsDefaultTextUtils {
@@ -17,6 +18,6 @@ export class ColumnSettingsDefaultTextUtils {
       const isUpdated = CellEvents.setCellToDefaultIfNeeded(at, relativeIndex, columnIndex, element, false);
       if (!isCellUpdated && isUpdated) isCellUpdated = true;
     });
-    setTimeout(() => at.onContentUpdate(JSON.parse(JSON.stringify(at.content))));
+    setTimeout(() => FireEvents.onContentUpdate(at));
   }
 }

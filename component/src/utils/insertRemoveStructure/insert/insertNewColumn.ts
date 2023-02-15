@@ -1,6 +1,5 @@
 import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
-import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
 import {UpdateCellsForColumns} from '../update/updateCellsForColumns';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
@@ -8,6 +7,7 @@ import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
 import {MaximumColumns} from './maximum/maximumColumns';
 import {TableRow} from '../../../types/tableContent';
+import {FireEvents} from '../../events/fireEvents';
 import {EMPTY_STRING} from '../../../consts/text';
 import {ActiveTable} from '../../../activeTable';
 import {LastColumn} from '../shared/lastColumn';
@@ -36,8 +36,8 @@ export class InsertNewColumn {
       InsertNewColumn.insertToAllRows(at, columnIndex, columnData);
       ToggleAdditionElements.update(at, true, AddNewColumnElement.toggle);
       setTimeout(() => {
-        at.onContentUpdate(JSON.parse(JSON.stringify(at.content)));
-        ColumnDetailsUtils.fireUpdateEvent(at._columnsDetails, at.onColumnsUpdate);
+        FireEvents.onContentUpdate(at);
+        FireEvents.onColumnsUpdate(at);
       });
     }
   }

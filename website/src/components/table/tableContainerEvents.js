@@ -1,9 +1,10 @@
 import TableContainer, {extractChildTableElement} from '@site/src/components/table/tableContainer';
+import LiveTableData from './liveTableData';
 import React from 'react';
 
 // using child to prevent table re-render
 const EventText = React.forwardRef((_, ref) => {
-  const [eventsText, setEventsText] = React.useState([]);
+  const [eventsText, setEventsText] = React.useState(['']);
   React.useImperativeHandle(ref, () => {
     const closureEventsText = [];
     return {
@@ -18,11 +19,7 @@ const EventText = React.forwardRef((_, ref) => {
   return (
     <div>
       Latest events:
-      {eventsText.map((eventText, index) => (
-        <div key={index}>
-          {'>'} {JSON.stringify(eventText)}
-        </div>
-      ))}
+      <LiveTableData data={eventsText}></LiveTableData>
     </div>
   );
 });

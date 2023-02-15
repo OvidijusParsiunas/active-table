@@ -20,6 +20,6 @@ export interface ColumnUpdateDetails {
 
 export type OnColumnsUpdate = (columnsUpdate: ColumnUpdateDetails[]) => void;
 
-export type OnTableUpdate = (tableUpdate: TableContent) => void;
+export type OnContentUpdate = (contentUpdate: TableContent) => void;
 
 export type OnColumnWidthsUpdate = (columnWidthsUpdate: number[]) => void;

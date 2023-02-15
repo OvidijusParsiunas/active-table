@@ -1,4 +1,5 @@
 import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
+import {MaximumColumns} from '../../utils/insertRemoveStructure/insert/maximum/maximumColumns';
 import {FrameComponentsElements} from '../../utils/frameComponents/frameComponentsElements';
 import {FrameComponentsColors} from '../../utils/frameComponents/frameComponentsColors';
 import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElements';
@@ -8,7 +9,6 @@ import {InsertRemoveColumnSizer} from '../columnSizer/utils/insertRemoveColumnSi
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {AddNewColumnElement} from './addNewElements/column/addNewColumnElement';
-import {ColumnDetailsUtils} from '../../utils/columnDetails/columnDetailsUtils';
 import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
 import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
 import {StickyPropsUtils} from '../../utils/stickyProps/stickyPropsUtils';
@@ -20,11 +20,11 @@ import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
 import {CellDropdown} from '../dropdown/cellDropdown/cellDropdown';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {TableDimensions} from '../../types/tableDimensions';
+import {FireEvents} from '../../utils/events/fireEvents';
 import {IndexColumn} from '../indexColumn/indexColumn';
 import {TableRow} from '../../types/tableContent';
 import {ActiveTable} from '../../activeTable';
 import {TableEvents} from './tableEvents';
-import {MaximumColumns} from '../../utils/insertRemoveStructure/insert/maximum/maximumColumns';
 
 export class TableElement {
   public static changeStaticWidthTotal(tableDimensions: TableDimensions, delta: number) {
@@ -69,7 +69,7 @@ export class TableElement {
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true); // REF-11
     InitialContentProcessing.postProcess(at.content, at._columnsDetails);
     setTimeout(() => {
-      ColumnDetailsUtils.fireUpdateEvent(at._columnsDetails, at.onColumnsUpdate);
+      FireEvents.onColumnsUpdate(at);
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, at._columnsDetails.length - 1);
     });
   }

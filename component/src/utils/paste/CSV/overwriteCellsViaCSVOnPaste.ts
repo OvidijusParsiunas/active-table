@@ -13,6 +13,7 @@ import {ParseCSVClipboardText} from './parseCSVClipboardText';
 import {CellEvents} from '../../../elements/cell/cellEvents';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {FocusedCell} from '../../../types/focusedCell';
+import {FireEvents} from '../../events/fireEvents';
 import {ArrayUtils} from '../../array/arrayUtils';
 import {EMPTY_STRING} from '../../../consts/text';
 import {ActiveTable} from '../../../activeTable';
@@ -164,7 +165,7 @@ export class OverwriteCellsViaCSVOnPaste {
     if (!OverwriteCellsViaCSVOnPaste.canNewRowsBeCreated(at, CSV, startColumnIndex)) return;
     const dataForNewRows = CSV.slice(numberOfRowsToOverwrite);
     OverwriteCellsViaCSVOnPaste.createNewRows(at, dataForNewRows, startColumnIndex);
-    setTimeout(() => at.onContentUpdate(JSON.parse(JSON.stringify(at.content))));
+    setTimeout(() => FireEvents.onContentUpdate(at));
   }
 
   private static focusOriginalCellAfterProcess(at: ActiveTable, process: () => void) {

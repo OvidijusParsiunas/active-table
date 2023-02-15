@@ -134,7 +134,7 @@ Removes default text when a cell containg one is focused.
 Defines the default style for table cells. <br />
 This object contais all `CSSStyle` properties except `minWidth`, `maxWidth`, `height`, `minHeight` and `maxHeight`. <br />
 The `width` property supports _px_ and _%_ measurements, however when using _%_ - the [`tableStyle`](./table#tableStyle) object should have its `width` property
-also set as otherwise the cells will not be able to calculate a relative width. Additionally, when [`cellStyle`](#cellStyle) - `width` and
+set as otherwise the cells will not be able to calculate a relative width. Additionally, when [`cellStyle`](#cellStyle) - `width` and
 [`tableStyle`](./table#tableStyle) - `width` are defined and [`isColumnResizable`](./column#isColumnResizable) is set to _true_, the [`cellStyle`](#cellStyle) - `width`
 will be overriden to reach the set table `width`, hence to prevent this make sure to set [`isColumnResizable`](./column#isColumnResizable) to _false_.
 

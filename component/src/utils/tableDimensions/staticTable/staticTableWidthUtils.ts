@@ -2,6 +2,7 @@ import {ColumnDetailsUtils} from '../../columnDetails/columnDetailsUtils';
 import {TableDimensions} from '../../../types/tableDimensions';
 import {ColumnsByWidth} from '../../../types/columnsByWidth';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
+import {FireEvents} from '../../events/fireEvents';
 import {ActiveTable} from '../../../activeTable';
 import {StaticTable} from './staticTable';
 
@@ -77,7 +78,7 @@ export class StaticTableWidthUtils {
   }
 
   public static changeWidthsBasedOnColumnInsertRemove(at: ActiveTable, isInsert: boolean) {
-    const {_tableElementRef: table, _tableDimensions: td, _columnsDetails, onColumnsUpdate} = at;
+    const {_tableElementRef: table, _tableDimensions: td, _columnsDetails} = at;
     if (!table) return;
     const {width, maxWidth, staticWidth} = td;
     if (width !== undefined) {
@@ -89,6 +90,6 @@ export class StaticTableWidthUtils {
     } else if (isInsert && StaticTable.isTableAtMaxWidth(table, td)) {
       StaticTableWidthUtils.resetColumnSizes(_columnsDetails, maxWidth as number, td);
     }
-    setTimeout(() => ColumnDetailsUtils.fireUpdateEvent(_columnsDetails, onColumnsUpdate));
+    setTimeout(() => FireEvents.onColumnsUpdate(at));
   }
 }
