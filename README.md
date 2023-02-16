@@ -1,6 +1,6 @@
 <br />
 
-![alt text](./readme/Screenshot21.png)
+![alt text](./readme/Screenshot22.png)
 
 <b>Active Table</b> is a UI component built with a focus on delivering the best editable table experience. With customizable features, you can easily tailor it to meet your specific design requirements. Use activetable.io to browse all the available features, how to use them, examples and more!
 
