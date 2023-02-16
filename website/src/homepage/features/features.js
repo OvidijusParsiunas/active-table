@@ -40,7 +40,6 @@ function ColumnTypes() {
                 ],
               },
               {headerName: 'Date of Birth', defaultColumnTypeName: 'Date d-m-y'},
-              {headerName: 'Verified', defaultColumnTypeName: 'Checkbox'},
               {
                 headerName: 'Hobby',
                 defaultColumnTypeName: 'Hobbies',
@@ -52,13 +51,13 @@ function ColumnTypes() {
                   },
                 ],
               },
-              {headerName: 'Balance', defaultColumnTypeName: 'Currency'},
+              {headerName: 'Verified', defaultColumnTypeName: 'Checkbox'},
             ]}
             content={[
               ['Name', 'Date of Birth', 'Hobby', 'Verified'],
-              ['Peter', '12-08-1992', 'Fishing', '$20.00'],
+              ['Peter', '12-08-1992', 'Fishing', 'true'],
               ['John', '14-10-2012', 'Soccer', 'false'],
-              ['Gregg', '05-02-1975', 'Reading', '$80.00'],
+              ['Gregg', '05-02-1975', 'Reading', 'false'],
               ['Jeff', '24-04-2015', 'Soccer', 'false'],
             ]}
           ></TableWrapper>

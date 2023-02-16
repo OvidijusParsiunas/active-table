@@ -1,41 +1,25 @@
-# Website
+<br />
 
-This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+![alt text](../readme/Screenshot16.png)
 
-### Installation
+<b>Active Table</b> is a UI component built with a focus on delivering the best editable table experience. Every feature is customizable to allow you to design the table you need. Please use activetable.io to browse all the available features, how to use them, examples and more!
 
-```
-$ yarn
-```
+The documentation website has been built using [Docusaurus 2](https://docusaurus.io/).
 
-### Local Development
+## Local setup
 
 ```
-$ yarn start
+# Install node dependencies:
+$ npm install
+
+# build the website:
+$ npm run build
+
+# serve and automatically build the website:
+$ npm run start
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+## Contributions
 
-### Build
-
-```
-$ yarn build
-```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-### Deployment
-
-Using SSH:
-
-```
-$ USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+Open source is built by the community for the community. All contributions to this project are welcome!
+<br> Additionally, if you have any suggestions for enhancements, ideas on how to take the project further or have discovered a bug, do not hesitate to create a new issue ticket and we will look into it as soon as possible!
