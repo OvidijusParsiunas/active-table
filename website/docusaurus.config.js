@@ -8,14 +8,13 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Active Table',
   tagline: 'Fully customisable editable table component',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://active-table.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
 
   // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
   organizationName: 'OvidijusParsiunas', // Usually your GitHub org/user name.
   projectName: 'active-table', // Usually your repo name.
 
@@ -35,16 +34,9 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
+          // Used for the "edit this page" links.
           editUrl: 'https://github.com/OvidijusParsiunas/active-table/tree/main/website',
         },
-        // blog: {
-        //   showReadingTime: true,
-        //   // Please change this to your repo.
-        //   // Remove this to remove the "edit this page" links.
-        //   editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        // },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
@@ -71,119 +63,18 @@ const config = {
     }),
   ],
 
-  // // table:
-  // tableStyle
-  // overflow
-  // frameComponentsStyle
-
-  // // content:
-  // content
-  // defaultText
-  // isDefaultTextRemovable
-  // cellStyle
-  // isCellTextEditable
-  // spellCheck
-
-  // // header:
-  // headerStyles
-  // isHeaderTextEditable
-  // allowDuplicateHeaders
-  // displayHeaderIcons
-  // headerIconStyle
-  // stickyHeader
-  // dataStartsAtHeader
-
-  // // rows:
-  // rowHoverStyle
-  // stripedRows
-  // rowDropdown
-  // maxRows
-  // displayAddNewRow
-
-  // // columns:
-  // isColumnResizable
-  // columnResizerColors
-  // columnDropdown
-  // customColumnsSettings
-  // maxColumns
-  // preserveNarrowColumns
-  // displayAddNewColumn
-  // displayIndexColumn
-  // Types
-  // CellDropdown
-  // ColumnDropdownSettings
-
-  // // column type:
-  // defaultColumnTypeName
-  // availableDefaultColumnTypes
-  // customColumnTypes
-  // ColumnType
-  // TextValidation
-  // CustomTextProcessing
-  // Sorting
-  // IconSettings
-  // Calendar
-  // Checkbox
-  // DEFAULT_COLUMN_TYPES
-
-  // // pagination:
-  // pagination
-  // Types
-  // RowsPerPageSelect
-  // PaginationStyle
-  // RowsPerPageOptionsStyle
-  // PageButtonStyle
-  // ActionButtonStyle
-  // PaginationPositions
-  // PaginationPosition
-  // StatefulCSS
-  // More examples
-
-  // // methods:
-  // getContent
-  // getColumnsDetails
-  // updateCell
-
-  // // events:
-  // onCellUpdate
-  // onContentUpdate
-  // onColumnsUpdate
-
-  // // types:
-  // DropdownDisplaySettings
-  // CSSStyle
-  // HoverableStyles
-  // NoDimensionCSSStyle
-  // ColumnDetails
-
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
         title: 'Active Table',
-        // logo: {
-        //   alt: 'My Site Logo',
-        //   src: 'img/logo.svg',
-        // },
         items: [
-          // {
-          //   type: 'doc',
-          //   docId: 'Intro/getting-started',
-          //   position: 'left',
-          //   label: 'Intro',
-          // },
           {
             type: 'doc',
             docId: 'API/introduction',
             position: 'left',
             label: 'Documentation',
           },
-          // {to: '/blog', label: 'Blog', position: 'left'},
-          // {
-          //   href: 'https://github.com/OvidijusParsiunas/active-table',
-          //   label: 'GitHub',
-          //   position: 'right',
-          // },
           {
             href: 'https://github.com/OvidijusParsiunas/active-table',
             position: 'right',
