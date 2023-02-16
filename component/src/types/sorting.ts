@@ -6,7 +6,7 @@ export interface Sorting {
   // The reason why the arguments are of string type is because cell dom elements store text in a string format, hence
   // instead of attempting to infer the correct type ourselves, we leave it to the consumer to infer the data they
   // want to and give them full control over the sorting functionality.
-  // IMPORTANT - if utilizing regex inside the function, make sure the escape characters are padded, e.g: \ => \\
+  // for attributes - if utilizing regex inside the function, make sure the escape characters are padded, e.g: \ => \\
   ascendingFunc: SortingFunc;
   descendingFunc: SortingFunc;
 }

@@ -35,7 +35,7 @@ export class DataUtils {
     const {activeType: {textValidation, customTextProcessing}, settings: {defaultText}} = columnsDetails;
     if (rowIndex > 0) {
       if (customTextProcessing?.changeTextFunc) {
-        processedText = customTextProcessing.changeTextFunc(String(processedText)); 
+        processedText = customTextProcessing.changeTextFunc(String(processedText), rowIndex); 
       }
       if (!textValidation.setTextToDefaultOnFail && processedText !== EMPTY_STRING) return processedText;
     }

@@ -16,11 +16,11 @@ export class ProcessedDataTextStyle {
 
   // prettier-ignore
   private static setCustomStyle(changeStyleFunc: CustomTextProcessing['changeStyleFunc'], text: CellText,
-      columnDetails: ColumnDetailsT, processedStyle: CellProcessedTextStyle,
+      columnDetails: ColumnDetailsT, rowIndex: number, processedStyle: CellProcessedTextStyle,
       textContainerElement: HTMLElement, columnsSettings: DefaultColumnsSettings) {
     if (changeStyleFunc) {
       ResetColumnStyles.setDefaultStyle(columnDetails, processedStyle, textContainerElement, columnsSettings);
-      const newStyle = changeStyleFunc(String(text));
+      const newStyle = changeStyleFunc(String(text), rowIndex);
       Object.assign(textContainerElement.style, newStyle);
       processedStyle.lastAppliedStyle = newStyle;
       ColumnSettingsBorderUtils.overwriteSideBorderIfSiblingsHaveSettings(columnDetails, [textContainerElement]);
@@ -75,8 +75,8 @@ export class ProcessedDataTextStyle {
       }
     }
     if (!wasValidationStyleSet && customTextProcessing?.changeStyleFunc) { // REF-3
-      ProcessedDataTextStyle.setCustomStyle(customTextProcessing.changeStyleFunc, text, columnDetails, processedStyle,
-        textContainerElement, at._defaultColumnsSettings);
+      ProcessedDataTextStyle.setCustomStyle(customTextProcessing.changeStyleFunc, text, columnDetails,
+        rowIndex, processedStyle, textContainerElement, at._defaultColumnsSettings);
     }
   }
 

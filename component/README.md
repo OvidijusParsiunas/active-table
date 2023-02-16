@@ -34,7 +34,7 @@ Use the following package for React instead:
 npm install active-table-react
 ```
 
-Then Simply add this to your markup:
+Then simply add this to your markup:
 
 ```
 <active-table content='[["Planet"],["Earth"]]'/>

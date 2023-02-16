@@ -132,7 +132,7 @@ more than one of these is provided - only the first one will be used in that ord
 ### `TextValidation` {#TextValidation}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `func: ((cellText: string) => boolean) as string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `func: (cellText: string, rowIndex: number) => boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `setTextToDefaultOnFail?: boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`failedStyle?: NoDimensionCSSStyle`](./sharedTypes#NoDimensionCSSStyle), <br />
   }
@@ -140,9 +140,7 @@ more than one of these is provided - only the first one will be used in that ord
 
 Used to enforce cell text validation. This operates only in the data cells and not the header. <br />
 The `func` property takes a function that will be called when the text is initially placed in the cell and when
-it changes. The function must return _true_ if the text is correct or _false_ if it is incorrect. It is IMPORTANT
-to note that the function needs to be converted into a string, as otherwise it will be removed when passed in
-with the parent object.
+it changes. The function must return _true_ if the text is correct or _false_ if it is incorrect.
 `setTextToDefaultOnFail` will reset the cell text to value defined inside [`defaultText`](./content#defaultText)
 if the function returns _false_. <br />
 `failedStyle` is used to change the cell styling if the function returns _false_.
@@ -222,14 +220,13 @@ if the function returns _false_. <br />
 ### `CustomTextProcessing` {#CustomTextProcessing}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `changeTextFunc?: ((cellText: string) => string|number) as string`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`changeStyleFunc?: ((cellText: string) => NoDimensionCSSStyle) as string`](./sharedTypes#NoDimensionCSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `changeTextFunc?: (cellText: string, rowIndex: number) => string|number`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`changeStyleFunc?: (cellText: string, rowIndex: number) => NoDimensionCSSStyle`](./sharedTypes#NoDimensionCSSStyle), <br />
   }
 
 Augments cell after its text is changed. `changeTextFunc` is a function that processes cell text and
 returns same/new text depending on its contents. `changeStyleFunc` is a function that processes cell text and
-returns a styling object for the cell depenging on its contents. It is IMPORTANT to note that both functions
-need to be converted into strings as otherwise they will be removed when passed in with the parent object.
+returns a styling object for the cell depenging on its contents.
 
 #### Example processing for currency: 20 (red) < 100 (yellow) < more (green)
 
@@ -318,15 +315,14 @@ need to be converted into strings as otherwise they will be removed when passed 
 ### `Sorting` {#Sorting}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `ascendingFunc: ((cellText1: string, cellText2: string) => number) as string`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `descendingFunc: ((cellText1: string, cellText2: string) => number) as string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `ascendingFunc: (cellText1: string, cellText2: string) => number`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `descendingFunc: (cellText1: string, cellText2: string) => number`, <br />
   }
 
 Facilitates column cell sorting capabilities.
 The functions are executed using the standard JavaScript [.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
 method and are expected to return a negative value (< 0) if cellText1 is less than cellText2, zero (0) if both arguments
 are equal, or a positive value (> 0) if cellText1 is greater than cellText2.
-It is IMPORTANT to note that both functions need to be converted into strings as otherwise they will be removed when passed in with the parent object.
 
 #### Example sorting for numbers
 
@@ -672,15 +668,14 @@ Styling properties for the select and label dropdowns.
 ### `Calendar` {#Calendar}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `toYMDFunc: ((cellText: string) => YMDFormat) as string`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `fromYMDFunc: ((YMD: YMDFormat) => string) as string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `toYMDFunc: (cellText: string) => YMDFormat`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `fromYMDFunc: (YMD: YMDFormat) => string`, <br />
   }
 
 Adds a hoverable calendar icon element to each data cell. When a cell is focused - a [date picker overlay](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date)
 is opened which the user can use to help select the date they need. <br />
 The `toYMDFunc` and `fromYMDFunc` functions are strictly used for converting cell text into a format ([`YMDFormat`](#YMDFormat)) the calendar API
 accepts and back to the original format when a new date is chosen.
-It is IMPORTANT to note that both functions need to be converted into strings as otherwise they will be removed when passed in with the parent object.
 
 #### `YMDFormat` {#YMDFormat}
 

@@ -1,8 +1,8 @@
 <br />
 
-![alt text](./readme/Screenshot16.png)
+![alt text](./readme/Screenshot21.png)
 
-<b>Active Table</b> is a UI component built with a focus on delivering the best editable table experience. Every feature is customizable to allow you to design the table you need. Please use activetable.io to browse all the available features, how to use them, examples and more!
+<b>Active Table</b> is a UI component built with a focus on delivering the best editable table experience. With customizable features, you can easily tailor it to meet your specific design requirements. Use activetable.io to browse all the available features, how to use them, examples and more!
 
 ### Main Features
 
@@ -34,7 +34,7 @@ Use the following package for React instead:
 npm install active-table-react
 ```
 
-Then Simply add this to your markup:
+Then simply add this to your markup:
 
 ```
 <active-table content='[["Planet"],["Earth"]]'/>
@@ -42,11 +42,11 @@ Then Simply add this to your markup:
 
 The exact syntax for the above will vary depending on the framework of your choice (see here).
 
-### Roadmap
+### Todo
 
 - [ ] Code refactoring (<b>In progress</b>)
 - [ ] Move row/column by dragging
-- [ ] Pick mode
+- [ ] Selection mode
 - [ ] Data filtering
 - [ ] Unit tests
 - [ ] Undo/Redo
