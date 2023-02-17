@@ -1,4 +1,5 @@
 import {OuterContainerContentPosition, OuterContainers} from '../../types/outerContainer';
+import {CSVButtonProps, CSVButtonsInternal} from '../../types/CSVInternal';
 import {PaginationPositions} from '../../types/pagination';
 import {ActiveTable} from '../../activeTable';
 
@@ -64,6 +65,7 @@ export class OuterContainerElements {
 
   private static isContainerRequired(at: ActiveTable, containerPosition: 'top' | 'bottom') {
     let isRequired = false;
+    // checking client object as _pagination has default properties
     if (at.pagination) {
       const positions = at._pagination.positions;
       isRequired = !!Object.keys(positions).find((componentName) => {
@@ -71,8 +73,12 @@ export class OuterContainerElements {
         return position.indexOf(containerPosition) >= 0;
       });
     }
-    if (!isRequired && at.csv) {
-      isRequired = at._csv.position.indexOf(containerPosition) >= 0;
+    if (!isRequired && at._csvButtons) {
+      const csv = at._csvButtons;
+      isRequired = !!Object.keys(csv).find((componentName) => {
+        const component = csv[componentName as keyof CSVButtonsInternal] as CSVButtonProps;
+        return component.position.indexOf(containerPosition) >= 0;
+      });
     }
     return isRequired;
   }

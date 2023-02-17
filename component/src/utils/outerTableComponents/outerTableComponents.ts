@@ -1,12 +1,14 @@
 import {PaginationElements} from '../../elements/pagination/paginationElements';
 import {OuterContainerElements} from './outerContainerElements';
+import {CSVElemets} from '../../elements/CSV/CSVElements';
+import {CSVInternalUtils} from './CSV/CSVInternalUtils';
 import {ActiveTable} from '../../activeTable';
-import {CSV} from './CSV/CSV';
 
 export class OuterTableComponents {
   public static create(at: ActiveTable) {
+    if (at.csvButtons) CSVInternalUtils.process(at);
     const outerContainers = OuterContainerElements.create(at);
     if (at.pagination) PaginationElements.create(at, outerContainers);
-    if (at.csv) CSV.createElementsAndEvents(at, outerContainers);
+    if (at.csvButtons) CSVElemets.create(at, outerContainers);
   }
 }

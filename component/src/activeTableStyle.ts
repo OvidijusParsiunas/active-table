@@ -479,6 +479,23 @@ export const activeTableStyle = css`
     text-align: right;
   }
 
+  .csv-button {
+    border: 1px solid #00000038;
+    border-radius: 3px;
+    color: #464646;
+    min-width: 30px;
+    height: 24px;
+    padding-top: 5.5px;
+    padding-left: 8px;
+    padding-right: 8px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    background-color: #f8f8f9;
+    font-family: system-ui;
+    font-size: 14.5px;
+  }
+
   .hidden-row {
     line-height: 0px;
     height: 0px !important;

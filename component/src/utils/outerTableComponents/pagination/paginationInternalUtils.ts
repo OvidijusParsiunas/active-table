@@ -165,7 +165,7 @@ export class PaginationInternalUtils {
     // buttons
     const defButtonsBackgroundColors = {def: 'white', hover: '#f5f5f5', click: '#c8c8c8'};
     PaginationInternalUtils.setStatefulCSS(statefulStyle, 'buttons');
-    PaginationInternalUtils.setDefaultBackgroundColors(pagination.style.pageButtons.buttons, defButtonsBackgroundColors)
+    PaginationInternalUtils.setDefaultBackgroundColors(pagination.style.pageButtons.buttons, defButtonsBackgroundColors);
     // actionButtons
     PaginationInternalUtils.setStatefulCSS(statefulStyle, 'actionButtons');
     PaginationInternalUtils.setDefaultBackgroundColors(pagination.style.pageButtons.actionButtons,

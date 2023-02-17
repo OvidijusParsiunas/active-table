@@ -21,6 +21,7 @@ import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {ProgrammaticCellUpdateT} from './types/programmaticCellUpdateT';
 import {DefaultColumnsSettings} from './types/columnsSettingsDefault';
 import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
+import {CSVExport} from './utils/outerTableComponents/CSV/CSVExport';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {CellHighlightUtils} from './utils/color/cellHighlightUtils';
 import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
@@ -40,13 +41,13 @@ import {TableElement} from './elements/table/tableElement';
 import {ColumnType, ColumnTypes} from './types/columnType';
 import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
-import {CSV} from './utils/outerTableComponents/CSV/CSV';
 import {ColumnResizerColors} from './types/columnSizer';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
 import {HeaderIconStyle} from './types/headerIconStyle';
 import {HoverableStyles} from './types/hoverableStyles';
+import {CSVButtonsInternal} from './types/CSVInternal';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {GlobalItemColors} from './types/itemToColor';
 import {StripedRows} from './utils/rows/stripedRows';
@@ -60,7 +61,7 @@ import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
-import {OuterContainerContentPosition} from './types/outerContainer';
+import {CSVButtons} from './types/CSV';
 
 @customElement('active-table')
 export class ActiveTable extends LitElement {
@@ -77,7 +78,7 @@ export class ActiveTable extends LitElement {
 
   // WORK - generate/parse csv
   @property({type: Function})
-  exportCSV: () => void = () => CSV.export(this);
+  exportCSV: () => void = () => CSVExport.export(this);
 
   // REF-20
   @property({converter: LITElementTypeConverters.convertToFunction})
@@ -246,7 +247,7 @@ export class ActiveTable extends LitElement {
   pagination?: Pagination | boolean;
 
   @property({type: Object})
-  csv = true;
+  csvButtons?: CSVButtons;
 
   // setting header to true if above is undefined and vertical overflow is present
   // (using object to be able to set values without re-rendering the component)
@@ -325,7 +326,7 @@ export class ActiveTable extends LitElement {
   _pagination: PaginationInternal = PaginationInternalUtils.getDefault();
 
   @state()
-  _csv: {position: OuterContainerContentPosition} = {position: 'bottom-left'};
+  _csvButtons?: CSVButtonsInternal;
 
   @state({
     hasChanged() {
