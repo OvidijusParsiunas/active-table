@@ -1,17 +1,17 @@
 import {CustomColumnsSettings, CustomColumnSettings, DimensionalCSSStyle} from './types/columnsSettings';
+import {PaginationInternalUtils} from './utils/outerTableComponents/pagination/paginationInternalUtils';
 import {ColumnUpdateDetails, OnCellUpdate, OnColumnsUpdate, OnContentUpdate} from './types/onUpdate';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
 import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {ProgrammaticCellUpdate} from './utils/programmaticUpdates/programmaticCellUpdate';
+import {OuterTableComponents} from './utils/outerTableComponents/outerTableComponents';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
-import {PaginationInternalUtils} from './utils/pagination/paginationInternalUtils';
 import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {ColumnDropdownSettingsDefault} from './types/columnDropdownSettings';
-import {PaginationElements} from './elements/pagination/paginationElements';
 import {ColumnDetailsUtils} from './utils/columnDetails/columnDetailsUtils';
 import {FrameComponentsStyle, IndexColumnT} from './types/frameComponents';
 import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
@@ -40,6 +40,7 @@ import {TableElement} from './elements/table/tableElement';
 import {ColumnType, ColumnTypes} from './types/columnType';
 import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
+import {CSV} from './utils/outerTableComponents/CSV/CSV';
 import {ColumnResizerColors} from './types/columnSizer';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
@@ -59,6 +60,7 @@ import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
+import {OuterContainerContentPosition} from './types/outerContainer';
 
 @customElement('active-table')
 export class ActiveTable extends LitElement {
@@ -74,6 +76,8 @@ export class ActiveTable extends LitElement {
   };
 
   // WORK - generate/parse csv
+  @property({type: Function})
+  exportCSV: () => void = () => CSV.export(this);
 
   // REF-20
   @property({converter: LITElementTypeConverters.convertToFunction})
@@ -241,6 +245,9 @@ export class ActiveTable extends LitElement {
   @property({type: Object})
   pagination?: Pagination | boolean;
 
+  @property({type: Object})
+  csv = true;
+
   // setting header to true if above is undefined and vertical overflow is present
   // (using object to be able to set values without re-rendering the component)
   @state()
@@ -317,6 +324,9 @@ export class ActiveTable extends LitElement {
   @state()
   _pagination: PaginationInternal = PaginationInternalUtils.getDefault();
 
+  @state()
+  _csv: {position: OuterContainerContentPosition} = {position: 'bottom-left'};
+
   @state({
     hasChanged() {
       return false;
@@ -348,7 +358,7 @@ export class ActiveTable extends LitElement {
     if (this.overflow) OverflowUtils.setupContainer(this, tableElement); // must not be after BORDER_DIMENSIONS is set
     TableElement.addOverlayElements(this, tableElement, this._activeOverlayElements);
     this.shadowRoot?.appendChild(this._overflow?.overflowContainer || tableElement);
-    if (this.pagination) PaginationElements.create(this);
+    OuterTableComponents.create(this);
     InitialContentProcessing.preProcess(this);
     WindowElement.setEvents(this);
     this.spellcheck = this.spellCheck;

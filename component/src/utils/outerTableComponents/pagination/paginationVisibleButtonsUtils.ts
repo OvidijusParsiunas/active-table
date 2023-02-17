@@ -1,10 +1,10 @@
-import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
-import {RowElement} from '../../elements/table/addNewElements/row/rowElement';
-import {PaginationInternal} from '../../types/paginationInternal';
-import {PageButtonStyle} from '../../types/pagination';
-import {ElementStyle} from '../elements/elementStyle';
-import {CSSStyle} from '../../types/cssStyle';
-import {ActiveTable} from '../../activeTable';
+import {PageButtonElement} from '../../../elements/pagination/pageButtons/pageButtonElement';
+import {RowElement} from '../../../elements/table/addNewElements/row/rowElement';
+import {PaginationInternal} from '../../../types/paginationInternal';
+import {PageButtonStyle} from '../../../types/pagination';
+import {ElementStyle} from '../../elements/elementStyle';
+import {CSSStyle} from '../../../types/cssStyle';
+import {ActiveTable} from '../../../activeTable';
 
 // this is used for overriding first and last visible button styling
 export class PaginationVisibleButtonsUtils {

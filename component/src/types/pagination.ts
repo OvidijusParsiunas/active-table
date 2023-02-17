@@ -1,15 +1,8 @@
+import {OuterContainerContentPosition} from './outerContainer';
 import {CSSStyle, StatefulCSS} from './cssStyle';
 
-export type PaginationPositionSide =
-  | 'top-left'
-  | 'top-middle'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-middle'
-  | 'bottom-right';
-
 export interface PaginationPosition {
-  side: PaginationPositionSide;
+  side: OuterContainerContentPosition;
   order?: number;
 }
 

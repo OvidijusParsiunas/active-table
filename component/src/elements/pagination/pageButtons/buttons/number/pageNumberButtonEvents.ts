@@ -1,4 +1,4 @@
-import {PaginationUtils} from '../../../../../utils/pagination/paginationUtils';
+import {PaginationUtils} from '../../../../../utils/outerTableComponents/pagination/paginationUtils';
 import {PaginationInternal} from '../../../../../types/paginationInternal';
 import {ActiveTable} from '../../../../../activeTable';
 import {PageButtonStyle} from '../../pageButtonStyle';

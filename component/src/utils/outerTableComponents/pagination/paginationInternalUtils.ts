@@ -1,16 +1,11 @@
-import {RowsPerPageDropdownItem} from '../../elements/pagination/rowsPerPageSelect/dropdown/rowsPerPageDropdownItem';
-import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
-import {IPaginationStyle, PaginationInternal} from '../../types/paginationInternal';
-import {StatefulCSS} from '../../types/cssStyle';
-import {ActiveTable} from '../../activeTable';
-import {Browser} from '../browser/browser';
-import {
-  PaginationPositionSide,
-  RowsPerPageSelect,
-  PaginationPositions,
-  PageButtonStyle,
-  Pagination,
-} from '../../types/pagination';
+import {RowsPerPageDropdownItem} from '../../../elements/pagination/rowsPerPageSelect/dropdown/rowsPerPageDropdownItem';
+import {RowsPerPageSelect, PaginationPositions, PageButtonStyle, Pagination} from '../../../types/pagination';
+import {PageButtonElement} from '../../../elements/pagination/pageButtons/pageButtonElement';
+import {IPaginationStyle, PaginationInternal} from '../../../types/paginationInternal';
+import {OuterContainerContentPosition} from '../../../types/outerContainer';
+import {StatefulCSS} from '../../../types/cssStyle';
+import {ActiveTable} from '../../../activeTable';
+import {Browser} from '../../browser/browser';
 
 interface DefaultBackgroundColors {
   def: string;
@@ -23,7 +18,7 @@ type StatefulStyle = {[key: string]: StatefulCSS};
 export class PaginationInternalUtils {
   private static readonly DEFAULT_SIDE = 'bottom-right';
   // prettier-ignore
-  private static readonly SIDES: Set<PaginationPositionSide> = new Set([
+  private static readonly SIDES: Set<OuterContainerContentPosition> = new Set([
     'top-left', 'top-middle', 'top-right', 'bottom-left', 'bottom-middle', PaginationInternalUtils.DEFAULT_SIDE,
   ]);
 

@@ -1,4 +1,4 @@
-import {PaginationVisibleButtonsUtils} from '../../../utils/pagination/paginationVisibleButtonsUtils';
+import {PaginationVisibleButtonsUtils} from '../../../utils/outerTableComponents/pagination/paginationVisibleButtonsUtils';
 import {IPageButtonsStyle} from '../../../types/paginationInternal';
 import {ElementStyle} from '../../../utils/elements/elementStyle';
 import {PropertiesOfType} from '../../../types/utilityTypes';

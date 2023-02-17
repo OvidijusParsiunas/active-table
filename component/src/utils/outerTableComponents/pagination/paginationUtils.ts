@@ -1,14 +1,14 @@
-import {NumberOfVisibleRowsElement} from '../../elements/pagination/numberOfVisibleRows/numberOfVisibleRowsElement';
-import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
-import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
+import {NumberOfVisibleRowsElement} from '../../../elements/pagination/numberOfVisibleRows/numberOfVisibleRowsElement';
+import {PageButtonElement} from '../../../elements/pagination/pageButtons/pageButtonElement';
+import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
 import {PaginationPageActionButtonUtils} from './paginationPageActionButtonUtils';
 import {PaginationVisibleButtonsUtils} from './paginationVisibleButtonsUtils';
 import {PaginationUpdatePageButtons} from './paginationUpdatePageButtons';
-import {PaginationInternal} from '../../types/paginationInternal';
-import {CustomRowProperties} from '../rows/customRowProperties';
-import {ExtractElements} from '../elements/extractElements';
-import {CellElement} from '../../elements/cell/cellElement';
-import {ActiveTable} from '../../activeTable';
+import {PaginationInternal} from '../../../types/paginationInternal';
+import {CustomRowProperties} from '../../rows/customRowProperties';
+import {ExtractElements} from '../../elements/extractElements';
+import {CellElement} from '../../../elements/cell/cellElement';
+import {ActiveTable} from '../../../activeTable';
 
 export class PaginationUtils {
   private static readonly HIDDEN_ROW_CLASS = 'hidden-row';

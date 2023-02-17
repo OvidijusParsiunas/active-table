@@ -1,8 +1,8 @@
-import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
-import {PageButtonStyle} from '../../elements/pagination/pageButtons/pageButtonStyle';
-import {IPageButtonsStyle, IPaginationStyle} from '../../types/paginationInternal';
+import {PageButtonElement} from '../../../elements/pagination/pageButtons/pageButtonElement';
+import {PageButtonStyle} from '../../../elements/pagination/pageButtons/pageButtonStyle';
+import {IPageButtonsStyle, IPaginationStyle} from '../../../types/paginationInternal';
 import {PaginationUtils} from './paginationUtils';
-import {ActiveTable} from '../../activeTable';
+import {ActiveTable} from '../../../activeTable';
 
 export class PaginationPageActionButtonUtils {
   private static setButtonAsEnabled(button: HTMLElement, pageButtonStyle: IPageButtonsStyle) {

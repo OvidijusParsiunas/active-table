@@ -1,7 +1,8 @@
-import {Containers, PaginationContainerElement} from '../paginationContainer/paginationContainerElement';
+import {OuterContainerElements} from '../../../utils/outerTableComponents/outerContainerElements';
 import {RowsPerPageSelectButtonElement} from './button/rowsPerPageSelectButtonElement';
-import {RowsPerPageDropdown} from './dropdown/rowsPerPageDropdown';
 import {PaginationInternal} from '../../../types/paginationInternal';
+import {RowsPerPageDropdown} from './dropdown/rowsPerPageDropdown';
+import {OuterContainers} from '../../../types/outerContainer';
 import {RowsPerPageSelect} from '../../../types/pagination';
 import {PaginationElements} from '../paginationElements';
 import {ActiveTable} from '../../../activeTable';
@@ -29,14 +30,14 @@ export class RowsPerPageSelectElement {
   }
 
   // prettier-ignore
-  public static create(at: ActiveTable, containers: Containers) {
+  public static create(at: ActiveTable, containers: OuterContainers) {
     const rowsPerPageOptionsContainer = RowsPerPageSelectElement.createContainer(at._pagination);
     rowsPerPageOptionsContainer.appendChild(RowsPerPageSelectElement.createText(at._pagination));
     const optionsButton = RowsPerPageSelectButtonElement.create(at);
     rowsPerPageOptionsContainer.appendChild(optionsButton);
     at._pagination.rowsPerPageDropdown = RowsPerPageDropdown.create(at, optionsButton);
     rowsPerPageOptionsContainer.appendChild(at._pagination.rowsPerPageDropdown);
-    PaginationContainerElement.addToContainer(at._pagination.positions.rowsPerPageSelect.side,
+    OuterContainerElements.addToContainer(at._pagination.positions.rowsPerPageSelect.side,
       containers, rowsPerPageOptionsContainer);
     return rowsPerPageOptionsContainer;
   }

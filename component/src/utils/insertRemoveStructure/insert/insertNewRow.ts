@@ -2,11 +2,11 @@ import {RowDropdownCellOverlay} from '../../../elements/dropdown/rowDropdown/cel
 import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
+import {PaginationUtils} from '../../outerTableComponents/pagination/paginationUtils';
 import {RowElement} from '../../../elements/table/addNewElements/row/rowElement';
 import {IndexColumn} from '../../../elements/indexColumn/indexColumn';
 import {CustomRowProperties} from '../../rows/customRowProperties';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
-import {PaginationUtils} from '../../pagination/paginationUtils';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
 import {CellText, TableRow} from '../../../types/tableContent';
 import {ElementDetails} from '../../../types/elementDetails';

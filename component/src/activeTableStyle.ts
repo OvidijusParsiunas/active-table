@@ -498,44 +498,44 @@ export const activeTableStyle = css`
     display: none;
   }
 
-  .pagination-container {
+  .outer-container {
     display: grid;
     position: relative;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  #pagination-top-container > div > * {
+  #outer-top-container > div > * {
     margin-bottom: 13px;
   }
 
-  #pagination-bottom-container > div > * {
+  #outer-bottom-container > div > * {
     margin-top: 13px;
   }
 
-  .pagination-container-column {
+  .outer-container-column {
     display: flex;
   }
 
-  .pagination-container-left-column > div {
+  .outer-container-left-column > div {
     margin-right: 10px;
   }
 
-  .pagination-container-middle-column {
+  .outer-container-middle-column {
     justify-content: center;
     position: absolute;
     width: 0px;
   }
 
-  .pagination-container-middle-column > div {
+  .outer-container-middle-column > div {
     margin-left: 10px;
     margin-right: 10px;
   }
 
-  .pagination-container-right-column {
+  .outer-container-right-column {
     justify-content: end;
   }
 
-  .pagination-container-right-column > div {
+  .outer-container-right-column > div {
     margin-left: 10px;
   }
 

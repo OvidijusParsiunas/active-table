@@ -1,5 +1,5 @@
 import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
-import {PaginationUtils} from '../pagination/paginationUtils';
+import {PaginationUtils} from '../outerTableComponents/pagination/paginationUtils';
 import {RowHoverStyle} from '../../types/rowHoverStyle';
 import {RowHoverEvents} from './rowHoverEvents';
 import {ActiveTable} from '../../activeTable';

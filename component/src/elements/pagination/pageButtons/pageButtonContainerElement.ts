@@ -1,13 +1,14 @@
-import {Containers, PaginationContainerElement} from '../paginationContainer/paginationContainerElement';
-import {PaginationVisibleButtonsUtils} from '../../../utils/pagination/paginationVisibleButtonsUtils';
+import {PaginationVisibleButtonsUtils} from '../../../utils/outerTableComponents/pagination/paginationVisibleButtonsUtils';
+import {OuterContainerElements} from '../../../utils/outerTableComponents/outerContainerElements';
+import {PaginationUtils} from '../../../utils/outerTableComponents/pagination/paginationUtils';
 import {PreviousPageButtonElement} from './buttons/prevNext/previousPageButtonElement';
 import {FirstPageButtonElement} from './buttons/firstLast/firstPageButtonElement';
 import {PageNumberButtonElement} from './buttons/number/pageNumberButtonElement';
 import {LastPageButtonElement} from './buttons/firstLast/lastPageButtonElement';
 import {NextPageButtonElement} from './buttons/prevNext/nextPageButtonElement';
-import {PaginationUtils} from '../../../utils/pagination/paginationUtils';
 import {PageButtonContainerEvents} from './pageButtonContainerEvents';
 import {PaginationInternal} from '../../../types/paginationInternal';
+import {OuterContainers} from '../../../types/outerContainer';
 import {PageButtonElement} from './pageButtonElement';
 import {ActiveTable} from '../../../activeTable';
 
@@ -68,11 +69,11 @@ export class PageButtonContainerElement {
     PageButtonContainerElement.setStyle(at);
   }
 
-  public static addInitialElements(at: ActiveTable, containers: Containers) {
+  public static addInitialElements(at: ActiveTable, containers: OuterContainers) {
     PageButtonContainerElement.repopulateButtons(at);
     PaginationVisibleButtonsUtils.setStateAndStyles(at);
     const {positions, buttonContainer} = at._pagination;
-    PaginationContainerElement.addToContainer(positions.pageButtons.side, containers, buttonContainer);
+    OuterContainerElements.addToContainer(positions.pageButtons.side, containers, buttonContainer);
   }
 
   public static create(at: ActiveTable) {

@@ -1,7 +1,7 @@
-import {PageNumberButtonElement} from '../../elements/pagination/pageButtons/buttons/number/pageNumberButtonElement';
-import {PageButtonElement} from '../../elements/pagination/pageButtons/pageButtonElement';
+import {PageNumberButtonElement} from '../../../elements/pagination/pageButtons/buttons/number/pageNumberButtonElement';
+import {PageButtonElement} from '../../../elements/pagination/pageButtons/pageButtonElement';
 import {PaginationUtils} from './paginationUtils';
-import {ActiveTable} from '../../activeTable';
+import {ActiveTable} from '../../../activeTable';
 
 export class PaginationUpdatePageButtons {
   private static removeLastNumberButton(at: ActiveTable, numberButtons: HTMLElement[]) {

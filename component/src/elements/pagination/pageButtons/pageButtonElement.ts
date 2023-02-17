@@ -1,9 +1,10 @@
-import {PaginationPageActionButtonUtils} from '../../../utils/pagination/paginationPageActionButtonUtils';
-import {PaginationVisibleButtonsUtils} from '../../../utils/pagination/paginationVisibleButtonsUtils';
-import {PaginationUpdatePageButtons} from '../../../utils/pagination/paginationUpdatePageButtons';
+// eslint-disable-next-line max-len
+import {PaginationPageActionButtonUtils} from '../../../utils/outerTableComponents/pagination/paginationPageActionButtonUtils';
+import {PaginationVisibleButtonsUtils} from '../../../utils/outerTableComponents/pagination/paginationVisibleButtonsUtils';
+import {PaginationUpdatePageButtons} from '../../../utils/outerTableComponents/pagination/paginationUpdatePageButtons';
+import {PaginationUtils} from '../../../utils/outerTableComponents/pagination/paginationUtils';
 import {IPageButtonsStyle, PaginationInternal} from '../../../types/paginationInternal';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
-import {PaginationUtils} from '../../../utils/pagination/paginationUtils';
 import {PaginationElements} from '../paginationElements';
 import {CellText} from '../../../types/tableContent';
 import {PageButtonEvents} from './pageButtonEvents';

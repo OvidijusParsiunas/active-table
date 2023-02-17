@@ -1,5 +1,6 @@
-import {Containers, PaginationContainerElement} from '../paginationContainer/paginationContainerElement';
+import {OuterContainerElements} from '../../../utils/outerTableComponents/outerContainerElements';
 import {PaginationInternal} from '../../../types/paginationInternal';
+import {OuterContainers} from '../../../types/outerContainer';
 import {PaginationElements} from '../paginationElements';
 import {ActiveTable} from '../../../activeTable';
 
@@ -31,14 +32,14 @@ export class NumberOfVisibleRowsElement {
     }
   }
 
-  public static create(at: ActiveTable, containers: Containers) {
+  public static create(at: ActiveTable, containers: OuterContainers) {
     const numberOfVisibleRowsElement = document.createElement('div');
     numberOfVisibleRowsElement.id = NumberOfVisibleRowsElement.ID;
     numberOfVisibleRowsElement.classList.add(PaginationElements.PAGINATION_TEXT_COMPONENT_CLASS);
     const {style, positions} = at._pagination;
     numberOfVisibleRowsElement.style.order = String(positions.numberOfVisibleRows.order);
     Object.assign(numberOfVisibleRowsElement.style, style.numberOfVisibleRows);
-    PaginationContainerElement.addToContainer(positions.numberOfVisibleRows.side, containers, numberOfVisibleRowsElement);
+    OuterContainerElements.addToContainer(positions.numberOfVisibleRows.side, containers, numberOfVisibleRowsElement);
     setTimeout(() => NumberOfVisibleRowsElement.update(at));
     return numberOfVisibleRowsElement;
   }

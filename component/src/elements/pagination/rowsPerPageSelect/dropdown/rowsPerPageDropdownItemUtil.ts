@@ -1,6 +1,6 @@
+import {PaginationUtils} from '../../../../utils/outerTableComponents/pagination/paginationUtils';
 import {RowsPerPageSelectButtonElement} from '../button/rowsPerPageSelectButtonElement';
 import {PageButtonContainerElement} from '../../pageButtons/pageButtonContainerElement';
-import {PaginationUtils} from '../../../../utils/pagination/paginationUtils';
 import {RowsPerPageDropdownItem} from './rowsPerPageDropdownItem';
 import {ActiveTable} from '../../../../activeTable';
 
