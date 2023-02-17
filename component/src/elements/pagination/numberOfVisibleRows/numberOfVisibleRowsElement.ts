@@ -39,7 +39,7 @@ export class NumberOfVisibleRowsElement {
     const {style, positions} = at._pagination;
     numberOfVisibleRowsElement.style.order = String(positions.numberOfVisibleRows.order);
     Object.assign(numberOfVisibleRowsElement.style, style.numberOfVisibleRows);
-    OuterContainerElements.addToContainer(positions.numberOfVisibleRows.side, containers, numberOfVisibleRowsElement);
+    OuterContainerElements.addToContainer(positions.numberOfVisibleRows.position, containers, numberOfVisibleRowsElement);
     setTimeout(() => NumberOfVisibleRowsElement.update(at));
     return numberOfVisibleRowsElement;
   }

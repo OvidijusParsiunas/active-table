@@ -73,7 +73,7 @@ export class PageButtonContainerElement {
     PageButtonContainerElement.repopulateButtons(at);
     PaginationVisibleButtonsUtils.setStateAndStyles(at);
     const {positions, buttonContainer} = at._pagination;
-    OuterContainerElements.addToContainer(positions.pageButtons.side, containers, buttonContainer);
+    OuterContainerElements.addToContainer(positions.pageButtons.position, containers, buttonContainer);
   }
 
   public static create(at: ActiveTable) {

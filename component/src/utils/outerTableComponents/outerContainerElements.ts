@@ -1,7 +1,10 @@
 import {OuterContainerContentPosition, OuterContainers} from '../../types/outerContainer';
-import {CSVButtonProps, CSVButtonsInternal} from '../../types/CSVInternal';
-import {PaginationPositions} from '../../types/pagination';
+import {CSVButtonsInternal} from '../../types/CSVInternal';
 import {ActiveTable} from '../../activeTable';
+
+type ContainerPositions = 'top' | 'bottom';
+
+type PositionalComponents = {[key: string]: {position: OuterContainerContentPosition}};
 
 export class OuterContainerElements {
   private static readonly CONTAINER_CLASS = 'outer-container';
@@ -25,21 +28,23 @@ export class OuterContainerElements {
     });
   }
 
-  public static addToContainer(side: OuterContainerContentPosition, containers: OuterContainers, element: HTMLElement) {
-    const container = (side.indexOf('top') >= 0 ? containers.top : containers.bottom) as HTMLElement;
-    if (side.indexOf('left') >= 0) {
+  // prettier-ignore
+  public static addToContainer(position: OuterContainerContentPosition,
+      containers: OuterContainers, element: HTMLElement) {
+    const container = (position.indexOf('top') >= 0 ? containers.top : containers.bottom) as HTMLElement;
+    if (position.indexOf('left') >= 0) {
       container.children[0].appendChild(element);
-    } else if (side.indexOf('middle') >= 0) {
+    } else if (position.indexOf('middle') >= 0) {
       container.children[1].appendChild(element);
     } else {
       container.children[2].appendChild(element);
     }
   }
 
-  private static createContainerColumn(sideClass: string, columnNumber: string) {
+  private static createContainerColumn(positionClass: string, columnNumber: string) {
     const column = document.createElement('div');
     column.style.gridColumn = columnNumber;
-    column.classList.add(OuterContainerElements.COLUMN_CLASS, sideClass);
+    column.classList.add(OuterContainerElements.COLUMN_CLASS, positionClass);
     return column;
   }
 
@@ -63,22 +68,21 @@ export class OuterContainerElements {
     return container;
   }
 
-  private static isContainerRequired(at: ActiveTable, containerPosition: 'top' | 'bottom') {
+  private static isRequired(object: PositionalComponents, conPosition: ContainerPositions) {
+    return !!Object.keys(object).find((componentName) => {
+      const {position} = object[componentName];
+      return position.indexOf(conPosition) >= 0;
+    });
+  }
+
+  private static isContainerRequired(at: ActiveTable, containerPosition: ContainerPositions) {
     let isRequired = false;
     // checking client object as _pagination has default properties
     if (at.pagination) {
-      const positions = at._pagination.positions;
-      isRequired = !!Object.keys(positions).find((componentName) => {
-        const position = positions[componentName as keyof PaginationPositions].side;
-        return position.indexOf(containerPosition) >= 0;
-      });
+      isRequired = OuterContainerElements.isRequired(at._pagination.positions, containerPosition);
     }
     if (!isRequired && at._csvButtons) {
-      const csv = at._csvButtons;
-      isRequired = !!Object.keys(csv).find((componentName) => {
-        const component = csv[componentName as keyof CSVButtonsInternal] as CSVButtonProps;
-        return component.position.indexOf(containerPosition) >= 0;
-      });
+      isRequired = OuterContainerElements.isRequired(at._csvButtons as Required<CSVButtonsInternal>, containerPosition);
     }
     return isRequired;
   }

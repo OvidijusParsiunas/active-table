@@ -2,7 +2,7 @@ import {OuterContainerContentPosition} from './outerContainer';
 import {CSSStyle, StatefulCSS} from './cssStyle';
 
 export interface PaginationPosition {
-  side: OuterContainerContentPosition;
+  position: OuterContainerContentPosition;
   order?: number;
 }
 

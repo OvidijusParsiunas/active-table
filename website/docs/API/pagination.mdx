@@ -861,9 +861,9 @@ overwrite it by adding the following property to `default`: _"fontFamily": "Inte
   &nbsp;&nbsp;&nbsp;&nbsp;[`rowsPerPageSelect?: PaginationPosition`](#PaginationPosition) <br />
   }
 - Default: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;_pageButtons: {side: "bottom-right", "order": 3}_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;_numberOfVisibleRows: {side: "bottom-right", "order": 2}_, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;_rowsPerPageSelect: {side: "bottom-right", "order": 1}_ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_pageButtons: {position: "bottom-right", "order": 3}_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_numberOfVisibleRows: {position: "bottom-right", "order": 2}_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_rowsPerPageSelect: {position: "bottom-right", "order": 1}_ <br />
   }
 
 Positions for pagination components.
@@ -872,9 +872,9 @@ Positions for pagination components.
   <active-table
     pagination='{
       "positions": {
-        "pageButtons": {"side": "bottom-middle"},
-        "numberOfVisibleRows": {"side": "top-left", "order": 2},
-        "rowsPerPageSelect": {"side": "top-left", "order": 1}
+        "pageButtons": {"position": "bottom-middle"},
+        "numberOfVisibleRows": {"position": "top-left", "order": 2},
+        "rowsPerPageSelect": {"position": "top-left", "order": 1}
       },
       "rowsPerPage": 5
     }'
@@ -916,9 +916,9 @@ Positions for pagination components.
 <active-table
   pagination='{
     "positions": {
-      "pageButtons": {"side": "bottom-middle"},
-      "numberOfVisibleRows": {"side": "top-left", "order": 2},
-      "rowsPerPageSelect": {"side": "top-left", "order": 1}
+      "pageButtons": {"position": "bottom-middle"},
+      "numberOfVisibleRows": {"position": "top-left", "order": 2},
+      "rowsPerPageSelect": {"position": "top-left", "order": 1}
     },
     "rowsPerPage": 5
   }'
@@ -934,9 +934,9 @@ Positions for pagination components.
 <active-table
   pagination='{
     "positions": {
-      "pageButtons": {"side": "bottom-middle"},
-      "numberOfVisibleRows": {"side": "top-left", "order": 2},
-      "rowsPerPageSelect": {"side": "top-left", "order": 1}
+      "pageButtons": {"position": "bottom-middle"},
+      "numberOfVisibleRows": {"position": "top-left", "order": 2},
+      "rowsPerPageSelect": {"position": "top-left", "order": 1}
     },
     "rowsPerPage": 5
   }'
@@ -978,15 +978,16 @@ Positions for pagination components.
 ### `PaginationPosition` {#PaginationPosition}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`side?:` `"top-left"` | `"top-middle"` | `"top-right"` | `"bottom-left"` | `"bottom-middle"` | `"bottom-right"`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`position?:` `"top-left"` | `"top-middle"` | `"top-right"` | `"bottom-left"` | `"bottom-middle"` | `"bottom-right"`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`order?: number` <br />
   }
 - Default: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;_side: "bottom-right"_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_position: "bottom-right"_, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;_order: 1_ <br />
   }
 
-Object defining position properties for a pagination component. `order` is the order position of the component when multiple ones are lined up on the same side.
+Object defining position properties for a pagination component. `order` is the placement order of the component
+when multiple ones are placed in the same position.
 
 <LineBreak></LineBreak>
 
@@ -1018,7 +1019,7 @@ Circle buttons
       }},
       "rowsPerPageSelect": false,
       "displayNumberOfVisibleRows": false,
-      "positions": {"pageButtons": {"side": "bottom-middle"}},
+      "positions": {"pageButtons": {"position": "bottom-middle"}},
       "rowsPerPage": 2
     }'
     content='[
@@ -1056,7 +1057,7 @@ Circle buttons
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-middle"}},
     "rowsPerPage": 2
   }'
 ></active-table>
@@ -1083,7 +1084,7 @@ Circle buttons
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-middle"}},
     "rowsPerPage": 2
   }'
   content='[
@@ -1122,7 +1123,7 @@ Active circle button
       }},
       "rowsPerPageSelect": false,
       "displayNumberOfVisibleRows": false,
-      "positions": {"pageButtons": {"side": "bottom-middle"}},
+      "positions": {"pageButtons": {"position": "bottom-middle"}},
       "rowsPerPage": 2
     }'
     content='[
@@ -1160,7 +1161,7 @@ Active circle button
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-middle"}},
     "rowsPerPage": 2
   }'
 ></active-table>
@@ -1186,7 +1187,7 @@ Active circle button
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-middle"}},
     "rowsPerPage": 2
   }'
   content='[
@@ -1226,7 +1227,7 @@ Active square button
       }},
       "rowsPerPageSelect": false,
       "displayNumberOfVisibleRows": false,
-      "positions": {"pageButtons": {"side": "bottom-middle"}},
+      "positions": {"pageButtons": {"position": "bottom-middle"}},
       "rowsPerPage": 2
     }'
     content='[
@@ -1265,7 +1266,7 @@ Active square button
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-middle"}},
     "rowsPerPage": 2
   }'
 ></active-table>
@@ -1292,7 +1293,7 @@ Active square button
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-middle"}},
     "rowsPerPage": 2
   }'
   content='[
@@ -1332,7 +1333,7 @@ Grey background button series
       }},
       "rowsPerPageSelect": false,
       "displayNumberOfVisibleRows": false,
-      "positions": {"pageButtons": {"side": "bottom-middle"}},
+      "positions": {"pageButtons": {"position": "bottom-middle"}},
       "rowsPerPage": 2
     }'
     content='[
@@ -1371,7 +1372,7 @@ Grey background button series
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-middle"}},
     "rowsPerPage": 2
   }'
 ></active-table>
@@ -1398,7 +1399,7 @@ Grey background button series
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-middle"}},
     "rowsPerPage": 2
   }'
   content='[
@@ -1437,7 +1438,7 @@ Disabled buttons not displayed
       }},
       "rowsPerPageSelect": false,
       "displayNumberOfVisibleRows": false,
-      "positions": {"pageButtons": {"side": "bottom-middle"}},
+      "positions": {"pageButtons": {"position": "bottom-middle"}},
       "rowsPerPage": 2
     }'
     content='[
@@ -1473,7 +1474,7 @@ Disabled buttons not displayed
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-middle"}},
     "rowsPerPage": 2
   }'
 ></active-table>
@@ -1499,7 +1500,7 @@ Disabled buttons not displayed
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"side": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-middle"}},
     "rowsPerPage": 2
   }'
   content='[

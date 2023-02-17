@@ -16,10 +16,10 @@ interface DefaultBackgroundColors {
 type StatefulStyle = {[key: string]: StatefulCSS};
 
 export class PaginationInternalUtils {
-  private static readonly DEFAULT_SIDE = 'bottom-right';
+  private static readonly DEFAULT_POSITION = 'bottom-right';
   // prettier-ignore
-  private static readonly SIDES: Set<OuterContainerContentPosition> = new Set([
-    'top-left', 'top-middle', 'top-right', 'bottom-left', 'bottom-middle', PaginationInternalUtils.DEFAULT_SIDE,
+  private static readonly POSITIONS: Set<OuterContainerContentPosition> = new Set([
+    'top-left', 'top-middle', 'top-right', 'bottom-left', 'bottom-middle', PaginationInternalUtils.DEFAULT_POSITION,
   ]);
 
   private static insertNewRowsPerPageOption(newRowsPerPageNumber: number, rowsPerPageOptionsItemText: string[]) {
@@ -201,16 +201,17 @@ export class PaginationInternalUtils {
     delete pagination.style; // deleted so that Object.assign wouldn't apply it
   }
 
-  private static processSides(positions: Required<PaginationPositions>) {
+  private static processPositions(positions: Required<PaginationPositions>) {
     Object.keys(positions).forEach((componentName) => {
       const component = positions[componentName as keyof PaginationPositions];
-      if (!PaginationInternalUtils.SIDES.has(component.side)) component.side = PaginationInternalUtils.DEFAULT_SIDE;
+      if (!PaginationInternalUtils.POSITIONS.has(component.position))
+        component.position = PaginationInternalUtils.DEFAULT_POSITION;
     });
   }
 
   private static processPosition(pagination: Pagination, paginationInternal: PaginationInternal) {
     if (pagination.positions) Object.assign(paginationInternal.positions, pagination.positions);
-    PaginationInternalUtils.processSides(paginationInternal.positions);
+    PaginationInternalUtils.processPositions(paginationInternal.positions);
     delete pagination.positions; // deleted so that Object.assign wouldn't apply it
   }
 
@@ -245,15 +246,15 @@ export class PaginationInternalUtils {
       dropdownWidth: 24,
       positions: {
         pageButtons: {
-          side: PaginationInternalUtils.DEFAULT_SIDE,
+          position: PaginationInternalUtils.DEFAULT_POSITION,
           order: 3,
         },
         numberOfVisibleRows: {
-          side: PaginationInternalUtils.DEFAULT_SIDE,
+          position: PaginationInternalUtils.DEFAULT_POSITION,
           order: 2,
         },
         rowsPerPageSelect: {
-          side: PaginationInternalUtils.DEFAULT_SIDE,
+          position: PaginationInternalUtils.DEFAULT_POSITION,
           order: 1,
         },
       },

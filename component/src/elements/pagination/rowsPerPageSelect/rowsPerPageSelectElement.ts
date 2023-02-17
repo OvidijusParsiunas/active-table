@@ -37,7 +37,7 @@ export class RowsPerPageSelectElement {
     rowsPerPageOptionsContainer.appendChild(optionsButton);
     at._pagination.rowsPerPageDropdown = RowsPerPageDropdown.create(at, optionsButton);
     rowsPerPageOptionsContainer.appendChild(at._pagination.rowsPerPageDropdown);
-    OuterContainerElements.addToContainer(at._pagination.positions.rowsPerPageSelect.side,
+    OuterContainerElements.addToContainer(at._pagination.positions.rowsPerPageSelect.position,
       containers, rowsPerPageOptionsContainer);
     return rowsPerPageOptionsContainer;
   }
