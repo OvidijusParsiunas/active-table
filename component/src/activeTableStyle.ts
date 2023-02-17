@@ -483,7 +483,7 @@ export const activeTableStyle = css`
     border: 1px solid #00000038;
     border-radius: 3px;
     color: #464646;
-    min-width: 30px;
+    min-width: 80px;
     height: 24px;
     padding-top: 5.5px;
     padding-left: 8px;
@@ -531,6 +531,7 @@ export const activeTableStyle = css`
 
   .outer-container-column {
     display: flex;
+    width: 0px;
   }
 
   .outer-container-left-column > div {
@@ -540,7 +541,6 @@ export const activeTableStyle = css`
   .outer-container-middle-column {
     justify-content: center;
     position: absolute;
-    width: 0px;
   }
 
   .outer-container-middle-column > div {

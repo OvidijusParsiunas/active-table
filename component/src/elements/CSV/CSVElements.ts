@@ -1,5 +1,6 @@
 import {OuterContainerElements} from '../../utils/outerTableComponents/outerContainerElements';
-import {CSVImportButtonElement} from './CSVImportButtonElement';
+import {CSVImportButtonElement} from './importButton/CSVImportButtonElement';
+import {CSVExportButtonElement} from './exportButton/CSVExportButtonElement';
 import {OuterContainers} from '../../types/outerContainer';
 import {ActiveTable} from '../../activeTable';
 
@@ -11,8 +12,10 @@ export class CSVElemets {
       const buttonContainer = CSVImportButtonElement.create(at, importComponent);
       OuterContainerElements.addToContainer(importComponent.position, outerContainers, buttonContainer);
     }
-    if (at._csvButtons.export?.position) {
-      // OuterContainerElements.addToContainer(at._csvButtons.export.position, outerContainers, buttonContainer);
+    const exportComponent = at._csvButtons.export;
+    if (exportComponent) {
+      const buttonElement = CSVExportButtonElement.create(at, exportComponent);
+      OuterContainerElements.addToContainer(exportComponent.position, outerContainers, buttonElement);
     }
   }
 }

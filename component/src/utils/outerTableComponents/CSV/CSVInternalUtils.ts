@@ -5,8 +5,8 @@ import {CSVButtons} from '../../../types/CSV';
 export class CSVInternalUtils {
   private static getDefaultProperties(defaultText: string): CSVButtonProps {
     return {
-      styles: {default: {}, hover: {backgroundColor: 'grey'}, click: {}},
-      position: 'top-left',
+      styles: {default: {}, hover: {backgroundColor: '#f0f0f0'}, click: {backgroundColor: '#e4e4e4'}},
+      position: 'bottom-left',
       text: defaultText,
       order: 0,
     };

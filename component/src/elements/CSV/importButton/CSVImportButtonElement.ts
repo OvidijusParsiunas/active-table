@@ -1,13 +1,12 @@
-import {CSVImport} from '../../utils/outerTableComponents/CSV/CSVImport';
-import {CSVButtonProps} from '../../types/CSVInternal';
-import {CSVButtonElement} from './CSVButtonElement';
-import {CSVButtonEvents} from './CSVButtonEvents';
-import {ActiveTable} from '../../activeTable';
+import {CSVImportButtonEvents} from './CSVImportButtonEvents';
+import {CSVButtonProps} from '../../../types/CSVInternal';
+import {CSVButtonElement} from '../CSVButtonElement';
+import {ActiveTable} from '../../../activeTable';
 
 export class CSVImportButtonElement {
   private static createButtonElement(inputElement: HTMLInputElement, buttonProps: CSVButtonProps) {
     const buttonElement = CSVButtonElement.create(buttonProps);
-    buttonElement.onclick = CSVButtonEvents.clickInputElement.bind(this, inputElement);
+    CSVImportButtonEvents.setButtonEvents(buttonElement, inputElement);
     return buttonElement;
   }
 
@@ -16,7 +15,7 @@ export class CSVImportButtonElement {
     inputElement.type = 'file';
     inputElement.accept = '.csv';
     inputElement.hidden = true;
-    inputElement.onchange = CSVImport.import.bind(this, at);
+    CSVImportButtonEvents.setInputEvents(at, inputElement);
     return inputElement;
   }
 
@@ -26,10 +25,10 @@ export class CSVImportButtonElement {
     return container;
   }
 
-  public static create(at: ActiveTable, importComponent: CSVButtonProps) {
-    const buttonContainer = CSVImportButtonElement.createContainer(importComponent.order);
+  public static create(at: ActiveTable, buttonProps: CSVButtonProps) {
+    const buttonContainer = CSVImportButtonElement.createContainer(buttonProps.order);
     const inputElement = CSVImportButtonElement.createInputElement(at);
-    const buttonElement = CSVImportButtonElement.createButtonElement(inputElement, importComponent);
+    const buttonElement = CSVImportButtonElement.createButtonElement(inputElement, buttonProps);
     buttonContainer.appendChild(inputElement);
     buttonContainer.appendChild(buttonElement);
     return buttonContainer;
