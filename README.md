@@ -22,25 +22,25 @@
 - Striped rows
 - Customization styling
 
-### Get started
+### Getting started
 
 ```
 npm install active-table
 ```
 
-Use the following package for React instead:
+Install the following package for React instead:
 
 ```
 npm install active-table-react
 ```
 
-Then simply add this to your markup:
+Simply add this to your markup:
 
 ```
 <active-table content='[["Planet"],["Earth"]]'/>
 ```
 
-The exact syntax for the above will vary depending on the framework of your choice (see here).
+The exact syntax for the above example will vary depending on the framework of your choice (see here).
 
 ### Todo
 

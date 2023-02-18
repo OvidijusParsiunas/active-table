@@ -1,3 +1,4 @@
+import {NoContentStubElement} from '../../../elements/table/addNewElements/shared/noContentStubElement';
 import {CSVImportButtonEvents} from '../../../elements/CSV/importButton/CSVImportButtonEvents';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {RemoveRow} from '../../insertRemoveStructure/remove/removeRow';
@@ -42,6 +43,9 @@ export class CSVImport {
     // in a timeout because RemoveRow.remove contains processes inside timeouts e.g. remove column details
     setTimeout(() => {
       newContent.forEach((row, index) => InsertNewRow.insert(at, index, true, row));
+      if (newContent.length > 0) {
+        NoContentStubElement.convertFromStub({target: at._addRowCellElementRef as HTMLElement});
+      }
     });
   }
 

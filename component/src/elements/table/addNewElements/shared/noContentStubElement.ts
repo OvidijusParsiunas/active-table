@@ -6,7 +6,7 @@ import {ActiveTable} from '../../../../activeTable';
 export class NoContentStubElement {
   private static readonly NO_CONTENT_STUB_CLASS = 'no-content-stub';
 
-  private static convertFromStub(event: MouseEvent) {
+  public static convertFromStub(event: {target: EventTarget | null}) {
     const addNewRowCell = event.target as HTMLElement;
     addNewRowCell.classList.remove(NoContentStubElement.NO_CONTENT_STUB_CLASS);
     AddNewRowElement.setDefaultStyle(addNewRowCell);

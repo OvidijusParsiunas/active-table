@@ -78,10 +78,10 @@ export class ActiveTable extends LitElement {
     ProgrammaticCellUpdate.updateText(this, update);
   };
 
+  // can only be activated by a user action - such as a button click
   @property({type: Function})
   importCSV: () => void = () => CSVImport.externalImportTrigger(this);
 
-  // WORK - generate/parse csv
   @property({type: Function})
   exportCSV: () => void = () => CSVExport.export(this);
 

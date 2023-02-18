@@ -23,7 +23,7 @@ const ResultText = React.forwardRef((_, ref) => {
   );
 });
 
-export default function TableContainerMethods({children, propertyname}) {
+export default function TableContainerMethods({children, propertyname, displayResults}) {
   const tableContainerRef = React.useRef(null);
   const eventTextRef = React.useRef(null);
   const updateText = eventTextRef.current?.updateText; // stored in a reference for closure to work
@@ -31,7 +31,7 @@ export default function TableContainerMethods({children, propertyname}) {
   const click = () => {
     const activeTableReference = extractChildTableElement(tableContainerRef.current.children[0]);
     const content = activeTableReference[propertyname]();
-    updateText(content);
+    if (displayResults ?? true) updateText(content);
   };
 
   return (
@@ -43,7 +43,7 @@ export default function TableContainerMethods({children, propertyname}) {
         <button className="method-button" onClick={click}>
           Call Method
         </button>
-        <ResultText ref={eventTextRef}></ResultText>
+        {(displayResults ?? true) && <ResultText ref={eventTextRef}></ResultText>}
       </div>
     </div>
   );
