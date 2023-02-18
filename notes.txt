@@ -281,6 +281,14 @@ When the header is sticky and the overflow is not coming from the table, but the
 looks weird when the table has a border-top and it does not. To fix this we have moved border-top from the table to the table body
 to not have it displayed and use inheritance via selectors to set it on the header cells instead.
 
+REF-38
+Outer container column elements use 'width: 0px' property to not force component elements of the other columns to move out of the table
+bounds. This has resulted in a new problem where the 'width' property of the components would no longer work and 'min-width' would be
+the only one that can set the widths. This is not intuitive for the client when they want to change the width of the elements, hence
+we added nested elements inside those columns to allow the component widths to be set via the 'width' property. The inner column
+element has been nested in another nested element for this to work in Safari.
+If the above will no longer meet the requirements - undo and force user to use min-width to set the widths.
+
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
 does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()

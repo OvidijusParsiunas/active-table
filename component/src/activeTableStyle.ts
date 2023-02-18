@@ -483,11 +483,9 @@ export const activeTableStyle = css`
     border: 1px solid #00000038;
     border-radius: 3px;
     color: #464646;
-    width: 80px;
+    width: 96px;
     height: 24px;
     padding-top: 5.5px;
-    padding-left: 8px;
-    padding-right: 8px;
     text-align: center;
     cursor: pointer;
     user-select: none;
@@ -525,17 +523,24 @@ export const activeTableStyle = css`
     margin-bottom: 13px;
   }
 
-  #outer-bottom-container > div > * {
+  #outer-bottom-container > div > div > div > * {
     margin-top: 13px;
   }
 
+  /* REF-38 */
   .outer-container-column {
     display: flex;
     width: 0px;
   }
 
+  .outer-container-column-inner {
+    display: flex;
+  }
+
   .outer-container-column-content {
     display: flex;
+    /* use -webkit-max-content if the below does not work */
+    width: max-content;
   }
 
   .outer-container-left-column .outer-container-column-content > div {
@@ -547,9 +552,9 @@ export const activeTableStyle = css`
     position: absolute;
   }
 
-  .outer-container-middle-column > div {
-    margin-left: 10px;
-    margin-right: 10px;
+  .outer-container-middle-column .outer-container-column-content > div {
+    margin-left: 5px;
+    margin-right: 5px;
   }
 
   .outer-container-right-column {

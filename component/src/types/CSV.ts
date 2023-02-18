@@ -1,4 +1,4 @@
-import {OuterContainerContentPosition} from './outerContainer';
+import {OuterContentPosition} from './outerContainer';
 import {StatefulCSS} from './cssStyle';
 
 export type CSVRow = string[];
@@ -8,7 +8,7 @@ export type CSV = CSVRow[];
 export interface CSVButton<T = StatefulCSS> {
   styles?: T;
   text?: string;
-  position?: OuterContainerContentPosition;
+  position?: OuterContentPosition;
   order?: number;
 }
 

@@ -1,4 +1,4 @@
-export type OuterContainerContentPosition =
+export type OuterContentPosition =
   | 'top-left'
   | 'top-middle'
   | 'top-right'

@@ -1,24 +1,32 @@
-import {OuterContainerContentPosition, OuterContainers} from '../../types/outerContainer';
+import {OuterContentPosition, OuterContainers} from '../../types/outerContainer';
 import {CSVButtonsInternal} from '../../types/CSVInternal';
 import {ActiveTable} from '../../activeTable';
 
 type ContainerPositions = 'top' | 'bottom';
 
-type PositionalComponents = {[key: string]: {position: OuterContainerContentPosition}};
+type PositionalComponents = {[key: string]: {position: OuterContentPosition}};
 
 export class OuterContainerElements {
   private static readonly CONTAINER_CLASS = 'outer-container';
-  private static readonly CONTAINER_CONTENT_CLASS = 'outer-container-column-content';
   private static readonly TOP_CONTAINER_ID = 'outer-top-container';
   private static readonly BOTTOM_CONTAINER_ID = 'outer-bottom-container';
+  // REF-38
   private static readonly COLUMN_CLASS = 'outer-container-column';
+  private static readonly COLUMN_INNER_CLASS = 'outer-container-column-inner';
+  private static readonly COLUMN_CONTENT_CLASS = 'outer-container-column-content';
   private static readonly LEFT_COLUMN_CLASS = 'outer-container-left-column';
   private static readonly MIDDLE_COLUMN_CLASS = 'outer-container-middle-column';
   private static readonly RIGHT_COLUMN_CLASS = 'outer-container-right-column';
 
+  // REF-38
+  private static getColumnContentContainer(column: HTMLElement) {
+    return column.children[0].children[0];
+  }
+
   private static setContainerHeightBasedOnMiddleColumn(container: HTMLElement) {
     if (container.getBoundingClientRect().height === 0) {
-      container.style.height = `${container.children[1].getBoundingClientRect().height}px`;
+      const contentContainer = OuterContainerElements.getColumnContentContainer(container.children[1] as HTMLElement);
+      container.style.height = `${contentContainer.getBoundingClientRect().height}px`;
     }
   }
 
@@ -29,27 +37,36 @@ export class OuterContainerElements {
     });
   }
 
-  // prettier-ignore
-  public static addToContainer(position: OuterContainerContentPosition,
-      containers: OuterContainers, element: HTMLElement) {
+  // REF-38
+  private static appendChildToColumn(column: HTMLElement, child: HTMLElement) {
+    const contentContainer = OuterContainerElements.getColumnContentContainer(column);
+    contentContainer.appendChild(child);
+  }
+
+  // REF-38
+  public static addToContainer(position: OuterContentPosition, containers: OuterContainers, element: HTMLElement) {
     const container = (position.indexOf('top') >= 0 ? containers.top : containers.bottom) as HTMLElement;
     if (position.indexOf('left') >= 0) {
-      container.children[0].children[0].appendChild(element);
+      OuterContainerElements.appendChildToColumn(container.children[0] as HTMLElement, element);
     } else if (position.indexOf('middle') >= 0) {
-      container.children[1].children[0].appendChild(element);
+      OuterContainerElements.appendChildToColumn(container.children[1] as HTMLElement, element);
     } else {
-      container.children[2].children[0].appendChild(element);
+      OuterContainerElements.appendChildToColumn(container.children[2] as HTMLElement, element);
     }
   }
 
+  // REF-38
+  // need an inner divs in order for the inserted components 'width' properties to work as CONTAINER_CLASS has width: 0px
   private static createContainerColumn(positionClass: string, columnNumber: string) {
     const column = document.createElement('div');
-    const innerColumnWidth = document.createElement('div');
-    // need an inner div in order for the inserter components 'width' properties to work as CONTAINER_CLASS has width: 0px
-    innerColumnWidth.classList.add(OuterContainerElements.CONTAINER_CONTENT_CLASS);
-    column.appendChild(innerColumnWidth);
-    column.style.gridColumn = columnNumber;
     column.classList.add(OuterContainerElements.COLUMN_CLASS, positionClass);
+    const columnInnerContainer = document.createElement('div');
+    columnInnerContainer.classList.add(OuterContainerElements.COLUMN_INNER_CLASS);
+    const contentContainer = document.createElement('div');
+    contentContainer.classList.add(OuterContainerElements.COLUMN_CONTENT_CLASS);
+    columnInnerContainer.appendChild(contentContainer);
+    column.appendChild(columnInnerContainer);
+    column.style.gridColumn = columnNumber;
     return column;
   }
 

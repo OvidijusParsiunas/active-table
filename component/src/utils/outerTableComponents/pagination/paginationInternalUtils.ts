@@ -2,7 +2,7 @@ import {RowsPerPageDropdownItem} from '../../../elements/pagination/rowsPerPageS
 import {RowsPerPageSelect, PaginationPositions, PageButtonStyle, Pagination} from '../../../types/pagination';
 import {PageButtonElement} from '../../../elements/pagination/pageButtons/pageButtonElement';
 import {IPaginationStyle, PaginationInternal} from '../../../types/paginationInternal';
-import {OuterContainerContentPosition} from '../../../types/outerContainer';
+import {OuterContentPosition} from '../../../types/outerContainer';
 import {StatefulCSS} from '../../../types/cssStyle';
 import {ActiveTable} from '../../../activeTable';
 import {Browser} from '../../browser/browser';
@@ -18,7 +18,7 @@ type StatefulStyle = {[key: string]: StatefulCSS};
 export class PaginationInternalUtils {
   private static readonly DEFAULT_POSITION = 'bottom-right';
   // prettier-ignore
-  private static readonly POSITIONS: Set<OuterContainerContentPosition> = new Set([
+  private static readonly POSITIONS: Set<OuterContentPosition> = new Set([
     'top-left', 'top-middle', 'top-right', 'bottom-left', 'bottom-middle', PaginationInternalUtils.DEFAULT_POSITION,
   ]);
 

@@ -410,9 +410,9 @@ When number of visible rows text contains digits that are in the 100s+, it is ad
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`container?: CSSStyle`](./sharedTypes#CSSStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`prefixText?: CSSStyle`](./sharedTypes#CSSStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`button?: StatefulCSS`](#StatefulCSS), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`buttonText?: StatefulCSS`](#StatefulCSS), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`buttonArrow?: StatefulCSS`](#StatefulCSS) <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`button?: StatefulCSS`](./sharedTypes#StatefulCSS), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`buttonText?: StatefulCSS`](./sharedTypes#StatefulCSS), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`buttonArrow?: StatefulCSS`](./sharedTypes#StatefulCSS) <br />
   }
 
 Styling properties for the rows per page component elements. `container` is the parent element that encapsulates all of the rows per page elements.
@@ -537,10 +537,10 @@ Styling properties for the rows per page component elements. `container` is the 
 
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`container?: CSSStyle`](./sharedTypes#CSSStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`buttons?: StatefulCSS`](#StatefulCSS), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`activeButton?: StatefulCSS`](#StatefulCSS), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`buttons?: StatefulCSS`](./sharedTypes#StatefulCSS), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`activeButton?: StatefulCSS`](./sharedTypes#StatefulCSS), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`activeButtonPrecedence?: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`disabledButtons?: StatefulCSS`](#StatefulCSS), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`disabledButtons?: StatefulCSS`](./sharedTypes#StatefulCSS), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`actionButtons?: ActionButtonStyle`](#ActionButtonStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`firstVisibleButtonOverride?: CSSStyle`](./sharedTypes#CSSStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`lastVisibleButtonOverride?: CSSStyle`](./sharedTypes#CSSStyle) <br />
@@ -711,7 +711,7 @@ the active button to unset the left border of the right sibling and not the left
 
 ### `ActionButtonStyle` {#ActionButtonStyle}
 
-- Type: {[`StatefulCSS`](#StatefulCSS) & <br />
+- Type: {[`StatefulCSS`](./sharedTypes#StatefulCSS) & <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`previousText?: string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`nextText?: string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`firstText?: string`, <br />
@@ -978,7 +978,7 @@ Positions for pagination components.
 ### `PaginationPosition` {#PaginationPosition}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`position?:` `"top-left"` | `"top-middle"` | `"top-right"` | `"bottom-left"` | `"bottom-middle"` | `"bottom-right"`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`position?: OuterContentPosition`](./sharedTypes#OuterContentPosition), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`order?: number` <br />
   }
 - Default: {<br />
@@ -986,16 +986,7 @@ Positions for pagination components.
   &nbsp;&nbsp;&nbsp;&nbsp;_order: 1_ <br />
   }
 
-Object defining position properties for a pagination component. `order` is the placement order of the component
-when multiple ones are placed in the same position.
-
-<LineBreak></LineBreak>
-
-### `StatefulCSS` {#StatefulCSS}
-
-- Type: {[`default?: CSSStyle`](./sharedTypes#CSSStyle), [`hover?: CSSStyle`](./sharedTypes#CSSStyle), [`click?: CSSStyle`](./sharedTypes#CSSStyle)}
-
-Object defining styling properties for different mouse states on the element.
+Object defining position properties for a pagination component. `order` is the order of the component when other ones are also placed in the same position.
 
 <LineBreak></LineBreak>
 

@@ -1,0 +1,211 @@
+---
+sidebar_position: 10
+---
+
+# CSV
+
+Import/Export CSV Excel files via the use of buttons or via methods.
+
+### `csvButtons` {#csvButtons}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`import?: CSVButton | boolean`](#CSVButton), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`export?: CSVButton | boolean`](#CSVButton) <br />
+  }
+
+`import` and `export` buttons can be enabled by definining their properties using the `CSVButton` object or by setting them to _true_.
+
+#### Example
+
+import TableContainer from '@site/src/components/table/tableContainer';
+import LineBreak from '@site/src/components/markdown/lineBreak';
+import {readdAutoNavToggle} from '@site/src/nav/autoNavToggle';
+import {ActiveTable} from 'active-table';
+import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs';
+readdAutoNavToggle();
+
+<TableContainer>
+  <active-table
+    csvButtons='{"import": true, "export": true}'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```text
+<active-table csvButtons='{"import": true, "export": true}'></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+    csvButtons='{"import": true, "export": true}'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+## Types
+
+Object types for properties inside [`csvButtons`](#csvButtons):
+
+### `CSVButton` {#CSVButton}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`styles?: StatefulCSS`](./sharedTypes#StatefulCSS), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`text?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`position?: OuterContentPosition`](./sharedTypes#OuterContentPosition), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`order?: number` <br />
+  }
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_text: "Import CSV"|"Export CSV_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_position: "bottom-left"_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_order: 0_ <br />
+  }
+
+Custom settings for the `csvButtons` properties. <br />
+`styles` is the definition of button style for various mouse events. <br />
+`text` is the text that is displayed before the button. <br />
+`position` is the location of the button. <br />
+`order` is the order of the button when multiple other components are also placed in the same position.
+
+#### Example
+
+<TableContainer>
+  <active-table
+    csvButtons='{
+      "import": {
+        "styles": {
+          "default": {
+            "backgroundColor": "#66baff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
+          },
+          "hover": {"backgroundColor": "#74c1ff"}, "click": {"backgroundColor": "#65b9ff"}
+        },
+        "text": "Import",
+        "position": "top-left",
+        "order": 1
+      },
+      "export": {
+        "styles": {
+          "default": {
+            "backgroundColor": "#66baff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
+          },
+          "hover": {"backgroundColor": "#74c1ff"}, "click": {"backgroundColor": "#65b9ff"}
+        },
+        "text": "Export",
+        "position": "top-left",
+        "order": 0
+      }
+    }'
+    content='[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]'
+    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  ></active-table>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```text
+<active-table
+  csvButtons='{
+    "import": {
+      "styles": {
+        "default": {
+          "backgroundColor": "#66baff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
+        },
+        "hover": {"backgroundColor": "#74c1ff"}, "click": {"backgroundColor": "#65b9ff"}
+      },
+      "text": "Import",
+      "position": "top-left",
+      "order": 1
+    },
+    "export": {
+      "styles": {
+        "default": {
+          "backgroundColor": "#66baff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
+        },
+        "hover": {"backgroundColor": "#74c1ff"}, "click": {"backgroundColor": "#65b9ff"}
+      },
+      "text": "Export",
+      "position": "top-left",
+      "order": 0
+    }
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```text
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  csvButtons='{
+    "import": {
+      "styles": {
+        "default": {
+          "backgroundColor": "#66baff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
+        },
+        "hover": {"backgroundColor": "#74c1ff"}, "click": {"backgroundColor": "#65b9ff"}
+      },
+      "text": "Import",
+      "position": "top-left",
+      "order": 1
+    },
+    "export": {
+      "styles": {
+        "default": {
+          "backgroundColor": "#66baff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
+        },
+        "hover": {"backgroundColor": "#74c1ff"}, "click": {"backgroundColor": "#65b9ff"}
+      },
+      "text": "Export",
+      "position": "top-left",
+      "order": 0
+    }
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
