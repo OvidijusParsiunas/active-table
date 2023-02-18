@@ -9,7 +9,7 @@ export class CSVButtonElement {
     const buttonElement = document.createElement('div');
     buttonElement.classList.add(CSVButtonElement.CSV_BUTTON_CLASS);
     buttonElement.textContent = text;
-    buttonElement.style.order = String(order); // redundant for upload button as it is in a container
+    buttonElement.style.order = String(order);
     Object.assign(buttonElement.style, styles.default);
     setTimeout(() => CSVButtonEvents.setEvents(buttonElement, styles));
     return buttonElement;

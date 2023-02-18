@@ -1,4 +1,5 @@
-import {CSVButtonProps, CSVButtonsInternal} from '../../../types/CSVInternal';
+import {CSVImportButtonElement} from '../../../elements/CSV/importButton/CSVImportButtonElement';
+import {CSVButtonProps, CSVButtonsInternal, CSVInternal} from '../../../types/CSVInternal';
 import {ActiveTable} from '../../../activeTable';
 import {CSVButtons} from '../../../types/CSV';
 
@@ -29,10 +30,13 @@ export class CSVInternalUtils {
     }
   }
 
-  public static process(at: ActiveTable) {
-    if (!at.csvButtons) return;
-    at._csvButtons = {};
-    CSVInternalUtils.setInternalComponent(at.csvButtons, at._csvButtons, 'import', 'Import CSV');
-    CSVInternalUtils.setInternalComponent(at.csvButtons, at._csvButtons, 'export', 'Export CSV');
+  public static process(csvButtons: CSVButtons, _csv: CSVInternal) {
+    _csv.buttons = {};
+    CSVInternalUtils.setInternalComponent(csvButtons, _csv.buttons, 'import', 'Import CSV');
+    CSVInternalUtils.setInternalComponent(csvButtons, _csv.buttons, 'export', 'Export CSV');
+  }
+
+  public static createDefault(at: ActiveTable): CSVInternal {
+    return {inputElementRef: CSVImportButtonElement.createInputElement(at)};
   }
 }

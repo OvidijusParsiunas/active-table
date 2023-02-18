@@ -1,3 +1,4 @@
+import {CSVImportButtonEvents} from '../../../elements/CSV/importButton/CSVImportButtonEvents';
 import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
 import {RemoveRow} from '../../insertRemoveStructure/remove/removeRow';
 import {ActiveTable} from '../../../activeTable';
@@ -49,5 +50,10 @@ export class CSVImport {
     const file = (event.target as HTMLInputElement).files?.[0] as Blob;
     reader.readAsText(file);
     reader.onload = (event) => CSVImport.processFile(at, event.target?.result as string);
+  }
+
+  public static externalImportTrigger(at: ActiveTable) {
+    const inputElement = at._csv.inputElementRef;
+    CSVImportButtonEvents.triggerImportPrompt(inputElement);
   }
 }

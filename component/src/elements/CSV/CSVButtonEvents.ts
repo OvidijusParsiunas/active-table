@@ -5,6 +5,7 @@ export class CSVButtonEvents {
   private static buttonMouseUp(buttonStyle: StatefulCSS, event: MouseEvent) {
     const buttonElement = event.target as HTMLElement;
     ElementStyle.unsetAllCSSStates(buttonElement, buttonStyle);
+    Object.assign(buttonElement.style, buttonStyle.default);
     Object.assign(buttonElement.style, buttonStyle.hover);
   }
 
@@ -16,6 +17,7 @@ export class CSVButtonEvents {
   private static buttonMouseLeave(buttonStyle: StatefulCSS, event: MouseEvent) {
     const buttonElement = event.target as HTMLElement;
     ElementStyle.unsetAllCSSStates(buttonElement, buttonStyle);
+    Object.assign(buttonElement.style, buttonStyle.default);
   }
 
   private static buttonMouseEnter(buttonStyle: StatefulCSS, event: MouseEvent) {

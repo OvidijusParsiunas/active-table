@@ -6,7 +6,7 @@ import {ActiveTable} from '../../activeTable';
 
 export class OuterTableComponents {
   public static create(at: ActiveTable) {
-    if (at.csvButtons) CSVInternalUtils.process(at);
+    if (at.csvButtons) CSVInternalUtils.process(at.csvButtons, at._csv);
     const outerContainers = OuterContainerElements.create(at);
     if (at.pagination) PaginationElements.create(at, outerContainers);
     if (at.csvButtons) CSVElemets.create(at, outerContainers);

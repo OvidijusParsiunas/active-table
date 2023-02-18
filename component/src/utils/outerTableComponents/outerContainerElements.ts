@@ -8,6 +8,7 @@ type PositionalComponents = {[key: string]: {position: OuterContainerContentPosi
 
 export class OuterContainerElements {
   private static readonly CONTAINER_CLASS = 'outer-container';
+  private static readonly CONTAINER_CONTENT_CLASS = 'outer-container-column-content';
   private static readonly TOP_CONTAINER_ID = 'outer-top-container';
   private static readonly BOTTOM_CONTAINER_ID = 'outer-bottom-container';
   private static readonly COLUMN_CLASS = 'outer-container-column';
@@ -33,16 +34,20 @@ export class OuterContainerElements {
       containers: OuterContainers, element: HTMLElement) {
     const container = (position.indexOf('top') >= 0 ? containers.top : containers.bottom) as HTMLElement;
     if (position.indexOf('left') >= 0) {
-      container.children[0].appendChild(element);
+      container.children[0].children[0].appendChild(element);
     } else if (position.indexOf('middle') >= 0) {
-      container.children[1].appendChild(element);
+      container.children[1].children[0].appendChild(element);
     } else {
-      container.children[2].appendChild(element);
+      container.children[2].children[0].appendChild(element);
     }
   }
 
   private static createContainerColumn(positionClass: string, columnNumber: string) {
     const column = document.createElement('div');
+    const innerColumnWidth = document.createElement('div');
+    // need an inner div in order for the inserter components 'width' properties to work as CONTAINER_CLASS has width: 0px
+    innerColumnWidth.classList.add(OuterContainerElements.CONTAINER_CONTENT_CLASS);
+    column.appendChild(innerColumnWidth);
     column.style.gridColumn = columnNumber;
     column.classList.add(OuterContainerElements.COLUMN_CLASS, positionClass);
     return column;
@@ -81,8 +86,8 @@ export class OuterContainerElements {
     if (at.pagination) {
       isRequired = OuterContainerElements.isRequired(at._pagination.positions, containerPosition);
     }
-    if (!isRequired && at._csvButtons) {
-      isRequired = OuterContainerElements.isRequired(at._csvButtons as Required<CSVButtonsInternal>, containerPosition);
+    if (!isRequired && at._csv.buttons) {
+      isRequired = OuterContainerElements.isRequired(at._csv.buttons as Required<CSVButtonsInternal>, containerPosition);
     }
     return isRequired;
   }

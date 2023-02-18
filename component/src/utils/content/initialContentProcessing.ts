@@ -4,12 +4,12 @@ import {EMPTY_STRING} from '../../consts/text';
 import {ActiveTable} from '../../activeTable';
 
 export class InitialContentProcessing {
-  private static cleanupContentThatDidNotGetAdded(contents: TableContent, columnsDetails: ColumnsDetailsT) {
-    if (contents[0]?.length - columnsDetails.length > 0) contents.forEach((row) => row.splice(columnsDetails.length));
+  private static cleanupContentThatDidNotGetAdded(content: TableContent, columnsDetails: ColumnsDetailsT) {
+    if (content[0]?.length - columnsDetails.length > 0) content.forEach((row) => row.splice(columnsDetails.length));
     if (columnsDetails.length === 0) {
-      contents.splice(0, contents.length);
-    } else if (contents.length > columnsDetails[0].elements.length) {
-      contents.splice(columnsDetails[0].elements.length);
+      content.splice(0, content.length);
+    } else if (content.length > columnsDetails[0].elements.length) {
+      content.splice(columnsDetails[0].elements.length);
     }
   }
 

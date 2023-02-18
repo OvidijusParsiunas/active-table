@@ -4,33 +4,23 @@ import {CSVButtonElement} from '../CSVButtonElement';
 import {ActiveTable} from '../../../activeTable';
 
 export class CSVImportButtonElement {
-  private static createButtonElement(inputElement: HTMLInputElement, buttonProps: CSVButtonProps) {
-    const buttonElement = CSVButtonElement.create(buttonProps);
-    CSVImportButtonEvents.setButtonEvents(buttonElement, inputElement);
-    return buttonElement;
-  }
-
-  private static createInputElement(at: ActiveTable) {
+  // created separately as the user may want to trigger the importCSV component method without the CSV buttons
+  public static createInputElement(at: ActiveTable) {
     const inputElement = document.createElement('input');
     inputElement.type = 'file';
     inputElement.accept = '.csv';
     inputElement.hidden = true;
-    CSVImportButtonEvents.setInputEvents(at, inputElement);
+    setTimeout(() => {
+      CSVImportButtonEvents.setInputEvents(at, inputElement);
+      at._tableElementRef?.appendChild(inputElement);
+    });
     return inputElement;
   }
 
-  private static createContainer(order: number) {
-    const container = document.createElement('div');
-    container.style.order = String(order);
-    return container;
-  }
-
   public static create(at: ActiveTable, buttonProps: CSVButtonProps) {
-    const buttonContainer = CSVImportButtonElement.createContainer(buttonProps.order);
-    const inputElement = CSVImportButtonElement.createInputElement(at);
-    const buttonElement = CSVImportButtonElement.createButtonElement(inputElement, buttonProps);
-    buttonContainer.appendChild(inputElement);
-    buttonContainer.appendChild(buttonElement);
-    return buttonContainer;
+    const inputElement = at._csv.inputElementRef;
+    const buttonElement = CSVButtonElement.create(buttonProps);
+    setTimeout(() => CSVImportButtonEvents.setButtonEvents(buttonElement, inputElement));
+    return buttonElement;
   }
 }

@@ -483,7 +483,7 @@ export const activeTableStyle = css`
     border: 1px solid #00000038;
     border-radius: 3px;
     color: #464646;
-    min-width: 80px;
+    width: 80px;
     height: 24px;
     padding-top: 5.5px;
     padding-left: 8px;
@@ -534,7 +534,11 @@ export const activeTableStyle = css`
     width: 0px;
   }
 
-  .outer-container-left-column > div {
+  .outer-container-column-content {
+    display: flex;
+  }
+
+  .outer-container-left-column .outer-container-column-content > div {
     margin-right: 10px;
   }
 
@@ -552,7 +556,7 @@ export const activeTableStyle = css`
     justify-content: end;
   }
 
-  .outer-container-right-column > div {
+  .outer-container-right-column .outer-container-column-content > div {
     margin-left: 10px;
   }
 

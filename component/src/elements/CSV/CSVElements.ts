@@ -6,16 +6,16 @@ import {ActiveTable} from '../../activeTable';
 
 export class CSVElemets {
   public static create(at: ActiveTable, outerContainers: OuterContainers) {
-    if (!at._csvButtons) return;
-    const importComponent = at._csvButtons.import;
-    if (importComponent) {
-      const buttonContainer = CSVImportButtonElement.create(at, importComponent);
-      OuterContainerElements.addToContainer(importComponent.position, outerContainers, buttonContainer);
+    if (!at._csv.buttons) return;
+    const importButtonProps = at._csv.buttons.import;
+    if (importButtonProps) {
+      const buttonContainer = CSVImportButtonElement.create(at, importButtonProps);
+      OuterContainerElements.addToContainer(importButtonProps.position, outerContainers, buttonContainer);
     }
-    const exportComponent = at._csvButtons.export;
-    if (exportComponent) {
-      const buttonElement = CSVExportButtonElement.create(at, exportComponent);
-      OuterContainerElements.addToContainer(exportComponent.position, outerContainers, buttonElement);
+    const exportButtonProps = at._csv.buttons.export;
+    if (exportButtonProps) {
+      const buttonElement = CSVExportButtonElement.create(at, exportButtonProps);
+      OuterContainerElements.addToContainer(exportButtonProps.position, outerContainers, buttonElement);
     }
   }
 }

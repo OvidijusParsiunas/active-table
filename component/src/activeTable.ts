@@ -7,6 +7,7 @@ import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdo
 import {ProgrammaticCellUpdate} from './utils/programmaticUpdates/programmaticCellUpdate';
 import {OuterTableComponents} from './utils/outerTableComponents/outerTableComponents';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
+import {CSVInternalUtils} from './utils/outerTableComponents/CSV/CSVInternalUtils';
 import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
@@ -22,6 +23,7 @@ import {ProgrammaticCellUpdateT} from './types/programmaticCellUpdateT';
 import {DefaultColumnsSettings} from './types/columnsSettingsDefault';
 import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
 import {CSVExport} from './utils/outerTableComponents/CSV/CSVExport';
+import {CSVImport} from './utils/outerTableComponents/CSV/CSVImport';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {CellHighlightUtils} from './utils/color/cellHighlightUtils';
 import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
@@ -47,13 +49,13 @@ import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
 import {HeaderIconStyle} from './types/headerIconStyle';
 import {HoverableStyles} from './types/hoverableStyles';
-import {CSVButtonsInternal} from './types/CSVInternal';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {GlobalItemColors} from './types/itemToColor';
 import {StripedRows} from './utils/rows/stripedRows';
 import {activeTableStyle} from './activeTableStyle';
 import {RowHoverStyle} from './types/rowHoverStyle';
 import {StripedRowsT} from './types/stripedRows';
+import {CSVInternal} from './types/CSVInternal';
 import {StickyProps} from './types/stickyProps';
 import {Browser} from './utils/browser/browser';
 import {LitElement, PropertyValues} from 'lit';
@@ -75,6 +77,9 @@ export class ActiveTable extends LitElement {
   updateCell: (update: ProgrammaticCellUpdateT) => void = (update: ProgrammaticCellUpdateT) => {
     ProgrammaticCellUpdate.updateText(this, update);
   };
+
+  @property({type: Function})
+  importCSV: () => void = () => CSVImport.externalImportTrigger(this);
 
   // WORK - generate/parse csv
   @property({type: Function})
@@ -326,7 +331,7 @@ export class ActiveTable extends LitElement {
   _pagination: PaginationInternal = PaginationInternalUtils.getDefault();
 
   @state()
-  _csvButtons?: CSVButtonsInternal;
+  _csv: CSVInternal = CSVInternalUtils.createDefault(this);
 
   @state({
     hasChanged() {

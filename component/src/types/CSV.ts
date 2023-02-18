@@ -5,7 +5,7 @@ export type CSVRow = string[];
 
 export type CSV = CSVRow[];
 
-export interface CSVButtonStyle<T = StatefulCSS> {
+export interface CSVButton<T = StatefulCSS> {
   styles?: T;
   text?: string;
   position?: OuterContainerContentPosition;
@@ -13,6 +13,6 @@ export interface CSVButtonStyle<T = StatefulCSS> {
 }
 
 export interface CSVButtons {
-  import?: CSVButtonStyle | boolean;
-  export?: CSVButtonStyle | boolean;
+  import?: CSVButton | boolean;
+  export?: CSVButton | boolean;
 }

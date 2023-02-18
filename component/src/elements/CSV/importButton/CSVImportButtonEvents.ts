@@ -10,11 +10,11 @@ export class CSVImportButtonEvents {
     inputElement.onchange = CSVImportButtonEvents.inputChange.bind(this, at);
   }
 
-  private static buttonClick(inputElement: HTMLInputElement) {
+  public static triggerImportPrompt(inputElement: HTMLInputElement) {
     inputElement.click();
   }
 
   public static setButtonEvents(buttonElement: HTMLElement, inputElement: HTMLInputElement) {
-    buttonElement.onclick = CSVImportButtonEvents.buttonClick.bind(this, inputElement);
+    buttonElement.onclick = CSVImportButtonEvents.triggerImportPrompt.bind(this, inputElement);
   }
 }

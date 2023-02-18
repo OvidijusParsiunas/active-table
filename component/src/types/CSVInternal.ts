@@ -1,9 +1,14 @@
 import {StatefulCSS} from './cssStyle';
-import {CSVButtonStyle} from './CSV';
+import {CSVButton} from './CSV';
 
-export type CSVButtonProps = Required<CSVButtonStyle<Required<StatefulCSS>>>;
+export type CSVButtonProps = Required<CSVButton<Required<StatefulCSS>>>;
 
 export interface CSVButtonsInternal {
   import?: CSVButtonProps;
   export?: CSVButtonProps;
+}
+
+export interface CSVInternal {
+  buttons?: CSVButtonsInternal;
+  inputElementRef: HTMLInputElement;
 }
