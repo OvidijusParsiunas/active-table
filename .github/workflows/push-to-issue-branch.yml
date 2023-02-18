@@ -16,7 +16,7 @@ jobs:
         run: |
           cd component
           npm install
-          npm run build
+          npm run build:element
       - name: Install and Build Wesbite 🔧
         run: |
           cd website

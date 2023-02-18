@@ -110,8 +110,8 @@ a timeout - asynchronously adding all the other necessary details except the siz
 proceeding to create the sizer and adding it to the object, thus completing the creation of the column details object.
 
 REF-14
-In Firefox - a synchronous call for super.connectedCallback() was causing the render lifecycle method to be triggered twice.
-The first render method also did not have the passed in client properties. This behaviour was fixed by calling
+In Firefox - the delayed insertion of arguments/properties was causing the render lifecycle method to be triggered twice where
+the first render method did not have the passed in client properties. This behaviour was fixed by calling
 super.connectedCallback() inside a timeout.
 
 REF-15

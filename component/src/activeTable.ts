@@ -374,7 +374,7 @@ export class ActiveTable extends LitElement {
   override connectedCallback() {
     // REF-14
     if (Browser.IS_FIREFOX) {
-      setTimeout(() => super.connectedCallback()); // WORK - see if the firefox issue can be fixed
+      setTimeout(() => super.connectedCallback());
     } else {
       super.connectedCallback();
     }

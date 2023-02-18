@@ -14,9 +14,9 @@ const config = {
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
 
-  // GitHub pages deployment config.
-  organizationName: 'OvidijusParsiunas', // Usually your GitHub org/user name.
-  projectName: 'active-table', // Usually your repo name.
+  // GitHub pages deployment config
+  organizationName: 'OvidijusParsiunas', // GitHub org/user name
+  projectName: 'active-table', // repo name
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -33,7 +33,6 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
           // Used for the "edit this page" links.
           editUrl: 'https://github.com/OvidijusParsiunas/active-table/tree/main/website',
         },
@@ -71,7 +70,7 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'API/introduction',
+            docId: 'introduction',
             position: 'left',
             label: 'Documentation',
           },
