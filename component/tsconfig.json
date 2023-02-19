@@ -26,7 +26,8 @@
         "name": "ts-lit-plugin",
         "strict": true
       }
-    ]
+    ],
+    "types": ["@types/mocha"]
   },
   "include": ["src/**/*.ts"],
   "exclude": []
