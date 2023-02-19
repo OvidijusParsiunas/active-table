@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "build:element": "npm run clean && tsc --project tsconfig.element.json && npm run analyze && rollup -c",
+    "build:element": "npm run clean && tsc && npm run analyze && rollup -c",
     "clean": "rimraf dist test",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",
