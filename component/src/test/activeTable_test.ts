@@ -1,6 +1,9 @@
 import {fixture, assert} from '@open-wc/testing';
 import {ActiveTable} from '../activeTable.js';
 import {html} from 'lit/static-html.js';
+import {suite, test} from 'mocha';
+
+// active table currently holds no tests, but this is kept here in-case they will be added in the future
 
 suite('active-table tests', () => {
   test('is defined', () => {
