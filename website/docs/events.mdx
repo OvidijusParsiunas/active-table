@@ -51,14 +51,14 @@ readdAutoNavToggle();
 <Tabs>
 <TabItem value="js" label="Function">
 
-```text
+```html
 tableElementRef.onCellUpdate = (cellUpdate) => { console.log(cellUpdate); });
 ```
 
 </TabItem>
 <TabItem value="py" label="Event">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 tableElementRef.addEventListener('cell-update', (cellUpdate) => { console.log(cellUpdate.detail); });
@@ -96,14 +96,14 @@ Similarly to [`onCellUpdate`](#onCellUpdate) this is triggered when any cell is 
 <Tabs>
 <TabItem value="js" label="Function">
 
-```text
+```html
 tableElementRef.onContentUpdate = (contentUpdate) => { console.log(contentUpdate); };
 ```
 
 </TabItem>
 <TabItem value="py" label="Event">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 tableElementRef.addEventListener('content-update', (contentUpdate) => { console.log(contentUpdate.detail); });
@@ -142,14 +142,14 @@ in the next session on the initial load.
 <Tabs>
 <TabItem value="js" label="Function">
 
-```text
+```html
 tableElementRef.onColumnsUpdate = (columnsUpdate) => { console.log(columnsUpdate); };
 ```
 
 </TabItem>
 <TabItem value="py" label="Event">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 tableElementRef.addEventListener('columns-update', (columnsUpdate) => { console.log(columnsUpdate.detail); });

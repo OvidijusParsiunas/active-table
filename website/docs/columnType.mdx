@@ -37,6 +37,35 @@ readdAutoNavToggle();
   ></active-table>
 </TableContainer>
 
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table defaultColumnTypeName="Label"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  defaultColumnTypeName="Label"
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
 <LineBreak></LineBreak>
 
 ### `availableDefaultColumnTypes` {#availableDefaultColumnTypes}
@@ -62,6 +91,35 @@ will be automatically set to _"Text"_.
     tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
   ></active-table>
 </TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table availableDefaultColumnTypes='["Number"]'></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  availableDefaultColumnTypes='["Number"]'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["1", 12756, 5.97, 1, 5514],
+    ["2", 6792, 0.642, 2, 3934],
+    ["3", 142984, 1898, 79, 1326],
+    ["4", 120536, 568, 82, 687],
+    ["5", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
 
 <LineBreak></LineBreak>
 
@@ -96,6 +154,55 @@ An array of custom column types which are automatically appended to the [`availa
     tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
   ></active-table>
 </TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table
+  customColumnTypes='[{
+    "name": "Custom type",
+    "select": {
+      "options": ["Pass", "Fail"],
+      "canAddMoreOptions": false
+    },
+    "iconSettings": {
+      "reusableIconName": "select"
+    }}]'
+  availableDefaultColumnTypes="[]"
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  customColumnTypes='[{
+    "name": "Custom type",
+    "select": {
+      "options": ["Pass", "Fail"],
+      "canAddMoreOptions": false
+    },
+    "iconSettings": {
+      "reusableIconName": "select"
+    }}]'
+  availableDefaultColumnTypes="[]"
+  content='[
+    ["Category 1", "Category 2", "Category 3", "Category 4", "Category 5"],
+    ["Pass", "Pass", "Fail", "Fail", "Fail"],
+    ["Fail", "Pass", "Pass", "Fail", "Fail"],
+    ["Fail", "Pass", "Pass", "Pass", "Fail"],
+    ["Pass", "Fail", "Fail", "Pass", "Pass"],
+    ["Pass", "Fail", "Fail", "Fail", "Fail"]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
 
 <LineBreak></LineBreak>
 
@@ -172,7 +279,7 @@ if the function returns _false_. <br />
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   customColumnTypes='[
     {
@@ -188,7 +295,7 @@ if the function returns _false_. <br />
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -259,7 +366,7 @@ returns a styling object for the cell depenging on its contents.
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   customColumnTypes='[
   {
@@ -279,7 +386,7 @@ returns a styling object for the cell depenging on its contents.
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -350,7 +457,7 @@ are equal, or a positive value (> 0) if cellText1 is greater than cellText2.
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   customColumnTypes='[
     {
@@ -365,7 +472,7 @@ are equal, or a positive value (> 0) if cellText1 is greater than cellText2.
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -438,7 +545,7 @@ properties are also used for the header however if they don't fit the `headerCor
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   customColumnTypes='[
   {
@@ -456,7 +563,7 @@ properties are also used for the header however if they don't fit the `headerCor
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -548,7 +655,7 @@ Styling properties for the select and label dropdowns.
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   customColumnTypes='[
     {
@@ -565,7 +672,7 @@ Styling properties for the select and label dropdowns.
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -622,7 +729,7 @@ Styling properties for the select and label dropdowns.
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   customColumnTypes='[
     {
@@ -637,7 +744,7 @@ Styling properties for the select and label dropdowns.
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -709,7 +816,7 @@ for a custom [`Calendar`](#Calendar) type).
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   customColumnTypes='[
     {
@@ -725,7 +832,7 @@ for a custom [`Calendar`](#Calendar) type).
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -792,7 +899,7 @@ is checked and _"false"_ if unchecked.
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   customColumnTypes='[
     {
@@ -806,7 +913,7 @@ is checked and _"false"_ if unchecked.
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table

@@ -6,13 +6,10 @@ import {ActiveTable} from '../../activeTable';
 export class FrameComponentsColors {
   // prettier-ignore
   private static getInheritedHeaderColors(at: ActiveTable) {
-    const {_stripedRows, _defaultColumnsSettings: {headerStyles, cellStyle}} = at;
-    // Defined for add new column header when undefined
-    // When rows are striped - cell background colors overwrite them (by convention), thus default should not be defined
-    const defaultBackgroundColor = _stripedRows ? '' : 'white';
+    const {_defaultColumnsSettings: {headerStyles, cellStyle}} = at;
     return {
       default: {
-        backgroundColor: headerStyles?.default?.backgroundColor || cellStyle?.backgroundColor || defaultBackgroundColor,
+        backgroundColor: headerStyles?.default?.backgroundColor || cellStyle?.backgroundColor || '',
         color: headerStyles?.default?.color || cellStyle?.color || '',
       },
       hover: {

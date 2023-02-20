@@ -63,7 +63,7 @@ $ npm run build
 # Automatically build the component as soon as you make a change:
 $ npm run build:watch
 
-# Serve the component build locally (from /dev/index.html):
+# Serve the component locally (from /dev/index.html):
 $ npm run serve
 ```
 

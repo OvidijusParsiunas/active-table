@@ -332,6 +332,31 @@ html[data-theme='dark'] .header-github-link:before {
   color: var(--footer-text-color);
 }
 
+/* overwriting code blocks */
+.function {
+  color: rgb(0, 128, 255) !important;
+}
+
+.plain {
+  color: rgb(20, 67, 103) !important;
+}
+
+.tag {
+  color: rgb(27, 118, 188) !important;
+}
+
+.attr-name {
+  color: rgb(0, 145, 255) !important;
+}
+
+.attr-value {
+  color: rgb(5, 52, 102) !important;
+}
+
+.punctuation {
+  color: rgb(57 58 52) !important;
+}
+
 @media (max-height: 500px) {
   #start-page-content {
     transform: translateY(-50%) !important;

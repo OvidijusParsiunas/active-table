@@ -52,40 +52,40 @@ readdAutoNavToggle();
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   headerStyles='{
-      "default": {
-        "backgroundColor": "#efefef",
-        "borderBottom": "unset",
-        "fontWeight": "800",
-        "fontSize": "15px"
-      },
-      "hoverColors": {
-        "backgroundColor": "#d2d2d2"
-      }
-    }'
+    "default": {
+      "backgroundColor": "#efefef",
+      "borderBottom": "unset",
+      "fontWeight": "800",
+      "fontSize": "15px"
+    },
+    "hoverColors": {
+      "backgroundColor": "#d2d2d2"
+    }
+  }'
 ></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
   headerStyles='{
-      "default": {
-        "backgroundColor": "#efefef",
-        "borderBottom": "unset",
-        "fontWeight": "800",
-        "fontSize": "15px"
-      },
-      "hoverColors": {
-        "backgroundColor": "#d2d2d2"
-      }
-    }'
+    "default": {
+      "backgroundColor": "#efefef",
+      "borderBottom": "unset",
+      "fontWeight": "800",
+      "fontSize": "15px"
+    },
+    "hoverColors": {
+      "backgroundColor": "#d2d2d2"
+    }
+  }'
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
@@ -125,6 +125,35 @@ Controls if cell text can be edited for header cells.
   ></active-table>
 </TableContainer>
 
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table isHeaderTextEditable="false"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  isHeaderTextEditable="false"
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
 <LineBreak></LineBreak>
 
 ### `allowDuplicateHeaders`
@@ -154,14 +183,14 @@ Allows multiple columns to have the same header text. If set to _false_ and a du
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table allowDuplicateHeaders="false"></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -208,14 +237,14 @@ Displays an icon beside header text that represents the column type.
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table displayHeaderIcons="false"></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -273,7 +302,7 @@ that can be retrieved using the [cssfilterconverter](https://cssfilterconverter.
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   headerIconStyle='{
     "filterColor": "brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)",
@@ -285,7 +314,7 @@ that can be retrieved using the [cssfilterconverter](https://cssfilterconverter.
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -335,14 +364,14 @@ Header row will remain at the top of the table when there is overflow in the tab
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table stickyHeader="true"></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <div style="maxHeight: 200px; overflow: auto">
@@ -396,14 +425,14 @@ Starts the index column count at header row and if [`pagination`](./pagination) 
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table dataStartsAtHeader="true"></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table

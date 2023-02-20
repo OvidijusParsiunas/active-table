@@ -41,14 +41,14 @@ readdAutoNavToggle();
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table rowHoverStyle='{"style":{"backgroundColor": "#d6d6d630"}}'></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -67,9 +67,9 @@ readdAutoNavToggle();
 </TabItem>
 </Tabs>
 
-:::info
-Using this property unsets the default header and [`frameComponentsStyle`](./table#frameComponentsStyle) hover color properties.
-If the component is set with a [`cellStyle`](./content#cellStyle) property - this will be overriden.
+:::caution
+Custom default cell styles will override this property's styling. Additionally, using this property unsets the header (if set to _true_)
+and [`frameComponentsStyle`](./table#frameComponentsStyle) hover color properties.
 :::
 
 <LineBreak></LineBreak>
@@ -101,16 +101,14 @@ Stripe based styling for rows.
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
-<active-table
-  stripedRows='{"odd": {"backgroundColor": ""}, "even": {"backgroundColor": "#ebebeb7a"}}'
-></active-table>
+```html
+<active-table stripedRows='{"odd": {"backgroundColor": ""}, "even": {"backgroundColor": "#ebebeb7a"}}'></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -181,7 +179,7 @@ it does not open on header row when set to _false_.
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   rowDropdown='{"displaySettings":{"isAvailable": true, "openMethod": {"overlayClick": true}}, "canEditHeaderRow": false}'
 ></active-table>
@@ -190,7 +188,7 @@ it does not open on header row when set to _false_.
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -237,14 +235,14 @@ Maximum number of rows allowed (including header row).
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table maxRows="4"></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -292,14 +290,14 @@ You can set the add new row style via [`frameComponentsStyle`](./table#frameComp
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table displayAddNewRow="true"></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table

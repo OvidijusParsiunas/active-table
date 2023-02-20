@@ -44,7 +44,7 @@ readdAutoNavToggle();
 <Tabs>
 <TabItem value="js" label="Code">
 
-```text
+```html
 tableElementRef.getContent();
 ```
 
@@ -79,7 +79,7 @@ in the next session on the initial load.
 <Tabs>
 <TabItem value="js" label="Code">
 
-```text
+```html
 tableElementRef.getColumnsDetails();
 ```
 
@@ -113,17 +113,18 @@ at _0_ where it is the header row for `rowIndex` and the left-most column for `c
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 tableElementRef.updateCell({newText: "sample text", rowIndex: 1, columnIndex: 1});
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
-<active-table id="active-table"
+<active-table
+  id="active-table"
   content='[
     ["Name", "CPU", "Memory", "Disk", "Network"],
     ["Chrome", "4.5%", "1400MB", "0.2MB/s", "1.2Mbps"],
@@ -189,7 +190,7 @@ be activated through user actions, such as a click of a button.
 <Tabs>
 <TabItem value="js" label="Code">
 
-```text
+```html
 tableElementRef.importCSV();
 ```
 
@@ -223,7 +224,7 @@ Exports table content in a .csv file.
 <Tabs>
 <TabItem value="js" label="Code">
 
-```text
+```html
 tableElementRef.exportCSV();
 ```
 

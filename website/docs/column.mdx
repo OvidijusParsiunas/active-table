@@ -39,6 +39,35 @@ readdAutoNavToggle();
   ></active-table>
 </TableContainer>
 
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table isColumnResizable="true"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  isColumnResizable="true"
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
 <LineBreak></LineBreak>
 
 ### `columnResizerColors` {#columnResizerColors}
@@ -67,16 +96,14 @@ Column width resizer overlay background color style for hover and click events.
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
-<active-table
-  columnResizerColors='{ "hover": "#87ddff", "click": "#369cfd" }'
-></active-table>
+```html
+<active-table columnResizerColors='{ "hover": "#87ddff", "click": "#369cfd" }'></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -137,6 +164,47 @@ appear over it.
   ></active-table>
 </TableContainer>
 
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table
+  columnDropdown='{
+    "displaySettings": {
+      "openMethod": {"overlayClick": true}},
+    "isSortAvailable": false,
+    "isMoveAvailable": false
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  columnDropdown='{
+    "displaySettings": {
+      "openMethod": {"overlayClick": true}},
+    "isSortAvailable": false,
+    "isMoveAvailable": false
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
 <LineBreak></LineBreak>
 
 ### `customColumnsSettings` {#customColumnsSettings}
@@ -184,7 +252,7 @@ automatically inherit their values from the corresponding ones set directly on t
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   customColumnsSettings='[
     { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
@@ -198,7 +266,7 @@ automatically inherit their values from the corresponding ones set directly on t
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -250,14 +318,14 @@ Maximum number of columns allowed (not including the index and add columns colum
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table maxColumns="4"></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -306,7 +374,7 @@ _\*Minimal column size is recognised as 33px_
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   preserveNarrowColumns="true"
   tableStyle='{"width":"300px"}'
@@ -319,14 +387,14 @@ _\*Minimal column size is recognised as 33px_
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
-    content='[
+  content='[
       ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"],
       ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"]]'
-    tableStyle='{"width":"300px", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+  tableStyle='{"width":"300px", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
 ></active-table>
 ```
 
@@ -367,14 +435,14 @@ You can set the add new column style via [`frameComponentsStyle`](./table#frameC
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table displayAddNewColumn="true"></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -427,14 +495,14 @@ You can set the index column style via [`frameComponentsStyle`](./table#frameCom
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table displayIndexColumn='{"wrapIndexCellText": "false"}'></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -508,7 +576,7 @@ Shared object property types related to columns:
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   columnDropdown='{
     "isSortAvailable": false,
@@ -522,7 +590,7 @@ Shared object property types related to columns:
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table

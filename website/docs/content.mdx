@@ -39,7 +39,7 @@ readdAutoNavToggle();
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
@@ -54,7 +54,7 @@ readdAutoNavToggle();
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -97,6 +97,35 @@ Replacement text that is displayed when cell has no text or its type validation 
   ></active-table>
 </TableContainer>
 
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table defaultText="-"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  defaultText="-"
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["", "", 5.97, 1, 5514],
+    ["", "", 0.642, 2, 3934],
+    ["", "", 1898, 79, 1326],
+    ["", "", 568, 82, 687],
+    ["", "", 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
 <LineBreak></LineBreak>
 
 ### `isDefaultTextRemovable` {#isDefaultTextRemovable}
@@ -123,7 +152,35 @@ Removes default text when a cell containg one is focused.
   ></active-table>
 </TableContainer>
 
-<LineBreak></LineBreak>
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table defaultText="Click" isDefaultTextRemovable="true"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  defaultText="Click"
+  isDefaultTextRemovable="true"
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["", "", 5.97, 1, 5514],
+    ["", "", 0.642, 2, 3934],
+    ["", "", 1898, 79, 1326],
+    ["", "", 568, 82, 687],
+    ["", "", 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
 
 <LineBreak></LineBreak>
 
@@ -157,7 +214,7 @@ will be overriden to reach the set table `width`, hence to prevent this make sur
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table
   cellStyle='{"borderBottom": "1px solid black", "borderRight": "1px solid black", "backgroundColor": "#fafafa"}'
 ></active-table>
@@ -166,7 +223,7 @@ will be overriden to reach the set table `width`, hence to prevent this make sur
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
@@ -215,6 +272,35 @@ Controls if cell text can be edited for both data and header cells. This propert
   ></active-table>
 </TableContainer>
 
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table isCellTextEditable="false"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  isCellTextEditable="false"
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
 <LineBreak></LineBreak>
 
 ### `spellCheck`
@@ -243,14 +329,14 @@ Checks table text for spelling mistakes (based on the browser's language setting
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```text
+```html
 <active-table spellCheck="true"></active-table>
 ```
 
 </TabItem>
 <TabItem value="py" label="Full code">
 
-```text
+```html
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table

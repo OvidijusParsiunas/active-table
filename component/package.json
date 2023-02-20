@@ -1,14 +1,14 @@
 {
   "name": "active-table",
-  "version": "0.0.200",
-  "description": "A fully editable table",
+  "version": "0.0.203",
+  "description": "Framework agnostic table component for editable data experience",
   "main": "./dist/activeTable.js",
   "module": "./dist/activeTable.js",
   "type": "module",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "build:element": "npm run clean && tsc && npm run analyze && rollup -c",
+    "build:element": "npm run clean && tsc --project tsconfig.element.json && npm run analyze && rollup -c",
     "clean": "rimraf dist test",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",
@@ -32,17 +32,16 @@
     "react",
     "vue",
     "angular",
+    "solid",
+    "svelte",
     "javascript",
-    "typescript",
-    "add",
-    "remove",
+    "framework-agnostic",
     "component",
-    "web-components",
-    "lit",
-    "lit-element"
+    "web-component",
+    "csv"
   ],
   "author": "Ovidijus Parsiunas",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/OvidijusParsiunas/active-table.git"
@@ -52,11 +51,7 @@
   },
   "homepage": "https://github.com/OvidijusParsiunas/active-table",
   "dependencies": {
-    "@rollup/plugin-replace": "^4.0.0",
-    "lit": "^2.2.4",
-    "rollup": "^2.79.0",
-    "rollup-plugin-summary": "^1.4.3",
-    "rollup-plugin-terser": "^7.0.2"
+    "lit": "^2.2.4"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.6.3",
@@ -73,7 +68,11 @@
     "lit-analyzer": "^1.2.1",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
-    "typescript": "~4.9.0"
+    "typescript": "~4.9.0",
+    "rollup": "^2.79.0",
+    "rollup-plugin-summary": "^1.4.3",
+    "rollup-plugin-terser": "^7.0.2",
+    "@rollup/plugin-replace": "^4.0.0"
   },
   "customElements": "custom-elements.json",
   "files": [
