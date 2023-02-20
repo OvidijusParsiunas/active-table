@@ -29,5 +29,6 @@ Open source is at the heart of what we do. Active Table is built by the communit
 
 If you have any suggestions for enhancements, ideas on how to take the project further or have discovered a bug, do not hesitate to create a new [**issue ticket**](https://github.com/OvidijusParsiunas/active-table/issues/new/choose) and we will look into it as soon as possible!
 
-import {readdAutoNavToggle} from '@site/src/nav/autoNavToggle';
-readdAutoNavToggle();
+import BrowserOnly from '@docusaurus/BrowserOnly';
+
+<BrowserOnly>{() => require('@site/src/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>

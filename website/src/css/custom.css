@@ -170,6 +170,7 @@ code {
 #left-panel {
   float: left;
   width: 50%;
+  padding-top: 20px;
 }
 
 #colored-header {

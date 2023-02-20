@@ -14,29 +14,31 @@ Object containing CSS styling properties for the table element. <br />
 
 #### Example
 
+import ActiveTable from '@site/src/components/table/activeTableBrowser';
 import TableContainer from '@site/src/components/table/tableContainer';
 import LineBreak from '@site/src/components/markdown/lineBreak';
-import {readdAutoNavToggle} from '@site/src/nav/autoNavToggle';
-import {ActiveTable} from 'active-table';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
-readdAutoNavToggle();
+
+<BrowserOnly>{() => require('@site/src/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
 
 <TableContainer>
-  <active-table
-    tableStyle='{
-      "borderRadius": "10px",
-      "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px",
-      "width":"100%"
-    }'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-  ></active-table>
+  <ActiveTable
+    tableStyle={{
+      borderRadius: '10px',
+      boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px',
+      width: '100%',
+    }}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -96,25 +98,26 @@ A scrollbar is introduced on the table if either of the specified dimensions are
 #### Example
 
 <TableContainer>
-  <active-table
-    overflow='{"maxHeight": "300px", "maxWidth": "100%"}'
-    tableStyle='{
-      "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px",
-      "width":"1000px"
-    }'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638],
-      ["Mercury", 4879, 0.33, 0, 5429],
-      ["Venus", 12104, 4.87, 0, 5243],
-      ["Uranus", 51118, 86.8, 27, 1270],
-      ["Pluto", 2376, 0.013, 5, 1850],
-      ["Moon", 3475, 0.073, 0, 3340]]'
-  ></active-table>
+  <ActiveTable
+    overflow={{maxHeight: '300px', maxWidth: '100%'}}
+    tableStyle={{
+      boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px',
+      width: '1000px',
+    }}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+      ['Mercury', 4879, 0.33, 0, 5429],
+      ['Venus', 12104, 4.87, 0, 5243],
+      ['Uranus', 51118, 86.8, 27, 1270],
+      ['Pluto', 2376, 0.013, 5, 1850],
+      ['Moon', 3475, 0.073, 0, 3340],
+    ]}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -169,22 +172,24 @@ row's `backgroundColor` and text `color`.
 #### Example
 
 <TableContainer>
-  <active-table
-    frameComponentsStyle='{
-      "style": {
-        "default": {"backgroundColor": "#f5f5f5"},
-        "hoverColors": {"backgroundColor": "#dedede"}},
-      "inheritHeaderColors": false
-    }'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    frameComponentsStyle={{
+      style: {
+        default: {backgroundColor: '#f5f5f5'},
+        hoverColors: {backgroundColor: '#dedede'},
+      },
+      inheritHeaderColors: false,
+    }}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>

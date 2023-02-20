@@ -17,36 +17,38 @@ in [`frameComponentsStyle`](./table#frameComponentsStyle) to _false_.
 
 #### Example
 
+import ActiveTable from '@site/src/components/table/activeTableBrowser';
 import TableContainer from '@site/src/components/table/tableContainer';
 import LineBreak from '@site/src/components/markdown/lineBreak';
-import {readdAutoNavToggle} from '@site/src/nav/autoNavToggle';
-import {ActiveTable} from 'active-table';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
-readdAutoNavToggle();
+
+<BrowserOnly>{() => require('@site/src/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
 
 <TableContainer>
-  <active-table
-    headerStyles='{
-      "default": {
-        "backgroundColor": "#efefef",
-        "borderBottom": "unset",
-        "fontWeight": "800",
-        "fontSize": "15px"
+  <ActiveTable
+    headerStyles={{
+      default: {
+        backgroundColor: '#efefef',
+        borderBottom: 'unset',
+        fontWeight: '800',
+        fontSize: '15px',
       },
-      "hoverColors": {
-        "backgroundColor": "#d2d2d2"
-      }
-    }'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+      hoverColors: {
+        backgroundColor: '#d2d2d2',
+      },
+    }}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -112,17 +114,18 @@ Controls if cell text can be edited for header cells.
 #### Example
 
 <TableContainer>
-  <active-table
-    isHeaderTextEditable="false"
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    isHeaderTextEditable={false}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -167,17 +170,18 @@ Allows multiple columns to have the same header text. If set to _false_ and a du
 #### Example for false
 
 <TableContainer>
-  <active-table
-    allowDuplicateHeaders="false"
-    content='[
-      ["Planet", "Planet", "Moons", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    allowDuplicateHeaders={false}
+    content={[
+      ['Planet', 'Planet', 'Moons', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -221,17 +225,18 @@ Displays an icon beside header text that represents the column type.
 #### Example for false
 
 <TableContainer>
-  <active-table
-    displayHeaderIcons="false"
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    displayHeaderIcons={false}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -283,20 +288,22 @@ that can be retrieved using the [cssfilterconverter](https://cssfilterconverter.
 #### Example
 
 <TableContainer>
-  <active-table
-    headerIconStyle='{
-      "filterColor": "brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)",
-      "scale": {"x": 1.5, "y": 1.5}
-    }'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    headerIconStyle={{
+      filterColor:
+        'brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)',
+      scale: {x: 1.5, y: 1.5},
+    }}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -348,17 +355,18 @@ Header row will remain at the top of the table when there is overflow in the tab
 #### Example
 
 <TableContainer customStyle={{maxHeight: '200px', overflow: 'auto'}}>
-  <active-table
-    stickyHeader="true"
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"97%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    stickyHeader={true}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '97%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -409,17 +417,18 @@ Starts the index column count at header row and if [`pagination`](./pagination) 
 #### Example
 
 <TableContainer>
-  <active-table
-    dataStartsAtHeader="true"
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    dataStartsAtHeader={'true'}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>

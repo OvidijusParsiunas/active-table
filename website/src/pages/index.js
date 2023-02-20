@@ -1,6 +1,6 @@
-import {TableWrapper} from '../components/table/tableWrapper';
-import {readdAutoNavToggle} from '../nav/autoNavToggle';
+import ActiveTableBrowser from '../components/table/activeTableBrowser';
 import {Features} from '../homepage/features/features';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import Layout from '@theme/Layout';
 import React from 'react';
 
@@ -9,11 +9,6 @@ function LeftPanel() {
     <div id="left-panel">
       <h1 id="colored-header">Active Table</h1>
       <h1 id="sub-header">Framework agnostic table component for editable data experience</h1>
-      <div style={{marginTop: '30px'}}>
-        <a id="install-button" className="header-button" href="docs/API/installation">
-          Install
-        </a>
-      </div>
     </div>
   );
 }
@@ -23,18 +18,39 @@ function RightPanel() {
     <div id="right-panel">
       {/* WORK - can remove this div once the right-panel id can be used to determine width */}
       <div style={{width: '100%'}}>
-        <TableWrapper
-          tableStyle={{borderRadius: '5px', width: '100%'}}
-          content={[
-            ['Planet', 'Diameter', 'Mass', 'Moons'],
-            ['Earth', 12756, 5.97, 1],
-            ['Mars', 6792, 0.642, 2],
-            ['Jupiter', 142984, 1898, 79],
-            ['Saturn', 120536, 568, 82],
-            ['Neptune', 49528, 102, 14],
-            ['Mercury', 4879, 0.33, 0],
+        <ActiveTableBrowser
+          tableStyle={{borderRadius: '5px', width: '580px'}}
+          customColumnsSettings={[
+            {
+              headerName: 'Category',
+              defaultColumnTypeName: 'Label',
+              // customColumnTypes: [
+              //   {
+              //     name: 'Hobbies',
+              //     label: {
+              //       options: [
+              //         {text: 'Furniture', backgroundColor: '#cdfef7'},
+              //         {text: 'Vehicles', backgroundColor: '#d6ffbd'},
+              //         {text: 'Electronics', backgroundColor: '#afdffd'},
+              //       ],
+              //     },
+              //   },
+              // ],
+            },
+            {headerName: 'Sale date', defaultColumnTypeName: 'Date d-m-y'},
+            // {headerName: 'Verified', defaultColumnTypeName: 'Checkbox'},
+            {headerName: 'Price', defaultColumnTypeName: 'Currency'},
           ]}
-        ></TableWrapper>
+          content={[
+            ['Name', 'Category', 'Sale date', 'Price'],
+            ['Car', 'Vehicles', '20/07/2012', '$6800.00'],
+            ['Laptop', 'Electronics', '08/11/2014', '$700'],
+            ['Chair', 'Furniture', '05/02/2019', '$20.00'],
+            ['Apples', 'Food', '10/04/2022', '$1.00'],
+            ['Bracelet', 'Jewellery', '10/06/1998', '$180.00'],
+            ['Jeans', 'Clothing', '16/02/2023', '$70.00'],
+          ]}
+        ></ActiveTableBrowser>
       </div>
     </div>
   );
@@ -62,7 +78,6 @@ function StartPage() {
 }
 
 export default function Home() {
-  readdAutoNavToggle();
   return (
     <Layout description="Fully customisable editable table component">
       <main>
@@ -72,7 +87,7 @@ export default function Home() {
           <div
             style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '120px', marginBottom: '120px'}}
           >
-            <a className={'header-button custom-button'} href="docs/API/columnType">
+            <a className={'header-button custom-button'} href="docs/table">
               Explore API for more
             </a>
           </div>
@@ -89,6 +104,7 @@ export default function Home() {
           .
         </div>
       </main>
+      <BrowserOnly>{() => require('@site/src/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
     </Layout>
   );
 }

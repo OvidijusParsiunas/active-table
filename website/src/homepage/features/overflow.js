@@ -1,4 +1,4 @@
-import {TableWrapper} from '../../components/table/tableWrapper';
+import ActiveTableBrowser from '../../components/table/activeTableBrowser';
 import React from 'react';
 
 export function Overflow() {
@@ -8,7 +8,7 @@ export function Overflow() {
       <div style={{display: 'flex', marginTop: '30px'}}>
         <div style={{float: 'left', width: '50%'}}>
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
-            <TableWrapper
+            <ActiveTableBrowser
               tableStyle={{borderRadius: '5px', width: '100%'}}
               overflow={{maxHeight: '258px'}}
               content={[
@@ -24,12 +24,12 @@ export function Overflow() {
                 ['Pluto', 2376, 0.013, 5],
                 ['Moon', 3475, 0.073, 0],
               ]}
-            ></TableWrapper>
+            ></ActiveTableBrowser>
           </div>
         </div>
         <div style={{float: 'left', width: '50%'}}>
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
-            <TableWrapper
+            <ActiveTableBrowser
               tableStyle={{borderRadius: '5px', width: '100%'}}
               pagination={{rowsPerPage: 4}}
               content={[
@@ -47,7 +47,7 @@ export function Overflow() {
                 ['Earth', 12756, 5.97, 1],
                 ['Mars', 6792, 0.642, 2],
               ]}
-            ></TableWrapper>
+            ></ActiveTableBrowser>
           </div>
         </div>
       </div>

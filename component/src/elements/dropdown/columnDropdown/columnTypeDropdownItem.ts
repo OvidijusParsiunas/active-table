@@ -7,8 +7,10 @@ import {DropdownItem} from '../dropdownItem';
 export class ColumnTypeDropdownItem {
   private static unsetActiveItem(dropdownElement: HTMLElement) {
     const activeItem = dropdownElement.getElementsByClassName(DropdownItem.ACTIVE_ITEM_CLASS)[0] as HTMLElement;
-    (activeItem.children[0] as HTMLElement).style.filter = '';
-    activeItem.classList.remove(DropdownItem.ACTIVE_ITEM_CLASS);
+    if (activeItem) {
+      (activeItem.children[0] as HTMLElement).style.filter = '';
+      activeItem.classList.remove(DropdownItem.ACTIVE_ITEM_CLASS);
+    }
   }
 
   public static reset(dropdownElement: HTMLElement) {

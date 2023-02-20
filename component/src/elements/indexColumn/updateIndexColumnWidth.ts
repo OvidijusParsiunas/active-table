@@ -58,7 +58,7 @@ export class UpdateIndexColumnWidth {
     // if using pagination and the last row is not visible, then scrollWidth will be 0 and we must temporarily add
     // the last cell content to the first data row cell to measure the overflow
     if (lastCell.scrollWidth === 0) {
-      const firstDataRow = firstRow.nextSibling as HTMLElement;
+      const firstDataRow = firstRow?.nextSibling as HTMLElement;
       if (firstDataRow && !AddNewRowElement.isAddNewRowRow(firstDataRow)) {
         const firstDataCell = firstDataRow.children[0] as HTMLElement;
         const firstCellContent = firstDataCell.textContent;

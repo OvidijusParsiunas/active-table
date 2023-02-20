@@ -1,4 +1,4 @@
-import {TableWrapper} from '../../components/table/tableWrapper';
+import ActiveTableBrowser from '../../components/table/activeTableBrowser';
 import {ProgrammaticUpdates} from './programmaticUpdates';
 import {Customization} from './customization';
 import {Responsive} from './responsive';
@@ -19,7 +19,7 @@ function ColumnTypes() {
       </div>
       <div style={{float: 'right', width: '50%'}}>
         <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
-          <TableWrapper
+          <ActiveTableBrowser
             tableStyle={{borderRadius: '5px', width: '100%'}}
             customColumnsSettings={[
               {
@@ -60,7 +60,7 @@ function ColumnTypes() {
               ['Gregg', '05-02-1975', 'Reading', 'false'],
               ['Jeff', '24-04-2015', 'Soccer', 'false'],
             ]}
-          ></TableWrapper>
+          ></ActiveTableBrowser>
         </div>
       </div>
     </div>

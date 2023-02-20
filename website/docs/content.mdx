@@ -15,25 +15,27 @@ Header and data text to be displayed in the table. First array represents the he
 
 #### Example
 
+import ActiveTable from '@site/src/components/table/activeTableBrowser';
 import TableContainer from '@site/src/components/table/tableContainer';
 import LineBreak from '@site/src/components/markdown/lineBreak';
-import {readdAutoNavToggle} from '@site/src/nav/autoNavToggle';
-import {ActiveTable} from 'active-table';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
-readdAutoNavToggle();
+
+<BrowserOnly>{() => require('@site/src/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
 
 <TableContainer>
-  <active-table
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -84,17 +86,18 @@ Replacement text that is displayed when cell has no text or its type validation 
 #### Example
 
 <TableContainer>
-  <active-table
-    defaultText="-"
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["", "", 5.97, 1, 5514],
-      ["", "", 0.642, 2, 3934],
-      ["", "", 1898, 79, 1326],
-      ["", "", 568, 82, 687],
-      ["", "", 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    defaultText={'-'}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['', '', 5.97, 1, 5514],
+      ['', '', 0.642, 2, 3934],
+      ['', '', 1898, 79, 1326],
+      ['', '', 568, 82, 687],
+      ['', '', 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -138,18 +141,19 @@ Removes default text when a cell containg one is focused.
 #### Example
 
 <TableContainer>
-  <active-table
-    defaultText="Click"
-    isDefaultTextRemovable="true"
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["", "", 5.97, 1, 5514],
-      ["", "", 0.642, 2, 3934],
-      ["", "", 1898, 79, 1326],
-      ["", "", 568, 82, 687],
-      ["", "", 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    defaultText={'Click'}
+    isDefaultTextRemovable={'true'}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['', '', 5.97, 1, 5514],
+      ['', '', 0.642, 2, 3934],
+      ['', '', 1898, 79, 1326],
+      ['', '', 568, 82, 687],
+      ['', '', 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -198,17 +202,18 @@ will be overriden to reach the set table `width`, hence to prevent this make sur
 #### Example
 
 <TableContainer>
-  <active-table
-    cellStyle='{"borderBottom": "1px solid black", "borderRight": "1px solid black", "backgroundColor": "#fafafa"}'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    cellStyle={{borderBottom: '1px solid black', borderRight: '1px solid black', backgroundColor: '#fafafa'}}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -259,17 +264,18 @@ Controls if cell text can be edited for both data and header cells. This propert
 #### Example
 
 <TableContainer>
-  <active-table
-    isCellTextEditable="false"
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    isCellTextEditable={false}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -313,17 +319,18 @@ Checks table text for spelling mistakes (based on the browser's language setting
 #### Example
 
 <TableContainer>
-  <active-table
-    spellCheck="true"
-    content='[
-      ["Planetasdasd", "Diamasdasdeter", "Masssdfsdf", "Mooffns", "Denssdsdfdsfity"],
-      ["asdasdasd", 12756, 5.97, 1, 5514],
-      ["Msadasdars", 6792, 0.642, 2, 3934],
-      ["Jupitar", 142984, 1898, 79, 1326],
-      ["asudhasd", 120536, 568, 82, 687],
-      ["saiuhfjduidshfuis", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    spellCheck={true}
+    content={[
+      ['Planetasdasd', 'Diamasdasdeter', 'Masssdfsdf', 'Mooffns', 'Denssdsdfdsfity'],
+      ['asdasdasd', 12756, 5.97, 1, 5514],
+      ['Msadasdars', 6792, 0.642, 2, 3934],
+      ['Jupitar', 142984, 1898, 79, 1326],
+      ['asudhasd', 120536, 568, 82, 687],
+      ['saiuhfjduidshfuis', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>

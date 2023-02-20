@@ -1,4 +1,4 @@
-import {TableWrapper} from '../../components/table/tableWrapper';
+import ActiveTableBrowser from '../../components/table/activeTableBrowser';
 import React from 'react';
 
 function mouseMoving(mouseClick, leftTableRef, rightTableRef, event) {
@@ -82,7 +82,7 @@ export function Responsive() {
       <div style={{display: 'flex', marginTop: '20px'}}>
         <div style={{float: 'left', width: 'calc(50% - 20px)'}} ref={leftTableRef}>
           <div style={{width: '100%', float: 'right', display: 'flex'}}>
-            <TableWrapper
+            <ActiveTableBrowser
               tableStyle={{borderRadius: '5px', width: '100%'}}
               content={[
                 ['Planet', 'Diameter', 'Mass', 'Moons'],
@@ -91,13 +91,13 @@ export function Responsive() {
                 ['Jupiter', 142984, 1898, 79],
                 ['Neptune', 49528, 102, 14],
               ]}
-            ></TableWrapper>
+            ></ActiveTableBrowser>
           </div>
         </div>
         <Resizer mouseClick={mouseClick}></Resizer>
         <div style={{float: 'right', width: 'calc(50% - 20px)'}} ref={rightTableRef}>
           <div style={{width: '100%', float: 'left', display: 'flex'}}>
-            <TableWrapper
+            <ActiveTableBrowser
               tableStyle={{borderRadius: '5px', width: '100%'}}
               content={[
                 ['Planet', 'Diameter', 'Mass', 'Moons'],
@@ -106,7 +106,7 @@ export function Responsive() {
                 ['Jupiter', 142984, 1898, 79],
                 ['Neptune', 49528, 102, 14],
               ]}
-            ></TableWrapper>
+            ></ActiveTableBrowser>
           </div>
         </div>
       </div>

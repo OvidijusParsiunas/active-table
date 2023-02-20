@@ -15,26 +15,28 @@ Nname for the default column type.
 
 #### Example
 
+import ActiveTable from '@site/src/components/table/activeTableBrowser';
 import TableContainer from '@site/src/components/table/tableContainer';
 import LineBreak from '@site/src/components/markdown/lineBreak';
-import {readdAutoNavToggle} from '@site/src/nav/autoNavToggle';
-import {ActiveTable} from 'active-table';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
-readdAutoNavToggle();
+
+<BrowserOnly>{() => require('@site/src/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
 
 <TableContainer>
-  <active-table
-    defaultColumnTypeName="Label"
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    defaultColumnTypeName={'Label'}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -79,17 +81,18 @@ will be automatically set to _"Text"_.
 #### Example
 
 <TableContainer>
-  <active-table
-    availableDefaultColumnTypes='["Number"]'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["1", 12756, 5.97, 1, 5514],
-      ["2", 6792, 0.642, 2, 3934],
-      ["3", 142984, 1898, 79, 1326],
-      ["4", 120536, 568, 82, 687],
-      ["5", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    availableDefaultColumnTypes={['Number']}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['1', 12756, 5.97, 1, 5514],
+      ['2', 6792, 0.642, 2, 3934],
+      ['3', 142984, 1898, 79, 1326],
+      ['4', 120536, 568, 82, 687],
+      ['5', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -133,26 +136,30 @@ An array of custom column types which are automatically appended to the [`availa
 #### Example
 
 <TableContainer>
-  <active-table
-    availableDefaultColumnTypes="[]"
-    customColumnTypes='[{
-      "name": "Custom type",
-      "select": {
-        "options": ["Pass", "Fail"],
-        "canAddMoreOptions": false
+  <ActiveTable
+    availableDefaultColumnTypes={[]}
+    customColumnTypes={[
+      {
+        name: 'Custom type',
+        select: {
+          options: ['Pass', 'Fail'],
+          canAddMoreOptions: false,
+        },
+        iconSettings: {
+          reusableIconName: 'select',
+        },
       },
-      "iconSettings": {
-        "reusableIconName": "select"
-      }}]'
-    content='[
-      ["Category 1", "Category 2", "Category 3", "Category 4", "Category 5"],
-      ["Pass", "Pass", "Fail", "Fail", "Fail"],
-      ["Fail", "Pass", "Pass", "Fail", "Fail"],
-      ["Fail", "Pass", "Pass", "Pass", "Fail"],
-      ["Pass", "Fail", "Fail", "Pass", "Pass"],
-      ["Pass", "Fail", "Fail", "Fail", "Fail"]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+    ]}
+    content={[
+      ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'],
+      ['Pass', 'Pass', 'Fail', 'Fail', 'Fail'],
+      ['Fail', 'Pass', 'Pass', 'Fail', 'Fail'],
+      ['Fail', 'Pass', 'Pass', 'Pass', 'Fail'],
+      ['Pass', 'Fail', 'Fail', 'Pass', 'Pass'],
+      ['Pass', 'Fail', 'Fail', 'Fail', 'Fail'],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -255,25 +262,28 @@ if the function returns _false_. <br />
 #### Example validation for if number is higher than 20
 
 <TableContainer>
-  <active-table
-    customColumnTypes='[
+  <ActiveTable
+    customColumnTypes={[
       {
-        "name": "Custom type",
-        "textValidation": {
-          "func": "(cellText) => Number(cellText) > 20",
-          "setTextToDefaultOnFail":false,
-          "failedStyle":{"color":"red"}
-    }}]'
-    defaultColumnTypeName="Custom type"
-    content='[
-      ["Gravity", "Diameter", "Mass", "Moons", "Density"],
+        name: 'Custom type',
+        textValidation: {
+          func: '(cellText) => Number(cellText) > 20',
+          setTextToDefaultOnFail: false,
+          failedStyle: {color: 'red'},
+        },
+      },
+    ]}
+    defaultColumnTypeName={'Custom type'}
+    content={[
+      ['Gravity', 'Diameter', 'Mass', 'Moons', 'Density'],
       [9.8, 12756, 5.97, 1, 5514],
       [3.7, 6792, 0.642, 2, 3934],
       [23.1, 142984, 1898, 79, 1326],
       [9, 120536, 568, 82, 687],
-      [11, 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+      [11, 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -338,29 +348,33 @@ returns a styling object for the cell depenging on its contents.
 #### Example processing for currency: 20 (red) < 100 (yellow) < more (green)
 
 <TableContainer>
-  <active-table
-    customColumnTypes='[
+  <ActiveTable
+    customColumnTypes={[
       {
-        "name": "Custom type",
-        "customTextProcessing": {
-          "changeTextFunc": "(cellText) => `$${Number(cellText.replace(/[^0-9.-]+/g,\"\"))}`",
-          "changeStyleFunc": "(cellText) => {
-            const moneyNumber = Number(cellText.replace(/[^0-9.-]+/g,\"\"));
-            if (moneyNumber < 20) return {backgroundColor: `#ff3232`};
-            if (moneyNumber < 100) return {backgroundColor: `#ffff00`};
-            return {backgroundColor: `#00ac00`};
-          }"
-      }}]'
-    defaultColumnTypeName="Custom type"
-    content='[
-      ["Gravity", "Diameter", "Mass", "Moons", "Density"],
+        name: 'Custom type',
+        customTextProcessing: {
+          changeTextFunc: '(cellText) => `$${Number(cellText.replace(/[^0-9.-]+/g,""))}`',
+          changeStyleFunc:
+            '(cellText) => {' +
+            'const moneyNumber = Number(cellText.replace(/[^0-9.-]+/g,""));' +
+            'if (moneyNumber < 20) return {backgroundColor: `#ff3232`};' +
+            'if (moneyNumber < 100) return {backgroundColor: `#ffff00`};' +
+            'return {backgroundColor: `#00ac00`};' +
+            '}',
+        },
+      },
+    ]}
+    defaultColumnTypeName={'Custom type'}
+    content={[
+      ['Gravity', 'Diameter', 'Mass', 'Moons', 'Density'],
       [9.8, 12756, 5.97, 1, 5514],
       [3.7, 6792, 0.642, 2, 3934],
       [23.1, 142984, 1898, 79, 1326],
       [9, 120536, 568, 82, 687],
-      [11, 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+      [11, 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -434,24 +448,27 @@ are equal, or a positive value (> 0) if cellText1 is greater than cellText2.
 #### Example sorting for numbers
 
 <TableContainer>
-  <active-table
-    customColumnTypes='[
+  <ActiveTable
+    customColumnTypes={[
       {
-        "name": "Custom type",
-        "sorting": {
-          "ascendingFunc": "(cellText1, cellText2) => Number(cellText1) - Number(cellText2)",
-          "descendingFunc": "(cellText1, cellText2) => Number(cellText2) - Number(cellText1)"
-    }}]'
-    defaultColumnTypeName="Custom type"
-    content='[
-      ["Gravity", "Diameter", "Mass", "Moons", "Density"],
+        name: 'Custom type',
+        sorting: {
+          ascendingFunc: '(cellText1, cellText2) => Number(cellText1) - Number(cellText2)',
+          descendingFunc: '(cellText1, cellText2) => Number(cellText2) - Number(cellText1)',
+        },
+      },
+    ]}
+    defaultColumnTypeName={'Custom type'}
+    content={[
+      ['Gravity', 'Diameter', 'Mass', 'Moons', 'Density'],
       [9.8, 12756, 5.97, 1, 5514],
       [3.7, 6792, 0.642, 2, 3934],
       [23.1, 142984, 1898, 79, 1326],
       [9, 120536, 568, 82, 687],
-      [11, 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+      [11, 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -520,26 +537,31 @@ properties are also used for the header however if they don't fit the `headerCor
 #### Example calendar icon
 
 <TableContainer>
-  <active-table
-    customColumnTypes='[
-    {
-      "name": "Custom type",
-      "iconSettings": {
-        "svgString": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"10px\" viewBox=\"0 0 10 10\" version=\"1.1\">\n<g id=\"surface1\">\n<path style=\" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;\" d=\"M 1.070312 9.285156 L 8.929688 9.285156 L 8.929688 3.570312 L 1.070312 3.570312 Z M 3.214844 2.5 L 3.214844 0.894531 C 3.214844 0.839844 3.199219 0.796875 3.164062 0.765625 C 3.128906 0.730469 3.085938 0.714844 3.035156 0.714844 L 2.679688 0.714844 C 2.625 0.714844 2.582031 0.730469 2.550781 0.765625 C 2.515625 0.796875 2.5 0.839844 2.5 0.894531 L 2.5 2.5 C 2.5 2.550781 2.515625 2.59375 2.550781 2.628906 C 2.582031 2.660156 2.625 2.679688 2.679688 2.679688 L 3.035156 2.679688 C 3.085938 2.679688 3.128906 2.660156 3.164062 2.628906 C 3.199219 2.59375 3.214844 2.550781 3.214844 2.5 Z M 7.5 2.5 L 7.5 0.894531 C 7.5 0.839844 7.484375 0.796875 7.449219 0.765625 C 7.417969 0.730469 7.375 0.714844 7.320312 0.714844 L 6.964844 0.714844 C 6.914062 0.714844 6.871094 0.730469 6.835938 0.765625 C 6.800781 0.796875 6.785156 0.839844 6.785156 0.894531 L 6.785156 2.5 C 6.785156 2.550781 6.800781 2.59375 6.835938 2.628906 C 6.871094 2.660156 6.914062 2.679688 6.964844 2.679688 L 7.320312 2.679688 C 7.375 2.679688 7.417969 2.660156 7.449219 2.628906 C 7.484375 2.59375 7.5 2.550781 7.5 2.5 Z M 9.644531 2.144531 L 9.644531 9.285156 C 9.644531 9.480469 9.570312 9.648438 9.429688 9.789062 C 9.289062 9.929688 9.121094 10 8.929688 10 L 1.070312 10 C 0.878906 10 0.710938 9.929688 0.570312 9.789062 C 0.429688 9.648438 0.355469 9.480469 0.355469 9.285156 L 0.355469 2.144531 C 0.355469 1.949219 0.429688 1.78125 0.570312 1.640625 C 0.710938 1.5 0.878906 1.429688 1.070312 1.429688 L 1.785156 1.429688 L 1.785156 0.894531 C 1.785156 0.648438 1.875 0.4375 2.046875 0.261719 C 2.222656 0.0859375 2.433594 0 2.679688 0 L 3.035156 0 C 3.28125 0 3.492188 0.0859375 3.667969 0.261719 C 3.839844 0.4375 3.929688 0.648438 3.929688 0.894531 L 3.929688 1.429688 L 6.070312 1.429688 L 6.070312 0.894531 C 6.070312 0.648438 6.160156 0.4375 6.332031 0.261719 C 6.507812 0.0859375 6.71875 0 6.964844 0 L 7.320312 0 C 7.566406 0 7.777344 0.0859375 7.953125 0.261719 C 8.125 0.4375 8.214844 0.648438 8.214844 0.894531 L 8.214844 1.429688 L 8.929688 1.429688 C 9.121094 1.429688 9.289062 1.5 9.429688 1.640625 C 9.570312 1.78125 9.644531 1.949219 9.644531 2.144531 Z M 9.644531 2.144531 \"/>\n</g>\n</svg>",
-        "containerStyles": {
-          "dropdown": {"marginLeft": "1.25px", "marginRight": "8px", "marginTop": "-2px"},
-          "headerCorrections": {"marginTop": "0px"}
-    }}}]'
-    defaultColumnTypeName="Custom type"
-    content='[
-      ["Gravity", "Diameter", "Mass", "Moons", "Density"],
+  <ActiveTable
+    customColumnTypes={[
+      {
+        name: 'Custom type',
+        iconSettings: {
+          svgString:
+            '<?xml version="1.0" encoding="UTF-8"?>\n <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10px" viewBox="0 0 10 10" version="1.1">\n<g id="surface1">\n<path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 1.070312 9.285156 L 8.929688 9.285156 L 8.929688 3.570312 L 1.070312 3.570312 Z M 3.214844 2.5 L 3.214844 0.894531 C 3.214844 0.839844 3.199219 0.796875 3.164062 0.765625 C 3.128906 0.730469 3.085938 0.714844 3.035156 0.714844 L 2.679688 0.714844 C 2.625 0.714844 2.582031 0.730469 2.550781 0.765625 C 2.515625 0.796875 2.5 0.839844 2.5 0.894531 L 2.5 2.5 C 2.5 2.550781 2.515625 2.59375 2.550781 2.628906 C 2.582031 2.660156 2.625 2.679688 2.679688 2.679688 L 3.035156 2.679688 C 3.085938 2.679688 3.128906 2.660156 3.164062 2.628906 C 3.199219 2.59375 3.214844 2.550781 3.214844 2.5 Z M 7.5 2.5 L 7.5 0.894531 C 7.5 0.839844 7.484375 0.796875 7.449219 0.765625 C 7.417969 0.730469 7.375 0.714844 7.320312 0.714844 L 6.964844 0.714844 C 6.914062 0.714844 6.871094 0.730469 6.835938 0.765625 C 6.800781 0.796875 6.785156 0.839844 6.785156 0.894531 L 6.785156 2.5 C 6.785156 2.550781 6.800781 2.59375 6.835938 2.628906 C 6.871094 2.660156 6.914062 2.679688 6.964844 2.679688 L 7.320312 2.679688 C 7.375 2.679688 7.417969 2.660156 7.449219 2.628906 C 7.484375 2.59375 7.5 2.550781 7.5 2.5 Z M 9.644531 2.144531 L 9.644531 9.285156 C 9.644531 9.480469 9.570312 9.648438 9.429688 9.789062 C 9.289062 9.929688 9.121094 10 8.929688 10 L 1.070312 10 C 0.878906 10 0.710938 9.929688 0.570312 9.789062 C 0.429688 9.648438 0.355469 9.480469 0.355469 9.285156 L 0.355469 2.144531 C 0.355469 1.949219 0.429688 1.78125 0.570312 1.640625 C 0.710938 1.5 0.878906 1.429688 1.070312 1.429688 L 1.785156 1.429688 L 1.785156 0.894531 C 1.785156 0.648438 1.875 0.4375 2.046875 0.261719 C 2.222656 0.0859375 2.433594 0 2.679688 0 L 3.035156 0 C 3.28125 0 3.492188 0.0859375 3.667969 0.261719 C 3.839844 0.4375 3.929688 0.648438 3.929688 0.894531 L 3.929688 1.429688 L 6.070312 1.429688 L 6.070312 0.894531 C 6.070312 0.648438 6.160156 0.4375 6.332031 0.261719 C 6.507812 0.0859375 6.71875 0 6.964844 0 L 7.320312 0 C 7.566406 0 7.777344 0.0859375 7.953125 0.261719 C 8.125 0.4375 8.214844 0.648438 8.214844 0.894531 L 8.214844 1.429688 L 8.929688 1.429688 C 9.121094 1.429688 9.289062 1.5 9.429688 1.640625 C 9.570312 1.78125 9.644531 1.949219 9.644531 2.144531 Z M 9.644531 2.144531 "/>\n</g>\n</svg>',
+          containerStyles: {
+            dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-2px'},
+            headerCorrections: {marginTop: '0px'},
+          },
+        },
+      },
+    ]}
+    defaultColumnTypeName={'Custom type'}
+    content={[
+      ['Gravity', 'Diameter', 'Mass', 'Moons', 'Density'],
       [9.8, 12756, 5.97, 1, 5514],
       [3.7, 6792, 0.642, 2, 3934],
       [23.1, 142984, 1898, 79, 1326],
       [9, 120536, 568, 82, 687],
-      [11, 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+      [11, 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -631,25 +653,28 @@ Styling properties for the select and label dropdowns.
 #### Example for Select
 
 <TableContainer>
-  <active-table
-    customColumnTypes='[
+  <ActiveTable
+    customColumnTypes={[
       {
-        "name": "Custom select type",
-        "select": {
-          "dropdownStyle": {"border": "0.5px solid #00000066"},
-          "optionStyle": {"textColor": "#606060"},
-          "options": ["Elephant", "Tiger", "Giraffe"],
-          "canAddMoreOptions": false
-      }}]'
-    defaultColumnTypeName="Custom select type"
-    content='[
-      ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
-      ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
-      ["Tiger", "Elephant", "Tiger", "Tiger", "Giraffe"],
-      ["Giraffe", "Tiger", "Invalid animal", "Elephant", "Invalid animal"],
-      ["Invalid animal", "Tiger", "Giraffe", "Invalid animal", "Tiger"]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+        name: 'Custom select type',
+        select: {
+          dropdownStyle: {border: '0.5px solid #00000066'},
+          optionStyle: {textColor: '#606060'},
+          options: ['Elephant', 'Tiger', 'Giraffe'],
+          canAddMoreOptions: false,
+        },
+      },
+    ]}
+    defaultColumnTypeName={'Custom select type'}
+    content={[
+      ['Animal 1', 'Animal 2', 'Animal 3', 'Animal 4', 'Animal 5'],
+      ['Elephant', 'Giraffe', 'Elephant', 'Giraffe', 'Tiger'],
+      ['Tiger', 'Elephant', 'Tiger', 'Tiger', 'Giraffe'],
+      ['Giraffe', 'Tiger', 'Invalid animal', 'Elephant', 'Invalid animal'],
+      ['Invalid animal', 'Tiger', 'Giraffe', 'Invalid animal', 'Tiger'],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -707,23 +732,30 @@ Styling properties for the select and label dropdowns.
 #### Example for Label
 
 <TableContainer>
-  <active-table
-    customColumnTypes='[
+  <ActiveTable
+    customColumnTypes={[
       {
-        "name": "Custom label type",
-        "label": {
-          "options": [{"text":"Elephant", "backgroundColor": "#4ddd3878"}, {"text":"Tiger", "backgroundColor": "#ff606082"}, {"text":"Giraffe", "backgroundColor": "#ff940f8f"}],
-          "canAddMoreOptions": true
-      }}]'
-    defaultColumnTypeName="Custom label type"
-    content='[
-      ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
-      ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
-      ["Tiger", "Elephant", "Tiger", "Tiger", "Giraffe"],
-      ["Giraffe", "Tiger", "Elephant", "Elephant", "Kangaroo"],
-      ["Goose", "Elephant", "Giraffe", "Whale", "Tiger"]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+        name: 'Custom label type',
+        label: {
+          options: [
+            {text: 'Elephant', backgroundColor: '#4ddd3878'},
+            {text: 'Tiger', backgroundColor: '#ff606082'},
+            {text: 'Giraffe', backgroundColor: '#ff940f8f'},
+          ],
+          canAddMoreOptions: true,
+        },
+      },
+    ]}
+    defaultColumnTypeName={'Custom label type'}
+    content={[
+      ['Animal 1', 'Animal 2', 'Animal 3', 'Animal 4', 'Animal 5'],
+      ['Elephant', 'Giraffe', 'Elephant', 'Giraffe', 'Tiger'],
+      ['Tiger', 'Elephant', 'Tiger', 'Tiger', 'Giraffe'],
+      ['Giraffe', 'Tiger', 'Elephant', 'Elephant', 'Kangaroo'],
+      ['Goose', 'Elephant', 'Giraffe', 'Whale', 'Tiger'],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -795,22 +827,26 @@ for a custom [`Calendar`](#Calendar) type).
 #### Example for custom d/m/y type
 
 <TableContainer>
-  <active-table
-    customColumnTypes='[
+  <ActiveTable
+    customColumnTypes={[
       {
-        "name": "Custom d/m/y type",
-        "calendar": {
-          "toYMDFunc": "(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }",
-          "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
-      }}]'
-    defaultColumnTypeName="Custom d/m/y type"
-    content='[
-      ["Date 1", "Date 2", "Date 3", "Date 4"],
-      ["3/2/2052", "4/2/1993", "6/12/2012", "2/2/2012"],
-      ["18/12/0001", "2/4/1689", "16/2/2029", "1/02/2004"],
-      ["12/8/1943", "24/2/1992", "16/12/2022", "17/3/2023"]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+        name: 'Custom d/m/y type',
+        calendar: {
+          toYMDFunc:
+            '(cellText) => { const integerArr = cellText.match(/\\d+/g); return [integerArr[2], integerArr[1], integerArr[0]]; }',
+          fromYMDFunc: '(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }',
+        },
+      },
+    ]}
+    defaultColumnTypeName={'Custom d/m/y type'}
+    content={[
+      ['Date 1', 'Date 2', 'Date 3', 'Date 4'],
+      ['3/2/2052', '4/2/1993', '6/12/2012', '2/2/2012'],
+      ['18/12/0001', '2/4/1689', '16/2/2029', '1/02/2004'],
+      ['12/8/1943', '24/2/1992', '16/12/2022', '17/3/2023'],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -880,20 +916,22 @@ is checked and _"false"_ if unchecked.
 #### Example
 
 <TableContainer>
-  <active-table
-    customColumnTypes='[
+  <ActiveTable
+    customColumnTypes={[
       {
-        "name": "Custom checkbox type",
-        "checkbox": true
-      }]'
-    defaultColumnTypeName="Custom checkbox type"
-    content='[
-      ["Criteria 1", "Criteria 2", "Criteria 3", "Criteria 4"],
-      ["positive", "true", "positive", "false"],
-      ["true", "false", "00", ""],
-      ["", "0", "positive", "truthy"]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+        name: 'Custom checkbox type',
+        checkbox: true,
+      },
+    ]}
+    defaultColumnTypeName={'Custom checkbox type'}
+    content={[
+      ['Criteria 1', 'Criteria 2', 'Criteria 3', 'Criteria 4'],
+      ['positive', 'true', 'positive', 'false'],
+      ['true', 'false', '00', ''],
+      ['', '0', 'positive', 'truthy'],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>

@@ -40,18 +40,19 @@ to change `rowsPerPage`. <br />
 
 #### Example
 
+import ActiveTable from '@site/src/components/table/activeTableBrowser';
 import TableContainer from '@site/src/components/table/tableContainer';
 import LineBreak from '@site/src/components/markdown/lineBreak';
-import {readdAutoNavToggle} from '@site/src/nav/autoNavToggle';
-import {ActiveTable} from 'active-table';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
-readdAutoNavToggle();
+
+<BrowserOnly>{() => require('@site/src/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
 
 <TableContainer>
-  <active-table
-    pagination="true"
-    content='[
+  <ActiveTable
+    pagination={true}
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -76,9 +77,9 @@ readdAutoNavToggle();
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-> </active-table>
+      ["Saturn", 120536, 568, 82, 687]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainer>
 
@@ -152,13 +153,15 @@ Custom settings for the `rowsPerPageSelect` property. <br />
 `options` is the array of options that are displayed in the dropdown. `"all"|"All"` option displays all of the table's rows within one page.
 If the defined `rowsPerPage` value (in [`pagination`](#pagination) object) is not in the options array, it will be added to it automatically. <br />
 
+#### Example
+
 <TableContainer>
-  <active-table
-    pagination='{
+  <ActiveTable
+    pagination={{
       "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [10, 20, 30, "All"]},
       "rowsPerPage": 5
-    }'
-    content='[
+    }}
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -183,9 +186,9 @@ If the defined `rowsPerPage` value (in [`pagination`](#pagination) object) is no
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-> </active-table>
+      ["Saturn", 120536, 568, 82, 687]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainer>
 
@@ -260,9 +263,11 @@ Styling properties of pagination components. <br />
 `numberOfVisibleRows` defines styling properties for the number of visible rows text. <br />
 `pageButtons` defines styling properties for the page/previous/next/first/last buttons. <br />
 
+#### Example
+
 <TableContainer>
-  <active-table
-    pagination='{
+  <ActiveTable
+    pagination={{
       "style": {
         "rowsPerPageSelect": {
           "prefixText": {"color": "#174a76"},
@@ -280,8 +285,8 @@ Styling properties of pagination components. <br />
           "activeButtonPrecedence": true
       }},
       "rowsPerPage": 5
-    }'
-    content='[
+    }}
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -306,9 +311,9 @@ Styling properties of pagination components. <br />
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-> </active-table>
+      ["Saturn", 120536, 568, 82, 687]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainer>
 
@@ -417,9 +422,11 @@ When number of visible rows text contains digits that are in the 100s+, it is ad
 
 Styling properties for the rows per page component elements. `container` is the parent element that encapsulates all of the rows per page elements.
 
+#### Example
+
 <TableContainer>
-  <active-table
-    pagination='{
+  <ActiveTable
+    pagination={{
       "style": {
         "rowsPerPageSelect": {
           "container": {"marginRight": "1px"},
@@ -429,8 +436,8 @@ Styling properties for the rows per page component elements. `container` is the 
           "buttonArrow": {"default":{"color": "#435484"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
         }},
       "rowsPerPage": 5
-    }'
-    content='[
+    }}
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -455,9 +462,9 @@ Styling properties for the rows per page component elements. `container` is the 
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-> </active-table>
+      ["Saturn", 120536, 568, 82, 687]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainer>
 
@@ -569,9 +576,11 @@ Eg. when
 default properties are _"border": "1px solid #dedede", "borderRight": "unset"_, set `lastVisibleButtonOverride` with \_"borderLeft":"1px solid #dedede"\_
 as otherwise the last button is not going to have a border on the right.
 
+#### Example
+
 <TableContainer>
-  <active-table
-    pagination='{
+  <ActiveTable
+    pagination={{
       "style": {
         "pageButtons": {
           "buttons": {
@@ -584,8 +593,8 @@ as otherwise the last button is not going to have a border on the right.
           "activeButtonPrecedence": true
       }},
       "rowsPerPage": 5
-    }'
-    content='[
+    }}
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -610,9 +619,9 @@ as otherwise the last button is not going to have a border on the right.
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-> </active-table>
+      ["Saturn", 120536, 568, 82, 687]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainer>
 
@@ -720,9 +729,11 @@ the active button to unset the left border of the right sibling and not the left
 
 Styling for action buttons that facilitates the definition of style for various mouse states and the text that is displayed in each one.
 
+#### Example
+
 <TableContainer>
-  <active-table
-    pagination='{
+  <ActiveTable
+    pagination={{
       "style": {
         "pageButtons": {
           "actionButtons": {
@@ -736,8 +747,8 @@ Styling for action buttons that facilitates the definition of style for various 
         }}
       },
       "rowsPerPage": 5
-    }'
-    content='[
+    }}
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -762,9 +773,9 @@ Styling for action buttons that facilitates the definition of style for various 
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-> </active-table>
+      ["Saturn", 120536, 568, 82, 687]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainer>
 
@@ -868,17 +879,19 @@ overwrite it by adding the following property to `default`: _"fontFamily": "Inte
 
 Positions for pagination components.
 
+#### Example
+
 <TableContainer>
-  <active-table
-    pagination='{
+  <ActiveTable
+    pagination={{
       "positions": {
         "pageButtons": {"position": "bottom-middle"},
         "numberOfVisibleRows": {"position": "top-left", "order": 2},
         "rowsPerPageSelect": {"position": "top-left", "order": 1}
       },
       "rowsPerPage": 5
-    }'
-    content='[
+    }}
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -903,9 +916,9 @@ Positions for pagination components.
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-> </active-table>
+      ["Saturn", 120536, 568, 82, 687]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainer>
 
@@ -992,41 +1005,55 @@ Object defining position properties for a pagination component. `order` is the o
 
 ## More examples
 
-Circle buttons
+<LineBreak></LineBreak>
+
+<h3>Circle buttons</h3>
 
 <TableContainer>
-  <active-table
-    pagination='{
-      "displayFirstLast": false,
-      "style": {
-        "pageButtons": {
-          "buttons": {
-            "default": {"color": "grey", "border":"1px solid #dedede", "marginRight": "5px", "marginTop": "1px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
-          "activeButton": {"default": {"backgroundColor": "#56b3ff", "color": "white", "border":"1px solid #56b3ff"}},
-          "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px"}},
-          "disabledButtons": {"default": {"backgroundColor": "white"}},
-          "firstVisibleButtonOverride": {},
-          "lastVisibleButtonOverride": {}
-      }},
-      "rowsPerPageSelect": false,
-      "displayNumberOfVisibleRows": false,
-      "positions": {"pageButtons": {"position": "bottom-middle"}},
-      "rowsPerPage": 2
-    }'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638],
-      ["Mercury", 4879, 0.33, 0, 5429],
-      ["Venus", 12104, 4.87, 0, 5243],
-      ["Uranus", 51118, 86.8, 27, 1270],
-      ["Pluto", 2376, 0.013, 5, 1850],
-      ["Moon", 3475, 0.073, 0, 3340]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    pagination={{
+      displayFirstLast: false,
+      style: {
+        pageButtons: {
+          buttons: {
+            default: {
+              color: 'grey',
+              border: '1px solid #dedede',
+              marginRight: '5px',
+              marginTop: '1px',
+              height: '26px',
+              width: '31px',
+              paddingTop: '5px',
+              borderRadius: '20px',
+            },
+          },
+          activeButton: {default: {backgroundColor: '#56b3ff', color: 'white', border: '1px solid #56b3ff'}},
+          actionButtons: {default: {fontSize: '13px', paddingTop: '7px', height: '24px'}},
+          disabledButtons: {default: {backgroundColor: 'white'}},
+          firstVisibleButtonOverride: {},
+          lastVisibleButtonOverride: {},
+        },
+      },
+      rowsPerPageSelect: false,
+      displayNumberOfVisibleRows: false,
+      positions: {pageButtons: {position: 'bottom-middle'}},
+      rowsPerPage: 2,
+    }}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+      ['Mercury', 4879, 0.33, 0, 5429],
+      ['Venus', 12104, 4.87, 0, 5243],
+      ['Uranus', 51118, 86.8, 27, 1270],
+      ['Pluto', 2376, 0.013, 5, 1850],
+      ['Moon', 3475, 0.073, 0, 3340],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -1097,11 +1124,13 @@ Circle buttons
 </TabItem>
 </Tabs>
 
-Active circle button
+<LineBreak></LineBreak>
+
+<h3>Active circle button</h3>
 
 <TableContainer>
-  <active-table
-    pagination='{
+  <ActiveTable
+    pagination={{
       "style": {
         "pageButtons": {
           "buttons": {
@@ -1116,8 +1145,8 @@ Active circle button
       "displayNumberOfVisibleRows": false,
       "positions": {"pageButtons": {"position": "bottom-middle"}},
       "rowsPerPage": 2
-    }'
-    content='[
+    }}
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -1128,9 +1157,9 @@ Active circle button
       ["Venus", 12104, 4.87, 0, 5243],
       ["Uranus", 51118, 86.8, 27, 1270],
       ["Pluto", 2376, 0.013, 5, 1850],
-      ["Moon", 3475, 0.073, 0, 3340]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-> </active-table>
+      ["Moon", 3475, 0.073, 0, 3340]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainer>
 
@@ -1200,11 +1229,13 @@ Active circle button
 </TabItem>
 </Tabs>
 
-Active square button
+<LineBreak></LineBreak>
+
+<h3>Active square button</h3>
 
 <TableContainer>
-  <active-table
-    pagination='{
+  <ActiveTable
+    pagination={{
       "displayFirstLast": false,
       "style": {
         "pageButtons": {
@@ -1220,8 +1251,8 @@ Active square button
       "displayNumberOfVisibleRows": false,
       "positions": {"pageButtons": {"position": "bottom-middle"}},
       "rowsPerPage": 2
-    }'
-    content='[
+    }}
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -1232,9 +1263,9 @@ Active square button
       ["Venus", 12104, 4.87, 0, 5243],
       ["Uranus", 51118, 86.8, 27, 1270],
       ["Pluto", 2376, 0.013, 5, 1850],
-      ["Moon", 3475, 0.073, 0, 3340]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-> </active-table>
+      ["Moon", 3475, 0.073, 0, 3340]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainer>
 
@@ -1306,11 +1337,13 @@ Active square button
 </TabItem>
 </Tabs>
 
-Grey background button series
+<LineBreak></LineBreak>
+
+<h3>Grey background button series</h3>
 
 <TableContainer>
-  <active-table
-    pagination='{
+  <ActiveTable
+    pagination={{
       "style": {
         "pageButtons": {
           "buttons": {
@@ -1326,8 +1359,8 @@ Grey background button series
       "displayNumberOfVisibleRows": false,
       "positions": {"pageButtons": {"position": "bottom-middle"}},
       "rowsPerPage": 2
-    }'
-    content='[
+    }}
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -1338,9 +1371,9 @@ Grey background button series
       ["Venus", 12104, 4.87, 0, 5243],
       ["Uranus", 51118, 86.8, 27, 1270],
       ["Pluto", 2376, 0.013, 5, 1850],
-      ["Moon", 3475, 0.073, 0, 3340]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-> </active-table>
+      ["Moon", 3475, 0.073, 0, 3340]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainer>
 
@@ -1412,11 +1445,13 @@ Grey background button series
 </TabItem>
 </Tabs>
 
-Disabled buttons not displayed
+<LineBreak></LineBreak>
+
+<h3>Disabled buttons not displayed</h3>
 
 <TableContainer>
-  <active-table
-    pagination='{
+  <ActiveTable
+    pagination={{
       "style": {
         "pageButtons": {
           "buttons": {
@@ -1431,8 +1466,8 @@ Disabled buttons not displayed
       "displayNumberOfVisibleRows": false,
       "positions": {"pageButtons": {"position": "bottom-middle"}},
       "rowsPerPage": 2
-    }'
-    content='[
+    }}
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -1443,9 +1478,9 @@ Disabled buttons not displayed
       ["Venus", 12104, 4.87, 0, 5243],
       ["Uranus", 51118, 86.8, 27, 1270],
       ["Pluto", 2376, 0.013, 5, 1850],
-      ["Moon", 3475, 0.073, 0, 3340]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-> </active-table>
+      ["Moon", 3475, 0.073, 0, 3340]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 <Tabs>
 <TabItem value="js" label="Sample code">

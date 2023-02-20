@@ -1,4 +1,4 @@
-import {TableWrapper} from '../../components/table/tableWrapper';
+import ActiveTableBrowser from '../../components/table/activeTableBrowser';
 import React from 'react';
 
 export function Customization() {
@@ -8,7 +8,7 @@ export function Customization() {
       <div style={{display: 'flex', marginTop: '30px'}}>
         <div style={{float: 'left', width: '50%'}}>
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
-            <TableWrapper
+            <ActiveTableBrowser
               tableStyle={{width: '100%'}}
               headerStyles={{
                 default: {backgroundColor: '#5686b7', color: 'white'},
@@ -28,12 +28,12 @@ export function Customization() {
                 ['Jupiter', 142984, 1898, 79],
                 ['Neptune', 49528, 102, 14],
               ]}
-            ></TableWrapper>
+            ></ActiveTableBrowser>
           </div>
         </div>
         <div style={{float: 'left', width: '50%'}}>
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
-            <TableWrapper
+            <ActiveTableBrowser
               tableStyle={{borderRadius: '5px', width: '100%'}}
               headerStyles={{
                 default: {backgroundColor: '#52555b', color: 'white'},
@@ -51,14 +51,14 @@ export function Customization() {
                 ['Jupiter', 142984, 1898, 79],
                 ['Neptune', 49528, 102, 14],
               ]}
-            ></TableWrapper>
+            ></ActiveTableBrowser>
           </div>
         </div>
       </div>
       <div style={{display: 'flex', marginTop: '50px', width: '100%', justifyContent: 'center'}}>
         <div style={{float: 'left', width: '50%'}}>
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
-            <TableWrapper
+            <ActiveTableBrowser
               tableStyle={{width: '100%', borderRadius: '8px', border: 'unset'}}
               cellStyle={{borderRight: 'unset', color: 'white'}}
               pagination={{
@@ -113,12 +113,12 @@ export function Customization() {
                 ['Neptune', 49528, 102, 14],
                 ['Mercury', 4879, 0.33, 0],
               ]}
-            ></TableWrapper>
+            ></ActiveTableBrowser>
           </div>
         </div>
         <div style={{float: 'right', width: '50%'}}>
           <div style={{width: '90%', marginLeft: 'auto', marginRight: 'auto'}}>
-            <TableWrapper
+            <ActiveTableBrowser
               tableStyle={{width: '100%', borderRadius: '8px', border: 'unset'}}
               cellStyle={{borderRight: 'unset', color: 'white'}}
               pagination={{
@@ -186,7 +186,7 @@ export function Customization() {
                 ['Neptune', 49528, 102, 14],
                 ['Mercury', 4879, 0.33, 0],
               ]}
-            ></TableWrapper>
+            ></ActiveTableBrowser>
           </div>
         </div>
       </div>

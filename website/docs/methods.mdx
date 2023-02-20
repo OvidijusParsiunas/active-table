@@ -20,24 +20,25 @@ Returns current table contents 2D array.
 
 import TableContainerProgrammaticUpdates from '@site/src/components/table/tableContainerProgrammaticUpdates';
 import TableContainerMethods from '@site/src/components/table/tableContainerMethods';
+import ActiveTable from '@site/src/components/table/activeTableBrowser';
 import LineBreak from '@site/src/components/markdown/lineBreak';
-import {readdAutoNavToggle} from '@site/src/nav/autoNavToggle';
-import {ActiveTable} from 'active-table';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
-readdAutoNavToggle();
+
+<BrowserOnly>{() => require('@site/src/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
 
 <TableContainerMethods propertyname={"getContent"}>
-  <active-table
-    content='[
+  <ActiveTable
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
       ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-></active-table>
+      ["Neptune", 49528, 102, 14, 1638]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainerMethods>
 
@@ -63,16 +64,16 @@ in the next session on the initial load.
 #### Example
 
 <TableContainerMethods propertyname={"getColumnsDetails"}>
-  <active-table
-    content='[
+  <ActiveTable
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
       ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-></active-table>
+      ["Neptune", 49528, 102, 14, 1638]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainerMethods>
 
@@ -98,16 +99,17 @@ at _0_ where it is the header row for `rowIndex` and the left-most column for `c
 #### Example
 
 <TableContainerProgrammaticUpdates>
-  <active-table
-    content='[
-      ["Name", "CPU", "Memory", "Disk", "Network"],
-      ["Chrome", "4.5%", "1400MB", "0.2MB/s", "1.2Mbps"],
-      ["Firefox", "2.5%", "800MB", "0.1MB/s", "0.5Mbps"],
-      ["Edge", "5.5%", "1000MB", "1.4MB/s", "0.7Mbps"],
-      ["Safari", "1.5%", "1200MB", "1.2MB/s", "0.2Mbps"],
-      ["Opera", "3.5%", "400MB", "0.8MB/s", "0.5Mbps"]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    content={[
+      ['Name', 'CPU', 'Memory', 'Disk', 'Network'],
+      ['Chrome', '4.5%', '1400MB', '0.2MB/s', '1.2Mbps'],
+      ['Firefox', '2.5%', '800MB', '0.1MB/s', '0.5Mbps'],
+      ['Edge', '5.5%', '1000MB', '1.4MB/s', '0.7Mbps'],
+      ['Safari', '1.5%', '1200MB', '1.2MB/s', '0.2Mbps'],
+      ['Opera', '3.5%', '400MB', '0.8MB/s', '0.5Mbps'],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainerProgrammaticUpdates>
 
 <Tabs>
@@ -174,16 +176,16 @@ be activated through user actions, such as a click of a button.
 #### Example
 
 <TableContainerMethods propertyname={"importCSV"} displayResults={false}>
-  <active-table
-    content='[
+  <ActiveTable
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
       ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-></active-table>
+      ["Neptune", 49528, 102, 14, 1638]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainerMethods>
 
@@ -208,16 +210,16 @@ Exports table content in a .csv file.
 #### Example
 
 <TableContainerMethods propertyname={"exportCSV"} displayResults={false}>
-  <active-table
-    content='[
+  <ActiveTable
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
       ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-></active-table>
+      ["Neptune", 49528, 102, 14, 1638]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainerMethods>
 

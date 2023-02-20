@@ -17,26 +17,28 @@ meet the set table `width`. However if this is set to _false_, columns will perm
 
 #### Example
 
+import ActiveTable from '@site/src/components/table/activeTableBrowser';
 import TableContainer from '@site/src/components/table/tableContainer';
 import LineBreak from '@site/src/components/markdown/lineBreak';
-import {readdAutoNavToggle} from '@site/src/nav/autoNavToggle';
-import {ActiveTable} from 'active-table';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
-readdAutoNavToggle();
+
+<BrowserOnly>{() => require('@site/src/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
 
 <TableContainer>
-  <active-table
-    isColumnResizable="true"
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    isColumnResizable={true}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -80,17 +82,18 @@ Column width resizer overlay background color style for hover and click events.
 #### Example
 
 <TableContainer>
-  <active-table
-    columnResizerColors='{ "hover": "#87ddff", "click": "#369cfd" }'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    columnResizerColors={{hover: '#87ddff', click: '#369cfd'}}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -146,22 +149,24 @@ appear over it.
 #### Example
 
 <TableContainer>
-  <active-table
-    columnDropdown='{
-      "displaySettings": {
-        "openMethod": {"overlayClick": true}},
-      "isSortAvailable": false,
-      "isMoveAvailable": false
-    }'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    columnDropdown={{
+      displaySettings: {
+        openMethod: {overlayClick: true},
+      },
+      isSortAvailable: false,
+      isMoveAvailable: false,
+    }}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -231,22 +236,38 @@ automatically inherit their values from the corresponding ones set directly on t
 #### Example
 
 <TableContainer>
-  <active-table
-    customColumnsSettings='[
-      { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
-      { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "defaultColumnTypeName": "number", "isHeaderTextEditable": false },
-      { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "defaultColumnTypeName": "Select", "isHeaderTextEditable": false },
-      { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "defaultColumnTypeName": "Date d-m-y", "isHeaderTextEditable": false }
-    ]'
-    content='[
-      ["Planet", "Number", "Shape", "Date Created"],
-      ["", 12756, "Sphere", "01-02-2012"],
-      ["", 6792, "Dinosaur", "14-05-1990"],
-      ["", 142984, "Triangle", "04-12-2020"],
-      ["", 120536, "Square", "23-10-2008"],
-      ["", 49528, "Flat", "19-02-2006"]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    customColumnsSettings={[
+      {headerName: 'Planet', defaultText: 'Insert Planet', cellStyle: {width: '150px'}, isHeaderTextEditable: false},
+      {
+        headerName: 'Number',
+        cellStyle: {backgroundColor: '#fdfdfd'},
+        defaultColumnTypeName: 'number',
+        isHeaderTextEditable: false,
+      },
+      {
+        headerName: 'Shape',
+        cellStyle: {backgroundColor: '#f8f8f8'},
+        defaultColumnTypeName: 'Select',
+        isHeaderTextEditable: false,
+      },
+      {
+        headerName: 'Date Created',
+        cellStyle: {backgroundColor: '#f1f1f1'},
+        defaultColumnTypeName: 'Date d-m-y',
+        isHeaderTextEditable: false,
+      },
+    ]}
+    content={[
+      ['Planet', 'Number', 'Shape', 'Date Created'],
+      ['', 12756, 'Sphere', '01-02-2012'],
+      ['', 6792, 'Dinosaur', '14-05-1990'],
+      ['', 142984, 'Triangle', '04-12-2020'],
+      ['', 120536, 'Square', '23-10-2008'],
+      ['', 49528, 'Flat', '19-02-2006'],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -302,17 +323,18 @@ Maximum number of columns allowed (not including the index and add columns colum
 #### Example
 
 <TableContainer>
-  <active-table
-    maxColumns="4"
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    maxColumns={4}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -363,12 +385,87 @@ _\*Minimal column size is recognised as 33px_
 **Example where preset table width of 300px is exceeded**
 
 <TableContainer>
-  <active-table
-    content='[
-      ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"],
-      ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"]]'
-    tableStyle='{"width":"300px", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    content={[
+      [
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+      ],
+      [
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+        '1',
+        '2',
+      ],
+    ]}
+    tableStyle={{width: '300px', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -419,17 +516,18 @@ You can set the add new column style via [`frameComponentsStyle`](./table#frameC
 #### Example
 
 <TableContainer>
-  <active-table
-    displayAddNewColumn="true"
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    displayAddNewColumn={true}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -479,24 +577,25 @@ You can set the index column style via [`frameComponentsStyle`](./table#frameCom
 #### Example
 
 <TableContainer>
-  <active-table
-    displayIndexColumn='{"wrapIndexCellText": "false"}'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    displayIndexColumn={{wrapIndexCellText: false}}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
 <TabItem value="js" label="Sample code">
 
 ```html
-<active-table displayIndexColumn='{"wrapIndexCellText": "false"}'></active-table>
+<active-table displayIndexColumn='{"wrapIndexCellText": false}'></active-table>
 ```
 
 </TabItem>
@@ -506,7 +605,7 @@ You can set the index column style via [`frameComponentsStyle`](./table#frameCom
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
-  displayIndexColumn='{"wrapIndexCellText": "false"}'
+  displayIndexColumn='{"wrapIndexCellText": false}'
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
@@ -555,22 +654,23 @@ Shared object property types related to columns:
 #### Example
 
 <TableContainer>
-  <active-table
-    columnDropdown='{
-      "isSortAvailable": false,
-      "isDeleteAvailable": true,
-      "isInsertLeftAvailable": false,
-      "isInsertRightAvailable": true
-    }'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    columnDropdown={{
+      isSortAvailable: false,
+      isDeleteAvailable: true,
+      isInsertLeftAvailable: false,
+      isInsertRightAvailable: true,
+    }}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>

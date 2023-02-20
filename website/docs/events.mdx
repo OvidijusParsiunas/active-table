@@ -27,24 +27,25 @@ where it is the header row for `rowIndex` and the left-most column for `columnIn
 #### Example
 
 import TableContainerEvents from '@site/src/components/table/tableContainerEvents';
+import ActiveTable from '@site/src/components/table/activeTableBrowser';
 import LineBreak from '@site/src/components/markdown/lineBreak';
-import {readdAutoNavToggle} from '@site/src/nav/autoNavToggle';
-import {ActiveTable} from 'active-table';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
-readdAutoNavToggle();
+
+<BrowserOnly>{() => require('@site/src/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
 
 <TableContainerEvents propertyname={"onCellUpdate"}>
-  <active-table
-    content='[
+  <ActiveTable
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
       ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-></active-table>
+      ["Neptune", 49528, 102, 14, 1638]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainerEvents>
 
@@ -80,16 +81,16 @@ Similarly to [`onCellUpdate`](#onCellUpdate) this is triggered when any cell is 
 #### Example
 
 <TableContainerEvents propertyname={"onContentUpdate"}>
-  <active-table
-    content='[
+  <ActiveTable
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
       ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-></active-table>
+      ["Neptune", 49528, 102, 14, 1638]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainerEvents>
 
@@ -126,16 +127,16 @@ in the next session on the initial load.
 #### Example
 
 <TableContainerEvents propertyname={"onColumnsUpdate"}>
-  <active-table
-    content='[
+  <ActiveTable
+    content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
       ["Jupiter", 142984, 1898, 79, 1326],
       ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-></active-table>
+      ["Neptune", 49528, 102, 14, 1638]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
 
 </TableContainerEvents>
 

@@ -1,4 +1,4 @@
-import {TableWrapper} from '../../components/table/tableWrapper';
+import ActiveTableBrowser from '../../components/table/activeTableBrowser';
 import React from 'react';
 import './features.css';
 
@@ -33,7 +33,7 @@ export function ProgrammaticUpdates() {
     <div style={{display: 'flex', marginTop: '120px'}}>
       <div style={{float: 'right', width: '50%'}}>
         <div ref={programmaticUpdateTableContainer} style={{width: '85%', float: 'right', marginRight: '10px'}}>
-          <TableWrapper
+          <ActiveTableBrowser
             tableStyle={{borderRadius: '5px', width: '100%'}}
             displayIndexColumn={false}
             displayAddNewColumn={false}
@@ -88,7 +88,7 @@ export function ProgrammaticUpdates() {
               ['SOR', '$46.84', '$48.69', '0.9%', '2.4%'],
               ['LCRDA', '$20.25', '$29.3', '0.4%', '0.8%'],
             ]}
-          ></TableWrapper>
+          ></ActiveTableBrowser>
         </div>
       </div>
       <div style={{float: 'left', width: '50%'}}>

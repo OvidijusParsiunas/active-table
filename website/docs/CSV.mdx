@@ -18,26 +18,28 @@ insert CSV data by simply copying cells from Excel and pasting them into the tab
 
 #### Example
 
+import ActiveTable from '@site/src/components/table/activeTableBrowser';
 import TableContainer from '@site/src/components/table/tableContainer';
 import LineBreak from '@site/src/components/markdown/lineBreak';
-import {readdAutoNavToggle} from '@site/src/nav/autoNavToggle';
-import {ActiveTable} from 'active-table';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
-readdAutoNavToggle();
+
+<BrowserOnly>{() => require('@site/src/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
 
 <TableContainer>
-  <active-table
-    csvButtons='{"import": true, "export": true}'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+  <ActiveTable
+    csvButtons={{import: true, export: true}}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
@@ -98,40 +100,53 @@ Custom settings for the `csvButtons` properties. <br />
 #### Example
 
 <TableContainer>
-  <active-table
-    csvButtons='{
-      "import": {
-        "styles": {
-          "default": {
-            "backgroundColor": "#66baff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
+  <ActiveTable
+    csvButtons={{
+      import: {
+        styles: {
+          default: {
+            backgroundColor: '#66baff',
+            width: '70px',
+            height: '25px',
+            paddingTop: '6px',
+            color: 'white',
+            border: 'unset',
           },
-          "hover": {"backgroundColor": "#74c1ff"}, "click": {"backgroundColor": "#65b9ff"}
+          hover: {backgroundColor: '#74c1ff'},
+          click: {backgroundColor: '#65b9ff'},
         },
-        "text": "Import",
-        "position": "top-left",
-        "order": 1
+        text: 'Import',
+        position: 'top-left',
+        order: 1,
       },
-      "export": {
-        "styles": {
-          "default": {
-            "backgroundColor": "#66baff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
+      export: {
+        styles: {
+          default: {
+            backgroundColor: '#66baff',
+            width: '70px',
+            height: '25px',
+            paddingTop: '6px',
+            color: 'white',
+            border: 'unset',
           },
-          "hover": {"backgroundColor": "#74c1ff"}, "click": {"backgroundColor": "#65b9ff"}
+          hover: {backgroundColor: '#74c1ff'},
+          click: {backgroundColor: '#65b9ff'},
         },
-        "text": "Export",
-        "position": "top-left",
-        "order": 0
-      }
-    }'
-    content='[
-      ["Planet", "Diameter", "Mass", "Moons", "Density"],
-      ["Earth", 12756, 5.97, 1, 5514],
-      ["Mars", 6792, 0.642, 2, 3934],
-      ["Jupiter", 142984, 1898, 79, 1326],
-      ["Saturn", 120536, 568, 82, 687],
-      ["Neptune", 49528, 102, 14, 1638]]'
-    tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
-  ></active-table>
+        text: 'Export',
+        position: 'top-left',
+        order: 0,
+      },
+    }}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
 </TableContainer>
 
 <Tabs>
