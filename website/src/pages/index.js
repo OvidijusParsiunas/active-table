@@ -57,10 +57,13 @@ function RightPanel() {
 }
 
 function StartPage() {
+  const leftTableRef = React.useRef(null);
   return (
     <div id="start-page" style={{position: 'relative', width: '100%'}}>
       <div
+        ref={leftTableRef}
         id="start-page-content"
+        className={'invisible-component'}
         style={{
           position: 'absolute',
           marginTop: 0,
@@ -72,6 +75,12 @@ function StartPage() {
       >
         <LeftPanel></LeftPanel>
         <RightPanel></RightPanel>
+        <BrowserOnly>
+          {() => {
+            require('active-table-react');
+            leftTableRef.current.className = 'fade-in-component';
+          }}
+        </BrowserOnly>
       </div>
     </div>
   );

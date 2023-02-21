@@ -57,7 +57,7 @@ function ColumnTypes() {
               ['Name', 'Date of Birth', 'Hobby', 'Verified'],
               ['Peter', '12-08-1992', 'Fishing', 'true'],
               ['John', '14-10-2012', 'Soccer', 'false'],
-              ['Gregg', '05-02-1975', 'Reading', 'false'],
+              ['Gregg', '05-02-1975', 'Reading', 'true'],
               ['Jeff', '24-04-2015', 'Soccer', 'false'],
             ]}
           ></ActiveTableBrowser>

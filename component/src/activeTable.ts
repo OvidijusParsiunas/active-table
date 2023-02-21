@@ -37,7 +37,6 @@ import {UserKeyEventsState} from './types/userKeyEventsState';
 import {PaginationInternal} from './types/paginationInternal';
 import {LabelColorUtils} from './utils/color/labelColorUtils';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
-import {CellText, TableContent} from './types/tableContent';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
 import {ColumnType, ColumnTypes} from './types/columnType';
@@ -59,6 +58,7 @@ import {CSVInternal} from './types/CSVInternal';
 import {StickyProps} from './types/stickyProps';
 import {Browser} from './utils/browser/browser';
 import {LitElement, PropertyValues} from 'lit';
+import {CellText} from './types/tableContent';
 import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
@@ -68,7 +68,7 @@ import {CSVButtons} from './types/CSV';
 @customElement('active-table')
 export class ActiveTable extends LitElement {
   @property({type: Function})
-  getContent: () => TableContent = () => JSON.parse(JSON.stringify(this.content));
+  getContent: () => (number | string)[][] = () => JSON.parse(JSON.stringify(this.content));
 
   @property({type: Function})
   getColumnsDetails: () => ColumnUpdateDetails[] = () => ColumnDetailsUtils.getAllColumnsDetails(this._columnsDetails);
@@ -96,7 +96,7 @@ export class ActiveTable extends LitElement {
   onColumnsUpdate: OnColumnsUpdate = () => {};
 
   @property({type: Array})
-  content: TableContent = [
+  content: (number | string)[][] = [
     // ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
     // ['Earth', 12756, 5.97, 1, 5514],
     // ['Mars', 6792, 0.642, 2, 3934],
@@ -168,7 +168,7 @@ export class ActiveTable extends LitElement {
   displayAddNewColumn = true;
 
   @property({type: Object})
-  displayIndexColumn: boolean | IndexColumnT = {wrapIndexCellText: true};
+  displayIndexColumn: IndexColumnT = {wrapIndexCellText: true};
 
   // REF-22 - to be used by the client
   // frame components are comprised of index column, add new column column and add new row row
