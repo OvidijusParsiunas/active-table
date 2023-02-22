@@ -1,0 +1,15 @@
+#homepage-content {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* need to use !important as it is on an anchor (a) element  */
+.homepage-button {
+  color: white !important;
+  border: unset;
+  border-radius: 5px !important;
+  transition: 0.1s !important;
+  text-decoration: none !important;
+  user-select: none;
+}

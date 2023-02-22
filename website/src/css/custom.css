@@ -118,27 +118,6 @@ code {
   --ifm-code-font-size: 87%;
 }
 
-#homepage-content {
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-#start-page {
-  height: 600px;
-  padding-top: 1%;
-  /* prevents panels below from moving to the side if the user adds new rows to the table */
-  display: table;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-#start-page-contents {
-  max-width: 1500px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .example-container {
   width: 100%;
   border-top-left-radius: 5px;
@@ -167,121 +146,8 @@ code {
   background-color: #3f90e0;
 }
 
-#left-panel {
-  float: left;
-  width: 50%;
-  padding-top: 20px;
-}
-
-#colored-header {
-  font-weight: 800;
-  font-size: 3.75rem;
-  background-image: linear-gradient(to right, rgb(104, 159, 214), rgb(44, 97, 150), rgb(56, 114, 172), rgb(104, 159, 214));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: color-change 700s linear infinite;
-}
-
-/* #colored-header {
-  background: -webkit-linear-gradient(20deg, rgb(86, 155, 224), #333);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 800;
-  font-size: 3.75rem;
-} */
-
-@keyframes color-change {
-  to {
-    background-position: 4500vh;
-  }
-}
-
 .prism-code {
   background-color: var(--code-background);
-}
-
-#sub-header {
-  font-weight: 800;
-  font-size: 2.7rem;
-}
-
-.header-button {
-  background-color: rgb(57, 60, 65);
-  color: white !important;
-  border: unset;
-  padding-left: 28px !important;
-  padding-right: 28px !important;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-  border-radius: 5px !important;
-  font-size: 1.15rem !important;
-  margin-right: 30px !important;
-  transition: 0.1s !important;
-  text-decoration: none !important;
-  user-select: none;
-}
-
-#install-button {
-  font-weight: 500 !important;
-}
-
-#install-button:hover {
-  background-color: rgb(76, 81, 92) !important;
-}
-
-#install-button:active {
-  background-color: rgb(51, 54, 59) !important;
-}
-
-#right-panel {
-  float: right;
-  padding-left: 5px;
-  padding-top: 20px;
-  text-align: center;
-  width: 50%;
-}
-
-.colored-sub-header {
-  background: -webkit-linear-gradient(20deg, rgb(103, 159, 212), rgb(40, 105, 155));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 800;
-  font-size: 2.9rem;
-  text-align: center;
-}
-
-.resizer-dot {
-  height: 2px;
-  width: 2px;
-  margin-top: 5px;
-  background-color: rgb(212, 212, 212);
-}
-
-.custom-button {
-  background-color: #1c2d4b !important;
-  margin-right: unset !important;
-  height: 50px !important;
-  font-size: 20px !important;
-  font-weight: 500 !important;
-  padding-top: 8px !important;
-}
-
-.custom-button:hover {
-  background-color: #2b4169 !important;
-}
-
-.custom-button:active {
-  background-color: #223558 !important;
-}
-
-.feature-style {
-  text-align: center;
-  font-size: 25px;
-  font-weight: 700;
-  color: var(--feature-title);
 }
 
 .navbar__title {
@@ -295,10 +161,6 @@ code {
 
 .navbar--fixed-top {
   box-shadow: unset;
-}
-
-#start-page-content {
-  transform: translateY(-60%);
 }
 
 .header-github-link:hover {
@@ -323,22 +185,12 @@ html[data-theme='dark'] .header-github-link:before {
     contrast(100%);
 }
 
-#footer {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1300px;
-  padding-top: 10px;
-  padding-bottom: 5px;
-  font-size: 14px;
-  color: var(--footer-text-color);
-}
-
-/* using selector for homepage as the navbar needs to have opacity: 0 from the getgo and not when the element is found */
+/* using selector for homepage as the navbar needs to have opacity: 0 from the very start and not when the element is found */
 .plugin-pages > body > #__docusaurus > nav {
   opacity: 0;
 }
 
-/* can use a class instead of a selector when we have the required element reference from the very start */
+/* use class instead of a selector when we the required element reference is available from the very start */
 .invisible-component {
   opacity: 0;
 }
@@ -371,22 +223,4 @@ html[data-theme='dark'] .header-github-link:before {
 
 .punctuation {
   color: rgb(57 58 52) !important;
-}
-
-@media (max-height: 500px) {
-  #start-page-content {
-    transform: translateY(-50%) !important;
-  }
-}
-
-@media (max-height: 620px) {
-  #start-page-content {
-    transform: translateY(-55%) !important;
-  }
-}
-
-@media (max-height: 800px) {
-  #start-page {
-    height: calc(100vh - 60px);
-  }
 }

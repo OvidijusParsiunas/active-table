@@ -1,0 +1,101 @@
+import ActiveTableBrowser from '../../components/table/activeTableBrowser';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import React from 'react';
+import './startPanel.css';
+
+function FadeInContent({startPanelContentRef}) {
+  return (
+    <BrowserOnly>
+      {() => {
+        // REF-39 - code synchronous
+        require('active-table-react');
+        // in a timeout as moving back to the homepage from a different tab has the page ref 'current' as null
+        setTimeout(() => {
+          if (startPanelContentRef?.current) startPanelContentRef.current.className = 'fade-in';
+        });
+      }}
+    </BrowserOnly>
+  );
+}
+
+function RightPanel() {
+  return (
+    <div id="start-panel-right">
+      <ActiveTableBrowser
+        tableStyle={{borderRadius: '5px', width: '580px'}}
+        // customColumnTypes={[
+        //   {
+        //     name: 'Category',
+        //     label: {
+        //       options: [
+        //         {text: 'Vehicles', backgroundColor: '#d9ebfc'},
+        //         {text: 'Electronics', backgroundColor: '#ccffe2'},
+        //         {text: 'Furniture', backgroundColor: '#f7e0ab'},
+        //         {text: 'Food', backgroundColor: '#e1ff8f'},
+        //         {text: 'Jewellery', backgroundColor: '#ffcce1'},
+        //         {text: 'Clothing', backgroundColor: '#cdf3fe'},
+        // {text: 'Clothing', backgroundColor: '#f1fecd'},
+        // ],
+        // options: [
+        //   {text: 'Vehicles', backgroundColor: '#d6cdfe'},
+        //   {text: 'Electronics', backgroundColor: '#fcf5b0'},
+        //   {text: 'Furniture', backgroundColor: '#eec191'},
+        //   {text: 'Food', backgroundColor: '#b9e694'},
+        //   {text: 'Jewellery', backgroundColor: '#f7e0ab'},
+        //   {text: 'Clothing', backgroundColor: '#afdffd'},
+        // ],
+        //     },
+        //   },
+        // ]}
+        customColumnsSettings={[
+          {
+            headerName: 'Category',
+            defaultColumnTypeName: 'Label',
+          },
+          {headerName: 'Sale date', defaultColumnTypeName: 'Date d-m-y'},
+          // {headerName: 'Verified', defaultColumnTypeName: 'Checkbox'},
+          {headerName: 'Price', defaultColumnTypeName: 'Currency'},
+        ]}
+        content={[
+          ['Name', 'Category', 'Sale date', 'Price'],
+          ['Car', 'Vehicles', '20/07/2012', '$6800.00'],
+          ['Laptop', 'Electronics', '08/11/2014', '$700'],
+          ['Chair', 'Furniture', '05/02/2019', '$20.00'],
+          ['Apples', 'Food', '10/04/2022', '$1.00'],
+          ['Bracelet', 'Jewellery', '10/06/1998', '$180.00'],
+          ['Jeans', 'Clothing', '16/02/2023', '$70.00'],
+        ]}
+      ></ActiveTableBrowser>
+    </div>
+  );
+}
+
+function LeftPanel() {
+  return (
+    <div id="start-panel-left">
+      <h1 id="start-colored-header">Active Table</h1>
+      <h1 id="start-sub-header">Framework agnostic table component for editable data experience</h1>
+      <div style={{marginTop: '27px'}}>
+        <a className={'homepage-button start-button'} href="docs/installation">
+          Installation
+        </a>
+        <a className={'homepage-button start-button'} href="docs/table">
+          Explore API
+        </a>
+      </div>
+    </div>
+  );
+}
+
+export function StartPanel() {
+  const startPanelContentRef = React.useRef(null);
+  return (
+    <div id="start-panel">
+      <div ref={startPanelContentRef} id="start-panel-content" className="invisible-component">
+        <LeftPanel></LeftPanel>
+        <RightPanel></RightPanel>
+        <FadeInContent startPanelContentRef={startPanelContentRef}></FadeInContent>
+      </div>
+    </div>
+  );
+}
