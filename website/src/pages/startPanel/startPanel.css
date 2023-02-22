@@ -22,6 +22,7 @@
 #start-panel-left {
   float: left;
   width: 50%;
+  padding-top: 5px;
 }
 
 #start-colored-header {
@@ -57,7 +58,7 @@
 /* need to use !important as it is on an anchor (a) element  */
 .start-button {
   margin-right: 20px !important;
-  background-color: #6b6b6b;
+  background-color: #3b4f72;
   font-weight: 500 !important;
   font-size: 1.05rem !important;
   padding-left: 14px !important;

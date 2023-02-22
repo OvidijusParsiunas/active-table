@@ -183,19 +183,29 @@ html[data-theme='dark'] .header-github-link:before {
     contrast(100%);
 }
 
-/* using selector for homepage as the navbar needs to have opacity: 0 from the very start and not when the element is found */
-.plugin-pages > body > #__docusaurus > nav {
-  opacity: 0;
-}
+/* REF-39 -fade in */
 
 /* use class instead of a selector when we the required element reference is available from the very start */
 .invisible-component {
   opacity: 0;
 }
 
+/* using selector for homepage as the navbar needs to have opacity: 0 from the very start and not when the element is found */
+.plugin-pages > body > #__docusaurus > nav {
+  opacity: 0;
+}
+
 .fade-in {
-  transition: 1.8s;
-  opacity: 1 !important;
+  animation: fadeIn 1.8s !important;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* overwriting code blocks */

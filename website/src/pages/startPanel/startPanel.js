@@ -23,39 +23,39 @@ function RightPanel() {
     <div id="start-panel-right">
       <ActiveTableBrowser
         tableStyle={{borderRadius: '5px', width: '580px'}}
-        // customColumnTypes={[
-        //   {
-        //     name: 'Category',
-        //     label: {
-        //       options: [
-        //         {text: 'Vehicles', backgroundColor: '#d9ebfc'},
-        //         {text: 'Electronics', backgroundColor: '#ccffe2'},
-        //         {text: 'Furniture', backgroundColor: '#f7e0ab'},
-        //         {text: 'Food', backgroundColor: '#e1ff8f'},
-        //         {text: 'Jewellery', backgroundColor: '#ffcce1'},
-        //         {text: 'Clothing', backgroundColor: '#cdf3fe'},
-        // {text: 'Clothing', backgroundColor: '#f1fecd'},
-        // ],
-        // options: [
-        //   {text: 'Vehicles', backgroundColor: '#d6cdfe'},
-        //   {text: 'Electronics', backgroundColor: '#fcf5b0'},
-        //   {text: 'Furniture', backgroundColor: '#eec191'},
-        //   {text: 'Food', backgroundColor: '#b9e694'},
-        //   {text: 'Jewellery', backgroundColor: '#f7e0ab'},
-        //   {text: 'Clothing', backgroundColor: '#afdffd'},
-        // ],
-        //     },
-        //   },
-        // ]}
-        customColumnsSettings={[
+        customColumnTypes={[
           {
-            headerName: 'Category',
-            defaultColumnTypeName: 'Label',
+            name: 'Category',
+            label: {
+              options: [
+                {text: 'Vehicles', backgroundColor: '#d9ebfc'},
+                {text: 'Electronics', backgroundColor: '#ccffe2'},
+                {text: 'Furniture', backgroundColor: '#f7e0ab'},
+                {text: 'Food', backgroundColor: '#e1ff8f'},
+                {text: 'Jewellery', backgroundColor: '#ffcce1'},
+                {text: 'Clothing', backgroundColor: '#cdf3fe'},
+                {text: 'Clothing', backgroundColor: '#f1fecd'},
+              ],
+              // options: [
+              //   {text: 'Vehicles', backgroundColor: '#d6cdfe'},
+              //   {text: 'Electronics', backgroundColor: '#fcf5b0'},
+              //   {text: 'Furniture', backgroundColor: '#eec191'},
+              //   {text: 'Food', backgroundColor: '#b9e694'},
+              //   {text: 'Jewellery', backgroundColor: '#f7e0ab'},
+              //   {text: 'Clothing', backgroundColor: '#afdffd'},
+              // ],
+            },
           },
-          {headerName: 'Sale date', defaultColumnTypeName: 'Date d-m-y'},
-          // {headerName: 'Verified', defaultColumnTypeName: 'Checkbox'},
-          {headerName: 'Price', defaultColumnTypeName: 'Currency'},
         ]}
+        // customColumnsSettings={[
+        //   {
+        //     headerName: 'Category',
+        //     defaultColumnTypeName: 'Label',
+        //   },
+        //   {headerName: 'Sale date', defaultColumnTypeName: 'Date d-m-y'},
+        //   // {headerName: 'Verified', defaultColumnTypeName: 'Checkbox'},
+        //   {headerName: 'Price', defaultColumnTypeName: 'Currency'},
+        // ]}
         content={[
           ['Name', 'Category', 'Sale date', 'Price'],
           ['Car', 'Vehicles', '20/07/2012', '$6800.00'],
