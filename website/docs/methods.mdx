@@ -26,7 +26,7 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
 
-<BrowserOnly>{() => require('@site/src/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
+<BrowserOnly>{() => require('@site/src/components/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
 
 <TableContainerMethods propertyname={"getContent"}>
   <ActiveTable
@@ -139,6 +139,7 @@ tableElementRef.updateCell({newText: "sample text", rowIndex: 1, columnIndex: 1}
 
 <script>
   function updateCell(tableElement) {
+    if (!tableElement?.isConnected) return;
     setTimeout(() => {
       const rowIndex = Math.floor(Math.random() * 5 + 1);
       const columnIndex = Math.floor(Math.random() * 5 + 1);

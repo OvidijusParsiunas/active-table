@@ -11,7 +11,7 @@ function FadeInNav() {
   return (
     <BrowserOnly>
       {() => {
-        const navToggle = require('@site/src/nav/autoNavToggle');
+        const navToggle = require('@site/src/components/nav/autoNavToggle');
         // REF-39
         navToggle.fadeIn();
         navToggle.readdAutoNavToggle();

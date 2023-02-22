@@ -39,8 +39,8 @@ export default function TableContainerMethods({children, propertyname, displayRe
       <div ref={tableContainerRef}>
         <TableContainer>{children}</TableContainer>
       </div>
-      <div className="example-container">
-        <button className="method-button" onClick={click}>
+      <div className="documentation-example-container">
+        <button className="documentation-method-button" onClick={click}>
           Call Method
         </button>
         {(displayResults ?? true) && <ResultText ref={eventTextRef}></ResultText>}

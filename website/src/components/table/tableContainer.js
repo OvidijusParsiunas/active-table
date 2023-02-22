@@ -4,10 +4,10 @@ export function extractChildTableElement(containerElement) {
   return containerElement?.children[0]?.children[0];
 }
 
-export default function TableContainer({children, customStyle}) {
+export default function TableContainer({children}) {
   return (
-    <div className="example-container">
-      <div style={{width: '100%', ...customStyle}}>{children}</div>
+    <div className="documentation-example-container">
+      <div>{children}</div>
     </div>
   );
 }

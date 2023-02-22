@@ -118,15 +118,13 @@ code {
   --ifm-code-font-size: 87%;
 }
 
-.example-container {
+.documentation-example-container {
   width: 100%;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
   padding: 18px 18px 18px;
   border: unset;
 }
 
-.method-button {
+.documentation-method-button {
   padding: 10px;
   background-color: #3b8ddf;
   border: unset;
@@ -138,11 +136,11 @@ code {
   transition: 0.1s;
 }
 
-.method-button:hover {
+.documentation-method-button:hover {
   background-color: #4b99e7;
 }
 
-.method-button:active {
+.documentation-method-button:active {
   background-color: #3f90e0;
 }
 

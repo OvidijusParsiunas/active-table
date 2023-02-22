@@ -2,6 +2,7 @@ import TableContainer, {extractChildTableElement} from '@site/src/components/tab
 import React from 'react';
 
 function updateCell(tableElement) {
+  if (!tableElement?.isConnected) return;
   setTimeout(() => {
     const rowIndex = Math.floor(Math.random() * 5 + 1);
     const columnIndex = Math.floor(Math.random() * 5 + 1);

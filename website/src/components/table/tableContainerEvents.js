@@ -46,7 +46,7 @@ export default function TableContainerEvents({children, propertyname}) {
       <div ref={tableContainerRef}>
         <TableContainer>{children}</TableContainer>
       </div>
-      <div className="example-container">
+      <div className="documentation-example-container">
         <EventText ref={eventTextRef}></EventText>
       </div>
     </div>
