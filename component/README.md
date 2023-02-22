@@ -1,6 +1,6 @@
 <br />
 
-![alt text](../readme/Screenshot16.png)
+![alt text](../readme/title.png)
 
 <b>Active Table</b> is a UI component built with a focus on delivering the best editable table experience possible. It is fully customizable to let you build the table you need. Please use [activetable.io](https://activetable.io/) to view all the available features, how to use them, examples and more!
 
@@ -44,7 +44,7 @@ The exact syntax for the above will vary depending on the framework of your choi
 
 ### :dart: Roadmap
 
-- [ ] Code refactoring (<b>In progress</b>)
+- [ ] Code refactoring (<b>In Progress</b>)
 - [ ] Move row/column by dragging
 - [ ] Pick mode
 - [ ] Data filtering
@@ -65,6 +65,9 @@ $ npm run build:watch
 
 # Serve the component locally (from index.html):
 $ npm run serve
+
+# Bundle the component into a single file (dist/activeTable.bundle.js):
+$ npm run build:bundle
 ```
 
 ## :heart: Contributions

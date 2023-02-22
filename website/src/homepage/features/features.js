@@ -32,8 +32,8 @@ function ColumnTypes() {
                       options: [
                         {text: 'Peter', backgroundColor: '#cdfef7'},
                         {text: 'John', backgroundColor: '#d6ffbd'},
-                        {text: 'Gregg', backgroundColor: '#afdffd'},
-                        {text: 'Jeff', backgroundColor: '#adcaff'},
+                        {text: 'Gregg', backgroundColor: '#fdd1e1'},
+                        {text: 'Jeff', backgroundColor: '#fff2c2'},
                       ],
                     },
                   },

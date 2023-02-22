@@ -1,14 +1,14 @@
 {
   "name": "active-table",
-  "version": "0.0.208",
+  "version": "0.0.209",
   "description": "Framework agnostic table component for editable data experience",
   "main": "./dist/activeTable.js",
   "module": "./dist/activeTable.js",
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run analyze",
     "build:watch": "tsc --watch",
-    "build:element": "npm run clean && tsc --project tsconfig.element.json && npm run analyze && rollup -c",
+    "build:bundle": "npm run clean && tsc --project tsconfig.element.json && npm run analyze && rollup -c",
     "clean": "rimraf dist test",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",
@@ -49,7 +49,7 @@
   "bugs": {
     "url": "https://github.com/OvidijusParsiunas/active-table/issues"
   },
-  "homepage": "https://github.com/OvidijusParsiunas/active-table",
+  "homepage": "https://activetable.io",
   "dependencies": {
     "lit": "^2.2.4"
   },

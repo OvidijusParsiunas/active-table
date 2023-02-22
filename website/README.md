@@ -1,12 +1,12 @@
 <br />
 
-![alt text](../readme/Screenshot16.png)
+![alt text](../readme/title.png)
 
-<b>Active Table</b> is a UI component built with a focus on delivering the best editable table experience. Every feature is customizable to allow you to design the table you need. Please use activetable.io to browse all the available features, how to use them, examples and more!
+<b>Active Table</b> is a UI component built with a focus on delivering the best editable table experience possible. It is fully customizable to let you build the table you need. Please use [activetable.io](https://activetable.io/) to view all the available features, how to use them, examples and more!
 
 The documentation website has been built using [Docusaurus 2](https://docusaurus.io/).
 
-## Local setup
+## :construction_worker: Local setup
 
 ```
 # Install node dependencies:
@@ -19,7 +19,7 @@ $ npm run build
 $ npm run start
 ```
 
-## Contributions
+## :heart: Contributions
 
 Open source is built by the community for the community. All contributions to this project are welcome!
 <br> Additionally, if you have any suggestions for enhancements, ideas on how to take the project further or have discovered a bug, do not hesitate to create a new issue ticket and we will look into it as soon as possible!

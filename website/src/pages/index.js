@@ -78,7 +78,12 @@ function StartPage() {
         <BrowserOnly>
           {() => {
             require('active-table-react');
-            leftTableRef.current.className = 'fade-in-component';
+            // in a timeout as moving back to the homepage from a different tab has the page ref 'current' as null
+            setTimeout(() => {
+              if (leftTableRef?.current) {
+                leftTableRef.current.className = 'fade-in';
+              }
+            });
           }}
         </BrowserOnly>
       </div>
@@ -113,7 +118,13 @@ export default function Home() {
           .
         </div>
       </main>
-      <BrowserOnly>{() => require('@site/src/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
+      <BrowserOnly>
+        {() => {
+          const navToggle = require('@site/src/nav/autoNavToggle');
+          navToggle.fadeIn();
+          navToggle.readdAutoNavToggle();
+        }}
+      </BrowserOnly>
     </Layout>
   );
 }

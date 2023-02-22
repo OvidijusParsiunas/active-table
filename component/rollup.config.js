@@ -6,7 +6,7 @@ import {terser} from 'rollup-plugin-terser';
 export default {
   input: 'dist/activeTable.js',
   output: {
-    file: 'dist/activeTable.bundled.js',
+    file: 'dist/activeTable.bundle.js',
     format: 'esm',
   },
   onwarn(warning) {

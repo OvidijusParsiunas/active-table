@@ -319,7 +319,7 @@ TO-DO can potentially keep track of the column widths and reset them correctly i
 
 Updating package version Checklist:
 
-Run npm run build:element
+Run npm run build:bundle
 Update Webpage
 Update CDN references - in doc Install and VanillaJS Live Example sections.
 Update Live Examples

@@ -1,10 +1,10 @@
 <br />
 
-![alt text](./readme/Screenshot22.png)
+![alt text](./readme/title.png)
 
-<b>Active Table</b> is a UI component built with a focus on delivering the best editable table experience. With customizable features, you can easily tailor it to meet your specific design requirements. Use activetable.io to browse all the available features, how to use them, examples and more!
+<b>Active Table</b> is a UI component built with a focus on delivering the best editable table experience possible. It is fully customizable to let you build the table you need. Please use [activetable.io](https://activetable.io/) to view all the available features, how to use them, examples and more!
 
-### Main Features
+### :rocket: Main Features
 
 - Add/Remove/Move rows/columns
 - Max rows/columns
@@ -15,43 +15,43 @@
 - Sorting
 - Column types: Text/Number/Currency/Select/Label/Date/Checkbox
 - API for building custom column types
-- Paste from CSV
+- Import/Export/Paste from CSV
 - Programmatic cell updates
 - Overflow scrollbar
 - Pagination
 - Striped rows
 - Customization styling
 
-### Getting started
+### :computer: Getting started
 
 ```
 npm install active-table
 ```
 
-Install the following package for React instead:
+Use the following package for React instead:
 
 ```
 npm install active-table-react
 ```
 
-Simply add this to your markup:
+Then simply add this to your markup:
 
 ```
 <active-table content='[["Planet"],["Earth"]]'/>
 ```
 
-The exact syntax for the above example will vary depending on the framework of your choice (see here).
+The exact syntax for the above will vary depending on the framework of your choice (see here).
 
-### Todo
+### :dart: Roadmap
 
 - [ ] Code refactoring (<b>In Progress</b>)
 - [ ] Move row/column by dragging
-- [ ] Selection mode
+- [ ] Pick mode
 - [ ] Data filtering
 - [ ] Unit tests
 - [ ] Undo/Redo
 
-## Contributions
+## :heart: Contributions
 
 Open source is built by the community for the community. All contributions to this project are welcome!
 <br> Additionally, if you have any suggestions for enhancements, ideas on how to take the project further or have discovered a bug, do not hesitate to create a new issue ticket and we will look into it as soon as possible!

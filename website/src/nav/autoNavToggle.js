@@ -20,3 +20,10 @@ export function readdAutoNavToggle() {
     }
   }, 2);
 }
+
+export function fadeIn() {
+  setTimeout(() => {
+    const element = document.querySelectorAll('.plugin-pages > body > #__docusaurus > nav')?.[0];
+    if (element) element.classList.add('fade-in');
+  }, 2);
+}
