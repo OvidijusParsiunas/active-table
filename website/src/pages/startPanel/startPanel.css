@@ -55,10 +55,14 @@
   font-size: 2.7rem;
 }
 
+#start-buttons {
+  margin-top: 27px;
+}
+
 /* need to use !important as it is on an anchor (a) element  */
 .start-button {
-  margin-right: 20px !important;
-  background-color: #3b4f72;
+  margin-right: 20px;
+  background-color: #555555;
   font-weight: 500 !important;
   font-size: 1.05rem !important;
   padding-left: 14px !important;
@@ -68,11 +72,11 @@
 }
 
 .start-button:hover {
-  background-color: #444444 !important;
+  background-color: #2b3d5b !important;
 }
 
 .start-button:active {
-  background-color: #343434 !important;
+  background-color: #172336 !important;
 }
 
 #start-panel-right {

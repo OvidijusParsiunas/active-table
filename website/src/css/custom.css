@@ -23,6 +23,12 @@
   --text-code-border-color: rgb(240, 240, 240);
   --code-background: #fbfbfb;
   --footer-text-color: #4f4f4f;
+  --code-plain-color: #144367;
+  --code-function-color: #0080ff;
+  --code-tag-color: #1b76bc;
+  --code-punctuation-color: #393a34;
+  --code-attr-name-color: #0091ff;
+  --code-attr-value-color: #053466;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -43,6 +49,12 @@
   --text-code-background-color: #3c3c3c;
   --code-background: #282a36;
   --footer-text-color: white;
+  --code-plain-color: white;
+  --code-function-color: white;
+  --code-tag-color: white;
+  --code-punctuation-color: white;
+  --code-attr-name-color: white;
+  --code-attr-value-color: white;
 }
 
 .theme-doc-sidebar-container {
@@ -209,26 +221,82 @@ html[data-theme='dark'] .header-github-link:before {
 }
 
 /* overwriting code blocks */
+
+/* installation */
 .function {
-  color: rgb(0, 128, 255) !important;
+  color: var(--code-function-color) !important;
 }
 
 .plain {
-  color: rgb(20, 67, 103) !important;
+  color: var(--code-plain-color) !important;
 }
 
+/* API */
 .tag {
-  color: rgb(27, 118, 188) !important;
+  color: var(--code-tag-color) !important;
 }
 
 .attr-name {
-  color: rgb(0, 145, 255) !important;
+  color: var(--code-attr-name-color) !important;
 }
 
 .attr-value {
-  color: rgb(5, 52, 102) !important;
+  color: var(--code-attr-value-color) !important;
 }
 
 .punctuation {
-  color: rgb(57 58 52) !important;
+  color: var(--code-punctuation-color) !important;
+}
+
+@media (max-width: 640px) {
+  #start-panel {
+    display: none !important;
+  }
+
+  #features-container {
+    display: none;
+  }
+
+  #small-screen {
+    display: block !important;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px;
+  }
+
+  #start-panel-left {
+    width: 90% !important;
+    margin-left: auto;
+    margin-right: auto;
+    float: none !important;
+  }
+
+  #start-buttons {
+    margin-top: 47px !important;
+  }
+
+  #explore-button-container {
+    margin-top: 60px !important;
+    margin-bottom: 40px !important;
+  }
+
+  #footer {
+    text-align: center;
+  }
+}
+
+@media (max-width: 314px) {
+  #start-buttons {
+    text-align: center;
+    display: grid;
+  }
+
+  .start-button {
+    margin-left: auto;
+    margin-right: auto !important;
+  }
+
+  .start-button:nth-child(2) {
+    margin-top: 10px;
+  }
 }

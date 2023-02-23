@@ -1,4 +1,5 @@
 import {ExploreButton} from './exploreButton/exploreButton';
+import {SmallScreen} from './smallScreen/smallScreen';
 import {StartPanel} from './startPanel/startPanel';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import {Features} from './features/features';
@@ -34,6 +35,7 @@ export default function Home() {
         <div id="homepage-content">
           <StartPanel></StartPanel>
           <Features></Features>
+          <SmallScreen></SmallScreen>
           <ExploreButton></ExploreButton>
           <Footer></Footer>
         </div>
