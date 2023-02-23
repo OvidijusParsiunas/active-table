@@ -1,31 +1,12 @@
 import ExploreButton from './exploreButton/exploreButton';
 import SmallScreen from './smallScreen/smallScreen';
-import BrowserOnly from '@docusaurus/BrowserOnly';
 import StartPanel from './startPanel/startPanel';
 import Features from './features/features';
+import {FadeInNav} from './utils/fadeIn';
 import Footer from './footer/footer';
 import Layout from '@theme/Layout';
 import React from 'react';
 import './index.css';
-
-function FadeInNav() {
-  return (
-    <BrowserOnly>
-      {() => {
-        // REF-39
-        const navToggle = require('@site/src/components/nav/autoNavToggle');
-        setTimeout(() => {
-          const navbar = document.querySelector('.plugin-pages > body > #__docusaurus > nav');
-          // because the selector is used to set opacity 0 at the start - its opacity takes over
-          // after the animation is finished - hence we manually set it here
-          if (navbar) navbar.style.opacity = '1';
-        }, 1700);
-        navToggle.fadeIn();
-        navToggle.readdAutoNavToggle();
-      }}
-    </BrowserOnly>
-  );
-}
 
 export default function Home() {
   return (

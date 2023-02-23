@@ -56,7 +56,7 @@
 }
 
 #start-buttons {
-  margin-top: 27px;
+  margin-top: 30px;
 }
 
 /* need to use !important as it is on an anchor (a) element  */
@@ -85,6 +85,31 @@
   padding-top: 20px;
   text-align: center;
   width: 50%;
+}
+
+/* REF-39 - fade in */
+
+/* use class instead of a selector when we the required element reference is available from the very start */
+.invisible-component {
+  opacity: 0;
+}
+
+/* using selector for homepage as the navbar needs to have opacity: 0 from the very start and not when the element is found */
+.plugin-pages > body > #__docusaurus > nav {
+  opacity: 0;
+}
+
+.fade-in {
+  animation: fadeIn 1.8s !important;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @media (max-height: 500px) {

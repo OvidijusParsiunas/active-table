@@ -1,22 +1,7 @@
 import ActiveTableBrowser from '../../components/table/activeTableBrowser';
-import BrowserOnly from '@docusaurus/BrowserOnly';
+import {FadeInContent} from '../utils/fadeIn';
 import React from 'react';
 import './startPanel.css';
-
-function FadeInContent({startPanelContentRef}) {
-  return (
-    <BrowserOnly>
-      {() => {
-        // REF-39 - code synchronous
-        require('active-table-react');
-        // in a timeout as moving back to the homepage from a different tab has the page ref 'current' as null
-        setTimeout(() => {
-          if (startPanelContentRef?.current) startPanelContentRef.current.className = 'fade-in';
-        });
-      }}
-    </BrowserOnly>
-  );
-}
 
 function RightPanel() {
   return (
@@ -58,7 +43,7 @@ function RightPanel() {
                 {text: 'Furniture', backgroundColor: '#cdfef7'},
                 {text: 'Food', backgroundColor: '#ccffe2'},
                 {text: 'Jewellery', backgroundColor: '#b9e694'},
-                {text: 'Clothing', backgroundColor: '#ffe0f9'},
+                {text: 'Clothing', backgroundColor: '#f4e0a6'},
               ],
             },
           },
@@ -103,13 +88,13 @@ export function LeftPanel() {
 }
 
 export default function StartPanel() {
-  const startPanelContentRef = React.useRef(null);
+  const contentRef = React.useRef(null);
   return (
     <div id="start-panel">
-      <div ref={startPanelContentRef} id="start-panel-content" className="invisible-component">
+      <div ref={contentRef} id="start-panel-content" className="invisible-component">
         <LeftPanel></LeftPanel>
         <RightPanel></RightPanel>
-        <FadeInContent startPanelContentRef={startPanelContentRef}></FadeInContent>
+        <FadeInContent contentRef={contentRef}></FadeInContent>
       </div>
     </div>
   );

@@ -1,11 +1,14 @@
 import ActiveTableBrowser from '../../components/table/activeTableBrowser';
 import {LeftPanel} from '../startPanel/startPanel';
+import {FadeInContent} from '../utils/fadeIn';
 import './smallScreen.css';
 import React from 'react';
 
 export default function SmallScreen() {
+  const contentRef = React.useRef(null);
   return (
-    <div id="small-screen">
+    <div ref={contentRef} id="small-screen">
+      <FadeInContent contentRef={contentRef}></FadeInContent>
       <LeftPanel></LeftPanel>
       <div id="small-screen-table">
         <ActiveTableBrowser

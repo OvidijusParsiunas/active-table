@@ -27,7 +27,7 @@
   --code-function-color: #0080ff;
   --code-tag-color: #1b76bc;
   --code-punctuation-color: #393a34;
-  --code-attr-name-color: #0091ff;
+  --code-attr-name-color: #008af2;
   --code-attr-value-color: #053466;
 }
 
@@ -193,31 +193,6 @@ html[data-theme='dark'] .header-github-link:before {
     no-repeat;
   filter: brightness(0) saturate(100%) invert(100%) sepia(87%) saturate(2%) hue-rotate(56deg) brightness(106%)
     contrast(100%);
-}
-
-/* REF-39 -fade in */
-
-/* use class instead of a selector when we the required element reference is available from the very start */
-.invisible-component {
-  opacity: 0;
-}
-
-/* using selector for homepage as the navbar needs to have opacity: 0 from the very start and not when the element is found */
-.plugin-pages > body > #__docusaurus > nav {
-  opacity: 0;
-}
-
-.fade-in {
-  animation: fadeIn 1.8s !important;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }
 
 /* overwriting code blocks */
