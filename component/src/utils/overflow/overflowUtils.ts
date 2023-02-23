@@ -16,7 +16,7 @@ export class OverflowUtils {
 
   // a simple way to not take the border into consideration when doing table width calculation, however if there are issues
   // feel free to investigate a better way
-  public static unsetBorderDimensions(tableDimensions: TableDimensions, numberDimension: ParsedDimension) {
+  private static unsetBorderDimensions(tableDimensions: TableDimensions, numberDimension: ParsedDimension) {
     numberDimension.number -= tableDimensions.border.leftWidth + tableDimensions.border.rightWidth;
     TableElement.changeStaticWidthTotal(tableDimensions, -tableDimensions.border.leftWidth);
     TableElement.changeStaticWidthTotal(tableDimensions, -tableDimensions.border.rightWidth);

@@ -14,8 +14,8 @@ export class MaximumColumns {
 
   // REF-24
   // this is a small effort to toggle off the add new column button when columns with set widths breach the table
-  // please note that this will not allow any more columns to be added even if preserveNarrowColumns is true
-  private static isStaticContentBreachingSetTableWidth(tableDimensions: TableDimensions) {
+  private static isStaticContentBreachingSetTableWidth(tableDimensions: TableDimensions, preserveNarrowColumns: boolean) {
+    if (preserveNarrowColumns) return false;
     const width = tableDimensions.width || tableDimensions.maxWidth;
     return width !== undefined && tableDimensions.staticWidth > width;
   }
@@ -30,10 +30,10 @@ export class MaximumColumns {
 
   // prettier-ignore
   public static canAddMore(at: ActiveTable) {
-    const {_tableElementRef, _columnsDetails, _tableDimensions, maxColumns} = at;
+    const {_tableElementRef, _columnsDetails, _tableDimensions, maxColumns, preserveNarrowColumns} = at;
     const numberOfColumns = _columnsDetails.length;
-    if ((maxColumns !== undefined && maxColumns > 0 && maxColumns === numberOfColumns)
-      || MaximumColumns.isStaticContentBreachingSetTableWidth(_tableDimensions)) return false;
+    if (((maxColumns !== undefined && maxColumns > 0 && maxColumns === numberOfColumns)
+      || MaximumColumns.isStaticContentBreachingSetTableWidth(_tableDimensions, preserveNarrowColumns))) return false;
     const tableElement = _tableElementRef as HTMLElement;
     if (MaximumColumns.ignoreMinimalColumnWidthCheck(_tableDimensions, tableElement, numberOfColumns)) return true;
     const totalColumnsWidth = tableElement.offsetWidth - _tableDimensions.staticWidth;

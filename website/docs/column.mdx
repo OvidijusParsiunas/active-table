@@ -375,9 +375,9 @@ Maximum number of columns allowed (not including the index and add columns colum
 
 When [`tableStyle`](./table#tableStyle) is set with a `width` or `maxWidth` property to limit its size, the insertion of new columns will
 cause all existing column widths to automatically be reduced to make space for the new ones (except columns set with `isColumnResizable` as _false_
-inside [`cellStyle`](./content#cellStyle) of the [`customColumnsSettings`](#customColumnsSettings) object). This can however become problematic when existing column
-widths eventually become too narrow\* and their widths cannot be reduced any further. <br />
-When `preserveNarrowColumns` is _true_ and column widths are too narrow\*, the table width will be increased allow new columns to be inserted. <br />
+inside [`cellStyle`](./content#cellStyle) of the [`customColumnsSettings`](#customColumnsSettings) object). This can however become problematic when
+existing column widths eventually become too narrow\* and their widths cannot be reduced any further. <br />
+When `preserveNarrowColumns` is _true_ and column widths are too narrow\*, the table width will be increased to allow new columns to be inserted. <br />
 When `preserveNarrowColumns` is _false_ and column widths are too narow\*, no new columns will be allowed to be inserted.
 set to true by default.<br />
 _\*Minimal column size is recognised as 33px_
