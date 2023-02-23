@@ -1,5 +1,5 @@
 import ActiveTableBrowser from '../../../components/table/activeTableBrowser';
-import {Resizer} from './resizer';
+import Resizer from './resizer';
 import './responsiveDesign.css';
 import React from 'react';
 
@@ -30,7 +30,7 @@ const Panel = React.forwardRef((_, ref) => (
   </div>
 ));
 
-export function ResponsiveDesign() {
+export default function ResponsiveDesign() {
   const mouseClick = {isClicked: false, offset: 0};
   const leftTableRef = React.useRef(null);
   const rightTableRef = React.useRef(null);

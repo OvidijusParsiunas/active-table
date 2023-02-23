@@ -60,7 +60,7 @@ function LeftPanel() {
   );
 }
 
-export function LayoutManagement() {
+export default function LayoutManagement() {
   return (
     <div id="layout-management">
       <div className="feature-sub-header">Layout management</div>

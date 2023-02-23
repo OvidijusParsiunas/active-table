@@ -64,7 +64,7 @@ function LeftPanel() {
   );
 }
 
-export function ColumnTypes() {
+export default function ColumnTypes() {
   return (
     <div id="column-types">
       <LeftPanel></LeftPanel>

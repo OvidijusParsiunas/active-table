@@ -102,7 +102,7 @@ export function LeftPanel() {
   );
 }
 
-export function StartPanel() {
+export default function StartPanel() {
   const startPanelContentRef = React.useRef(null);
   return (
     <div id="start-panel">

@@ -197,7 +197,7 @@ function TopPanel() {
   );
 }
 
-export function Customization() {
+export default function Customization() {
   return (
     <div id="customization">
       <div className="feature-sub-header">Your table, your style</div>

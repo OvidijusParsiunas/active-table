@@ -15,7 +15,7 @@ function ResizerDots({style}) {
   );
 }
 
-export function Resizer(props) {
+export default function Resizer(props) {
   const [hovered, setHovered] = React.useState(false);
   return (
     <div

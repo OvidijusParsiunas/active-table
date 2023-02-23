@@ -3,7 +3,7 @@ import {LeftPanel} from '../startPanel/startPanel';
 import './smallScreen.css';
 import React from 'react';
 
-export function SmallScreen() {
+export default function SmallScreen() {
   return (
     <div id="small-screen">
       <LeftPanel></LeftPanel>

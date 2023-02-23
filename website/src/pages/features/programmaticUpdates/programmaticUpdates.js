@@ -102,7 +102,7 @@ function LeftPanel() {
   );
 }
 
-export function ProgrammaticUpdates() {
+export default function ProgrammaticUpdates() {
   return (
     <div id="programmatic-updates">
       <LeftPanel></LeftPanel>
