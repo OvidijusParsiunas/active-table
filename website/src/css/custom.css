@@ -1,10 +1,7 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Any CSS included here will be global.
  */
 
-/* You can override the default Infima variables here. */
 :root {
   --ifm-table-container-background-color: #ffffff;
   --ifm-table-container-border: 0.5px solid #eeeeee;
@@ -31,7 +28,6 @@
   --code-attr-value-color: #053466;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
   --ifm-table-container-background-color: #282a36;
   --ifm-table-container-border: unset;
@@ -223,55 +219,16 @@ html[data-theme='dark'] .header-github-link:before {
   color: var(--code-punctuation-color) !important;
 }
 
-@media (max-width: 640px) {
-  #start-panel {
-    display: none !important;
-  }
-
-  #features-container {
+@media (max-width: 575px) {
+  .documentation-example-container {
     display: none;
   }
 
-  #small-screen {
-    display: block !important;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 700px;
+  h4.anchor {
+    display: none;
   }
 
-  #start-panel-left {
-    width: 90% !important;
-    margin-left: auto;
-    margin-right: auto;
-    float: none !important;
-  }
-
-  #start-buttons {
-    margin-top: 47px !important;
-  }
-
-  #explore-button-container {
-    margin-top: 60px !important;
-    margin-bottom: 40px !important;
-  }
-
-  #footer {
-    text-align: center;
-  }
-}
-
-@media (max-width: 314px) {
-  #start-buttons {
-    text-align: center;
-    display: grid;
-  }
-
-  .start-button {
-    margin-left: auto;
-    margin-right: auto !important;
-  }
-
-  .start-button:nth-child(2) {
-    margin-top: 10px;
+  .tabs-container {
+    display: none;
   }
 }

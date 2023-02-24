@@ -87,6 +87,12 @@
   width: 50%;
 }
 
+#start-panel-right-table {
+  width: 580px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* REF-39 - fade in */
 
 /* use class instead of a selector when we the required element reference is available from the very start */
@@ -112,9 +118,9 @@
   }
 }
 
-@media (max-height: 500px) {
-  #start-panel-content {
-    transform: translateY(-50%) !important;
+@media (max-height: 800px) {
+  #start-panel {
+    height: calc(100vh - 60px);
   }
 }
 
@@ -124,8 +130,36 @@
   }
 }
 
-@media (max-height: 800px) {
+@media (max-height: 500px) {
+  #start-panel-content {
+    transform: translateY(-50%) !important;
+  }
+
+  #features-header {
+    margin-top: 40px !important;
+  }
+}
+
+@media (max-height: 410px) {
   #start-panel {
-    height: calc(100vh - 60px);
+    height: calc(100vh + 10px) !important;
+  }
+}
+
+@media (max-height: 340px) {
+  #start-panel {
+    height: calc(100vh + 40px) !important;
+  }
+}
+
+@media (max-height: 294px) {
+  #start-panel {
+    height: calc(100vh + 55px) !important;
+  }
+}
+
+@media (max-height: 280px) {
+  #start-panel {
+    height: calc(100vh + 120px) !important;
   }
 }
