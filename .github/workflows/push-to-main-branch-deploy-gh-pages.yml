@@ -8,7 +8,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: production
+      NODE_ENV: development
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
