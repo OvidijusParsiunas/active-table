@@ -34,3 +34,5 @@ export function FadeInContent({contentRef}) {
     </BrowserOnly>
   );
 }
+
+export default {FadeInNav, FadeInContent};
