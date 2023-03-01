@@ -232,3 +232,8 @@ html[data-theme='dark'] .header-github-link:before {
     display: none;
   }
 }
+
+/* algolia fix to not remove the scrollbar when opened as it would move the tables */
+body.DocSearch--active {
+  overflow: auto !important;
+}
