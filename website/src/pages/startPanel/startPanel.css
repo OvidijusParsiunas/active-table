@@ -72,11 +72,11 @@
 }
 
 .start-button:hover {
-  background-color: #2b3d5b !important;
+  background-color: #3e3e3e !important;
 }
 
 .start-button:active {
-  background-color: #172336 !important;
+  background-color: #292929 !important;
 }
 
 #start-panel-right {

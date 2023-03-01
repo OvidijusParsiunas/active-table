@@ -27,7 +27,7 @@ import Tabs from '@theme/Tabs';
 
 <BrowserOnly>{() => require('@site/src/components/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
 
-<TableContainer>
+<TableContainer minHeight="380">
   <ActiveTable
     csvButtons={{import: true, export: true}}
     content={[
@@ -99,21 +99,21 @@ Custom settings for the `csvButtons` properties. <br />
 
 #### Example
 
-<TableContainer>
+<TableContainer minHeight="380">
   <ActiveTable
     csvButtons={{
       import: {
         styles: {
           default: {
-            backgroundColor: '#66baff',
+            backgroundColor: '#46acff',
             width: '70px',
             height: '25px',
             paddingTop: '6px',
             color: 'white',
             border: 'unset',
           },
-          hover: {backgroundColor: '#74c1ff'},
-          click: {backgroundColor: '#65b9ff'},
+          hover: {backgroundColor: '#2b9cf8'},
+          click: {backgroundColor: '#198eef'},
         },
         text: 'Import',
         position: 'top-left',
@@ -122,15 +122,15 @@ Custom settings for the `csvButtons` properties. <br />
       export: {
         styles: {
           default: {
-            backgroundColor: '#66baff',
+            backgroundColor: '#46acff',
             width: '70px',
             height: '25px',
             paddingTop: '6px',
             color: 'white',
             border: 'unset',
           },
-          hover: {backgroundColor: '#74c1ff'},
-          click: {backgroundColor: '#65b9ff'},
+          hover: {backgroundColor: '#2b9cf8'},
+          click: {backgroundColor: '#198eef'},
         },
         text: 'Export',
         position: 'top-left',
@@ -158,9 +158,9 @@ Custom settings for the `csvButtons` properties. <br />
     "import": {
       "styles": {
         "default": {
-          "backgroundColor": "#66baff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
+          "backgroundColor": "#46acff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
         },
-        "hover": {"backgroundColor": "#74c1ff"}, "click": {"backgroundColor": "#65b9ff"}
+        "hover": {"backgroundColor": "#2b9cf8"}, "click": {"backgroundColor": "#198eef"}
       },
       "text": "Import",
       "position": "top-left",
@@ -169,9 +169,9 @@ Custom settings for the `csvButtons` properties. <br />
     "export": {
       "styles": {
         "default": {
-          "backgroundColor": "#66baff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
+          "backgroundColor": "#46acff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
         },
-        "hover": {"backgroundColor": "#74c1ff"}, "click": {"backgroundColor": "#65b9ff"}
+        "hover": {"backgroundColor": "#2b9cf8"}, "click": {"backgroundColor": "#198eef"}
       },
       "text": "Export",
       "position": "top-left",
@@ -192,9 +192,9 @@ Custom settings for the `csvButtons` properties. <br />
     "import": {
       "styles": {
         "default": {
-          "backgroundColor": "#66baff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
+          "backgroundColor": "#46acff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
         },
-        "hover": {"backgroundColor": "#74c1ff"}, "click": {"backgroundColor": "#65b9ff"}
+        "hover": {"backgroundColor": "#2b9cf8"}, "click": {"backgroundColor": "#198eef"}
       },
       "text": "Import",
       "position": "top-left",
@@ -203,9 +203,9 @@ Custom settings for the `csvButtons` properties. <br />
     "export": {
       "styles": {
         "default": {
-          "backgroundColor": "#66baff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
+          "backgroundColor": "#46acff", "width": "70px", "height": "25px", "paddingTop": "6px", "color": "white", "border": "unset"
         },
-        "hover": {"backgroundColor": "#74c1ff"}, "click": {"backgroundColor": "#65b9ff"}
+        "hover": {"backgroundColor": "#2b9cf8"}, "click": {"backgroundColor": "#198eef"}
       },
       "text": "Export",
       "position": "top-left",
