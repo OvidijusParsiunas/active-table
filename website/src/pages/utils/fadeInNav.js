@@ -1,7 +1,7 @@
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import React from 'react';
 
-export function FadeInNav() {
+export default function FadeInNav() {
   return (
     <BrowserOnly>
       {() => {
@@ -19,20 +19,3 @@ export function FadeInNav() {
     </BrowserOnly>
   );
 }
-
-export function FadeInContent({contentRef}) {
-  return (
-    <BrowserOnly>
-      {() => {
-        // REF-39 - code synchronous
-        require('active-table-react');
-        // in a timeout as moving back to the homepage from a different tab has the page ref 'current' as null
-        setTimeout(() => {
-          if (contentRef?.current) contentRef.current.className = 'fade-in';
-        });
-      }}
-    </BrowserOnly>
-  );
-}
-
-export default {FadeInNav, FadeInContent};

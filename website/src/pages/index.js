@@ -2,7 +2,7 @@ import ExploreButton from './exploreButton/exploreButton';
 import SmallScreen from './smallScreen/smallScreen';
 import StartPanel from './startPanel/startPanel';
 import Features from './features/features';
-import {FadeInNav} from './utils/fadeIn';
+import FadeInNav from './utils/fadeInNav';
 import Footer from './footer/footer';
 import Layout from '@theme/Layout';
 import React from 'react';

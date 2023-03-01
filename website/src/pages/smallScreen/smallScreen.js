@@ -1,6 +1,6 @@
 import ActiveTableBrowser from '../../components/table/activeTableBrowser';
 import {LeftPanel} from '../startPanel/startPanel';
-import {FadeInContent} from '../utils/fadeIn';
+import FadeInContent from '../utils/fadeInContent';
 import './smallScreen.css';
 import React from 'react';
 
