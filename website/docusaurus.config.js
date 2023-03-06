@@ -66,6 +66,15 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      metadata: [
+        {name: 'description', content: 'Framework agnostic table component for editable data experience'},
+        {name: 'keywords', content: 'table, grid, edit, component, javascript'},
+        {name: 'og:title', content: 'Active Table'},
+        {name: 'og:description', content: 'Framework agnostic table component for editable data experience'},
+        {name: 'og:url', content: 'https://activetable.io/'},
+        {name: 'twitter:title', content: 'Active Table'},
+        {name: 'twitter:description', content: 'Framework agnostic table component for editable data experience'},
+      ],
       navbar: {
         title: 'Active Table',
         items: [

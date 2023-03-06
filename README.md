@@ -2,7 +2,7 @@
 
 ![alt text](./readme/title.png)
 
-<b>Active Table</b> is a UI component built with a focus on delivering the best editable table experience possible. It is fully customizable to let you build the table you need. Please use [activetable.io](https://activetable.io/) to view all the available features, how to use them, examples and more!
+<b>Active Table</b> is a fully customizable UI component built with a focus on delivering the best editable table experience possible. Please use [activetable.io](https://activetable.io/) to view all the available features, how to use them, examples and more!
 
 ### :rocket: Main Features
 
@@ -10,17 +10,16 @@
 - Max rows/columns
 - Index column
 - Resizable column widths
-- Text validation
-- Reactive cell styling
+- Striped rows
 - Sorting
+- Text validation
 - Column types: Text/Number/Currency/Select/Label/Date/Checkbox
 - API for building custom column types
-- Import/Export/Paste from CSV
 - Programmatic cell updates
-- Overflow scrollbar
 - Pagination
-- Striped rows
-- Customization styling
+- Overflow scrollbar
+- Import/Export/Paste from CSV
+- Everything is customizable
 
 ### :computer: Getting started
 
@@ -28,7 +27,7 @@
 npm install active-table
 ```
 
-Use the following package for React instead:
+If using React, install the following instead:
 
 ```
 npm install active-table-react
@@ -40,7 +39,7 @@ Then simply add this to your markup:
 <active-table content='[["Planet"],["Earth"]]'/>
 ```
 
-The exact syntax for the above will vary depending on the framework of your choice (see here).
+The exact syntax for the above example will vary depending on the framework of your choice ([see here](https://activetable.io/docs/examples)).
 
 ### :dart: Roadmap
 

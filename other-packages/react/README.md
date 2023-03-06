@@ -2,7 +2,7 @@
 
 ![alt text](../../readme/title.png)
 
-<b>Active Table</b> is a UI component built with a focus on delivering the best editable table experience possible. It is fully customizable to let you build the table you need. Please use [activetable.io](https://activetable.io/) to view all the available features, how to use them, examples and more!
+<b>Active Table</b> is a fully customizable UI component built with a focus on delivering the best editable table experience possible. Please use [activetable.io](https://activetable.io/) to view all the available features, how to use them, examples and more!
 
 This package is a custom element wrapper for React to facilitate access to component properties and events.
 
