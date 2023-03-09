@@ -6,6 +6,107 @@ sidebar_position: 7
 
 Properties related to table columns.
 
+### `customColumnsSettings` {#customColumnsSettings}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `headerName: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`defaultColumnTypeName?: string`](./columnType#defaultColumnTypeName), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`availableDefaultColumnTypes?: DEFAULT_COLUMN_TYPES[]`](./columnType#availableDefaultColumnTypes), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`customColumnTypes?: ColumnType[]`](./columnType#customColumnTypes), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`defaultText?: string|number`](./content#defaultText), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`isDefaultTextRemovable?: boolean`](./content#isDefaultTextRemovable), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`cellStyle?: cellStyle`](./content#cellStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`isCellTextEditable?: boolean`](./content#isCellTextEditable), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`isColumnResizable?: boolean`](#isColumnResizable), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`headerStyles?: headerStyles`](./header#headerStyles), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`isHeaderTextEditable?: boolean`](./header#isHeaderTextEditable), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`headerIconStyle?: HeaderIconStyle`](./header#HeaderIconStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`columnDropdown?: ColumnDropdownSettings`](#ColumnDropdownSettings) <br />
+  }[]
+
+Array of custom properties for columns with header text that matches the `headerName`. Values for properties that are not set will
+automatically be inherited from corresponding component level properties (except `headerName`).
+
+#### Example
+
+<TableContainer>
+  <ActiveTable
+    customColumnsSettings={[
+      {headerName: 'Planet', defaultText: 'Insert Planet', cellStyle: {width: '150px'}, isHeaderTextEditable: false},
+      {
+        headerName: 'Number',
+        cellStyle: {backgroundColor: '#fdfdfd'},
+        defaultColumnTypeName: 'number',
+        isHeaderTextEditable: false,
+      },
+      {
+        headerName: 'Shape',
+        cellStyle: {backgroundColor: '#f8f8f8'},
+        defaultColumnTypeName: 'Select',
+        isHeaderTextEditable: false,
+      },
+      {
+        headerName: 'Date Created',
+        cellStyle: {backgroundColor: '#f1f1f1'},
+        defaultColumnTypeName: 'Date d-m-y',
+        isHeaderTextEditable: false,
+      },
+    ]}
+    content={[
+      ['Planet', 'Number', 'Shape', 'Date Created'],
+      ['', 12756, 'Sphere', '01-02-2012'],
+      ['', 6792, 'Dinosaur', '14-05-1990'],
+      ['', 142984, 'Triangle', '04-12-2020'],
+      ['', 120536, 'Square', '23-10-2008'],
+      ['', 49528, 'Flat', '19-02-2006'],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table
+  customColumnsSettings='[
+    { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
+    { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "defaultColumnTypeName": "number", "isHeaderTextEditable": false },
+    { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "defaultColumnTypeName": "Select", "isHeaderTextEditable": false },
+    { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "defaultColumnTypeName": "Date d-m-y", "isHeaderTextEditable": false }
+  ]'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  customColumnsSettings='[
+    { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
+    { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "defaultColumnTypeName": "number", "isHeaderTextEditable": false },
+    { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "defaultColumnTypeName": "Select", "isHeaderTextEditable": false },
+    { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "defaultColumnTypeName": "Date d-m-y", "isHeaderTextEditable": false }
+  ]'
+  content='[
+    ["Planet", "Number", "Shape", "Date Created"],
+    ["", 12756, "Sphere", "01-02-2012"],
+    ["", 6792, "Dinosaur", "14-05-1990"],
+    ["", 142984, "Triangle", "04-12-2020"],
+    ["", 120536, "Square", "23-10-2008"],
+    ["", 49528, "Flat", "19-02-2006"]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
 ### `isColumnResizable` {#isColumnResizable}
 
 - Type: `boolean`
@@ -203,107 +304,6 @@ appear over it.
     ["Jupiter", 142984, 1898, 79, 1326],
     ["Saturn", 120536, 568, 82, 687],
     ["Neptune", 49528, 102, 14, 1638]]'
-  tableStyle='{"borderRadius":"2px"}'
-></active-table>
-```
-
-</TabItem>
-</Tabs>
-
-<LineBreak></LineBreak>
-
-### `customColumnsSettings` {#customColumnsSettings}
-
-- Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `headerName: string`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`defaultText?: string|number`](./content#defaultText), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`isDefaultTextRemovable?: boolean`](./content#isDefaultTextRemovable), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`cellStyle?: cellStyle`](./content#cellStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`isCellTextEditable?: boolean`](./content#isCellTextEditable), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`isColumnResizable?: boolean`](#isColumnResizable), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`headerStyles?: headerStyles`](./header#headerStyles), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`isHeaderTextEditable?: boolean`](./header#isHeaderTextEditable), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`headerIconStyle?: HeaderIconStyle`](./header#HeaderIconStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`defaultColumnTypeName?: string`](./columnType#defaultColumnTypeName), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`availableDefaultColumnTypes?: DEFAULT_COLUMN_TYPES[]`](./columnType#availableDefaultColumnTypes), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`customColumnTypes?: ColumnType[]`](./columnType#customColumnTypes), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`columnDropdown?: ColumnDropdownSettings`](#ColumnDropdownSettings) <br />
-  }[]
-
-Custom override properties for columns with a header text that matches the `headerName` string. Any properties that have not been set will
-automatically inherit their values from the corresponding ones set directly on the component (except `headerName`).
-
-#### Example
-
-<TableContainer>
-  <ActiveTable
-    customColumnsSettings={[
-      {headerName: 'Planet', defaultText: 'Insert Planet', cellStyle: {width: '150px'}, isHeaderTextEditable: false},
-      {
-        headerName: 'Number',
-        cellStyle: {backgroundColor: '#fdfdfd'},
-        defaultColumnTypeName: 'number',
-        isHeaderTextEditable: false,
-      },
-      {
-        headerName: 'Shape',
-        cellStyle: {backgroundColor: '#f8f8f8'},
-        defaultColumnTypeName: 'Select',
-        isHeaderTextEditable: false,
-      },
-      {
-        headerName: 'Date Created',
-        cellStyle: {backgroundColor: '#f1f1f1'},
-        defaultColumnTypeName: 'Date d-m-y',
-        isHeaderTextEditable: false,
-      },
-    ]}
-    content={[
-      ['Planet', 'Number', 'Shape', 'Date Created'],
-      ['', 12756, 'Sphere', '01-02-2012'],
-      ['', 6792, 'Dinosaur', '14-05-1990'],
-      ['', 142984, 'Triangle', '04-12-2020'],
-      ['', 120536, 'Square', '23-10-2008'],
-      ['', 49528, 'Flat', '19-02-2006'],
-    ]}
-    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
-  ></ActiveTable>
-</TableContainer>
-
-<Tabs>
-<TabItem value="js" label="Sample code">
-
-```html
-<active-table
-  customColumnsSettings='[
-    { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
-    { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "defaultColumnTypeName": "number", "isHeaderTextEditable": false },
-    { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "defaultColumnTypeName": "Select", "isHeaderTextEditable": false },
-    { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "defaultColumnTypeName": "Date d-m-y", "isHeaderTextEditable": false }
-  ]'
-></active-table>
-```
-
-</TabItem>
-<TabItem value="py" label="Full code">
-
-```html
-<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
-
-<active-table
-  customColumnsSettings='[
-    { "headerName": "Planet", "defaultText": "Insert Planet", "cellStyle": {"width": "150px"}, "isHeaderTextEditable": false },
-    { "headerName": "Number", "cellStyle": {"backgroundColor": "#fdfdfd"}, "defaultColumnTypeName": "number", "isHeaderTextEditable": false },
-    { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "defaultColumnTypeName": "Select", "isHeaderTextEditable": false },
-    { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "defaultColumnTypeName": "Date d-m-y", "isHeaderTextEditable": false }
-  ]'
-  content='[
-    ["Planet", "Number", "Shape", "Date Created"],
-    ["", 12756, "Sphere", "01-02-2012"],
-    ["", 6792, "Dinosaur", "14-05-1990"],
-    ["", 142984, "Triangle", "04-12-2020"],
-    ["", 120536, "Square", "23-10-2008"],
-    ["", 49528, "Flat", "19-02-2006"]]'
   tableStyle='{"borderRadius":"2px"}'
 ></active-table>
 ```

@@ -6,7 +6,6 @@
 
 /* need to use !important as it is on an anchor (a) element  */
 .homepage-button {
-  color: white !important;
   border: unset;
   border-radius: 5px !important;
   transition: 0.1s !important;

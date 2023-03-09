@@ -26,6 +26,11 @@
   --code-punctuation-color: #393a34;
   --code-attr-name-color: #008af2;
   --code-attr-value-color: #053466;
+  --start-button-color: #555555;
+  --start-button-border: 1px solid #555555;
+  --start-button-background-color: white;
+  --start-button-background-hover-color: #ececec;
+  --start-button-background-click-color: #c4c4c4;
 }
 
 [data-theme='dark'] {
@@ -51,6 +56,11 @@
   --code-punctuation-color: white;
   --code-attr-name-color: white;
   --code-attr-value-color: white;
+  --start-button-color: white;
+  --start-button-border: unset;
+  --start-button-background-color: #555555;
+  --start-button-background-hover-color: #3e3e3e;
+  --start-button-background-click-color: #343434;
 }
 
 .theme-doc-sidebar-container {

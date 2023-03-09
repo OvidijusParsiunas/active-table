@@ -2,7 +2,7 @@
 
 ![alt text](../readme/title.png)
 
-<b>Active Table</b> is a fully customizable UI component built with a focus on delivering the best editable table experience possible. Please use [activetable.io](https://activetable.io/) to view all the available features, how to use them, examples and more!
+<b>Active Table</b> is a fully customizable UI component built with a focus on delivering the best editable table experience possible. Whether you need a simple table or a complex real-time data visualization grid, this component can be tailored to suit your specific needs! Explore [activetable.io](https://activetable.io/) to view all of the available features, how to use them, examples and more!
 
 The documentation website has been built using [Docusaurus 2](https://docusaurus.io/).
 

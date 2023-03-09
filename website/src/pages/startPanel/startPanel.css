@@ -62,7 +62,9 @@
 /* need to use !important as it is on an anchor (a) element  */
 .start-button {
   margin-right: 20px;
-  background-color: #555555;
+  background-color: var(--start-button-background-color);
+  border: var(--start-button-border) !important;
+  color: var(--start-button-color) !important;
   font-weight: 500 !important;
   font-size: 1.05rem !important;
   padding-left: 14px !important;
@@ -72,11 +74,11 @@
 }
 
 .start-button:hover {
-  background-color: #3e3e3e !important;
+  background-color: var(--start-button-background-hover-color) !important;
 }
 
 .start-button:active {
-  background-color: #292929 !important;
+  background-color: var(--start-button-background-click-color) !important;
 }
 
 #start-panel-right {
