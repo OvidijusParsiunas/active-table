@@ -37,6 +37,8 @@ const config = {
         docs: {
           // Used for the "edit this page" links.
           editUrl: 'https://github.com/OvidijusParsiunas/active-table/tree/main/website',
+          sidebarPath: 'sidebars.js',
+          routeBasePath: '/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -79,10 +81,16 @@ const config = {
         title: 'Active Table',
         items: [
           {
-            type: 'doc',
-            docId: 'introduction',
+            type: 'docSidebar',
             position: 'left',
-            label: 'Documentation',
+            label: 'Docs',
+            sidebarId: 'docs',
+          },
+          {
+            type: 'docSidebar',
+            position: 'left',
+            label: 'Examples',
+            sidebarId: 'examples',
           },
           {
             href: 'https://github.com/OvidijusParsiunas/active-table',
