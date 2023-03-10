@@ -121,7 +121,7 @@ tableElementRef.addEventListener('content-update', (contentUpdate) => { console.
 - Event: `columns-update`
 - Body: [`ColumnsDetails`](./sharedTypes#ColumnsDetails)
 
-Triggered when column details are updated. This is particularly useful if the user has made changes to columns and you want to recreate them
+Triggered when any of the properties inside the [`ColumnsDetails`](./sharedTypes#ColumnsDetails) object are updated. This is particularly useful if the user has made changes to columns and you want to recreate them
 in the next session on the initial load.
 
 #### Example

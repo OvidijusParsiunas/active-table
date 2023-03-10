@@ -29,6 +29,15 @@ automatically be inherited from the corresponding component level properties (ex
 
 #### Example
 
+import ActiveTable from '@site/src/components/table/activeTableBrowser';
+import TableContainer from '@site/src/components/table/tableContainer';
+import LineBreak from '@site/src/components/markdown/lineBreak';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs';
+
+<BrowserOnly>{() => require('@site/src/components/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
+
 <TableContainer>
   <ActiveTable
     customColumnsSettings={[
@@ -117,15 +126,6 @@ and [`tableStyle`](./table#tableStyle) properties, and this is set to _true_ - t
 meet the set table `width`. However if this is set to _false_, columns will permanently hold the initially set `width`.
 
 #### Example
-
-import ActiveTable from '@site/src/components/table/activeTableBrowser';
-import TableContainer from '@site/src/components/table/tableContainer';
-import LineBreak from '@site/src/components/markdown/lineBreak';
-import BrowserOnly from '@docusaurus/BrowserOnly';
-import TabItem from '@theme/TabItem';
-import Tabs from '@theme/Tabs';
-
-<BrowserOnly>{() => require('@site/src/components/nav/autoNavToggle').readdAutoNavToggle()}</BrowserOnly>
 
 <TableContainer>
   <ActiveTable

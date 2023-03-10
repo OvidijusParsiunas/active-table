@@ -39,7 +39,7 @@ Then simply add this to your markup:
 <active-table content='[["Planet"],["Earth"]]'/>
 ```
 
-The exact syntax for the above example will vary depending on the framework of your choice ([see here](https://activetable.io/docs/examples)).
+The exact syntax for the above example will vary depending on the framework of your choice ([see here](https://activetable.io/examples/frameworks)).
 
 ### :dart: Roadmap
 
