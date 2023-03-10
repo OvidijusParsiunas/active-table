@@ -26,11 +26,11 @@
   --code-punctuation-color: #393a34;
   --code-attr-name-color: #008af2;
   --code-attr-value-color: #053466;
-  --start-button-color: #555555;
-  --start-button-border: 1px solid #555555;
+  --start-button-color: #343434;
+  --start-button-border: 1px solid black;
   --start-button-background-color: white;
-  --start-button-background-hover-color: #ececec;
-  --start-button-background-click-color: #c4c4c4;
+  --start-button-background-hover-color: #f7f7f7;
+  --start-button-background-click-color: #ebebeb;
 }
 
 [data-theme='dark'] {
