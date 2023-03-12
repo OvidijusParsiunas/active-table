@@ -19,7 +19,7 @@
 - Pagination
 - Overflow scrollbar
 - Import/Export/Paste from CSV
-- Everything is customizable
+- Everything is customizable!
 
 ### :computer: Getting started
 

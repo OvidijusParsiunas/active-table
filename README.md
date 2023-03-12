@@ -7,9 +7,9 @@
 ### :rocket: Main Features
 
 - Add/Remove/Move rows/columns
+- Resizable column widths
 - Max rows/columns
 - Index column
-- Resizable column widths
 - Striped rows
 - Sorting
 - Text validation
@@ -19,7 +19,7 @@
 - Pagination
 - Overflow scrollbar
 - Import/Export/Paste from CSV
-- Everything is customizable
+- Everything is customizable!
 
 ### :computer: Getting started
 
