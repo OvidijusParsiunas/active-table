@@ -1,6 +1,8 @@
 <br />
 
-![alt text](../assets/readme/title.png)
+<p align="center"> 
+    <img style="margin-left: -20px" width="95%" src="../assets/readme/title.png" alt="Logo">
+</p>
 
 <b>Active Table</b> is a fully customizable UI component built with a focus on delivering the best editable table experience possible. Whether you need a simple table or a complex real-time data visualization grid, this component can be tailored to suit your specific needs! Explore [activetable.io](https://activetable.io/) to view all of the available features, how to use them, examples and more!
 
