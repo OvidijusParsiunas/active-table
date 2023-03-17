@@ -6,6 +6,7 @@ export const activeTableStyle = css`
   :host {
     /* the following property prevents outside styles from affecting this component */
     all: initial;
+    /* the following property is used to control the overall component width */
     display: inline-block;
   }
 
