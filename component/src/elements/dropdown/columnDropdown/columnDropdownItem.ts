@@ -30,6 +30,12 @@ export class ColumnDropdownItem {
     });
   }
 
+  // hide divider when there are no items below
+  private static hideDivider(items: HTMLElement[]) {
+    const visibleIcon = items.slice(4).find((element) => element.style.display !== 'none');
+    if (!visibleIcon) DropdownItem.toggleItem(items[3], false);
+  }
+
   private static toggleItems(settings: ColumnDropdownSettings, items: HTMLElement[]) {
     const {isSortAvailable, isDeleteAvailable, isInsertLeftAvailable, isInsertRightAvailable, isMoveAvailable} = settings;
     if (!isSortAvailable) {
@@ -44,6 +50,7 @@ export class ColumnDropdownItem {
       DropdownItem.toggleItem(items[9], false);
     }
     if (!isDeleteAvailable) DropdownItem.toggleItem(items[10], false);
+    ColumnDropdownItem.hideDivider(items);
   }
 
   // prettier-ignore
