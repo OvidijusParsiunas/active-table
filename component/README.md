@@ -29,7 +29,7 @@
 npm install active-table
 ```
 
-If using React, install the following instead:
+If using React, install the [following](https://www.npmjs.com/package/active-table-react) instead:
 
 ```
 npm install active-table-react
@@ -38,7 +38,7 @@ npm install active-table-react
 Then simply add this to your markup:
 
 ```
-<active-table content='[["Planet"],["Earth"]]'/>
+<active-table content='[["Planet", "Diameter"], ["Earth", 12756]]'/>
 ```
 
 The exact syntax for the above example will vary depending on the framework of your choice ([see here](https://activetable.io/examples/frameworks)).
