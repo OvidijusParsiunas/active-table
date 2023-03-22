@@ -6,7 +6,7 @@
 
 <b>Active Table</b> is a fully customizable web component built with a focus on delivering the best editable table experience possible. Whether you need a simple table or a complex real-time data visualization grid, this component can be tailored to suit your specific needs! Explore [activetable.io](https://activetable.io/) to view all of the available features, how to use them, examples and more!
 
-This package is a wrapper for [Active Table](https://www.npmjs.com/package/active-table) that allows it to work in React.
+This package is an [Active Table](https://www.npmjs.com/package/active-table) component wrapper for [React](https://react.dev/).
 
 ### :rocket: Main Features
 
