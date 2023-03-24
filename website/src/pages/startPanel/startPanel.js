@@ -1,5 +1,4 @@
 import ActiveTableBrowser from '../../components/table/activeTableBrowser';
-import FadeInContent from '../utils/fadeInContent';
 import React from 'react';
 import './startPanel.css';
 
@@ -91,13 +90,11 @@ export function LeftPanel() {
 }
 
 export default function StartPanel() {
-  const contentRef = React.useRef(null);
   return (
     <div id="start-panel">
-      <div ref={contentRef} id="start-panel-content" className="invisible-component">
+      <div id="start-panel-content">
         <LeftPanel></LeftPanel>
         <RightPanel></RightPanel>
-        <FadeInContent contentRef={contentRef}></FadeInContent>
       </div>
     </div>
   );
