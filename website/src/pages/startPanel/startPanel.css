@@ -28,7 +28,8 @@
 
 #start-colored-header {
   font-weight: 800;
-  font-size: 3.75rem;
+  letter-spacing: -1px;
+  font-size: 3.65rem;
   background-image: linear-gradient(to right, rgb(104, 159, 214), rgb(44, 97, 150), rgb(56, 114, 172), rgb(104, 159, 214));
   background-clip: text;
   -webkit-background-clip: text;
