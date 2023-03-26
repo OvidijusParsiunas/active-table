@@ -1,3 +1,5 @@
+@import url('fonts.css');
+
 /**
  * Any CSS included here will be global.
  */
@@ -63,12 +65,22 @@
   --start-button-background-click-color: #343434;
 }
 
+.markdown > h1 {
+  font-family: 'Lato', sans-serif;
+}
+
+.markdown > h2 {
+  font-family: 'Roboto', sans-serif;
+}
+
 .theme-doc-sidebar-container {
   border-right: unset !important;
 }
 
 .menu__link {
   border-radius: 5px !important;
+  letter-spacing: -0.2px;
+  font-family: 'Manrope', sans-serif;
 }
 
 .menu__link:hover {
