@@ -67,6 +67,8 @@
 
 .markdown > h1 {
   font-family: 'Lato', sans-serif;
+  margin-top: 2px;
+  font-size: 2.95rem;
 }
 
 .markdown > h2 {
