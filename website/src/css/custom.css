@@ -1,4 +1,4 @@
-@import url('fonts.css');
+@import url('fonts/fonts.css');
 
 /**
  * Any CSS included here will be global.
@@ -185,7 +185,7 @@ code {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-top: -2px;
+  margin-top: -1.2px;
   font-size: 19.5px;
   letter-spacing: -0.2px;
   /* same font as in .header-font */
