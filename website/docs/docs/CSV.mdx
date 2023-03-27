@@ -15,6 +15,8 @@ insert CSV data by simply copying cells from Excel and pasting them into the tab
   }
 
 `import` and `export` buttons can be enabled by definining their properties using the `CSVButton` object or by setting them to _true_.
+The `export` button [CSVButton](#CSVButton) object also contains a `fileName` property which defines the exported file's name e.g. _custom_file_name_
+or _custom_file_name.csv_.
 
 #### Example
 
@@ -84,11 +86,13 @@ Object types for properties inside [`csvButtons`](#csvButtons):
   &nbsp;&nbsp;&nbsp;&nbsp;`text?: string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`position?: OuterContentPosition`](./sharedTypes#OuterContentPosition), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`order?: number` <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`fileName?: string` <br />
   }
 - Default: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp;_text: "Import CSV"|"Export CSV_, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;_position: "bottom-left"_, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;_order: 0_ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_fileName: "table_data.csv"_ <br />
   }
 
 Custom settings for the `csvButtons` properties. <br />
@@ -135,6 +139,7 @@ Custom settings for the `csvButtons` properties. <br />
         text: 'Export',
         position: 'top-left',
         order: 0,
+        fileName: 'custom_file_name',
       },
     }}
     content={[
@@ -175,7 +180,8 @@ Custom settings for the `csvButtons` properties. <br />
       },
       "text": "Export",
       "position": "top-left",
-      "order": 0
+      "order": 0,
+      "fileName": "custom_file_name"
     }
   }'
 ></active-table>
@@ -209,7 +215,8 @@ Custom settings for the `csvButtons` properties. <br />
       },
       "text": "Export",
       "position": "top-left",
-      "order": 0
+      "order": 0,
+      "fileName": "custom_file_name"
     }
   }'
   content='[

@@ -4,6 +4,12 @@ import {ActiveTable} from '../../../activeTable';
 import {CSVButtons} from '../../../types/CSV';
 
 export class CSVInternalUtils {
+  private static setCustomExportFileName(csvButtons: CSVButtons, _csvButtons: CSVButtonsInternal) {
+    if (typeof csvButtons.export === 'object' && csvButtons.export.fileName && _csvButtons.export) {
+      _csvButtons.export.fileName = csvButtons.export.fileName;
+    }
+  }
+
   private static getDefaultProperties(defaultText: string): CSVButtonProps {
     return {
       styles: {default: {}, hover: {backgroundColor: '#f0f0f0'}, click: {backgroundColor: '#e4e4e4'}},
@@ -34,6 +40,7 @@ export class CSVInternalUtils {
     _csv.buttons = {};
     CSVInternalUtils.setInternalComponent(csvButtons, _csv.buttons, 'import', 'Import CSV');
     CSVInternalUtils.setInternalComponent(csvButtons, _csv.buttons, 'export', 'Export CSV');
+    CSVInternalUtils.setCustomExportFileName(csvButtons, _csv.buttons);
   }
 
   public static createDefault(at: ActiveTable): CSVInternal {

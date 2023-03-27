@@ -169,7 +169,7 @@ tableElementRef.updateCell({newText: "sample text", rowIndex: 1, columnIndex: 1}
 
 ### `importCSV` {#importCSV}
 
-- Type: [`() => ColumnsDetails`](./sharedTypes#ColumnsDetails)
+- Type: `() => void`
 
 Opens up a file browser window to select a .csv file and import its data which will be used in the table. For browser security reasons - this method can ONLY
 be activated through user actions, such as a click of a button.
@@ -204,9 +204,11 @@ tableElementRef.importCSV();
 
 ### `exportCSV` {#exportCSV}
 
-- Type: [`() => ColumnsDetails`](./sharedTypes#ColumnsDetails)
+- Type: `(fileName?: string) => void`
+- Default: _fileName: "table_data.csv"_
 
-Exports table content in a .csv file.
+Exports table content in a .csv file. You can optionally define the exported file's name by calling the method with a string argument
+e.g. _exportCSV("custom_file_name")_ or _exportCSV("custom_file_name.csv")_.
 
 #### Example
 

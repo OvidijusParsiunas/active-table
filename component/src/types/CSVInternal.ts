@@ -3,9 +3,11 @@ import {CSVButton} from './CSV';
 
 export type CSVButtonProps = Required<CSVButton<Required<StatefulCSS>>>;
 
+export type ExportCSVButtonProps = CSVButtonProps & {fileName?: string};
+
 export interface CSVButtonsInternal {
   import?: CSVButtonProps;
-  export?: CSVButtonProps;
+  export?: ExportCSVButtonProps;
 }
 
 export interface CSVInternal {

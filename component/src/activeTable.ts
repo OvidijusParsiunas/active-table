@@ -83,7 +83,7 @@ export class ActiveTable extends LitElement {
   importCSV: () => void = () => CSVImport.externalImportTrigger(this);
 
   @property({type: Function})
-  exportCSV: () => void = () => CSVExport.export(this);
+  exportCSV: (fileName?: string) => void = (fileName) => CSVExport.export(this, fileName);
 
   // REF-20
   @property({converter: LITElementTypeConverters.convertToFunction})

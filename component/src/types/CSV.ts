@@ -14,5 +14,5 @@ export interface CSVButton<T = StatefulCSS> {
 
 export interface CSVButtons {
   import?: CSVButton | boolean;
-  export?: CSVButton | boolean;
+  export?: (CSVButton & {fileName?: string}) | boolean;
 }
