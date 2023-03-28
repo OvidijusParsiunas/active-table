@@ -248,6 +248,11 @@ html[data-theme='dark'] .header-github-link:before {
   color: var(--code-punctuation-color) !important;
 }
 
+/* This is used to reduce the space between the Introduction title and its subtitle  */
+h1 + h2 {
+  margin-top: 35px !important;
+}
+
 @media (max-width: 575px) {
   .documentation-example-container {
     display: none;
