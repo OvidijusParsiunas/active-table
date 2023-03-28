@@ -1,7 +1,7 @@
 import {NoContentStubElement} from '../../../elements/table/addNewElements/shared/noContentStubElement';
-import {CSVImportButtonEvents} from '../../../elements/CSV/importButton/CSVImportButtonEvents';
-import {InsertNewRow} from '../../insertRemoveStructure/insert/insertNewRow';
+import {InsertMatrix} from '../../insertRemoveStructure/insert/insertMatrix';
 import {RemoveRow} from '../../insertRemoveStructure/remove/removeRow';
+import {ImportOverwriteOptions} from '../../../types/CSV';
 import {ActiveTable} from '../../../activeTable';
 
 export class CSVImport {
@@ -34,30 +34,38 @@ export class CSVImport {
     }
   }
 
-  private static processFile(at: ActiveTable, csvText: string) {
-    const newContent = CSVImport.parseCSV(csvText);
-    if (!newContent) return;
-    for (let i = at.content.length - 1; i >= 0; i -= 1) {
+  private static getStartRowIndex(numberOfTableRows: number, options?: ImportOverwriteOptions): number {
+    if (options && typeof options.tableRowStartIndex === 'number') {
+      if (options.tableRowStartIndex < 0 || options.tableRowStartIndex > numberOfTableRows) {
+        return numberOfTableRows;
+      }
+      return options.tableRowStartIndex;
+    }
+    return 0;
+  }
+
+  private static processFile(at: ActiveTable, csvText: string, options?: ImportOverwriteOptions) {
+    const csvContent = CSVImport.parseCSV(csvText);
+    if (csvContent && options && typeof options.csvRowStartIndex === 'number')
+      csvContent.splice(0, options.csvRowStartIndex);
+    if (!csvContent || csvContent.length === 0) return;
+    const startRowIndex = CSVImport.getStartRowIndex(at.content.length, options);
+    for (let i = at.content.length - 1; i >= startRowIndex; i -= 1) {
       RemoveRow.remove(at, i);
     }
     // in a timeout because RemoveRow.remove contains processes inside timeouts e.g. remove column details
     setTimeout(() => {
-      newContent.forEach((row, index) => InsertNewRow.insert(at, index, true, row));
-      if (newContent.length > 0) {
+      InsertMatrix.insert(at, csvContent, startRowIndex, 0, true);
+      if (startRowIndex === 0) {
         NoContentStubElement.convertFromStub({target: at._addRowCellElementRef as HTMLElement});
       }
     });
   }
 
-  public static import(at: ActiveTable, event: Event) {
+  public static import(at: ActiveTable, event: Event, options?: ImportOverwriteOptions) {
     const reader = new FileReader();
     const file = (event.target as HTMLInputElement).files?.[0] as Blob;
     reader.readAsText(file);
-    reader.onload = (event) => CSVImport.processFile(at, event.target?.result as string);
-  }
-
-  public static externalImportTrigger(at: ActiveTable) {
-    const inputElement = at._csv.inputElementRef;
-    CSVImportButtonEvents.triggerImportPrompt(inputElement);
+    reader.onload = (event) => CSVImport.processFile(at, event.target?.result as string, options);
   }
 }

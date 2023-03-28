@@ -4,6 +4,12 @@ import {ActiveTable} from '../../../activeTable';
 import {CSVButtons} from '../../../types/CSV';
 
 export class CSVInternalUtils {
+  private static setImportOverwriteOptions(csvButtons: CSVButtons, _csvButtons: CSVButtonsInternal) {
+    if (typeof csvButtons.import === 'object' && csvButtons.import.overwriteOptions && _csvButtons.import) {
+      _csvButtons.import.overwriteOptions = csvButtons.import.overwriteOptions;
+    }
+  }
+
   private static setCustomExportFileName(csvButtons: CSVButtons, _csvButtons: CSVButtonsInternal) {
     if (typeof csvButtons.export === 'object' && csvButtons.export.fileName && _csvButtons.export) {
       _csvButtons.export.fileName = csvButtons.export.fileName;
@@ -41,6 +47,7 @@ export class CSVInternalUtils {
     CSVInternalUtils.setInternalComponent(csvButtons, _csv.buttons, 'import', 'Import CSV');
     CSVInternalUtils.setInternalComponent(csvButtons, _csv.buttons, 'export', 'Export CSV');
     CSVInternalUtils.setCustomExportFileName(csvButtons, _csv.buttons);
+    CSVInternalUtils.setImportOverwriteOptions(csvButtons, _csv.buttons);
   }
 
   public static createDefault(at: ActiveTable): CSVInternal {

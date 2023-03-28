@@ -1,4 +1,4 @@
-import {CSV} from '../../../types/CSV';
+import {Matrix} from '../../../types/matrix';
 
 export class ParseCSVClipboardText {
   private static readonly STRING_QUOTE_SYMBOL = '"';
@@ -29,7 +29,7 @@ export class ParseCSVClipboardText {
     return {newLine: ParseCSVClipboardText.NEW_LINE_SYMBOL, tab: ParseCSVClipboardText.TAB_SYMBOL};
   }
 
-  public static parse(multiLineString: string): CSV {
+  public static parse(multiLineString: string): Matrix {
     const processedText = ParseCSVClipboardText.preprocessText(multiLineString);
     const {newLine, tab} = ParseCSVClipboardText.getSeparatorSymbols(processedText);
     const linesOfText: string[] = processedText.split(newLine);

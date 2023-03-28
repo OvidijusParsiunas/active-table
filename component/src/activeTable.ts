@@ -5,6 +5,7 @@ import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOv
 import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {ProgrammaticCellUpdate} from './utils/programmaticUpdates/programmaticCellUpdate';
+import {CSVImportButtonEvents} from './elements/CSV/importButton/CSVImportButtonEvents';
 import {OuterTableComponents} from './utils/outerTableComponents/outerTableComponents';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {CSVInternalUtils} from './utils/outerTableComponents/CSV/CSVInternalUtils';
@@ -23,7 +24,6 @@ import {ProgrammaticCellUpdateT} from './types/programmaticCellUpdateT';
 import {DefaultColumnsSettings} from './types/columnsSettingsDefault';
 import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
 import {CSVExport} from './utils/outerTableComponents/CSV/CSVExport';
-import {CSVImport} from './utils/outerTableComponents/CSV/CSVImport';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {CellHighlightUtils} from './utils/color/cellHighlightUtils';
 import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
@@ -32,6 +32,7 @@ import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {StripedRowsInternal} from './types/stripedRowsInternal';
 import {DEFAULT_COLUMN_TYPES} from './enums/defaultColumnTypes';
 import {DefaultCellHoverColors} from './types/cellStateColors';
+import {CSVButtons, ImportOverwriteOptions} from './types/CSV';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {PaginationInternal} from './types/paginationInternal';
@@ -63,7 +64,6 @@ import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
-import {CSVButtons} from './types/CSV';
 
 @customElement('active-table')
 export class ActiveTable extends LitElement {
@@ -80,10 +80,11 @@ export class ActiveTable extends LitElement {
 
   // can only be activated by a user action - such as a button click
   @property({type: Function})
-  importCSV: () => void = () => CSVImport.externalImportTrigger(this);
+  importCSV: (options?: ImportOverwriteOptions) => void = (options?: ImportOverwriteOptions) =>
+    CSVImportButtonEvents.triggerImportPrompt(this, options);
 
   @property({type: Function})
-  exportCSV: (fileName?: string) => void = (fileName) => CSVExport.export(this, fileName);
+  exportCSV: (fileName?: string) => void = (fileName?: string) => CSVExport.export(this, fileName);
 
   // REF-20
   @property({converter: LITElementTypeConverters.convertToFunction})
