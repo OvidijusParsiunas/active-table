@@ -168,6 +168,7 @@ export class ActiveTable extends LitElement {
   })
   displayAddNewColumn = true;
 
+  // WORK - not sure if this should be set here
   @property({type: Object})
   displayIndexColumn: IndexColumnT = {wrapIndexCellText: true};
 

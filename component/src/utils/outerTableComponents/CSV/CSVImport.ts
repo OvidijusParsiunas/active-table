@@ -55,7 +55,7 @@ export class CSVImport {
     }
     // in a timeout because RemoveRow.remove contains processes inside timeouts e.g. remove column details
     setTimeout(() => {
-      InsertMatrix.insert(at, csvContent, startRowIndex, 0, true, true);
+      InsertMatrix.insert(at, csvContent, startRowIndex, 0, true);
       if (startRowIndex === 0) {
         NoContentStubElement.convertFromStub({target: at._addRowCellElementRef as HTMLElement});
       }
