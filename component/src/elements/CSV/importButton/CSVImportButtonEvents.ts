@@ -4,7 +4,7 @@ import {ActiveTable} from '../../../activeTable';
 
 export class CSVImportButtonEvents {
   private static inputChange(at: ActiveTable, options: ImportOverwriteOptions | undefined, event: Event) {
-    CSVImport.import(at, event, options);
+    CSVImport.import(at, event.target as HTMLInputElement, options);
   }
 
   public static triggerImportPrompt(at: ActiveTable, options?: ImportOverwriteOptions) {
