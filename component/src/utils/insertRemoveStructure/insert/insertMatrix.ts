@@ -161,10 +161,10 @@ export class InsertMatrix {
 
   // A matrix is a complete 2D array
   // prettier-ignore
-  public static insert(at: ActiveTable,
-      matrix: Matrix, startRowIndex: number, startColumnIndex: number, isCSVImport?: boolean) {
+  public static insert(at: ActiveTable, matrix: Matrix, startRowIndex: number, startColumnIndex: number,
+      forceOverwriteColumns?: boolean, isCSVImport?: boolean) {
     const numberOfRowsToOverwrite = at.content.length - startRowIndex;
-    InsertMatrix.insertColumnsInsideIfCantInsertRight(at, matrix, startColumnIndex);
+    if (!forceOverwriteColumns) InsertMatrix.insertColumnsInsideIfCantInsertRight(at, matrix, startColumnIndex);
     const dataToOverwriteRows = matrix.slice(0, numberOfRowsToOverwrite);
     // the reason why new columns are not created when the existing cells are overwritten is because the creation of new
     // columns allows new column data to be defined - which is gathered after traversing all dataToOverwriteRows
