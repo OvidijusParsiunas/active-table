@@ -46,8 +46,8 @@ export class CSVImport {
 
   private static processFile(at: ActiveTable, csvText: string, options?: ImportOverwriteOptions) {
     const csvContent = CSVImport.parseCSV(csvText);
-    if (csvContent && options && typeof options.csvRowStartIndex === 'number')
-      csvContent.splice(0, options.csvRowStartIndex);
+    if (csvContent && options && typeof options.importRowStartIndex === 'number')
+      csvContent.splice(0, options.importRowStartIndex);
     if (!csvContent || csvContent.length === 0) return;
     const startRowIndex = CSVImport.getStartRowIndex(at.content.length, options);
     for (let i = at.content.length - 1; i >= startRowIndex; i -= 1) {
@@ -67,6 +67,6 @@ export class CSVImport {
     const file = inputElement.files?.[0] as Blob;
     reader.readAsText(file);
     reader.onload = (event) => CSVImport.processFile(at, event.target?.result as string, options);
-    inputElement.value = ''; // resetting to prevent chrome issue of not being able to upload same file twice
+    inputElement.value = ''; // resetting to prevent Chrome issue of not being able to upload same file twice
   }
 }

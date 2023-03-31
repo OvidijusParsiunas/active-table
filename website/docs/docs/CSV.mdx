@@ -10,15 +10,16 @@ insert CSV data by simply copying cells from Excel and pasting them into the tab
 ### `csvButtons` {#csvButtons}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`import?: CSVButton | boolean`](#CSVButton), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`export?: CSVButton | boolean`](#CSVButton) <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`import?`: `boolean` | { [`CSVButton?`](#CSVButton), [`overwriteOptions?: ImportOverwriteOptions`](./sharedTypes#ImportOverwriteOptions) },<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`export?`: `boolean` | { [`CSVButton?`](#CSVButton), `fileName?: string` } <br />
   }
 
-`import` and `export` buttons can be enabled by definining their properties using the `CSVButton` object or by setting them to _true_.
-The `export` button [CSVButton](#CSVButton) object also contains a `fileName` property which defines the exported file's name e.g. _custom_file_name_
-or _custom_file_name.csv_.
+`import` and `export` buttons can be enabled by setting their properties to _true_ or by definining their custom configurations using json objects. Both of these objects
+can optionally contain the properties inside the [CSVButton](#CSVButton) type. Additionally, the `import` object can contain the [`overwriteOptions`](./sharedTypes#ImportOverwriteOptions)
+property which defines the configuration of what is overwritten and `export` can contain a `fileName` property to define the exported file's name
+e.g. _custom_file_name_ or _custom_file_name.csv_ (default is _table_data.csv_).
 
-#### Example
+#### Simple Example
 
 import ActiveTable from '@site/src/components/table/activeTableBrowser';
 import TableContainer from '@site/src/components/table/tableContainer';
@@ -75,6 +76,90 @@ import Tabs from '@theme/Tabs';
 
 <LineBreak></LineBreak>
 
+#### Custom Configuration Example
+
+<TableContainer minHeight="380">
+  <ActiveTable
+    csvButtons={{
+      import: {
+        styles: {default: {width: '120px'}},
+        text: 'Custom Import',
+        overwriteOptions: {
+          importRowStartIndex: 1,
+          tableRowStartIndex: 1,
+        },
+      },
+      export: {
+        styles: {default: {width: '120px'}},
+        text: 'Custom Export',
+        fileName: 'custom_file_name',
+      },
+    }}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table
+  csvButtons='{
+    "import": {
+      "styles": { "default": { "width": "120px" }},
+      "text": "Custom Import",
+      "overwriteOptions": { "importRowStartIndex": 1, "tableRowStartIndex": 1 }
+    },
+    "export": {
+      "styles": { "default": { "width": "120px" }},
+      "text": "Custom Export",
+      "fileName": "custom_file_name"
+    }
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  csvButtons='{
+    "import": {
+      "styles": { "default": { "width": "120px" }},
+      "text": "Custom Import",
+      "overwriteOptions": { "importRowStartIndex": 1, "tableRowStartIndex": 1 }
+    },
+    "export": {
+      "styles": { "default": { "width": "120px" }},
+      "text": "Custom Export",
+      "fileName": "custom_file_name"
+    }
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
 ## Types
 
 Object types for properties inside [`csvButtons`](#csvButtons):
@@ -86,13 +171,11 @@ Object types for properties inside [`csvButtons`](#csvButtons):
   &nbsp;&nbsp;&nbsp;&nbsp;`text?: string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`position?: OuterContentPosition`](./sharedTypes#OuterContentPosition), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`order?: number` <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;`fileName?: string` <br />
   }
 - Default: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp;_text: "Import CSV"|"Export CSV_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_text: "Import CSV"|"Export CSV"_, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;_position: "bottom-left"_, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;_order: 0_ <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;_fileName: "table_data.csv"_ <br />
   }
 
 Custom settings for the `csvButtons` properties. <br />

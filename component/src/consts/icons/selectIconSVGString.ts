@@ -4,7 +4,7 @@
 export const SELECT_ICON_SVG_STRING = 
 `<?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="body_1" width="18" height="14">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="14">
 	<g transform="matrix(0.9 0 0 0.93333334 0 0)">
 		<g transform="matrix(0.03 0 0 0.03 2.5000005 -0)">
 			<g transform="matrix(1 0 0 1 -86.77152 -33.81399)">

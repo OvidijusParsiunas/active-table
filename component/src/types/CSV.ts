@@ -8,7 +8,7 @@ export interface CSVButton<T = StatefulCSS> {
   order?: number;
 }
 
-export type ImportOverwriteOptions = {tableRowStartIndex?: number; csvRowStartIndex?: number};
+export type ImportOverwriteOptions = {tableRowStartIndex?: number; importRowStartIndex?: number};
 
 export interface CSVButtons {
   import?: (CSVButton & {overwriteOptions?: ImportOverwriteOptions}) | boolean;
