@@ -1,5 +1,3 @@
-@import url('fonts/fonts.css');
-
 /**
  * Any CSS included here will be global.
  */
@@ -66,13 +64,19 @@
 }
 
 .markdown > h1 {
-  font-family: 'Lato', sans-serif;
+  font-family: sans-serif;
   margin-top: 2px;
   font-size: 2.95rem;
 }
 
 .markdown > h2 {
-  font-family: 'Roboto', sans-serif;
+  font-family: sans-serif;
+  letter-spacing: -1px;
+}
+
+/* stopping the title beside framework icons from changing font when screen too small (docusaurus framework - max-width: 576px) */
+img + h2 {
+  font-size: 2rem !important;
 }
 
 .theme-doc-sidebar-container {
@@ -81,8 +85,8 @@
 
 .menu__link {
   border-radius: 5px !important;
-  letter-spacing: -0.2px;
-  font-family: 'Manrope', sans-serif;
+  letter-spacing: 0.1px;
+  font-family: system-ui;
 }
 
 .menu__link:hover {
