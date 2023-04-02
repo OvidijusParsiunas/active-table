@@ -71,7 +71,7 @@
 
 .markdown > h2 {
   font-family: sans-serif;
-  letter-spacing: -1px;
+  letter-spacing: -0.9px;
 }
 
 /* stopping the title beside framework icons from changing font when screen too small (docusaurus framework - max-width: 576px) */
@@ -85,8 +85,8 @@ img + h2 {
 
 .menu__link {
   border-radius: 5px !important;
-  letter-spacing: 0.1px;
-  font-family: system-ui;
+  font-size: 17px;
+  font-family: 'Microsoft Sans Serif', sans-serif;
 }
 
 .menu__link:hover {
