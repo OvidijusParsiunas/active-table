@@ -85,8 +85,7 @@ img + h2 {
 
 .menu__link {
   border-radius: 5px !important;
-  font-size: 17px;
-  font-family: 'Microsoft Sans Serif', sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .menu__link:hover {
@@ -127,6 +126,7 @@ code {
   padding-right: 4px;
 }
 
+/* WORK - top border is not displayed */
 .tabs {
   background-color: var(--ifm-table-container-background-color);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
