@@ -28,7 +28,7 @@ const config = {
     locales: ['en'],
   },
 
-  // TO-DO - enchich introduction with a section about the community e.g. twitter/sharing-examples
+  // TO-DO - enrich introduction with a section about the community e.g. twitter/sharing-examples
   presets: [
     [
       'classic',

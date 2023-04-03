@@ -86,6 +86,7 @@ img + h2 {
 .menu__link {
   border-radius: 5px !important;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  letter-spacing: 0.4px;
 }
 
 .menu__link:hover {
