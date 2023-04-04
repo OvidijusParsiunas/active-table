@@ -12,7 +12,7 @@ export const activeTableStyle = css`
 
   table {
     border-spacing: 0px;
-    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
     position: relative;
     border: 1px solid #00000026;
     background-color: white;
