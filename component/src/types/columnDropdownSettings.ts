@@ -12,5 +12,5 @@ export interface ColumnDropdownSettings {
   isMoveAvailable?: boolean; // true by default
 }
 
-// displaySettings is only available for default columns for UX consistency
-export type ColumnDropdownSettingsDefault = {displaySettings: DropdownDisplaySettings} & ColumnDropdownSettings;
+// displaySettings is only available for default settings and not individual columns for UX consistency
+export type ColumnDropdownSettingsDefault = {displaySettings?: DropdownDisplaySettings} & ColumnDropdownSettings;

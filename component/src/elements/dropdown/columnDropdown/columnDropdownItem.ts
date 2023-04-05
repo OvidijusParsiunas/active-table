@@ -57,7 +57,7 @@ export class ColumnDropdownItem {
   private static setUpInputElement(at: ActiveTable,
       columnIndex: number, cellElement: HTMLElement, inputItem: HTMLElement, dropdownElement: HTMLElement) {
     const {isCellTextEditable, isHeaderTextEditable} = at._columnsDetails[columnIndex].settings;
-    if (at._defaultColumnsSettings.columnDropdown?.displaySettings.openMethod?.overlayClick ||
+    if (at._defaultColumnsSettings.columnDropdown?.displaySettings?.openMethod?.overlayClick ||
         (ObjectUtils.areValuesFullyDefined(isHeaderTextEditable) ? !isHeaderTextEditable : !isCellTextEditable)) {
       DropdownItem.toggleItem(inputItem, false);
     } else {
