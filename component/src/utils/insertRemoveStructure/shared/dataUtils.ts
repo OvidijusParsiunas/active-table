@@ -1,4 +1,4 @@
-import {NumberOfIdenticalCells} from '../../numberOfIdenticalCells';
+import {NumberOfIdenticalCells} from '../../content/numberOfIdenticalCells';
 import {TextValidation} from '../../../types/textValidation';
 import {CellText} from '../../../types/tableContent';
 import {EMPTY_STRING} from '../../../consts/text';

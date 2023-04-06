@@ -7,8 +7,10 @@ import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdo
 import {ProgrammaticCellUpdate} from './utils/programmaticUpdates/programmaticCellUpdate';
 import {CSVImportButtonEvents} from './elements/CSV/importButton/CSVImportButtonEvents';
 import {OuterTableComponents} from './utils/outerTableComponents/outerTableComponents';
+import {LITElementTypeConverters} from './utils/webComponent/LITElementTypeConverters';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {CSVInternalUtils} from './utils/outerTableComponents/CSV/CSVInternalUtils';
+import {WebComponentStyleUtils} from './utils/webComponent/webComponentStyleUtils';
 import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
@@ -16,7 +18,6 @@ import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {ColumnDropdownSettingsDefault} from './types/columnDropdownSettings';
 import {ColumnDetailsUtils} from './utils/columnDetails/columnDetailsUtils';
 import {FrameComponentsStyle, IndexColumnT} from './types/frameComponents';
-import {LITElementTypeConverters} from './utils/LITElementTypeConverters';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {FrameComponentsInternal} from './types/frameComponentsInternal';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
@@ -256,6 +257,9 @@ export class ActiveTable extends LitElement {
   @property({type: Object})
   csvButtons?: CSVButtons;
 
+  @property({type: String})
+  additionalStyle?: string;
+
   // setting header to true if above is undefined and vertical overflow is present
   // (using object to be able to set values without re-rendering the component)
   @state()
@@ -370,6 +374,7 @@ export class ActiveTable extends LitElement {
     InitialContentProcessing.preProcess(this);
     WindowElement.setEvents(this);
     this.spellcheck = this.spellCheck;
+    if (this.additionalStyle && this.shadowRoot) WebComponentStyleUtils.apply(this.additionalStyle, this.shadowRoot);
     super.update(changedProperties);
   }
 

@@ -1,4 +1,4 @@
-import {LITElementTypeConverters} from '../LITElementTypeConverters';
+import {LITElementTypeConverters} from '../webComponent/LITElementTypeConverters';
 import {GenericObject} from '../../types/genericObject';
 
 export class ObjectUtils {

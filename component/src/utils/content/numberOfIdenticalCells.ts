@@ -1,6 +1,6 @@
-import {CellElement} from '../elements/cell/cellElement';
-import {ColumnsDetailsT} from '../types/columnDetails';
-import {CellText} from '../types/tableContent';
+import {CellElement} from '../../elements/cell/cellElement';
+import {ColumnsDetailsT} from '../../types/columnDetails';
+import {CellText} from '../../types/tableContent';
 
 export class NumberOfIdenticalCells {
   // columnsDetails instead of row from content because during startup - content is already be populated and
