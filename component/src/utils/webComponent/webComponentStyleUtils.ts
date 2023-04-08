@@ -1,15 +1,15 @@
 export class WebComponentStyleUtils {
-  public static apply(additionalStyle: string, shadowRoot: ShadowRoot) {
-    if (!shadowRoot || !additionalStyle) return;
+  public static add(auxiliaryStyle: string, shadowRoot: ShadowRoot) {
+    if (!shadowRoot || !auxiliaryStyle) return;
     try {
-      WebComponentStyleUtils.applyStyleSheet(additionalStyle, shadowRoot);
+      WebComponentStyleUtils.addStyleSheet(auxiliaryStyle, shadowRoot);
     } catch (err) {
       // fallback for if CSSStyleSheet is not supported (Safari)
-      WebComponentStyleUtils.addStyleElement(additionalStyle, shadowRoot);
+      WebComponentStyleUtils.addStyleElement(auxiliaryStyle, shadowRoot);
     }
   }
 
-  private static applyStyleSheet(style: string, shadowRoot: ShadowRoot) {
+  private static addStyleSheet(style: string, shadowRoot: ShadowRoot) {
     const styleSheet = new CSSStyleSheet();
     styleSheet.replaceSync(style);
     shadowRoot.adoptedStyleSheets.push(styleSheet);

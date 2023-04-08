@@ -258,7 +258,7 @@ export class ActiveTable extends LitElement {
   csvButtons?: CSVButtons;
 
   @property({type: String})
-  additionalStyle?: string;
+  auxiliaryStyle?: string;
 
   // setting header to true if above is undefined and vertical overflow is present
   // (using object to be able to set values without re-rendering the component)
@@ -374,7 +374,7 @@ export class ActiveTable extends LitElement {
     InitialContentProcessing.preProcess(this);
     WindowElement.setEvents(this);
     this.spellcheck = this.spellCheck;
-    if (this.additionalStyle && this.shadowRoot) WebComponentStyleUtils.apply(this.additionalStyle, this.shadowRoot);
+    if (this.auxiliaryStyle && this.shadowRoot) WebComponentStyleUtils.add(this.auxiliaryStyle, this.shadowRoot);
     super.update(changedProperties);
   }
 
