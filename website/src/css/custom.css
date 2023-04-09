@@ -5,6 +5,7 @@
 :root {
   --ifm-table-container-background-color: #ffffff;
   --ifm-table-container-border: 0.5px solid #eeeeee;
+  --ifm-table-container-border-top: 1px solid #eeeeee;
   --ifm-color-primary: #3584d3;
   --ifm-link-color: #114674;
   --ifm-color-primary-dark: #29784c;
@@ -35,6 +36,7 @@
 
 [data-theme='dark'] {
   --ifm-table-container-background-color: #282a36;
+  --ifm-table-container-border-top: 1px solid #282a36;
   --ifm-table-container-border: unset;
   --ifm-color-primary: #5da9f6;
   --ifm-link-color: #c8e6ff;
@@ -127,13 +129,12 @@ code {
   padding-right: 4px;
 }
 
-/* WORK - top border is not displayed */
 .tabs {
   background-color: var(--ifm-table-container-background-color);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
   border: var(--ifm-table-container-border);
-  border-bottom: 'unset';
-  border-top: 'unset';
+  border-bottom: unset;
+  border-top: var(--ifm-table-container-border-top);
 }
 
 .margin-top--md {
@@ -183,6 +184,8 @@ code {
 
 .prism-code {
   background-color: var(--code-background);
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
 }
 
 .navbar__title {
