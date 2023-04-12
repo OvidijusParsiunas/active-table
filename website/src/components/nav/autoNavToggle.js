@@ -24,6 +24,7 @@ export function readdAutoNavShadowToggle() {
 export function fadeIn() {
   setTimeout(() => {
     const element = document.querySelectorAll('.plugin-pages > body > #__docusaurus > nav')?.[0];
+    // WORK
     try {
       element.classList.add('fade-in');
     } catch (e) {
