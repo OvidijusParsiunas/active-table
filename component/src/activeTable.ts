@@ -169,9 +169,8 @@ export class ActiveTable extends LitElement {
   })
   displayAddNewColumn = true;
 
-  // WORK - not sure if this should be set here
   @property({type: Object})
-  displayIndexColumn: IndexColumnT = {wrapIndexCellText: true};
+  displayIndexColumn: IndexColumnT = {wrapIndexCellText: false};
 
   // REF-22 - to be used by the client
   // frame components are comprised of index column, add new column column and add new row row

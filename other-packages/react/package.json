@@ -1,6 +1,6 @@
 {
   "name": "active-table-react",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "Active Table wrapper for React",
   "main": "./dist/activeTable.js",
   "module": "./dist/activeTable.js",
@@ -34,7 +34,7 @@
   "license": "MIT",
   "dependencies": {
     "@lit-labs/react": "^1.1.1",
-    "active-table": "^0.0.230"
+    "active-table": "^0.0.232"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
