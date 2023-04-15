@@ -66,6 +66,16 @@ import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
 
+// WORK - the border is half rounded
+// content="[]"
+// tableStyle='{"borderRadius": "8px"}'
+// frameComponentsStyle='{
+// "style": {
+//   "default": {"backgroundColor": "blue"},
+// },
+// "inheritHeaderColors": false
+// }'
+
 @customElement('active-table')
 export class ActiveTable extends LitElement {
   @property({type: Function})
@@ -289,9 +299,6 @@ export class ActiveTable extends LitElement {
   // the reason why keeping ref of all the add column cells and not column index cells is because this can be toggled
   @state()
   _addColumnCellsElementsRef: HTMLElement[] = [];
-
-  @state()
-  _columnGroupRef?: HTMLElement;
 
   @state()
   _focusedElements: FocusedElements = FocusedElementsUtils.createEmpty();

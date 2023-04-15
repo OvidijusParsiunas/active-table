@@ -1,7 +1,6 @@
 import {ColumnDropdownCellOverlay} from '../../../elements/dropdown/columnDropdown/cellOverlay/columnDropdownCellOverlay';
 import {HeaderIconCellElement} from '../../../elements/cell/cellsWithTextDiv/headerIconCell/headerIconCellElement';
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
-import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
 import {DateCellElement} from '../../../elements/cell/cellsWithTextDiv/dateCell/dateCellElement';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
 import {CheckboxCellElement} from '../../../elements/cell/checkboxCell/checkboxCellElement';
@@ -100,7 +99,6 @@ export class InsertNewCell {
     InsertNewCell.insert(at, rowElement, newCellElement, processedCellText, isNewText, rowIndex, columnIndex);
     InsertNewCell.convertCell(at, rowIndex, columnIndex, newCellElement); // need text set before conversion (checkbox)
     if (rowIndex === 0) {
-      if (at._frameComponents.displayAddNewColumn) ColumnGroupElement.update(at);
       if (isNewText) StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true); // REF-11
       ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
     } else {

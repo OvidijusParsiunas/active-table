@@ -9,7 +9,6 @@ import {InsertRemoveColumnSizer} from '../columnSizer/utils/insertRemoveColumnSi
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {AddNewColumnElement} from './addNewElements/column/addNewColumnElement';
-import {ColumnGroupElement} from './addNewElements/column/columnGroupElement';
 import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
 import {StickyPropsUtils} from '../../utils/stickyProps/stickyPropsUtils';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
@@ -109,13 +108,8 @@ export class TableElement {
 
   // CAUTION-4 - add row cell is created and ref assigned here - then it is added post render in addFrameBodyElements
   public static createInfrastructureElements(at: ActiveTable) {
-    FrameComponentsColors.setEventColors(at); // needs to be before the creation of column group element
+    FrameComponentsColors.setEventColors(at);
     at._tableElementRef = TableElement.createTableElement(at);
-    if (at._frameComponents.displayAddNewColumn) {
-      // needs to be appended before the body
-      at._columnGroupRef = ColumnGroupElement.create(at._frameComponents.cellColors.data);
-      at._tableElementRef.appendChild(at._columnGroupRef);
-    }
     at._tableBodyElementRef = TableElement.createTableBody(at._stickyProps.header);
     at._addRowCellElementRef = AddNewRowElement.create(at); // REF-18
     at._tableElementRef.appendChild(at._tableBodyElementRef);

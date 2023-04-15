@@ -2,7 +2,6 @@ import {RowDropdownCellOverlay} from '../../../elements/dropdown/rowDropdown/cel
 import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
 import {InsertRemoveColumnSizer} from '../../../elements/columnSizer/utils/insertRemoveColumnSizer';
-import {ColumnGroupElement} from '../../../elements/table/addNewElements/column/columnGroupElement';
 import {StaticTableWidthUtils} from '../../tableDimensions/staticTable/staticTableWidthUtils';
 import {ColumnSettingsBorderUtils} from '../../columnSettings/columnSettingsBorderUtils';
 import {ColumnSettingsWidthUtils} from '../../columnSettings/columnSettingsWidthUtils';
@@ -19,11 +18,6 @@ import {ActiveTable} from '../../../activeTable';
 import {LastColumn} from '../shared/lastColumn';
 
 export class RemoveColumn {
-  private static updateAdditionElements(at: ActiveTable) {
-    if (at._frameComponents.displayAddNewColumn) ColumnGroupElement.update(at);
-    ToggleAdditionElements.update(at, false, AddNewColumnElement.toggle);
-  }
-
   public static reduceStaticWidthTotal(at: ActiveTable, settings: ColumnSettingsInternal) {
     if (settings.widths?.staticWidth) {
       const {number} = ColumnSettingsWidthUtils.getSettingsWidthNumber(
@@ -78,7 +72,7 @@ export class RemoveColumn {
 
   public static remove(at: ActiveTable, columnIndex: number) {
     const removedColumnDetails = RemoveColumn.removeCellFromAllRows(at, columnIndex);
-    RemoveColumn.updateAdditionElements(at);
+    ToggleAdditionElements.update(at, false, AddNewColumnElement.toggle);
     ColumnSettingsBorderUtils.updateSiblingColumns(at, columnIndex);
     setTimeout(() => {
       // CAUTION-2

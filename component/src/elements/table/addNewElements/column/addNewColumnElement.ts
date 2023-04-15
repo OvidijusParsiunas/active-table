@@ -36,10 +36,7 @@ export class AddNewColumnElement {
       GenericElementUtils.NOT_SELECTABLE_CLASS,
       AddNewColumnElement.ADD_COLUMN_CELL_CLASS
     );
-    Object.assign(cell.style, at._defaultColumnsSettings.cellStyle, at._frameComponents.style?.default, {
-      // backgroundColor controlled by column group - REF-17
-      backgroundColor: '',
-    });
+    Object.assign(cell.style, at._defaultColumnsSettings.cellStyle, at._frameComponents.style?.default);
     AddNewColumnEvents.setEvents(at, cell);
     return cell;
   }
@@ -55,7 +52,9 @@ export class AddNewColumnElement {
   }
 
   private static createDataCell(at: ActiveTable) {
-    return AddNewColumnElement.createCell(at, false);
+    const dataCell = AddNewColumnElement.createCell(at, false);
+    Object.assign(dataCell.style, at._frameComponents.cellColors.data.default);
+    return dataCell;
   }
 
   private static isDisplayed(addColumnCellsElementsRef: HTMLElement[]) {
@@ -82,13 +81,13 @@ export class AddNewColumnElement {
 
   // prettier-ignore
   private static toggleEachCell(canAddMore: boolean, tableBodyElement: HTMLElement,
-      addColumnCellsElementsRef: HTMLElement[], columnGroupElement: HTMLElement, cellColors: FrameComponentsCellsColors) {
+      addColumnCellsElementsRef: HTMLElement[], cellColors: FrameComponentsCellsColors) {
     addColumnCellsElementsRef.forEach((cell, rowIndex) => {
       AddNewColumnElement.setDisplay(cell, canAddMore, tableBodyElement, rowIndex);
     });
     if (!canAddMore) {
       // remove does not trigger mouse leave event, hence need to trigger it manually
-      setTimeout(() => AddNewColumnEvents.toggleColor(columnGroupElement, false, addColumnCellsElementsRef, cellColors))
+      setTimeout(() => AddNewColumnEvents.toggleColor(false, addColumnCellsElementsRef, cellColors))
     }
   }
 
@@ -100,19 +99,19 @@ export class AddNewColumnElement {
 
   // prettier-ignore
   public static toggle(at: ActiveTable, isInsert: boolean) {
-    const {_addColumnCellsElementsRef: addColumnCellsElementsRef, _tableBodyElementRef, _columnGroupRef: columnGroup,
+    const {_addColumnCellsElementsRef: addColumnCellsElementsRef, _tableBodyElementRef,
       _frameComponents: {displayAddNewColumn, cellColors: colors}} = at;
-    if (!displayAddNewColumn || !_tableBodyElementRef || !columnGroup) return;
+    if (!displayAddNewColumn || !_tableBodyElementRef) return;
     const canAddMore = MaximumColumns.canAddMore(at);
     // do not toggle if already in the intended state
     if (canAddMore === AddNewColumnElement.isDisplayed(addColumnCellsElementsRef)) return;
     // for isTableAtMaxWidth to be triggered correctly for maxWidth, add cells before it and remove after it
     if (canAddMore) {
-      AddNewColumnElement.toggleEachCell(canAddMore, _tableBodyElementRef, addColumnCellsElementsRef, columnGroup, colors);
+      AddNewColumnElement.toggleEachCell(canAddMore, _tableBodyElementRef, addColumnCellsElementsRef, colors);
       AddNewColumnElement.changeTableWidths(at, canAddMore, isInsert);
     } else {
       AddNewColumnElement.changeTableWidths(at, canAddMore, isInsert);
-      AddNewColumnElement.toggleEachCell(canAddMore, _tableBodyElementRef, addColumnCellsElementsRef, columnGroup, colors);
+      AddNewColumnElement.toggleEachCell(canAddMore, _tableBodyElementRef, addColumnCellsElementsRef, colors);
     }
   }
 }
