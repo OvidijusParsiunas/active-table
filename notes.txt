@@ -139,13 +139,6 @@ I have raised a stack overflow question to see if this can be fixed automaticall
 https://stackoverflow.com/questions/73920147/table-element-width-using-column-widths-safari)
 
 REF-17
-The add column cell/button is made up of cells (one for each row in the table). The hover highlight functionality has been optimised
-to not traverse all of the cells and highlight them individually (as that would be computationally expensive if there are many rows)
-and instead utilise the column group element to control its highlight.
-In order for column group column background color toggle to work - the style must only be set on the col element and not on the cell
-elements. An exception to this is the header cell as first of all column group cannot control the 'color' property and secondly
-because frame header elements can inherit the user set header style we must always be manually setting the header style.
-Column group is EXCLUSIVELY used for controlling the add column cells' style.
 
 REF-18
 The add row button is always in the table body and is converted into a no content stub and reconverted after it is clicked on.
@@ -327,6 +320,4 @@ Updating package version Checklist:
 Run npm run build:bundle
 Update Webpage
 Update CDN references - in doc Install and VanillaJS Live Example sections.
-Update Live Examples
 Update React wrapper
-Update React wrapper version and React live

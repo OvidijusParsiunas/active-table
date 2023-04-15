@@ -127,6 +127,75 @@ Data in this table cannot be changed.
 </TabItem>
 </CodeToggle>
 
+<LineBreak></LineBreak>
+
+### Dark theme {#darkTheme}
+
+Table configuration for a dark design.
+
+<TableContainer minHeight="354">
+  <ActiveTable
+    tableStyle={{width: '100%', borderRadius: '8px', border: 'unset'}}
+    cellStyle={{color: 'white', borderRight: '1px solid #00000029'}}
+    columnResizerColors={{click: '#727272'}}
+    stripedRows={{odd: {backgroundColor: '#4f4f4f'}, even: {backgroundColor: '#373737'}}}
+    headerIconStyle={{
+      filterColor:
+        'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
+    }}
+    headerStyles={{default: {backgroundColor: '#2d2d2d'}, hoverColors: {backgroundColor: '#353535'}}}
+    frameComponentsStyle={{
+      style: {
+        hoverColors: {backgroundColor: '#5f5f5f'},
+      },
+      inheritHeaderColors: true,
+    }}
+    content={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+  ></ActiveTable>
+</TableContainer>
+
+<CodeToggle>
+<TabItem value="js" label="Show code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Frameworks) -->
+
+<active-table
+  tableStyle='{"width": "100%", "borderRadius": "8px", "border": "unset"}'
+  cellStyle='{"color": "white", "borderRight": "1px solid #00000029"}'
+  columnResizerColors='{"click": "#727272"}'
+  stripedRows='{"odd": {"backgroundColor": "#4f4f4f"}, "even": {"backgroundColor": "#373737"}}'
+  headerStyles='{"default": {"backgroundColor": "#2d2d2d"}, "hoverColors": {"backgroundColor": "#353535"}}'
+  headerIconStyle='{
+    "filterColor": "brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)"
+  }'
+  frameComponentsStyle='{
+    "style": {
+      "hoverColors": {"backgroundColor": "#5f5f5f"}},
+    "inheritHeaderColors": true
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+></active-table>
+```
+
+</TabItem>
+</CodeToggle>
+
+<LineBreak></LineBreak>
+
 ### Dynamic updates {#dynamicUpdates}
 
 The programmatic cell update functionality is provided by the [`updateCell`](../docs/methods#updateCell) method that exists on the component element reference.
