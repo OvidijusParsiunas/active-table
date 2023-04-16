@@ -54,11 +54,12 @@ import Tabs from '@theme/Tabs';
 
 <active-table
   customColumnsSettings='[
-    { "headerName": "Planet", "availableDefaultColumnTypes": ["text"] },
-    { "headerName": "Number", "availableDefaultColumnTypes": ["number"] },
-    { "headerName": "Shape", "availableDefaultColumnTypes": ["Select"] },
-    { "headerName": "Date Created", "defaultColumnTypeName": "Date d-m-y", "availableDefaultColumnTypes": ["Date d-m-y", "Date m-d-y"] }
+    {"headerName": "Planet", "availableDefaultColumnTypes": ["text"]},
+    {"headerName": "Number", "availableDefaultColumnTypes": ["number"]},
+    {"headerName": "Shape", "availableDefaultColumnTypes": ["Select"]},
+    {"headerName": "Date Created", "defaultColumnTypeName": "Date d-m-y", "availableDefaultColumnTypes": ["Date d-m-y", "Date m-d-y"]}
   ]'
+  tableStyle='{"borderRadius":"2px"}'
   content='[
     ["Planet", "Age", "Shape", "Date Created"],
     ["Earth", 12756, "Sphere", "01-02-2012"],
@@ -66,7 +67,6 @@ import Tabs from '@theme/Tabs';
     ["Jupiter", 142984, "Triangle", "04-12-2020"],
     ["Saturn", 120536, "Square", "23-10-2008"],
     ["Neptune", 49528, "Flat", "19-02-2006"]]'
-  tableStyle='{"borderRadius":"2px"}'
 ></active-table>
 ```
 
@@ -110,17 +110,17 @@ Data in this table cannot be changed.
   isCellTextEditable="false"
   displayAddNewColumn="false"
   displayAddNewRow="false"
-  columnDropdown='{ "displaySettings": { "isAvailable": "false"}}'
-  rowDropdown='{ "displaySettings": { "isAvailable": "false"}}'
-  frameComponentsStyle='{ "style": { "hoverColors": { "backgroundColor": "white"}}}'
-  headerStyles='{ "hoverColors": { "backgroundColor": "white"}}'
+  columnDropdown='{"displaySettings": {"isAvailable": false}}'
+  rowDropdown='{"displaySettings": {"isAvailable": false}}'
+  frameComponentsStyle='{"style": {"hoverColors": {"backgroundColor": "white"}}}'
+  headerStyles='{"hoverColors": {"backgroundColor": "white"}}'
+  tableStyle='{"borderRadius":"2px"}'
   content='[
     ["Planet", "Diameter", "Mass", "Moons","Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
     ["Saturn", 120536, 568, 82, 687],
     ["Neptune", 49528, 102, 14, 1638]]'
-  tableStyle='{"borderRadius":"2px"}'
 ></active-table>
 ```
 
@@ -168,7 +168,7 @@ Table configuration for a dark design.
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Frameworks) -->
 
 <active-table
-  tableStyle='{"width": "100%", "borderRadius": "8px", "border": "unset"}'
+  tableStyle='{"borderRadius": "8px", "border": "unset"}'
   cellStyle='{"color": "white", "borderRight": "1px solid #00000029"}'
   columnResizerColors='{"click": "#727272"}'
   stripedRows='{"odd": {"backgroundColor": "#4f4f4f"}, "even": {"backgroundColor": "#373737"}}'
@@ -177,8 +177,7 @@ Table configuration for a dark design.
     "filterColor": "brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)"
   }'
   frameComponentsStyle='{
-    "style": {
-      "hoverColors": {"backgroundColor": "#5f5f5f"}},
+    "style": {"hoverColors": {"backgroundColor": "#5f5f5f"}},
     "inheritHeaderColors": true
   }'
   content='[

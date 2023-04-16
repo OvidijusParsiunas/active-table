@@ -10,6 +10,7 @@ function Panel({children}) {
   );
 }
 
+// WORK - change the resizer styles
 function BottomPanel() {
   return (
     <div id="customization-bottom">
