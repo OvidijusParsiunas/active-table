@@ -62,7 +62,7 @@ export class RowsPerPageSelectButtonElement {
       arrow.style.fontSize = '17px';
       arrow.style.marginLeft = '4px';
     }
-    RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(arrow, pagination.style.rowsPerPageSelect?.buttonArrow);
+    RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(arrow, pagination.styles.rowsPerPageSelect?.buttonArrow);
     arrow.innerHTML = '&#8964';
     return arrow;
   }
@@ -73,11 +73,11 @@ export class RowsPerPageSelectButtonElement {
   }
 
   private static createButtonText(pagination: PaginationInternal) {
-    const {isAllRowsOptionSelected, rowsPerPageOptionsItemText, rowsPerPage, style} = pagination;
+    const {isAllRowsOptionSelected, rowsPerPageOptionsItemText, rowsPerPage, styles} = pagination;
     const text = document.createElement('div');
     text.id = RowsPerPageSelectButtonElement.TEXT_ID;
     text.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);
-    RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(text, style.rowsPerPageSelect?.buttonText);
+    RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(text, styles.rowsPerPageSelect?.buttonText);
     text.innerText = isAllRowsOptionSelected ? rowsPerPageOptionsItemText[0] : String(rowsPerPage);
     return text;
   }
@@ -86,7 +86,7 @@ export class RowsPerPageSelectButtonElement {
     const optionsButton = document.createElement('div');
     optionsButton.id = RowsPerPageSelectButtonElement.BUTTON_ID;
     optionsButton.style.padding = Browser.IS_CHROMIUM ? '1px 5px' : '1px 6px';
-    RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(optionsButton, pagination.style.rowsPerPageSelect?.button);
+    RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(optionsButton, pagination.styles.rowsPerPageSelect?.button);
     return optionsButton;
   }
 

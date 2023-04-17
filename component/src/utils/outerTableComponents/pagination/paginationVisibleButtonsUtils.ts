@@ -1,7 +1,7 @@
 import {PageButtonElement} from '../../../elements/pagination/pageButtons/pageButtonElement';
 import {RowElement} from '../../../elements/table/addNewElements/row/rowElement';
 import {PaginationInternal} from '../../../types/paginationInternal';
-import {PageButtonStyle} from '../../../types/pagination';
+import {PageButtonStyles} from '../../../types/pagination';
 import {ElementStyle} from '../../elements/elementStyle';
 import {CSSStyle} from '../../../types/cssStyle';
 import {ActiveTable} from '../../../activeTable';
@@ -55,8 +55,8 @@ export class PaginationVisibleButtonsUtils {
   }
 
   // prettier-ignore
-  public static overrideOnMouseEvent(buttonElement: HTMLElement, pageButtonsStyle: PageButtonStyle) {
-    const {firstVisibleButtonOverride, lastVisibleButtonOverride} = pageButtonsStyle;
+  public static overrideOnMouseEvent(buttonElement: HTMLElement, pageButtonsStyles: PageButtonStyles) {
+    const {firstVisibleButtonOverride, lastVisibleButtonOverride} = pageButtonsStyles;
     if (buttonElement.classList.contains(PaginationVisibleButtonsUtils.FIRST_VISIBLE_CLASS)) {
       PaginationVisibleButtonsUtils.setStyle(buttonElement,
         PaginationVisibleButtonsUtils.FIRST_PRECEDENCE_VALUES, false, firstVisibleButtonOverride);
@@ -69,7 +69,8 @@ export class PaginationVisibleButtonsUtils {
 
   // prettier-ignore
   public static unsetStateAndStyles(pagination: PaginationInternal) {
-    const {style: {pageButtons: {firstVisibleButtonOverride, lastVisibleButtonOverride}}, visibleEdgeButtons} = pagination;
+    const {styles: {pageButtons: {firstVisibleButtonOverride, lastVisibleButtonOverride}},
+      visibleEdgeButtons} = pagination;
     if (visibleEdgeButtons.length === 0) return;
     if (firstVisibleButtonOverride) ElementStyle.unsetStyle(visibleEdgeButtons[0], firstVisibleButtonOverride);
     visibleEdgeButtons[0].classList.remove(PaginationVisibleButtonsUtils.FIRST_VISIBLE_CLASS);
@@ -85,7 +86,7 @@ export class PaginationVisibleButtonsUtils {
 
   // prettier-ignore
   private static set(buttons: HTMLElement[], firstVisibleIndex: number, pagination: PaginationInternal) {
-    const {style: {pageButtons: {firstVisibleButtonOverride, lastVisibleButtonOverride}}} = pagination;
+    const {styles: {pageButtons: {firstVisibleButtonOverride, lastVisibleButtonOverride}}} = pagination;
     const firstVisibleButton = buttons[firstVisibleIndex];
     if (!firstVisibleButton) return;
     if (!firstVisibleButton.classList.contains(PaginationVisibleButtonsUtils.FIRST_VISIBLE_CLASS)) {

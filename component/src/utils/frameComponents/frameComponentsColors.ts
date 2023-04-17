@@ -23,13 +23,13 @@ export class FrameComponentsColors {
 
   // prettier-ignore
   private static getHoverColorValue(at: ActiveTable, colorKey: keyof CellStateColorProperties): string {
-    const {_frameComponents: {style}, _defaultCellHoverColors} = at;
-    return style?.hoverColors?.[colorKey] || style?.default?.[colorKey]
+    const {_frameComponents: {styles}, _defaultCellHoverColors} = at;
+    return styles?.hoverColors?.[colorKey] || styles?.default?.[colorKey]
       || at._defaultColumnsSettings.cellStyle?.[colorKey] || _defaultCellHoverColors[colorKey];
   }
 
   private static getDefaultColorValue(at: ActiveTable, colorKey: keyof CellStateColorProperties) {
-    return at._frameComponents.style?.default?.[colorKey] || at._defaultColumnsSettings.cellStyle?.[colorKey] || '';
+    return at._frameComponents.styles?.default?.[colorKey] || at._defaultColumnsSettings.cellStyle?.[colorKey] || '';
   }
 
   // prettier-ignore

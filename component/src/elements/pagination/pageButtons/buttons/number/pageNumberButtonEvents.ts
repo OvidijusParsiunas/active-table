@@ -13,7 +13,7 @@ export class PageNumberButtonEvents {
   private static buttonMouseUp(this: ActiveTable, buttonNumber: number, event: MouseEvent) {
     PageNumberButtonEvents.markClick(this._pagination);
     const buttonElement = event.target as HTMLElement;
-    const {pageButtons} = this._pagination.style;
+    const {pageButtons} = this._pagination.styles;
     if (this._pagination.activePageNumber === buttonNumber) {
       PageButtonStyle.mouseEnter(buttonElement, pageButtons, false);
     } else {

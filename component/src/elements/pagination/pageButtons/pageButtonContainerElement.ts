@@ -79,9 +79,9 @@ export class PageButtonContainerElement {
   public static create(at: ActiveTable) {
     const buttonContainerElement = document.createElement('div');
     buttonContainerElement.id = PageButtonContainerElement.PAGINATION_BUTTON_CONTAINER_ID;
-    const {style, positions} = at._pagination;
+    const {styles, positions} = at._pagination;
     buttonContainerElement.style.order = String(positions.pageButtons.order);
-    Object.assign(buttonContainerElement.style, style.pageButtons.container);
+    Object.assign(buttonContainerElement.style, styles.pageButtons.container);
     PageButtonContainerEvents.setEvents(buttonContainerElement, at._pagination);
     return buttonContainerElement;
   }

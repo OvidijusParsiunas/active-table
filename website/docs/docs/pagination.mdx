@@ -15,7 +15,7 @@ Divides table rows into a series of pages.
   &nbsp;&nbsp;&nbsp;&nbsp;`displayPrevNext?: boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`displayFirstLast?: boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`displayNumberOfVisibleRows?: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`style?: PaginationStyle`](#PaginationStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`styles?: PaginationStyle`](#PaginationStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`positions?: PaginationPositions`](#PaginationPositions) <br />
   }
 - Default: {<br />
@@ -35,7 +35,7 @@ to change `rowsPerPage`. <br />
 `displayPrevNext` defines whether the previous and next page buttons are displayed. <br />
 `displayFirstLast` defines whether the first and last page buttons are displayed. <br />
 `displayNumberOfVisibleRows` displays information on the index of currently visible rows out of the total number of rows in the table. E.g. _1-5 of 20_. <br />
-`style` defines the styling properties of pagination components. <br />
+`styles` defines the styling properties of pagination components. <br />
 `positions` defines pagination components positions. <br />
 
 #### Example
@@ -268,7 +268,7 @@ Styling properties of pagination components. <br />
 <TableContainer minHeight="390">
   <ActiveTable
     pagination={{
-      "style": {
+      "styles": {
         "rowsPerPageSelect": {
           "prefixText": {"color": "#174a76"},
           "buttonText": {"default":{"color": "#174a76"}},
@@ -323,7 +323,7 @@ Styling properties of pagination components. <br />
 ```html
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "rowsPerPageSelect": {
         "prefixText": {"color": "#174a76"},
         "buttonText": {"default":{"color": "#174a76"}},
@@ -352,7 +352,7 @@ Styling properties of pagination components. <br />
 
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "rowsPerPageSelect": {
         "prefixText": {"color": "#174a76"},
         "buttonText": {"default":{"color": "#174a76"}},
@@ -427,7 +427,7 @@ Styling properties for the rows per page component elements. `container` is the 
 <TableContainer minHeight="390">
   <ActiveTable
     pagination={{
-      "style": {
+      "styles": {
         "rowsPerPageSelect": {
           "container": {"marginRight": "1px"},
           "prefixText": {"color": "#435484"},
@@ -474,7 +474,7 @@ Styling properties for the rows per page component elements. `container` is the 
 ```html
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "rowsPerPageSelect": {
         "container": {"marginRight": "1px"},
         "prefixText": {"color": "#435484"},
@@ -495,7 +495,7 @@ Styling properties for the rows per page component elements. `container` is the 
 
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "rowsPerPageSelect": {
         "container": {"marginRight": "1px"},
         "prefixText": {"color": "#435484"},
@@ -563,15 +563,15 @@ Styling properties for the rows per page component elements. `container` is the 
 
 Styling properties for the page buttons component elements. <br />
 `container` is the parent element that encapsulates all of the buttons. <br />
-`buttons` is used to style the buttons with numbers, however its properties are also reused by `actionButtons`, `disabledButtons` and `actionButtons`. Use the _TIPs_ below to help
-style them correctly. <br />
+`buttons` is used to styles the buttons with numbers, however its properties are also reused by `actionButtons`, `disabledButtons` and `actionButtons`. Use the _TIPs_ below to help
+styles them correctly. <br />
 `activeButton` is the button with the currently active page number. <br />
 `activeButtonPrecedence` denotes whether its border properties overcomes the sibling border properties (except radius). <br />
 `disabledButtons` are buttons that have no events and cannot be clicked. E.g. buttons when there are no data rows or
 action buttons when the currently active page number is either the first or the last. <br />
 `actionButtons` are buttons that change the currently active page number to next, previous, first and last. <br />
 `firstVisibleButtonOverride` and `lastVisibleButtonOverride` are used for overriding the properties of first or last buttons within the container, e.g. setting
-the border radius or setting the opposite side border property when the `buttons` style border properties are set for the other.
+the border radius or setting the opposite side border property when the `buttons` styles border properties are set for the other.
 Eg. when
 default properties are _"border": "1px solid #dedede", "borderRight": "unset"_, set `lastVisibleButtonOverride` with \_"borderLeft":"1px solid #dedede"\_
 as otherwise the last button is not going to have a border on the right.
@@ -581,7 +581,7 @@ as otherwise the last button is not going to have a border on the right.
 <TableContainer minHeight="390">
   <ActiveTable
     pagination={{
-      "style": {
+      "styles": {
         "pageButtons": {
           "buttons": {
             "default": {
@@ -631,7 +631,7 @@ as otherwise the last button is not going to have a border on the right.
 ```html
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "pageButtons": {
         "buttons": {
           "default": {
@@ -655,7 +655,7 @@ as otherwise the last button is not going to have a border on the right.
 
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "pageButtons": {
         "buttons": {
           "default": {
@@ -727,14 +727,14 @@ the active button to unset the left border of the right sibling and not the left
   &nbsp;&nbsp;&nbsp;&nbsp;`lastText?: string` <br />
   }
 
-Styling for action buttons that facilitates the definition of style for various mouse states and the text that is displayed in each one.
+Styling for action buttons that facilitates the definition of styles for various mouse states and the text that is displayed in each one.
 
 #### Example
 
 <TableContainer minHeight="390">
   <ActiveTable
     pagination={{
-      "style": {
+      "styles": {
         "pageButtons": {
           "actionButtons": {
             "default": {"width": "50px", "fontSize": "15px"},
@@ -785,7 +785,7 @@ Styling for action buttons that facilitates the definition of style for various 
 ```html
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "pageButtons": {
         "actionButtons": {
           "default": {"width": "50px", "fontSize": "15px"},
@@ -810,7 +810,7 @@ Styling for action buttons that facilitates the definition of style for various 
 
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "pageButtons": {
         "actionButtons": {
           "default": {"width": "50px", "fontSize": "15px"},
@@ -1013,7 +1013,7 @@ Object defining position properties for a pagination component. `order` is the o
   <ActiveTable
     pagination={{
       displayFirstLast: false,
-      style: {
+      styles: {
         pageButtons: {
           buttons: {
             default: {
@@ -1063,7 +1063,7 @@ Object defining position properties for a pagination component. `order` is the o
 <active-table
   pagination='{
     "displayFirstLast": false,
-    "style": {
+    "styles": {
       "pageButtons": {
         "buttons": {
           "default": {"color": "grey", "border":"1px solid #dedede", "marginRight": "5px", "marginTop": "1px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
@@ -1090,7 +1090,7 @@ Object defining position properties for a pagination component. `order` is the o
 <active-table
   pagination='{
     "displayFirstLast": false,
-    "style": {
+    "styles": {
       "pageButtons": {
         "buttons": {
           "default": {"color": "grey", "border":"1px solid #dedede", "marginRight": "5px", "marginTop": "1px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
@@ -1131,7 +1131,7 @@ Object defining position properties for a pagination component. `order` is the o
 <TableContainer minHeight="264">
   <ActiveTable
     pagination={{
-      "style": {
+      "styles": {
         "pageButtons": {
           "buttons": {
             "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginRight": "5px", "marginTop": "3px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
@@ -1169,7 +1169,7 @@ Object defining position properties for a pagination component. `order` is the o
 ```html
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "pageButtons": {
         "buttons": {
           "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginRight": "5px", "marginTop": "3px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
@@ -1195,7 +1195,7 @@ Object defining position properties for a pagination component. `order` is the o
 
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "pageButtons": {
         "buttons": {
           "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginRight": "5px", "marginTop": "3px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
@@ -1237,7 +1237,7 @@ Object defining position properties for a pagination component. `order` is the o
   <ActiveTable
     pagination={{
       "displayFirstLast": false,
-      "style": {
+      "styles": {
         "pageButtons": {
           "buttons": {
             "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
@@ -1276,7 +1276,7 @@ Object defining position properties for a pagination component. `order` is the o
 <active-table
   pagination='{
     "displayFirstLast": false,
-    "style": {
+    "styles": {
       "pageButtons": {
         "buttons": {
           "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
@@ -1303,7 +1303,7 @@ Object defining position properties for a pagination component. `order` is the o
 <active-table
   pagination='{
     "displayFirstLast": false,
-    "style": {
+    "styles": {
       "pageButtons": {
         "buttons": {
           "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
@@ -1344,7 +1344,7 @@ Object defining position properties for a pagination component. `order` is the o
 <TableContainer minHeight="264">
   <ActiveTable
     pagination={{
-      "style": {
+      "styles": {
         "pageButtons": {
           "buttons": {
             "default": {"color": "grey", "border":"unset", "borderRight": "unset", "backgroundColor":"#ececec", "marginTop": "8px"},
@@ -1383,7 +1383,7 @@ Object defining position properties for a pagination component. `order` is the o
 ```html
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "pageButtons": {
         "buttons": {
           "default": {"color": "grey", "border":"unset", "borderRight": "unset", "backgroundColor":"#ececec", "marginTop": "8px"},
@@ -1410,7 +1410,7 @@ Object defining position properties for a pagination component. `order` is the o
 
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "pageButtons": {
         "buttons": {
           "default": {"color": "grey", "border":"unset", "borderRight": "unset", "backgroundColor":"#ececec", "marginTop": "8px"},
@@ -1452,7 +1452,7 @@ Object defining position properties for a pagination component. `order` is the o
 <TableContainer minHeight="264">
   <ActiveTable
     pagination={{
-      style: {
+      styles: {
         pageButtons: {
           buttons: {
             default: {
@@ -1506,7 +1506,7 @@ Object defining position properties for a pagination component. `order` is the o
 ```html
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "pageButtons": {
         "buttons": {
           "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
@@ -1532,7 +1532,7 @@ Object defining position properties for a pagination component. `order` is the o
 
 <active-table
   pagination='{
-    "style": {
+    "styles": {
       "pageButtons": {
         "buttons": {
           "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},

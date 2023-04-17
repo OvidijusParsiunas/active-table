@@ -50,7 +50,7 @@ export const activeTableStyle = css`
     color: rgba(0, 0, 0, 0.87);
     font-size: 13px;
     font-weight: 400;
-    /* the following is not supported in Firefox (on rows), hence rowHoverStyle will not have the border */
+    /* the following is not supported in Firefox (on rows), hence rowHoverStyles will not have the border */
     border-radius: inherit;
   }
 

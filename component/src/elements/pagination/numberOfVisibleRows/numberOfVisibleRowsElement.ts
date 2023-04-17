@@ -36,9 +36,9 @@ export class NumberOfVisibleRowsElement {
     const numberOfVisibleRowsElement = document.createElement('div');
     numberOfVisibleRowsElement.id = NumberOfVisibleRowsElement.ID;
     numberOfVisibleRowsElement.classList.add(PaginationElements.PAGINATION_TEXT_COMPONENT_CLASS);
-    const {style, positions} = at._pagination;
+    const {styles, positions} = at._pagination;
     numberOfVisibleRowsElement.style.order = String(positions.numberOfVisibleRows.order);
-    Object.assign(numberOfVisibleRowsElement.style, style.numberOfVisibleRows);
+    Object.assign(numberOfVisibleRowsElement.style, styles.numberOfVisibleRows);
     OuterContainerElements.addToContainer(positions.numberOfVisibleRows.position, containers, numberOfVisibleRowsElement);
     setTimeout(() => NumberOfVisibleRowsElement.update(at));
     return numberOfVisibleRowsElement;

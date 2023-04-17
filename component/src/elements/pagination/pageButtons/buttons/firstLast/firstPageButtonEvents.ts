@@ -5,7 +5,7 @@ import {PageButtonStyle} from '../../pageButtonStyle';
 export class FirstPageButtonEvents {
   private static buttonMouseUp(this: ActiveTable, event: MouseEvent) {
     const buttonElement = event.target as HTMLElement;
-    PageButtonStyle.mouseEnter(buttonElement, this._pagination.style.pageButtons, true);
+    PageButtonStyle.mouseEnter(buttonElement, this._pagination.styles.pageButtons, true);
     if (this._pagination.activePageNumber === 1) return;
     PaginationUtils.displayRowsForDifferentButton(this, 1);
   }

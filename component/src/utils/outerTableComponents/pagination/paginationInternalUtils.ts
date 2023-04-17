@@ -1,7 +1,7 @@
 import {RowsPerPageDropdownItem} from '../../../elements/pagination/rowsPerPageSelect/dropdown/rowsPerPageDropdownItem';
-import {RowsPerPageSelect, PaginationPositions, PageButtonStyle, Pagination} from '../../../types/pagination';
+import {RowsPerPageSelect, PaginationPositions, PageButtonStyles, Pagination} from '../../../types/pagination';
 import {PageButtonElement} from '../../../elements/pagination/pageButtons/pageButtonElement';
-import {IPaginationStyle, PaginationInternal} from '../../../types/paginationInternal';
+import {IPaginationStyles, PaginationInternal} from '../../../types/paginationInternal';
 import {OuterContentPosition} from '../../../types/outerContainer';
 import {StatefulCSS} from '../../../types/cssStyle';
 import {ActiveTable} from '../../../activeTable';
@@ -119,7 +119,7 @@ export class PaginationInternalUtils {
   }
 
   // prettier-ignore
-  private static setRowsPerPageOptionsStyle(style: IPaginationStyle) {
+  private static setRowsPerPageOptionsStyle(style: IPaginationStyles) {
     PaginationInternalUtils.setStatefulCSS(style.rowsPerPageSelect as StatefulStyle, 'button');
     const defButtonsBackgroundColors = {def: '', hover: '#f5f5f5', click: '#f5f5f5'};
     PaginationInternalUtils.setDefaultBackgroundColors(style.rowsPerPageSelect?.button as Required<StatefulCSS>,
@@ -127,8 +127,8 @@ export class PaginationInternalUtils {
   }
 
   // activeButtons reuse buttons style
-  private static mergeButtonsStyleWithActiveStyle(statefulStyle: PageButtonStyle) {
-    const {buttons, actionButtons, activeButton} = statefulStyle as Required<PageButtonStyle<Required<StatefulCSS>>>;
+  private static mergeButtonsStyleWithActiveStyle(statefulStyle: PageButtonStyles) {
+    const {buttons, actionButtons, activeButton} = statefulStyle as Required<PageButtonStyles<Required<StatefulCSS>>>;
     const buttonsClone = JSON.parse(JSON.stringify(buttons)) as typeof actionButtons;
     buttonsClone.default.backgroundColor = '#e8e8e8';
     buttonsClone.hover.backgroundColor = '#d6d6d6';
@@ -142,9 +142,9 @@ export class PaginationInternalUtils {
   }
 
   // actionButtons reuse buttons style
-  private static mergeButtonsStyleWithActionStyle(pageButtonsStyle: PageButtonStyle) {
-    (pageButtonsStyle as unknown as StatefulStyle).actionButtons ??= {};
-    const {buttons, actionButtons} = pageButtonsStyle as Required<PageButtonStyle<Required<StatefulCSS>>>;
+  private static mergeButtonsStylesWithActionStyles(pageButtonsStyles: PageButtonStyles) {
+    (pageButtonsStyles as unknown as StatefulStyle).actionButtons ??= {};
+    const {buttons, actionButtons} = pageButtonsStyles as Required<PageButtonStyles<Required<StatefulCSS>>>;
     // structuredClone does not seem to work properly
     const buttonsClone = JSON.parse(JSON.stringify(buttons)) as typeof actionButtons;
     Object.assign(buttonsClone.default, actionButtons.default);
@@ -159,46 +159,46 @@ export class PaginationInternalUtils {
   }
 
   // prettier-ignore
-  private static processPageButtonStyle(pagination: PaginationInternal) {
-    (pagination.style.pageButtons as unknown as StatefulStyle) ??= {};
-    const statefulStyle = pagination.style.pageButtons as unknown as StatefulStyle;
+  private static processPageButtonStyles(pagination: PaginationInternal) {
+    (pagination.styles.pageButtons as unknown as StatefulStyle) ??= {};
+    const statefulStyle = pagination.styles.pageButtons as unknown as StatefulStyle;
     // buttons
     const defButtonsBackgroundColors = {def: 'white', hover: '#f5f5f5', click: '#c8c8c8'};
     PaginationInternalUtils.setStatefulCSS(statefulStyle, 'buttons');
-    PaginationInternalUtils.setDefaultBackgroundColors(pagination.style.pageButtons.buttons, defButtonsBackgroundColors);
+    PaginationInternalUtils.setDefaultBackgroundColors(pagination.styles.pageButtons.buttons, defButtonsBackgroundColors);
     // actionButtons
     PaginationInternalUtils.setStatefulCSS(statefulStyle, 'actionButtons');
-    PaginationInternalUtils.setDefaultBackgroundColors(pagination.style.pageButtons.actionButtons,
+    PaginationInternalUtils.setDefaultBackgroundColors(pagination.styles.pageButtons.actionButtons,
       {} as DefaultBackgroundColors);
-    const newActionButtons = PaginationInternalUtils.mergeButtonsStyleWithActionStyle(statefulStyle);
-    pagination.style.pageButtons.actionButtons = newActionButtons;
+    const newActionButtons = PaginationInternalUtils.mergeButtonsStylesWithActionStyles(statefulStyle);
+    pagination.styles.pageButtons.actionButtons = newActionButtons;
     // activeButton
     const newActiveButtons = PaginationInternalUtils.mergeButtonsStyleWithActiveStyle(statefulStyle);
-    pagination.style.pageButtons.activeButton = newActiveButtons;
+    pagination.styles.pageButtons.activeButton = newActiveButtons;
     // disabledButtons - this inherits the 'buttons' style when using the PageButtonStyle.setDisabled method
-    pagination.style.pageButtons.disabledButtons ??= {backgroundColor: '#f9f9f9', color: '#9d9d9d'};
+    pagination.styles.pageButtons.disabledButtons ??= {backgroundColor: '#f9f9f9', color: '#9d9d9d'};
     // first overrides
     const defFirstVisibleOverride = {
       borderLeft: '1px solid #0000004d', borderTopLeftRadius: '2px', borderBottomLeftRadius: '2px'};
-    pagination.style.pageButtons.firstVisibleButtonOverride ??= defFirstVisibleOverride;
+    pagination.styles.pageButtons.firstVisibleButtonOverride ??= defFirstVisibleOverride;
     // last overrides
     const defLastVisibleOverride = {
       borderRight: '1px solid #0000004d', borderTopRightRadius: '2px', borderBottomRightRadius: '2px'};
-    pagination.style.pageButtons.lastVisibleButtonOverride ??= defLastVisibleOverride;
+    pagination.styles.pageButtons.lastVisibleButtonOverride ??= defLastVisibleOverride;
     // active style
-    pagination.style.pageButtons.activeButtonClass = pagination.style.pageButtons.activeButtonPrecedence
+    pagination.styles.pageButtons.activeButtonClass = pagination.styles.pageButtons.activeButtonPrecedence
       ? PageButtonElement.PRECEDENCE_ACTIVE_PAGINATION_BUTTON_CLASS : PageButtonElement.ACTIVE_PAGINATION_BUTTON_CLASS;
   }
 
   private static processStyle(pagination: Pagination, paginationInternal: PaginationInternal) {
-    if (pagination.style) Object.assign(paginationInternal.style, pagination.style);
-    PaginationInternalUtils.processPageButtonStyle(paginationInternal);
+    if (pagination.styles) Object.assign(paginationInternal.styles, pagination.styles);
+    PaginationInternalUtils.processPageButtonStyles(paginationInternal);
     if (pagination.rowsPerPageSelect !== false) {
-      paginationInternal.style.rowsPerPageSelect ??= {};
-      PaginationInternalUtils.setRowsPerPageOptionsStyle(paginationInternal.style);
+      paginationInternal.styles.rowsPerPageSelect ??= {};
+      PaginationInternalUtils.setRowsPerPageOptionsStyle(paginationInternal.styles);
     }
-    paginationInternal.style.numberOfVisibleRows ??= {};
-    delete pagination.style; // deleted so that Object.assign wouldn't apply it
+    paginationInternal.styles.numberOfVisibleRows ??= {};
+    delete pagination.styles; // deleted so that Object.assign wouldn't apply it
   }
 
   private static processPositions(positions: Required<PaginationPositions>) {
@@ -240,7 +240,7 @@ export class PaginationInternalUtils {
       displayPrevNext: true,
       displayFirstLast: true,
       displayNumberOfVisibleRows: true,
-      style: {}, // this is going to be populated during the call of processInternal method
+      styles: {}, // this is going to be populated during the call of processInternal method
       visibleEdgeButtons: [],
       numberOfActionButtons: 0,
       dropdownWidth: 24,

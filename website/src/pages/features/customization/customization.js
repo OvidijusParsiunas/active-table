@@ -19,7 +19,7 @@ function BottomPanel() {
           tableStyle={{width: '100%', borderRadius: '8px', border: 'unset'}}
           cellStyle={{borderRight: 'unset', color: 'white'}}
           pagination={{
-            style: {
+            styles: {
               pageButtons: {
                 buttons: {
                   default: {
@@ -77,7 +77,7 @@ function BottomPanel() {
           tableStyle={{width: '100%', borderRadius: '8px', border: 'unset'}}
           cellStyle={{borderRight: 'unset', color: 'white'}}
           pagination={{
-            style: {
+            styles: {
               pageButtons: {
                 buttons: {
                   default: {

@@ -1,6 +1,6 @@
 import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
 import {PaginationUtils} from '../outerTableComponents/pagination/paginationUtils';
-import {RowHoverStyle} from '../../types/rowHoverStyle';
+import {RowHoverStyles} from '../../types/rowHoverStyles';
 import {RowHoverEvents} from './rowHoverEvents';
 import {ActiveTable} from '../../activeTable';
 import {CSSStyle} from '../../types/cssStyle';
@@ -13,10 +13,10 @@ export class CustomRowProperties {
     // the reason why last row events are applied synchronously is because upon adding a new row via add new row element,
     // mouse leave is triggered on that element, hence need to add the event before it to use the correct default style
     if (rowIndex === lastRowIndex) {
-      RowHoverEvents.addEvents(etc.rowHoverStyle as RowHoverStyle, rowElement, rowIndex, defaultStyle);
+      RowHoverEvents.addEvents(etc.rowHoverStyles as RowHoverStyles, rowElement, rowIndex, defaultStyle);
     } else {
       setTimeout(() => {
-        RowHoverEvents.addEvents(etc.rowHoverStyle as RowHoverStyle, rowElement, rowIndex, defaultStyle);
+        RowHoverEvents.addEvents(etc.rowHoverStyles as RowHoverStyles, rowElement, rowIndex, defaultStyle);
      });
     }
   }
@@ -35,7 +35,7 @@ export class CustomRowProperties {
   public static updateRow(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, lastRowIndex: number,
       isAddRowEven: boolean) {
     const defaultStyle: CSSStyle | undefined = CustomRowProperties.setStyle(etc, rowElement, rowIndex, isAddRowEven);
-    if (etc.rowHoverStyle) CustomRowProperties.setHoverEvents(etc, rowElement, rowIndex, lastRowIndex, defaultStyle);
+    if (etc.rowHoverStyles) CustomRowProperties.setHoverEvents(etc, rowElement, rowIndex, lastRowIndex, defaultStyle);
   }
 
   // REF-32

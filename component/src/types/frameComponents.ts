@@ -15,6 +15,6 @@ export type IndexColumnT =
 // frame components are comprised of index column, add new column column and add new row row
 // to be used by the client
 export interface FrameComponentsStyle {
-  style?: HoverableStyles;
+  styles?: HoverableStyles;
   inheritHeaderColors?: boolean; // true by default, applied to header only and will not inherit the default header style
 }

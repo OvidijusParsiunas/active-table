@@ -1,6 +1,6 @@
 import {CSSStyle} from './cssStyle';
 
-export interface RowHoverStyle {
+export interface RowHoverStyles {
   style: CSSStyle;
   header?: boolean; // by default true
   addNewRowButton?: boolean; // by default true

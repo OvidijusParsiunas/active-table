@@ -10,7 +10,7 @@ Object types that are shared by top level properties.
 
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp; `isAvailable?: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`overlayStyle?: DropdownCellOverlayStyle`](#DropdownCellOverlayStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`overlayStyles?: DropdownCellOverlayStyle`](#DropdownCellOverlayStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `openMethod?`: { `cellClick?: boolean`, `overlayClick?: boolean` } <br />
   }
 - Default: {<br />
@@ -20,7 +20,7 @@ Object types that are shared by top level properties.
 
 Custom styling for row and column dropdowns. <br />
 `isAvailable` determines if the dropdown is is available/displayed. <br />
-`overlayStyle` property is only applicable if `overlayClick` is set to _true_ and is used to style the background color
+`overlayStyles` property is only applicable if `overlayClick` is set to _true_ and is used to style the background color
 for default and mouse hover states.<br />
 `openMethod` is used to define the method for opening the dropdown. Either by clicking a cell via `cellClick` or hovering over the cell
 and clicking on the overlay via `overlayClick`.
@@ -50,7 +50,7 @@ import Tabs from '@theme/Tabs';
     columnDropdown={{
       displaySettings: {
         openMethod: {overlayClick: true},
-        overlayStyle: {default: {backgroundColor: 'grey'}, hover: {backgroundColor: 'blue'}},
+        overlayStyles: {default: {backgroundColor: 'grey'}, hover: {backgroundColor: 'blue'}},
       },
     }}
     content={[
@@ -73,7 +73,7 @@ import Tabs from '@theme/Tabs';
   rowDropdown='{"displaySettings": {
     "openMethod": {"overlayClick": true }}}'
   columnDropdown='{"displaySettings": {
-    "openMethod": {"overlayClick": true }, "overlayStyle": {"default": {"backgroundColor": "grey"}, "hover": {"backgroundColor": "blue"}}}}'
+    "openMethod": {"overlayClick": true }, "overlayStyles": {"default": {"backgroundColor": "grey"}, "hover": {"backgroundColor": "blue"}}}}'
 ></active-table>
 ```
 
@@ -87,7 +87,7 @@ import Tabs from '@theme/Tabs';
   rowDropdown='{"displaySettings": {
     "openMethod": {"overlayClick": true }}}'
   columnDropdown='{"displaySettings": {
-    "openMethod": {"overlayClick": true }, "overlayStyle": {"default": {"backgroundColor": "grey"}, "hover": {"backgroundColor": "blue"}}}}'
+    "openMethod": {"overlayClick": true }, "overlayStyles": {"default": {"backgroundColor": "grey"}, "hover": {"backgroundColor": "blue"}}}}'
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],

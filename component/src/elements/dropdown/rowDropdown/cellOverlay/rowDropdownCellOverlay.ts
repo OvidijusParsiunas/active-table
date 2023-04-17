@@ -1,4 +1,4 @@
-import {DropdownCellOverlayStyle, DropdownDisplaySettings} from '../../../../types/dropdownDisplaySettings';
+import {DropdownCellOverlayStyles, DropdownDisplaySettings} from '../../../../types/dropdownDisplaySettings';
 import {RowDropdownCellOverlayEvents} from './rowDropdownCellOverlayEvents';
 import {ExtractElements} from '../../../../utils/elements/extractElements';
 import {DropdownCellOverlay} from '../../cellOverlay/dropdownCellOverlay';
@@ -7,19 +7,19 @@ import {ActiveTable} from '../../../../activeTable';
 export class RowDropdownCellOverlay {
   private static readonly ROW_DROPDOWN_CELL_OVERLAY_CLASS = 'row-dropdown-cell-overlay';
 
-  private static setDefault(rowDropdownCellOverlay: HTMLElement, overlayStyle?: DropdownCellOverlayStyle) {
-    rowDropdownCellOverlay.style.backgroundColor = overlayStyle?.default?.backgroundColor || '';
+  private static setDefault(rowDropdownCellOverlay: HTMLElement, overlayStyles?: DropdownCellOverlayStyles) {
+    rowDropdownCellOverlay.style.backgroundColor = overlayStyles?.default?.backgroundColor || '';
   }
 
   public static resetDefaultColor(displaySettings: DropdownDisplaySettings, rowDropdownCellOverlay: HTMLElement) {
-    const overlayStyle = displaySettings.overlayStyle;
-    if (overlayStyle?.hover?.backgroundColor) {
-      RowDropdownCellOverlay.setDefault(rowDropdownCellOverlay, overlayStyle);
+    const overlayStyles = displaySettings.overlayStyles;
+    if (overlayStyles?.hover?.backgroundColor) {
+      RowDropdownCellOverlay.setDefault(rowDropdownCellOverlay, overlayStyles);
     }
   }
 
   public static setHoverColor(displaySettings: DropdownDisplaySettings, rowDropdownCellOverlay: HTMLElement) {
-    const hoverBackgroundColor = displaySettings.overlayStyle?.hover?.backgroundColor;
+    const hoverBackgroundColor = displaySettings.overlayStyles?.hover?.backgroundColor;
     if (hoverBackgroundColor) rowDropdownCellOverlay.style.backgroundColor = hoverBackgroundColor;
   }
 
@@ -47,12 +47,12 @@ export class RowDropdownCellOverlay {
     rowDropdownCellOverlay.style.left = `-${leftMostElement.offsetWidth + left}px`;
   }
 
-  private static create(overlayStyle?: DropdownCellOverlayStyle) {
+  private static create(overlayStyles?: DropdownCellOverlayStyles) {
     const rowDropdownCellOverlay = document.createElement('div');
     rowDropdownCellOverlay.classList.add(RowDropdownCellOverlay.ROW_DROPDOWN_CELL_OVERLAY_CLASS);
     rowDropdownCellOverlay.classList.add(DropdownCellOverlay.DROPDOWN_CELL_OVERLAY_CLASS);
     rowDropdownCellOverlay.style.width = DropdownCellOverlay.HIDDEN_PX;
-    RowDropdownCellOverlay.setDefault(rowDropdownCellOverlay, overlayStyle);
+    RowDropdownCellOverlay.setDefault(rowDropdownCellOverlay, overlayStyles);
     return rowDropdownCellOverlay;
   }
 
@@ -64,7 +64,7 @@ export class RowDropdownCellOverlay {
   }
 
   public static add(at: ActiveTable, rowIndex: number, leftMostCell: HTMLElement) {
-    const rowDropdownCellOverlay = RowDropdownCellOverlay.create(at.rowDropdown.displaySettings.overlayStyle);
+    const rowDropdownCellOverlay = RowDropdownCellOverlay.create(at.rowDropdown.displaySettings.overlayStyles);
     const {displayIndexColumn} = at._frameComponents;
     const cellDividerElement = RowDropdownCellOverlay.getCellDividerElement(leftMostCell, !!displayIndexColumn);
     cellDividerElement.appendChild(rowDropdownCellOverlay);

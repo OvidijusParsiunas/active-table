@@ -51,10 +51,10 @@ import {HoveredElements} from './types/hoveredElements';
 import {HeaderIconStyle} from './types/headerIconStyle';
 import {HoverableStyles} from './types/hoverableStyles';
 import {ColumnsDetailsT} from './types/columnDetails';
+import {RowHoverStyles} from './types/rowHoverStyles';
 import {GlobalItemColors} from './types/itemToColor';
 import {StripedRows} from './utils/rows/stripedRows';
 import {activeTableStyle} from './activeTableStyle';
-import {RowHoverStyle} from './types/rowHoverStyle';
 import {StripedRowsT} from './types/stripedRows';
 import {CSVInternal} from './types/CSVInternal';
 import {StickyProps} from './types/stickyProps';
@@ -69,7 +69,7 @@ import {Overflow} from './types/overflow';
 // WORK - the border is half rounded
 // content="[]"
 // tableStyle='{"borderRadius": "8px"}'
-// frameComponentsStyle='{
+// frameComponentsStyles='{
 // "style": {
 //   "default": {"backgroundColor": "blue"},
 // },
@@ -151,7 +151,7 @@ export class ActiveTable extends LitElement {
   customColumnsSettings: CustomColumnsSettings = [];
 
   @property({type: Object})
-  rowHoverStyle?: RowHoverStyle;
+  rowHoverStyles?: RowHoverStyles;
 
   // when true - the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
   // this property is not used internally and is being set/used in tableDimensions as it is overriden when resizing
@@ -185,7 +185,7 @@ export class ActiveTable extends LitElement {
   // REF-22 - to be used by the client
   // frame components are comprised of index column, add new column column and add new row row
   @property({type: Object})
-  frameComponentsStyle: FrameComponentsStyle = {};
+  frameComponentsStyles: FrameComponentsStyle = {};
 
   // this affects the column index and pagination
   @property({
@@ -371,7 +371,7 @@ export class ActiveTable extends LitElement {
     RowDropdownSettingsUtil.process(this);
     if (this.pagination) PaginationInternalUtils.process(this);
     if (this.stripedRows) StripedRows.process(this);
-    if (this.rowHoverStyle) RowHoverEvents.process(this.rowHoverStyle, this._defaultCellHoverColors);
+    if (this.rowHoverStyles) RowHoverEvents.process(this.rowHoverStyles, this._defaultCellHoverColors);
     const tableElement = TableElement.createInfrastructureElements(this);
     if (this.overflow) OverflowUtils.setupContainer(this, tableElement); // must not be after BORDER_DIMENSIONS is set
     TableElement.addOverlayElements(this, tableElement, this._activeOverlayElements);

@@ -1,5 +1,5 @@
 import {PaginationVisibleButtonsUtils} from '../../../utils/outerTableComponents/pagination/paginationVisibleButtonsUtils';
-import {IPageButtonsStyle} from '../../../types/paginationInternal';
+import {IPageButtonsStyles} from '../../../types/paginationInternal';
 import {ElementStyle} from '../../../utils/elements/elementStyle';
 import {PropertiesOfType} from '../../../types/utilityTypes';
 import {PageButtonElement} from './pageButtonElement';
@@ -8,90 +8,90 @@ import {StatefulCSS} from '../../../types/cssStyle';
 // action buttons will never be active
 export class PageButtonStyle {
   // prettier-ignore
-  private static unsetAllCSSStates(buttonElement: HTMLElement,
-      pageButtonsStyle: IPageButtonsStyle, buttonType: keyof PropertiesOfType<IPageButtonsStyle, Required<StatefulCSS>>) {
-    ElementStyle.unsetAllCSSStates(buttonElement, pageButtonsStyle[buttonType]);
+  private static unsetAllCSSStates(buttonElement: HTMLElement, pageButtonsStyles: IPageButtonsStyles,
+      buttonType: keyof PropertiesOfType<IPageButtonsStyles, Required<StatefulCSS>>) {
+    ElementStyle.unsetAllCSSStates(buttonElement, pageButtonsStyles[buttonType]);
   }
 
-  private static unsetAll(buttonElement: HTMLElement, pageButtonsStyle: IPageButtonsStyle, isActionButton: boolean) {
-    if (buttonElement.classList.contains(pageButtonsStyle.activeButtonClass)) {
-      PageButtonStyle.unsetAllCSSStates(buttonElement, pageButtonsStyle, 'activeButton');
+  private static unsetAll(buttonElement: HTMLElement, pageButtonsStyles: IPageButtonsStyles, isActionButton: boolean) {
+    if (buttonElement.classList.contains(pageButtonsStyles.activeButtonClass)) {
+      PageButtonStyle.unsetAllCSSStates(buttonElement, pageButtonsStyles, 'activeButton');
     } else if (buttonElement.classList.contains(PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) {
-      ElementStyle.unsetStyle(buttonElement, pageButtonsStyle.disabledButtons);
+      ElementStyle.unsetStyle(buttonElement, pageButtonsStyles.disabledButtons);
     } else {
-      PageButtonStyle.unsetAllCSSStates(buttonElement, pageButtonsStyle, isActionButton ? 'actionButtons' : 'buttons');
+      PageButtonStyle.unsetAllCSSStates(buttonElement, pageButtonsStyles, isActionButton ? 'actionButtons' : 'buttons');
     }
   }
 
-  public static setDefault(buttonElement: HTMLElement, pageButtonsStyle: IPageButtonsStyle, isActionButton: boolean) {
-    PageButtonStyle.unsetAll(buttonElement, pageButtonsStyle, isActionButton);
+  public static setDefault(buttonElement: HTMLElement, pageButtonsStyles: IPageButtonsStyles, isActionButton: boolean) {
+    PageButtonStyle.unsetAll(buttonElement, pageButtonsStyles, isActionButton);
     if (isActionButton) {
-      Object.assign(buttonElement.style, pageButtonsStyle.actionButtons.default);
+      Object.assign(buttonElement.style, pageButtonsStyles.actionButtons.default);
     } else {
-      Object.assign(buttonElement.style, pageButtonsStyle.buttons.default);
+      Object.assign(buttonElement.style, pageButtonsStyles.buttons.default);
     }
   }
 
   // prettier-ignore
-  public static setActive(newActiveButton: HTMLElement, pageButtonsStyle: IPageButtonsStyle,
+  public static setActive(newActiveButton: HTMLElement, pageButtonsStyles: IPageButtonsStyles,
       previousActiveButton?: HTMLElement) {
     if (previousActiveButton) {
-      PageButtonStyle.unsetAllCSSStates(previousActiveButton, pageButtonsStyle, 'activeButton');
-      Object.assign(previousActiveButton.style, pageButtonsStyle.buttons.default);
+      PageButtonStyle.unsetAllCSSStates(previousActiveButton, pageButtonsStyles, 'activeButton');
+      Object.assign(previousActiveButton.style, pageButtonsStyles.buttons.default);
     }
     if (newActiveButton.classList.contains(PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) {
-      ElementStyle.unsetStyle(newActiveButton, pageButtonsStyle.disabledButtons);
+      ElementStyle.unsetStyle(newActiveButton, pageButtonsStyles.disabledButtons);
     } else {
-      PageButtonStyle.unsetAllCSSStates(newActiveButton, pageButtonsStyle, 'buttons');
+      PageButtonStyle.unsetAllCSSStates(newActiveButton, pageButtonsStyles, 'buttons');
     }
-    Object.assign(newActiveButton.style, pageButtonsStyle.activeButton.default);
+    Object.assign(newActiveButton.style, pageButtonsStyles.activeButton.default);
   }
 
-  public static setDisabled(buttonElement: HTMLElement, pageButtonsStyle: IPageButtonsStyle, isActionButton: boolean) {
-    PageButtonStyle.setDefault(buttonElement, pageButtonsStyle, isActionButton);
-    Object.assign(buttonElement.style, pageButtonsStyle.disabledButtons);
+  public static setDisabled(buttonElement: HTMLElement, pageButtonsStyles: IPageButtonsStyles, isActionButton: boolean) {
+    PageButtonStyle.setDefault(buttonElement, pageButtonsStyles, isActionButton);
+    Object.assign(buttonElement.style, pageButtonsStyles.disabledButtons);
   }
 
-  public static mouseDown(buttonElement: HTMLElement, pageButtonsStyle: IPageButtonsStyle, isActionButton: boolean) {
-    if (buttonElement.classList.contains(pageButtonsStyle.activeButtonClass)) {
-      Object.assign(buttonElement.style, pageButtonsStyle.activeButton.click);
+  public static mouseDown(buttonElement: HTMLElement, pageButtonsStyles: IPageButtonsStyles, isActionButton: boolean) {
+    if (buttonElement.classList.contains(pageButtonsStyles.activeButtonClass)) {
+      Object.assign(buttonElement.style, pageButtonsStyles.activeButton.click);
     } else if (isActionButton) {
-      Object.assign(buttonElement.style, pageButtonsStyle.actionButtons.click);
+      Object.assign(buttonElement.style, pageButtonsStyles.actionButtons.click);
     } else {
-      Object.assign(buttonElement.style, pageButtonsStyle.buttons.click);
+      Object.assign(buttonElement.style, pageButtonsStyles.buttons.click);
     }
-    PaginationVisibleButtonsUtils.overrideOnMouseEvent(buttonElement, pageButtonsStyle);
+    PaginationVisibleButtonsUtils.overrideOnMouseEvent(buttonElement, pageButtonsStyles);
   }
 
-  public static mouseEnter(buttonElement: HTMLElement, pageButtonsStyle: IPageButtonsStyle, isActionButton: boolean) {
+  public static mouseEnter(buttonElement: HTMLElement, pageButtonsStyles: IPageButtonsStyles, isActionButton: boolean) {
     if (buttonElement.classList.contains(PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) return;
-    if (buttonElement.classList.contains(pageButtonsStyle.activeButtonClass)) {
+    if (buttonElement.classList.contains(pageButtonsStyles.activeButtonClass)) {
       // needed to unset click style and reset default + hover styles
-      PageButtonStyle.unsetAllCSSStates(buttonElement, pageButtonsStyle, 'activeButton');
-      Object.assign(buttonElement.style, pageButtonsStyle.activeButton.default);
-      Object.assign(buttonElement.style, pageButtonsStyle.activeButton.hover);
+      PageButtonStyle.unsetAllCSSStates(buttonElement, pageButtonsStyles, 'activeButton');
+      Object.assign(buttonElement.style, pageButtonsStyles.activeButton.default);
+      Object.assign(buttonElement.style, pageButtonsStyles.activeButton.hover);
     } else {
       // needed to unset click style and reset default + hover styles
-      PageButtonStyle.setDefault(buttonElement, pageButtonsStyle, isActionButton);
+      PageButtonStyle.setDefault(buttonElement, pageButtonsStyles, isActionButton);
       if (isActionButton) {
-        Object.assign(buttonElement.style, pageButtonsStyle.actionButtons.hover);
+        Object.assign(buttonElement.style, pageButtonsStyles.actionButtons.hover);
       } else {
-        Object.assign(buttonElement.style, pageButtonsStyle.buttons.hover);
+        Object.assign(buttonElement.style, pageButtonsStyles.buttons.hover);
       }
     }
-    PaginationVisibleButtonsUtils.overrideOnMouseEvent(buttonElement, pageButtonsStyle);
+    PaginationVisibleButtonsUtils.overrideOnMouseEvent(buttonElement, pageButtonsStyles);
   }
 
-  public static mouseLeave(buttonElement: HTMLElement, pageButtonsStyle: IPageButtonsStyle, isActionButton: boolean) {
+  public static mouseLeave(buttonElement: HTMLElement, pageButtonsStyles: IPageButtonsStyles, isActionButton: boolean) {
     // this is required because mouseLeave can be fired when the hovered button is disabled
     // as pointer-events are set to none
     if (buttonElement.classList.contains(PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS)) return;
-    if (buttonElement.classList.contains(pageButtonsStyle.activeButtonClass)) {
-      PageButtonStyle.unsetAll(buttonElement, pageButtonsStyle, false);
-      Object.assign(buttonElement.style, pageButtonsStyle.activeButton.default);
+    if (buttonElement.classList.contains(pageButtonsStyles.activeButtonClass)) {
+      PageButtonStyle.unsetAll(buttonElement, pageButtonsStyles, false);
+      Object.assign(buttonElement.style, pageButtonsStyles.activeButton.default);
     } else {
-      PageButtonStyle.setDefault(buttonElement, pageButtonsStyle, isActionButton);
+      PageButtonStyle.setDefault(buttonElement, pageButtonsStyles, isActionButton);
     }
-    PaginationVisibleButtonsUtils.overrideOnMouseEvent(buttonElement, pageButtonsStyle);
+    PaginationVisibleButtonsUtils.overrideOnMouseEvent(buttonElement, pageButtonsStyles);
   }
 }

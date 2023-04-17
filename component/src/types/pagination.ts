@@ -27,7 +27,7 @@ type ActionButtonStyle<T> = T & {
   lastText?: string;
 };
 
-export interface PageButtonStyle<T = StatefulCSS> {
+export interface PageButtonStyles<T = StatefulCSS> {
   container?: CSSStyle;
   buttons?: T;
   activeButton?: T;
@@ -38,8 +38,8 @@ export interface PageButtonStyle<T = StatefulCSS> {
   lastVisibleButtonOverride?: CSSStyle;
 }
 
-export interface PaginationStyle<T = StatefulCSS> {
-  pageButtons: PageButtonStyle<T>;
+export interface PaginationStyles<T = StatefulCSS> {
+  pageButtons: PageButtonStyles<T>;
   numberOfVisibleRows?: CSSStyle;
   rowsPerPageSelect?: RowsPerPageOptionsStyle<T>;
 }
@@ -57,6 +57,6 @@ export interface Pagination {
   displayPrevNext?: boolean; // by default true
   displayFirstLast?: boolean; // by default true
   displayNumberOfVisibleRows?: boolean; // by default true
-  style?: PaginationStyle;
+  styles?: PaginationStyles;
   positions?: PaginationPositions;
 }

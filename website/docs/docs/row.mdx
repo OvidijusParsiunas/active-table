@@ -6,7 +6,7 @@ sidebar_position: 5
 
 Properties related to table rows.
 
-### `rowHoverStyle` {#rowHoverStyle}
+### `rowHoverStyles` {#rowHoverStyles}
 
 - Type: {[`style: CSSStyle`](./sharedTypes#CSSStyle), `header?: boolean`, `addNewRowButton?: boolean`}
 - Default: _unset_, but if _style_ is set then _header_ and _addNewRowButton_ are _true_
@@ -27,7 +27,7 @@ import Tabs from '@theme/Tabs';
 
 <TableContainer>
   <ActiveTable
-    rowHoverStyle={{style: {backgroundColor: '#d6d6d630'}}}
+    rowHoverStyles={{style: {backgroundColor: '#d6d6d630'}}}
     content={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
@@ -44,7 +44,7 @@ import Tabs from '@theme/Tabs';
 <TabItem value="js" label="Sample code">
 
 ```html
-<active-table rowHoverStyle='{"style":{"backgroundColor": "#d6d6d630"}}'></active-table>
+<active-table rowHoverStyles='{"style":{"backgroundColor": "#d6d6d630"}}'></active-table>
 ```
 
 </TabItem>
@@ -54,7 +54,7 @@ import Tabs from '@theme/Tabs';
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
-  rowHoverStyle='{"style":{"backgroundColor": "#d6d6d630"}}'
+  rowHoverStyles='{"style":{"backgroundColor": "#d6d6d630"}}'
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
@@ -71,7 +71,7 @@ import Tabs from '@theme/Tabs';
 
 :::caution
 Custom default cell styles will override this property's styling. Additionally, using this property unsets the header (if set to _true_)
-and [`frameComponentsStyle`](./table#frameComponentsStyle) hover color properties.
+and [`frameComponentsStyles`](./table#frameComponentsStyles) hover color properties.
 :::
 
 <LineBreak></LineBreak>
@@ -132,7 +132,7 @@ Stripe based styling for rows.
 </Tabs>
 
 :::info
-Using this property unsets the default header and [`frameComponentsStyle`](./table#frameComponentsStyle) hover color properties.
+Using this property unsets the default header and [`frameComponentsStyles`](./table#frameComponentsStyles) hover color properties.
 If the component is set with a [`cellStyle`](./content#cellStyle) property - this will be overriden.
 :::
 
@@ -274,7 +274,7 @@ Maximum number of rows allowed (including header row).
 - Default: _true_
 
 A toggle for a clickable '+ New' row at the bottom of the table which is used to add new empty rows. <br />
-You can set the add new row style via [`frameComponentsStyle`](./table#frameComponentsStyle).
+You can set the add new row style via [`frameComponentsStyles`](./table#frameComponentsStyles).
 
 #### Example
 

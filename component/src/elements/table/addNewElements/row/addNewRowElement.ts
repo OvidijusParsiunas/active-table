@@ -28,8 +28,8 @@ export class AddNewRowElement {
 
   // prettier-ignore
   private static createCell(at: ActiveTable) {
-    const {_defaultColumnsSettings: {cellStyle}, _frameComponents: {displayAddNewRow, style}} = at;
-    const addNewRowCell = CellElement.createContentCell(false, cellStyle, style?.default);
+    const {_defaultColumnsSettings: {cellStyle}, _frameComponents: {displayAddNewRow, styles}} = at;
+    const addNewRowCell = CellElement.createContentCell(false, cellStyle, styles?.default);
     addNewRowCell.id = AddNewRowElement.ID;
     if (!displayAddNewRow) {
       // if this is not displayed when there is content, always use the stub style - REF-18

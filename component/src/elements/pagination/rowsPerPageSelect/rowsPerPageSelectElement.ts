@@ -15,7 +15,7 @@ export class RowsPerPageSelectElement {
     const textElement = document.createElement('div');
     textElement.id = RowsPerPageSelectElement.TEXT_ID;
     textElement.style.marginRight = '8px';
-    Object.assign(textElement.style, pagination.style.rowsPerPageSelect?.prefixText);
+    Object.assign(textElement.style, pagination.styles.rowsPerPageSelect?.prefixText);
     textElement.innerText = (pagination.rowsPerPageSelect as RowsPerPageSelect).prefixText as string;
     return textElement;
   }
@@ -25,7 +25,7 @@ export class RowsPerPageSelectElement {
     rowsPerPageOptionsElement.id = RowsPerPageSelectElement.ID;
     rowsPerPageOptionsElement.classList.add(PaginationElements.PAGINATION_TEXT_COMPONENT_CLASS);
     rowsPerPageOptionsElement.style.order = String(pagination.positions.rowsPerPageSelect.order);
-    Object.assign(rowsPerPageOptionsElement.style, pagination.style.rowsPerPageSelect?.container);
+    Object.assign(rowsPerPageOptionsElement.style, pagination.styles.rowsPerPageSelect?.container);
     return rowsPerPageOptionsElement;
   }
 

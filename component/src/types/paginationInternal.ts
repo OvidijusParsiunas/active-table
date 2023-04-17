@@ -1,4 +1,4 @@
-import {PageButtonStyle, Pagination, PaginationPositions, PaginationStyle} from './pagination';
+import {PageButtonStyles, Pagination, PaginationPositions, PaginationStyles} from './pagination';
 import {StatefulCSS} from './cssStyle';
 
 interface ActiveButtonClass {
@@ -6,15 +6,15 @@ interface ActiveButtonClass {
 }
 
 // (InternalPageButtonsStyle)
-export type IPageButtonsStyle = Required<PageButtonStyle<Required<StatefulCSS>>> & ActiveButtonClass;
+export type IPageButtonsStyles = Required<PageButtonStyles<Required<StatefulCSS>>> & ActiveButtonClass;
 
 // (InternalPaginationStyle)
-export interface IPaginationStyle extends PaginationStyle<Required<StatefulCSS>> {
-  pageButtons: IPageButtonsStyle;
+export interface IPaginationStyles extends PaginationStyles<Required<StatefulCSS>> {
+  pageButtons: IPageButtonsStyles;
 }
 
 export interface PaginationInternal extends Required<Pagination> {
-  style: IPaginationStyle;
+  styles: IPaginationStyles;
   dropdownWidth: number;
   positions: Required<PaginationPositions>;
   buttonContainer: HTMLElement;

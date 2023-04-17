@@ -36,7 +36,7 @@ export class AddNewColumnElement {
       GenericElementUtils.NOT_SELECTABLE_CLASS,
       AddNewColumnElement.ADD_COLUMN_CELL_CLASS
     );
-    Object.assign(cell.style, at._defaultColumnsSettings.cellStyle, at._frameComponents.style?.default);
+    Object.assign(cell.style, at._defaultColumnsSettings.cellStyle, at._frameComponents.styles?.default);
     AddNewColumnEvents.setEvents(at, cell);
     return cell;
   }

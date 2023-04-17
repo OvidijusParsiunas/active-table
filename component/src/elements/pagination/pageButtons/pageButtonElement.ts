@@ -3,7 +3,7 @@ import {PaginationPageActionButtonUtils} from '../../../utils/outerTableComponen
 import {PaginationVisibleButtonsUtils} from '../../../utils/outerTableComponents/pagination/paginationVisibleButtonsUtils';
 import {PaginationUpdatePageButtons} from '../../../utils/outerTableComponents/pagination/paginationUpdatePageButtons';
 import {PaginationUtils} from '../../../utils/outerTableComponents/pagination/paginationUtils';
-import {IPageButtonsStyle, PaginationInternal} from '../../../types/paginationInternal';
+import {IPageButtonsStyles, PaginationInternal} from '../../../types/paginationInternal';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {PaginationElements} from '../paginationElements';
 import {CellText} from '../../../types/tableContent';
@@ -19,21 +19,21 @@ export class PageButtonElement {
 
   public static unsetDisabled(pagination: PaginationInternal) {
     const numberButton = PaginationUtils.getPageNumberButtons(pagination)[0];
-    const {pageButtons} = pagination.style;
+    const {pageButtons} = pagination.styles;
     PageButtonStyle.setActive(numberButton, pageButtons);
     numberButton.classList.replace(PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS, pageButtons.activeButtonClass);
   }
 
   public static setDisabled(pagination: PaginationInternal) {
-    const {buttonContainer, style, numberOfActionButtons} = pagination;
+    const {buttonContainer, styles, numberOfActionButtons} = pagination;
     const buttons = Array.from(buttonContainer.children);
     for (let i = 0; i < numberOfActionButtons / 2; i += 1) {
-      PageButtonStyle.setDisabled(buttons[i] as HTMLElement, style.pageButtons, true);
-      PageButtonStyle.setDisabled(buttons[buttons.length - 1 - i] as HTMLElement, style.pageButtons, true);
+      PageButtonStyle.setDisabled(buttons[i] as HTMLElement, styles.pageButtons, true);
+      PageButtonStyle.setDisabled(buttons[buttons.length - 1 - i] as HTMLElement, styles.pageButtons, true);
     }
     const numberButton = PaginationUtils.getPageNumberButtons(pagination)[0];
-    PageButtonStyle.setDisabled(numberButton, style.pageButtons, false);
-    numberButton.classList.remove(style.pageButtons.activeButtonClass);
+    PageButtonStyle.setDisabled(numberButton, styles.pageButtons, false);
+    numberButton.classList.remove(styles.pageButtons.activeButtonClass);
     buttons.forEach((buttonElement) => {
       buttonElement.classList.add(PageButtonElement.DISABLED_PAGINATION_BUTTON_CLASS);
     });
@@ -43,7 +43,7 @@ export class PageButtonElement {
   private static programmaticMouseEnterTrigger(numberButtons: HTMLElement[], pagination: PaginationInternal,
       previousLocationOfNewIndex: number) {
     const elementToBeHovered = numberButtons[previousLocationOfNewIndex];
-    const {pageButtons} = pagination.style;
+    const {pageButtons} = pagination.styles;
     if (elementToBeHovered && !elementToBeHovered.classList.contains(pageButtons.activeButtonClass)) {
       PageButtonStyle.mouseEnter(elementToBeHovered, pageButtons, false);
       // REF-31
@@ -57,7 +57,7 @@ export class PageButtonElement {
     const lastButtonNumber = Number(numberButtons[numberButtons.length - 1].innerText);
     const newActiveIndex = numberButtons.length - (lastButtonNumber - buttonNumber) - 1;
     const newActiveButton = numberButtons[newActiveIndex];
-    newActiveButton.classList.add(pagination.style.pageButtons.activeButtonClass);
+    newActiveButton.classList.add(pagination.styles.pageButtons.activeButtonClass);
     return {newActiveButton, numberButtons};
   }
 
@@ -68,7 +68,7 @@ export class PageButtonElement {
     const previousActiveButton = numberButtons[previousActiveIndex];
     const previousLocationOfNewIndex = numberButtons.length - (lastButtonNumber - buttonNumber) - 1;
     if (previousActiveButton) {
-      previousActiveButton.classList.remove(pagination.style.pageButtons.activeButtonClass);
+      previousActiveButton.classList.remove(pagination.styles.pageButtons.activeButtonClass);
       return {previousActiveButton, previousLocationOfNewIndex};
     }
     return {previousLocationOfNewIndex};
@@ -77,7 +77,7 @@ export class PageButtonElement {
   // prettier-ignore
   public static setActive(at: ActiveTable, buttonNumber: number) {
     const {_pagination} = at;
-    const {style: {pageButtons}, clickedPageNumberButton} = _pagination;
+    const {styles: {pageButtons}, clickedPageNumberButton} = _pagination;
     const {previousActiveButton, previousLocationOfNewIndex} = PageButtonElement.unsetPreviousActive(
       _pagination, buttonNumber);
     PaginationVisibleButtonsUtils.unsetStateAndStyles(at._pagination);
@@ -93,7 +93,7 @@ export class PageButtonElement {
     }
   }
 
-  public static create(text: CellText, pageButtonsStyle: IPageButtonsStyle, isActionButton: boolean) {
+  public static create(text: CellText, pageButtonsStyles: IPageButtonsStyles, isActionButton: boolean) {
     const button = document.createElement('div');
     button.classList.add(
       PageButtonElement.PAGINATION_BUTTON_CLASS,
@@ -101,8 +101,8 @@ export class PageButtonElement {
       GenericElementUtils.NOT_SELECTABLE_CLASS
     );
     button.innerHTML = String(text);
-    PageButtonStyle.setDefault(button, pageButtonsStyle, isActionButton);
-    setTimeout(() => PageButtonEvents.setEvents(button, pageButtonsStyle, isActionButton));
+    PageButtonStyle.setDefault(button, pageButtonsStyles, isActionButton);
+    setTimeout(() => PageButtonEvents.setEvents(button, pageButtonsStyles, isActionButton));
     return button;
   }
 }

@@ -15,7 +15,7 @@ export class DropdownDisplaySettingsUtil {
       }
     } else {
       delete dropdownDisplaySettings.openMethod;
-      delete dropdownDisplaySettings.overlayStyle;
+      delete dropdownDisplaySettings.overlayStyles;
     }
   }
 }
