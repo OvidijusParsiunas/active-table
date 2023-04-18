@@ -1,5 +1,5 @@
 import {FrameComponentsCellsColors} from './frameComponentsCellsColors';
-import {FrameComponentsStyle, IndexColumnT} from './frameComponents';
+import {FrameComponentsStyles, IndexColumnT} from './frameComponents';
 
 // to be used internally
 
@@ -12,5 +12,5 @@ interface FrameComponentsDisplayProps {
 
 // REF-22
 // frame components are comprised of index column, add new column column and add new row row
-export type FrameComponentsInternal = FrameComponentsStyle &
+export type FrameComponentsInternal = FrameComponentsStyles &
   FrameComponentsDisplayProps & {cellColors: FrameComponentsCellsColors};

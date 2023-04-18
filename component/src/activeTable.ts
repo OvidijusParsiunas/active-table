@@ -17,7 +17,7 @@ import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {ColumnDropdownSettingsDefault} from './types/columnDropdownSettings';
 import {ColumnDetailsUtils} from './utils/columnDetails/columnDetailsUtils';
-import {FrameComponentsStyle, IndexColumnT} from './types/frameComponents';
+import {FrameComponentsStyles, IndexColumnT} from './types/frameComponents';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {FrameComponentsInternal} from './types/frameComponentsInternal';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
@@ -185,7 +185,7 @@ export class ActiveTable extends LitElement {
   // REF-22 - to be used by the client
   // frame components are comprised of index column, add new column column and add new row row
   @property({type: Object})
-  frameComponentsStyles: FrameComponentsStyle = {};
+  frameComponentsStyles: FrameComponentsStyles = {};
 
   // this affects the column index and pagination
   @property({
