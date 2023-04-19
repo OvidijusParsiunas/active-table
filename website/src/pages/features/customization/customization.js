@@ -44,6 +44,7 @@ function BottomPanel() {
             rowsPerPage: 4,
           }}
           stripedRows={{odd: {backgroundColor: '#2e3c60'}, even: {backgroundColor: '#242b4a'}}}
+          columnResizerColors={{hover: '#205be3', click: '#1245b8'}}
           headerIconStyle={{
             filterColor:
               'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
@@ -120,6 +121,7 @@ function BottomPanel() {
               'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
           }}
           headerStyles={{default: {backgroundColor: '#2d2d2d'}, hoverColors: {backgroundColor: '#353535'}}}
+          columnResizerColors={{click: '#727272'}}
           displayAddNewRow={false}
           displayAddNewColumn={false}
           content={[
@@ -163,6 +165,7 @@ function TopPanel() {
               'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
           }}
           stripedRows={{odd: {backgroundColor: ''}, even: {backgroundColor: '#edf7ff'}}}
+          columnResizerColors={{hover: '#66b3ff', click: '#4aa5ff'}}
           displayAddNewColumn={false}
           content={[
             ['Planet', 'Diameter', 'Mass', 'Moons'],
@@ -185,6 +188,7 @@ function TopPanel() {
               'brightness(0) saturate(100%) invert(98%) sepia(2%) saturate(6%) hue-rotate(76deg) brightness(100%) contrast(104%)',
           }}
           stripedRows={{odd: {backgroundColor: ''}, even: {backgroundColor: '#ebebeb7a'}}}
+          columnResizerColors={{click: '#727272'}}
           content={[
             ['Planet', 'Diameter', 'Mass', 'Moons'],
             ['Earth', 12756, 5.97, 1],
