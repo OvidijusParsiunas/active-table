@@ -66,16 +66,6 @@ import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
 
-// WORK - the border is half rounded
-// content="[]"
-// tableStyle='{"borderRadius": "8px"}'
-// frameComponentsStyles='{
-// "style": {
-//   "default": {"backgroundColor": "blue"},
-// },
-// "inheritHeaderColors": false
-// }'
-
 @customElement('active-table')
 export class ActiveTable extends LitElement {
   @property({type: Function})

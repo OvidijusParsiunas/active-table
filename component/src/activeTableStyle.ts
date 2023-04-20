@@ -224,6 +224,9 @@ export const activeTableStyle = css`
     text-align: center;
     padding: 0px !important;
     border: none !important;
+    // inheriting border radius as when frame components style background is set (add new row component), table border
+    // radius is visibly not inherited
+    border-radius: inherit;
   }
 
   .active-table-dropdown {
