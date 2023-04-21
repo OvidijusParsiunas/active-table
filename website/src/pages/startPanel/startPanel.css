@@ -31,8 +31,8 @@
   letter-spacing: -1.2px;
   font-size: 3.7rem;
   /* this is a fix for safari where it draws a blue line above/below the colored title */
-  border-top: 1px solid white;
-  border-bottom: 1px solid white;
+  border-top: 1px solid var(--start-header-border-color);
+  border-bottom: 1px solid var(--start-header-border-color);
   background-image: linear-gradient(to right, rgb(104, 159, 214), rgb(44, 97, 150), rgb(56, 114, 172), rgb(104, 159, 214));
   background-clip: text;
   -webkit-background-clip: text;
