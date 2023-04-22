@@ -1,7 +1,7 @@
 import {CSVImportButtonElement} from '../../../elements/CSV/importButton/CSVImportButtonElement';
 import {CSVButtonProps, CSVButtonsInternal, CSVInternal} from '../../../types/CSVInternal';
+import {CSV, CSVButtons} from '../../../types/CSV';
 import {ActiveTable} from '../../../activeTable';
-import {CSVButtons} from '../../../types/CSV';
 
 export class CSVInternalUtils {
   private static setImportOverwriteOptions(csvButtons: CSVButtons, _csvButtons: CSVButtonsInternal) {
@@ -42,12 +42,19 @@ export class CSVInternalUtils {
     }
   }
 
-  public static process(csvButtons: CSVButtons, _csv: CSVInternal) {
+  public static processButtons(csvButtons: CSVButtons, _csv: CSVInternal) {
     _csv.buttons = {};
     CSVInternalUtils.setInternalComponent(csvButtons, _csv.buttons, 'import', 'Import CSV');
     CSVInternalUtils.setInternalComponent(csvButtons, _csv.buttons, 'export', 'Export CSV');
     CSVInternalUtils.setCustomExportFileName(csvButtons, _csv.buttons);
     CSVInternalUtils.setImportOverwriteOptions(csvButtons, _csv.buttons);
+  }
+
+  public static isDragAndDropDisplayed(csv?: CSV) {
+    if (csv) {
+      return typeof csv.dragAndDrop === 'boolean' ? csv.dragAndDrop : true;
+    }
+    return false;
   }
 
   public static createDefault(at: ActiveTable): CSVInternal {

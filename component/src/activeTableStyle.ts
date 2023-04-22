@@ -397,6 +397,18 @@ export const activeTableStyle = css`
     height: 100%;
   }
 
+  #drag-and-drop-overlay {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    height: calc(100% - 10px);
+    width: calc(100% - 10px);
+    background-color: #70c6ff4d;
+    border: 5px dashed rgb(47, 141, 255);
+    display: none;
+  }
+
   .dropdown-cell-overlay {
     cursor: pointer;
     background-color: grey;

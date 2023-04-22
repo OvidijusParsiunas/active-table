@@ -2,6 +2,7 @@ import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/sta
 import {MaximumColumns} from '../../utils/insertRemoveStructure/insert/maximum/maximumColumns';
 import {FrameComponentsElements} from '../../utils/frameComponents/frameComponentsElements';
 import {FrameComponentsColors} from '../../utils/frameComponents/frameComponentsColors';
+import {CSVInternalUtils} from '../../utils/outerTableComponents/CSV/CSVInternalUtils';
 import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElements';
 import {StringDimensionUtils} from '../../utils/tableDimensions/stringDimensionUtils';
 import {InitialContentProcessing} from '../../utils/content/initialContentProcessing';
@@ -16,6 +17,7 @@ import {CustomRowProperties} from '../../utils/rows/customRowProperties';
 import {TableBorderDimensionsUtils} from './tableBorderDimensionsUtils';
 import {ActiveOverlayElements} from '../../types/activeOverlayElements';
 import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
+import {DragAndDropElement} from '../dragAndDrop/dragAndDropElement';
 import {CellDropdown} from '../dropdown/cellDropdown/cellDropdown';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {TableDimensions} from '../../types/tableDimensions';
@@ -44,7 +46,9 @@ export class TableElement {
     // full table overlay for column dropdown
     const fullTableOverlay = FullTableOverlayElement.create(at);
     activeOverlayElements.fullTableOverlay = fullTableOverlay;
-    (at._overflow?.overflowContainer || tableElement).appendChild(fullTableOverlay);
+    const fullTableContainer = at._overflow?.overflowContainer || tableElement;
+    fullTableContainer.appendChild(fullTableOverlay);
+    if (CSVInternalUtils.isDragAndDropDisplayed(at.csv)) DragAndDropElement.append(at, fullTableContainer);
     // column dropdown
     const columnDropdownElement = ColumnDropdown.create(at);
     tableElement.appendChild(columnDropdownElement);

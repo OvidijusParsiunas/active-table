@@ -62,11 +62,9 @@ export class CSVImport {
     });
   }
 
-  public static import(at: ActiveTable, inputElement: HTMLInputElement, options?: ImportOverwriteOptions) {
+  public static import(at: ActiveTable, file: Blob, options?: ImportOverwriteOptions) {
     const reader = new FileReader();
-    const file = inputElement.files?.[0] as Blob;
     reader.readAsText(file);
     reader.onload = (event) => CSVImport.processFile(at, event.target?.result as string, options);
-    inputElement.value = ''; // resetting to prevent Chrome issue of not being able to upload same file twice
   }
 }

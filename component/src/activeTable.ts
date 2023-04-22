@@ -9,8 +9,8 @@ import {CSVImportButtonEvents} from './elements/CSV/importButton/CSVImportButton
 import {OuterTableComponents} from './utils/outerTableComponents/outerTableComponents';
 import {LITElementTypeConverters} from './utils/webComponent/LITElementTypeConverters';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
-import {CSVInternalUtils} from './utils/outerTableComponents/CSV/CSVInternalUtils';
 import {WebComponentStyleUtils} from './utils/webComponent/webComponentStyleUtils';
+import {CSVInternalUtils} from './utils/outerTableComponents/CSV/CSVInternalUtils';
 import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
@@ -33,7 +33,6 @@ import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {StripedRowsInternal} from './types/stripedRowsInternal';
 import {DEFAULT_COLUMN_TYPES} from './enums/defaultColumnTypes';
 import {DefaultCellHoverColors} from './types/cellStateColors';
-import {CSVButtons, ImportOverwriteOptions} from './types/CSV';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {PaginationInternal} from './types/paginationInternal';
@@ -44,6 +43,7 @@ import {TableElement} from './elements/table/tableElement';
 import {ColumnType, ColumnTypes} from './types/columnType';
 import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
+import {CSV, ImportOverwriteOptions} from './types/CSV';
 import {ColumnResizerColors} from './types/columnSizer';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
@@ -66,6 +66,7 @@ import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
 
+// WORK - drag and drop func
 @customElement('active-table')
 export class ActiveTable extends LitElement {
   @property({type: Function})
@@ -254,7 +255,7 @@ export class ActiveTable extends LitElement {
   pagination?: Pagination | boolean;
 
   @property({type: Object})
-  csvButtons?: CSVButtons;
+  csv?: CSV;
 
   @property({type: String})
   auxiliaryStyle?: string;
