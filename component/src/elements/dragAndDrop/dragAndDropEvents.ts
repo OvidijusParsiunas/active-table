@@ -1,12 +1,16 @@
+import {XLSInternalUtils} from '../../utils/outerTableComponents/XLS/XLSInternalUtils';
 import {CSVImport} from '../../utils/outerTableComponents/CSV/CSVImport';
+import {XLSImport} from '../../utils/outerTableComponents/XLS/XLSImport';
 import {ActiveTable} from '../../activeTable';
 
 export class DragAndDropEvents {
-  private static uploadFile(at: ActiveTable, event: DragEvent) {
+  private static async uploadFile(at: ActiveTable, event: DragEvent) {
     const file = event.dataTransfer?.files?.[0];
     if (file?.name.endsWith('.csv')) {
       const options = typeof at.csv?.dragAndDrop === 'object' ? at.csv.dragAndDrop.overwriteOptions : undefined;
       CSVImport.import(at, file, options);
+    } else if (file?.name.endsWith('.xls') || file?.name.endsWith('.xlsx')) {
+      XLSInternalUtils.execFuncWithExtractorModule(XLSImport.import.bind(this, at, file));
     }
   }
 

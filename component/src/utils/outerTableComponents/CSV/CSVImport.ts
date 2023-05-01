@@ -10,6 +10,7 @@ export class CSVImport {
   }
 
   private static parseDataFromRow(row: string, rowsOfData: string[][], largestRowLength: number) {
+    // WORK - bug where the start empty cells are not parsed correctly
     const data = row.split(',').filter((cellValue) => cellValue.trim() !== '');
     if (data.length > 0) {
       rowsOfData.push(data);
@@ -44,7 +45,7 @@ export class CSVImport {
     return 0;
   }
 
-  private static processFile(at: ActiveTable, csvText: string, options?: ImportOverwriteOptions) {
+  public static processFile(at: ActiveTable, csvText: string, options?: ImportOverwriteOptions) {
     const csvContent = CSVImport.parseCSV(csvText);
     if (csvContent && options && typeof options.importRowStartIndex === 'number')
       csvContent.splice(0, options.importRowStartIndex);
