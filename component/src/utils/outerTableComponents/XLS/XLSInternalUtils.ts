@@ -1,15 +1,19 @@
 import xlsx from 'xlsx';
 
-declare const XLSX: typeof xlsx;
+declare global {
+  interface Window {
+    XLSX: typeof xlsx;
+  }
+}
 
 export class XLSInternalUtils {
   private static MODULE_NOT_FOUND_ERROR = 'xlsx module was not found';
 
   private static async getExtractorModule() {
     let xlsxModule: typeof xlsx | undefined;
-    if (XLSX) {
+    if (window.XLSX) {
       // imported via a script
-      xlsxModule = XLSX;
+      xlsxModule = window.XLSX;
     } else {
       // imported via a module
       try {
