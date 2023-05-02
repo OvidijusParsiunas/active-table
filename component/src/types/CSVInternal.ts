@@ -1,7 +1,7 @@
-import {CSVButton, ImportOverwriteOptions} from './CSV';
+import {FileButtonStyles, ImportOverwriteOptions} from './files';
 import {StatefulCSS} from './cssStyle';
 
-export type CSVButtonProps = Required<CSVButton<Required<StatefulCSS>>>;
+export type CSVButtonProps = Required<FileButtonStyles<Required<StatefulCSS>>>;
 
 export type ImportCSVButtonProps = CSVButtonProps & {overwriteOptions?: ImportOverwriteOptions};
 

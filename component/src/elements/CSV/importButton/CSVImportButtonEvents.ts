@@ -1,5 +1,5 @@
 import {CSVImport} from '../../../utils/outerTableComponents/CSV/CSVImport';
-import {ImportOverwriteOptions} from '../../../types/CSV';
+import {ImportOverwriteOptions} from '../../../types/files';
 import {ActiveTable} from '../../../activeTable';
 
 export class CSVImportButtonEvents {

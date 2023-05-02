@@ -44,8 +44,8 @@ export class CSVInternalUtils {
 
   public static processButtons(csvButtons: CSVButtons, _csv: CSVInternal) {
     _csv.buttons = {};
-    CSVInternalUtils.setInternalComponent(csvButtons, _csv.buttons, 'import', 'Import CSV');
-    CSVInternalUtils.setInternalComponent(csvButtons, _csv.buttons, 'export', 'Export CSV');
+    CSVInternalUtils.setInternalComponent(csvButtons, _csv.buttons, 'import', 'Import');
+    CSVInternalUtils.setInternalComponent(csvButtons, _csv.buttons, 'export', 'Export');
     CSVInternalUtils.setCustomExportFileName(csvButtons, _csv.buttons);
     CSVInternalUtils.setImportOverwriteOptions(csvButtons, _csv.buttons);
   }

@@ -38,12 +38,12 @@ import {UserKeyEventsState} from './types/userKeyEventsState';
 import {PaginationInternal} from './types/paginationInternal';
 import {LabelColorUtils} from './utils/color/labelColorUtils';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
+import {Files, ImportOverwriteOptions} from './types/files';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
 import {ColumnType, ColumnTypes} from './types/columnType';
 import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
-import {CSV, ImportOverwriteOptions} from './types/CSV';
 import {ColumnResizerColors} from './types/columnSizer';
 import {TableDimensions} from './types/tableDimensions';
 import {FocusedElements} from './types/focusedElements';
@@ -65,6 +65,7 @@ import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
+import {CSV} from './types/CSV';
 
 // WORK - drag and drop func
 @customElement('active-table')
@@ -256,6 +257,9 @@ export class ActiveTable extends LitElement {
 
   @property({type: Object})
   csv?: CSV;
+
+  @property({type: Object})
+  files?: Files;
 
   @property({type: String})
   auxiliaryStyle?: string;

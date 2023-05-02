@@ -1,23 +1,8 @@
-import {OuterContentPosition} from './outerContainer';
-import {CSSStyle, StatefulCSS} from './cssStyle';
-
-export interface CSVButton<T = StatefulCSS> {
-  styles?: T;
-  text?: string;
-  position?: OuterContentPosition;
-  order?: number;
-}
-
-export type ImportOverwriteOptions = {tableRowStartIndex?: number; importRowStartIndex?: number};
+import {DragAndDrop, FileButtonStyles, ImportOverwriteOptions} from './files';
 
 export interface CSVButtons {
-  import?: (CSVButton & {overwriteOptions?: ImportOverwriteOptions}) | boolean;
-  export?: (CSVButton & {fileName?: string}) | boolean;
-}
-
-export interface DragAndDrop {
-  overlayStyle?: CSSStyle;
-  overwriteOptions?: ImportOverwriteOptions;
+  import?: (FileButtonStyles & {overwriteOptions?: ImportOverwriteOptions}) | boolean;
+  export?: (FileButtonStyles & {fileName?: string}) | boolean;
 }
 
 export interface CSV {

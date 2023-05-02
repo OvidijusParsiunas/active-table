@@ -1,7 +1,7 @@
 import {NoContentStubElement} from '../../../elements/table/addNewElements/shared/noContentStubElement';
 import {InsertMatrix} from '../../insertRemoveStructure/insert/insertMatrix';
 import {RemoveRow} from '../../insertRemoveStructure/remove/removeRow';
-import {ImportOverwriteOptions} from '../../../types/CSV';
+import {ImportOverwriteOptions} from '../../../types/files';
 import {ActiveTable} from '../../../activeTable';
 
 export class CSVImport {
