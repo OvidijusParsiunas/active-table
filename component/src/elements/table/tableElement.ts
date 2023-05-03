@@ -1,11 +1,11 @@
 import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
 import {MaximumColumns} from '../../utils/insertRemoveStructure/insert/maximum/maximumColumns';
-import {FilesInternalUtils} from '../../utils/outerTableComponents/files/filesInternalUtils';
 import {FrameComponentsElements} from '../../utils/frameComponents/frameComponentsElements';
 import {FrameComponentsColors} from '../../utils/frameComponents/frameComponentsColors';
 import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElements';
 import {StringDimensionUtils} from '../../utils/tableDimensions/stringDimensionUtils';
 import {InitialContentProcessing} from '../../utils/content/initialContentProcessing';
+import {FilesUtils} from '../../utils/outerTableComponents/files/filesInternalUtils';
 import {InsertRemoveColumnSizer} from '../columnSizer/utils/insertRemoveColumnSizer';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
@@ -48,7 +48,7 @@ export class TableElement {
     activeOverlayElements.fullTableOverlay = fullTableOverlay;
     const fullTableContainer = at._overflow?.overflowContainer || tableElement;
     fullTableContainer.appendChild(fullTableOverlay);
-    if (FilesInternalUtils.isDragAndDropDisplayed(at.files)) DragAndDropElement.append(at, fullTableContainer);
+    if (FilesUtils.isDragAndDropDisplayed(at.files)) DragAndDropElement.append(at, fullTableContainer);
     // column dropdown
     const columnDropdownElement = ColumnDropdown.create(at);
     tableElement.appendChild(columnDropdownElement);

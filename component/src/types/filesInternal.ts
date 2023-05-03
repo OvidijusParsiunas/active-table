@@ -1,20 +1,5 @@
-import {FileButtonStyles, FileType, ImportOverwriteOptions} from './files';
-import {InterfacesUnion} from './utilityTypes';
-import {StatefulCSS} from './cssStyle';
-
-// WORK - this may not be required
-export type FileButtonStylingInternal = Required<FileButtonStyles<Required<StatefulCSS>>>;
-
-export type FileButtonInternal = InterfacesUnion<
-  | {
-      export: {type: FileType; fileName: string} & FileButtonStylingInternal;
-    }
-  | {
-      import: {acceptedTypes: FileType[]; overwriteOptions?: ImportOverwriteOptions} & FileButtonStylingInternal;
-    }
->;
-
 export type FilesInternal = {
-  buttons?: FileButtonInternal[];
+  // always created as the user may want to trigger the importCSV method without the CSV buttons and need this to work
+  // WORK - dynamically switch the accepted extensions
   inputElementRef: HTMLInputElement;
 };

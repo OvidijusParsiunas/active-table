@@ -14,6 +14,7 @@ import {CSVInternalUtils} from './utils/outerTableComponents/CSV/CSVInternalUtil
 import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
+import {FilesUtils} from './utils/outerTableComponents/files/filesInternalUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {ColumnDropdownSettingsDefault} from './types/columnDropdownSettings';
 import {ColumnDetailsUtils} from './utils/columnDetails/columnDetailsUtils';
@@ -55,6 +56,7 @@ import {RowHoverStyles} from './types/rowHoverStyles';
 import {GlobalItemColors} from './types/itemToColor';
 import {StripedRows} from './utils/rows/stripedRows';
 import {activeTableStyle} from './activeTableStyle';
+import {FilesInternal} from './types/filesInternal';
 import {StripedRowsT} from './types/stripedRows';
 import {CSVInternal} from './types/CSVInternal';
 import {StickyProps} from './types/stickyProps';
@@ -339,6 +341,9 @@ export class ActiveTable extends LitElement {
 
   @state()
   _csv: CSVInternal = CSVInternalUtils.createDefault(this);
+
+  @state()
+  _files: FilesInternal = FilesUtils.createDefault(this);
 
   @state({
     hasChanged() {

@@ -495,7 +495,7 @@ export const activeTableStyle = css`
     text-align: right;
   }
 
-  .csv-button {
+  .file-button {
     border: 1px solid #00000038;
     border-radius: 3px;
     color: #464646;

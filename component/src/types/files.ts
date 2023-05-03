@@ -12,6 +12,7 @@ export interface DragAndDrop {
   overwriteOptions?: ImportOverwriteOptions;
 }
 
+// WORK - thing StatefulCSS can be the default
 export interface FileButtonStyles<T = StatefulCSS> {
   styles?: T;
   text?: string;

@@ -1,36 +1,20 @@
-import {CSVImportButtonElement} from '../../../elements/CSV/importButton/CSVImportButtonElement';
-import {FileButton, FileButtonStyles, Files} from '../../../types/files';
+import {FileImportInputElement} from '../../../elements/files/buttons/importButton/fileImportInputElement';
 import {FilesInternal} from '../../../types/filesInternal';
+import {StatefulCSS} from '../../../types/cssStyle';
 import {ActiveTable} from '../../../activeTable';
+import {Files} from '../../../types/files';
 
-export class FilesInternalUtils {
-  private static processStyles(buttonStyles: FileButtonStyles) {
+export class FilesUtils {
+  public static readonly DEFAULT_BUTTON_POSITION = 'bottom-left';
+
+  public static processStyles(buttonStyles?: StatefulCSS) {
     const styles = {default: {}, hover: {backgroundColor: '#f0f0f0'}, click: {backgroundColor: '#e4e4e4'}};
-    if (buttonStyles.styles) {
-      Object.assign(styles.default, buttonStyles.styles.default);
-      Object.assign(styles.hover, buttonStyles.styles.hover);
-      Object.assign(styles.click, buttonStyles.styles.click);
+    if (buttonStyles) {
+      Object.assign(styles.default, buttonStyles.default);
+      Object.assign(styles.hover, buttonStyles.hover);
+      Object.assign(styles.click, buttonStyles.click);
     }
-    buttonStyles.styles = styles;
-  }
-
-  private static processStylesProps(button: FileButton) {
-    FilesInternalUtils.processStyles(button);
-    button.position ??= 'bottom-left';
-    button.text ??= button.export ? 'Export' : 'Import';
-    button.order ??= 0;
-  }
-
-  private static processButton(button: FileButton) {
-    FilesInternalUtils.processStylesProps(button);
-    // WORK - may need to do additional preprocessing here - not sure
-  }
-
-  public static process(files: Files) {
-    if (files.buttons) {
-      files.buttons = files.buttons.filter((button) => button.export || button.import); // removes invalid
-      files.buttons.map((button) => FilesInternalUtils.processButton(button));
-    }
+    return styles;
   }
 
   public static isDragAndDropDisplayed(files?: Files) {
@@ -41,6 +25,6 @@ export class FilesInternalUtils {
   }
 
   public static createDefault(at: ActiveTable): FilesInternal {
-    return {inputElementRef: CSVImportButtonElement.createInputElement(at)};
+    return {inputElementRef: FileImportInputElement.create(at)};
   }
 }

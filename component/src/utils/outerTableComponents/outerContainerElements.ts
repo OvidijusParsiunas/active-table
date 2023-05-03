@@ -1,5 +1,5 @@
 import {OuterContentPosition, OuterContainers} from '../../types/outerContainer';
-import {CSVButtonsInternal} from '../../types/CSVInternal';
+import {FilesUtils} from './files/filesInternalUtils';
 import {ActiveTable} from '../../activeTable';
 
 type ContainerPositions = 'top' | 'bottom';
@@ -90,6 +90,7 @@ export class OuterContainerElements {
     return container;
   }
 
+  // can be reused for other positional components
   private static isRequired(object: PositionalComponents, conPosition: ContainerPositions) {
     return !!Object.keys(object).find((componentName) => {
       const {position} = object[componentName];
@@ -103,8 +104,11 @@ export class OuterContainerElements {
     if (at.pagination) {
       isRequired = OuterContainerElements.isRequired(at._pagination.positions, containerPosition);
     }
-    if (!isRequired && at._csv.buttons) {
-      isRequired = OuterContainerElements.isRequired(at._csv.buttons as Required<CSVButtonsInternal>, containerPosition);
+    if (!isRequired && at.files?.buttons) {
+      isRequired = !!at.files.buttons.find((button) => {
+        const position = button.position || FilesUtils.DEFAULT_BUTTON_POSITION;
+        return position.indexOf(containerPosition) >= 0;
+      });
     }
     return isRequired;
   }
