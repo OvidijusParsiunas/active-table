@@ -63,7 +63,7 @@ export class CSVImport {
     });
   }
 
-  public static import(at: ActiveTable, file: Blob, options?: ImportOverwriteOptions) {
+  public static import(at: ActiveTable, file: File, options?: ImportOverwriteOptions) {
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = (event) => CSVImport.processFile(at, event.target?.result as string, options);

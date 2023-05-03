@@ -5,7 +5,7 @@ import {ActiveTable} from '../../../activeTable';
 export class CSVImportButtonEvents {
   private static inputChange(at: ActiveTable, options: ImportOverwriteOptions | undefined, event: Event) {
     const inputElement = event.target as HTMLInputElement;
-    const file = inputElement.files?.[0] as Blob;
+    const file = inputElement.files?.[0] as File;
     CSVImport.import(at, file, options);
     inputElement.value = ''; // resetting to prevent Chrome issue of not being able to upload same file twice
   }

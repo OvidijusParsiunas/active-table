@@ -12,9 +12,9 @@ export class FileButtonElements {
 
   private static setEvents(at: ActiveTable, button: FileButton, buttonElement: HTMLElement) {
     if (button.import) {
-      FileImportButtonEvents.setButtonEvents(at, buttonElement, button.import.overwriteOptions);
+      FileImportButtonEvents.setEvents(at, buttonElement, button.import.acceptedTypes, button.import.overwriteOptions);
     } else if (button.export) {
-      FileExportButtonEvents.setEvents(at, buttonElement, button.export.fileName);
+      FileExportButtonEvents.setEvents(at, buttonElement, button.export.type, button.export.fileName);
     }
   }
 

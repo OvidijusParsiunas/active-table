@@ -1,22 +1,35 @@
+import {XLSInternalUtils} from '../../../../utils/outerTableComponents/XLS/XLSInternalUtils';
 import {CSVImport} from '../../../../utils/outerTableComponents/CSV/CSVImport';
-import {ImportOverwriteOptions} from '../../../../types/files';
+import {XLSImport} from '../../../../utils/outerTableComponents/XLS/XLSImport';
+import {FileType, ImportOverwriteOptions} from '../../../../types/files';
 import {ActiveTable} from '../../../../activeTable';
 
 export class FileImportButtonEvents {
+  public static importFile(at: ActiveTable, file: File, options?: ImportOverwriteOptions) {
+    if (file.name.endsWith('.csv')) {
+      CSVImport.import(at, file, options);
+    } else if (file.name.endsWith('.xls') || file.name.endsWith('.xlsx')) {
+      XLSInternalUtils.execFuncWithExtractorModule(XLSImport.import.bind(this, at, file));
+    }
+  }
+
   private static inputChange(at: ActiveTable, options: ImportOverwriteOptions | undefined, event: Event) {
     const inputElement = event.target as HTMLInputElement;
-    const file = inputElement.files?.[0] as Blob;
-    CSVImport.import(at, file, options); // WORK - set importable
+    const file = inputElement.files?.[0] as File;
+    FileImportButtonEvents.importFile(at, file, options);
     inputElement.value = ''; // resetting to prevent Chrome issue of not being able to upload same file twice
   }
 
-  public static triggerImportPrompt(at: ActiveTable, options?: ImportOverwriteOptions) {
+  public static triggerImportPrompt(at: ActiveTable, acceptedTypes: FileType[], options?: ImportOverwriteOptions) {
     const inputElement = at._files.inputElementRef;
+    inputElement.accept = acceptedTypes.map((type) => `.${type}`).join(',');
     inputElement.onchange = FileImportButtonEvents.inputChange.bind(this, at, options);
     inputElement.click();
   }
 
-  public static setButtonEvents(at: ActiveTable, buttonElement: HTMLElement, options?: ImportOverwriteOptions) {
-    buttonElement.onclick = FileImportButtonEvents.triggerImportPrompt.bind(this, at, options);
+  // prettier-ignore
+  public static setEvents(at: ActiveTable, buttonElement: HTMLElement, acceptedTypes: FileType[],
+      overwriteOptions?: ImportOverwriteOptions) {
+    buttonElement.onclick = FileImportButtonEvents.triggerImportPrompt.bind(this, at, acceptedTypes, overwriteOptions);
   }
 }

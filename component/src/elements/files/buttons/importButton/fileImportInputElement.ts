@@ -5,7 +5,6 @@ export class FileImportInputElement {
   public static create(at: ActiveTable) {
     const inputElement = document.createElement('input');
     inputElement.type = 'file';
-    inputElement.accept = '.csv'; // WORK - change here
     inputElement.hidden = true;
     setTimeout(() => {
       at._tableElementRef?.appendChild(inputElement);

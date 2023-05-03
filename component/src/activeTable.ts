@@ -2,6 +2,8 @@ import {CustomColumnsSettings, CustomColumnSettings, DimensionalCSSStyle} from '
 import {PaginationInternalUtils} from './utils/outerTableComponents/pagination/paginationInternalUtils';
 import {ColumnUpdateDetails, OnCellUpdate, OnColumnsUpdate, OnContentUpdate} from './types/onUpdate';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
+import {FileExportButtonEvents} from './elements/files/buttons/exportButton/fileExportButtonEvents';
+import {FileImportButtonEvents} from './elements/files/buttons/importButton/fileImportButtonEvents';
 import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {ProgrammaticCellUpdate} from './utils/programmaticUpdates/programmaticCellUpdate';
@@ -25,10 +27,12 @@ import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {ProgrammaticCellUpdateT} from './types/programmaticCellUpdateT';
 import {DefaultColumnsSettings} from './types/columnsSettingsDefault';
 import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
+import {Files, FileType, ImportOverwriteOptions} from './types/files';
 import {CSVExport} from './utils/outerTableComponents/CSV/CSVExport';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {CellHighlightUtils} from './utils/color/cellHighlightUtils';
 import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
+import {ExportFile, ImportFile} from './types/fileTriggerMethods';
 import {customElement, property, state} from 'lit/decorators.js';
 import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {StripedRowsInternal} from './types/stripedRowsInternal';
@@ -39,7 +43,6 @@ import {UserKeyEventsState} from './types/userKeyEventsState';
 import {PaginationInternal} from './types/paginationInternal';
 import {LabelColorUtils} from './utils/color/labelColorUtils';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
-import {Files, ImportOverwriteOptions} from './types/files';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
 import {ColumnType, ColumnTypes} from './types/columnType';
@@ -88,8 +91,16 @@ export class ActiveTable extends LitElement {
   importCSV: (options?: ImportOverwriteOptions) => void = (options?: ImportOverwriteOptions) =>
     CSVImportButtonEvents.triggerImportPrompt(this, options);
 
+  // can only be activated by a user action - such as a button click
+  @property({type: Function})
+  importFile: ImportFile = (acceptedTypes: FileType[], options?: ImportOverwriteOptions) =>
+    FileImportButtonEvents.triggerImportPrompt(this, acceptedTypes, options);
+
   @property({type: Function})
   exportCSV: (fileName?: string) => void = (fileName?: string) => CSVExport.export(this, fileName);
+
+  @property({type: Function})
+  exportFile: ExportFile = (type: FileType, fileName?: string) => FileExportButtonEvents.export(this, type, fileName);
 
   // REF-20
   @property({converter: LITElementTypeConverters.convertToFunction})
