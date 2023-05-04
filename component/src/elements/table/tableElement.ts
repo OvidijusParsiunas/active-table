@@ -5,7 +5,6 @@ import {FrameComponentsColors} from '../../utils/frameComponents/frameComponents
 import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElements';
 import {StringDimensionUtils} from '../../utils/tableDimensions/stringDimensionUtils';
 import {InitialContentProcessing} from '../../utils/content/initialContentProcessing';
-import {FilesUtils} from '../../utils/outerTableComponents/files/filesInternalUtils';
 import {InsertRemoveColumnSizer} from '../columnSizer/utils/insertRemoveColumnSizer';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
@@ -48,7 +47,7 @@ export class TableElement {
     activeOverlayElements.fullTableOverlay = fullTableOverlay;
     const fullTableContainer = at._overflow?.overflowContainer || tableElement;
     fullTableContainer.appendChild(fullTableOverlay);
-    if (FilesUtils.isDragAndDropDisplayed(at.files)) DragAndDropElement.append(at, fullTableContainer);
+    if (at.files?.dragAndDrop) DragAndDropElement.append(at, fullTableContainer);
     // column dropdown
     const columnDropdownElement = ColumnDropdown.create(at);
     tableElement.appendChild(columnDropdownElement);

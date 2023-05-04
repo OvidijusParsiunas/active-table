@@ -1,11 +1,11 @@
-import {OuterContainerElements} from '../../../utils/outerTableComponents/outerContainerElements';
-import {FilesUtils} from '../../../utils/outerTableComponents/files/filesInternalUtils';
-import {FileImportButtonEvents} from './importButton/fileImportButtonEvents';
-import {FileExportButtonEvents} from './exportButton/fileExportButtonEvents';
-import {OuterContainers} from '../../../types/outerContainer';
+import {OuterContainerElements} from '../../utils/outerTableComponents/outerContainerElements';
+import {FilesUtils} from '../../utils/outerTableComponents/files/filesInternalUtils';
+import {FileImportButtonEvents} from './buttons/importButton/fileImportButtonEvents';
+import {FileExportButtonEvents} from './buttons/exportButton/fileExportButtonEvents';
+import {OuterContainers} from '../../types/outerContainer';
 import {FileButtonEvents} from './fileButtonEvents';
-import {ActiveTable} from '../../../activeTable';
-import {FileButton} from '../../../types/files';
+import {ActiveTable} from '../../activeTable';
+import {FileButton} from '../../types/files';
 
 export class FileButtonElements {
   private static readonly BUTTON_CLASS = 'file-button';

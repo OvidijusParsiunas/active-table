@@ -1,8 +1,8 @@
-import {ActiveTable} from '../../../activeTable';
-import {FileType} from '../../../types/files';
+import {ActiveTable} from '../../../../activeTable';
+import {FileType} from '../../../../types/files';
 import xlsx from 'xlsx';
 
-export class XLSExport {
+export class SheetJSExport {
   private static getFileName(type: FileType, fileName?: string) {
     if (fileName) {
       return fileName.endsWith(`.${type}`) ? fileName : `${fileName}.${type}`;
@@ -15,7 +15,7 @@ export class XLSExport {
     const workbook = xlsxModule.utils.book_new();
     const worksheet = xlsxModule.utils.aoa_to_sheet(at.content);
     xlsxModule.utils.book_append_sheet(workbook, worksheet, 'Sheet');
-    const definedFileName = XLSExport.getFileName(type, fileName);
+    const definedFileName = SheetJSExport.getFileName(type, fileName);
     xlsxModule.writeFile(workbook, definedFileName, {bookType: type});
   }
 }

@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-export class XLSInternalUtils {
+export class SheetJSInternalUtils {
   private static MODULE_NOT_FOUND_ERROR = 'xlsx module was not found';
 
   private static async getExtractorModule() {
@@ -27,9 +27,9 @@ export class XLSInternalUtils {
   }
 
   public static async execFuncWithExtractorModule(func: (xlsxModule: typeof xlsx) => void) {
-    const xlsxModule = await XLSInternalUtils.getExtractorModule();
+    const xlsxModule = await SheetJSInternalUtils.getExtractorModule();
     if (!xlsxModule) {
-      console.error(XLSInternalUtils.MODULE_NOT_FOUND_ERROR);
+      console.error(SheetJSInternalUtils.MODULE_NOT_FOUND_ERROR);
     } else {
       func(xlsxModule);
     }

@@ -7,12 +7,10 @@ import {FileImportButtonEvents} from './elements/files/buttons/importButton/file
 import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {ProgrammaticCellUpdate} from './utils/programmaticUpdates/programmaticCellUpdate';
-import {CSVImportButtonEvents} from './elements/CSV/importButton/CSVImportButtonEvents';
 import {OuterTableComponents} from './utils/outerTableComponents/outerTableComponents';
 import {LITElementTypeConverters} from './utils/webComponent/LITElementTypeConverters';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {WebComponentStyleUtils} from './utils/webComponent/webComponentStyleUtils';
-import {CSVInternalUtils} from './utils/outerTableComponents/CSV/CSVInternalUtils';
 import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
@@ -28,7 +26,6 @@ import {ProgrammaticCellUpdateT} from './types/programmaticCellUpdateT';
 import {DefaultColumnsSettings} from './types/columnsSettingsDefault';
 import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
 import {Files, FileType, ImportOverwriteOptions} from './types/files';
-import {CSVExport} from './utils/outerTableComponents/CSV/CSVExport';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {CellHighlightUtils} from './utils/color/cellHighlightUtils';
 import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
@@ -61,7 +58,6 @@ import {StripedRows} from './utils/rows/stripedRows';
 import {activeTableStyle} from './activeTableStyle';
 import {FilesInternal} from './types/filesInternal';
 import {StripedRowsT} from './types/stripedRows';
-import {CSVInternal} from './types/CSVInternal';
 import {StickyProps} from './types/stickyProps';
 import {Browser} from './utils/browser/browser';
 import {LitElement, PropertyValues} from 'lit';
@@ -70,7 +66,6 @@ import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
-import {CSV} from './types/CSV';
 
 // TO-DO - add comments on type properties
 // WORK - drag and drop func
@@ -89,16 +84,8 @@ export class ActiveTable extends LitElement {
 
   // can only be activated by a user action - such as a button click
   @property({type: Function})
-  importCSV: (options?: ImportOverwriteOptions) => void = (options?: ImportOverwriteOptions) =>
-    CSVImportButtonEvents.triggerImportPrompt(this, options);
-
-  // can only be activated by a user action - such as a button click
-  @property({type: Function})
   importFile: ImportFile = (acceptedTypes: FileType[], options?: ImportOverwriteOptions) =>
     FileImportButtonEvents.triggerImportPrompt(this, acceptedTypes, options);
-
-  @property({type: Function})
-  exportCSV: (fileName?: string) => void = (fileName?: string) => CSVExport.export(this, fileName);
 
   @property({type: Function})
   exportFile: ExportFile = (type: FileType, fileName?: string) => FileExportButtonEvents.export(this, type, fileName);
@@ -270,9 +257,6 @@ export class ActiveTable extends LitElement {
   pagination?: Pagination | boolean;
 
   @property({type: Object})
-  csv?: CSV;
-
-  @property({type: Object})
   files?: Files;
 
   @property({type: String})
@@ -350,9 +334,6 @@ export class ActiveTable extends LitElement {
   // cannot be used as an indicator for pagination as this is always defined
   @state()
   _pagination: PaginationInternal = PaginationInternalUtils.getDefault();
-
-  @state()
-  _csv: CSVInternal = CSVInternalUtils.createDefault(this);
 
   @state()
   _files: FilesInternal = FilesUtils.createDefault(this);

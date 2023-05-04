@@ -2,7 +2,6 @@ import {FileImportInputElement} from '../../../elements/files/buttons/importButt
 import {FilesInternal} from '../../../types/filesInternal';
 import {StatefulCSS} from '../../../types/cssStyle';
 import {ActiveTable} from '../../../activeTable';
-import {Files} from '../../../types/files';
 
 export class FilesUtils {
   public static readonly DEFAULT_BUTTON_POSITION = 'bottom-left';
@@ -15,13 +14,6 @@ export class FilesUtils {
       Object.assign(styles.click, buttonStyles.click);
     }
     return styles;
-  }
-
-  public static isDragAndDropDisplayed(files?: Files) {
-    if (files) {
-      return typeof files.dragAndDrop === 'boolean' ? files.dragAndDrop : true;
-    }
-    return false;
   }
 
   public static createDefault(at: ActiveTable): FilesInternal {

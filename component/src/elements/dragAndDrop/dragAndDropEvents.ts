@@ -6,7 +6,7 @@ import {ActiveTable} from '../../activeTable';
 export class DragAndDropEvents {
   private static async uploadFile(at: ActiveTable, acceptedTypes: FileType[], event: DragEvent) {
     const file = event.dataTransfer?.files?.[0] as File;
-    const options = typeof at.csv?.dragAndDrop === 'object' ? at.csv.dragAndDrop.overwriteOptions : undefined;
+    const options = typeof at.files?.dragAndDrop === 'object' ? at.files.dragAndDrop.overwriteOptions : undefined;
     FileImportButtonEvents.importFile(at, file, acceptedTypes, options);
   }
 

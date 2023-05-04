@@ -1,6 +1,6 @@
-import {XLSInternalUtils} from '../../../../utils/outerTableComponents/XLS/XLSInternalUtils';
-import {XLSExport} from '../../../../utils/outerTableComponents/XLS/XLSExport';
-import {CSVExport} from '../../../../utils/outerTableComponents/CSV/CSVExport';
+import {SheetJSInternalUtils} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSInternalUtils';
+import {SheetJSExport} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSExport';
+import {CSVExport} from '../../../../utils/outerTableComponents/files/CSV/CSVExport';
 import {ALLOWED_FILE_EXTENSIONS} from '../../../../consts/fileTypes';
 import {ActiveTable} from '../../../../activeTable';
 import {FileType} from '../../../../types/files';
@@ -10,7 +10,7 @@ export class FileExportButtonEvents {
     if (ALLOWED_FILE_EXTENSIONS.find((extension) => type === extension)) {
       if (type === 'csv') {
         CSVExport.export(at, fileName);
-      } else XLSInternalUtils.execFuncWithExtractorModule(XLSExport.export.bind(this, at, type, fileName));
+      } else SheetJSInternalUtils.execFuncWithExtractorModule(SheetJSExport.export.bind(this, at, type, fileName));
     }
   }
 

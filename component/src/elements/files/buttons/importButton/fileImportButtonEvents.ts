@@ -1,6 +1,6 @@
-import {XLSInternalUtils} from '../../../../utils/outerTableComponents/XLS/XLSInternalUtils';
-import {CSVImport} from '../../../../utils/outerTableComponents/CSV/CSVImport';
-import {XLSImport} from '../../../../utils/outerTableComponents/XLS/XLSImport';
+import {SheetJSInternalUtils} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSInternalUtils';
+import {SheetJSImport} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSImport';
+import {CSVImport} from '../../../../utils/outerTableComponents/files/CSV/CSVImport';
 import {FileType, ImportOverwriteOptions} from '../../../../types/files';
 import {ALLOWED_FILE_EXTENSIONS} from '../../../../consts/fileTypes';
 import {ActiveTable} from '../../../../activeTable';
@@ -11,7 +11,7 @@ export class FileImportButtonEvents {
       if (file.name.endsWith('.csv')) {
         CSVImport.import(at, file, options);
       } else {
-        XLSInternalUtils.execFuncWithExtractorModule(XLSImport.import.bind(this, at, file));
+        SheetJSInternalUtils.execFuncWithExtractorModule(SheetJSImport.import.bind(this, at, file));
       }
     }
   }

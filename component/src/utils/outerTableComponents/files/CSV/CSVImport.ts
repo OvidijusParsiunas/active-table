@@ -1,8 +1,8 @@
-import {NoContentStubElement} from '../../../elements/table/addNewElements/shared/noContentStubElement';
-import {InsertMatrix} from '../../insertRemoveStructure/insert/insertMatrix';
-import {RemoveRow} from '../../insertRemoveStructure/remove/removeRow';
-import {ImportOverwriteOptions} from '../../../types/files';
-import {ActiveTable} from '../../../activeTable';
+import {NoContentStubElement} from '../../../../elements/table/addNewElements/shared/noContentStubElement';
+import {InsertMatrix} from '../../../insertRemoveStructure/insert/insertMatrix';
+import {RemoveRow} from '../../../insertRemoveStructure/remove/removeRow';
+import {ImportOverwriteOptions} from '../../../../types/files';
+import {ActiveTable} from '../../../../activeTable';
 
 export class CSVImport {
   private static getPaddedArray(rowsOfData: string[][], largestRowLength: number) {

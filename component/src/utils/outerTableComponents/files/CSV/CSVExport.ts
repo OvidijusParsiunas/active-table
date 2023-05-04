@@ -1,4 +1,4 @@
-import {ActiveTable} from '../../../activeTable';
+import {ActiveTable} from '../../../../activeTable';
 
 export class CSVExport {
   public static export(at: ActiveTable, fileName?: string) {

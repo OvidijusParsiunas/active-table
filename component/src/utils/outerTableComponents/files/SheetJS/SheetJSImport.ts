@@ -1,8 +1,8 @@
-import {ActiveTable} from '../../../activeTable';
+import {ActiveTable} from '../../../../activeTable';
 import {CSVImport} from '../CSV/CSVImport';
 import xlsx from 'xlsx';
 
-export class XLSImport {
+export class SheetJSImport {
   public static import(at: ActiveTable, file: File, xlsxModule: typeof xlsx) {
     const reader = new FileReader();
     reader.readAsBinaryString(file);

@@ -1,7 +1,6 @@
-import {FileButtonElements} from '../../elements/files/buttons/fileButtonElements';
 import {PaginationElements} from '../../elements/pagination/paginationElements';
+import {FileButtonElements} from '../../elements/files/fileButtonElements';
 import {OuterContainerElements} from './outerContainerElements';
-import {CSVElemets} from '../../elements/CSV/CSVElements';
 import {ActiveTable} from '../../activeTable';
 
 export class OuterTableComponents {
@@ -9,6 +8,5 @@ export class OuterTableComponents {
     const outerContainers = OuterContainerElements.create(at);
     if (at.pagination) PaginationElements.create(at, outerContainers);
     if (at.files) FileButtonElements.create(at, outerContainers);
-    if (at.csv) CSVElemets.create(at, outerContainers);
   }
 }

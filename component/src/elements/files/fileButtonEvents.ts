@@ -1,5 +1,5 @@
-import {ElementStyle} from '../../../utils/elements/elementStyle';
-import {StatefulCSS} from '../../../types/cssStyle';
+import {ElementStyle} from '../../utils/elements/elementStyle';
+import {StatefulCSS} from '../../types/cssStyle';
 
 export class FileButtonEvents {
   private static buttonMouseUp(buttonStyle: StatefulCSS, event: MouseEvent) {
