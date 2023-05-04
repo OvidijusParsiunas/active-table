@@ -4,7 +4,7 @@ import {InterfacesUnion} from './utilityTypes';
 
 export type ImportOverwriteOptions = {tableRowStartIndex?: number; importRowStartIndex?: number};
 
-export type FileType = 'csv' | 'xls' | 'xlsx';
+export type FileType = 'csv' | 'xls' | 'xlsx' | 'ods' | 'txt' | 'html';
 
 export interface DragAndDrop {
   overlayStyle?: CSSStyle;
@@ -12,7 +12,7 @@ export interface DragAndDrop {
   overwriteOptions?: ImportOverwriteOptions;
 }
 
-// WORK - thing StatefulCSS can be the default
+// WORK - think StatefulCSS can be the default
 export interface FileButtonStyles<T = StatefulCSS> {
   styles?: T;
   text?: string;

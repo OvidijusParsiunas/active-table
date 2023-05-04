@@ -19,7 +19,7 @@ export class DropdownItemNavigation {
     if (dropdownParent.classList.contains(DropdownItem.DROPDOWN_ITEM_CLASS)) {
       dropdownElement = focusedItem.parentElement as HTMLElement;
     }
-    // when on last item/item
+    // when on last item
     const lastItem = isNext ? dropdownElement.children[0] : dropdownElement.children[dropdownElement.children.length - 1];
     return DropdownItemNavigation.focusSiblingItem(lastItem as HTMLElement, dropdownElement, isNext, true);
   }

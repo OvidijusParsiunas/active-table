@@ -2,13 +2,14 @@ import {XLSInternalUtils} from '../../../../utils/outerTableComponents/XLS/XLSIn
 import {CSVImport} from '../../../../utils/outerTableComponents/CSV/CSVImport';
 import {XLSImport} from '../../../../utils/outerTableComponents/XLS/XLSImport';
 import {FileType, ImportOverwriteOptions} from '../../../../types/files';
+import {ALLOWED_FILE_EXTENSIONS} from '../../../../consts/fileTypes';
 import {ActiveTable} from '../../../../activeTable';
 
 export class FileImportButtonEvents {
   public static importFile(at: ActiveTable, file: File, options?: ImportOverwriteOptions) {
     if (file.name.endsWith('.csv')) {
       CSVImport.import(at, file, options);
-    } else if (file.name.endsWith('.xls') || file.name.endsWith('.xlsx')) {
+    } else if (ALLOWED_FILE_EXTENSIONS.find((extension) => file.name.endsWith(extension))) {
       XLSInternalUtils.execFuncWithExtractorModule(XLSImport.import.bind(this, at, file));
     }
   }
