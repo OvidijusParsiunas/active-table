@@ -1,7 +1,6 @@
 import {DragAndDropEvents} from './dragAndDropEvents';
 import {ActiveTable} from '../../activeTable';
 import {Files} from '../../types/files';
-
 export class DragAndDropElement {
   private static createOverlayElement(files: Files) {
     const overlayElement = document.createElement('div');

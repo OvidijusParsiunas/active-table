@@ -6,18 +6,20 @@ import {ALLOWED_FILE_EXTENSIONS} from '../../../../consts/fileTypes';
 import {ActiveTable} from '../../../../activeTable';
 
 export class FileImportButtonEvents {
-  public static importFile(at: ActiveTable, file: File, options?: ImportOverwriteOptions) {
-    if (file.name.endsWith('.csv')) {
-      CSVImport.import(at, file, options);
-    } else if (ALLOWED_FILE_EXTENSIONS.find((extension) => file.name.endsWith(extension))) {
-      XLSInternalUtils.execFuncWithExtractorModule(XLSImport.import.bind(this, at, file));
+  public static importFile(at: ActiveTable, file: File, acceptedTypes: FileType[], options?: ImportOverwriteOptions) {
+    if (acceptedTypes.find((extension) => file.name.endsWith(extension))) {
+      if (file.name.endsWith('.csv')) {
+        CSVImport.import(at, file, options);
+      } else {
+        XLSInternalUtils.execFuncWithExtractorModule(XLSImport.import.bind(this, at, file));
+      }
     }
   }
 
   private static inputChange(at: ActiveTable, options: ImportOverwriteOptions | undefined, event: Event) {
     const inputElement = event.target as HTMLInputElement;
     const file = inputElement.files?.[0] as File;
-    FileImportButtonEvents.importFile(at, file, options);
+    FileImportButtonEvents.importFile(at, file, ALLOWED_FILE_EXTENSIONS as FileType[], options);
     inputElement.value = ''; // resetting to prevent Chrome issue of not being able to upload same file twice
   }
 

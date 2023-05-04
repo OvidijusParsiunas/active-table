@@ -72,6 +72,7 @@ import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
 import {CSV} from './types/CSV';
 
+// TO-DO - add comments on type properties
 // WORK - drag and drop func
 @customElement('active-table')
 export class ActiveTable extends LitElement {

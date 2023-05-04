@@ -10,7 +10,7 @@ export class XLSExport {
     return `table_data.${type}`;
   }
 
-  // for xls or xlsx
+  // not csv
   public static export(at: ActiveTable, type: FileType, fileName: string | undefined, xlsxModule: typeof xlsx) {
     const workbook = xlsxModule.utils.book_new();
     const worksheet = xlsxModule.utils.aoa_to_sheet(at.content);

@@ -4,7 +4,7 @@ import {InterfacesUnion} from './utilityTypes';
 
 export type ImportOverwriteOptions = {tableRowStartIndex?: number; importRowStartIndex?: number};
 
-export type FileType = 'csv' | 'xls' | 'xlsx' | 'ods' | 'txt' | 'html';
+export type FileType = 'csv' | 'xls' | 'xlsx' | 'ods' | 'txt';
 
 export interface DragAndDrop {
   overlayStyle?: CSSStyle;

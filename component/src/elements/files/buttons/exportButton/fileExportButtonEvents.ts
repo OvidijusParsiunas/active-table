@@ -7,10 +7,10 @@ import {FileType} from '../../../../types/files';
 
 export class FileExportButtonEvents {
   public static export(at: ActiveTable, type: FileType, fileName?: string) {
-    if (type === 'csv') {
-      CSVExport.export(at, fileName);
-    } else if (ALLOWED_FILE_EXTENSIONS.find((extension) => type === extension)) {
-      XLSInternalUtils.execFuncWithExtractorModule(XLSExport.export.bind(this, at, type, fileName));
+    if (ALLOWED_FILE_EXTENSIONS.find((extension) => type === extension)) {
+      if (type === 'csv') {
+        CSVExport.export(at, fileName);
+      } else XLSInternalUtils.execFuncWithExtractorModule(XLSExport.export.bind(this, at, type, fileName));
     }
   }
 
