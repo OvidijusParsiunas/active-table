@@ -1,13 +1,13 @@
 import {FileImportButtonEvents} from '../files/buttons/importButton/fileImportButtonEvents';
-import {ALLOWED_FILE_EXTENSIONS} from '../../consts/fileTypes';
+import {ACCEPTED_FILE_EXTENSIONS} from '../../consts/fileTypes';
 import {Files, FileType} from '../../types/files';
 import {ActiveTable} from '../../activeTable';
 
 export class DragAndDropEvents {
-  private static async uploadFile(at: ActiveTable, acceptedTypes: FileType[], event: DragEvent) {
+  private static async uploadFile(at: ActiveTable, types: FileType[], event: DragEvent) {
     const file = event.dataTransfer?.files?.[0] as File;
     const options = typeof at.files?.dragAndDrop === 'object' ? at.files.dragAndDrop.overwriteOptions : undefined;
-    FileImportButtonEvents.importFile(at, file, acceptedTypes, options);
+    FileImportButtonEvents.importFile(at, file, types, options);
   }
 
   private static toggleOverlayElement(overlayElement: HTMLElement, isDisplayed: boolean) {
@@ -15,21 +15,23 @@ export class DragAndDropEvents {
   }
 
   private static getAcceptedFileTypes(files?: Files) {
-    if (typeof files?.dragAndDrop === 'object' && files.dragAndDrop.acceptedTypes) {
-      return files.dragAndDrop.acceptedTypes;
+    if (typeof files?.dragAndDrop === 'object' && files.dragAndDrop.types) {
+      return files.dragAndDrop.types;
     }
     const importButtonTypes = files?.buttons
       ?.filter((button) => button.import)
-      .map((button) => button.import?.acceptedTypes)
+      .map((button) => {
+        return typeof button.import === 'object' && button.import.types ? button.import.types : ACCEPTED_FILE_EXTENSIONS;
+      })
       .flat(1);
     if (importButtonTypes && importButtonTypes.length > 0) {
-      return importButtonTypes;
+      return Array.from(new Set(importButtonTypes)); // makes all array entries unique
     }
-    return ALLOWED_FILE_EXTENSIONS;
+    return ACCEPTED_FILE_EXTENSIONS;
   }
 
   public static setEvents(at: ActiveTable, fullTableContainer: HTMLElement, overlayElement: HTMLElement) {
-    const acceptedTypes = DragAndDropEvents.getAcceptedFileTypes(at.files) as FileType[];
+    const types = DragAndDropEvents.getAcceptedFileTypes(at.files) as FileType[];
     fullTableContainer.ondragenter = (event) => {
       event.preventDefault();
       DragAndDropEvents.toggleOverlayElement(overlayElement, true);
@@ -43,7 +45,7 @@ export class DragAndDropEvents {
     };
     overlayElement.ondrop = (event) => {
       event.preventDefault();
-      DragAndDropEvents.uploadFile(at, acceptedTypes, event);
+      DragAndDropEvents.uploadFile(at, types, event);
       DragAndDropEvents.toggleOverlayElement(overlayElement, false);
     };
   }

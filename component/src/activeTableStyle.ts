@@ -405,7 +405,7 @@ export const activeTableStyle = css`
     height: calc(100% - 10px);
     width: calc(100% - 10px);
     background-color: #70c6ff4d;
-    border: 5px dashed rgb(47, 141, 255);
+    border: 5px dashed #6dafff;
     display: none;
   }
 
@@ -499,8 +499,6 @@ export const activeTableStyle = css`
     border: 1px solid #00000038;
     border-radius: 3px;
     color: #464646;
-    width: 96px;
-    height: 24px;
     padding-top: 5.5px;
     text-align: center;
     cursor: pointer;
@@ -508,6 +506,7 @@ export const activeTableStyle = css`
     background-color: #f8f8f9;
     font-family: system-ui;
     font-size: 14.5px;
+    padding: 6px 10px 7px;
   }
 
   .hidden-row {

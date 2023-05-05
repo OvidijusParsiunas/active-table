@@ -8,23 +8,23 @@ export type FileType = 'csv' | 'xls' | 'xlsx' | 'ods' | 'txt';
 
 export interface DragAndDrop {
   overlayStyle?: CSSStyle;
-  acceptedTypes?: FileType[]; // by default will inherit from Import buttons if it is defined
+  types?: FileType[]; // by default will inherit from Import buttons if it is defined
   overwriteOptions?: ImportOverwriteOptions;
 }
 
-// WORK - think StatefulCSS can be the default
-export interface FileButtonStyles<T = StatefulCSS> {
-  styles?: T;
+export interface FileButtonStyles {
+  styles?: StatefulCSS;
   text?: string;
   position?: OuterContentPosition;
   order?: number;
 }
 
-export type ImportButton = {acceptedTypes: FileType[]; overwriteOptions?: ImportOverwriteOptions};
+export type ImportOptions = {types?: FileType[]; overwriteOptions?: ImportOverwriteOptions};
 
-export type ExportButton = {type: FileType; fileName?: string};
+export type ExportOptions = {type?: FileType; fileName?: string};
 
-export type FileButton = FileButtonStyles & InterfacesUnion<{export: ExportButton} | {import: ImportButton}>;
+export type FileButton = FileButtonStyles &
+  InterfacesUnion<{export: boolean | ExportOptions} | {import: boolean | ImportOptions}>;
 
 export interface Files {
   buttons?: FileButton[];

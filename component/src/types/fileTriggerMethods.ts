@@ -1,5 +1,5 @@
-import {FileType, ImportOverwriteOptions} from './files';
+import {ImportOptions, ExportOptions} from './files';
 
-export type ImportFile = (acceptedTypes: FileType[], options?: ImportOverwriteOptions) => void;
+export type ImportFile = (options?: ImportOptions) => void;
 
-export type ExportFile = (type: FileType, fileName?: string) => void;
+export type ExportFile = (options?: ExportOptions) => void;

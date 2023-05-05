@@ -25,11 +25,11 @@ import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {ProgrammaticCellUpdateT} from './types/programmaticCellUpdateT';
 import {DefaultColumnsSettings} from './types/columnsSettingsDefault';
 import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
-import {Files, FileType, ImportOverwriteOptions} from './types/files';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {CellHighlightUtils} from './utils/color/cellHighlightUtils';
 import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
 import {ExportFile, ImportFile} from './types/fileTriggerMethods';
+import {ExportOptions, Files, ImportOptions} from './types/files';
 import {customElement, property, state} from 'lit/decorators.js';
 import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {StripedRowsInternal} from './types/stripedRowsInternal';
@@ -68,7 +68,6 @@ import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
 
 // TO-DO - add comments on type properties
-// WORK - drag and drop func
 @customElement('active-table')
 export class ActiveTable extends LitElement {
   @property({type: Function})
@@ -84,11 +83,10 @@ export class ActiveTable extends LitElement {
 
   // can only be activated by a user action - such as a button click
   @property({type: Function})
-  importFile: ImportFile = (acceptedTypes: FileType[], options?: ImportOverwriteOptions) =>
-    FileImportButtonEvents.triggerImportPrompt(this, acceptedTypes, options);
+  importFile: ImportFile = (options?: ImportOptions) => FileImportButtonEvents.triggerImportPrompt(this, options);
 
   @property({type: Function})
-  exportFile: ExportFile = (type: FileType, fileName?: string) => FileExportButtonEvents.export(this, type, fileName);
+  exportFile: ExportFile = (options?: ExportOptions) => FileExportButtonEvents.export(this, options);
 
   // REF-20
   @property({converter: LITElementTypeConverters.convertToFunction})
