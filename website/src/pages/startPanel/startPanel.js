@@ -6,6 +6,8 @@ function RightPanel() {
   return (
     <div id="start-panel-right">
       <div id="start-panel-right-table">
+        {/* WORK - bug with Category dropdown when navigating with keys */}
+        {/* Also category dropdown items overflow */}
         <ActiveTableBrowser
           tableStyle={{borderRadius: '5px', width: '100%'}}
           customColumnTypes={[

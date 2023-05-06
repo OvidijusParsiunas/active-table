@@ -27,6 +27,7 @@ import TabItem from '@theme/TabItem';
 import Tabs from '@theme/Tabs';
 
 <BrowserOnly>{() => require('@site/src/components/nav/autoNavToggle').readdAutoNavShadowToggle()}</BrowserOnly>
+<BrowserOnly>{() => require('@site/src/components/externalModules/externalModules').importXLSX()}</BrowserOnly>
 
 <TableContainerMethods propertyname={"getContent"}>
   <ActiveTable
@@ -167,17 +168,18 @@ tableElementRef.updateCell({newText: "sample text", rowIndex: 1, columnIndex: 1}
 
 <LineBreak></LineBreak>
 
-### `importCSV` {#importCSV}
+### `importFile` {#importFile}
 
-- Type: [`(overwriteOptions?: ImportOverwriteOptions) => void`](./sharedTypes#ImportOverwriteOptions)
+- Type: [`(options?: ImportOptions) => void`](./files#ImportOptions)
+- Default: _({types: ["csv"]}) => void_
 
-Opens up a file browser window to select a .csv file and import its data which will be used in the table. For browser security reasons - this method can ONLY
-be activated through user actions, such as a click of a button. You can optionally pass a [`overwriteOptions`](./sharedTypes#ImportOverwriteOptions) object
-to define what is to be overwritten.
+Opens up a file browser window to select a file and import its data. You can optionally pass an [`options`](./files#ImportOptions)
+object to define the allowed types and what they will overwrite. For browser security reasons - this method can ONLY be activated through
+user actions, such as a click of a button.
 
 #### Example
 
-<TableContainerMethods propertyname={"importCSV"} displayResults={false}>
+<TableContainerMethods propertyname={"importFile"} displayResults={false}>
   <ActiveTable
     content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
@@ -195,25 +197,32 @@ to define what is to be overwritten.
 <TabItem value="js" label="Code">
 
 ```html
-tableElementRef.importCSV();
+tableElementRef.importFile();
 ```
+
+:::info
+`csv` files are supported natively, however if you want to import any of the other file types - you will need to add the [`xlsx`](https://www.npmjs.com/package/xlsx) module
+into your project. Please see examples [here](../../examples/files).
+:::
 
 </TabItem>
 </Tabs>
 
 <LineBreak></LineBreak>
 
-### `exportCSV` {#exportCSV}
+### `exportFile` {#exportFile}
 
-- Type: `(fileName?: string) => void`
-- Default: _fileName: "table_data.csv"_
+xw
 
-Exports table content in a .csv file. You can optionally define the exported file's name by calling the method with a string argument
-e.g. _exportCSV("custom_file_name")_ or _exportCSV("custom_file_name.csv")_.
+- Type: [`(options?: exportOptions) => void`](./files#exportOptions)
+- Default: _({type: "csv", fileName: "table_data"}) => void_
+
+Exports existing table content into a file. You can optionally pass an [`options`](./files#exportOptions) object
+to define the exported file's name and its type.
 
 #### Example
 
-<TableContainerMethods propertyname={"exportCSV"} displayResults={false}>
+<TableContainerMethods propertyname={"exportFile"} displayResults={false}>
   <ActiveTable
     content={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
@@ -231,8 +240,13 @@ e.g. _exportCSV("custom_file_name")_ or _exportCSV("custom_file_name.csv")_.
 <TabItem value="js" label="Code">
 
 ```html
-tableElementRef.exportCSV();
+tableElementRef.exportFile();
 ```
 
 </TabItem>
 </Tabs>
+
+:::info
+`csv` files are supported natively, however if you want to export any of the other file types - you will need to add the [`xlsx`](https://www.npmjs.com/package/xlsx) module
+into your project. Please see examples [here](../../examples/files).
+:::
