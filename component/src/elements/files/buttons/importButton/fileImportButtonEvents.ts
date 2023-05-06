@@ -1,8 +1,8 @@
 import {SheetJSInternalUtils} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSInternalUtils';
 import {SheetJSImport} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSImport';
+import {ACCEPTED_FILE_EXTENSIONS, DEFAULT_FILE_EXTENSIONS} from '../../../../consts/fileTypes';
 import {FileType, ImportOptions, ImportOverwriteOptions} from '../../../../types/files';
 import {CSVImport} from '../../../../utils/outerTableComponents/files/CSV/CSVImport';
-import {ACCEPTED_FILE_EXTENSIONS} from '../../../../consts/fileTypes';
 import {ActiveTable} from '../../../../activeTable';
 
 export class FileImportButtonEvents {
@@ -24,7 +24,7 @@ export class FileImportButtonEvents {
   }
 
   private static getAcceptedTypes(importOptions?: ImportOptions) {
-    return importOptions?.types && importOptions.types.length > 0 ? importOptions.types : ACCEPTED_FILE_EXTENSIONS;
+    return importOptions?.types && importOptions.types.length > 0 ? importOptions.types : DEFAULT_FILE_EXTENSIONS;
   }
 
   public static triggerImportPrompt(at: ActiveTable, importOptions?: ImportOptions) {

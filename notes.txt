@@ -139,6 +139,15 @@ I have raised a stack overflow question to see if this can be fixed automaticall
 https://stackoverflow.com/questions/73920147/table-element-width-using-column-widths-safari)
 
 REF-17
+Conditional dynamic modules that are imported from the parent project had to be abandoned for the following reasons:
+await import('module'); would force the module to be present when the component is built. This was ok for this project as we can
+use the 'external: ['module']' property in rollup config, however if the component is part of another project with their own
+configuration - the module would need to be present even if it was not being used by the parent.
+A workaround to use padding in the imported module name (import('module' + paddingStr)) does not work in docusaurus (SSR)
+or solidjs.
+Using a url to import modules was a potential solution, however this is still new and is not supported by older bundlers
+such as webpack older versions - hence if parent project is using them - they would not build.
+Therefore the final solution is to import them as external scripts.
 
 REF-18
 The add row button is always in the table body and is converted into a no content stub and reconverted after it is clicked on.

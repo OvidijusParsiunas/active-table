@@ -1,5 +1,5 @@
 import {FileImportButtonEvents} from '../files/buttons/importButton/fileImportButtonEvents';
-import {ACCEPTED_FILE_EXTENSIONS} from '../../consts/fileTypes';
+import {DEFAULT_FILE_EXTENSIONS} from '../../consts/fileTypes';
 import {Files, FileType} from '../../types/files';
 import {ActiveTable} from '../../activeTable';
 
@@ -21,13 +21,13 @@ export class DragAndDropEvents {
     const importButtonTypes = files?.buttons
       ?.filter((button) => button.import)
       .map((button) => {
-        return typeof button.import === 'object' && button.import.types ? button.import.types : ACCEPTED_FILE_EXTENSIONS;
+        return typeof button.import === 'object' && button.import.types ? button.import.types : DEFAULT_FILE_EXTENSIONS;
       })
       .flat(1);
     if (importButtonTypes && importButtonTypes.length > 0) {
       return Array.from(new Set(importButtonTypes)); // makes all array entries unique
     }
-    return ACCEPTED_FILE_EXTENSIONS;
+    return DEFAULT_FILE_EXTENSIONS;
   }
 
   public static setEvents(at: ActiveTable, fullTableContainer: HTMLElement, overlayElement: HTMLElement) {

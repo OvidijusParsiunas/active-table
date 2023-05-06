@@ -6,11 +6,8 @@ export type ImportOverwriteOptions = {tableRowStartIndex?: number; importRowStar
 
 export type FileType = 'csv' | 'xls' | 'xlsx' | 'ods' | 'txt';
 
-export interface DragAndDrop {
-  overlayStyle?: CSSStyle;
-  types?: FileType[]; // by default will inherit from Import buttons if it is defined
-  overwriteOptions?: ImportOverwriteOptions;
-}
+// by default types property will inherit from Import buttons if it is defined
+export type DragAndDrop = {overlayStyle?: CSSStyle} & ImportOptions;
 
 export interface FileButtonStyles {
   styles?: StatefulCSS;
@@ -24,9 +21,9 @@ export type ImportOptions = {types?: FileType[]; overwriteOptions?: ImportOverwr
 export type ExportOptions = {type?: FileType; fileName?: string};
 
 export type FileButton = FileButtonStyles &
-  InterfacesUnion<{export: boolean | ExportOptions} | {import: boolean | ImportOptions}>;
+  InterfacesUnion<{export: true | ExportOptions} | {import: true | ImportOptions}>;
 
 export interface Files {
   buttons?: FileButton[];
-  dragAndDrop?: DragAndDrop | boolean;
+  dragAndDrop?: boolean | DragAndDrop;
 }

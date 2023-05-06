@@ -52,7 +52,7 @@ export interface RowsPerPageSelect {
 
 export interface Pagination {
   rowsPerPage?: number; // by default set to 10
-  rowsPerPageSelect?: RowsPerPageSelect | boolean;
+  rowsPerPageSelect?: boolean | RowsPerPageSelect;
   maxNumberOfVisiblePageButtons?: number; // by default set to 8
   displayPrevNext?: boolean; // by default true
   displayFirstLast?: boolean; // by default true

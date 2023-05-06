@@ -195,7 +195,7 @@ export class ActiveTable extends LitElement {
   // if using pagination with user defined rowsPerPageSelect, the options need to have an even number or otherwise
   // two rows could have same color (as rows are hidden and not removed)
   @property({type: Object})
-  stripedRows?: StripedRowsT | boolean;
+  stripedRows?: boolean | StripedRowsT;
 
   @property({type: Object})
   overflow?: Overflow;
@@ -252,7 +252,7 @@ export class ActiveTable extends LitElement {
   columnDropdown?: ColumnDropdownSettingsDefault;
 
   @property({type: Object})
-  pagination?: Pagination | boolean;
+  pagination?: boolean | Pagination;
 
   @property({type: Object})
   files?: Files;
