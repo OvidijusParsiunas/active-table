@@ -10,13 +10,13 @@ import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayEleme
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {AddNewColumnElement} from './addNewElements/column/addNewColumnElement';
 import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
+import {DragAndDropElement} from '../files/dragAndDrop/dragAndDropElement';
 import {StickyPropsUtils} from '../../utils/stickyProps/stickyPropsUtils';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {CustomRowProperties} from '../../utils/rows/customRowProperties';
 import {TableBorderDimensionsUtils} from './tableBorderDimensionsUtils';
 import {ActiveOverlayElements} from '../../types/activeOverlayElements';
 import {AddNewRowElement} from './addNewElements/row/addNewRowElement';
-import {DragAndDropElement} from '../dragAndDrop/dragAndDropElement';
 import {CellDropdown} from '../dropdown/cellDropdown/cellDropdown';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {TableDimensions} from '../../types/tableDimensions';

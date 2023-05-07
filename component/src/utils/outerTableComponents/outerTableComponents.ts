@@ -1,5 +1,5 @@
+import {FileButtonElements} from '../../elements/files/buttons/fileButtonElements';
 import {PaginationElements} from '../../elements/pagination/paginationElements';
-import {FileButtonElements} from '../../elements/files/fileButtonElements';
 import {OuterContainerElements} from './outerContainerElements';
 import {ActiveTable} from '../../activeTable';
 

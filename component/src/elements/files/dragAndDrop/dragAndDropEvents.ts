@@ -1,37 +1,37 @@
-import {FileImportButtonEvents} from '../files/buttons/importButton/fileImportButtonEvents';
-import {DEFAULT_FILE_EXTENSIONS} from '../../consts/fileTypes';
-import {Files, FileType} from '../../types/files';
-import {ActiveTable} from '../../activeTable';
+import {FileImportButtonEvents} from '../buttons/importButton/fileImportButtonEvents';
+import {DEFAULT_FILE_FORMATS} from '../../../consts/fileFormats';
+import {Files, FileFormat} from '../../../types/files';
+import {ActiveTable} from '../../../activeTable';
 
 export class DragAndDropEvents {
-  private static async uploadFile(at: ActiveTable, types: FileType[], event: DragEvent) {
+  private static async uploadFile(at: ActiveTable, formats: FileFormat[], event: DragEvent) {
     const file = event.dataTransfer?.files?.[0] as File;
     const options = typeof at.files?.dragAndDrop === 'object' ? at.files.dragAndDrop.overwriteOptions : undefined;
-    FileImportButtonEvents.importFile(at, file, types, options);
+    FileImportButtonEvents.importFile(at, file, formats, options);
   }
 
   private static toggleOverlayElement(overlayElement: HTMLElement, isDisplayed: boolean) {
     overlayElement.style.display = isDisplayed ? 'block' : 'none';
   }
 
-  private static getAcceptedFileTypes(files?: Files) {
-    if (typeof files?.dragAndDrop === 'object' && files.dragAndDrop.types) {
-      return files.dragAndDrop.types;
+  private static getAcceptedFileFormats(files?: Files) {
+    if (typeof files?.dragAndDrop === 'object' && files.dragAndDrop.formats) {
+      return files.dragAndDrop.formats;
     }
-    const importButtonTypes = files?.buttons
+    const importButtonFormats = files?.buttons
       ?.filter((button) => button.import)
       .map((button) => {
-        return typeof button.import === 'object' && button.import.types ? button.import.types : DEFAULT_FILE_EXTENSIONS;
+        return typeof button.import === 'object' && button.import.formats ? button.import.formats : DEFAULT_FILE_FORMATS;
       })
       .flat(1);
-    if (importButtonTypes && importButtonTypes.length > 0) {
-      return Array.from(new Set(importButtonTypes)); // makes all array entries unique
+    if (importButtonFormats && importButtonFormats.length > 0) {
+      return Array.from(new Set(importButtonFormats)); // makes all array entries unique
     }
-    return DEFAULT_FILE_EXTENSIONS;
+    return DEFAULT_FILE_FORMATS;
   }
 
   public static setEvents(at: ActiveTable, fullTableContainer: HTMLElement, overlayElement: HTMLElement) {
-    const types = DragAndDropEvents.getAcceptedFileTypes(at.files) as FileType[];
+    const formats = DragAndDropEvents.getAcceptedFileFormats(at.files) as FileFormat[];
     fullTableContainer.ondragenter = (event) => {
       event.preventDefault();
       DragAndDropEvents.toggleOverlayElement(overlayElement, true);
@@ -45,7 +45,7 @@ export class DragAndDropEvents {
     };
     overlayElement.ondrop = (event) => {
       event.preventDefault();
-      DragAndDropEvents.uploadFile(at, types, event);
+      DragAndDropEvents.uploadFile(at, formats, event);
       DragAndDropEvents.toggleOverlayElement(overlayElement, false);
     };
   }

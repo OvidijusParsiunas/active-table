@@ -1,13 +1,13 @@
 import {SheetJSInternalUtils} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSInternalUtils';
 import {SheetJSImport} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSImport';
-import {ACCEPTED_FILE_EXTENSIONS, DEFAULT_FILE_EXTENSIONS} from '../../../../consts/fileTypes';
-import {FileType, ImportOptions, ImportOverwriteOptions} from '../../../../types/files';
+import {ACCEPTED_FILE_FORMATS, DEFAULT_FILE_FORMATS} from '../../../../consts/fileFormats';
+import {FileFormat, ImportOptions, ImportOverwriteOptions} from '../../../../types/files';
 import {CSVImport} from '../../../../utils/outerTableComponents/files/CSV/CSVImport';
 import {ActiveTable} from '../../../../activeTable';
 
 export class FileImportButtonEvents {
-  public static importFile(at: ActiveTable, file: File, types: FileType[], options?: ImportOverwriteOptions) {
-    if (types.find((extension) => file.name.endsWith(extension))) {
+  public static importFile(at: ActiveTable, file: File, formats: FileFormat[], options?: ImportOverwriteOptions) {
+    if (formats.find((extension) => file.name.endsWith(extension))) {
       if (file.name.endsWith('.csv')) {
         CSVImport.import(at, file, options);
       } else {
@@ -19,18 +19,18 @@ export class FileImportButtonEvents {
   private static inputChange(at: ActiveTable, options: ImportOverwriteOptions | undefined, event: Event) {
     const inputElement = event.target as HTMLInputElement;
     const file = inputElement.files?.[0] as File;
-    FileImportButtonEvents.importFile(at, file, ACCEPTED_FILE_EXTENSIONS as FileType[], options);
+    FileImportButtonEvents.importFile(at, file, ACCEPTED_FILE_FORMATS as FileFormat[], options);
     inputElement.value = ''; // resetting to prevent Chrome issue of not being able to upload same file twice
   }
 
-  private static getAcceptedTypes(importOptions?: ImportOptions) {
-    return importOptions?.types && importOptions.types.length > 0 ? importOptions.types : DEFAULT_FILE_EXTENSIONS;
+  private static getAcceptedFormats(importOptions?: ImportOptions) {
+    return importOptions?.formats && importOptions.formats.length > 0 ? importOptions.formats : DEFAULT_FILE_FORMATS;
   }
 
   public static triggerImportPrompt(at: ActiveTable, importOptions?: ImportOptions) {
     const inputElement = at._files.inputElementRef;
-    const acceptedTypes = FileImportButtonEvents.getAcceptedTypes(importOptions);
-    inputElement.accept = acceptedTypes.map((type) => `.${type}`).join(',');
+    const acceptedFormats = FileImportButtonEvents.getAcceptedFormats(importOptions);
+    inputElement.accept = acceptedFormats.map((format) => `.${format}`).join(',');
     inputElement.onchange = FileImportButtonEvents.inputChange.bind(this, at, importOptions?.overwriteOptions);
     inputElement.click();
   }

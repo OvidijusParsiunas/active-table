@@ -4,7 +4,7 @@ import {InterfacesUnion} from './utilityTypes';
 
 export type ImportOverwriteOptions = {tableRowStartIndex?: number; importRowStartIndex?: number};
 
-export type FileType = 'csv' | 'xls' | 'xlsx' | 'ods' | 'txt';
+export type FileFormat = 'csv' | 'xls' | 'xlsx' | 'ods' | 'txt';
 
 // by default types property will inherit from Import buttons if it is defined
 export type DragAndDrop = {overlayStyle?: CSSStyle} & ImportOptions;
@@ -16,9 +16,9 @@ export interface FileButtonStyles {
   order?: number;
 }
 
-export type ImportOptions = {types?: FileType[]; overwriteOptions?: ImportOverwriteOptions};
+export type ImportOptions = {formats?: FileFormat[]; overwriteOptions?: ImportOverwriteOptions};
 
-export type ExportOptions = {type?: FileType; fileName?: string};
+export type ExportOptions = {format?: FileFormat; fileName?: string};
 
 export type FileButton = FileButtonStyles &
   InterfacesUnion<{export: true | ExportOptions} | {import: true | ImportOptions}>;
