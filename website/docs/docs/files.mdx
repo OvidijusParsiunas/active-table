@@ -333,7 +333,7 @@ file formats that are not in the [`formats`](#ImportOptions) array after they ar
 - Default: {_formats: ["csv"]_}
 
 Configuration for the importable files. <br />
-`formats` are the kind of files that are allowed to be imported. If the array is not set or is empty - it will default to _["csv"]_. <br />
+`formats` are file extensions that are allowed to be imported. If the array is not set or is empty - it will default to _["csv"]_. <br />
 `overwriteOptions` defines the content that the imported file will overwrite.
 
 #### Example
@@ -452,7 +452,7 @@ indicates that it will only use rows below the header. <br />
 `tableRowStartIndex` property marks the starting row of the data that will be completely removed and overwritten by the imported table rows. E.g. a value of _1_
 will overwrite all of the rows below the header row. Use a value of _-1_ to append the incoming table rows after the last existing row of the table. <br />
 
-#### Example when using csvButtons
+#### Example
 
 <TableContainer minHeight="380">
   <ActiveTable
@@ -505,8 +505,8 @@ will overwrite all of the rows below the header row. Use a value of _-1_ to appe
 
 ### `ExportOptions` {#ExportOptions}
 
-- Type: {[`format?: FileFormat`](#FileFormat), fileName?: string}
-- Default: _{format: "csv", fileName: "table_data"}_
+- Type: {fileName?: string, [`format?: FileFormat`](#FileFormat)}
+- Default: _{fileName: "table_data", format: "csv"}_
 
 Configuration for the exported `fileName` and its `format` .
 
@@ -516,11 +516,11 @@ Configuration for the exported `fileName` and its `format` .
   <ActiveTable
     files={{
       buttons: [
-        {export: {format: 'csv', fileName: 'example_csv'}, text: 'Export CSV'},
-        {export: {format: 'xls', fileName: 'example_xls'}, text: 'Export XLS'},
-        {export: {format: 'xlsx', fileName: 'example_xlsx'}, text: 'Export XLSX'},
-        {export: {format: 'ods', fileName: 'example_ods'}, text: 'Export ODS'},
-        {export: {format: 'txt', fileName: 'example_txt'}, text: 'Export TXT'},
+        {export: {fileName: 'example_csv', format: 'csv'}, text: 'Export CSV'},
+        {export: {fileName: 'example_xls', format: 'xls'}, text: 'Export XLS'},
+        {export: {fileName: 'example_xlsx', format: 'xlsx'}, text: 'Export XLSX'},
+        {export: {fileName: 'example_ods', format: 'ods'}, text: 'Export ODS'},
+        {export: {fileName: 'example_txt', format: 'txt'}, text: 'Export TXT'},
       ],
     }}
     content={[
@@ -542,11 +542,11 @@ Configuration for the exported `fileName` and its `format` .
 <active-table
   files='{
     "buttons": [
-      {"export": {"format": "csv", "fileName": "example_csv"}},
-      {"export": {"format": "xls", "fileName": "example_xls"}},
-      {"export": {"format": "xlsx", "fileName": "example_xlsx"}},
-      {"export": {"format": "ods", "fileName": "example_ods"}},
-      {"export": {"format": "txt", "fileName": "example_txt"}}
+      {"export": {"fileName": "example_csv", "format": "csv"}},
+      {"export": {"fileName": "example_xls", "format": "xls"}},
+      {"export": {"fileName": "example_xlsx", "format": "xlsx"}},
+      {"export": {"fileName": "example_ods", "format": "ods"}},
+      {"export": {"fileName": "example_txt", "format": "txt"}}
   ]}'
 ></active-table>
 ```
@@ -561,11 +561,11 @@ Configuration for the exported `fileName` and its `format` .
 <active-table
   files='{
     "buttons": [
-      {"export": {"format": "csv", "fileName": "example_csv"}, "text": "Export CSV"},
-      {"export": {"format": "xls", "fileName": "example_xls"}, "text": "Export XLS"},
-      {"export": {"format": "xlsx", "fileName": "example_xlsx"}, "text": "Export XLSX"},
-      {"export": {"format": "ods", "fileName": "example_ods"}, "text": "Export ODS"},
-      {"export": {"format": "txt", "fileName": "txt"}, "text": "Export TXT"}
+      {"export": {"fileName": "example_csv", "format": "csv"}, "text": "Export CSV"},
+      {"export": {"fileName": "example_xls", "format": "xls"}, "text": "Export XLS"},
+      {"export": {"fileName": "example_xlsx", "format": "xlsx"}, "text": "Export XLSX"},
+      {"export": {"fileName": "example_ods", "format": "ods"}, "text": "Export ODS"},
+      {"export": {"fileName": "example_txt", "format": "txt"}, "text": "Export TXT"}
   ]}'
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
@@ -587,4 +587,4 @@ Configuration for the exported `fileName` and its `format` .
 
 - Type: `"csv"` | `"xls"` | `"xlsx"` | `"ods"` | `"txt"`
 
-Formats of files that can be imported into and exported out of Active Table.
+File formats that can be imported into and exported out of Active Table.

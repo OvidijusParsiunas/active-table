@@ -20,7 +20,7 @@
 - Programmatic cell updates
 - Pagination
 - Overflow scrollbar
-- Import/Export/Paste from CSV
+- Import/Export/Paste/Drag&Drop csv, xls, xlsx, ods, txt files
 - Everything is customizable!
 
 ### :computer: Getting started
@@ -45,6 +45,7 @@ The exact syntax for the above example will vary depending on the framework of y
 
 ### :dart: Roadmap
 
+- [x] Support csv, xls, xlsx, ods, txt files
 - [ ] Code refactoring (<b>In Progress</b>)
 - [ ] Move row/column by dragging
 - [ ] Pick mode

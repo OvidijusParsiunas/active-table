@@ -22,7 +22,7 @@ This package is an [Active Table](https://www.npmjs.com/package/active-table) co
 - Programmatic cell updates
 - Pagination
 - Overflow scrollbar
-- Import/Export/Paste from CSV
+- Import/Export/Paste/Drag&Drop csv, xls, xlsx, ods, txt files
 - Everything is customizable!
 
 ### :computer: Getting started
@@ -41,8 +41,8 @@ Explore live examples for React and other frameworks [here](https://activetable.
 
 ### :dart: Roadmap
 
+- [x] Support csv, xls, xlsx, ods, txt files
 - [ ] Code refactoring (<b>In Progress</b>)
-- [ ] Move row/column by dragging
 - [ ] Pick mode
 - [ ] Data filtering
 - [ ] Unit tests
