@@ -8,6 +8,7 @@ import {CellDropdown} from '../../elements/dropdown/cellDropdown/cellDropdown';
 import {ColumnSettingsInternal} from '../../types/columnsSettingsInternal';
 import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
+import {IconSettings} from '../../types/dropdownButtonItem';
 import {DefaultColumnTypes} from './defaultColumnTypes';
 import {CellText} from '../../types/tableContent';
 import {ObjectUtils} from '../object/objectUtils';
@@ -59,10 +60,10 @@ export class ColumnTypesUtils {
 
   private static processDropdownItemSettings(type: ColumnType) {
     const {name, iconSettings} = type;
-    let dropdownIconSettings = null;
+    let dropdownIconSettings: IconSettings;
     if (iconSettings) {
       if (iconSettings.reusableIconName) {
-        dropdownIconSettings = ColumnTypesUtils.getReusableDefaultIcon(iconSettings);
+        dropdownIconSettings = ColumnTypesUtils.getReusableDefaultIcon(iconSettings) as IconSettings;
       } else {
         dropdownIconSettings = iconSettings;
         if (Object.keys(iconSettings).length === 0) {

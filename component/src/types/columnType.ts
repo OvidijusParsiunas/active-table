@@ -9,9 +9,8 @@ import {Sorting} from './sorting';
 
 // This is to be used by the client exclusively
 
-export type ColumnIconSettings = {
-  reusableIconName?: DEFAULT_COLUMN_TYPES; // can reuse one of the existing icons
-} & IconSettings;
+// can reuse one of the existing icons
+export type ColumnIconSettings = InterfacesUnion<{reusableIconName: DEFAULT_COLUMN_TYPES} | IconSettings>;
 
 interface Parent {
   name: string;

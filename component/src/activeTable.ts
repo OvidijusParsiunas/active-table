@@ -67,6 +67,7 @@ import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
 
+// WORK - on-render
 // TO-DO - add comments on type properties
 @customElement('active-table')
 export class ActiveTable extends LitElement {

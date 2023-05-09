@@ -12,6 +12,7 @@ import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {DropdownItem} from '../../elements/dropdown/dropdownItem';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
 import {ColumnType, ColumnTypes} from '../../types/columnType';
+import {IconSettings} from '../../types/dropdownButtonItem';
 import {Validation} from './validation';
 import {Sort} from './sort';
 
@@ -69,7 +70,10 @@ export class DefaultColumnTypes {
       label: {},
       iconSettings: {
         svgString: LABEL_ICON_SVG_STRING,
-        containerStyles: {dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'}},
+        containerStyles: {
+          dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'},
+          headerCorrections: {marginTop: '2.5px', marginRight: '5.5px', marginLeft: '0px'},
+        },
       },
     },
     {
@@ -117,7 +121,7 @@ export class DefaultColumnTypes {
     DefaultColumnTypes.DEFAULT_TYPES.forEach((type) => {
       const settings = {
         text: type.name,
-        iconSettings: type.iconSettings || DropdownButtonItemConf.DEFAULT_ITEM.iconSettings,
+        iconSettings: (type.iconSettings as IconSettings) || DropdownButtonItemConf.DEFAULT_ITEM.iconSettings,
       };
       (type as ColumnTypeInternal).dropdownItem = {
         element: DropdownItem.createButtonItemNoEvents(undefined, settings),

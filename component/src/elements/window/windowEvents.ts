@@ -35,7 +35,7 @@ export class WindowEvents {
       ColumnDropdownEvents.onKeyDown.bind(this)(this._activeOverlayElements.columnDropdown as HTMLElement, event);
       return;
     }
-    if (this._columnsDetails[columnIndex].activeType.cellDropdownProps) {
+    if (rowIndex > 0 && this._columnsDetails[columnIndex].activeType.cellDropdownProps) {
       SelectCellTextBaseEvents.keyDownText(this, rowIndex, columnIndex, event);
     }
   }

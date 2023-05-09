@@ -13,6 +13,9 @@ function RightPanel() {
           customColumnTypes={[
             {
               name: 'Category',
+              iconSettings: {
+                reusableIconName: 'label',
+              },
               label: {
                 // options: [
                 //   {text: 'Vehicles', backgroundColor: '#d9ebfc'},
