@@ -10,8 +10,7 @@ export class CSVImport {
   }
 
   private static parseDataFromRow(row: string, rowsOfData: string[][], largestRowLength: number) {
-    // WORK - bug where the start empty cells are not parsed correctly
-    const data = row.split(',').filter((cellValue) => cellValue.trim() !== '');
+    const data = row.split(',');
     if (data.length > 0) {
       rowsOfData.push(data);
       if (data.length > largestRowLength) largestRowLength = data.length;
