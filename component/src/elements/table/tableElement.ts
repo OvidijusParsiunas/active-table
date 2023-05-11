@@ -47,7 +47,7 @@ export class TableElement {
     activeOverlayElements.fullTableOverlay = fullTableOverlay;
     const fullTableContainer = at._overflow?.overflowContainer || tableElement;
     fullTableContainer.appendChild(fullTableOverlay);
-    if (at.files?.dragAndDrop) DragAndDropElement.append(at, fullTableContainer);
+    if (DragAndDropElement.isEnabled(at.files)) DragAndDropElement.append(at, fullTableContainer);
     // column dropdown
     const columnDropdownElement = ColumnDropdown.create(at);
     tableElement.appendChild(columnDropdownElement);

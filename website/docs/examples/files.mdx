@@ -17,14 +17,14 @@ Active Table recognises this module via the `window` element as `window.XLSX`. H
   If you are using a dependancy manager such as npm, you can dynamically import the module from the following url and
   assign it to window.XLSX: <br />
   https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js
-- <b>Script from local file</b> <br />
+- <b>Script from a local file</b> <br />
   You can download the `xlsv` module file from the url above and import it by creating a script tag and appending it to the
   document body (this will automatically assign it to window.XLSX).
 - <b>Script from a CDN</b> <br />
   You can create a script tag with the url above and append it to the document body (this will automatically assign it to
   window.XLSX).
 
-If you are using `TypeScript`, add this to your file:
+If you are using `TypeScript`, add this to the file where the module is used:
 
 ```
 declare global {
@@ -46,17 +46,17 @@ VanillaJS allows you to simply append the module in a script tag:
 
 ## Why
 
-The decision for the developer to download an external dependancy was not easy to make and there are a multiple reasons that
+The decision for developers to download an external dependancy was not easy to make and there are a multiple reasons that
 lead us down this road. <br />
 The [`xlsx`](https://www.npmjs.com/package/xlsx) module's post compression file size is similar to Active Table itself, which
-ruled out the idea of bundling it into our project as it would effectively double its size. <br />
-We spent some time experimenting with dynamic imports which were very promising, but unfortunatelly we came to
-a roadblock that had no simple way of overcoming; Active Table is an injectable component that exists as part of an arbitrary
-project which can have a wide range of possible framework + bundler configurations and needs to do its best to run in as many of
-them as possible. This is where dynamic imports become problematic as they are not supported by all bundlers and in many cases need
-extra configuration to make them work. <br />
-Hence, in order to help make the lives of the developers' as simple as possible, we have left the decision of how to implement
-[`xlsx`](https://www.npmjs.com/package/xlsx) in their hands and allow them to tailor the configuration to their specific setup.
+ruled out the idea of bundling it together as it would effectively double its size. <br />
+We spent some time experimenting with dynamic imports which seemed promising, but unfortunatelly we came to
+a roadblock that had no simple way of overcoming; Active Table is an injectable component that exists as part of a project
+that can have a wide range of possible framework + bundler configurations and needs to do its best to run in as many of their
+combinations as possible. This is where dynamic imports become problematic as they are not supported by all bundlers and in
+many cases need extra configuration to make them work. <br />
+Therefore, in order to help make the lives of our developers as simple as possible, we have left the decision of how to implement
+[`xlsx`](https://www.npmjs.com/package/xlsx) in their hands in order to alllow them to tailor the configuration to their specific setup.
 
 ## Troubleshooting
 

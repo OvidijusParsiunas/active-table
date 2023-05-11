@@ -15,4 +15,11 @@ export class DragAndDropElement {
     DragAndDropEvents.setEvents(at, fullTableContainer, overlayElement);
     fullTableContainer.appendChild(overlayElement);
   }
+
+  public static isEnabled(files?: Files) {
+    if (files?.dragAndDrop !== undefined) {
+      return !!files.dragAndDrop;
+    }
+    return !!files?.buttons?.find((button) => button.import);
+  }
 }
