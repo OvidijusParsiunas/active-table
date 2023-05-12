@@ -12,7 +12,9 @@ export const activeTableStyle = css`
 
   table {
     border-spacing: 0px;
+    /* fallback font-family is Avenir */
     font-family: Avenir, Helvetica, Arial, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     position: relative;
     border: 1px solid #00000026;
     background-color: white;
@@ -48,7 +50,7 @@ export const activeTableStyle = css`
 
   .row {
     color: rgba(0, 0, 0, 0.87);
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 400;
     /* the following is not supported in Firefox (on rows), hence rowHoverStyles will not have the border */
     border-radius: inherit;
@@ -75,7 +77,7 @@ export const activeTableStyle = css`
     text-align: left;
     padding: 6px;
     padding-top: 11px;
-    height: 43px;
+    height: 42.5px;
     box-sizing: border-box;
     outline: none;
     overflow-wrap: anywhere;
@@ -195,11 +197,10 @@ export const activeTableStyle = css`
   }
 
   #add-new-row-cell {
-    padding-top: 8px;
+    padding-top: 5px;
     padding-left: 17px;
     min-height: 28px;
     line-height: 18px;
-    font-size: 12px;
     color: #555555;
     vertical-align: middle;
     cursor: pointer;
@@ -252,7 +253,7 @@ export const activeTableStyle = css`
     cursor: pointer;
     /* retaining the outline for dropdown input to make it easier to recognise */
     outline: none;
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .dropdown-item-icon-container {
@@ -269,7 +270,7 @@ export const activeTableStyle = css`
     cursor: default;
     color: #7c7c7c;
     font-weight: 600;
-    font-size: 0.75rem;
+    font-size: 12px;
     margin-top: 2px;
   }
 
@@ -325,16 +326,6 @@ export const activeTableStyle = css`
     opacity: 1;
   }
 
-  .cell-drodown-option-button-icon {
-    position: absolute;
-    color: grey;
-    left: 2px;
-    top: -3px;
-    font-size: 14px;
-    pointer-events: none;
-    color: black;
-  }
-
   .cell-drodown-option-button-container {
     position: absolute;
     width: 100%;
@@ -344,11 +335,21 @@ export const activeTableStyle = css`
     display: none;
   }
 
+  .cell-drodown-option-delete-button-icon {
+    position: absolute;
+    color: grey;
+    left: 2.8px;
+    top: -3px;
+    font-size: 13.5px;
+    pointer-events: none;
+    color: black;
+  }
+
   .cell-dropdown-option-color-button-icon {
     position: absolute;
-    font-size: 13px;
-    top: -3.2px;
-    left: 3px;
+    font-size: 11.5px;
+    top: -2.8px;
+    left: 3.1px;
     pointer-events: none;
     color: black;
   }

@@ -25,5 +25,5 @@ export type FileButton = FileButtonStyles &
 
 export interface Files {
   buttons?: FileButton[];
-  dragAndDrop?: boolean | DragAndDrop; // WORK - enable this by default if import button present
+  dragAndDrop?: boolean | DragAndDrop;
 }

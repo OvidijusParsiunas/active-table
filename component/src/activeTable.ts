@@ -43,6 +43,7 @@ import {OverflowUtils} from './utils/overflow/overflowUtils';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
 import {ColumnType, ColumnTypes} from './types/columnType';
+import {GoogleFont} from './utils/webComponent/googleFont';
 import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
 import {ColumnResizerColors} from './types/columnSizer';
@@ -377,6 +378,7 @@ export class ActiveTable extends LitElement {
   }
 
   override connectedCallback() {
+    GoogleFont.appendStyleSheetToHead();
     // REF-14
     if (Browser.IS_FIREFOX) {
       setTimeout(() => super.connectedCallback());
