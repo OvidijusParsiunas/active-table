@@ -38,7 +38,7 @@ export class DefaultColumnTypes {
         svgString: NUMBER_ICON_SVG_STRING,
         containerStyles: {
           dropdown: {marginLeft: '-1px', marginRight: '4.5px', marginTop: '2px'},
-          headerCorrections: {marginTop: '3px'},
+          headerCorrections: {marginTop: '2.5px'},
         },
       },
     },
@@ -49,8 +49,8 @@ export class DefaultColumnTypes {
       iconSettings: {
         svgString: CURRENCY_ICON_SVG_STRING,
         containerStyles: {
-          dropdown: {marginLeft: '-2px', marginRight: '3.5px', marginTop: '1px'},
-          headerCorrections: {marginRight: '3px', marginTop: '2.5px'},
+          dropdown: {marginLeft: '-2px', marginRight: '4px', marginTop: '1px'},
+          headerCorrections: {marginRight: '3px', marginTop: '2px'},
         },
       },
     },
@@ -60,8 +60,8 @@ export class DefaultColumnTypes {
       iconSettings: {
         svgString: SELECT_ICON_SVG_STRING,
         containerStyles: {
-          dropdown: {marginTop: '0.75px', marginRight: '3px', marginLeft: '-2.75px'},
-          headerCorrections: {marginTop: '2px'},
+          dropdown: {marginTop: '0.5px', marginRight: '3px', marginLeft: '-2.75px'},
+          headerCorrections: {marginTop: '1.5px'},
         },
       },
     },
@@ -72,7 +72,7 @@ export class DefaultColumnTypes {
         svgString: LABEL_ICON_SVG_STRING,
         containerStyles: {
           dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'},
-          headerCorrections: {marginTop: '3px', marginRight: '5.5px', marginLeft: '0px'},
+          headerCorrections: {marginTop: '2.5px', marginRight: '5.5px', marginLeft: '0px'},
         },
       },
     },
@@ -97,7 +97,7 @@ export class DefaultColumnTypes {
       iconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
         containerStyles: {
-          dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-1px'},
+          dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-2px'},
           headerCorrections: {marginTop: '0px'},
         },
       },
@@ -109,7 +109,7 @@ export class DefaultColumnTypes {
       iconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
         containerStyles: {
-          dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-1px'},
+          dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-2px'},
           headerCorrections: {marginTop: '0px'},
         },
       },

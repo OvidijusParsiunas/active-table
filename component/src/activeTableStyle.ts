@@ -12,9 +12,7 @@ export const activeTableStyle = css`
 
   table {
     border-spacing: 0px;
-    /* fallback font-family is Avenir */
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Inter', sans-serif, Avenir, Helvetica, Arial;
     position: relative;
     border: 1px solid #00000026;
     background-color: white;
@@ -50,7 +48,7 @@ export const activeTableStyle = css`
 
   .row {
     color: rgba(0, 0, 0, 0.87);
-    font-size: 12.5px;
+    font-size: 13px;
     font-weight: 400;
     /* the following is not supported in Firefox (on rows), hence rowHoverStyles will not have the border */
     border-radius: inherit;
@@ -144,7 +142,7 @@ export const activeTableStyle = css`
   .header-cell {
     border-top: none !important;
     cursor: pointer;
-    color: #575757;
+    color: #626262;
     padding-top: 12px;
     padding-bottom: 12px;
     font-weight: 500;
@@ -197,10 +195,11 @@ export const activeTableStyle = css`
   }
 
   #add-new-row-cell {
-    padding-top: 5px;
+    padding-top: 8px;
     padding-left: 17px;
     min-height: 28px;
     line-height: 18px;
+    font-size: 12px;
     color: #555555;
     vertical-align: middle;
     cursor: pointer;
@@ -244,8 +243,8 @@ export const activeTableStyle = css`
   }
 
   .dropdown-item {
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding-top: 3px;
+    padding-bottom: 3px;
     padding-right: 5px;
     padding-left: 5px;
     color: #4b4b4b;
@@ -253,7 +252,7 @@ export const activeTableStyle = css`
     cursor: pointer;
     /* retaining the outline for dropdown input to make it easier to recognise */
     outline: none;
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .dropdown-item-icon-container {
@@ -270,7 +269,7 @@ export const activeTableStyle = css`
     cursor: default;
     color: #7c7c7c;
     font-weight: 600;
-    font-size: 12px;
+    font-size: 0.75rem;
     margin-top: 2px;
   }
 
@@ -285,6 +284,7 @@ export const activeTableStyle = css`
     color: #2d2d2d;
     font-size: 14px;
     padding: 3px;
+    padding-top: 4px;
   }
 
   .dropdown-item-divider {
@@ -338,18 +338,18 @@ export const activeTableStyle = css`
   .cell-drodown-option-delete-button-icon {
     position: absolute;
     color: grey;
-    left: 2.8px;
-    top: -3px;
-    font-size: 13.5px;
+    left: 2.4px;
+    top: -2px;
+    font-size: 13px;
     pointer-events: none;
     color: black;
   }
 
   .cell-dropdown-option-color-button-icon {
     position: absolute;
-    font-size: 11.5px;
-    top: -2.8px;
-    left: 3.1px;
+    font-size: 12px;
+    top: -1.5px;
+    left: 2.8px;
     pointer-events: none;
     color: black;
   }
@@ -458,7 +458,6 @@ export const activeTableStyle = css`
   }
 
   #pagination-number-of-rows-select {
-    padding-top: 2px;
     position: relative;
     color: #1d1d1d;
     min-width: max-content;
@@ -472,7 +471,7 @@ export const activeTableStyle = css`
     display: inline-block;
     background-color: white;
     border: 1px solid #0000004d;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
   }
 
@@ -487,10 +486,6 @@ export const activeTableStyle = css`
     pointer-events: none;
   }
 
-  .pagination-text-component {
-    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  }
-
   .number-of-rows-dropdown-item {
     padding-right: 12.5px;
     text-align: right;
@@ -500,14 +495,15 @@ export const activeTableStyle = css`
     border: 1px solid #00000038;
     border-radius: 3px;
     color: #464646;
-    padding-top: 5.5px;
     text-align: center;
     cursor: pointer;
     user-select: none;
     background-color: #f8f8f9;
-    font-family: system-ui;
     font-size: 14.5px;
-    padding: 6px 10px 7px;
+    align-items: center;
+    display: flex;
+    height: 29px;
+    padding: 0px 10px 1px;
   }
 
   .hidden-row {
@@ -533,6 +529,7 @@ export const activeTableStyle = css`
     display: grid;
     position: relative;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    font-family: Inter, sans-serif, Avenir, Helvetica, Arial;
   }
 
   #outer-top-container > div > * {

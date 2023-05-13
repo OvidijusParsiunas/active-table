@@ -58,7 +58,7 @@ export class RowsPerPageSelectButtonElement {
       arrow.style.fontSize = '16px';
       arrow.style.marginLeft = '5px';
     } else {
-      arrow.style.transform = 'translateY(-16%)';
+      arrow.style.transform = 'translateY(-21%)';
       arrow.style.fontSize = '17px';
       arrow.style.marginLeft = '4px';
     }
@@ -85,7 +85,7 @@ export class RowsPerPageSelectButtonElement {
   private static createOptionsButton(pagination: PaginationInternal) {
     const optionsButton = document.createElement('div');
     optionsButton.id = RowsPerPageSelectButtonElement.BUTTON_ID;
-    optionsButton.style.padding = Browser.IS_CHROMIUM ? '1px 5px' : '1px 6px';
+    optionsButton.style.padding = Browser.IS_FIREFOX ? '4px 5px 3px' : '3px 5px 4px';
     RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(optionsButton, pagination.styles.rowsPerPageSelect?.button);
     return optionsButton;
   }
