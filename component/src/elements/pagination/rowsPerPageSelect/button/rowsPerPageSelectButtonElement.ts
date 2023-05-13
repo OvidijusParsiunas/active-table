@@ -1,15 +1,17 @@
+import {ARROW_DOWN_SVG_STRING} from '../../../../consts/icons/arrowDownIconSVGString';
 import {GenericElementUtils} from '../../../../utils/elements/genericElementUtils';
 import {RowsPerPageSelectButtonEvents} from './rowsPerPageSelectButtonEvents';
 import {PaginationInternal} from '../../../../types/paginationInternal';
 import {RowsPerPageOptionsStyle} from '../../../../types/pagination';
 import {ElementStyle} from '../../../../utils/elements/elementStyle';
-import {Browser} from '../../../../utils/browser/browser';
+import {SVGIconUtils} from '../../../../utils/svgIcons/svgIconUtils';
 import {StatefulCSS} from '../../../../types/cssStyle';
 import {ActiveTable} from '../../../../activeTable';
 
 export class RowsPerPageSelectButtonElement {
   private static readonly BUTTON_ID = 'rows-per-page-select-button';
-  private static readonly ARROW_ID = 'rows-per-page-select-button-arrow';
+  private static readonly ARROW_CONTAINER_ID = 'rows-per-page-select-button-arrow-container';
+  private static readonly ARROW_ICON_ID = 'rows-per-page-select-button-arrow-icon';
   private static readonly TEXT_ID = 'rows-per-page-select-button-text';
 
   // prettier-ignore
@@ -51,19 +53,12 @@ export class RowsPerPageSelectButtonElement {
 
   private static createButtonArrow(pagination: PaginationInternal) {
     const arrow = document.createElement('div');
-    arrow.id = RowsPerPageSelectButtonElement.ARROW_ID;
+    arrow.id = RowsPerPageSelectButtonElement.ARROW_CONTAINER_ID;
     arrow.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);
-    if (Browser.IS_FIREFOX) {
-      arrow.style.transform = 'translateY(-8%) scaleX(1.4)';
-      arrow.style.fontSize = '16px';
-      arrow.style.marginLeft = '5px';
-    } else {
-      arrow.style.transform = 'translateY(-21%)';
-      arrow.style.fontSize = '17px';
-      arrow.style.marginLeft = '4px';
-    }
     RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(arrow, pagination.styles.rowsPerPageSelect?.buttonArrow);
-    arrow.innerHTML = '&#8964';
+    const arrowDownIcon = SVGIconUtils.createSVGElement(ARROW_DOWN_SVG_STRING);
+    arrowDownIcon.id = RowsPerPageSelectButtonElement.ARROW_ICON_ID;
+    arrow.appendChild(arrowDownIcon);
     return arrow;
   }
 
@@ -85,7 +80,6 @@ export class RowsPerPageSelectButtonElement {
   private static createOptionsButton(pagination: PaginationInternal) {
     const optionsButton = document.createElement('div');
     optionsButton.id = RowsPerPageSelectButtonElement.BUTTON_ID;
-    optionsButton.style.padding = Browser.IS_FIREFOX ? '4px 5px 3px' : '3px 5px 4px';
     RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(optionsButton, pagination.styles.rowsPerPageSelect?.button);
     return optionsButton;
   }

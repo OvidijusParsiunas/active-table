@@ -439,9 +439,11 @@ export const activeTableStyle = css`
     border-right: unset;
     color: #353535;
     min-width: 30px;
-    height: 25px;
-    padding-top: 4px;
-    text-align: center;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 1px;
     cursor: pointer;
   }
 
@@ -472,18 +474,32 @@ export const activeTableStyle = css`
     background-color: white;
     border: 1px solid #0000004d;
     border-radius: 4px;
+    height: 24px;
+    margin-top: 1px;
+    padding-top: 3px;
+    padding-left: 6px;
+    padding-right: 2px;
     cursor: pointer;
   }
 
-  #rows-per-page-select-button-arrow {
-    display: inline-block;
+  #rows-per-page-select-button-arrow-container {
     pointer-events: none;
     color: #353535;
+    font-size: 16px;
+    float: right;
+    margin: 1px;
+    width: 19px;
+  }
+
+  #rows-per-page-select-button-arrow-icon {
+    height: 20px;
+    transform: scale(0.7, 1);
   }
 
   #rows-per-page-select-button-text {
     display: inline-block;
     pointer-events: none;
+    padding-top: 1px;
   }
 
   .number-of-rows-dropdown-item {
