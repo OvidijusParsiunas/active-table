@@ -277,7 +277,7 @@ Styling properties of pagination components. <br />
         "numberOfVisibleRows": {"color": "#174a76"},
         "pageButtons": {
           "buttons": {
-            "default": {"color": "steelblue", "border":"1px solid #dedede", "borderRight": "unset"}
+            "default": {"color": "steelblue", "stroke": "steelblue", "border":"1px solid #dedede", "borderRight": "unset"}
           },
           "activeButton": {"default": {"backgroundColor": "steelblue", "color": "white", "border":"1px solid steelblue"}},
           "firstVisibleButtonOverride": {"borderTopLeftRadius": "2px", "borderBottomLeftRadius": "2px"},
@@ -332,7 +332,7 @@ Styling properties of pagination components. <br />
       "numberOfVisibleRows": {"color": "#174a76"},
       "pageButtons": {
         "buttons": {
-          "default": {"color": "steelblue", "border":"1px solid #dedede", "borderRight": "unset"}
+          "default": {"color": "steelblue", "stroke": "steelblue", "border":"1px solid #dedede", "borderRight": "unset"}
         },
         "activeButton": {"default": {"backgroundColor": "steelblue", "color": "white", "border":"1px solid steelblue"}},
         "firstVisibleButtonOverride": {"borderTopLeftRadius": "2px", "borderBottomLeftRadius": "2px"},
@@ -361,7 +361,7 @@ Styling properties of pagination components. <br />
       "numberOfVisibleRows": {"color": "#174a76"},
       "pageButtons": {
         "buttons": {
-          "default": {"color": "steelblue", "border":"1px solid #dedede", "borderRight": "unset"}
+          "default": {"color": "steelblue", "stroke": "steelblue", "border":"1px solid #dedede", "borderRight": "unset"}
         },
         "activeButton": {"default": {"backgroundColor": "steelblue", "color": "white", "border":"1px solid steelblue"}},
         "firstVisibleButtonOverride": {"borderTopLeftRadius": "2px", "borderBottomLeftRadius": "2px"},
@@ -404,8 +404,8 @@ Styling properties of pagination components. <br />
 </Tabs>
 
 :::tip
-When number of visible rows text contains digits that are in the 100s+, it is advisable to set `numberOfVisibleRows` with a minWidth value that is higher than
-'32px' to stop side components from moving when its digits change.
+When number of visible rows text contains digits that are in the 100s+, it is advisable to set `numberOfVisibleRows` with a `minWidth` value that is higher than
+_32px_ to stop side components from moving when its digits change.
 :::
 
 <LineBreak></LineBreak>
@@ -585,7 +585,7 @@ as otherwise the last button is not going to have a border on the right.
         "pageButtons": {
           "buttons": {
             "default": {
-              "color": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset", "minWidth": "30px"
+              "color": "#3682ec", "stroke": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset", "minWidth": "30px"
           }},
           "activeButton": {"default": {"backgroundColor": "#3682ec", "color": "white", "border":"1px solid #3682ec"}},
           "firstVisibleButtonOverride": {"borderTopLeftRadius": "5px", "borderBottomLeftRadius": "5px"},
@@ -635,7 +635,7 @@ as otherwise the last button is not going to have a border on the right.
       "pageButtons": {
         "buttons": {
           "default": {
-            "color": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset", "minWidth": "30px"
+            "color": "#3682ec", "stroke": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset", "minWidth": "30px"
         }},
         "activeButton": {"default": {"backgroundColor": "#3682ec", "color": "white", "border":"1px solid #3682ec"}},
         "firstVisibleButtonOverride": {"borderTopLeftRadius": "5px", "borderBottomLeftRadius": "5px"},
@@ -659,7 +659,7 @@ as otherwise the last button is not going to have a border on the right.
       "pageButtons": {
         "buttons": {
           "default": {
-            "color": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset", "minWidth": "30px"
+            "color": "#3682ec", "stroke": "#3682ec", "border":"1px solid #dedede", "borderRight": "unset", "minWidth": "30px"
         }},
         "activeButton": {"default": {"backgroundColor": "#3682ec", "color": "white", "border":"1px solid #3682ec"}},
         "firstVisibleButtonOverride": {"borderTopLeftRadius": "5px", "borderBottomLeftRadius": "5px"},
@@ -702,17 +702,17 @@ as otherwise the last button is not going to have a border on the right.
 </Tabs>
 
 :::tip
-When setting button widths, use _"minWidth"_ instead of _"width"_ to override the defaults and it is additionally useful to automatically expand
+When setting button widths, use `minWidth` instead of `width` to override the defaults and it is additionally useful to automatically expand
 the button widths in situations when their numbers contain multiple digits that surpass the currently defined width dimensions.
 :::
 
 :::tip
-When buttons are grouped next to each other and they have borders, set _"borderRight": "unset"_ in the `buttons` property to create an appearance of a thin border.
-When doing this you will additionally need to set _"borderLeft":"value here"_ on `lastVisibleButtonOverride` as the rightmost button would not have a right border.
+When buttons are grouped next to each other and they have borders, set `borderRight` to _"unset"_ in the `buttons` property to create an appearance of a thin border.
+When doing this you will additionally need to set `borderLeft` with a pixel value on `lastVisibleButtonOverride` as the rightmost button would not have a right border.
 :::
 
 :::info
-When using `activeButtonPrecedence`, with thin `buttons` borders (in the tip above), make sure to use _"borderRight": "unset"_ and not _"borderLeft"_ as the css selector limitations only allow
+When using `activeButtonPrecedence` with thin `buttons` borders (in the tip above), make sure to set `borderRight` to _"unset"_ and not _"borderLeft"_ as the css selector limitations only allow
 the active button to unset the left border of the right sibling and not the left.
 :::
 
@@ -856,11 +856,6 @@ Styling for action buttons that facilitates the definition of styles for various
 
 </TabItem>
 </Tabs>
-
-:::caution
-Action button font family is changed to "Georgia, serif" in Firefox in order to align the symbols at a correct height, however when using text you can
-overwrite it by adding the following property to `default`: _"fontFamily": "Inter, Avenir, Helvetica, Arial, sans-serif"_.
-:::
 
 <LineBreak></LineBreak>
 
@@ -1018,17 +1013,16 @@ Object defining position properties for a pagination component. `order` is the o
           buttons: {
             default: {
               color: 'grey',
+              stroke: 'grey',
               border: '1px solid #dedede',
               marginRight: '5px',
               marginTop: '1px',
-              height: '26px',
+              height: '31px',
               width: '31px',
-              paddingTop: '5px',
               borderRadius: '20px',
             },
           },
           activeButton: {default: {backgroundColor: '#56b3ff', color: 'white', border: '1px solid #56b3ff'}},
-          actionButtons: {default: {fontSize: '13px', paddingTop: '7px', height: '24px'}},
           disabledButtons: {default: {backgroundColor: 'white'}},
           firstVisibleButtonOverride: {},
           lastVisibleButtonOverride: {},
@@ -1066,9 +1060,8 @@ Object defining position properties for a pagination component. `order` is the o
     "styles": {
       "pageButtons": {
         "buttons": {
-          "default": {"color": "grey", "border":"1px solid #dedede", "marginRight": "5px", "marginTop": "1px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
+          "default": {"color": "grey", "stroke": "grey", "border":"1px solid #dedede", "marginRight": "5px", "marginTop": "1px", "height": "31px", "width": "31px", "borderRadius": "20px"}},
         "activeButton": {"default": {"backgroundColor": "#56b3ff", "color": "white", "border":"1px solid #56b3ff"}},
-        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px"}},
         "disabledButtons": {"default": {"backgroundColor": "white"}},
         "firstVisibleButtonOverride": {},
         "lastVisibleButtonOverride": {}
@@ -1093,9 +1086,8 @@ Object defining position properties for a pagination component. `order` is the o
     "styles": {
       "pageButtons": {
         "buttons": {
-          "default": {"color": "grey", "border":"1px solid #dedede", "marginRight": "5px", "marginTop": "1px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
+          "default": {"color": "grey", "stroke": "grey", "border":"1px solid #dedede", "marginRight": "5px", "marginTop": "1px", "height": "31px", "width": "31px", "borderRadius": "20px"}},
         "activeButton": {"default": {"backgroundColor": "#56b3ff", "color": "white", "border":"1px solid #56b3ff"}},
-        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px"}},
         "disabledButtons": {"default": {"backgroundColor": "white"}},
         "firstVisibleButtonOverride": {},
         "lastVisibleButtonOverride": {}
@@ -1134,9 +1126,9 @@ Object defining position properties for a pagination component. `order` is the o
       "styles": {
         "pageButtons": {
           "buttons": {
-            "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginRight": "5px", "marginTop": "3px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
+            "default": {"color": "grey", "stroke": "grey", "backgroundColor": "none", "border":"none", "marginRight": "5px", "marginTop": "3px", "height": "31px", "width": "31px", "borderRadius": "20px"}},
           "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white"}},
-          "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+          "actionButtons": {"default": {"border": "none"}},
           "disabledButtons": {"default": {"backgroundColor": "white"}},
           "firstVisibleButtonOverride": {},
           "lastVisibleButtonOverride": {}
@@ -1172,9 +1164,9 @@ Object defining position properties for a pagination component. `order` is the o
     "styles": {
       "pageButtons": {
         "buttons": {
-          "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginRight": "5px", "marginTop": "3px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
+          "default": {"color": "grey", "stroke": "grey", "backgroundColor": "none", "border":"none", "marginRight": "5px", "marginTop": "3px", "height": "31px", "width": "31px", "borderRadius": "20px"}},
         "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white"}},
-        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+        "actionButtons": {"default": {"border": "none"}},
         "disabledButtons": {"default": {"backgroundColor": "white"}},
         "firstVisibleButtonOverride": {},
         "lastVisibleButtonOverride": {}
@@ -1198,10 +1190,10 @@ Object defining position properties for a pagination component. `order` is the o
     "styles": {
       "pageButtons": {
         "buttons": {
-          "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginRight": "5px", "marginTop": "3px", "height": "26px", "width": "31px", "paddingTop": "5px", "borderRadius": "20px"}},
+          "default": {"color": "grey", "stroke": "grey", "backgroundColor": "none", "border":"none", "marginRight": "5px", "marginTop": "3px", "height": "31px", "width": "31px", "borderRadius": "20px"}},
         "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white"}},
         "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
-        "disabledButtons": {"default": {"backgroundColor": "white"}},
+        "actionButtons": {"default": {"border": "none"}},
         "firstVisibleButtonOverride": {},
         "lastVisibleButtonOverride": {}
     }},
@@ -1240,9 +1232,9 @@ Object defining position properties for a pagination component. `order` is the o
       "styles": {
         "pageButtons": {
           "buttons": {
-            "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
+            "default": {"color": "grey", "stroke": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "borderRadius": "5px"}},
           "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white"}},
-          "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+          "actionButtons": {"default": {"border": "none"}},
           "disabledButtons": {"default": {"backgroundColor": "white"}},
           "firstVisibleButtonOverride": {},
           "lastVisibleButtonOverride": {}
@@ -1279,9 +1271,9 @@ Object defining position properties for a pagination component. `order` is the o
     "styles": {
       "pageButtons": {
         "buttons": {
-          "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
+          "default": {"color": "grey", "stroke" :"grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "borderRadius": "5px"}},
         "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white"}},
-        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+        "actionButtons": {"default": {"border": "none"}},
         "disabledButtons": {"default": {"backgroundColor": "white"}},
         "firstVisibleButtonOverride": {},
         "lastVisibleButtonOverride": {}
@@ -1306,9 +1298,9 @@ Object defining position properties for a pagination component. `order` is the o
     "styles": {
       "pageButtons": {
         "buttons": {
-          "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
+          "default": {"color": "grey", "stroke": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "borderRadius": "5px"}},
         "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white"}},
-        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+        "actionButtons": {"default": {"border": "none"}},
         "disabledButtons": {"default": {"backgroundColor": "white"}},
         "firstVisibleButtonOverride": {},
         "lastVisibleButtonOverride": {}
@@ -1457,10 +1449,10 @@ Object defining position properties for a pagination component. `order` is the o
           buttons: {
             default: {
               color: 'grey',
+              stroke: 'grey',
               backgroundColor: 'none',
               border: 'none',
               marginTop: '3px',
-              paddingTop: '5px',
               borderRadius: '5px',
             },
           },
@@ -1472,7 +1464,7 @@ Object defining position properties for a pagination component. `order` is the o
               boxShadow: 'rgb(55 55 55 / 17%) 0px 2px 5px 1px',
             },
           },
-          actionButtons: {default: {fontSize: '13px', paddingTop: '7px', height: '24px', border: 'none'}},
+          actionButtons: {default: {border: 'none'}},
           disabledButtons: {visibility: 'hidden'},
           firstVisibleButtonOverride: {},
           lastVisibleButtonOverride: {},
@@ -1509,9 +1501,9 @@ Object defining position properties for a pagination component. `order` is the o
     "styles": {
       "pageButtons": {
         "buttons": {
-          "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
+          "default": {"color": "grey", "stroke": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "borderRadius": "5px"}},
         "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white", "boxShadow": "rgb(55 55 55 / 17%) 0px 2px 5px 1px"}},
-        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+        "actionButtons": {"default": {"border": "none"}},
         "disabledButtons": {"visibility": "hidden"},
         "firstVisibleButtonOverride": {},
         "lastVisibleButtonOverride": {}
@@ -1535,9 +1527,9 @@ Object defining position properties for a pagination component. `order` is the o
     "styles": {
       "pageButtons": {
         "buttons": {
-          "default": {"color": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "paddingTop": "5px", "borderRadius": "5px"}},
+          "default": {"color": "grey", "stroke": "grey", "backgroundColor": "none", "border":"none", "marginTop": "3px", "borderRadius": "5px"}},
         "activeButton": {"default": {"backgroundColor": "#2e72fd", "border":"none", "color": "white", "boxShadow": "rgb(55 55 55 / 17%) 0px 2px 5px 1px"}},
-        "actionButtons": {"default": {"fontSize": "13px", "paddingTop": "7px", "height": "24px", "border":"none"}},
+        "actionButtons": {"default": {"border": "none"}},
         "disabledButtons": {"visibility": "hidden"},
         "firstVisibleButtonOverride": {},
         "lastVisibleButtonOverride": {}
