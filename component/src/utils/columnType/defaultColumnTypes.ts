@@ -71,7 +71,7 @@ export class DefaultColumnTypes {
       iconSettings: {
         svgString: LABEL_ICON_SVG_STRING,
         containerStyles: {
-          dropdown: {marginTop: '2px', marginRight: '5.5px', marginLeft: '-1px'},
+          dropdown: {marginTop: '1.5px', marginRight: '5.5px', marginLeft: '-1px'},
           headerCorrections: {marginTop: '2.5px', marginRight: '5.5px', marginLeft: '0px'},
         },
       },

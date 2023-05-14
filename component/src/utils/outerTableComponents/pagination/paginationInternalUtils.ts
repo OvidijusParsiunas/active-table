@@ -5,7 +5,6 @@ import {IPaginationStyles, PaginationInternal} from '../../../types/paginationIn
 import {OuterContentPosition} from '../../../types/outerContainer';
 import {StatefulCSS} from '../../../types/cssStyle';
 import {ActiveTable} from '../../../activeTable';
-import {Browser} from '../../browser/browser';
 
 interface DefaultBackgroundColors {
   def: string;
@@ -150,11 +149,10 @@ export class PaginationInternalUtils {
     Object.assign(buttonsClone.default, actionButtons.default);
     Object.assign(buttonsClone.hover, actionButtons.hover);
     Object.assign(buttonsClone.click, actionButtons.click);
-    buttonsClone.previousText = actionButtons.previousText || '&#60';
-    buttonsClone.nextText = actionButtons.nextText || '&#62';
-    buttonsClone.firstText = actionButtons.firstText || '&#8810';
-    buttonsClone.lastText = actionButtons.lastText || '&#8811';
-    if (Browser.IS_FIREFOX) buttonsClone.default.fontFamily ??= 'Georgia, serif'; // first buttond default padding fix
+    buttonsClone.previousText = actionButtons.previousText;
+    buttonsClone.nextText = actionButtons.nextText;
+    buttonsClone.firstText = actionButtons.firstText;
+    buttonsClone.lastText = actionButtons.lastText;
     return buttonsClone;
   }
 
@@ -176,7 +174,7 @@ export class PaginationInternalUtils {
     const newActiveButtons = PaginationInternalUtils.mergeButtonsStyleWithActiveStyle(statefulStyle);
     pagination.styles.pageButtons.activeButton = newActiveButtons;
     // disabledButtons - this inherits the 'buttons' style when using the PageButtonStyle.setDisabled method
-    pagination.styles.pageButtons.disabledButtons ??= {backgroundColor: '#f9f9f9', color: '#9d9d9d'};
+    pagination.styles.pageButtons.disabledButtons ??= {backgroundColor: '#f9f9f9', color: '#9d9d9d', stroke: '#9d9d9d'};
     // first overrides
     const defFirstVisibleOverride = {
       borderLeft: '1px solid #0000004d', borderTopLeftRadius: '2px', borderBottomLeftRadius: '2px'};

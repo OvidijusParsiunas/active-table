@@ -6,7 +6,6 @@ import {PaginationUtils} from '../../../utils/outerTableComponents/pagination/pa
 import {IPageButtonsStyles, PaginationInternal} from '../../../types/paginationInternal';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {PaginationElements} from '../paginationElements';
-import {CellText} from '../../../types/tableContent';
 import {PageButtonEvents} from './pageButtonEvents';
 import {PageButtonStyle} from './pageButtonStyle';
 import {ActiveTable} from '../../../activeTable';
@@ -93,14 +92,13 @@ export class PageButtonElement {
     }
   }
 
-  public static create(text: CellText, pageButtonsStyles: IPageButtonsStyles, isActionButton: boolean) {
+  public static create(pageButtonsStyles: IPageButtonsStyles, isActionButton: boolean) {
     const button = document.createElement('div');
     button.classList.add(
       PageButtonElement.PAGINATION_BUTTON_CLASS,
       PaginationElements.PAGINATION_TEXT_COMPONENT_CLASS,
       GenericElementUtils.NOT_SELECTABLE_CLASS
     );
-    button.innerHTML = String(text);
     PageButtonStyle.setDefault(button, pageButtonsStyles, isActionButton);
     setTimeout(() => PageButtonEvents.setEvents(button, pageButtonsStyles, isActionButton));
     return button;

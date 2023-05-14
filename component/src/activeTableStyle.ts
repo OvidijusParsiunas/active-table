@@ -87,6 +87,7 @@ export const activeTableStyle = css`
     vertical-align: top;
     text-align: left;
     border-right: 1px solid #0000001f;
+    color: #222222;
   }
 
   .cell-text-div {
@@ -438,25 +439,49 @@ export const activeTableStyle = css`
     border: 1px solid #0000004d;
     border-right: unset;
     color: #353535;
-    min-width: 30px;
-    height: 30px;
+    min-width: 31px;
+    height: 30.5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-bottom: 1px;
     cursor: pointer;
+    font-size: 15.5px;
+    /* REF-40 */
+    stroke: black;
+  }
+
+  .pagination-prev-next-button {
+    width: 14.25px;
+    padding-left: 4px;
+  }
+
+  .pagination-first-last-button {
+    width: 13px;
+  }
+
+  .pagination-button > * {
+    pointer-events: none;
   }
 
   .pagination-button-disabled {
     pointer-events: none;
     color: #7c7c7c;
+    /* REF-40 */
+    stroke: #7c7c7c;
+  }
+
+  .pagination-button > svg > path {
+    /* REF-40 */
+    stroke: inherit;
   }
 
   #pagination-number-of-visible-rows {
     padding-top: 6px;
-    color: #1d1d1d;
+    color: #252525;
     min-width: 82px;
     text-align: center;
+    font-size: 15.5px;
+    padding-top: 7.5px;
   }
 
   #pagination-number-of-rows-select {
@@ -466,7 +491,9 @@ export const activeTableStyle = css`
   }
 
   #pagination-number-of-rows-select-text {
-    display: inline-block;
+    font-size: 15.5px;
+    float: left;
+    margin-top: 6px;
   }
 
   #rows-per-page-select-button {
@@ -475,10 +502,11 @@ export const activeTableStyle = css`
     border: 1px solid #0000004d;
     border-radius: 4px;
     height: 24px;
-    margin-top: 1px;
     padding-top: 3px;
+    padding-bottom: 0.5px;
     padding-left: 6px;
-    padding-right: 2px;
+    padding-right: 1px;
+    margin-top: 1px;
     cursor: pointer;
   }
 
@@ -488,12 +516,15 @@ export const activeTableStyle = css`
     font-size: 16px;
     float: right;
     margin: 1px;
+    margin-left: -1px;
     width: 19px;
   }
 
   #rows-per-page-select-button-arrow-icon {
     height: 20px;
     transform: scale(0.7, 1);
+    filter: brightness(0) saturate(100%) invert(28%) sepia(0%) saturate(486%) hue-rotate(314deg) brightness(92%)
+      contrast(89%);
   }
 
   #rows-per-page-select-button-text {
@@ -545,7 +576,7 @@ export const activeTableStyle = css`
     display: grid;
     position: relative;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    font-family: Inter, sans-serif, Avenir, Helvetica, Arial;
+    font-family: 'Inter', sans-serif, Avenir, Helvetica, Arial;
   }
 
   #outer-top-container > div > * {
