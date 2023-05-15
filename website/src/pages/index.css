@@ -7,7 +7,7 @@
 /* need to use !important as it is on an anchor (a) element  */
 .homepage-button {
   border: unset;
-  border-radius: 5px !important;
+  border-radius: 3px !important;
   transition: 0.1s !important;
   text-decoration: none !important;
   user-select: none;

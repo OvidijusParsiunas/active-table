@@ -18,8 +18,6 @@
   margin-left: 55px;
   margin-right: 55px;
   transform: translateY(-60%);
-  /* this is required to allow the label dropdown to appear above the navbar */
-  z-index: 200;
 }
 
 #start-panel-left {
@@ -90,7 +88,7 @@
   padding-left: 14px !important;
   padding-right: 14px !important;
   padding-top: 9px !important;
-  padding-bottom: 9px !important;
+  padding-bottom: 10px !important;
 }
 
 .start-button:hover {

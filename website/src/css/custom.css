@@ -106,7 +106,7 @@ img + h2 {
 }
 
 .navbar__link--active {
-  color: var(--feature-title) !important;
+  color: #2b51a5 !important;
 }
 
 .navbar__link--active:hover {

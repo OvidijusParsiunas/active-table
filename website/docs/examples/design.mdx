@@ -79,7 +79,7 @@ import Tabs from '@theme/Tabs';
 
 Data in this table cannot be changed.
 
-<TableContainer minHeight="262">
+<TableContainer minHeight="301">
   <ActiveTable
     isCellTextEditable={false}
     displayAddNewColumn={false}
@@ -133,7 +133,7 @@ Data in this table cannot be changed.
 
 Table configuration for a dark design.
 
-<TableContainer minHeight="354">
+<TableContainer minHeight="341">
   <ActiveTable
     tableStyle={{width: '100%', borderRadius: '5px', border: 'unset', backgroundColor: 'black'}}
     cellStyle={{color: 'white', borderRight: '1px solid #00000029'}}
@@ -201,7 +201,7 @@ The programmatic cell update functionality is provided by the [`updateCell`](../
 The example additionally makes use of properties like [`customColumnsSettings`](../docs/column#customColumnsSettings) and [`stripedRows`](../docs/row#stripedRows)
 to set a stock related look. Whilst all of the columns are set to not be editable, the _Stock_ column allows its data to be changed and its rows to be sorted.
 
-<TableContainerProgrammaticUpdates isStock={true} minHeight="265">
+<TableContainerProgrammaticUpdates isStock={true} minHeight="300">
   <ActiveTable
     customColumnsSettings={[
       {

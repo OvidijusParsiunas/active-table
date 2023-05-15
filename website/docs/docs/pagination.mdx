@@ -49,7 +49,7 @@ import Tabs from '@theme/Tabs';
 
 <BrowserOnly>{() => require('@site/src/components/nav/autoNavToggle').readdAutoNavShadowToggle()}</BrowserOnly>
 
-<TableContainer minHeight="600">
+<TableContainer minHeight="602">
   <ActiveTable
     pagination={true}
     content={[
@@ -155,7 +155,7 @@ If the defined `rowsPerPage` value (in [`pagination`](#pagination) object) is no
 
 #### Example
 
-<TableContainer minHeight="390">
+<TableContainer minHeight="388">
   <ActiveTable
     pagination={{
       "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [10, 20, 30, "All"]},
@@ -265,7 +265,7 @@ Styling properties of pagination components. <br />
 
 #### Example
 
-<TableContainer minHeight="390">
+<TableContainer minHeight="388">
   <ActiveTable
     pagination={{
       "styles": {
@@ -424,16 +424,16 @@ Styling properties for the rows per page component elements. `container` is the 
 
 #### Example
 
-<TableContainer minHeight="390">
+<TableContainer minHeight="388">
   <ActiveTable
     pagination={{
       "styles": {
         "rowsPerPageSelect": {
           "container": {"marginRight": "1px"},
-          "prefixText": {"color": "#435484"},
+          "prefixText": {"color": "#1f6e97"},
           "button": {"default":{"border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
-          "buttonText": {"default":{"color": "#435484"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-          "buttonArrow": {"default":{"color": "#435484"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
+          "buttonText": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
+          "buttonArrow": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
         }},
       "rowsPerPage": 5
     }}
@@ -477,10 +477,10 @@ Styling properties for the rows per page component elements. `container` is the 
     "styles": {
       "rowsPerPageSelect": {
         "container": {"marginRight": "1px"},
-        "prefixText": {"color": "#435484"},
+        "prefixText": {"color": "#1f6e97"},
         "button": {"default":{"border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
-        "buttonText": {"default":{"color": "#435484"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-        "buttonArrow": {"default":{"color": "#435484"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
+        "buttonText": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
+        "buttonArrow": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
       }},
     "rowsPerPage": 5
   }'
@@ -498,10 +498,10 @@ Styling properties for the rows per page component elements. `container` is the 
     "styles": {
       "rowsPerPageSelect": {
         "container": {"marginRight": "1px"},
-        "prefixText": {"color": "#435484"},
+        "prefixText": {"color": "#1f6e97"},
         "button": {"default":{"border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
-        "buttonText": {"default":{"color": "#435484"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-        "buttonArrow": {"default":{"color": "#435484"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
+        "buttonText": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
+        "buttonArrow": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
       }},
     "rowsPerPage": 5
   }'
@@ -578,7 +578,7 @@ as otherwise the last button is not going to have a border on the right.
 
 #### Example
 
-<TableContainer minHeight="390">
+<TableContainer minHeight="388">
   <ActiveTable
     pagination={{
       "styles": {
@@ -731,13 +731,13 @@ Styling for action buttons that facilitates the definition of styles for various
 
 #### Example
 
-<TableContainer minHeight="390">
+<TableContainer minHeight="388">
   <ActiveTable
     pagination={{
       "styles": {
         "pageButtons": {
           "actionButtons": {
-            "default": {"width": "50px", "fontSize": "15px"},
+            "default": {"width": "50px", "fontSize": "15px", "color": "#1e912a"},
             "hover": {"backgroundColor": "#e4ffe4"},
             "click": {"backgroundColor": "#81d581"},
             "previousText": "Prev",
@@ -788,7 +788,7 @@ Styling for action buttons that facilitates the definition of styles for various
     "styles": {
       "pageButtons": {
         "actionButtons": {
-          "default": {"width": "50px", "fontSize": "15px"},
+          "default": {"width": "50px", "fontSize": "15px", "color": "#1e912a"},
           "hover": {"backgroundColor": "#e4ffe4"},
           "click": {"backgroundColor": "#81d581"},
           "previousText": "Prev",
@@ -813,7 +813,7 @@ Styling for action buttons that facilitates the definition of styles for various
     "styles": {
       "pageButtons": {
         "actionButtons": {
-          "default": {"width": "50px", "fontSize": "15px"},
+          "default": {"width": "50px", "fontSize": "15px", "color": "#1e912a"},
           "hover": {"backgroundColor": "#e4ffe4"},
           "click": {"backgroundColor": "#81d581"},
           "previousText": "Prev",
@@ -857,6 +857,11 @@ Styling for action buttons that facilitates the definition of styles for various
 </TabItem>
 </Tabs>
 
+:::tip
+Action buttons contain icons (by _default_) - if you want to change their color use the `stroke` property, otherwise when they are in text
+format like in the example above - use `color`.
+:::
+
 <LineBreak></LineBreak>
 
 ### `PaginationPositions` {#PaginationPositions}
@@ -876,7 +881,7 @@ Positions for pagination components.
 
 #### Example
 
-<TableContainer minHeight="430">
+<TableContainer minHeight="432">
   <ActiveTable
     pagination={{
       "positions": {
@@ -1004,7 +1009,7 @@ Object defining position properties for a pagination component. `order` is the o
 
 <h3>Circle buttons</h3>
 
-<TableContainer minHeight="264">
+<TableContainer minHeight="262">
   <ActiveTable
     pagination={{
       displayFirstLast: false,
@@ -1120,7 +1125,7 @@ Object defining position properties for a pagination component. `order` is the o
 
 <h3>Active circle button</h3>
 
-<TableContainer minHeight="264">
+<TableContainer minHeight="262">
   <ActiveTable
     pagination={{
       "styles": {
@@ -1225,7 +1230,7 @@ Object defining position properties for a pagination component. `order` is the o
 
 <h3>Active square button</h3>
 
-<TableContainer minHeight="264">
+<TableContainer minHeight="262">
   <ActiveTable
     pagination={{
       "displayFirstLast": false,
@@ -1333,7 +1338,7 @@ Object defining position properties for a pagination component. `order` is the o
 
 <h3>Grey background button series</h3>
 
-<TableContainer minHeight="264">
+<TableContainer minHeight="267">
   <ActiveTable
     pagination={{
       "styles": {
@@ -1441,7 +1446,7 @@ Object defining position properties for a pagination component. `order` is the o
 
 <h3>Disabled buttons not displayed</h3>
 
-<TableContainer minHeight="264">
+<TableContainer minHeight="262">
   <ActiveTable
     pagination={{
       styles: {

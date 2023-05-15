@@ -296,6 +296,10 @@ The website homepage initial contents are faded in because the table component i
 results in an empty space for the first couple of milliseconds that don't look too great. Hence the fade-in animation is used
 to overcome this issue.
 
+REF-40
+Pagination action buttons icon color is set via stroke, this is because filter would simply fill the whole button color. Using
+icons instead of text in order to keep them consistent for all operating systems.
+
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
 does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()

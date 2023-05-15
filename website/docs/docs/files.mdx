@@ -32,7 +32,7 @@ import Tabs from '@theme/Tabs';
 <BrowserOnly>{() => require('@site/src/components/nav/autoNavToggle').readdAutoNavShadowToggle()}</BrowserOnly>
 <BrowserOnly>{() => require('@site/src/components/externalModules/externalModules').importXLSX()}</BrowserOnly>
 
-<TableContainer minHeight="384">
+<TableContainer minHeight="381">
   <ActiveTable
     files={{buttons: [{import: true}, {export: true}], dragAndDrop: true}}
     content={[
@@ -107,7 +107,7 @@ This object requires either the `import` or `export` properties to be defined. <
 
 #### Example
 
-<TableContainer minHeight="380">
+<TableContainer minHeight="382">
   <ActiveTable
     files={{
       buttons: [
@@ -116,7 +116,7 @@ This object requires either the `import` or `export` properties to be defined. <
           styles: {
             default: {
               backgroundColor: '#46acff',
-              height: '18px',
+              height: '19px',
               padding: '7px 14px',
               color: 'white',
               border: 'unset',
@@ -133,7 +133,7 @@ This object requires either the `import` or `export` properties to be defined. <
           styles: {
             default: {
               backgroundColor: '#46acff',
-              height: '18px',
+              height: '19px',
               padding: '7px 14px',
               color: 'white',
               border: 'unset',
@@ -170,7 +170,7 @@ This object requires either the `import` or `export` properties to be defined. <
         "import": true,
         "styles": {
           "default": {
-            "backgroundColor": "#46acff", "height": "18px", "padding": "7px 14px", "color": "white", "border": "unset"
+            "backgroundColor": "#46acff", "height": "19px", "padding": "7px 14px", "color": "white", "border": "unset"
           },
           "hover": {"backgroundColor": "#2b9cf8"}, "click": {"backgroundColor": "#198eef"}
         },
@@ -182,7 +182,7 @@ This object requires either the `import` or `export` properties to be defined. <
         "export": true,
         "styles": {
           "default": {
-            "backgroundColor": "#46acff", "height": "18px", "padding": "7px 14px", "color": "white", "border": "unset"
+            "backgroundColor": "#46acff", "height": "19px", "padding": "7px 14px", "color": "white", "border": "unset"
           },
           "hover": {"backgroundColor": "#2b9cf8"}, "click": {"backgroundColor": "#198eef"}
         },
@@ -208,7 +208,7 @@ This object requires either the `import` or `export` properties to be defined. <
         "import": true,
         "styles": {
           "default": {
-            "backgroundColor": "#46acff", "height": "18px", "padding": "7px 14px", "color": "white", "border": "unset"
+            "backgroundColor": "#46acff", "height": "19px", "padding": "7px 14px", "color": "white", "border": "unset"
           },
           "hover": {"backgroundColor": "#2b9cf8"}, "click": {"backgroundColor": "#198eef"}
         },
@@ -220,7 +220,7 @@ This object requires either the `import` or `export` properties to be defined. <
         "export": true,
         "styles": {
           "default": {
-            "backgroundColor": "#46acff", "height": "18px", "padding": "7px 14px", "color": "white", "border": "unset"
+            "backgroundColor": "#46acff", "height": "19px", "padding": "7px 14px", "color": "white", "border": "unset"
           },
           "hover": {"backgroundColor": "#2b9cf8"}, "click": {"backgroundColor": "#198eef"}
         },
@@ -257,7 +257,7 @@ are no import buttons this property will be set to _["csv"]_.
 
 #### Example
 
-<TableContainer minHeight="346px">
+<TableContainer minHeight="343">
   <ActiveTable
     files={{
       dragAndDrop: {
@@ -338,7 +338,7 @@ Configuration for the importable files. <br />
 
 #### Example
 
-<TableContainer minHeight="380">
+<TableContainer minHeight="381">
   <ActiveTable
     files={{
       buttons: [
@@ -454,7 +454,7 @@ will overwrite all of the rows below the header row. Use a value of _-1_ to appe
 
 #### Example
 
-<TableContainer minHeight="380">
+<TableContainer minHeight="381">
   <ActiveTable
     files={{buttons: [{import: {overwriteOptions: {importRowStartIndex: 1, tableRowStartIndex: -1}}}]}}
     content={[
@@ -512,7 +512,7 @@ Configuration for the exported `fileName` and its `format` .
 
 #### Example
 
-<TableContainer minHeight="380">
+<TableContainer minHeight="381">
   <ActiveTable
     files={{
       buttons: [
