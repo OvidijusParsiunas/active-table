@@ -5,7 +5,7 @@ import {DropdownItem} from '../../dropdownItem';
 import {OptionButton} from './optionButton';
 
 export class OptionDeleteButton {
-  private static readonly DELETE_BUTTON_ICON_CLASS = 'cell-drodown-option-delete-button-icon';
+  private static readonly DELETE_BUTTON_ICON_CLASS = 'cell-dropdown-option-delete-button-icon';
   private static readonly DELETE_ICON_TEXT = '×';
 
   private static createIcon() {

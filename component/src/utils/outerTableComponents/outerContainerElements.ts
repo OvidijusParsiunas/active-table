@@ -82,9 +82,10 @@ export class OuterContainerElements {
     return container;
   }
 
-  private static addContainer(parentEl: HTMLElement, id: string) {
+  private static addContainer(parentEl: HTMLElement, id: string, tableElement?: HTMLElement) {
     const container = OuterContainerElements.createContainerElement();
     container.id = id;
+    if (tableElement?.style.fontFamily) container.style.fontFamily = tableElement.style.fontFamily; // REF-41
     const insertionLocation = id === OuterContainerElements.TOP_CONTAINER_ID ? 'beforebegin' : 'afterend';
     parentEl.insertAdjacentElement(insertionLocation, container);
     return container;
@@ -118,15 +119,15 @@ export class OuterContainerElements {
     const containers: OuterContainers = {};
     const isTopRequired = OuterContainerElements.isContainerRequired(at, 'top');
     const isBottomRequired = OuterContainerElements.isContainerRequired(at, 'bottom');
-    const {_tableElementRef} = at;
-    const parentEl = at._overflow?.overflowContainer || _tableElementRef;
+    const {_tableElementRef: tableEl} = at;
+    const parentEl = at._overflow?.overflowContainer || tableEl;
     if (!parentEl) return containers;
     if (isTopRequired) {
-      const container = OuterContainerElements.addContainer(parentEl, OuterContainerElements.TOP_CONTAINER_ID);
+      const container = OuterContainerElements.addContainer(parentEl, OuterContainerElements.TOP_CONTAINER_ID, tableEl);
       containers.top = container;
     }
     if (isBottomRequired) {
-      const container = OuterContainerElements.addContainer(parentEl, OuterContainerElements.BOTTOM_CONTAINER_ID);
+      const container = OuterContainerElements.addContainer(parentEl, OuterContainerElements.BOTTOM_CONTAINER_ID, tableEl);
       containers.bottom = container;
     }
     OuterContainerElements.setHeightsWhenOnlyMiddleColumns(containers);

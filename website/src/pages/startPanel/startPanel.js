@@ -57,6 +57,7 @@ function RightPanel() {
                   {text: 'Jewellery', backgroundColor: '#c4f39e'},
                   {text: 'Clothing', backgroundColor: '#ffdff7'},
                 ],
+                canAddMoreOptions: true,
               },
             },
           ]}

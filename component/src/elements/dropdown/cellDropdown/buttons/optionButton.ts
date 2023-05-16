@@ -6,8 +6,8 @@ import {OptionDeleteButton} from './optionDeleteButton';
 import {OptionColorButton} from './optionColorButton';
 
 export class OptionButton {
-  public static readonly BUTTON_CONTAINER_CLASS = 'cell-drodown-option-button-container';
-  public static readonly BUTTON_CLASS = 'cell-drodown-option-button';
+  public static readonly BUTTON_CONTAINER_CLASS = 'cell-dropdown-option-button-container';
+  public static readonly BUTTON_CLASS = 'cell-dropdown-option-button';
 
   public static changeVisibility(event: MouseEvent, dropdown: _CellDropdown, displayOnDropdown?: HTMLElement) {
     if (event.isTrusted) {

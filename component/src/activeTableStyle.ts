@@ -12,9 +12,8 @@ export const activeTableStyle = css`
 
   table {
     border-spacing: 0px;
-    font-family: 'Inter', sans-serif, Avenir, Helvetica, Arial;
     position: relative;
-    border: 1px solid #00000026;
+    border: 1px solid #00000028;
     background-color: white;
   }
 
@@ -86,7 +85,7 @@ export const activeTableStyle = css`
     border-bottom-color: rgba(0, 0, 0, 0.12);
     vertical-align: top;
     text-align: left;
-    border-right: 1px solid #0000001f;
+    border-right: 1px solid #00000021;
     color: #222222;
   }
 
@@ -256,6 +255,12 @@ export const activeTableStyle = css`
     font-size: 15px;
   }
 
+  .cell-dropdown > .dropdown-item {
+    /* the height of cell dropdown items seem to change depending on monitor size which inconsistently triggers overflow,
+    this sets it to be consistent but ideally we should not do this and use a different way to allow any font sizes */
+    height: 18px;
+  }
+
   .dropdown-item-icon-container {
     display: flex;
     float: left;
@@ -313,7 +318,16 @@ export const activeTableStyle = css`
     color: #9e9e9e8a;
   }
 
-  .cell-drodown-option-button {
+  .cell-dropdown-option-button-container {
+    position: absolute;
+    width: 100%;
+    height: 0px;
+    top: 5px;
+    left: -5px;
+    display: none;
+  }
+
+  .cell-dropdown-option-button {
     height: 13px;
     width: 13px;
     position: sticky;
@@ -323,36 +337,31 @@ export const activeTableStyle = css`
     background-color: white;
   }
 
-  .cell-drodown-option-button:hover {
+  .cell-dropdown-option-button:hover {
     opacity: 1;
   }
 
-  .cell-drodown-option-button-container {
-    position: absolute;
-    width: 100%;
-    height: 0px;
-    top: 5px;
-    left: -5px;
-    display: none;
+  .cell-dropdown-option-button:active {
+    background-color: #f8f8f8;
   }
 
-  .cell-drodown-option-delete-button-icon {
-    position: absolute;
-    color: grey;
-    left: 2.4px;
-    top: -2px;
-    font-size: 13px;
+  .cell-dropdown-option-button > div {
+    font-size: 12px;
+    height: 11px;
     pointer-events: none;
     color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cell-dropdown-option-delete-button-icon {
+    font-size: 12.5px;
+    width: 13px;
   }
 
   .cell-dropdown-option-color-button-icon {
-    position: absolute;
-    font-size: 12px;
-    top: -1.5px;
-    left: 2.8px;
-    pointer-events: none;
-    color: black;
+    width: 12.5px;
   }
 
   .color-input {
@@ -576,7 +585,6 @@ export const activeTableStyle = css`
     display: grid;
     position: relative;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    font-family: 'Inter', sans-serif, Avenir, Helvetica, Arial;
   }
 
   #outer-top-container > div > * {

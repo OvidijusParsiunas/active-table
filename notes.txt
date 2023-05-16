@@ -300,6 +300,10 @@ REF-40
 Pagination action buttons icon color is set via stroke, this is because filter would simply fill the whole button color. Using
 icons instead of text in order to keep them consistent for all operating systems.
 
+REF-41
+Table font family is set programmatically to allow the outer containers to inherit it so when the user set a custom style, they would
+automatically pick it up.
+
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
 does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()

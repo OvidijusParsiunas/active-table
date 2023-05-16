@@ -72,6 +72,11 @@ import {Overflow} from './types/overflow';
 // TO-DO - add comments on type properties
 @customElement('active-table')
 export class ActiveTable extends LitElement {
+  constructor() {
+    super();
+    GoogleFont.appendStyleSheetToHead();
+  }
+
   @property({type: Function})
   getContent: () => (number | string)[][] = () => JSON.parse(JSON.stringify(this.content));
 
@@ -102,12 +107,12 @@ export class ActiveTable extends LitElement {
 
   @property({type: Array})
   content: (number | string)[][] = [
-    // ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
-    // ['Earth', 12756, 5.97, 1, 5514],
-    // ['Mars', 6792, 0.642, 2, 3934],
-    // ['Jupiter', 142984, 1898, 79, 1326],
-    // ['Saturn', 120536, 568, 82, 687],
-    // ['Neptune', 49528, 102, 14, 1638],
+    ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+    ['Earth', 12756, 5.97, 1, 5514],
+    ['Mars', 6792, 0.642, 2, 3934],
+    ['Jupiter', 142984, 1898, 79, 1326],
+    ['Saturn', 120536, 568, 82, 687],
+    ['Neptune', 49528, 102, 14, 1638],
   ];
 
   @property({type: Object})
@@ -378,7 +383,6 @@ export class ActiveTable extends LitElement {
   }
 
   override connectedCallback() {
-    GoogleFont.appendStyleSheetToHead();
     // REF-14
     if (Browser.IS_FIREFOX) {
       setTimeout(() => super.connectedCallback());
