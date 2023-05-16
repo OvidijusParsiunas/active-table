@@ -242,6 +242,20 @@ export const activeTableStyle = css`
     white-space: nowrap;
   }
 
+  .cell-dropdown::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+
+  .cell-dropdown::-webkit-scrollbar-thumb {
+    background-color: #aaaaaa;
+    border-radius: 5px;
+  }
+
+  .cell-dropdown::-webkit-scrollbar-track {
+    background-color: #f2f2f2;
+  }
+
   .dropdown-item {
     padding-top: 3px;
     padding-bottom: 3px;

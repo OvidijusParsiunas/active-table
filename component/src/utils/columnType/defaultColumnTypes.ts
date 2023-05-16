@@ -61,7 +61,7 @@ export class DefaultColumnTypes {
         svgString: SELECT_ICON_SVG_STRING,
         containerStyles: {
           dropdown: {marginTop: '0.5px', marginRight: '3px', marginLeft: '-2.75px'},
-          headerCorrections: {marginTop: '1.5px'},
+          headerCorrections: {marginTop: '1px'},
         },
       },
     },
