@@ -24,7 +24,7 @@
 ### :tada: Latest update: Drag & Drop
 
 <p align="center"> 
-    <img style="margin-left: -15px" width="70%" src="./assets/readme/drag-and-drop.gif" alt="Logo">
+    <img style="margin-left: -15px" src="./assets/readme/drag-and-drop.gif" alt="drag-and-drop">
 </p>
 
 ### :computer: Getting started
