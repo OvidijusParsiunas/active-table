@@ -21,6 +21,12 @@
 - Import/Export/Paste/Drag&Drop csv, xls, xlsx, ods, txt files
 - Everything is customizable!
 
+### :tada: Latest update: Drag & Drop
+
+<p align="center"> 
+    <img style="margin-left: -15px" width="70%" src="./assets/readme/drag-and-drop.gif" alt="Logo">
+</p>
+
 ### :computer: Getting started
 
 ```
