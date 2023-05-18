@@ -52,12 +52,12 @@ The exact syntax for the above example will vary depending on the framework of y
 ### :dart: Roadmap
 
 - [x] Support csv, xls, xlsx, ods, txt files
-- [ ] Code refactoring (<b>In Progress</b>)
+- [ ] Data filtering (<b>In Progress</b> - [branch](https://github.com/OvidijusParsiunas/active-table/tree/data-filtering))
 - [ ] Move row/column by dragging
 - [ ] Pick mode
-- [ ] Data filtering
-- [ ] Unit tests
 - [ ] Undo/Redo
+- [ ] Code refactoring
+- [ ] Unit tests
 
 ## :construction_worker: Local setup
 
