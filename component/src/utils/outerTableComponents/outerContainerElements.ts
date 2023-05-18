@@ -111,6 +111,7 @@ export class OuterContainerElements {
         return position.indexOf(containerPosition) >= 0;
       });
     }
+    if (!isRequired && at.filter) isRequired = true; // WORK
     return isRequired;
   }
 

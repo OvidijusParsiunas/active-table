@@ -679,4 +679,15 @@ export const activeTableStyle = css`
   .no-overflow-sticky-header-body > *:first-child > th {
     border-top: inherit !important;
   }
+
+  .filter-input {
+    width: 150px;
+    height: 20px;
+    border: 1px solid #00000036;
+    border-radius: 4px;
+    color: rgb(45, 45, 45);
+    font-size: 14px;
+    font-family: inherit;
+    padding: 5px 6px;
+  }
 `;

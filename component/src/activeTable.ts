@@ -69,6 +69,8 @@ import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
 
 // WORK - on-render
+// WORK - stub-style
+// WORK - hover animation in the example
 // TO-DO - add comments on type properties
 @customElement('active-table')
 export class ActiveTable extends LitElement {
@@ -263,6 +265,9 @@ export class ActiveTable extends LitElement {
 
   @property({type: Object})
   files?: Files;
+
+  @property({type: Boolean})
+  filter?: boolean = true;
 
   @property({type: String})
   auxiliaryStyle?: string;
