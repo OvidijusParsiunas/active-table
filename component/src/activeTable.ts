@@ -267,7 +267,7 @@ export class ActiveTable extends LitElement {
   files?: Files;
 
   @property({type: Boolean})
-  filter?: boolean = true;
+  filter?: boolean;
 
   @property({type: String})
   auxiliaryStyle?: string;

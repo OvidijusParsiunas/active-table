@@ -72,8 +72,10 @@ export const activeTableStyle = css`
 
   .cell {
     text-align: left;
-    padding: 6px;
-    padding-top: 11px;
+    /* WORK - this will need to be removed from this branch */
+    padding: 11px 6px 10px;
+    font-size: 14px;
+    line-height: 17px;
     height: 42.5px;
     box-sizing: border-box;
     outline: none;
@@ -683,7 +685,7 @@ export const activeTableStyle = css`
   .filter-input {
     width: 150px;
     height: 20px;
-    border: 1px solid #00000036;
+    border: 1px solid #0000002b;
     border-radius: 4px;
     color: rgb(45, 45, 45);
     font-size: 14px;
