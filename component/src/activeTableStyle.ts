@@ -682,14 +682,39 @@ export const activeTableStyle = css`
     border-top: inherit !important;
   }
 
-  .filter-input {
+  .row-filter-input-container {
+    position: relative;
+  }
+
+  .row-filter-input {
     width: 150px;
     height: 20px;
     border: 1px solid #0000002b;
     border-radius: 4px;
     color: rgb(45, 45, 45);
-    font-size: 14px;
     font-family: inherit;
     padding: 5px 6px;
+    font-size: 14px;
+  }
+
+  .row-filter-input-with-case {
+    padding-right: 30px;
+    width: 126px;
+  }
+
+  .row-filter-case-button {
+    position: absolute;
+    right: 0px;
+    top: 49%;
+    transform: translate(-50%, -50%);
+    color: grey;
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .row-filter-case-button-active {
+    color: black;
+    /* font-weight: 500; */
   }
 `;

@@ -67,6 +67,7 @@ import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
+import {CSSStyle} from './types/cssStyle';
 
 // WORK - on-render
 // WORK - stub-style
@@ -267,7 +268,7 @@ export class ActiveTable extends LitElement {
   files?: Files;
 
   @property({type: Boolean})
-  filter?: boolean;
+  filter?: boolean | {caseButton?: boolean | CSSStyle};
 
   @property({type: String})
   auxiliaryStyle?: string;

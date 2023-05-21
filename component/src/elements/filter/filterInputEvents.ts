@@ -7,11 +7,11 @@ import {ActiveTable} from '../../activeTable';
 // WORK - ability to toggle if case senseitive
 export class FilterInputEvents {
   // WORK - be careful about pagination
-  public static setEvents(at: ActiveTable, inputElement: HTMLInputElement, columnIndex: number) {
+  public static setEvents(at: ActiveTable, inputElement: HTMLInputElement, columnIndex: number, isCaseSensitive: boolean) {
     const {_tableBodyElementRef, content} = at;
-    const processRows = RowFilterUtils.getFilterFunc();
+    const processRows = RowFilterUtils.getFilterFunc(isCaseSensitive);
     inputElement.oninput = () => {
-      const filterText = inputElement.value.toLocaleLowerCase();
+      const filterText = isCaseSensitive ? inputElement.value : inputElement.value.toLocaleLowerCase();
       const dataRows = ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content).slice(1);
       processRows(dataRows, filterText, columnIndex);
     };

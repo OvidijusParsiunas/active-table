@@ -6,11 +6,11 @@ export class RowFilterWebWorkers {
   // const worker = new Worker(new URL('./worker.js', import.meta.url))
   // using a string literal instead, ref:
   // https://stackoverflow.com/questions/10343913/how-to-create-a-web-worker-from-a-string
-  public static createWorkerBlobURL() {
+  public static createWorkerBlobURL(caseSensitive: boolean) {
     const code = `
       self.onmessage = function (event) {
         const {chunk, filterText} = event.data;
-        const result = chunk.map((text) => text.toLocaleLowerCase().includes(filterText));
+        const result = chunk.map((text) => text${caseSensitive ? '' : '.toLocaleLowerCase()'}.includes(filterText));
         self.postMessage(result);
       };
     `;
