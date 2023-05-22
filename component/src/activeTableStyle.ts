@@ -380,6 +380,10 @@ export const activeTableStyle = css`
     width: 12.5px;
   }
 
+  .outer-container-dropdown {
+    z-index: 2;
+  }
+
   .color-input {
     width: 0px;
     height: 0px;
@@ -434,6 +438,7 @@ export const activeTableStyle = css`
     background-color: #70c6ff4d;
     border: 5px dashed #6dafff;
     display: none;
+    z-index: 2;
   }
 
   .dropdown-cell-overlay {
@@ -682,11 +687,11 @@ export const activeTableStyle = css`
     border-top: inherit !important;
   }
 
-  .row-filter-input-container {
+  .filter-rows-container {
     position: relative;
   }
 
-  .row-filter-input {
+  .filter-rows-input {
     width: 150px;
     height: 20px;
     border: 1px solid #0000002b;
@@ -697,12 +702,7 @@ export const activeTableStyle = css`
     font-size: 14px;
   }
 
-  .row-filter-input-with-case {
-    padding-right: 30px;
-    width: 126px;
-  }
-
-  .row-filter-case-button {
+  .filter-rows-dropdown-button {
     position: absolute;
     right: 0px;
     top: 49%;
@@ -713,8 +713,43 @@ export const activeTableStyle = css`
     user-select: none;
   }
 
-  .row-filter-case-button-active {
+  .filter-rows-dropdown-button + .filter-rows-case-button {
+    right: 21px;
+  }
+
+  .filter-rows-case-button + .filter-rows-input,
+  .filter-rows-dropdown-button + .filter-rows-input {
+    padding-right: 30px;
+    width: 126px;
+  }
+
+  .filter-rows-dropdown-button + .filter-rows-case-button + .filter-rows-input {
+    padding-right: 50px;
+    width: 106px;
+  }
+
+  .filter-rows-case-button {
+    position: absolute;
+    right: 0px;
+    top: 49%;
+    transform: translate(-50%, -50%);
+    color: grey;
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .filter-rows-case-button-active {
     color: black;
     /* font-weight: 500; */
+  }
+
+  .filter-rows-dropdown {
+    width: unset !important;
+  }
+
+  .filter-rows-dropdown > .dropdown-item {
+    padding-left: 8px;
+    padding-right: 8px;
   }
 `;

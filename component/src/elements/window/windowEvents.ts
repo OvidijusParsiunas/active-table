@@ -1,5 +1,6 @@
 import {SelectCellTextBaseEvents} from '../cell/cellsWithTextDiv/selectCell/baseEvents/selectCellTextBaseEvents';
 import {RowsPerPageDropdownEvents} from '../pagination/rowsPerPageSelect/dropdown/rowsPerPageDropdownEvents';
+import {OuterDropdownElement} from '../../utils/outerTableComponents/dropdown/outerDropdownElement';
 import {OptionColorButtonEvents} from '../dropdown/cellDropdown/buttons/optionColorButtonEvents';
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
@@ -17,7 +18,9 @@ import {Dropdown} from '../dropdown/dropdown';
 export class WindowEvents {
   // prettier-ignore
   public static onKeyDown(this: ActiveTable, event: KeyboardEvent) {
-    if (Dropdown.isDisplayed(this._pagination.rowsPerPageDropdown)) {
+    if (Dropdown.isDisplayed(this._activeOverlayElements.outerContainerDropdown)) {
+      OuterDropdownElement.windowOnKeyDown(this, event);
+    } else if (Dropdown.isDisplayed(this._pagination.rowsPerPageDropdown)) {
       RowsPerPageDropdownEvents.windowOnKeyDown.bind(this)(this, event);
     }
     if (Dropdown.isDisplayed(this._activeOverlayElements.rowDropdown)) {
@@ -52,7 +55,9 @@ export class WindowEvents {
   // prettier-ignore
   public static onMouseDown(this: ActiveTable, event: MouseEvent) {
     OptionColorButtonEvents.windowEventClosePicker(this._columnsDetails, this._focusedElements);
-    if (Dropdown.isDisplayed(this._pagination.rowsPerPageDropdown)) {
+    if (Dropdown.isDisplayed(this._activeOverlayElements.outerContainerDropdown)) {
+      OuterDropdownElement.windowOnMouseDown(this);
+    } else if (Dropdown.isDisplayed(this._pagination.rowsPerPageDropdown)) {
       RowsPerPageDropdownEvents.windowOnMouseDown.bind(this)(this);
     }
     // window event.target can only identify the parent element in shadow dom, not elements

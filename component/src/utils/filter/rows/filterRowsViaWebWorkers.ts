@@ -1,7 +1,7 @@
 import {CellElement} from '../../../elements/cell/cellElement';
-import {RowFilterUtils} from './rowFilterUtils';
+import {FilterRowsUtils} from './filterRowsUtils';
 
-export class RowFilterWebWorkers {
+export class FilterRowsViaWebWorkers {
   // cannot use a direct link to a webworker file as parent project may not allow the component to access it
   // const worker = new Worker(new URL('./worker.js', import.meta.url))
   // using a string literal instead, ref:
@@ -29,19 +29,19 @@ export class RowFilterWebWorkers {
   private static executeWorker(start: number, end: number,
       dataRows: Element[], textArray: string[], filterText: string, workerBlobURL: string) {
     const worker = new Worker(workerBlobURL);
-    worker.onmessage = RowFilterWebWorkers.workerToggleRow.bind(this, start, dataRows);
+    worker.onmessage = FilterRowsViaWebWorkers.workerToggleRow.bind(this, start, dataRows);
     const chunk = textArray.slice(start, end);
     worker.postMessage({chunk, filterText});
   }
 
   public static filter(objectURL: string, dataRows: Element[], filterText: string, columnIndex: number) {
     const textArray = dataRows.map((row) => CellElement.getText(row.children[columnIndex] as HTMLElement));
-    const chunkSize = RowFilterUtils.CHUNK_SIZE;
+    const chunkSize = FilterRowsUtils.CHUNK_SIZE;
     const numWorkers = Math.ceil(textArray.length / chunkSize);
     for (let i = 0; i < numWorkers; i++) {
       const start = i * chunkSize;
       const end = start + chunkSize;
-      RowFilterWebWorkers.executeWorker(start, end, dataRows, textArray, filterText, objectURL);
+      FilterRowsViaWebWorkers.executeWorker(start, end, dataRows, textArray, filterText, objectURL);
     }
   }
 }

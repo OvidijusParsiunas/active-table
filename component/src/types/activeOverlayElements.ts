@@ -4,6 +4,7 @@ export interface ActiveOverlayElements {
   columnDropdown?: HTMLElement;
   columnTypeDropdown?: HTMLElement;
   rowDropdown?: HTMLElement;
+  outerContainerDropdown?: HTMLElement; // does not include pagination
   fullTableOverlay?: HTMLElement;
   // cannot get the actual date picker as its native browser element is not accessible
   // the cell is probably not the best element for this but its use is very efficient
