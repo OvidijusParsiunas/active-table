@@ -1,4 +1,5 @@
 import {OuterDropdownElement} from '../../../../utils/outerTableComponents/dropdown/outerDropdownElement';
+import {OuterContentPosition} from '../../../../types/outerContainer';
 import {DropdownItem} from '../../../dropdown/dropdownItem';
 import {ActiveTable} from '../../../../activeTable';
 
@@ -12,15 +13,18 @@ export class FilterRowsDropdownElement {
 
   private static addItems(at: ActiveTable, dropdownElement: HTMLElement) {
     setTimeout(() => {
-      DropdownItem.addButtonItem(at, dropdownElement, {text: 'Hello'});
-      DropdownItem.addButtonItem(at, dropdownElement, {text: 'What makes sense'});
+      DropdownItem.addButtonItem(at, dropdownElement, {text: 'Planets Planets Planets Planets'});
+      DropdownItem.addButtonItem(at, dropdownElement, {text: 'Diameter'});
+      DropdownItem.addButtonItem(at, dropdownElement, {text: 'Mass'});
+      DropdownItem.addButtonItem(at, dropdownElement, {text: 'Moons'});
+      DropdownItem.addButtonItem(at, dropdownElement, {text: 'Density'});
     });
   }
 
-  public static create(at: ActiveTable, containerElement: HTMLElement) {
+  public static create(at: ActiveTable, containerElement: HTMLElement, position: OuterContentPosition) {
     const buttonElement = FilterRowsDropdownElement.createButton();
     containerElement.appendChild(buttonElement);
-    const dropdownElement = OuterDropdownElement.create(at, buttonElement);
+    const dropdownElement = OuterDropdownElement.create(at, buttonElement, position);
     FilterRowsDropdownElement.addItems(at, dropdownElement);
     return dropdownElement;
   }

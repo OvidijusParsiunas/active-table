@@ -32,8 +32,8 @@ export class OuterContainerElements {
 
   private static setHeightsWhenOnlyMiddleColumns(containers: OuterContainers) {
     setTimeout(() => {
-      if (containers.bottom) OuterContainerElements.setContainerHeightBasedOnMiddleColumn(containers.bottom);
       if (containers.top) OuterContainerElements.setContainerHeightBasedOnMiddleColumn(containers.top);
+      if (containers.bottom) OuterContainerElements.setContainerHeightBasedOnMiddleColumn(containers.bottom);
     });
   }
 

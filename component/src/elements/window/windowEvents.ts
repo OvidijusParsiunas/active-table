@@ -1,6 +1,6 @@
 import {SelectCellTextBaseEvents} from '../cell/cellsWithTextDiv/selectCell/baseEvents/selectCellTextBaseEvents';
 import {RowsPerPageDropdownEvents} from '../pagination/rowsPerPageSelect/dropdown/rowsPerPageDropdownEvents';
-import {OuterDropdownElement} from '../../utils/outerTableComponents/dropdown/outerDropdownElement';
+import {OuterDropdownEvents} from '../../utils/outerTableComponents/dropdown/outerDropdownEvents';
 import {OptionColorButtonEvents} from '../dropdown/cellDropdown/buttons/optionColorButtonEvents';
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
@@ -19,7 +19,7 @@ export class WindowEvents {
   // prettier-ignore
   public static onKeyDown(this: ActiveTable, event: KeyboardEvent) {
     if (Dropdown.isDisplayed(this._activeOverlayElements.outerContainerDropdown)) {
-      OuterDropdownElement.windowOnKeyDown(this, event);
+      OuterDropdownEvents.windowOnKeyDown(this, event);
     } else if (Dropdown.isDisplayed(this._pagination.rowsPerPageDropdown)) {
       RowsPerPageDropdownEvents.windowOnKeyDown.bind(this)(this, event);
     }
@@ -56,7 +56,7 @@ export class WindowEvents {
   public static onMouseDown(this: ActiveTable, event: MouseEvent) {
     OptionColorButtonEvents.windowEventClosePicker(this._columnsDetails, this._focusedElements);
     if (Dropdown.isDisplayed(this._activeOverlayElements.outerContainerDropdown)) {
-      OuterDropdownElement.windowOnMouseDown(this);
+      OuterDropdownEvents.windowOnMouseDown(this);
     } else if (Dropdown.isDisplayed(this._pagination.rowsPerPageDropdown)) {
       RowsPerPageDropdownEvents.windowOnMouseDown.bind(this)(this);
     }

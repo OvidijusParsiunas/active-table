@@ -239,6 +239,13 @@ export const activeTableStyle = css`
     z-index: 1;
   }
 
+  .active-table-dropup {
+    box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px,
+      rgba(15, 15, 15, 0.2) 0px -2px 24px;
+    top: unset;
+    bottom: 100%;
+  }
+
   .cell-dropdown {
     overflow: auto;
     white-space: nowrap;
@@ -608,7 +615,7 @@ export const activeTableStyle = css`
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  #outer-top-container > div > * {
+  #outer-top-container > div > div > div > * {
     margin-bottom: 13px;
   }
 
@@ -745,7 +752,8 @@ export const activeTableStyle = css`
   }
 
   .filter-rows-dropdown {
-    width: unset !important;
+    min-width: 100% !important;
+    width: max-content !important;
   }
 
   .filter-rows-dropdown > .dropdown-item {

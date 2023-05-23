@@ -70,8 +70,8 @@ import {Overflow} from './types/overflow';
 import {CSSStyle} from './types/cssStyle';
 
 // WORK - on-render
-// WORK - stub-style
-// WORK - hover animation in the example
+// WORK - hover animation for row
+// WORK - stub-style - rename to root cell
 // TO-DO - add comments on type properties
 @customElement('active-table')
 export class ActiveTable extends LitElement {
@@ -268,7 +268,7 @@ export class ActiveTable extends LitElement {
   files?: Files;
 
   @property({type: Boolean})
-  filter?: boolean | {caseButton?: boolean | CSSStyle};
+  filter?: boolean | {caseButton?: boolean | CSSStyle; dropdown?: boolean} = {};
 
   @property({type: String})
   auxiliaryStyle?: string;
