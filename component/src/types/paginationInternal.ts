@@ -25,7 +25,6 @@ export interface PaginationInternal extends Required<Pagination> {
   activePageNumber: number;
   programaticallyHoveredPageNumberButton?: HTMLElement;
   clickedPageNumberButton?: boolean; // REF-30
-  mouseDownOnRowsPerPageButton?: boolean;
   isAllRowsOptionSelected: boolean;
   rowsPerPageOptionsItemText: string[];
 }

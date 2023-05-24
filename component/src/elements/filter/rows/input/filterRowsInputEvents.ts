@@ -1,5 +1,5 @@
-import {FilterRowsUtils} from '../../../../utils/filter/rows/filterRowsUtils';
-import {ExtractElements} from '../../../../utils/elements/extractElements';
+import {FilterRowsInternalUtils} from '../../../../utils/outerTableComponents/filter/rows/filterRowsUtils';
+import {FilterRowsInternal} from '../../../../types/filterInternal';
 import {ActiveTable} from '../../../../activeTable';
 
 // WORK - filter when header is data too
@@ -7,13 +7,17 @@ import {ActiveTable} from '../../../../activeTable';
 // WORK - ability to toggle if case senseitive
 export class FilterRowsInputEvents {
   // WORK - be careful about pagination
-  public static setEvents(at: ActiveTable, inputElement: HTMLInputElement, columnIndex: number, isCaseSensitive: boolean) {
-    const {_tableBodyElementRef, content} = at;
-    const processRows = FilterRowsUtils.getFilterFunc(isCaseSensitive);
+  // prettier-ignore
+  public static setEvents(at: ActiveTable) {
+    const {content, _filterInternal: {rows}, _columnsDetails} = at;
+    const {isCaseSensitive, inputElement, activeColumnName} = rows as FilterRowsInternal;
+    const columnIndex = content[0]?.findIndex((headerText) => headerText === activeColumnName);
+    if (columnIndex === undefined) return;
+    const processRows = FilterRowsInternalUtils.getFilterFunc(isCaseSensitive);
     inputElement.oninput = () => {
       const filterText = isCaseSensitive ? inputElement.value : inputElement.value.toLocaleLowerCase();
-      const dataRows = ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content).slice(1);
-      processRows(dataRows, filterText, columnIndex);
+      const colCelss = _columnsDetails[columnIndex].elements.slice(1);
+      processRows(colCelss, filterText);
     };
   }
 }

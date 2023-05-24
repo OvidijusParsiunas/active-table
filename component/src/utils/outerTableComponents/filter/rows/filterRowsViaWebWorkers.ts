@@ -1,5 +1,5 @@
-import {CellElement} from '../../../elements/cell/cellElement';
-import {FilterRowsUtils} from './filterRowsUtils';
+import {CellElement} from '../../../../elements/cell/cellElement';
+import {FilterRowsInternalUtils} from './filterRowsUtils';
 
 export class FilterRowsViaWebWorkers {
   // cannot use a direct link to a webworker file as parent project may not allow the component to access it
@@ -18,30 +18,31 @@ export class FilterRowsViaWebWorkers {
     return URL.createObjectURL(blob);
   }
 
-  private static workerToggleRow(start: number, dataRows: Element[], event: MessageEvent) {
+  private static workerToggleRow(start: number, colCells: HTMLElement[], event: MessageEvent) {
     const result = event.data;
     result.forEach((display: boolean, index: number) => {
-      (dataRows[start + index] as HTMLElement).style.display = display ? '' : 'none';
+      const row = (colCells[start + index] as HTMLElement).parentElement as HTMLElement;
+      row.style.display = display ? '' : 'none';
     });
   }
 
   // prettier-ignore
   private static executeWorker(start: number, end: number,
-      dataRows: Element[], textArray: string[], filterText: string, workerBlobURL: string) {
+      colCells: HTMLElement[], textArray: string[], filterText: string, workerBlobURL: string) {
     const worker = new Worker(workerBlobURL);
-    worker.onmessage = FilterRowsViaWebWorkers.workerToggleRow.bind(this, start, dataRows);
+    worker.onmessage = FilterRowsViaWebWorkers.workerToggleRow.bind(this, start, colCells);
     const chunk = textArray.slice(start, end);
     worker.postMessage({chunk, filterText});
   }
 
-  public static filter(objectURL: string, dataRows: Element[], filterText: string, columnIndex: number) {
-    const textArray = dataRows.map((row) => CellElement.getText(row.children[columnIndex] as HTMLElement));
-    const chunkSize = FilterRowsUtils.CHUNK_SIZE;
+  public static filter(objectURL: string, colCells: HTMLElement[], filterText: string) {
+    const textArray = colCells.map((cell) => CellElement.getText(cell));
+    const chunkSize = FilterRowsInternalUtils.CHUNK_SIZE;
     const numWorkers = Math.ceil(textArray.length / chunkSize);
     for (let i = 0; i < numWorkers; i++) {
       const start = i * chunkSize;
       const end = start + chunkSize;
-      FilterRowsViaWebWorkers.executeWorker(start, end, dataRows, textArray, filterText, objectURL);
+      FilterRowsViaWebWorkers.executeWorker(start, end, colCells, textArray, filterText, objectURL);
     }
   }
 }

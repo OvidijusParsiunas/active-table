@@ -15,9 +15,9 @@ export class FilterRowsInputElement {
   }
 
   public static create(at: ActiveTable) {
-    const columnIndex = 1;
     const inputElement = FilterRowsInputElement.createElement();
-    setTimeout(() => FilterRowsInputEvents.setEvents(at, inputElement, columnIndex, false));
+    if (at._filterInternal.rows) at._filterInternal.rows.inputElement = inputElement;
+    setTimeout(() => FilterRowsInputEvents.setEvents(at));
     return inputElement;
   }
 }

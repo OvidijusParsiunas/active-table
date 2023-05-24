@@ -1,3 +1,4 @@
+import {DropdownItemHighlightUtils} from '../../color/dropdownItemHighlightUtils';
 import {OuterContainerDropdownI} from '../../../types/outerContainerInternal';
 import {ActiveOverlayElements} from '../../../types/activeOverlayElements';
 import {OuterDropdownButtonElement} from './outerDropdownButtonElement';
@@ -20,10 +21,11 @@ export class OuterDropdownElement {
         OuterDropdownButtonElement.toggleIcon(dropdown.button);
       }
       delete activeOverlayElements.outerContainerDropdown;
+      DropdownItemHighlightUtils.fadeCurrentlyHighlighted(activeOverlayElements);
     }
   }
 
-  public static display(dropdown: OuterContainerDropdownI, at: ActiveTable) {
+  public static display(at: ActiveTable, dropdown: OuterContainerDropdownI) {
     if (dropdown.button.classList.contains(OuterDropdownButtonElement.AUTO_STYLING)) {
       OuterDropdownButtonElement.toggleIcon(dropdown.button);
     }
@@ -31,9 +33,9 @@ export class OuterDropdownElement {
     at._activeOverlayElements.outerContainerDropdown = dropdown;
   }
 
-  public static displayReactToBottomVisibility(dropdown: OuterContainerDropdownI, at: ActiveTable) {
+  public static displayReactToBottomVisibility(at: ActiveTable, dropdown: OuterContainerDropdownI) {
     dropdown.element.classList.remove(OuterDropdownElement.DROPUP_CLASS);
-    OuterDropdownElement.display(dropdown, at);
+    OuterDropdownElement.display(at, dropdown);
     const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdown.element, at._tableDimensions.border, false);
     if (!visibilityDetails.isFullyVisible && visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
       dropdown.element.classList.add(OuterDropdownElement.DROPUP_CLASS);
@@ -53,13 +55,13 @@ export class OuterDropdownElement {
   }
 
   // prettier-ignore
-  public static create(at: ActiveTable,
-      button: HTMLElement, position: OuterContentPosition, additionalClasses?: string[], hideFunc?: () => void) {
+  public static create(at: ActiveTable, button: HTMLElement, position: OuterContentPosition,
+      additionalClasses: string[], hide: () => void,
+      displayFunc?: (at: ActiveTable, dropdown: OuterContainerDropdownI) => void) {
     const dropdownElement = OuterDropdownElement.createElement(additionalClasses);
-    const hide = hideFunc || OuterDropdownElement.hide.bind(this, at._activeOverlayElements);
-    const dropdown: OuterContainerDropdownI = {element: dropdownElement, hide, button: button};
+    const dropdown: OuterContainerDropdownI = {element: dropdownElement, hide, button};
     OuterDropdownElement.setOrientation(dropdownElement, position);
-    OuterDropdownButtonEvents.set(at, button, position, dropdown);
+    OuterDropdownButtonEvents.set(at, button, position, dropdown, displayFunc);
     OuterDropdownEvents.set(at, dropdown);
     return dropdown;
   }

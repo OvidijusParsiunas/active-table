@@ -6,6 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const ALGOLIA_APP_ID = process.env.ALGOLIA_APP_ID;
 const ALGOLIA_API_KEY = process.env.ALGOLIA_API_KEY;
 
+// WORK - change config to use environment variables
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Active Table',
