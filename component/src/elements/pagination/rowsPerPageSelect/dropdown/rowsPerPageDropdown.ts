@@ -1,18 +1,19 @@
-import {ElementVisibility} from '../../../../utils/elements/elementVisibility';
-import {TableBorderDimensions} from '../../../../types/tableBorderDimensions';
+import {OuterDropdownElement} from '../../../../utils/outerTableComponents/dropdown/outerDropdownElement';
+import {OuterContainerDropdownI} from '../../../../types/outerContainerInternal';
+import {ActiveOverlayElements} from '../../../../types/activeOverlayElements';
 import {PaginationInternal} from '../../../../types/paginationInternal';
-import {RowsPerPageDropdownEvents} from './rowsPerPageDropdownEvents';
 import {RowsPerPageDropdownItem} from './rowsPerPageDropdownItem';
 import {ActiveTable} from '../../../../activeTable';
-import {Dropdown} from '../../../dropdown/dropdown';
 import {PX} from '../../../../types/dimensions';
-import {SIDE} from '../../../../types/side';
 
 export class RowsPerPageDropdown {
-  public static hide(dropdownElement: HTMLElement, dropdownItems?: HTMLElement[]) {
-    Dropdown.hide(dropdownElement);
-    const items = dropdownItems || (Array.from(dropdownElement.children) as HTMLElement[]);
-    RowsPerPageDropdownItem.unsetHoverColors(items);
+  public static hide(activeOverlayElements: ActiveOverlayElements, dropdownItems?: HTMLElement[]) {
+    OuterDropdownElement.hide(activeOverlayElements);
+    const dropdownElement = activeOverlayElements.outerContainerDropdown?.element;
+    if (dropdownElement) {
+      const items = dropdownItems || (Array.from(dropdownElement.children) as HTMLElement[]);
+      RowsPerPageDropdownItem.unsetHoverColors(items);
+    }
   }
 
   private static getDropdownTopPosition(buttonElement: HTMLElement): PX {
@@ -25,24 +26,14 @@ export class RowsPerPageDropdown {
   }
 
   // prettier-ignore
-  private static displayAndSetDropdownPosition(buttonElement: HTMLElement, dropdownElement: HTMLElement,
-      dropdownWidth: number, borderDimensions: TableBorderDimensions) {
+  public static display(at: ActiveTable, buttonElement: HTMLElement, dropdown: OuterContainerDropdownI) {
+    const {_pagination: {dropdownWidth}} = at;
+    const {element: dropdownElement} = dropdown;
     dropdownElement.style.bottom = '';
     dropdownElement.style.left = RowsPerPageDropdown.getLeftPropertyToCenterDropdown(buttonElement, dropdownWidth);
     dropdownElement.style.top = RowsPerPageDropdown.getDropdownTopPosition(buttonElement);
     // needs to be displayed here to evalute if in view port
-    Dropdown.display(dropdownElement);
-    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement, borderDimensions, false);
-    if (!visibilityDetails.isFullyVisible && visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
-      dropdownElement.style.bottom = '0px';
-      dropdownElement.style.top = '';
-    }
-  }
-
-  // prettier-ignore
-  public static display(buttonElement: HTMLElement, dropdown: HTMLElement, dropdownWidth: number,
-      borderDimensions: TableBorderDimensions) {
-    RowsPerPageDropdown.displayAndSetDropdownPosition(buttonElement, dropdown, dropdownWidth, borderDimensions);
+    OuterDropdownElement.displayReactToBottomVisibility(dropdown, at)
   }
 
   private static setWidth(dropdownElement: HTMLElement, pagination: PaginationInternal) {
@@ -55,10 +46,11 @@ export class RowsPerPageDropdown {
   }
 
   public static create(at: ActiveTable, optionsButton: HTMLElement) {
-    const dropdownElement = Dropdown.createBase();
-    RowsPerPageDropdown.setWidth(dropdownElement, at._pagination);
-    RowsPerPageDropdownItem.populate(at, dropdownElement, optionsButton);
-    RowsPerPageDropdownEvents.set(at, dropdownElement);
-    return dropdownElement;
+    const hideFunc = RowsPerPageDropdown.hide.bind(this, at._activeOverlayElements);
+    // position is arbitrary as long as orientation isn't changed
+    const dropdown = OuterDropdownElement.create(at, optionsButton, 'bottom-middle', [], hideFunc);
+    RowsPerPageDropdownItem.populate(at, dropdown.element, optionsButton);
+    RowsPerPageDropdown.setWidth(dropdown.element, at._pagination);
+    return dropdown;
   }
 }

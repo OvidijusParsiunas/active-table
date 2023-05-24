@@ -1,5 +1,6 @@
 import {OuterContainerElements} from '../../../utils/outerTableComponents/outerContainerElements';
 import {RowsPerPageSelectButtonElement} from './button/rowsPerPageSelectButtonElement';
+import {RowsPerPageSelectButtonEvents} from './button/rowsPerPageSelectButtonEvents';
 import {PaginationInternal} from '../../../types/paginationInternal';
 import {RowsPerPageDropdown} from './dropdown/rowsPerPageDropdown';
 import {OuterContainers} from '../../../types/outerContainer';
@@ -34,9 +35,10 @@ export class RowsPerPageSelectElement {
     const rowsPerPageOptionsContainer = RowsPerPageSelectElement.createContainer(at._pagination);
     rowsPerPageOptionsContainer.appendChild(RowsPerPageSelectElement.createText(at._pagination));
     const optionsButton = RowsPerPageSelectButtonElement.create(at);
+    const dropdown = RowsPerPageDropdown.create(at, optionsButton);
+    setTimeout(() => RowsPerPageSelectButtonEvents.setEvents(at, optionsButton, dropdown))
     rowsPerPageOptionsContainer.appendChild(optionsButton);
-    at._pagination.rowsPerPageDropdown = RowsPerPageDropdown.create(at, optionsButton);
-    rowsPerPageOptionsContainer.appendChild(at._pagination.rowsPerPageDropdown);
+    rowsPerPageOptionsContainer.appendChild(dropdown.element);
     OuterContainerElements.addToContainer(at._pagination.positions.rowsPerPageSelect.position,
       containers, rowsPerPageOptionsContainer);
     return rowsPerPageOptionsContainer;

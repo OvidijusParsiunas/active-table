@@ -1,3 +1,5 @@
+import {OuterDropdownElement} from '../../../../utils/outerTableComponents/dropdown/outerDropdownElement';
+import {OuterContainerDropdownI} from '../../../../types/outerContainerInternal';
 import {RowsPerPageSelectButtonElement} from './rowsPerPageSelectButtonElement';
 import {PaginationInternal} from '../../../../types/paginationInternal';
 import {RowsPerPageDropdown} from '../dropdown/rowsPerPageDropdown';
@@ -7,20 +9,15 @@ import {ActiveTable} from '../../../../activeTable';
 import {Dropdown} from '../../../dropdown/dropdown';
 
 export class RowsPerPageSelectButtonEvents {
-  // prettier-ignore
-  private static buttonClick(this: ActiveTable, event: MouseEvent) {
-    const dropdownElement = this._pagination.rowsPerPageDropdown as HTMLElement;
-    if (Dropdown.isDisplayed(dropdownElement)) {
-      Dropdown.hide(dropdownElement);
+  private static buttonClick(this: ActiveTable, dropdown: OuterContainerDropdownI, button: HTMLElement) {
+    if (Dropdown.isDisplayed(dropdown.element)) {
+      OuterDropdownElement.hide(this._activeOverlayElements);
     } else {
-      const buttonElement = event.target as HTMLElement;
-      RowsPerPageDropdown.display(buttonElement, dropdownElement,
-        this._pagination.dropdownWidth, this._tableDimensions.border);
+      RowsPerPageDropdown.display(this, button, dropdown);
     }
   }
 
-  private static buttonMouseDown(pagination: PaginationInternal, event: MouseEvent) {
-    const button = event.target as HTMLElement;
+  private static mouseDown(pagination: PaginationInternal, button: HTMLElement) {
     Object.assign(button.style, pagination.styles.rowsPerPageSelect?.button?.click);
     const buttonText = button.children[0] as HTMLElement;
     Object.assign(buttonText.style, pagination.styles.rowsPerPageSelect?.buttonText?.click);
@@ -30,21 +27,19 @@ export class RowsPerPageSelectButtonEvents {
     setTimeout(() => (pagination.mouseDownOnRowsPerPageButton = false));
   }
 
-  private static buttonMouseLeave(paginationStyles: PaginationStyles<Required<StatefulCSS>>, event: MouseEvent) {
-    const button = event.target as HTMLElement;
+  private static mouseLeave(paginationStyles: PaginationStyles<Required<StatefulCSS>>, button: HTMLElement) {
     RowsPerPageSelectButtonElement.applyStylesOnElements(button, 'default', paginationStyles.rowsPerPageSelect);
   }
 
-  private static buttonMouseEnter(paginationStyles: PaginationStyles<Required<StatefulCSS>>, event: MouseEvent) {
-    const button = event.target as HTMLElement;
+  private static mouseEnter(paginationStyles: PaginationStyles<Required<StatefulCSS>>, button: HTMLElement) {
     RowsPerPageSelectButtonElement.applyStylesOnElements(button, 'hover', paginationStyles.rowsPerPageSelect);
   }
 
-  public static setEvents(at: ActiveTable, optionsButton: HTMLElement) {
-    optionsButton.onmouseenter = RowsPerPageSelectButtonEvents.buttonMouseEnter.bind(this, at._pagination.styles);
-    optionsButton.onmouseleave = RowsPerPageSelectButtonEvents.buttonMouseLeave.bind(this, at._pagination.styles);
-    optionsButton.onmousedown = RowsPerPageSelectButtonEvents.buttonMouseDown.bind(this, at._pagination);
-    optionsButton.onmouseup = RowsPerPageSelectButtonEvents.buttonMouseEnter.bind(this, at._pagination.styles);
-    optionsButton.onclick = RowsPerPageSelectButtonEvents.buttonClick.bind(at);
+  public static setEvents(at: ActiveTable, button: HTMLElement, dropdown: OuterContainerDropdownI) {
+    button.onmouseenter = RowsPerPageSelectButtonEvents.mouseEnter.bind(this, at._pagination.styles, button);
+    button.onmouseleave = RowsPerPageSelectButtonEvents.mouseLeave.bind(this, at._pagination.styles, button);
+    button.onmousedown = RowsPerPageSelectButtonEvents.mouseDown.bind(this, at._pagination, button);
+    button.onmouseup = RowsPerPageSelectButtonEvents.mouseEnter.bind(this, at._pagination.styles, button);
+    button.onclick = RowsPerPageSelectButtonEvents.buttonClick.bind(at, dropdown, button);
   }
 }

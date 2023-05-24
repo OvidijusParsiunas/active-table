@@ -1,5 +1,4 @@
 import {SelectCellTextBaseEvents} from '../cell/cellsWithTextDiv/selectCell/baseEvents/selectCellTextBaseEvents';
-import {RowsPerPageDropdownEvents} from '../pagination/rowsPerPageSelect/dropdown/rowsPerPageDropdownEvents';
 import {OuterDropdownEvents} from '../../utils/outerTableComponents/dropdown/outerDropdownEvents';
 import {OptionColorButtonEvents} from '../dropdown/cellDropdown/buttons/optionColorButtonEvents';
 import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellInputElement';
@@ -16,12 +15,9 @@ import {ActiveTable} from '../../activeTable';
 import {Dropdown} from '../dropdown/dropdown';
 
 export class WindowEvents {
-  // prettier-ignore
   public static onKeyDown(this: ActiveTable, event: KeyboardEvent) {
-    if (Dropdown.isDisplayed(this._activeOverlayElements.outerContainerDropdown)) {
+    if (Dropdown.isDisplayed(this._activeOverlayElements.outerContainerDropdown?.element)) {
       OuterDropdownEvents.windowOnKeyDown(this, event);
-    } else if (Dropdown.isDisplayed(this._pagination.rowsPerPageDropdown)) {
-      RowsPerPageDropdownEvents.windowOnKeyDown.bind(this)(this, event);
     }
     if (Dropdown.isDisplayed(this._activeOverlayElements.rowDropdown)) {
       RowDropdownEvents.windowOnKeyDown(this, event);
@@ -29,14 +25,12 @@ export class WindowEvents {
     const {rowIndex, columnIndex, element} = this._focusedElements.cell;
     if (rowIndex === undefined || columnIndex === undefined) return;
     if (rowIndex === 0 && !Dropdown.isDisplayed(this._activeOverlayElements.columnDropdown)) {
-    if (event.key === KEYBOARD_KEY.ESCAPE) {
-      ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, element as HTMLElement, columnIndex);
-      return;
-    }
-    // workaround for when opened dropdown does not have a focused item
+      if (event.key === KEYBOARD_KEY.ESCAPE) {
+        return ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, element as HTMLElement, columnIndex);
+      }
+      // workaround for when opened dropdown does not have a focused item
     } else if (Dropdown.isDisplayed(this._activeOverlayElements.columnDropdown) && !this.shadowRoot?.activeElement) {
-      ColumnDropdownEvents.onKeyDown.bind(this)(this._activeOverlayElements.columnDropdown as HTMLElement, event);
-      return;
+      return ColumnDropdownEvents.onKeyDown.bind(this)(this._activeOverlayElements.columnDropdown as HTMLElement, event);
     }
     if (rowIndex > 0 && this._columnsDetails[columnIndex].activeType.cellDropdownProps) {
       SelectCellTextBaseEvents.keyDownText(this, rowIndex, columnIndex, event);
@@ -55,10 +49,8 @@ export class WindowEvents {
   // prettier-ignore
   public static onMouseDown(this: ActiveTable, event: MouseEvent) {
     OptionColorButtonEvents.windowEventClosePicker(this._columnsDetails, this._focusedElements);
-    if (Dropdown.isDisplayed(this._activeOverlayElements.outerContainerDropdown)) {
+    if (Dropdown.isDisplayed(this._activeOverlayElements.outerContainerDropdown?.element)) {
       OuterDropdownEvents.windowOnMouseDown(this);
-    } else if (Dropdown.isDisplayed(this._pagination.rowsPerPageDropdown)) {
-      RowsPerPageDropdownEvents.windowOnMouseDown.bind(this)(this);
     }
     // window event.target can only identify the parent element in shadow dom, not elements
     // inside it, hence if the user clicks inside the element, the elements inside will

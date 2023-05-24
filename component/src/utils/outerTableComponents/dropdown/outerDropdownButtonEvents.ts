@@ -1,3 +1,4 @@
+import {OuterContainerDropdownI} from '../../../types/outerContainerInternal';
 import {OuterContentPosition} from '../../../types/outerContainer';
 import {Dropdown} from '../../../elements/dropdown/dropdown';
 import {OuterDropdownElement} from './outerDropdownElement';
@@ -8,11 +9,6 @@ type DisplayFunc = (at: ActiveTable, dropdownElement: HTMLElement) => void;
 export class OuterDropdownButtonEvents {
   // this is used to prevent the dropdown from opening up again after clicking the button to close
   private static DO_NOT_DISPLAY_DROPDOWN_CLASS = 'do-not-display-class';
-
-  private static getDisplayFunc(position: OuterContentPosition) {
-    if (position.startsWith('top')) return OuterDropdownElement.display;
-    return OuterDropdownElement.displayReactToBottomVisibility;
-  }
 
   private static mouseClickButton(at: ActiveTable, dropdownElement: HTMLElement, displayFunc: DisplayFunc) {
     if (dropdownElement.classList.contains(OuterDropdownButtonEvents.DO_NOT_DISPLAY_DROPDOWN_CLASS)) {
@@ -28,12 +24,16 @@ export class OuterDropdownButtonEvents {
     }
   }
 
+  private static getDisplayFunc(position: OuterContentPosition, dropdown: OuterContainerDropdownI) {
+    if (position.startsWith('top')) return OuterDropdownElement.display.bind(this, dropdown);
+    return OuterDropdownElement.displayReactToBottomVisibility.bind(this, dropdown);
+  }
+
   // prettier-ignore
   public static set(at: ActiveTable,
-      buttonElement: HTMLElement, dropdownElement: HTMLElement, position: OuterContentPosition) {
-    const displayFunc = OuterDropdownButtonEvents.getDisplayFunc(position);
-    buttonElement.onmousedown = OuterDropdownButtonEvents.mouseDownButton.bind(this, dropdownElement);
-    buttonElement.onclick = OuterDropdownButtonEvents.mouseClickButton.bind(this, at, dropdownElement, displayFunc);
-    return dropdownElement;
+      buttonElement: HTMLElement, position: OuterContentPosition, dropdown: OuterContainerDropdownI) {
+    const displayFunc = OuterDropdownButtonEvents.getDisplayFunc(position, dropdown);
+    buttonElement.onmousedown = OuterDropdownButtonEvents.mouseDownButton.bind(this, dropdown.element);
+    buttonElement.onclick = OuterDropdownButtonEvents.mouseClickButton.bind(this, at, dropdown.element, displayFunc);
   }
 }

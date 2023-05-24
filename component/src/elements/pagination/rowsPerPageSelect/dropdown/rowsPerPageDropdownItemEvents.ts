@@ -1,19 +1,21 @@
 import {RowsPerPageDropdownItemUtil} from './rowsPerPageDropdownItemUtil';
+import {PaginationInternal} from '../../../../types/paginationInternal';
 import {RowsPerPageDropdownItem} from './rowsPerPageDropdownItem';
 import {RowsPerPageDropdown} from './rowsPerPageDropdown';
 import {ActiveTable} from '../../../../activeTable';
 
 export class RowsPerPageDropdownItemEvents {
+  // prettier-ignore
   private static itemMouseDown(this: ActiveTable, optionsButton: HTMLElement, event: MouseEvent) {
-    const {rowsPerPageDropdown, rowsPerPage} = this._pagination;
-    const dropdown = rowsPerPageDropdown as HTMLElement;
+    const {pagination, _activeOverlayElements: {outerContainerDropdown}} = this;
     const newRowsPerPage = (event.target as HTMLElement).innerText;
-    if (rowsPerPage !== Number(newRowsPerPage)) {
+    if (((pagination as PaginationInternal).rowsPerPage) !== Number(newRowsPerPage)) {
       RowsPerPageDropdownItemUtil.setNewRowsPerPage(this, optionsButton, newRowsPerPage);
     }
-    const items = Array.from(dropdown.children) as HTMLElement[];
-    RowsPerPageDropdown.hide(dropdown, items);
-    RowsPerPageDropdownItem.unsetActiveItem(dropdown);
+    if (!outerContainerDropdown) return;
+    const items = Array.from(outerContainerDropdown.element.children) as HTMLElement[];
+    RowsPerPageDropdown.hide(this._activeOverlayElements, items);
+    RowsPerPageDropdownItem.unsetActiveItem(outerContainerDropdown.element);
     RowsPerPageDropdownItem.setActive(items, newRowsPerPage);
   }
 

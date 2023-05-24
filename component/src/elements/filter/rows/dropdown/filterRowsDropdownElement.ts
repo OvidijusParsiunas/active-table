@@ -24,8 +24,8 @@ export class FilterRowsDropdownElement {
   public static create(at: ActiveTable, containerElement: HTMLElement, position: OuterContentPosition) {
     const buttonElement = FilterRowsDropdownElement.createButton();
     containerElement.appendChild(buttonElement);
-    const dropdownElement = OuterDropdownElement.create(at, buttonElement, position);
-    FilterRowsDropdownElement.addItems(at, dropdownElement);
-    return dropdownElement;
+    const {element} = OuterDropdownElement.create(at, buttonElement, position, ['filter-rows-dropdown']);
+    FilterRowsDropdownElement.addItems(at, element);
+    return element;
   }
 }

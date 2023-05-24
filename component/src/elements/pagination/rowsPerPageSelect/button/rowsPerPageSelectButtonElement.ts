@@ -1,6 +1,5 @@
 import {ARROW_DOWN_SVG_STRING} from '../../../../consts/icons/arrowDownIconSVGString';
 import {GenericElementUtils} from '../../../../utils/elements/genericElementUtils';
-import {RowsPerPageSelectButtonEvents} from './rowsPerPageSelectButtonEvents';
 import {PaginationInternal} from '../../../../types/paginationInternal';
 import {RowsPerPageOptionsStyle} from '../../../../types/pagination';
 import {ElementStyle} from '../../../../utils/elements/elementStyle';
@@ -88,7 +87,6 @@ export class RowsPerPageSelectButtonElement {
     const optionsButton = RowsPerPageSelectButtonElement.createOptionsButton(at._pagination);
     optionsButton.appendChild(RowsPerPageSelectButtonElement.createButtonText(at._pagination));
     optionsButton.appendChild(RowsPerPageSelectButtonElement.createButtonArrow(at._pagination));
-    RowsPerPageSelectButtonEvents.setEvents(at, optionsButton);
     return optionsButton;
   }
 }

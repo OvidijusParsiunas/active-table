@@ -1,3 +1,5 @@
+import {OuterContainerDropdownI} from '../../../types/outerContainerInternal';
+import {ActiveOverlayElements} from '../../../types/activeOverlayElements';
 import {OuterDropdownButtonEvents} from './outerDropdownButtonEvents';
 import {OuterContentPosition} from '../../../types/outerContainer';
 import {ElementVisibility} from '../../elements/elementVisibility';
@@ -6,23 +8,27 @@ import {OuterDropdownEvents} from './outerDropdownEvents';
 import {ActiveTable} from '../../../activeTable';
 import {SIDE} from '../../../types/side';
 
-// not used for pagination as that dropdown behaves differently
 export class OuterDropdownElement {
-  public static hide(dropdownElement: HTMLElement) {
-    Dropdown.hide(dropdownElement);
+  private static readonly DROPUP_CLASS = 'active-table-dropup';
+
+  public static hide(activeOverlayElements: ActiveOverlayElements) {
+    if (activeOverlayElements.outerContainerDropdown) {
+      Dropdown.hide(activeOverlayElements.outerContainerDropdown.element);
+      delete activeOverlayElements.outerContainerDropdown;
+    }
   }
 
-  public static display(at: ActiveTable, dropdownElement: HTMLElement) {
-    Dropdown.display(dropdownElement);
-    at._activeOverlayElements.outerContainerDropdown = dropdownElement;
+  public static display(dropdown: OuterContainerDropdownI, at: ActiveTable) {
+    Dropdown.display(dropdown.element);
+    at._activeOverlayElements.outerContainerDropdown = dropdown;
   }
 
-  public static displayReactToBottomVisibility(at: ActiveTable, dropdownElement: HTMLElement) {
-    dropdownElement.classList.remove('active-table-dropup');
-    OuterDropdownElement.display(at, dropdownElement);
-    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdownElement, at._tableDimensions.border);
+  public static displayReactToBottomVisibility(dropdown: OuterContainerDropdownI, at: ActiveTable) {
+    dropdown.element.classList.remove(OuterDropdownElement.DROPUP_CLASS);
+    OuterDropdownElement.display(dropdown, at);
+    const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdown.element, at._tableDimensions.border, false);
     if (!visibilityDetails.isFullyVisible && visibilityDetails.blockingSides.has(SIDE.BOTTOM)) {
-      dropdownElement.classList.add('active-table-dropup');
+      dropdown.element.classList.add(OuterDropdownElement.DROPUP_CLASS);
     }
   }
 
@@ -30,13 +36,23 @@ export class OuterDropdownElement {
     if (position.endsWith('right')) dropdownElement.style.right = '0px';
   }
 
-  public static create(at: ActiveTable, buttonElement: HTMLElement, position: OuterContentPosition) {
+  private static createElement(additionalClasses?: string[]) {
     const dropdownElement = Dropdown.createBase();
     dropdownElement.style.width = '';
-    dropdownElement.classList.add('outer-container-dropdown', 'filter-rows-dropdown');
-    OuterDropdownElement.setOrientation(dropdownElement, position);
-    OuterDropdownButtonEvents.set(at, buttonElement, dropdownElement, position);
-    OuterDropdownEvents.set(at, dropdownElement);
+    dropdownElement.classList.add('outer-container-dropdown');
+    if (additionalClasses) dropdownElement.classList.add(...additionalClasses);
     return dropdownElement;
+  }
+
+  // prettier-ignore
+  public static create(at: ActiveTable,
+      buttonElement: HTMLElement, position: OuterContentPosition, additionalClasses?: string[], hideFunc?: () => void) {
+    const dropdownElement = OuterDropdownElement.createElement(additionalClasses);
+    const hide = hideFunc || OuterDropdownElement.hide.bind(this, at._activeOverlayElements);
+    const dropdown: OuterContainerDropdownI = {element: dropdownElement, hide};
+    OuterDropdownElement.setOrientation(dropdownElement, position);
+    OuterDropdownButtonEvents.set(at, buttonElement, position, dropdown);
+    OuterDropdownEvents.set(at, dropdown);
+    return dropdown;
   }
 }
