@@ -1,3 +1,4 @@
+// REF-10
 /* eslint-disable max-len */
 // prettier-ignore
 export const ARROW_DOWN_ICON_SVG_STRING = 

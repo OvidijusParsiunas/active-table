@@ -9,6 +9,6 @@ export class OuterTableComponents {
     const outerContainers = OuterContainerElements.create(at);
     if (at.pagination) PaginationElements.create(at, outerContainers);
     if (at.files) FileButtonElements.create(at, outerContainers);
-    if (at.filter) FilterRowsElements.create(at, outerContainers);
+    if (at.filterRows) FilterRowsElements.create(at, outerContainers);
   }
 }

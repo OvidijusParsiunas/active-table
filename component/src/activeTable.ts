@@ -65,9 +65,9 @@ import {LitElement, PropertyValues} from 'lit';
 import {CellText} from './types/tableContent';
 import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
+import {FilterRows} from './types/filterRows';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
-import {CSSStyle} from './types/cssStyle';
 
 // WORK - on-render
 // WORK - hover animation for row
@@ -268,7 +268,7 @@ export class ActiveTable extends LitElement {
   files?: Files;
 
   @property({type: Boolean})
-  filter?: boolean | {caseButton?: boolean | CSSStyle; dropdown?: boolean} = {};
+  filterRows?: FilterRows;
 
   @property({type: String})
   auxiliaryStyle?: string;

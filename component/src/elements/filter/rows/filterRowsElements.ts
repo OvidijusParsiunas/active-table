@@ -1,5 +1,5 @@
 import {OuterContainerElements} from '../../../utils/outerTableComponents/outerContainerElements';
-import {FilterRowsDropdownElement} from './dropdown/filterRowsDropdownElement';
+import {FilterRowsDropdownElement} from './activeColumn/dropdown/filterRowsDropdownElement';
 import {FilterRowsInputCaseElement} from './case/filterRowsInputCaseElement';
 import {FilterRowsInputElement} from './input/filterRowsInputElement';
 import {OuterContainers} from '../../../types/outerContainer';
@@ -7,6 +7,7 @@ import {ActiveTable} from '../../../activeTable';
 
 export class FilterRowsElements {
   private static readonly DEFAULT_INPUT_POSITION = 'top-right';
+  public static readonly ICON_BUTTON_CLASS = 'outer-container-icon-button';
 
   private static createContainerElement() {
     const containerElement = document.createElement('div');
@@ -20,11 +21,11 @@ export class FilterRowsElements {
     const position = FilterRowsElements.DEFAULT_INPUT_POSITION;
     const containerElement = FilterRowsElements.createContainerElement();
     const inputElement = FilterRowsInputElement.create(at);
-    if (typeof at.filter === 'boolean' || at.filter?.dropdown !== false) {
+    if (typeof at.filterRows === 'boolean' || at.filterRows?.dropdown !== false) {
       const dropdownElement = FilterRowsDropdownElement.create(at, containerElement, position);
       setTimeout(() => containerElement.appendChild(dropdownElement)); // appended at the end
     }
-    if (typeof at.filter === 'boolean' || at.filter?.caseButton !== false) {
+    if (typeof at.filterRows === 'boolean' || at.filterRows?.caseButton !== false) {
       FilterRowsInputCaseElement.create(at, inputElement, containerElement, columnIndex);
     }
     containerElement.appendChild(inputElement);

@@ -694,6 +694,16 @@ export const activeTableStyle = css`
     border-top: inherit !important;
   }
 
+  .outer-container-icon-button:hover {
+    filter: brightness(0) saturate(100%) invert(0%) sepia(92%) saturate(7480%) hue-rotate(293deg) brightness(97%)
+      contrast(99%);
+  }
+
+  .outer-container-icon-button-active {
+    filter: brightness(0) saturate(100%) invert(14%) sepia(59%) saturate(2970%) hue-rotate(219deg) brightness(98%)
+      contrast(126%) !important;
+  }
+
   .filter-rows-container {
     position: relative;
   }
@@ -711,28 +721,36 @@ export const activeTableStyle = css`
 
   .filter-rows-dropdown-button {
     position: absolute;
-    right: 0px;
-    top: 49%;
-    transform: translate(-50%, -50%);
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
     color: grey;
     font-size: 13px;
     cursor: pointer;
     user-select: none;
+    filter: brightness(0) saturate(100%) invert(40%) sepia(0%) saturate(5437%) hue-rotate(340deg) brightness(97%)
+      contrast(94%);
+    width: 16px;
+    height: 16px;
   }
 
   .filter-rows-dropdown-button + .filter-rows-case-button {
-    right: 21px;
+    right: 15px;
   }
 
-  .filter-rows-case-button + .filter-rows-input,
-  .filter-rows-dropdown-button + .filter-rows-input {
+  .filter-rows-case-button + .filter-rows-input {
     padding-right: 30px;
-    width: 126px;
+    width: 129px;
+  }
+
+  .filter-rows-dropdown-button + .filter-rows-input {
+    padding-right: 22px;
+    width: 137px;
   }
 
   .filter-rows-dropdown-button + .filter-rows-case-button + .filter-rows-input {
-    padding-right: 50px;
-    width: 106px;
+    padding-right: 45px;
+    width: 114px;
   }
 
   .filter-rows-case-button {
@@ -744,11 +762,6 @@ export const activeTableStyle = css`
     font-size: 13px;
     cursor: pointer;
     user-select: none;
-  }
-
-  .filter-rows-case-button-active {
-    color: black;
-    /* font-weight: 500; */
   }
 
   .filter-rows-dropdown {

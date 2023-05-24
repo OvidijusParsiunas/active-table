@@ -33,7 +33,8 @@ export class OuterDropdownButtonEvents {
   public static set(at: ActiveTable,
       buttonElement: HTMLElement, position: OuterContentPosition, dropdown: OuterContainerDropdownI) {
     const displayFunc = OuterDropdownButtonEvents.getDisplayFunc(position, dropdown);
-    buttonElement.onmousedown = OuterDropdownButtonEvents.mouseDownButton.bind(this, dropdown.element);
-    buttonElement.onclick = OuterDropdownButtonEvents.mouseClickButton.bind(this, at, dropdown.element, displayFunc);
+    buttonElement.addEventListener('mousedown', OuterDropdownButtonEvents.mouseDownButton.bind(this, dropdown.element));
+    buttonElement.addEventListener('click',
+      OuterDropdownButtonEvents.mouseClickButton.bind(this, at, dropdown.element, displayFunc));
   }
 }
