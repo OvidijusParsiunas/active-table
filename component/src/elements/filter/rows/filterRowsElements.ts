@@ -1,8 +1,10 @@
+import {FilterRowsInternalUtils} from '../../../utils/outerTableComponents/filter/rows/filterRowsUtils';
 import {OuterContainerElements} from '../../../utils/outerTableComponents/outerContainerElements';
 import {FilterRowsDropdownElement} from './activeColumn/dropdown/filterRowsDropdownElement';
 import {FilterRowsInputCaseElement} from './case/filterRowsInputCaseElement';
 import {FilterRowsInputElement} from './input/filterRowsInputElement';
 import {OuterContainers} from '../../../types/outerContainer';
+import {FilterRowsConfig} from '../../../types/filterRows';
 import {ActiveTable} from '../../../activeTable';
 
 export class FilterRowsElements {
@@ -16,19 +18,31 @@ export class FilterRowsElements {
   }
 
   // the order at which the elements are added is very important - please check the css selectors
-  public static create(at: ActiveTable, outerContainers: OuterContainers) {
-    const columnIndex = 1;
+  private static createButton(at: ActiveTable, outerContainers: OuterContainers, userConfig: FilterRowsConfig) {
     const position = FilterRowsElements.DEFAULT_INPUT_POSITION;
     const containerElement = FilterRowsElements.createContainerElement();
-    const inputElement = FilterRowsInputElement.create(at);
-    if (typeof at.filterRows === 'boolean' || at.filterRows?.dropdown !== false) {
-      const dropdownElement = FilterRowsDropdownElement.create(at, containerElement, position);
+    const internalConfig = FilterRowsInternalUtils.generateConfig(at, userConfig.defaultColumnHeaderName);
+    if (userConfig.dropdown !== false) {
+      const dropdownElement = FilterRowsDropdownElement.create(at, containerElement, position, internalConfig);
       setTimeout(() => containerElement.appendChild(dropdownElement)); // appended at the end
     }
-    if (typeof at.filterRows === 'boolean' || at.filterRows?.caseButton !== false) {
-      FilterRowsInputCaseElement.create(at, inputElement, containerElement, columnIndex);
+    if (userConfig.caseButton !== false) {
+      FilterRowsInputCaseElement.create(at, containerElement, internalConfig);
     }
+    const inputElement = FilterRowsInputElement.create(at, internalConfig);
     containerElement.appendChild(inputElement);
     OuterContainerElements.addToContainer(position, outerContainers, containerElement);
+  }
+
+  public static create(at: ActiveTable, outerContainers: OuterContainers) {
+    if (typeof at.filterRows === 'boolean') {
+      FilterRowsElements.createButton(at, outerContainers, {});
+    } else if (Array.isArray(at.filterRows)) {
+      at.filterRows.forEach((userConfig) => {
+        FilterRowsElements.createButton(at, outerContainers, userConfig);
+      });
+    } else if (at.filterRows) {
+      FilterRowsElements.createButton(at, outerContainers, at.filterRows);
+    }
   }
 }

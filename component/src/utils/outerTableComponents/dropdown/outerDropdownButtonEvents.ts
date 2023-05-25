@@ -25,7 +25,7 @@ export class OuterDropdownButtonEvents {
     }
   }
 
-  private static getDisplayFunc(position: OuterContentPosition) {
+  public static getDisplayFunc(position: OuterContentPosition) {
     if (position.startsWith('top')) return OuterDropdownElement.display;
     return OuterDropdownElement.displayReactToBottomVisibility;
   }

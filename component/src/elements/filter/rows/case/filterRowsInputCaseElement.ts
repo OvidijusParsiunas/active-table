@@ -1,3 +1,4 @@
+import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
 import {FilterRowsInputCaseEvents} from './filterRowsInputCaseEvents';
 import {FilterRowsElements} from '../filterRowsElements';
 import {ActiveTable} from '../../../../activeTable';
@@ -10,9 +11,9 @@ export class FilterRowsInputCaseElement {
     return caseButton;
   }
 
-  public static create(at: ActiveTable, inputElement: HTMLInputElement, containerElement: HTMLElement, colIndex: number) {
+  public static create(at: ActiveTable, containerElement: HTMLElement, config: FilterRowsInternalConfig) {
     const buttonElement = FilterRowsInputCaseElement.createButton();
     containerElement.appendChild(buttonElement);
-    setTimeout(() => FilterRowsInputCaseEvents.setEvents(at, inputElement, buttonElement, colIndex));
+    setTimeout(() => FilterRowsInputCaseEvents.setEvents(at, buttonElement, config));
   }
 }

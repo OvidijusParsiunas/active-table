@@ -5,7 +5,6 @@ import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOv
 import {FileExportButtonEvents} from './elements/files/buttons/exportButton/fileExportButtonEvents';
 import {FileImportButtonEvents} from './elements/files/buttons/importButton/fileImportButtonEvents';
 import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
-import {FilterRowsInternalUtils} from './utils/outerTableComponents/filter/rows/filterRowsUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {ProgrammaticCellUpdate} from './utils/programmaticUpdates/programmaticCellUpdate';
 import {OuterTableComponents} from './utils/outerTableComponents/outerTableComponents';
@@ -379,7 +378,6 @@ export class ActiveTable extends LitElement {
     DefaultColumnTypes.createDropdownItemsForDefaultTypes();
     RowDropdownSettingsUtil.process(this);
     if (this.pagination) PaginationInternalUtils.process(this);
-    if (this.filterRows) FilterRowsInternalUtils.process(this);
     if (this.stripedRows) StripedRows.process(this);
     if (this.rowHoverStyles) RowHoverEvents.process(this.rowHoverStyles, this._defaultCellHoverColors);
     const tableElement = TableElement.createInfrastructureElements(this);

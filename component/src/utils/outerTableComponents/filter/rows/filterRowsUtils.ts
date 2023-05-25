@@ -1,6 +1,7 @@
-import {FilterRowsInternal} from '../../../../types/filterInternal';
+import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
 import {FilterRowsViaWebWorkers} from './filterRowsViaWebWorkers';
 import {FilterRowsViaPromises} from './filterRowsViaPromises';
+import {TableContent} from '../../../../types/tableContent';
 import {ActiveTable} from '../../../../activeTable';
 
 export class FilterRowsInternalUtils {
@@ -12,8 +13,19 @@ export class FilterRowsInternalUtils {
       : FilterRowsViaPromises.filter.bind(this, isCaseSensitive);
   }
 
-  public static process(at: ActiveTable) {
-    const activeColumnName = at.content[0]?.[0] ? String(at.content[0]?.[0]) : '';
-    at._filterInternal.rows = {activeColumnName, isCaseSensitive: false} as FilterRowsInternal;
+  private static generateActiveColumnName(content: TableContent, defaultColumnName?: string) {
+    if (defaultColumnName) {
+      const headerExists = content[0]?.find((headerName) => headerName === defaultColumnName);
+      if (headerExists) return defaultColumnName;
+    }
+    return content[0]?.[0] !== undefined ? String(content[0]?.[0]) : '';
+  }
+
+  public static generateConfig(at: ActiveTable, defaultColumnName?: string) {
+    const activeColumnName = FilterRowsInternalUtils.generateActiveColumnName(at.content, defaultColumnName);
+    const config = {activeColumnName, isCaseSensitive: false} as FilterRowsInternalConfig; // inputElement is added later
+    at._filterInternal.rows ??= [];
+    at._filterInternal.rows.push(config);
+    return config;
   }
 }

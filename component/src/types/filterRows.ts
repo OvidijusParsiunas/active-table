@@ -1,8 +1,9 @@
 import {CSSStyle} from './cssStyle';
 
-export type FilterRows =
-  | boolean
-  | {
-      caseButton?: boolean | CSSStyle;
-      dropdown?: boolean;
-    };
+export interface FilterRowsConfig {
+  caseButton?: boolean | CSSStyle;
+  dropdown?: boolean;
+  defaultColumnHeaderName?: string;
+}
+
+export type FilterRows = boolean | FilterRowsConfig | FilterRowsConfig[];

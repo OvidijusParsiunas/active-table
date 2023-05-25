@@ -1,3 +1,4 @@
+import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
 import {FilterRowsInputEvents} from './filterRowsInputEvents';
 import {ActiveTable} from '../../../../activeTable';
 
@@ -14,10 +15,10 @@ export class FilterRowsInputElement {
     return inputElement;
   }
 
-  public static create(at: ActiveTable) {
+  public static create(at: ActiveTable, config: FilterRowsInternalConfig) {
     const inputElement = FilterRowsInputElement.createElement();
-    if (at._filterInternal.rows) at._filterInternal.rows.inputElement = inputElement;
-    setTimeout(() => FilterRowsInputEvents.setEvents(at));
+    config.inputElement = inputElement;
+    setTimeout(() => FilterRowsInputEvents.setEvents(at, config));
     return inputElement;
   }
 }
