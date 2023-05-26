@@ -1,6 +1,7 @@
 import {CellElement} from '../../../../elements/cell/cellElement';
 import {ChunkFilterData} from '../../../../types/filterInternal';
 
+// REF-42
 export class FilterRowsViaPromises {
   private static processOtherColumnsIfPresent(chunksData: ChunkFilterData[], matchingIndexes: number[]) {
     if (chunksData.length > 1 && matchingIndexes.length > 0) {

@@ -35,7 +35,7 @@ export class FilterRowsInputEvents {
         chunkData.chunk = data.colCells.slice(chunkIndex, chunkIndex + FilterRowsInternalUtils.CHUNK_SIZE);
         return chunkData;
       });
-      execFunc(chunkData);
+      execFunc(chunkData); // REF-42
     }
   }
 
@@ -44,12 +44,13 @@ export class FilterRowsInputEvents {
   public static setEvents(at: ActiveTable, config: FilterRowsInternalConfig) {
     const {content, _columnsDetails, _filterInternal: {rows}} = at;
     if (!content[0] || content[0].length === 0 || !rows) return FilterRowsInputEvents.unsetEvents(rows);
-    FilterRowsInternalUtils.assignElements(content, _columnsDetails, [config]);
+    FilterRowsInternalUtils.assignElements(content, _columnsDetails, config);
     const filterFunc = FilterRowsInternalUtils.getFilterFunc();
     const otherRowConfigs = rows.filter((rowConfig) => rowConfig !== config);
     config.inputElement.oninput = () => {
+      // update is done synchronously for evaluated inputs to have the same input value
+      FilterRowsInputEvents.updateSameInputValues(otherRowConfigs, config);
       FilterRowsInputEvents.splitChunksAndExecute(FilterRowsInputEvents.getFilterData(rows), filterFunc);
-      setTimeout(() => FilterRowsInputEvents.updateSameInputValues(otherRowConfigs, config));
     };
   }
 

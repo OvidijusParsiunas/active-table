@@ -1,6 +1,7 @@
 import {CellElement} from '../../../../elements/cell/cellElement';
 import {ChunkFilterData} from '../../../../types/filterInternal';
 
+// REF-42
 export class FilterRowsViaWebWorkers {
   private static readonly TRAVERSE_CHUNK = `
     const result = chunk.map((text) => (isCaseSensitive ? text : text.toLocaleLowerCase()).includes(filterText));

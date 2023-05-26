@@ -32,10 +32,8 @@ export class FilterRowsInternalUtils {
 
   // prettier-ignore
   public static assignElements(
-      content: TableContent, columnDetails: ColumnsDetailsT, rowConfigs: FilterRowsInternalConfig[]) {
-    rowConfigs.forEach((rowConfig) => {
-      const columnIndex = content[0].findIndex((headerText) => headerText === rowConfig.activeColumnName) || 0;
-      rowConfig.elements = columnDetails[columnIndex].elements;
-  });
-}
+    content: TableContent, columnDetails: ColumnsDetailsT, rowConfig: FilterRowsInternalConfig) {
+    const columnIndex = content[0].findIndex((headerText) => headerText === rowConfig.activeColumnName) || 0;
+    rowConfig.elements = columnDetails[columnIndex].elements;
+  }
 }
