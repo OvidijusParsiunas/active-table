@@ -1,5 +1,6 @@
 import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
 import {FilterRowsViaWebWorkers} from './filterRowsViaWebWorkers';
+import {ColumnsDetailsT} from '../../../../types/columnDetails';
 import {FilterRowsViaPromises} from './filterRowsViaPromises';
 import {TableContent} from '../../../../types/tableContent';
 import {ActiveTable} from '../../../../activeTable';
@@ -7,10 +8,10 @@ import {ActiveTable} from '../../../../activeTable';
 export class FilterRowsInternalUtils {
   public static readonly CHUNK_SIZE = 2;
 
-  public static getFilterFunc(isCaseSensitive: boolean) {
+  public static getFilterFunc() {
     return window.Worker
-      ? FilterRowsViaWebWorkers.filter.bind(this, FilterRowsViaWebWorkers.createWorkerBlobURL(isCaseSensitive))
-      : FilterRowsViaPromises.filter.bind(this, isCaseSensitive);
+      ? FilterRowsViaWebWorkers.execute.bind(this, FilterRowsViaWebWorkers.createWorkerBlobURL())
+      : FilterRowsViaPromises.execute;
   }
 
   private static generateActiveColumnName(content: TableContent, defaultColumnName?: string) {
@@ -28,4 +29,13 @@ export class FilterRowsInternalUtils {
     at._filterInternal.rows.push(config);
     return config;
   }
+
+  // prettier-ignore
+  public static assignElements(
+      content: TableContent, columnDetails: ColumnsDetailsT, rowConfigs: FilterRowsInternalConfig[]) {
+    rowConfigs.forEach((rowConfig) => {
+      const columnIndex = content[0].findIndex((headerText) => headerText === rowConfig.activeColumnName) || 0;
+      rowConfig.elements = columnDetails[columnIndex].elements;
+  });
+}
 }

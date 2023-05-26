@@ -1,25 +1,46 @@
 import {CellElement} from '../../../../elements/cell/cellElement';
-import {FilterRowsInternalUtils} from './filterRowsUtils';
+import {ChunkFilterData} from '../../../../types/filterInternal';
 
 export class FilterRowsViaPromises {
-  private static processString(chunk: HTMLElement[], filterText: string, isCaseSensitive?: boolean) {
-    new Promise((resolve) => {
-      chunk.forEach((cell) => {
-        const dataText = CellElement.getText(cell);
-        const processedText = isCaseSensitive ? dataText : dataText.toLocaleLowerCase();
-        const doesCellTextContainFilterInput = processedText.includes(filterText);
-        const row = cell.parentElement as HTMLElement;
-        row.style.display = doesCellTextContainFilterInput ? '' : 'none';
+  private static processOtherColumnsIfPresent(chunksData: ChunkFilterData[], matchingIndexes: number[]) {
+    if (chunksData.length > 1 && matchingIndexes.length > 0) {
+      FilterRowsViaPromises.processOtherColumns(chunksData.slice(1), matchingIndexes);
+    }
+  }
+
+  private static toggleRow(cell: HTMLElement, chunkData: ChunkFilterData, matchingIndexes: number[], index: number) {
+    const dataText = CellElement.getText(cell);
+    const processedText = chunkData.isCaseSensitive ? dataText : dataText.toLocaleLowerCase();
+    const doesCellTextContainFilterInput = processedText.includes(chunkData.filterText);
+    const row = cell.parentElement as HTMLElement;
+    if (doesCellTextContainFilterInput) {
+      row.style.display = '';
+      matchingIndexes.push(index);
+    } else {
+      row.style.display = 'none';
+    }
+  }
+
+  private static processOtherColumns(chunksData: ChunkFilterData[], indexes: number[]) {
+    new Promise(() => {
+      const matchingIndexes: number[] = [];
+      const chunkData = chunksData[0];
+      indexes.forEach((index) => {
+        const cell = chunkData.chunk[index];
+        FilterRowsViaPromises.toggleRow(cell, chunkData, matchingIndexes, index);
       });
-      resolve(true);
+      FilterRowsViaPromises.processOtherColumnsIfPresent(chunksData, matchingIndexes);
     });
   }
 
-  public static filter(isCaseSensitive: boolean, colCells: HTMLElement[], filterText: string) {
-    for (let i = 0; i < colCells.length / FilterRowsInternalUtils.CHUNK_SIZE; i += 1) {
-      const chunkIndex = i * FilterRowsInternalUtils.CHUNK_SIZE;
-      const chunk = colCells.slice(chunkIndex, chunkIndex + FilterRowsInternalUtils.CHUNK_SIZE);
-      FilterRowsViaPromises.processString(chunk, filterText, isCaseSensitive);
-    }
+  public static execute(chunksData: ChunkFilterData[]) {
+    new Promise(() => {
+      const matchingIndexes: number[] = [];
+      const chunkData = chunksData[0];
+      chunkData.chunk.forEach((cell, index) => {
+        FilterRowsViaPromises.toggleRow(cell, chunkData, matchingIndexes, index);
+      });
+      FilterRowsViaPromises.processOtherColumnsIfPresent(chunksData, matchingIndexes);
+    });
   }
 }

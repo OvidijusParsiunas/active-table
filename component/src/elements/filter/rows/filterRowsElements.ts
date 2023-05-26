@@ -3,6 +3,7 @@ import {OuterContainerElements} from '../../../utils/outerTableComponents/outerC
 import {FilterRowsDropdownElement} from './activeColumn/dropdown/filterRowsDropdownElement';
 import {FilterRowsInputCaseElement} from './case/filterRowsInputCaseElement';
 import {FilterRowsInputElement} from './input/filterRowsInputElement';
+import {FilterRowsInputEvents} from './input/filterRowsInputEvents';
 import {OuterContainers} from '../../../types/outerContainer';
 import {FilterRowsConfig} from '../../../types/filterRows';
 import {ActiveTable} from '../../../activeTable';
@@ -29,7 +30,7 @@ export class FilterRowsElements {
     if (userConfig.caseButton !== false) {
       FilterRowsInputCaseElement.create(at, containerElement, internalConfig);
     }
-    const inputElement = FilterRowsInputElement.create(at, internalConfig);
+    const inputElement = FilterRowsInputElement.create(internalConfig);
     containerElement.appendChild(inputElement);
     OuterContainerElements.addToContainer(position, outerContainers, containerElement);
   }
@@ -44,5 +45,6 @@ export class FilterRowsElements {
     } else if (at.filterRows) {
       FilterRowsElements.createButton(at, outerContainers, at.filterRows);
     }
+    setTimeout(() => FilterRowsInputEvents.setEventsForAllInputs(at));
   }
 }

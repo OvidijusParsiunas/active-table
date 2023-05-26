@@ -23,9 +23,9 @@ export class InsertMatrix {
       startColumnIndex: number) {
     const existingColumnsToCheck = columnsDetails.slice(startColumnIndex);
     existingColumnsToCheck.forEach((columnDetails, colIndex) => {
-      if (!columnDetails.settings.isCellTextEditable) dataForNewRows.forEach((dataRow) => {
-        dataRow[colIndex] = EMPTY_STRING;
-      });
+      if (!columnDetails.settings.isCellTextEditable) {
+        dataForNewRows.forEach((dataRow) => {dataRow[colIndex] = EMPTY_STRING;});
+      }
     });
     return dataForNewRows;
   }

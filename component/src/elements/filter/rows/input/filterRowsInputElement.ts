@@ -1,6 +1,4 @@
 import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
-import {FilterRowsInputEvents} from './filterRowsInputEvents';
-import {ActiveTable} from '../../../../activeTable';
 
 // WORK - filter when header is data too
 // WORK - ability to filter by header name or by column index
@@ -15,10 +13,9 @@ export class FilterRowsInputElement {
     return inputElement;
   }
 
-  public static create(at: ActiveTable, config: FilterRowsInternalConfig) {
+  public static create(config: FilterRowsInternalConfig) {
     const inputElement = FilterRowsInputElement.createElement();
     config.inputElement = inputElement;
-    setTimeout(() => FilterRowsInputEvents.setEvents(at, config));
     return inputElement;
   }
 }
