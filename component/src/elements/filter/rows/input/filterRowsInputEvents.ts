@@ -1,18 +1,17 @@
+import {FilterRowsInternalUtils} from '../../../../utils/outerTableComponents/filter/rows/filterRowsInternalUtils';
 import {ChunkFilterData, FilterRowsInternalConfig, InputFilterData} from '../../../../types/filterInternal';
-import {FilterRowsInternalUtils} from '../../../../utils/outerTableComponents/filter/rows/filterRowsUtils';
-import {ActiveTable} from '../../../../activeTable';
 
 // WORK - filter when header is data too
 // WORK - ability to filter by header name or by column index
 // WORK - ability to toggle if case senseitive
 export class FilterRowsInputEvents {
-  private static unsetEvents(rowConfigs?: FilterRowsInternalConfig[]) {
+  public static unsetEvents(rowConfigs?: FilterRowsInternalConfig[]) {
     if (rowConfigs) rowConfigs.forEach((rowConfig) => (rowConfig.inputElement.oninput = () => {}));
   }
 
   private static updateSameInputValues(otherConfigs: FilterRowsInternalConfig[], currentConfig: FilterRowsInternalConfig) {
     otherConfigs.forEach((otherRowConfig) => {
-      if (otherRowConfig.activeColumnName === currentConfig.activeColumnName) {
+      if (otherRowConfig.activeHeaderName === currentConfig.activeHeaderName) {
         otherRowConfig.inputElement.value = currentConfig.inputElement.value;
       }
     });
@@ -40,24 +39,14 @@ export class FilterRowsInputEvents {
   }
 
   // WORK - be careful about pagination
-  // prettier-ignore
-  public static setEvents(at: ActiveTable, config: FilterRowsInternalConfig) {
-    const {content, _columnsDetails, _filterInternal: {rows}} = at;
-    if (!content[0] || content[0].length === 0 || !rows) return FilterRowsInputEvents.unsetEvents(rows);
-    FilterRowsInternalUtils.assignElements(content, _columnsDetails, config);
+  public static setEvents(currentConfig: FilterRowsInternalConfig, allConfigs: FilterRowsInternalConfig[]) {
+    if (!currentConfig.elements) return; // elements not present when initialised with no content
     const filterFunc = FilterRowsInternalUtils.getFilterFunc();
-    const otherRowConfigs = rows.filter((rowConfig) => rowConfig !== config);
-    config.inputElement.oninput = () => {
+    const otherRowConfigs = allConfigs.filter((rowConfig) => rowConfig !== currentConfig);
+    currentConfig.inputElement.oninput = () => {
       // update is done synchronously for evaluated inputs to have the same input value
-      FilterRowsInputEvents.updateSameInputValues(otherRowConfigs, config);
-      FilterRowsInputEvents.splitChunksAndExecute(FilterRowsInputEvents.getFilterData(rows), filterFunc);
+      FilterRowsInputEvents.updateSameInputValues(otherRowConfigs, currentConfig);
+      FilterRowsInputEvents.splitChunksAndExecute(FilterRowsInputEvents.getFilterData(allConfigs), filterFunc);
     };
-  }
-
-  // prettier-ignore
-  public static setEventsForAllInputs(at: ActiveTable) {
-    const {content, _filterInternal: {rows}} = at;
-    if (!content[0] || content[0].length === 0 || !rows) return FilterRowsInputEvents.unsetEvents(rows);
-    rows.forEach((rowConfig) => FilterRowsInputEvents.setEvents(at, rowConfig));
   }
 }

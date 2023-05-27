@@ -3,9 +3,9 @@ import {ActiveOverlayElements} from '../../../types/activeOverlayElements';
 import {OuterDropdownItem} from './outerDropdownItem';
 import {ActiveTable} from '../../../activeTable';
 
-type ActionFunc = (at: ActiveTable, targetText: string) => void;
+type ActionFunc = undefined | ((at: ActiveTable, targetText: string) => void);
 
-type HideFunc = (activeOverlayElements: ActiveOverlayElements, items: HTMLElement[]) => void;
+type HideFunc = undefined | ((activeOverlayElements: ActiveOverlayElements, items: HTMLElement[]) => void);
 
 export class OuterDropdownItemEvents {
   // prettier-ignore
@@ -13,9 +13,9 @@ export class OuterDropdownItemEvents {
     const {_activeOverlayElements: {outerContainerDropdown}} = this;
     const targetText = (event.target as HTMLElement).innerText;
     if (!outerContainerDropdown) return;
-    action(this, targetText);
+    action?.(this, targetText);
     const items = Array.from(outerContainerDropdown.element.children) as HTMLElement[];
-    hide(this._activeOverlayElements, items);
+    hide?.(this._activeOverlayElements, items);
     OuterDropdownItem.unsetActiveItem(outerContainerDropdown.element);
     OuterDropdownItem.setActive(items, targetText);
     DropdownItemHighlightUtils.fadeCurrentlyHighlighted(this._activeOverlayElements);  

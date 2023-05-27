@@ -13,6 +13,6 @@ export class FilterRowsDropdownItem {
       const item = DropdownItem.addButtonItem(at, dropdownElement, itemsSettings);
       FilterRowsDropdownItemEvents.setEvents(at, item, config);
     });
-    OuterDropdownItem.setActive(Array.from(dropdownElement.children) as HTMLElement[], config.activeColumnName);
+    OuterDropdownItem.setActive(Array.from(dropdownElement.children) as HTMLElement[], config.activeHeaderName);
   }
 }
