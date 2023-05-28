@@ -2,6 +2,7 @@ import {FilterRowsInputElement} from '../../../../elements/filter/rows/input/fil
 import {FilterRowsInputEvents} from '../../../../elements/filter/rows/input/filterRowsInputEvents';
 import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
 import {FilterRowsViaWebWorkers} from './filterRowsViaWebWorkers';
+import {CellElement} from '../../../../elements/cell/cellElement';
 import {ColumnsDetailsT} from '../../../../types/columnDetails';
 import {FilterRowsViaPromises} from './filterRowsViaPromises';
 import {FilterRowsConfig} from '../../../../types/filterRows';
@@ -17,21 +18,21 @@ export class FilterRowsInternalUtils {
       : FilterRowsViaPromises.execute;
   }
 
-  private static generateActiveHeaderName(content: TableContent, defaultColumnName?: string) {
-    if (defaultColumnName) {
-      const headerExists = content[0]?.find((headerName) => headerName === defaultColumnName);
-      if (headerExists) return defaultColumnName;
+  public static generateDefaultHeaderName(content: TableContent, defaultColumnHeaderName?: string) {
+    if (defaultColumnHeaderName) {
+      const headerExists = content[0]?.find((headerName) => headerName === defaultColumnHeaderName);
+      if (headerExists) return defaultColumnHeaderName;
     }
     return content[0]?.[0] !== undefined ? String(content[0]?.[0]) : '';
   }
 
   public static addConfig(at: ActiveTable, userConfig: FilterRowsConfig) {
-    const {defaultColumnHeaderName, placeholderTemplate} = userConfig;
+    const {placeholderTemplate, defaultColumnHeaderName} = userConfig;
     // other values are added later
     const internalConfig = {
-      activeHeaderName: FilterRowsInternalUtils.generateActiveHeaderName(at.content, defaultColumnHeaderName),
       isCaseSensitive: false,
       placeholderTemplate,
+      defaultColumnHeaderName,
     } as FilterRowsInternalConfig;
     at._filterInternal.rows ??= [];
     at._filterInternal.rows.push(internalConfig);
@@ -43,12 +44,14 @@ export class FilterRowsInternalUtils {
   private static assignElements(content: TableContent,
       columnsDetails: ColumnsDetailsT, rowConfig: FilterRowsInternalConfig, colElements?: HTMLElement[]) {
     if (content.length === 0) return;
-    if (colElements) {
+    if (rowConfig.defaultColumnHeaderName) {
+      const columnIndex = content[0].findIndex((headerName) => headerName === rowConfig.defaultColumnHeaderName);
+      rowConfig.elements = columnsDetails[columnIndex === -1 ? 0 : columnIndex].elements;
+      delete rowConfig.defaultColumnHeaderName;
+    } else if (colElements) {
       rowConfig.elements = colElements;
-    } else {
-      // by default we are fetching the first column with the activeHeaderName
-      const columnIndex = content[0].findIndex((headerName) => headerName === rowConfig.activeHeaderName) || 0;
-      rowConfig.elements = columnsDetails[columnIndex].elements;
+    } else{
+      rowConfig.elements = columnsDetails[0].elements;
     }
   }
 
@@ -57,7 +60,8 @@ export class FilterRowsInternalUtils {
     const {content, _columnsDetails, _filterInternal: {rows}} = at;
     if (!rows) return;
     FilterRowsInternalUtils.assignElements(content, _columnsDetails, config, colElements);
-    FilterRowsInputElement.setPlaceholder(config.inputElement, config.activeHeaderName, config.placeholderTemplate);
+    const headerName = CellElement.getText(config.elements[0]);
+    FilterRowsInputElement.setPlaceholder(config.inputElement, headerName, config.placeholderTemplate);
     FilterRowsInputEvents.setEvents(config, rows);
   }
 

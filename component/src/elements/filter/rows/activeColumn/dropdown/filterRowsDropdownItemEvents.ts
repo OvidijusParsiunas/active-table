@@ -6,7 +6,6 @@ import {ActiveTable} from '../../../../../activeTable';
 
 export class FilterRowsDropdownItemEvents {
   private static resetInput(config: FilterRowsInternalConfig, at: ActiveTable, targetText: string, event: MouseEvent) {
-    config.activeHeaderName = targetText;
     const targetElement = event.target as HTMLElement;
     // if clicked on text or item
     const columnIndex =

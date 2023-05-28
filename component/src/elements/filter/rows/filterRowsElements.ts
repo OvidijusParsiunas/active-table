@@ -29,7 +29,7 @@ export class FilterRowsElements {
     if (userConfig.caseButton !== false) {
       FilterRowsInputCaseElement.create(at, containerElement, internalConfig);
     }
-    const inputElement = FilterRowsInputElement.create(internalConfig);
+    const inputElement = FilterRowsInputElement.create(internalConfig, at.content);
     containerElement.appendChild(inputElement);
     OuterContainerElements.addToContainer(position, outerContainers, containerElement);
   }

@@ -8,10 +8,10 @@ export type ChunkFilterData = InputFilterData & {chunk: HTMLElement[]};
 
 export interface FilterRowsInternalConfig {
   inputElement: HTMLInputElement;
-  activeHeaderName: string;
   isCaseSensitive: boolean;
   elements: HTMLElement[];
   placeholderTemplate?: string;
+  defaultColumnHeaderName?: string; // removed after first use
 }
 
 // the reason why the property this is attached to is called _filterInternal instead of _filter to not confuse the user
