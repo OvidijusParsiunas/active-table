@@ -11,7 +11,7 @@ export class FilterRowsInputEvents {
 
   private static updateSameInputValues(otherConfigs: FilterRowsInternalConfig[], currentConfig: FilterRowsInternalConfig) {
     otherConfigs.forEach((otherRowConfig) => {
-      if (otherRowConfig.activeHeaderName === currentConfig.activeHeaderName) {
+      if (otherRowConfig.elements === currentConfig.elements) {
         otherRowConfig.inputElement.value = currentConfig.inputElement.value;
       }
     });

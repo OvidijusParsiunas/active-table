@@ -15,4 +15,8 @@ export class OuterDropdownItem {
     const activeItem = items.find((item) => item.innerText === targetItemText);
     activeItem?.classList.add(DropdownItem.ACTIVE_ITEM_CLASS);
   }
+
+  public static setActiveByIndex(items: HTMLElement[], index: number) {
+    items[index].classList.add(DropdownItem.ACTIVE_ITEM_CLASS);
+  }
 }

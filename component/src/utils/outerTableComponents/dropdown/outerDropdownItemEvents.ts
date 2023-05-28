@@ -3,7 +3,7 @@ import {ActiveOverlayElements} from '../../../types/activeOverlayElements';
 import {OuterDropdownItem} from './outerDropdownItem';
 import {ActiveTable} from '../../../activeTable';
 
-type ActionFunc = undefined | ((at: ActiveTable, targetText: string) => void);
+type ActionFunc = undefined | ((at: ActiveTable, targetText: string, event: MouseEvent) => void);
 
 type HideFunc = undefined | ((activeOverlayElements: ActiveOverlayElements, items: HTMLElement[]) => void);
 
@@ -13,7 +13,7 @@ export class OuterDropdownItemEvents {
     const {_activeOverlayElements: {outerContainerDropdown}} = this;
     const targetText = (event.target as HTMLElement).innerText;
     if (!outerContainerDropdown) return;
-    action?.(this, targetText);
+    action?.(this, targetText, event);
     const items = Array.from(outerContainerDropdown.element.children) as HTMLElement[];
     hide?.(this._activeOverlayElements, items);
     OuterDropdownItem.unsetActiveItem(outerContainerDropdown.element);

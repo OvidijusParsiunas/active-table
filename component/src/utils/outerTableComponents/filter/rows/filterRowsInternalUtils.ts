@@ -38,19 +38,25 @@ export class FilterRowsInternalUtils {
     return internalConfig;
   }
 
+  // colElements are used to identify active column (not using name as columns can have same names)
   // prettier-ignore
-  private static assignElements(
-    content: TableContent, columnDetails: ColumnsDetailsT, rowConfig: FilterRowsInternalConfig) {
+  private static assignElements(content: TableContent,
+      columnsDetails: ColumnsDetailsT, rowConfig: FilterRowsInternalConfig, colElements?: HTMLElement[]) {
     if (content.length === 0) return;
-    const columnIndex = content[0].findIndex((headerText) => headerText === rowConfig.activeHeaderName) || 0;
-    rowConfig.elements = columnDetails[columnIndex].elements;
+    if (colElements) {
+      rowConfig.elements = colElements;
+    } else {
+      // by default we are fetching the first column with the activeHeaderName
+      const columnIndex = content[0].findIndex((headerName) => headerName === rowConfig.activeHeaderName) || 0;
+      rowConfig.elements = columnsDetails[columnIndex].elements;
+    }
   }
 
   // prettier-ignore
-  public static resetInput(at: ActiveTable, config: FilterRowsInternalConfig) {
+  public static resetInput(at: ActiveTable, config: FilterRowsInternalConfig, colElements?: HTMLElement[]) {
     const {content, _columnsDetails, _filterInternal: {rows}} = at;
     if (!rows) return;
-    FilterRowsInternalUtils.assignElements(content, _columnsDetails, config);
+    FilterRowsInternalUtils.assignElements(content, _columnsDetails, config, colElements);
     FilterRowsInputElement.setPlaceholder(config.inputElement, config.activeHeaderName, config.placeholderTemplate);
     FilterRowsInputEvents.setEvents(config, rows);
   }
