@@ -5,7 +5,7 @@ import {FilterRowsDropdownElement} from './filterRowsDropdownElement';
 import {ActiveTable} from '../../../../../activeTable';
 
 export class FilterRowsDropdownItemEvents {
-  private static resetInput(config: FilterRowsInternalConfig, at: ActiveTable, targetText: string, event: MouseEvent) {
+  private static resetInput(config: FilterRowsInternalConfig, at: ActiveTable, _: string, event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
     // if clicked on text or item
     const columnIndex =

@@ -26,10 +26,12 @@ export class FilterRowsInputEvents {
   }
 
   private static splitChunksAndExecute(inputsData: InputFilterData[], execFunc: (chunksData: ChunkFilterData[]) => void) {
-    const numWorkers = Math.ceil(inputsData[0].colCells.length / FilterRowsInternalUtils.CHUNK_SIZE);
+    const filterableInputs = inputsData.filter((inputData) => inputData.filterText !== '');
+    if (filterableInputs.length === 0) filterableInputs.push(inputsData[0]); // still need to do first to toggle all rows
+    const numWorkers = Math.ceil(filterableInputs[0].colCells.length / FilterRowsInternalUtils.CHUNK_SIZE);
     for (let i = 0; i < numWorkers; i += 1) {
       const chunkIndex = i * FilterRowsInternalUtils.CHUNK_SIZE;
-      const chunkData = inputsData.map((data) => {
+      const chunkData = filterableInputs.map((data) => {
         const chunkData = data as ChunkFilterData;
         chunkData.chunk = data.colCells.slice(chunkIndex, chunkIndex + FilterRowsInternalUtils.CHUNK_SIZE);
         return chunkData;
