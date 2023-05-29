@@ -5,10 +5,10 @@ import {DateCellInputElement} from '../cell/cellsWithTextDiv/dateCell/dateCellIn
 import {DateCellInputEvents} from '../cell/cellsWithTextDiv/dateCell/dateCellInputEvents';
 import {ColumnSizerExtrinsicEvents} from '../columnSizer/columnSizerExtrinsicEvents';
 import {ColumnDropdownEvents} from '../dropdown/columnDropdown/columnDropdownEvents';
-import {ColumnSettingsUtils} from '../../utils/columnSettings/columnSettingsUtils';
 import {CellWithTextEvents} from '../cell/cellsWithTextDiv/cellWithTextEvents';
 import {RowDropdownEvents} from '../dropdown/rowDropdown/rowDropdownEvents';
 import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
+import {HeaderText} from '../../utils/columnDetails/headerText';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {ActiveTable} from '../../activeTable';
@@ -26,7 +26,7 @@ export class WindowEvents {
     if (rowIndex === undefined || columnIndex === undefined) return;
     if (rowIndex === 0 && !Dropdown.isDisplayed(this._activeOverlayElements.columnDropdown)) {
       if (event.key === KEYBOARD_KEY.ESCAPE) {
-        return ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, element as HTMLElement, columnIndex);
+        return HeaderText.onChange(this, element as HTMLElement, columnIndex);
       }
       // workaround for when opened dropdown does not have a focused item
     } else if (Dropdown.isDisplayed(this._activeOverlayElements.columnDropdown) && !this.shadowRoot?.activeElement) {

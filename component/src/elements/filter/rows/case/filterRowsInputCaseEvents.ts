@@ -7,8 +7,7 @@ export class FilterRowsInputCaseEvents {
   private static clickButton(this: ActiveTable, button: HTMLElement, config: FilterRowsInternalConfig) {
     const wasActive = OuterDropdownButtonElement.toggleIcon(button);
     config.isCaseSensitive = !wasActive;
-    // important to pass config.elements as it is used to signify that the current elements should be reused
-    FilterRowsInternalUtils.resetInput(this, config, config.elements);
+    FilterRowsInternalUtils.resetInput(this, config);
     config.inputElement.dispatchEvent(new Event('input'));
   }
 

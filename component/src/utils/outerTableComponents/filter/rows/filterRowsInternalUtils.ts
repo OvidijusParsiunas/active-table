@@ -3,7 +3,6 @@ import {FilterRowsInputEvents} from '../../../../elements/filter/rows/input/filt
 import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
 import {FilterRowsViaWebWorkers} from './filterRowsViaWebWorkers';
 import {CellElement} from '../../../../elements/cell/cellElement';
-import {ColumnsDetailsT} from '../../../../types/columnDetails';
 import {FilterRowsViaPromises} from './filterRowsViaPromises';
 import {FilterRowsConfig} from '../../../../types/filterRows';
 import {TableContent} from '../../../../types/tableContent';
@@ -40,26 +39,23 @@ export class FilterRowsInternalUtils {
   }
 
   // colElements are used to identify active column (not using name as columns can have same names)
-  // prettier-ignore
-  private static assignElements(content: TableContent,
-      columnsDetails: ColumnsDetailsT, rowConfig: FilterRowsInternalConfig, colElements?: HTMLElement[]) {
+  private static assignElements(at: ActiveTable, rowConfig: FilterRowsInternalConfig) {
+    const {content, _columnsDetails} = at;
     if (content.length === 0) return;
     if (rowConfig.defaultColumnHeaderName) {
       const columnIndex = content[0].findIndex((headerName) => headerName === rowConfig.defaultColumnHeaderName);
-      rowConfig.elements = columnsDetails[columnIndex === -1 ? 0 : columnIndex].elements;
+      rowConfig.elements = _columnsDetails[columnIndex === -1 ? 0 : columnIndex].elements;
       delete rowConfig.defaultColumnHeaderName;
-    } else if (colElements) {
-      rowConfig.elements = colElements;
-    } else{
-      rowConfig.elements = columnsDetails[0].elements;
+    } else if (rowConfig.elements && !at.shadowRoot?.contains(rowConfig.elements[0])) {
+      rowConfig.elements = _columnsDetails[0].elements;
     }
   }
 
   // prettier-ignore
-  public static resetInput(at: ActiveTable, config: FilterRowsInternalConfig, colElements?: HTMLElement[]) {
-    const {content, _columnsDetails, _filterInternal: {rows}} = at;
+  public static resetInput(at: ActiveTable, config: FilterRowsInternalConfig) {
+    const {_filterInternal: {rows}} = at;
     if (!rows) return;
-    FilterRowsInternalUtils.assignElements(content, _columnsDetails, config, colElements);
+    FilterRowsInternalUtils.assignElements(at, config);
     const headerName = CellElement.getText(config.elements[0]);
     FilterRowsInputElement.setPlaceholder(config.inputElement, headerName, config.placeholderTemplate);
     FilterRowsInputEvents.setEvents(config, rows);
@@ -70,5 +66,18 @@ export class FilterRowsInternalUtils {
     const {content, _filterInternal: {rows}} = at;
     if (!content[0] || content[0].length === 0 || !rows) return FilterRowsInputEvents.unsetEvents(rows);
     rows.forEach((rowConfig) => FilterRowsInternalUtils.resetInput(at, rowConfig));
+  }
+
+  public static completeReset(at: ActiveTable) {
+    const internalRows = at._filterInternal.rows;
+    if (!internalRows) return;
+    if (Array.isArray(at.filterRows)) {
+      at.filterRows.forEach((rowConfig, index) => {
+        internalRows[index].defaultColumnHeaderName = rowConfig.defaultColumnHeaderName;
+      });
+    } else if (typeof at.filterRows === 'object') {
+      internalRows[0].defaultColumnHeaderName = at.filterRows.defaultColumnHeaderName;
+    }
+    FilterRowsInternalUtils.resetAllInputs(at);
   }
 }

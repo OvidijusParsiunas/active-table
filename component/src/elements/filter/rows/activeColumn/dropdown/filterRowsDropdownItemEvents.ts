@@ -12,7 +12,8 @@ export class FilterRowsDropdownItemEvents {
       targetElement.tabIndex === -1 ? (targetElement.parentElement as HTMLElement).tabIndex : targetElement.tabIndex;
     const colElements = at._columnsDetails[columnIndex].elements;
     if (colElements !== config.elements) {
-      FilterRowsInternalUtils.resetInput(at, config, colElements);
+      config.elements = colElements;
+      FilterRowsInternalUtils.resetInput(at, config);
     }
   }
 

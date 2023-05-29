@@ -1,4 +1,4 @@
-import {ColumnSettingsUtils} from '../../../../../utils/columnSettings/columnSettingsUtils';
+import {HeaderText} from '../../../../../utils/columnDetails/headerText';
 import {DataCellEvents} from '../../../dataCell/dataCellEvents';
 import {KEYBOARD_KEY} from '../../../../../consts/keyboardKeys';
 import {CellWithTextEvents} from '../../cellWithTextEvents';
@@ -15,7 +15,7 @@ export class EditableHeaderIconTextEvents {
   private static blurText(this: ActiveTable, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const textElement = event.target as HTMLElement;
     const cellElement = CellElement.getCellElement(textElement);
-    ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, cellElement, columnIndex);
+    HeaderText.onChange(this, cellElement, columnIndex);
     DataCellEvents.blur(this, rowIndex, columnIndex, textElement);
   }
 

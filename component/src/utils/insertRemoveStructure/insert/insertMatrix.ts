@@ -1,5 +1,4 @@
 import {CellDropdown} from '../../../elements/dropdown/cellDropdown/cellDropdown';
-import {ColumnSettingsUtils} from '../../columnSettings/columnSettingsUtils';
 import {TableRow, CellText, TableContent} from '../../../types/tableContent';
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
 import {ColumnTypesUtils} from '../../columnType/columnTypesUtils';
@@ -8,6 +7,7 @@ import {CellElementIndex} from '../../elements/cellElementIndex';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ColumnsDetailsT} from '../../../types/columnDetails';
 import {CellEvents} from '../../../elements/cell/cellEvents';
+import {HeaderText} from '../../columnDetails/headerText';
 import {Matrix, MatrixRow} from '../../../types/matrix';
 import {FireEvents} from '../../events/fireEvents';
 import {EMPTY_STRING} from '../../../consts/text';
@@ -51,7 +51,7 @@ export class InsertMatrix {
   private static changeColumnSettings(at: ActiveTable, columnIndex: number) {
     const {elements} = at._columnsDetails[columnIndex];
     FocusedCellUtils.set(at._focusedElements.cell, elements[0], 0, columnIndex);
-    ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, elements[0], columnIndex);
+    HeaderText.onChange(at, elements[0], columnIndex);
   }
 
   private static processNewColumn(at: ActiveTable) {
