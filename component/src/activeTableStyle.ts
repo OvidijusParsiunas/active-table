@@ -719,6 +719,10 @@ export const activeTableStyle = css`
     font-size: 14px;
   }
 
+  .filter-rows-input::placeholder {
+    color: var(--active-table-filter-placeholder-color);
+  }
+
   .filter-rows-dropdown-button {
     position: absolute;
     right: 4px;

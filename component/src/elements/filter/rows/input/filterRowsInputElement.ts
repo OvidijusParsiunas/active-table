@@ -1,4 +1,5 @@
 import {FilterRowsInternalUtils} from '../../../../utils/outerTableComponents/filter/rows/filterRowsInternalUtils';
+import {FilterRowsConfig, FilterRowsStyles} from '../../../../types/filterRows';
 import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
 import {TableContent} from '../../../../types/tableContent';
 
@@ -19,19 +20,23 @@ export class FilterRowsInputElement {
     }
   }
 
-  private static createElement(headerName?: string, template?: string) {
+  private static createElement(headerName?: string, template?: string, styles?: FilterRowsStyles) {
     const inputElement = document.createElement('input');
     inputElement.classList.add(FilterRowsInputElement.INPUT_CLASS);
+    if (styles) {
+      Object.assign(inputElement.style, styles?.container);
+      const placeholderColor = styles?.placeholder?.color;
+      if (placeholderColor) inputElement.style.setProperty('--active-table-filter-placeholder-color', placeholderColor);
+    }
     FilterRowsInputElement.setPlaceholder(inputElement, headerName, template);
-    inputElement.style.order = '1';
     return inputElement;
   }
 
-  public static create(config: FilterRowsInternalConfig, content: TableContent) {
+  public static create(config: FilterRowsInternalConfig, userConfig: FilterRowsConfig, content: TableContent) {
     // done here as resetInput is in a timeout which will cause the input text display to be delayed on startup
     const defaultHeader = FilterRowsInternalUtils.generateDefaultHeaderName(content, config.defaultColumnHeaderName);
-    const inputElement = FilterRowsInputElement.createElement(defaultHeader, config.placeholderTemplate);
-    config.inputElement = inputElement;
-    return inputElement;
+    const input = FilterRowsInputElement.createElement(defaultHeader, config.placeholderTemplate, userConfig.styles);
+    config.inputElement = input;
+    return input;
   }
 }

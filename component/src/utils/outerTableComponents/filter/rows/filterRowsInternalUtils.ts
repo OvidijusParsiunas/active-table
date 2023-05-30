@@ -1,5 +1,6 @@
 import {FilterRowsInputElement} from '../../../../elements/filter/rows/input/filterRowsInputElement';
 import {FilterRowsInputEvents} from '../../../../elements/filter/rows/input/filterRowsInputEvents';
+import {FilterRowsElements} from '../../../../elements/filter/rows/filterRowsElements';
 import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
 import {FilterRowsViaWebWorkers} from './filterRowsViaWebWorkers';
 import {CellElement} from '../../../../elements/cell/cellElement';
@@ -79,5 +80,19 @@ export class FilterRowsInternalUtils {
       internalRows[0].defaultColumnHeaderName = at.filterRows.defaultColumnHeaderName;
     }
     FilterRowsInternalUtils.resetAllInputs(at);
+  }
+
+  public static isContainerRequired(at: ActiveTable, containerPosition: 'top' | 'bottom') {
+    let isRequired = false;
+    if (Array.isArray(at.filterRows)) {
+      isRequired = !!at.filterRows.find((filterConfig) => {
+        const index = (filterConfig.position || FilterRowsElements.DEFAULT_INPUT_POSITION).indexOf(containerPosition);
+        return index !== undefined && index >= 0;
+      });
+    } else if (typeof at.filterRows === 'object') {
+      const index = (at.filterRows.position || FilterRowsElements.DEFAULT_INPUT_POSITION).indexOf(containerPosition);
+      isRequired = index !== undefined && index >= 0;
+    }
+    return isRequired;
   }
 }

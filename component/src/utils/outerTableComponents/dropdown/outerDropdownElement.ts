@@ -18,7 +18,7 @@ export class OuterDropdownElement {
     if (dropdown) {
       Dropdown.hide(dropdown.element);
       if (dropdown.button.classList.contains(OuterDropdownButtonElement.AUTO_STYLING)) {
-        OuterDropdownButtonElement.toggleIcon(dropdown.button);
+        OuterDropdownButtonElement.toggleIcon(dropdown.button, {});
       }
       delete activeOverlayElements.outerContainerDropdown;
       DropdownItemHighlightUtils.fadeCurrentlyHighlighted(activeOverlayElements);
@@ -27,7 +27,7 @@ export class OuterDropdownElement {
 
   public static display(at: ActiveTable, dropdown: OuterContainerDropdownI) {
     if (dropdown.button.classList.contains(OuterDropdownButtonElement.AUTO_STYLING)) {
-      OuterDropdownButtonElement.toggleIcon(dropdown.button);
+      OuterDropdownButtonElement.toggleIcon(dropdown.button, {});
     }
     Dropdown.display(dropdown.element);
     at._activeOverlayElements.outerContainerDropdown = dropdown;
