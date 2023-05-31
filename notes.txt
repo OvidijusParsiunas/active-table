@@ -1,4 +1,4 @@
-update homepage property in package
+ability to style dropdowns for all components
 
 detect React:
 !!Object.keys(document).find(key => key.includes('react'))

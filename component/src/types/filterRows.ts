@@ -5,6 +5,7 @@ export interface FilterRowsStyles {
   container?: CSSStyle;
   placeholder?: {color: string};
   caseButton?: StatefulCSS & {active?: CSSStyle};
+  dropdownArrow?: StatefulCSS & {active?: CSSStyle};
 }
 
 export interface FilterRowsConfig {

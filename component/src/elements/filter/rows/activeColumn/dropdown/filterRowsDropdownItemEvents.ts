@@ -3,6 +3,7 @@ import {OuterDropdownItemEvents} from '../../../../../utils/outerTableComponents
 import {FilterRowsInternalConfig} from '../../../../../types/filterInternal';
 import {FilterRowsDropdownElement} from './filterRowsDropdownElement';
 import {ActiveTable} from '../../../../../activeTable';
+import {CSSStyle} from '../../../../../types/cssStyle';
 
 export class FilterRowsDropdownItemEvents {
   private static resetInput(config: FilterRowsInternalConfig, at: ActiveTable, _: string, event: MouseEvent) {
@@ -17,9 +18,9 @@ export class FilterRowsDropdownItemEvents {
     }
   }
 
-  public static setEvents(at: ActiveTable, item: HTMLElement, config: FilterRowsInternalConfig) {
+  public static setEvents(at: ActiveTable, item: HTMLElement, config: FilterRowsInternalConfig, activeStyle: CSSStyle) {
     const actionFunc = FilterRowsDropdownItemEvents.resetInput.bind(this, config);
-    const hideFunc = FilterRowsDropdownElement.hide;
+    const hideFunc = FilterRowsDropdownElement.hide.bind(this, activeStyle);
     item.onmousedown = OuterDropdownItemEvents.itemMouseDownCommon.bind(at, actionFunc, hideFunc);
   }
 }

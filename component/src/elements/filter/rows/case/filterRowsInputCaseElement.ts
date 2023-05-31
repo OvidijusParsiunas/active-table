@@ -1,22 +1,16 @@
-import {OuterDropdownButtonElement} from '../../../../utils/outerTableComponents/dropdown/outerDropdownButtonElement';
-import {StatefulCSSEvents} from '../../../../utils/elements/statefulCSSEvents';
 import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
 import {FilterRowsInputCaseEvents} from './filterRowsInputCaseEvents';
-import {ElementStyle} from '../../../../utils/elements/elementStyle';
 import {FilterRowsStyles} from '../../../../types/filterRows';
+import {FilterRowsElements} from '../filterRowsElements';
 import {StatefulCSS} from '../../../../types/cssStyle';
 import {ActiveTable} from '../../../../activeTable';
 
 export class FilterRowsInputCaseElement {
-  // prettier-ignore
   private static createButton(styles: StatefulCSS = {}) {
     const caseButton = document.createElement('div');
     caseButton.classList.add('filter-rows-case-button');
     caseButton.textContent = 'Aa';
-    const statefulStyles = ElementStyle.generateStatefulCSS(styles, {color: '#010101'}, {color: '#001C87'});
-    Object.assign(caseButton.style, statefulStyles.default);
-    setTimeout(() => StatefulCSSEvents.setEvents(
-      caseButton, statefulStyles, OuterDropdownButtonElement.ACTIVE_BUTTON_ICON_CLASS));
+    FilterRowsElements.applyStatefulStyles(caseButton, {color: '#010101'}, styles);
     return caseButton;
   }
 

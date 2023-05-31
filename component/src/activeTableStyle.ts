@@ -694,16 +694,6 @@ export const activeTableStyle = css`
     border-top: inherit !important;
   }
 
-  .outer-container-icon-button:hover {
-    filter: brightness(0) saturate(100%) invert(0%) sepia(92%) saturate(7480%) hue-rotate(293deg) brightness(97%)
-      contrast(99%);
-  }
-
-  .outer-container-icon-button-active {
-    filter: brightness(0) saturate(100%) invert(14%) sepia(59%) saturate(2970%) hue-rotate(219deg) brightness(98%)
-      contrast(126%) !important;
-  }
-
   .filter-rows-container {
     position: relative;
   }

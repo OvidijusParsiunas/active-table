@@ -1,4 +1,5 @@
 import {OuterContainerDropdownI} from '../../../types/outerContainerInternal';
+import {ToggleableElement} from '../../elements/toggleableElement';
 import {OuterContentPosition} from '../../../types/outerContainer';
 import {Dropdown} from '../../../elements/dropdown/dropdown';
 import {OuterDropdownElement} from './outerDropdownElement';
@@ -19,9 +20,11 @@ export class OuterDropdownButtonEvents {
     }
   }
 
-  private static mouseDownButton(dropdownElement: HTMLElement) {
-    if (Dropdown.isDisplayed(dropdownElement)) {
-      dropdownElement.classList.add(OuterDropdownButtonEvents.DO_NOT_DISPLAY_DROPDOWN_CLASS);
+  private static mouseDownButton(dropdown: OuterContainerDropdownI) {
+    const {element, button, activeButtonStyle} = dropdown;
+    if (Dropdown.isDisplayed(element)) {
+      element.classList.add(OuterDropdownButtonEvents.DO_NOT_DISPLAY_DROPDOWN_CLASS);
+      ToggleableElement.unsetActive(button, activeButtonStyle);
     }
   }
 
@@ -34,7 +37,7 @@ export class OuterDropdownButtonEvents {
   public static set(at: ActiveTable, buttonElement: HTMLElement, position: OuterContentPosition,
       dropdown: OuterContainerDropdownI, displayFuncArg?: DisplayFunc) {
     const displayFunc = displayFuncArg || OuterDropdownButtonEvents.getDisplayFunc(position);
-    buttonElement.addEventListener('mousedown', OuterDropdownButtonEvents.mouseDownButton.bind(this, dropdown.element));
+    buttonElement.addEventListener('mousedown', OuterDropdownButtonEvents.mouseDownButton.bind(this, dropdown));
     buttonElement.addEventListener('click',
       OuterDropdownButtonEvents.mouseClickButton.bind(this, at, dropdown, displayFunc));
   }
