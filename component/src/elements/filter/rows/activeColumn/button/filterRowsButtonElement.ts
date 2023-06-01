@@ -15,7 +15,7 @@ export class FilterRowsButtonElement {
   private static readonly HOVER_STYLE = {
     filter:
       // eslint-disable-next-line max-len
-      'brightness(0) saturate(100%) invert(14%) sepia(59%) saturate(2970%) hue-rotate(219deg) brightness(98%) contrast(126%)',
+      'brightness(0) saturate(100%) invert(31%) sepia(1%) saturate(75%) hue-rotate(327deg) brightness(100%) contrast(99%)',
   };
 
   public static create(styles: StatefulCSS = {}) {

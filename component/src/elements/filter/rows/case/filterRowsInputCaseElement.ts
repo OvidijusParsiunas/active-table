@@ -10,7 +10,7 @@ export class FilterRowsInputCaseElement {
     const caseButton = document.createElement('div');
     caseButton.classList.add('filter-rows-case-button');
     caseButton.textContent = 'Aa';
-    FilterRowsElements.applyStatefulStyles(caseButton, {color: '#010101'}, styles);
+    FilterRowsElements.applyStatefulStyles(caseButton, {color: '#626262'}, styles);
     return caseButton;
   }
 

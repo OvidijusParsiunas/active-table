@@ -722,8 +722,8 @@ export const activeTableStyle = css`
     transform: translateY(-50%);
     cursor: pointer;
     user-select: none;
-    filter: brightness(0) saturate(100%) invert(35%) sepia(0%) saturate(711%) hue-rotate(70deg) brightness(95%)
-      contrast(93%);
+    filter: brightness(0) saturate(100%) invert(49%) sepia(0%) saturate(974%) hue-rotate(66deg) brightness(97%)
+      contrast(96%);
     width: 16px;
     height: 16px;
   }

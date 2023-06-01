@@ -54,7 +54,7 @@ export class FilterRowsElements {
   }
 
   public static applyStatefulStyles(element: HTMLElement, hoverStyle: CSSStyle, styles: StatefulCSS = {}) {
-    const statefulStyles = ElementStyle.generateStatefulCSS(styles, hoverStyle, {color: '#001C87'});
+    const statefulStyles = ElementStyle.generateStatefulCSS(styles, hoverStyle, {color: '#484848'});
     Object.assign(element.style, statefulStyles.default);
     setTimeout(() => StatefulCSSEvents.setEvents(element, statefulStyles, ToggleableElement.ACTIVE_BUTTON_CLASS));
   }

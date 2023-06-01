@@ -23,11 +23,9 @@ export class FilterRowsInputElement {
   private static createElement(headerName?: string, template?: string, styles?: FilterRowsStyles) {
     const inputElement = document.createElement('input');
     inputElement.classList.add(FilterRowsInputElement.INPUT_CLASS);
-    if (styles) {
-      Object.assign(inputElement.style, styles?.container);
-      const placeholderColor = styles?.placeholder?.color;
-      if (placeholderColor) inputElement.style.setProperty('--active-table-filter-placeholder-color', placeholderColor);
-    }
+    const placeholderColor = styles?.placeholder?.color || '#727272';
+    inputElement.style.setProperty('--active-table-filter-placeholder-color', placeholderColor);
+    Object.assign(inputElement.style, styles?.container);
     FilterRowsInputElement.setPlaceholder(inputElement, headerName, template);
     return inputElement;
   }
