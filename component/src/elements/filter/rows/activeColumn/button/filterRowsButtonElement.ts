@@ -1,4 +1,4 @@
-import {DRODOWN_ARROW_SVG_STRING} from '../../../../../consts/icons/dropdownArrowSVGString';
+import {ARROW_DOWN_SVG_STRING} from '../../../../../consts/icons/arrowDownIconSVGString';
 import {ToggleableElement} from '../../../../../utils/elements/toggleableElement';
 import {SVGIconUtils} from '../../../../../utils/svgIcons/svgIconUtils';
 import {FilterRowsElements} from '../../filterRowsElements';
@@ -22,7 +22,7 @@ export class FilterRowsButtonElement {
     const button = document.createElement('div');
     button.classList.add('filter-rows-dropdown-button', ToggleableElement.AUTO_STYLING_CLASS);
     FilterRowsElements.applyStatefulStyles(button as unknown as HTMLElement, FilterRowsButtonElement.HOVER_STYLE, styles);
-    const svgIconElement = SVGIconUtils.createSVGElement(DRODOWN_ARROW_SVG_STRING);
+    const svgIconElement = SVGIconUtils.createSVGElement(ARROW_DOWN_SVG_STRING);
     button.appendChild(svgIconElement);
     return button;
   }

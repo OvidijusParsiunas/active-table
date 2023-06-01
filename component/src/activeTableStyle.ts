@@ -558,10 +558,12 @@ export const activeTableStyle = css`
   }
 
   #rows-per-page-select-button-arrow-icon {
-    height: 20px;
-    transform: scale(0.7, 1);
-    filter: brightness(0) saturate(100%) invert(28%) sepia(0%) saturate(486%) hue-rotate(314deg) brightness(92%)
-      contrast(89%);
+    width: 16px;
+    transform: scale(0.9, 1);
+    filter: brightness(0) saturate(100%) invert(11%) sepia(3%) saturate(99%) hue-rotate(157deg) brightness(97%)
+      contrast(98%);
+    padding-top: 2px;
+    padding-left: 2px;
   }
 
   #rows-per-page-select-button-text {
@@ -716,10 +718,8 @@ export const activeTableStyle = css`
   .filter-rows-dropdown-button {
     position: absolute;
     right: 4px;
-    top: 50%;
+    top: 51%;
     transform: translateY(-50%);
-    color: grey;
-    font-size: 13px;
     cursor: pointer;
     user-select: none;
     filter: brightness(0) saturate(100%) invert(35%) sepia(0%) saturate(711%) hue-rotate(70deg) brightness(95%)
