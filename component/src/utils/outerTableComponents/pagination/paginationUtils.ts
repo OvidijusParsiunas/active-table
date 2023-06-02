@@ -2,10 +2,12 @@ import {NumberOfVisibleRowsElement} from '../../../elements/pagination/numberOfV
 import {PageButtonElement} from '../../../elements/pagination/pageButtons/pageButtonElement';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
 import {PaginationPageActionButtonUtils} from './paginationPageActionButtonUtils';
+import {FilterRowsInternalUtils} from '../filter/rows/filterRowsInternalUtils';
 import {PaginationVisibleButtonsUtils} from './paginationVisibleButtonsUtils';
 import {PaginationUpdatePageButtons} from './paginationUpdatePageButtons';
 import {PaginationInternal} from '../../../types/paginationInternal';
 import {CustomRowProperties} from '../../rows/customRowProperties';
+import {PaginationInternalUtils} from './paginationInternalUtils';
 import {ExtractElements} from '../../elements/extractElements';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ActiveTable} from '../../../activeTable';
@@ -15,9 +17,10 @@ export class PaginationUtils {
 
   // prettier-ignore
   public static getLastPossiblePageNumber(at: ActiveTable, isBeforeInsert = false) {
-    const {content, _pagination, dataStartsAtHeader} = at;
+    const {_pagination, dataStartsAtHeader} = at;
     if (_pagination.isAllRowsOptionSelected) return 1;
-    const contentLength = dataStartsAtHeader ? content.length + 1 : content.length;
+    const totalNumberOfRows = PaginationInternalUtils.getTotalNumberOfRows(at);
+    const contentLength = dataStartsAtHeader ? totalNumberOfRows + 1 : totalNumberOfRows;
     const numberOfRows = isBeforeInsert ? contentLength : contentLength - 1;
     return Math.max(Math.ceil(numberOfRows / _pagination.rowsPerPage), 1);
   }
@@ -29,10 +32,36 @@ export class PaginationUtils {
     return allButtons.slice(halfOfSideButtons, allButtons.length - halfOfSideButtons);
   }
 
+  public static getLastVisibleRowIndex(tableBodyElement: HTMLElement, pagination: PaginationInternal) {
+    const rows = Array.from(tableBodyElement.children);
+    const lastVisibleRow = pagination.visibleRows[pagination.visibleRows.length - 1];
+    return rows.findIndex((row) => row === lastVisibleRow);
+  }
+
+  private static getFilteredMaxVisibleRowIndex(tableBodyElement: HTMLElement, pagination: PaginationInternal) {
+    const {rowsPerPage, visibleRows} = pagination;
+    const rowIndex = PaginationUtils.getLastVisibleRowIndex(tableBodyElement, pagination);
+    if (visibleRows.length === rowsPerPage) return rowIndex;
+    return rowIndex + (rowsPerPage - visibleRows.length);
+  }
+
+  private static getMaxVisibleRowIndex(at: ActiveTable) {
+    const {_pagination, _tableBodyElementRef, content, _filterInternal} = at;
+    const {activePageNumber, rowsPerPage, isAllRowsOptionSelected} = _pagination;
+    if (isAllRowsOptionSelected) {
+      return content.length + 1;
+    }
+    if (_filterInternal.rows) {
+      return PaginationUtils.getFilteredMaxVisibleRowIndex(_tableBodyElementRef as HTMLElement, _pagination);
+    }
+    return activePageNumber * rowsPerPage;
+  }
+
+  // prettier-ignore
   public static getRelativeRowIndexes(at: ActiveTable, rowIndex = 0) {
-    const {activePageNumber, rowsPerPage, isAllRowsOptionSelected} = at._pagination;
-    let maxVisibleRowIndex = isAllRowsOptionSelected ? at.content.length + 1 : activePageNumber * rowsPerPage;
-    if (!at.dataStartsAtHeader) maxVisibleRowIndex += 1;
+    const {_pagination: {rowsPerPage}, dataStartsAtHeader} = at;
+    let maxVisibleRowIndex = PaginationUtils.getMaxVisibleRowIndex(at);
+    if (!dataStartsAtHeader) maxVisibleRowIndex += 1;
     const minVisibleRowIndex = maxVisibleRowIndex - rowsPerPage;
     const visibleRowIndex = rowIndex - minVisibleRowIndex;
     return {maxVisibleRowIndex, minVisibleRowIndex, visibleRowIndex};
@@ -49,7 +78,7 @@ export class PaginationUtils {
     }
   }
 
-  public static displayRow(rowElement: HTMLElement) {
+  private static displayRow(rowElement: HTMLElement) {
     if ((rowElement.children[0] as HTMLElement).tagName === CellElement.HEADER_TAG) {
       rowElement.classList.remove(PaginationUtils.HIDDEN_ROW_CLASS);
     } else {
@@ -109,8 +138,8 @@ export class PaginationUtils {
 
   // prettier-ignore
   public static updateOnRowChange(at: ActiveTable, rowIndex: number, newRowElement?: HTMLElement) {
-    const {dataStartsAtHeader, content, _pagination} = at;
-    if (!dataStartsAtHeader && rowIndex === 0 && content.length === 0) return;
+    const {dataStartsAtHeader, _pagination} = at;
+    if (!dataStartsAtHeader && rowIndex === 0 && PaginationInternalUtils.getTotalNumberOfRows(at) === 0) return;
     PaginationVisibleButtonsUtils.unsetStateAndStyles(_pagination);
     // buttons need to be updated first as displayRowsForDifferentButton will use them to toggle the side buttons
     if (newRowElement) {
@@ -146,8 +175,10 @@ export class PaginationUtils {
 
   // prettier-ignore
   private static setCorrectRowsAsVisible(at: ActiveTable, buttonNumber: number) {
-    const {_pagination: {rowsPerPage, visibleRows}, _tableBodyElementRef, content} = at;
-    const tableRows = ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content);
+    const {_pagination: {rowsPerPage, visibleRows}, _tableBodyElementRef, content, _filterInternal} = at;
+    const tableRows = _filterInternal?.rows
+      ? FilterRowsInternalUtils.extractUnfilteredRows(_tableBodyElementRef as HTMLElement, content.length)
+      : ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content)
     let startingRowIndex = rowsPerPage * (buttonNumber - 1);
     if (!at.dataStartsAtHeader) startingRowIndex += 1; 
     tableRows.slice(startingRowIndex, startingRowIndex + rowsPerPage).forEach((rowElement) => {

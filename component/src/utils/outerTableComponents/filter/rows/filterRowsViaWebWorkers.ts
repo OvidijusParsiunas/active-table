@@ -1,4 +1,5 @@
 import {CellElement} from '../../../../elements/cell/cellElement';
+import {FilterRowsInternalUtils} from './filterRowsInternalUtils';
 import {ChunkFilterData} from '../../../../types/filterInternal';
 
 // REF-42
@@ -34,10 +35,14 @@ export class FilterRowsViaWebWorkers {
     };
   `;
 
-  private static processOtherColumnsIfPresent(blobURL: string, chunksData: ChunkFilterData[], matchingIndexes: number[]) {
+  // prettier-ignore
+  private static processOtherColumnsIfPresent(
+      finish: () => void, blobURL: string, chunksData: ChunkFilterData[], matchingIndexes: number[]) {
+    FilterRowsInternalUtils.ACTIVE_WORKERS -= 1;
     if (chunksData.length > 1 && matchingIndexes.length > 0) {
-      FilterRowsViaWebWorkers.execute(blobURL, chunksData.slice(1), matchingIndexes);
-    }
+      FilterRowsViaWebWorkers.execute(finish, blobURL, chunksData.slice(1), matchingIndexes);
+    } else if (FilterRowsInternalUtils.ACTIVE_WORKERS === 0)
+      finish();
   }
 
   // cannot use a direct link to a webworker file as parent project may not allow the component to access it
@@ -49,37 +54,38 @@ export class FilterRowsViaWebWorkers {
     return URL.createObjectURL(blob);
   }
 
-  private static hideRows(blobURL: string, chunksData: ChunkFilterData[], event: MessageEvent) {
+  private static hideRows(finish: () => void, blobURL: string, chunksData: ChunkFilterData[], event: MessageEvent) {
     const {colCells} = chunksData[0];
     const {matchingIndexes, notMatchingIndexes} = event.data;
     notMatchingIndexes.forEach((index: number) => {
       const row = (colCells[index] as HTMLElement).parentElement as HTMLElement;
-      row.style.display = 'none';
+      row.classList.add(FilterRowsInternalUtils.HIDDEN_ROW_CLASS);
     });
-    FilterRowsViaWebWorkers.processOtherColumnsIfPresent(blobURL, chunksData, matchingIndexes);
+    FilterRowsViaWebWorkers.processOtherColumnsIfPresent(finish, blobURL, chunksData, matchingIndexes);
   }
 
-  private static toggleRows(blobURL: string, chunksData: ChunkFilterData[], event: MessageEvent) {
+  private static toggleRows(finish: () => void, blobURL: string, chunksData: ChunkFilterData[], event: MessageEvent) {
     const matchingIndexes: number[] = [];
     const {colCells} = chunksData[0];
     const result = event.data;
     result.forEach((display: boolean, index: number) => {
       const row = (colCells[index] as HTMLElement).parentElement as HTMLElement;
       if (display) {
-        row.style.display = '';
+        row.classList.remove(FilterRowsInternalUtils.HIDDEN_ROW_CLASS);
         matchingIndexes.push(index);
       } else {
-        row.style.display = 'none';
+        row.classList.add(FilterRowsInternalUtils.HIDDEN_ROW_CLASS);
       }
     });
-    FilterRowsViaWebWorkers.processOtherColumnsIfPresent(blobURL, chunksData, matchingIndexes);
+    FilterRowsViaWebWorkers.processOtherColumnsIfPresent(finish, blobURL, chunksData, matchingIndexes);
   }
 
   // prettier-ignore
-  public static execute(blobURL: string, chunksData: ChunkFilterData[], indexArray?: number[]) {
+  public static execute(finish: () => void, blobURL: string, chunksData: ChunkFilterData[], indexArray?: number[]) {
     const worker = new Worker(blobURL);
-    worker.onmessage = indexArray ? FilterRowsViaWebWorkers.hideRows.bind(this, blobURL, chunksData)
-      : FilterRowsViaWebWorkers.toggleRows.bind(this, blobURL, chunksData);
+    FilterRowsInternalUtils.ACTIVE_WORKERS += 1;
+    worker.onmessage = indexArray ? FilterRowsViaWebWorkers.hideRows.bind(this, finish, blobURL, chunksData)
+      : FilterRowsViaWebWorkers.toggleRows.bind(this, finish, blobURL, chunksData);
     const chunkData = chunksData[0];
     worker.postMessage({
       chunk: chunkData.colCells.map((cell) => CellElement.getText(cell)),

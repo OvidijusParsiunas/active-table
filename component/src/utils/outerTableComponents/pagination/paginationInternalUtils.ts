@@ -2,6 +2,7 @@ import {RowsPerPageDropdownItem} from '../../../elements/pagination/rowsPerPageS
 import {RowsPerPageSelect, PaginationPositions, PageButtonStyles, Pagination} from '../../../types/pagination';
 import {PageButtonElement} from '../../../elements/pagination/pageButtons/pageButtonElement';
 import {IPaginationStyles, PaginationInternal} from '../../../types/paginationInternal';
+import {FilterRowsInternalUtils} from '../filter/rows/filterRowsInternalUtils';
 import {OuterContentPosition} from '../../../types/outerContainer';
 import {StatefulCSS} from '../../../types/cssStyle';
 import {ActiveTable} from '../../../activeTable';
@@ -21,6 +22,13 @@ export class PaginationInternalUtils {
     'top-left', 'top-middle', 'top-right', 'bottom-left', 'bottom-middle', PaginationInternalUtils.DEFAULT_POSITION,
   ]);
 
+  public static getTotalNumberOfRows(at: ActiveTable) {
+    const {content, _filterInternal, _tableBodyElementRef} = at;
+    return _filterInternal?.rows
+      ? FilterRowsInternalUtils.extractUnfilteredRows(_tableBodyElementRef as HTMLElement, content.length).length
+      : content.length;
+  }
+
   private static insertNewRowsPerPageOption(newRowsPerPageNumber: number, rowsPerPageOptionsItemText: string[]) {
     let insertionIndex = rowsPerPageOptionsItemText.findIndex((option) => {
       const optionNumber = Number.parseInt(option);
@@ -31,11 +39,12 @@ export class PaginationInternalUtils {
   }
 
   private static setFirstOptionAsRowsPerPage(at: ActiveTable) {
-    const {_pagination, content, dataStartsAtHeader} = at;
+    const {_pagination, dataStartsAtHeader} = at;
     const firstItemText = _pagination.rowsPerPageOptionsItemText[0];
     if (firstItemText.toLocaleLowerCase() === RowsPerPageDropdownItem.ALL_ITEM_TEXT) {
       _pagination.isAllRowsOptionSelected = true;
-      _pagination.rowsPerPage = dataStartsAtHeader ? content.length : content.length - 1;
+      const totalNumberOfRows = PaginationInternalUtils.getTotalNumberOfRows(at);
+      _pagination.rowsPerPage = dataStartsAtHeader ? totalNumberOfRows : totalNumberOfRows - 1;
     } else {
       _pagination.rowsPerPage = Number(firstItemText);
     }

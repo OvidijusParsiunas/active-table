@@ -448,6 +448,10 @@ export const activeTableStyle = css`
     z-index: 2;
   }
 
+  .filter-hidden-row {
+    display: none;
+  }
+
   .dropdown-cell-overlay {
     cursor: pointer;
     background-color: grey;

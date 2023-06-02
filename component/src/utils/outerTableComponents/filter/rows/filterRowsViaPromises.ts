@@ -1,11 +1,15 @@
 import {CellElement} from '../../../../elements/cell/cellElement';
+import {FilterRowsInternalUtils} from './filterRowsInternalUtils';
 import {ChunkFilterData} from '../../../../types/filterInternal';
 
 // REF-42
 export class FilterRowsViaPromises {
-  private static processOtherColumnsIfPresent(chunksData: ChunkFilterData[], matchingIndexes: number[]) {
-    if (chunksData.length > 1 && matchingIndexes.length > 0) {
-      FilterRowsViaPromises.processOtherColumns(chunksData.slice(1), matchingIndexes);
+  private static processOtherColumnsIfPresent(finish: () => void, chunksData: ChunkFilterData[], indexes: number[]) {
+    FilterRowsInternalUtils.ACTIVE_WORKERS -= 1;
+    if (chunksData.length > 1 && indexes.length > 0) {
+      FilterRowsViaPromises.processOtherColumns(finish, chunksData.slice(1), indexes);
+    } else if (FilterRowsInternalUtils.ACTIVE_WORKERS === 0) {
+      finish();
     }
   }
 
@@ -15,33 +19,37 @@ export class FilterRowsViaPromises {
     const doesCellTextContainFilterInput = processedText.includes(chunkData.filterText);
     const row = cell.parentElement as HTMLElement;
     if (doesCellTextContainFilterInput) {
-      row.style.display = '';
+      row.classList.remove(FilterRowsInternalUtils.HIDDEN_ROW_CLASS);
       matchingIndexes.push(index);
     } else {
-      row.style.display = 'none';
+      row.classList.add(FilterRowsInternalUtils.HIDDEN_ROW_CLASS);
     }
   }
 
-  private static processOtherColumns(chunksData: ChunkFilterData[], indexes: number[]) {
+  private static processOtherColumns(finish: () => void, chunksData: ChunkFilterData[], indexes: number[]) {
     new Promise(() => {
+      FilterRowsInternalUtils.ACTIVE_WORKERS += 1;
       const matchingIndexes: number[] = [];
       const chunkData = chunksData[0];
       indexes.forEach((index) => {
         const cell = chunkData.chunk[index];
         FilterRowsViaPromises.toggleRow(cell, chunkData, matchingIndexes, index);
       });
-      FilterRowsViaPromises.processOtherColumnsIfPresent(chunksData, matchingIndexes);
+      FilterRowsViaPromises.processOtherColumnsIfPresent(finish, chunksData, matchingIndexes);
     });
   }
 
-  public static execute(chunksData: ChunkFilterData[]) {
+  public static execute(finish: () => void, chunksData: ChunkFilterData[]) {
+    FilterRowsInternalUtils.ACTIVE_WORKERS += 1;
     new Promise(() => {
-      const matchingIndexes: number[] = [];
-      const chunkData = chunksData[0];
-      chunkData.chunk.forEach((cell, index) => {
-        FilterRowsViaPromises.toggleRow(cell, chunkData, matchingIndexes, index);
+      setTimeout(() => {
+        const matchingIndexes: number[] = [];
+        const chunkData = chunksData[0];
+        chunkData.chunk.forEach((cell, index) => {
+          FilterRowsViaPromises.toggleRow(cell, chunkData, matchingIndexes, index);
+        });
+        FilterRowsViaPromises.processOtherColumnsIfPresent(finish, chunksData, matchingIndexes);
       });
-      FilterRowsViaPromises.processOtherColumnsIfPresent(chunksData, matchingIndexes);
     });
   }
 }

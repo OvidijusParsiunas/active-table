@@ -1,21 +1,34 @@
+import {PageButtonContainerElement} from '../../../../elements/pagination/pageButtons/pageButtonContainerElement';
 import {FilterRowsInputElement} from '../../../../elements/filter/rows/input/filterRowsInputElement';
 import {FilterRowsInputEvents} from '../../../../elements/filter/rows/input/filterRowsInputEvents';
 import {FilterRowsElements} from '../../../../elements/filter/rows/filterRowsElements';
 import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
 import {FilterRowsViaWebWorkers} from './filterRowsViaWebWorkers';
 import {CellElement} from '../../../../elements/cell/cellElement';
+import {PaginationUtils} from '../../pagination/paginationUtils';
 import {FilterRowsViaPromises} from './filterRowsViaPromises';
 import {FilterRowsConfig} from '../../../../types/filterRows';
 import {TableContent} from '../../../../types/tableContent';
 import {ActiveTable} from '../../../../activeTable';
 
 export class FilterRowsInternalUtils {
+  // IMPORTANT - only one instance of this variable exists for all components in the same browser window
+  public static ACTIVE_WORKERS = 0;
   public static readonly CHUNK_SIZE = 2;
+  public static readonly HIDDEN_ROW_CLASS = 'filter-hidden-row';
 
-  public static getFilterFunc() {
+  private static finishFiltering(at: ActiveTable) {
+    if (at.pagination) {
+      PageButtonContainerElement.repopulateButtons(at);
+      PaginationUtils.displayRowsForDifferentButton(at, 1);
+    }
+  }
+
+  public static getFilterFunc(at: ActiveTable) {
+    const finish = FilterRowsInternalUtils.finishFiltering.bind(this, at);
     return window.Worker
-      ? FilterRowsViaWebWorkers.execute.bind(this, FilterRowsViaWebWorkers.createWorkerBlobURL())
-      : FilterRowsViaPromises.execute;
+      ? FilterRowsViaWebWorkers.execute.bind(this, finish, FilterRowsViaWebWorkers.createWorkerBlobURL())
+      : FilterRowsViaPromises.execute.bind(this, finish);
   }
 
   public static generateDefaultHeaderName(content: TableContent, defaultColumnHeaderName?: string) {
@@ -59,7 +72,7 @@ export class FilterRowsInternalUtils {
     FilterRowsInternalUtils.assignElements(at, config);
     const headerName = CellElement.getText(config.elements[0]);
     FilterRowsInputElement.setPlaceholder(config.inputElement, headerName, config.placeholderTemplate);
-    FilterRowsInputEvents.setEvents(config, rows);
+    FilterRowsInputEvents.setEvents(at, config, rows);
   }
 
   // prettier-ignore
@@ -94,5 +107,10 @@ export class FilterRowsInternalUtils {
       isRequired = index !== undefined && index >= 0;
     }
     return isRequired;
+  }
+
+  public static extractUnfilteredRows(tableBodyElement: HTMLElement, contentLength: number) {
+    const rows = Array.from(tableBodyElement.children);
+    return rows.slice(0, contentLength).filter((row) => !row.classList.contains(FilterRowsInternalUtils.HIDDEN_ROW_CLASS));
   }
 }

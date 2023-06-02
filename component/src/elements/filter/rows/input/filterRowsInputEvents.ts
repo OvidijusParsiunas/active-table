@@ -1,9 +1,8 @@
 import {FilterRowsInternalUtils} from '../../../../utils/outerTableComponents/filter/rows/filterRowsInternalUtils';
 import {ChunkFilterData, FilterRowsInternalConfig, InputFilterData} from '../../../../types/filterInternal';
+import {ActiveTable} from '../../../../activeTable';
 
 // WORK - filter when header is data too
-// WORK - ability to filter by header name or by column index
-// WORK - ability to toggle if case senseitive
 export class FilterRowsInputEvents {
   public static unsetEvents(rowConfigs?: FilterRowsInternalConfig[]) {
     if (rowConfigs) rowConfigs.forEach((rowConfig) => (rowConfig.inputElement.oninput = () => {}));
@@ -32,22 +31,21 @@ export class FilterRowsInputEvents {
     for (let i = 0; i < numWorkers; i += 1) {
       const chunkIndex = i * FilterRowsInternalUtils.CHUNK_SIZE;
       const chunkData = filterableInputs.map((data) => {
-        const chunkData = data as ChunkFilterData;
-        chunkData.chunk = data.colCells.slice(chunkIndex, chunkIndex + FilterRowsInternalUtils.CHUNK_SIZE);
-        return chunkData;
+        return {...data, chunk: data.colCells.slice(chunkIndex, chunkIndex + FilterRowsInternalUtils.CHUNK_SIZE)};
       });
       execFunc(chunkData); // REF-42
     }
   }
 
   // WORK - be careful about pagination
-  public static setEvents(currentConfig: FilterRowsInternalConfig, allConfigs: FilterRowsInternalConfig[]) {
-    if (!currentConfig.elements) return; // elements not present when initialised with no content
-    const filterFunc = FilterRowsInternalUtils.getFilterFunc();
-    const otherRowConfigs = allConfigs.filter((rowConfig) => rowConfig !== currentConfig);
-    currentConfig.inputElement.oninput = () => {
+  // prettier-ignore
+  public static setEvents(at: ActiveTable, currentConf: FilterRowsInternalConfig, allConfigs: FilterRowsInternalConfig[]) {
+    if (!currentConf.elements) return; // elements not present when initialised with no content
+    const filterFunc = FilterRowsInternalUtils.getFilterFunc(at);
+    const otherRowConfigs = allConfigs.filter((rowConfig) => rowConfig !== currentConf);
+    currentConf.inputElement.oninput = () => {
       // update is done synchronously for evaluated inputs to have the same input value
-      FilterRowsInputEvents.updateSameInputValues(otherRowConfigs, currentConfig);
+      FilterRowsInputEvents.updateSameInputValues(otherRowConfigs, currentConf);
       FilterRowsInputEvents.splitChunksAndExecute(FilterRowsInputEvents.getFilterData(allConfigs), filterFunc);
     };
   }

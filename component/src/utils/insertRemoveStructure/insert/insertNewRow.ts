@@ -101,8 +101,13 @@ export class InsertNewRow {
   public static insertEvent(this: ActiveTable) {
     let newRowIndex = this.content.length;
     if (this.pagination) {
-      const {maxVisibleRowIndex} = PaginationUtils.getRelativeRowIndexes(this);
-      if (maxVisibleRowIndex < newRowIndex) newRowIndex = maxVisibleRowIndex;
+      if (this._filterInternal.rows) {
+        const index = PaginationUtils.getLastVisibleRowIndex(this._tableBodyElementRef as HTMLElement, this._pagination);
+        newRowIndex = index + 1;
+      } else {
+        const {maxVisibleRowIndex} = PaginationUtils.getRelativeRowIndexes(this);
+        if (maxVisibleRowIndex < newRowIndex) newRowIndex = maxVisibleRowIndex;
+      }
     }
     InsertNewRow.insert(this, newRowIndex, true);
   }
