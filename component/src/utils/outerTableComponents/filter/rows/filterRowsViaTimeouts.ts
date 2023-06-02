@@ -3,11 +3,11 @@ import {FilterRowsInternalUtils} from './filterRowsInternalUtils';
 import {ChunkFilterData} from '../../../../types/filterInternal';
 
 // REF-42
-export class FilterRowsViaPromises {
+export class FilterRowsViaTimeouts {
   private static processOtherColumnsIfPresent(finish: () => void, chunksData: ChunkFilterData[], indexes: number[]) {
     FilterRowsInternalUtils.ACTIVE_WORKERS -= 1;
     if (chunksData.length > 1 && indexes.length > 0) {
-      FilterRowsViaPromises.processOtherColumns(finish, chunksData.slice(1), indexes);
+      FilterRowsViaTimeouts.processOtherColumns(finish, chunksData.slice(1), indexes);
     } else if (FilterRowsInternalUtils.ACTIVE_WORKERS === 0) {
       finish();
     }
@@ -27,29 +27,27 @@ export class FilterRowsViaPromises {
   }
 
   private static processOtherColumns(finish: () => void, chunksData: ChunkFilterData[], indexes: number[]) {
-    new Promise(() => {
+    setTimeout(() => {
       FilterRowsInternalUtils.ACTIVE_WORKERS += 1;
       const matchingIndexes: number[] = [];
       const chunkData = chunksData[0];
       indexes.forEach((index) => {
         const cell = chunkData.chunk[index];
-        FilterRowsViaPromises.toggleRow(cell, chunkData, matchingIndexes, index);
+        FilterRowsViaTimeouts.toggleRow(cell, chunkData, matchingIndexes, index);
       });
-      FilterRowsViaPromises.processOtherColumnsIfPresent(finish, chunksData, matchingIndexes);
+      FilterRowsViaTimeouts.processOtherColumnsIfPresent(finish, chunksData, matchingIndexes);
     });
   }
 
   public static execute(finish: () => void, chunksData: ChunkFilterData[]) {
     FilterRowsInternalUtils.ACTIVE_WORKERS += 1;
-    new Promise(() => {
-      setTimeout(() => {
-        const matchingIndexes: number[] = [];
-        const chunkData = chunksData[0];
-        chunkData.chunk.forEach((cell, index) => {
-          FilterRowsViaPromises.toggleRow(cell, chunkData, matchingIndexes, index);
-        });
-        FilterRowsViaPromises.processOtherColumnsIfPresent(finish, chunksData, matchingIndexes);
+    setTimeout(() => {
+      const matchingIndexes: number[] = [];
+      const chunkData = chunksData[0];
+      chunkData.chunk.forEach((cell, index) => {
+        FilterRowsViaTimeouts.toggleRow(cell, chunkData, matchingIndexes, index);
       });
+      FilterRowsViaTimeouts.processOtherColumnsIfPresent(finish, chunksData, matchingIndexes);
     });
   }
 }

@@ -6,7 +6,7 @@ import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
 import {FilterRowsViaWebWorkers} from './filterRowsViaWebWorkers';
 import {CellElement} from '../../../../elements/cell/cellElement';
 import {PaginationUtils} from '../../pagination/paginationUtils';
-import {FilterRowsViaPromises} from './filterRowsViaPromises';
+import {FilterRowsViaTimeouts} from './filterRowsViaTimeouts';
 import {FilterRowsConfig} from '../../../../types/filterRows';
 import {TableContent} from '../../../../types/tableContent';
 import {ActiveTable} from '../../../../activeTable';
@@ -28,7 +28,7 @@ export class FilterRowsInternalUtils {
     const finish = FilterRowsInternalUtils.finishFiltering.bind(this, at);
     return window.Worker
       ? FilterRowsViaWebWorkers.execute.bind(this, finish, FilterRowsViaWebWorkers.createWorkerBlobURL())
-      : FilterRowsViaPromises.execute.bind(this, finish);
+      : FilterRowsViaTimeouts.execute.bind(this, finish);
   }
 
   public static generateDefaultHeaderName(content: TableContent, defaultColumnHeaderName?: string) {
