@@ -72,9 +72,9 @@ export const activeTableStyle = css`
 
   .cell {
     text-align: left;
-    /* WORK - this will need to be removed from this branch */
-    padding: 11px 6px 10px;
+    padding: 11px 6px 6px;
     font-size: 14px;
+    /* WORK - this will need to be removed from this branch */
     line-height: 17px;
     height: 42.5px;
     box-sizing: border-box;
@@ -718,7 +718,7 @@ export const activeTableStyle = css`
   .filter-rows-dropdown-button {
     position: absolute;
     right: 4px;
-    top: 51%;
+    top: 51.6%;
     transform: translateY(-50%);
     cursor: pointer;
     user-select: none;
@@ -766,5 +766,7 @@ export const activeTableStyle = css`
   .filter-rows-dropdown > .dropdown-item {
     padding-left: 8px;
     padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
   }
 `;

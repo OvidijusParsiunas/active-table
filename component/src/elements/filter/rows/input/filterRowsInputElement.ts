@@ -23,7 +23,7 @@ export class FilterRowsInputElement {
   private static createElement(headerName?: string, template?: string, styles?: FilterRowsStyles) {
     const inputElement = document.createElement('input');
     inputElement.classList.add(FilterRowsInputElement.INPUT_CLASS);
-    const placeholderColor = styles?.placeholder?.color || '#727272';
+    const placeholderColor = styles?.placeholder?.color || '#656565';
     inputElement.style.setProperty('--active-table-filter-placeholder-color', placeholderColor);
     Object.assign(inputElement.style, styles?.container);
     FilterRowsInputElement.setPlaceholder(inputElement, headerName, template);

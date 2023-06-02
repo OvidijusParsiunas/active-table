@@ -52,7 +52,7 @@ export class InsertNewRow {
   }
 
   // prettier-ignore
-  private static updagePagination(at: ActiveTable,
+  private static updatePagination(at: ActiveTable,
       rowIndex: number, isNewText: boolean, newRowElement: HTMLElement) {
     if (!isNewText) {
       PaginationUtils.initialRowUpdates(at, rowIndex, newRowElement);
@@ -64,7 +64,7 @@ export class InsertNewRow {
   private static insertNewRow(at: ActiveTable, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
     const newRowData = rowData || DataUtils.createEmptyStringDataArray(at.content[0]?.length || 1);
     const newRowElement = RowElement.create();
-    if (at.pagination) InsertNewRow.updagePagination(at, rowIndex, isNewText, newRowElement);
+    if (at.pagination) InsertNewRow.updatePagination(at, rowIndex, isNewText, newRowElement);
     at._tableBodyElementRef?.insertBefore(newRowElement, at._tableBodyElementRef.children[rowIndex]);
     // don't need a timeout as addition of row with new text is not expensive
     if (isNewText) at.content.splice(rowIndex, 0, []);
