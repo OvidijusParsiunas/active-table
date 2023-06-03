@@ -15,6 +15,7 @@ export class FilterRowsDropdownItemEvents {
     if (colElements !== config.elements) {
       config.elements = colElements;
       FilterRowsInternalUtils.resetInput(at, config);
+      FilterRowsInternalUtils.unsetFilter(config.inputElement);
     }
   }
 

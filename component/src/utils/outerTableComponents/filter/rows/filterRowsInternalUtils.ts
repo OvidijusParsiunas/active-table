@@ -75,11 +75,33 @@ export class FilterRowsInternalUtils {
     FilterRowsInputEvents.setEvents(at, config, rows);
   }
 
+  public static unsetFilter(inputElement: HTMLInputElement) {
+    if (inputElement.value !== '') {
+      inputElement.value = '';
+      inputElement.dispatchEvent(new Event('input'));
+    }
+  }
+
+  public static unsetAllFilters(at: ActiveTable) {
+    const {content, _filterInternal, _tableBodyElementRef} = at;
+    if (content[0] && content[0].length !== 0 && _tableBodyElementRef) {
+      let needReset = false;
+      _filterInternal.rows?.forEach((rowConfig) => {
+        if (rowConfig.inputElement.value !== '') {
+          rowConfig.inputElement.value = '';
+          needReset = true;
+        }
+      });
+      if (needReset) _filterInternal.rows?.[0].inputElement.dispatchEvent(new Event('input'));
+    }
+  }
+
   // prettier-ignore
   public static resetAllInputs(at: ActiveTable) {
     const {content, _filterInternal: {rows}} = at;
     if (!content[0] || content[0].length === 0 || !rows) return FilterRowsInputEvents.unsetEvents(rows);
     rows.forEach((rowConfig) => FilterRowsInternalUtils.resetInput(at, rowConfig));
+    FilterRowsInternalUtils.unsetAllFilters(at);
   }
 
   public static completeReset(at: ActiveTable) {

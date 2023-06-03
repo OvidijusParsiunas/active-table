@@ -1,6 +1,7 @@
 import {RowDropdownCellOverlay} from '../../../elements/dropdown/rowDropdown/cellOverlay/rowDropdownCellOverlay';
 import {ToggleAdditionElements} from '../../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
+import {PaginationRowIndexes} from '../../outerTableComponents/pagination/paginationRowIndexes';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
 import {PaginationUtils} from '../../outerTableComponents/pagination/paginationUtils';
 import {RowElement} from '../../../elements/table/addNewElements/row/rowElement';
@@ -101,11 +102,11 @@ export class InsertNewRow {
   public static insertEvent(this: ActiveTable) {
     let newRowIndex = this.content.length;
     if (this.pagination) {
-      if (this._filterInternal.rows) {
-        const index = PaginationUtils.getLastVisibleRowIndex(this._tableBodyElementRef as HTMLElement, this._pagination);
+      if (this._filterInternal.rows && this._tableBodyElementRef) {
+        const index = PaginationRowIndexes.getVisibleRowReallIndex(this._tableBodyElementRef, this._pagination);
         newRowIndex = index + 1;
       } else {
-        const {maxVisibleRowIndex} = PaginationUtils.getRelativeRowIndexes(this);
+        const maxVisibleRowIndex = PaginationRowIndexes.getMaxVisibleRowIndex(this);
         if (maxVisibleRowIndex < newRowIndex) newRowIndex = maxVisibleRowIndex;
       }
     }

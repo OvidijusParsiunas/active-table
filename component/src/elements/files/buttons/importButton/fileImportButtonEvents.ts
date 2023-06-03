@@ -1,3 +1,4 @@
+import {FilterRowsInternalUtils} from '../../../../utils/outerTableComponents/filter/rows/filterRowsInternalUtils';
 import {SheetJSInternalUtils} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSInternalUtils';
 import {FilterInternalUtils} from '../../../../utils/outerTableComponents/filter/filterInternalUtils';
 import {SheetJSImport} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSImport';
@@ -9,6 +10,7 @@ import {ActiveTable} from '../../../../activeTable';
 export class FileImportButtonEvents {
   public static importFile(at: ActiveTable, file: File, formats: FileFormat[], options?: ImportOverwriteOptions) {
     if (formats.find((extension) => file.name.endsWith(extension))) {
+      if (at._filterInternal.rows) FilterRowsInternalUtils.unsetAllFilters(at);
       if (file.name.endsWith('.csv')) {
         CSVImport.import(at, file, options);
       } else {

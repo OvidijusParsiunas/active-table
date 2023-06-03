@@ -27,7 +27,13 @@ export class RemoveRow {
     at._addColumnCellsElementsRef.splice(rowIndex, 1);
   }
 
+  private static rowToBeRemovedIndexWhenPagination(at: ActiveTable, rowIndex: number) {
+    const rowToBeRemoved = at._tableBodyElementRef?.children[rowIndex];
+    return at._pagination.visibleRows.findIndex((row) => row === rowToBeRemoved);
+  }
+
   private static removeRow(at: ActiveTable, rowIndex: number) {
+    const index = at.pagination ? RemoveRow.rowToBeRemovedIndexWhenPagination(at, rowIndex) : 0; // before it is removed
     at._tableBodyElementRef?.children[rowIndex].remove();
     at._rowDropdownCellOverlays.splice(rowIndex, 1);
     const removedContentRow = at.content.splice(rowIndex, 1);
@@ -36,7 +42,7 @@ export class RemoveRow {
       at._columnsDetails[columnIndex].elements.splice(rowIndex, 1);
       at._columnsDetails[columnIndex].processedStyle.splice(rowIndex, 1);
     });
-    if (at.pagination) PaginationUtils.updateOnRowChange(at, rowIndex);
+    if (at.pagination) PaginationUtils.updateOnRowChange(at, index);
     return removedContentRow[0];
   }
 
