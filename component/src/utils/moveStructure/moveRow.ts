@@ -46,7 +46,7 @@ export class MoveRow {
     // update header row settings
     _columnsDetails.forEach((column, columnIndex) => {
       FocusedCellUtils.set(_focusedElements.cell, column.elements[0], 0, columnIndex);
-      HeaderText.onChange(at, column.elements[0], columnIndex);
+      HeaderText.onAttemptChange(at, column.elements[0], columnIndex);
     });
     // overwrite data row using header row
     MoveRow.overwrite(at, overwrittenText, 1);

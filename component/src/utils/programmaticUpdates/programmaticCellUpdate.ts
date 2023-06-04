@@ -19,7 +19,7 @@ export class ProgrammaticCellUpdate {
     ColumnTypesUtils.updateRelatedElements(at, rowIndex, columnIndex, element);
     if (rowIndex === 0) {
       if (Dropdown.isDisplayed(at._activeOverlayElements.columnDropdown)) ColumnDropdown.processTextAndHide(at);
-      HeaderText.onChange(at, element, columnIndex);
+      HeaderText.onAttemptChange(at, element, columnIndex);
     }
   }
 }

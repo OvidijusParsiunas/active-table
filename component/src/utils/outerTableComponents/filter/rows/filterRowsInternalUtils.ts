@@ -6,6 +6,7 @@ import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
 import {FilterRowsViaWebWorkers} from './filterRowsViaWebWorkers';
 import {CellElement} from '../../../../elements/cell/cellElement';
 import {PaginationUtils} from '../../pagination/paginationUtils';
+import {ColumnsDetailsT} from '../../../../types/columnDetails';
 import {FilterRowsViaTimeouts} from './filterRowsViaTimeouts';
 import {FilterRowsConfig} from '../../../../types/filterRows';
 import {TableContent} from '../../../../types/tableContent';
@@ -71,6 +72,7 @@ export class FilterRowsInternalUtils {
     if (!rows) return;
     FilterRowsInternalUtils.assignElements(at, config);
     const headerName = CellElement.getText(config.elements[0]);
+    config.lastRegisteredHeaderName = headerName;
     FilterRowsInputElement.setPlaceholder(config.inputElement, headerName, config.placeholderTemplate);
     FilterRowsInputEvents.setEvents(at, config, rows);
   }
@@ -134,5 +136,11 @@ export class FilterRowsInternalUtils {
   public static extractUnfilteredRows(tableBodyElement: HTMLElement, contentLength: number) {
     const rows = Array.from(tableBodyElement.children);
     return rows.slice(0, contentLength).filter((row) => !row.classList.contains(FilterRowsInternalUtils.HIDDEN_ROW_CLASS));
+  }
+
+  public static wasHeaderChanged(columnsDetails: ColumnsDetailsT, rows: FilterRowsInternalConfig[], columnIndex: number) {
+    const elements = columnsDetails[columnIndex].elements;
+    const rowConfig = rows.find((rowConfig) => elements === rowConfig.elements);
+    return !rowConfig || rowConfig.lastRegisteredHeaderName !== CellElement.getText(elements[0]);
   }
 }

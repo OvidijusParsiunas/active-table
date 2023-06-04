@@ -65,7 +65,7 @@ export class RemoveColumn {
       RemoveColumn.removeCell(at, rowElement as HTMLElement, rowIndex, columnIndex);
     });
     RemoveColumn.cleanUpContent(at.content);
-    HeaderText.onChange(at, at._columnsDetails[columnIndex].elements[0], columnIndex, {colRemove: true});
+    HeaderText.onAttemptChange(at, at._columnsDetails[columnIndex].elements[0], columnIndex, {colRemove: true});
     // needs to be after getDetails but before changeWidthsBasedOnColumnInsertRemove
     const removedColumnDetails = at._columnsDetails.splice(columnIndex, 1)[0];
     RemoveColumn.updateTableDimensions(at, removedColumnDetails.settings);

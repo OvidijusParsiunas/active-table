@@ -14,6 +14,8 @@ export class DropdownItem {
   public static readonly DROPDOWN_INPUT_ITEM_CLASS = 'dropdown-input-item';
   public static readonly DROPDOWN_TITLE_ITEM_CLASS = 'dropdown-title-item';
   public static readonly DROPDOWN_ITEM_DIVIDER_CLASS = 'dropdown-item-divider';
+  private static readonly DROPDOWN_ITEM_EMPTY_CLASS = 'dropdown-item-empty';
+  private static readonly DROPDOWN_ITEM_EMPTY_PLACEHOLDER_TEXT = '...';
   // this is used to identify if a mouse event is currently on a dropdown item
   public static readonly DROPDOWN_ITEM_IDENTIFIER = 'dropdown-item-identifier';
   private static readonly HIDDEN = 'none';
@@ -67,7 +69,8 @@ export class DropdownItem {
   public static addPlaneButtonItem(dropdownElement: HTMLElement | undefined, text: string, index?: number) {
     const itemElement = DropdownItem.createItem(dropdownElement);
     const textElement = DropdownItem.createDropdownItemBaseElement('div');
-    textElement.innerText = text;
+    textElement.innerText = text || DropdownItem.DROPDOWN_ITEM_EMPTY_PLACEHOLDER_TEXT;
+    if (text.trim() === '') textElement.classList.add(DropdownItem.DROPDOWN_ITEM_EMPTY_CLASS);
     itemElement.append(textElement);
     if (dropdownElement) {
       if (index !== undefined && dropdownElement.children[index]) {

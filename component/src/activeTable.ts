@@ -73,6 +73,7 @@ import {Overflow} from './types/overflow';
 // WORK - on-render
 // WORK - hover animation for row
 // WORK - stub-style - rename to root cell
+// TO-DO - dropdown for export button
 // TO-DO - add comments on type properties
 @customElement('active-table')
 export class ActiveTable extends LitElement {

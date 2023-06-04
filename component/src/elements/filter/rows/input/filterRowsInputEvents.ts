@@ -2,7 +2,6 @@ import {FilterRowsInternalUtils} from '../../../../utils/outerTableComponents/fi
 import {ChunkFilterData, FilterRowsInternalConfig, InputFilterData} from '../../../../types/filterInternal';
 import {ActiveTable} from '../../../../activeTable';
 
-// WORK - filter when header is data too
 export class FilterRowsInputEvents {
   public static unsetEvents(rowConfigs?: FilterRowsInternalConfig[]) {
     if (rowConfigs) rowConfigs.forEach((rowConfig) => (rowConfig.inputElement.oninput = () => {}));
@@ -37,8 +36,6 @@ export class FilterRowsInputEvents {
     }
   }
 
-  // WORK - be careful about pagination
-  // prettier-ignore
   public static setEvents(at: ActiveTable, currentConf: FilterRowsInternalConfig, allConfigs: FilterRowsInternalConfig[]) {
     if (!currentConf.elements) return; // elements not present when initialised with no content
     const filterFunc = FilterRowsInternalUtils.getFilterFunc(at);

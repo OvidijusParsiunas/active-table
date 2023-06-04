@@ -336,6 +336,12 @@ export const activeTableStyle = css`
     color: white !important;
   }
 
+  /* Do not want to set default height incase user has set a font or a font-family so
+    setting a placeholder text and making it invisible */
+  .dropdown-item-empty {
+    color: #ffffae00 !important;
+  }
+
   .dropdown-disabled-item {
     pointer-events: none;
     color: #9e9e9e8a;

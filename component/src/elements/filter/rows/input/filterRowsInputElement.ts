@@ -3,8 +3,6 @@ import {FilterRowsConfig, FilterRowsStyles} from '../../../../types/filterRows';
 import {FilterRowsInternalConfig} from '../../../../types/filterInternal';
 import {TableContent} from '../../../../types/tableContent';
 
-// WORK - filter when header is data too
-// WORK - ability to filter by header name or by column index
 export class FilterRowsInputElement {
   private static readonly INPUT_CLASS = 'filter-rows-input';
   private static readonly TEMPLATE_VARIABLE = '{headerName}';

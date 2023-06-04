@@ -15,7 +15,7 @@ export class EditableHeaderIconTextEvents {
   private static blurText(this: ActiveTable, rowIndex: number, columnIndex: number, event: FocusEvent) {
     const textElement = event.target as HTMLElement;
     const cellElement = CellElement.getCellElement(textElement);
-    HeaderText.onChange(this, cellElement, columnIndex);
+    HeaderText.onAttemptChange(this, cellElement, columnIndex);
     DataCellEvents.blur(this, rowIndex, columnIndex, textElement);
   }
 

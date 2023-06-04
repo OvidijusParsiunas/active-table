@@ -26,7 +26,7 @@ export class WindowEvents {
     if (rowIndex === undefined || columnIndex === undefined) return;
     if (rowIndex === 0 && !Dropdown.isDisplayed(this._activeOverlayElements.columnDropdown)) {
       if (event.key === KEYBOARD_KEY.ESCAPE) {
-        return HeaderText.onChange(this, element as HTMLElement, columnIndex);
+        return HeaderText.onAttemptChange(this, element as HTMLElement, columnIndex);
       }
       // workaround for when opened dropdown does not have a focused item
     } else if (Dropdown.isDisplayed(this._activeOverlayElements.columnDropdown) && !this.shadowRoot?.activeElement) {

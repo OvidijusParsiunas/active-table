@@ -76,7 +76,7 @@ export class DataCellEvents {
 
   private static blurCell(this: ActiveTable, rowIndex: number, columnIndex: number, event: Event) {
     if (rowIndex === 0 && !this._defaultColumnsSettings.columnDropdown?.displaySettings?.openMethod?.cellClick) {
-      HeaderText.onChange(this, event.target as HTMLElement, columnIndex);
+      HeaderText.onAttemptChange(this, event.target as HTMLElement, columnIndex);
     }
     DataCellEvents.blur(this, rowIndex, columnIndex, event.target as HTMLElement);
   }

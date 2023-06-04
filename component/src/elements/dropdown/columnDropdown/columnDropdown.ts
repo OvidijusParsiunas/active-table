@@ -29,8 +29,8 @@ export class ColumnDropdown {
     const {columnDropdown, columnTypeDropdown, fullTableOverlay} = _activeOverlayElements;
     if (!columnDropdown || !fullTableOverlay || !columnTypeDropdown || !cellElement) return;
     if (GenericElementUtils.doesElementExistInDom(cellElement)) {
-      const wasSetToDefault = CellEvents.setCellToDefaultIfNeeded(at, 0, columnIndex as number, cellElement);
-      if (wasSetToDefault) HeaderText.onChange(at, cellElement, columnIndex as number);
+      CellEvents.setCellToDefaultIfNeeded(at, 0, columnIndex as number, cellElement);
+      HeaderText.onAttemptChange(at, cellElement, columnIndex as number);
     }
     CellHighlightUtils.fade(cellElement, _columnsDetails[columnIndex as number]?.headerStateColors.default);
     Dropdown.hide(columnDropdown, fullTableOverlay, columnTypeDropdown);

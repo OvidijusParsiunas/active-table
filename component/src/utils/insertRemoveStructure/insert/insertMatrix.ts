@@ -51,7 +51,7 @@ export class InsertMatrix {
   private static changeColumnSettings(at: ActiveTable, columnIndex: number) {
     const {elements} = at._columnsDetails[columnIndex];
     FocusedCellUtils.set(at._focusedElements.cell, elements[0], 0, columnIndex);
-    HeaderText.onChange(at, elements[0], columnIndex);
+    HeaderText.onAttemptChange(at, elements[0], columnIndex);
   }
 
   private static processNewColumn(at: ActiveTable) {

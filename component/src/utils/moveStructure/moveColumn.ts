@@ -27,7 +27,7 @@ export class MoveColumn {
   // prettier-ignore
   private static changeSettings(at: ActiveTable, targetColIndex: number, targetHeader: HTMLElement,
       targetColumnDetails: ColumnDetailsT, sourceType: ColumnTypeInternal) {
-    HeaderText.onChange(at, targetHeader, targetColIndex, {colMove: true});
+    HeaderText.onAttemptChange(at, targetHeader, targetColIndex, {colMove: true});
     if (sourceType !== targetColumnDetails.activeType) {
       ChangeColumnType.change.bind(at)(sourceType.name, targetColIndex);
     }
@@ -52,7 +52,7 @@ export class MoveColumn {
     const {areSettingsDifferent} = ColumnSettingsUtils.parseSettingsChange(at);
     if (areSettingsDifferent) {
       const currentColumn = at._columnsDetails[columnIndex];
-      HeaderText.onChange(at, currentColumn.elements[0], columnIndex);
+      HeaderText.onAttemptChange(at, currentColumn.elements[0], columnIndex);
     }
   }
 

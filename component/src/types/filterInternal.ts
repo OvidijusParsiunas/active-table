@@ -12,6 +12,7 @@ export interface FilterRowsInternalConfig {
   elements: HTMLElement[];
   placeholderTemplate?: string;
   defaultColumnHeaderName?: string; // removed after first use
+  lastRegisteredHeaderName: string;
 }
 
 // the reason why the property this is attached to is called _filterInternal instead of _filter to not confuse the user
