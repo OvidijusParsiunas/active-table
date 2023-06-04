@@ -1,13 +1,13 @@
-import {FilterRowsInternalUtils} from '../../../../utils/outerTableComponents/filter/rows/filterRowsInternalUtils';
-import {ChunkFilterData, FilterRowsInternalConfig, InputFilterData} from '../../../../types/filterInternal';
+import {FilterInternalUtils} from '../../../../utils/outerTableComponents/filter/rows/filterInternalUtils';
+import {ChunkFilterData, FilterInternal, InputFilterData} from '../../../../types/visibilityInternal';
 import {ActiveTable} from '../../../../activeTable';
 
-export class FilterRowsInputEvents {
-  public static unsetEvents(rowConfigs?: FilterRowsInternalConfig[]) {
+export class FilterInputEvents {
+  public static unsetEvents(rowConfigs?: FilterInternal[]) {
     if (rowConfigs) rowConfigs.forEach((rowConfig) => (rowConfig.inputElement.oninput = () => {}));
   }
 
-  private static updateSameInputValues(otherConfigs: FilterRowsInternalConfig[], currentConfig: FilterRowsInternalConfig) {
+  private static updateSameInputValues(otherConfigs: FilterInternal[], currentConfig: FilterInternal) {
     otherConfigs.forEach((otherRowConfig) => {
       if (otherRowConfig.elements === currentConfig.elements) {
         otherRowConfig.inputElement.value = currentConfig.inputElement.value;
@@ -15,7 +15,7 @@ export class FilterRowsInputEvents {
     });
   }
 
-  private static getFilterData(rowConfigs: FilterRowsInternalConfig[]): InputFilterData[] {
+  private static getFilterData(rowConfigs: FilterInternal[]): InputFilterData[] {
     return rowConfigs.map((config) => ({
       filterText: config.isCaseSensitive ? config.inputElement.value : config.inputElement.value.toLocaleLowerCase(),
       colCells: config.elements.slice(1),
@@ -26,24 +26,24 @@ export class FilterRowsInputEvents {
   private static splitChunksAndExecute(inputsData: InputFilterData[], execFunc: (chunksData: ChunkFilterData[]) => void) {
     const filterableInputs = inputsData.filter((inputData) => inputData.filterText !== '');
     if (filterableInputs.length === 0) filterableInputs.push(inputsData[0]); // still need to do first to toggle all rows
-    const numWorkers = Math.ceil(filterableInputs[0].colCells.length / FilterRowsInternalUtils.CHUNK_SIZE);
+    const numWorkers = Math.ceil(filterableInputs[0].colCells.length / FilterInternalUtils.CHUNK_SIZE);
     for (let i = 0; i < numWorkers; i += 1) {
-      const chunkIndex = i * FilterRowsInternalUtils.CHUNK_SIZE;
+      const chunkIndex = i * FilterInternalUtils.CHUNK_SIZE;
       const chunkData = filterableInputs.map((data) => {
-        return {...data, chunk: data.colCells.slice(chunkIndex, chunkIndex + FilterRowsInternalUtils.CHUNK_SIZE)};
+        return {...data, chunk: data.colCells.slice(chunkIndex, chunkIndex + FilterInternalUtils.CHUNK_SIZE)};
       });
       execFunc(chunkData); // REF-42
     }
   }
 
-  public static setEvents(at: ActiveTable, currentConf: FilterRowsInternalConfig, allConfigs: FilterRowsInternalConfig[]) {
+  public static setEvents(at: ActiveTable, currentConf: FilterInternal, allConfigs: FilterInternal[]) {
     if (!currentConf.elements) return; // elements not present when initialised with no content
-    const filterFunc = FilterRowsInternalUtils.getFilterFunc(at);
+    const filterFunc = FilterInternalUtils.getFilterFunc(at);
     const otherRowConfigs = allConfigs.filter((rowConfig) => rowConfig !== currentConf);
     currentConf.inputElement.oninput = () => {
       // update is done synchronously for evaluated inputs to have the same input value
-      FilterRowsInputEvents.updateSameInputValues(otherRowConfigs, currentConf);
-      FilterRowsInputEvents.splitChunksAndExecute(FilterRowsInputEvents.getFilterData(allConfigs), filterFunc);
+      FilterInputEvents.updateSameInputValues(otherRowConfigs, currentConf);
+      FilterInputEvents.splitChunksAndExecute(FilterInputEvents.getFilterData(allConfigs), filterFunc);
     };
   }
 }

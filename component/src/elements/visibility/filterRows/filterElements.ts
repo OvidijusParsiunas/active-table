@@ -1,17 +1,17 @@
-import {FilterRowsInternalUtils} from '../../../utils/outerTableComponents/filter/rows/filterRowsInternalUtils';
+import {FilterInternalUtils} from '../../../utils/outerTableComponents/filter/rows/filterInternalUtils';
 import {OuterContainerElements} from '../../../utils/outerTableComponents/outerContainerElements';
-import {FilterRowsDropdownElement} from './activeColumn/dropdown/filterRowsDropdownElement';
-import {FilterRowsInputCaseElement} from './case/filterRowsInputCaseElement';
+import {FilterDropdownElement} from './activeColumn/dropdown/filterDropdownElement';
 import {ToggleableElement} from '../../../utils/elements/toggleableElement';
 import {StatefulCSSEvents} from '../../../utils/elements/statefulCSSEvents';
-import {FilterRowsInputElement} from './input/filterRowsInputElement';
+import {FilterInputCaseElement} from './case/filterInputCaseElement';
 import {ElementStyle} from '../../../utils/elements/elementStyle';
+import {FilterInputElement} from './input/filterInputElement';
 import {OuterContainers} from '../../../types/outerContainer';
 import {CSSStyle, StatefulCSS} from '../../../types/cssStyle';
-import {FilterRowsConfig} from '../../../types/filterRows';
 import {ActiveTable} from '../../../activeTable';
+import {Filter} from '../../../types/filter';
 
-export class FilterRowsElements {
+export class FilterElements {
   public static readonly DEFAULT_INPUT_POSITION = 'top-right';
 
   private static createContainerElement(order?: number) {
@@ -23,34 +23,34 @@ export class FilterRowsElements {
 
   // the order at which the elements are added is very important - please check the css selectors
   // prettier-ignore
-  private static createComponent(at: ActiveTable, outerContainers: OuterContainers, userConfig: FilterRowsConfig) {
-    const position = userConfig.position || FilterRowsElements.DEFAULT_INPUT_POSITION;
-    const containerElement = FilterRowsElements.createContainerElement(userConfig.order);
-    const internalConfig = FilterRowsInternalUtils.addConfig(at, userConfig);
+  private static createComponent(at: ActiveTable, outerContainers: OuterContainers, userConfig: Filter) {
+    const position = userConfig.position || FilterElements.DEFAULT_INPUT_POSITION;
+    const containerElement = FilterElements.createContainerElement(userConfig.order);
+    const internalConfig = FilterInternalUtils.addConfig(at, userConfig);
     if (userConfig.dropdown !== false) {
-      const dropdownElement = FilterRowsDropdownElement.create(
+      const dropdownElement = FilterDropdownElement.create(
         at, containerElement, position, internalConfig, userConfig.styles?.dropdownArrow);
       setTimeout(() => containerElement.appendChild(dropdownElement)); // appended at the end
     }
     if (userConfig.caseButton !== false) {
-      FilterRowsInputCaseElement.create(at, containerElement, internalConfig, userConfig.styles);
+      FilterInputCaseElement.create(at, containerElement, internalConfig, userConfig.styles);
     }
-    const inputElement = FilterRowsInputElement.create(internalConfig, userConfig, at.content);
+    const inputElement = FilterInputElement.create(internalConfig, userConfig, at.content);
     containerElement.appendChild(inputElement);
     OuterContainerElements.addToContainer(position, outerContainers, containerElement);
   }
 
   public static create(at: ActiveTable, outerContainers: OuterContainers) {
-    if (typeof at.filterRows === 'boolean') {
-      FilterRowsElements.createComponent(at, outerContainers, {});
-    } else if (Array.isArray(at.filterRows)) {
-      at.filterRows.forEach((userConfig) => {
-        FilterRowsElements.createComponent(at, outerContainers, userConfig);
+    if (typeof at.filter === 'boolean') {
+      FilterElements.createComponent(at, outerContainers, {});
+    } else if (Array.isArray(at.filter)) {
+      at.filter.forEach((userConfig) => {
+        FilterElements.createComponent(at, outerContainers, userConfig);
       });
-    } else if (at.filterRows) {
-      FilterRowsElements.createComponent(at, outerContainers, at.filterRows);
+    } else if (at.filter) {
+      FilterElements.createComponent(at, outerContainers, at.filter);
     }
-    setTimeout(() => FilterRowsInternalUtils.resetAllInputs(at));
+    setTimeout(() => FilterInternalUtils.resetAllInputs(at));
   }
 
   public static applyStatefulStyles(element: HTMLElement, hoverStyle: CSSStyle, styles: StatefulCSS = {}) {

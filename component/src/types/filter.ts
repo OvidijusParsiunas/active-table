@@ -1,21 +1,19 @@
 import {OuterContentPosition} from './outerContainer';
 import {CSSStyle, StatefulCSS} from './cssStyle';
 
-export interface FilterRowsStyles {
+export interface FilterStyles {
   container?: CSSStyle;
   placeholder?: {color: string};
   caseButton?: StatefulCSS & {active?: CSSStyle};
   dropdownArrow?: StatefulCSS & {active?: CSSStyle};
 }
 
-export interface FilterRowsConfig {
+export interface Filter {
   caseButton?: boolean;
   dropdown?: boolean;
   defaultColumnHeaderName?: string;
   placeholderTemplate?: string;
-  styles?: FilterRowsStyles;
+  styles?: FilterStyles;
   position?: OuterContentPosition;
   order?: number;
 }
-
-export type FilterRows = boolean | FilterRowsConfig | FilterRowsConfig[];

@@ -39,6 +39,7 @@ import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {PaginationInternal} from './types/paginationInternal';
 import {LabelColorUtils} from './utils/color/labelColorUtils';
+import {VisibilityInternal} from './types/visibilityInternal';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
@@ -54,7 +55,6 @@ import {HeaderIconStyle} from './types/headerIconStyle';
 import {HoverableStyles} from './types/hoverableStyles';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {RowHoverStyles} from './types/rowHoverStyles';
-import {FilterInternal} from './types/filterInternal';
 import {GlobalItemColors} from './types/itemToColor';
 import {StripedRows} from './utils/rows/stripedRows';
 import {activeTableStyle} from './activeTableStyle';
@@ -66,9 +66,9 @@ import {LitElement, PropertyValues} from 'lit';
 import {CellText} from './types/tableContent';
 import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
-import {FilterRows} from './types/filterRows';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
+import {Filter} from './types/filter';
 
 // WORK - on-render
 // WORK - hover animation for row
@@ -270,7 +270,7 @@ export class ActiveTable extends LitElement {
   files?: Files;
 
   @property({type: Boolean})
-  filterRows?: FilterRows;
+  filter?: boolean | Filter | Filter[];
 
   @property({type: String})
   auxiliaryStyle?: string;
@@ -352,7 +352,7 @@ export class ActiveTable extends LitElement {
   _files: FilesInternal = FilesUtils.createDefault(this);
 
   @state()
-  _filterInternal: FilterInternal = {};
+  _visiblityInternal: VisibilityInternal = {};
 
   @state({
     hasChanged() {

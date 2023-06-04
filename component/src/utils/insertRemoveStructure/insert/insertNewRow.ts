@@ -102,7 +102,7 @@ export class InsertNewRow {
   public static insertEvent(this: ActiveTable) {
     let newRowIndex = this.content.length;
     if (this.pagination) {
-      if (this._filterInternal.rows && this._tableBodyElementRef) {
+      if (this._visiblityInternal.rows && this._tableBodyElementRef) {
         const index = PaginationRowIndexes.getVisibleRowReallIndex(this._tableBodyElementRef, this._pagination);
         newRowIndex = index + 1;
       } else {

@@ -22,12 +22,12 @@ export class PaginationRowIndexes {
   }
 
   private static getRawMaxVisibleRowIndex(at: ActiveTable) {
-    const {_pagination, _tableBodyElementRef, content, _filterInternal} = at;
+    const {_pagination, _tableBodyElementRef, content, _visiblityInternal} = at;
     const {activePageNumber, rowsPerPage, isAllRowsOptionSelected} = _pagination;
     if (isAllRowsOptionSelected) {
       return content.length + 1;
     }
-    if (_filterInternal.rows) {
+    if (_visiblityInternal.rows) {
       return PaginationRowIndexes.getFilteredMaxVisibleRowIndex(_tableBodyElementRef as HTMLElement, _pagination);
     }
     return activePageNumber * rowsPerPage;

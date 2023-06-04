@@ -1,9 +1,9 @@
+import {ChunkFilterData} from '../../../../types/visibilityInternal';
 import {CellElement} from '../../../../elements/cell/cellElement';
-import {FilterRowsInternalUtils} from './filterRowsInternalUtils';
-import {ChunkFilterData} from '../../../../types/filterInternal';
+import {FilterInternalUtils} from './filterInternalUtils';
 
 // REF-42
-export class FilterRowsViaWebWorkers {
+export class FilterViaWebWorkers {
   private static readonly TRAVERSE_CHUNK = `
     const result = chunk.map((text) => (isCaseSensitive ? text : text.toLocaleLowerCase()).includes(filterText));
     self.postMessage(result);
@@ -28,9 +28,9 @@ export class FilterRowsViaWebWorkers {
     self.onmessage = function (event) {
       const {chunk, indexArray, filterText, isCaseSensitive} = event.data;
       if (indexArray) {
-        ${FilterRowsViaWebWorkers.TRAVERSE_MATCHING_INDEXES}
+        ${FilterViaWebWorkers.TRAVERSE_MATCHING_INDEXES}
       } else {
-        ${FilterRowsViaWebWorkers.TRAVERSE_CHUNK}
+        ${FilterViaWebWorkers.TRAVERSE_CHUNK}
       }
     };
   `;
@@ -38,10 +38,10 @@ export class FilterRowsViaWebWorkers {
   // prettier-ignore
   private static processOtherColumnsIfPresent(
       finish: () => void, blobURL: string, chunksData: ChunkFilterData[], matchingIndexes: number[]) {
-    FilterRowsInternalUtils.ACTIVE_WORKERS -= 1;
+    FilterInternalUtils.ACTIVE_WORKERS -= 1;
     if (chunksData.length > 1 && matchingIndexes.length > 0) {
-      FilterRowsViaWebWorkers.execute(finish, blobURL, chunksData.slice(1), matchingIndexes);
-    } else if (FilterRowsInternalUtils.ACTIVE_WORKERS === 0)
+      FilterViaWebWorkers.execute(finish, blobURL, chunksData.slice(1), matchingIndexes);
+    } else if (FilterInternalUtils.ACTIVE_WORKERS === 0)
       finish();
   }
 
@@ -50,7 +50,7 @@ export class FilterRowsViaWebWorkers {
   // using a string literal instead, ref:
   // https://stackoverflow.com/questions/10343913/how-to-create-a-web-worker-from-a-string
   public static createWorkerBlobURL() {
-    const blob = new Blob([FilterRowsViaWebWorkers.CODE], {type: 'application/javascript'});
+    const blob = new Blob([FilterViaWebWorkers.CODE], {type: 'application/javascript'});
     return URL.createObjectURL(blob);
   }
 
@@ -59,9 +59,9 @@ export class FilterRowsViaWebWorkers {
     const {matchingIndexes, notMatchingIndexes} = event.data;
     notMatchingIndexes.forEach((index: number) => {
       const row = (colCells[index] as HTMLElement).parentElement as HTMLElement;
-      row.classList.add(FilterRowsInternalUtils.HIDDEN_ROW_CLASS);
+      row.classList.add(FilterInternalUtils.HIDDEN_ROW_CLASS);
     });
-    FilterRowsViaWebWorkers.processOtherColumnsIfPresent(finish, blobURL, chunksData, matchingIndexes);
+    FilterViaWebWorkers.processOtherColumnsIfPresent(finish, blobURL, chunksData, matchingIndexes);
   }
 
   private static toggleRows(finish: () => void, blobURL: string, chunksData: ChunkFilterData[], event: MessageEvent) {
@@ -71,21 +71,21 @@ export class FilterRowsViaWebWorkers {
     result.forEach((display: boolean, index: number) => {
       const row = (colCells[index] as HTMLElement).parentElement as HTMLElement;
       if (display) {
-        row.classList.remove(FilterRowsInternalUtils.HIDDEN_ROW_CLASS);
+        row.classList.remove(FilterInternalUtils.HIDDEN_ROW_CLASS);
         matchingIndexes.push(index);
       } else {
-        row.classList.add(FilterRowsInternalUtils.HIDDEN_ROW_CLASS);
+        row.classList.add(FilterInternalUtils.HIDDEN_ROW_CLASS);
       }
     });
-    FilterRowsViaWebWorkers.processOtherColumnsIfPresent(finish, blobURL, chunksData, matchingIndexes);
+    FilterViaWebWorkers.processOtherColumnsIfPresent(finish, blobURL, chunksData, matchingIndexes);
   }
 
   // prettier-ignore
   public static execute(finish: () => void, blobURL: string, chunksData: ChunkFilterData[], indexArray?: number[]) {
     const worker = new Worker(blobURL);
-    FilterRowsInternalUtils.ACTIVE_WORKERS += 1;
-    worker.onmessage = indexArray ? FilterRowsViaWebWorkers.hideRows.bind(this, finish, blobURL, chunksData)
-      : FilterRowsViaWebWorkers.toggleRows.bind(this, finish, blobURL, chunksData);
+    FilterInternalUtils.ACTIVE_WORKERS += 1;
+    worker.onmessage = indexArray ? FilterViaWebWorkers.hideRows.bind(this, finish, blobURL, chunksData)
+      : FilterViaWebWorkers.toggleRows.bind(this, finish, blobURL, chunksData);
     const chunkData = chunksData[0];
     worker.postMessage({
       chunk: chunkData.colCells.map((cell) => CellElement.getText(cell)),

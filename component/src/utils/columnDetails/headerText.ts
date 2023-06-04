@@ -1,5 +1,5 @@
-import {FilterRowsInternalUtils} from '../outerTableComponents/filter/rows/filterRowsInternalUtils';
-import {FilterInternalUtils} from '../outerTableComponents/filter/filterInternalUtils';
+import {FilterInternalUtils} from '../outerTableComponents/filter/rows/filterInternalUtils';
+import {VisibilityUtils} from '../outerTableComponents/filter/filterInternalUtils';
 import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
 import {ActiveTable} from '../../activeTable';
 
@@ -13,9 +13,9 @@ export class HeaderText {
     if (!event?.colRemove) {
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, cellElement, columnIndex, event?.colMove);
     }
-    if (at._filterInternal.rows) {
-      if (FilterRowsInternalUtils.wasHeaderChanged(at._columnsDetails, at._filterInternal.rows, columnIndex)) {
-        FilterInternalUtils.headerChanged(at);
+    if (at._visiblityInternal.rows) {
+      if (FilterInternalUtils.wasHeaderChanged(at._columnsDetails, at._visiblityInternal.rows, columnIndex)) {
+        VisibilityUtils.headerChanged(at);
       }
     }
   }

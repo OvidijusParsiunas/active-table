@@ -6,7 +6,7 @@ export interface InputFilterData {
 
 export type ChunkFilterData = InputFilterData & {chunk: HTMLElement[]};
 
-export interface FilterRowsInternalConfig {
+export interface FilterInternal {
   inputElement: HTMLInputElement;
   isCaseSensitive: boolean;
   elements: HTMLElement[];
@@ -15,7 +15,8 @@ export interface FilterRowsInternalConfig {
   lastRegisteredHeaderName: string;
 }
 
-// the reason why the property this is attached to is called _filterInternal instead of _filter to not confuse the user
-export interface FilterInternal {
-  rows?: FilterRowsInternalConfig[];
+// encapsulates manually togglable structures for visibility (not pagination)
+// will have columsn here in the future
+export interface VisibilityInternal {
+  rows?: FilterInternal[];
 }

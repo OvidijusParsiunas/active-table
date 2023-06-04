@@ -1,5 +1,5 @@
 import {OuterContentPosition, OuterContainers} from '../../types/outerContainer';
-import {FilterRowsInternalUtils} from './filter/rows/filterRowsInternalUtils';
+import {FilterInternalUtils} from './filter/rows/filterInternalUtils';
 import {FilesUtils} from './files/filesInternalUtils';
 import {ActiveTable} from '../../activeTable';
 
@@ -112,7 +112,7 @@ export class OuterContainerElements {
         return position.indexOf(containerPosition) >= 0;
       });
     }
-    if (!isRequired && at.filterRows) isRequired = FilterRowsInternalUtils.isContainerRequired(at, containerPosition);
+    if (!isRequired && at.filter) isRequired = FilterInternalUtils.isContainerRequired(at.filter, containerPosition);
     return isRequired;
   }
 

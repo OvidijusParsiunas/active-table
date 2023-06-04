@@ -2,7 +2,7 @@ import {RowsPerPageDropdownItem} from '../../../elements/pagination/rowsPerPageS
 import {RowsPerPageSelect, PaginationPositions, PageButtonStyles, Pagination} from '../../../types/pagination';
 import {PageButtonElement} from '../../../elements/pagination/pageButtons/pageButtonElement';
 import {IPaginationStyles, PaginationInternal} from '../../../types/paginationInternal';
-import {FilterRowsInternalUtils} from '../filter/rows/filterRowsInternalUtils';
+import {FilterInternalUtils} from '../filter/rows/filterInternalUtils';
 import {OuterContentPosition} from '../../../types/outerContainer';
 import {StatefulCSS} from '../../../types/cssStyle';
 import {ActiveTable} from '../../../activeTable';
@@ -23,9 +23,9 @@ export class PaginationInternalUtils {
   ]);
 
   public static getTotalNumberOfRows(at: ActiveTable) {
-    const {content, _filterInternal, _tableBodyElementRef} = at;
-    return _filterInternal?.rows
-      ? FilterRowsInternalUtils.extractUnfilteredRows(_tableBodyElementRef as HTMLElement, content.length).length
+    const {content, _visiblityInternal, _tableBodyElementRef} = at;
+    return _visiblityInternal?.rows
+      ? FilterInternalUtils.extractUnfilteredRows(_tableBodyElementRef as HTMLElement, content.length).length
       : content.length;
   }
 

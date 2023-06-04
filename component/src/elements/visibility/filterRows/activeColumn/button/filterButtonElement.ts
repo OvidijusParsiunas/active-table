@@ -1,11 +1,11 @@
 import {ARROW_DOWN_SVG_STRING} from '../../../../../consts/icons/arrowDownIconSVGString';
 import {ToggleableElement} from '../../../../../utils/elements/toggleableElement';
 import {SVGIconUtils} from '../../../../../utils/svgIcons/svgIconUtils';
-import {FilterRowsElements} from '../../filterRowsElements';
 import {StatefulCSS} from '../../../../../types/cssStyle';
+import {FilterElements} from '../../filterElements';
 
 // events are appended at OuterDropdownButtonEvents.set
-export class FilterRowsButtonElement {
+export class FilterButtonElement {
   public static readonly ACTIVE_STYLE = {
     filter:
       // eslint-disable-next-line max-len
@@ -21,7 +21,7 @@ export class FilterRowsButtonElement {
   public static create(styles: StatefulCSS = {}) {
     const button = document.createElement('div');
     button.classList.add('filter-rows-dropdown-button', ToggleableElement.AUTO_STYLING_CLASS);
-    FilterRowsElements.applyStatefulStyles(button as unknown as HTMLElement, FilterRowsButtonElement.HOVER_STYLE, styles);
+    FilterElements.applyStatefulStyles(button as unknown as HTMLElement, FilterButtonElement.HOVER_STYLE, styles);
     const svgIconElement = SVGIconUtils.createSVGElement(ARROW_DOWN_SVG_STRING);
     button.appendChild(svgIconElement);
     return button;

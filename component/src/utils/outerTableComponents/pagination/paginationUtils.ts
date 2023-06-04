@@ -2,9 +2,9 @@ import {NumberOfVisibleRowsElement} from '../../../elements/pagination/numberOfV
 import {PageButtonElement} from '../../../elements/pagination/pageButtons/pageButtonElement';
 import {AddNewRowElement} from '../../../elements/table/addNewElements/row/addNewRowElement';
 import {PaginationPageActionButtonUtils} from './paginationPageActionButtonUtils';
-import {FilterRowsInternalUtils} from '../filter/rows/filterRowsInternalUtils';
 import {PaginationVisibleButtonsUtils} from './paginationVisibleButtonsUtils';
 import {PaginationUpdatePageButtons} from './paginationUpdatePageButtons';
+import {FilterInternalUtils} from '../filter/rows/filterInternalUtils';
 import {PaginationInternal} from '../../../types/paginationInternal';
 import {CustomRowProperties} from '../../rows/customRowProperties';
 import {PaginationInternalUtils} from './paginationInternalUtils';
@@ -70,7 +70,7 @@ export class PaginationUtils {
       row: HTMLElement, sibling: 'nextSibling' | 'previousSibling'): HTMLElement | undefined {
     const siblingRow = row?.[sibling] as HTMLElement;
     if (!siblingRow || AddNewRowElement.isAddNewRowRow(siblingRow)) return undefined;
-    if (siblingRow.classList.contains(FilterRowsInternalUtils.HIDDEN_ROW_CLASS)) {
+    if (siblingRow.classList.contains(FilterInternalUtils.HIDDEN_ROW_CLASS)) {
       return PaginationUtils.getSiblingVisibleRow(siblingRow, sibling);
     }
     return siblingRow;
@@ -151,9 +151,9 @@ export class PaginationUtils {
 
   // prettier-ignore
   private static setCorrectRowsAsVisible(at: ActiveTable, buttonNumber: number) {
-    const {_pagination: {rowsPerPage, visibleRows}, _tableBodyElementRef, content, _filterInternal} = at;
-    const tableRows = _filterInternal?.rows
-      ? FilterRowsInternalUtils.extractUnfilteredRows(_tableBodyElementRef as HTMLElement, content.length)
+    const {_pagination: {rowsPerPage, visibleRows}, _tableBodyElementRef, content, _visiblityInternal} = at;
+    const tableRows = _visiblityInternal?.rows
+      ? FilterInternalUtils.extractUnfilteredRows(_tableBodyElementRef as HTMLElement, content.length)
       : ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content)
     let startingRowIndex = rowsPerPage * (buttonNumber - 1);
     if (!at.dataStartsAtHeader) startingRowIndex += 1; 
@@ -176,6 +176,6 @@ export class PaginationUtils {
   }
 
   public static getFirstVisibleRow(visibleRows: HTMLElement[]) {
-    return visibleRows.find((row) => !row.classList.contains(FilterRowsInternalUtils.HIDDEN_ROW_CLASS));
+    return visibleRows.find((row) => !row.classList.contains(FilterInternalUtils.HIDDEN_ROW_CLASS));
   }
 }

@@ -1,15 +1,15 @@
-import {FilterRowsInternalUtils} from './rows/filterRowsInternalUtils';
+import {FilterInternalUtils} from './rows/filterInternalUtils';
 import {ActiveTable} from '../../../activeTable';
 
-export class FilterInternalUtils {
+export class VisibilityUtils {
   public static headerChanged(at: ActiveTable) {
     // in a timeout primarily because when a column is removed the old column details are removed after this is executed
     setTimeout(() => {
-      if (at._filterInternal.rows) FilterRowsInternalUtils.resetAllInputs(at);
+      if (at._visiblityInternal.rows) FilterInternalUtils.resetAllInputs(at);
     });
   }
 
   public static completeReset(at: ActiveTable) {
-    if (at._filterInternal.rows) FilterRowsInternalUtils.completeReset(at);
+    if (at._visiblityInternal.rows) FilterInternalUtils.completeReset(at);
   }
 }

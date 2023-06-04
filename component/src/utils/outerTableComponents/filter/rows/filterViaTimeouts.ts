@@ -1,14 +1,14 @@
+import {ChunkFilterData} from '../../../../types/visibilityInternal';
 import {CellElement} from '../../../../elements/cell/cellElement';
-import {FilterRowsInternalUtils} from './filterRowsInternalUtils';
-import {ChunkFilterData} from '../../../../types/filterInternal';
+import {FilterInternalUtils} from './filterInternalUtils';
 
 // REF-42
-export class FilterRowsViaTimeouts {
+export class FilterViaTimeouts {
   private static processOtherColumnsIfPresent(finish: () => void, chunksData: ChunkFilterData[], indexes: number[]) {
-    FilterRowsInternalUtils.ACTIVE_WORKERS -= 1;
+    FilterInternalUtils.ACTIVE_WORKERS -= 1;
     if (chunksData.length > 1 && indexes.length > 0) {
-      FilterRowsViaTimeouts.processOtherColumns(finish, chunksData.slice(1), indexes);
-    } else if (FilterRowsInternalUtils.ACTIVE_WORKERS === 0) {
+      FilterViaTimeouts.processOtherColumns(finish, chunksData.slice(1), indexes);
+    } else if (FilterInternalUtils.ACTIVE_WORKERS === 0) {
       finish();
     }
   }
@@ -19,35 +19,35 @@ export class FilterRowsViaTimeouts {
     const doesCellTextContainFilterInput = processedText.includes(chunkData.filterText);
     const row = cell.parentElement as HTMLElement;
     if (doesCellTextContainFilterInput) {
-      row.classList.remove(FilterRowsInternalUtils.HIDDEN_ROW_CLASS);
+      row.classList.remove(FilterInternalUtils.HIDDEN_ROW_CLASS);
       matchingIndexes.push(index);
     } else {
-      row.classList.add(FilterRowsInternalUtils.HIDDEN_ROW_CLASS);
+      row.classList.add(FilterInternalUtils.HIDDEN_ROW_CLASS);
     }
   }
 
   private static processOtherColumns(finish: () => void, chunksData: ChunkFilterData[], indexes: number[]) {
     setTimeout(() => {
-      FilterRowsInternalUtils.ACTIVE_WORKERS += 1;
+      FilterInternalUtils.ACTIVE_WORKERS += 1;
       const matchingIndexes: number[] = [];
       const chunkData = chunksData[0];
       indexes.forEach((index) => {
         const cell = chunkData.chunk[index];
-        FilterRowsViaTimeouts.toggleRow(cell, chunkData, matchingIndexes, index);
+        FilterViaTimeouts.toggleRow(cell, chunkData, matchingIndexes, index);
       });
-      FilterRowsViaTimeouts.processOtherColumnsIfPresent(finish, chunksData, matchingIndexes);
+      FilterViaTimeouts.processOtherColumnsIfPresent(finish, chunksData, matchingIndexes);
     });
   }
 
   public static execute(finish: () => void, chunksData: ChunkFilterData[]) {
-    FilterRowsInternalUtils.ACTIVE_WORKERS += 1;
+    FilterInternalUtils.ACTIVE_WORKERS += 1;
     setTimeout(() => {
       const matchingIndexes: number[] = [];
       const chunkData = chunksData[0];
       chunkData.chunk.forEach((cell, index) => {
-        FilterRowsViaTimeouts.toggleRow(cell, chunkData, matchingIndexes, index);
+        FilterViaTimeouts.toggleRow(cell, chunkData, matchingIndexes, index);
       });
-      FilterRowsViaTimeouts.processOtherColumnsIfPresent(finish, chunksData, matchingIndexes);
+      FilterViaTimeouts.processOtherColumnsIfPresent(finish, chunksData, matchingIndexes);
     });
   }
 }
