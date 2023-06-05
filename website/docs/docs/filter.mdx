@@ -1,0 +1,328 @@
+---
+sidebar_position: 9
+---
+
+# Filter
+
+Filter data inside the table.
+
+### `filter` {#filterRows}
+
+- Type: `boolean` | [`Filter`](#Filter) | [`Filter[]`](#Filter)
+
+Generates an input component that can filter rows for a target column based on its value. This property can be set using
+a `boolean`, a [`Filter`](#Filter) object or an array of [`Filter`](#Filter) objects to generate multiple filter components.
+
+#### Example
+
+import ActiveTable from '@site/src/components/table/activeTableBrowser';
+import TableContainer from '@site/src/components/table/tableContainer';
+import LineBreak from '@site/src/components/markdown/lineBreak';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs';
+
+<BrowserOnly>{() => require('@site/src/components/nav/autoNavToggle').readdAutoNavShadowToggle()}</BrowserOnly>
+
+<TableContainer minHeight="380">
+  <ActiveTable
+    filter={true}
+    content={[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
+
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table filter="true"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  filter="true"
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+## Types
+
+Object types for filter:
+
+### `Filter` {#Filter}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`caseButton?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`dropdown?: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`defaultColumnHeaderName?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`placeholderTemplate?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`styles?: FilterStyles`](#FilterStyles), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`position?: OuterContentPosition`](./sharedTypes#OuterContentPosition), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`order?: number` <br />
+  }
+- Default: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_caseButton: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_dropdown: true_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_placeholderTemplate: "Filter {headerName}..."_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_position: "top-right"_, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;_order: 1_ <br />
+  }
+
+Custom settings for a row filter input component. <br />
+`caseButton` is used to toggle the visibility of a button that controls if row filtering is case sensitive. <br />
+`dropdown` is used to toggle the visibility of a button that is used to display the column selection dropdown. <br />
+`defaultColumnHeaderName` is the header name of the column that the filter will be targeting by default. If not set, it will use the first data column on the left. <br />
+`placeholderTemplate` is a special template string that is used to control the input element's placeholder text. Inside the template - include the following substring
+to denote where the column name will be set: _"{headerName}"_. If your template string is _"Filter {headerName}"_ and the target column's header name is _"Brand"_,
+the placeholder text will be _"Filter Brand"_. <br />
+`styles` is used to style the various elements inside the filter component. <br />
+`position` is used to set the location of the filter component. <br />
+`order` is the order of the component when other ones are also placed in the same position.
+
+#### Example
+
+<TableContainer minHeight="509">
+  <ActiveTable
+    filter={[
+      {
+        caseButton: false,
+        dropdown: false,
+        defaultColumnHeaderName: 'Mass',
+        placeholderTemplate: 'Filter by {headerName}',
+        position: 'top-left',
+        order: 1,
+      },
+      {
+        caseButton: true,
+        dropdown: true,
+        defaultColumnHeaderName: 'Planet',
+        placeholderTemplate: '{headerName}',
+        position: 'top-left',
+        order: 2,
+      },
+    ]}
+    content={[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638],
+      ["Mercury", 4879, 0.33, 0, 5429],
+      ["Venus", 12104, 4.87, 0, 5243],
+      ["Uranus", 51118, 86.8, 27, 1270]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
+
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table
+  filter='[
+    {
+      "caseButton": false,
+      "dropdown": false,
+      "defaultColumnHeaderName": "Mass",
+      "placeholderTemplate": "Filter by {headerName}",
+      "position": "top-left",
+      "order": 1
+    },
+    {
+      "caseButton": true,
+      "dropdown": true,
+      "defaultColumnHeaderName": "Planet",
+      "placeholderTemplate": "{headerName}",
+      "position": "top-left",
+      "order": 2
+    }
+  ]'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  filter='[
+    {
+      "caseButton": false,
+      "dropdown": false,
+      "defaultColumnHeaderName": "Mass",
+      "placeholderTemplate": "Filter by {headerName}",
+      "position": "top-left",
+      "order": 1
+    },
+    {
+      "caseButton": true,
+      "dropdown": true,
+      "defaultColumnHeaderName": "Planet",
+      "placeholderTemplate": "{headerName}",
+      "position": "top-left",
+      "order": 2
+    }
+  ]'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638],
+    ["Mercury", 4879, 0.33, 0, 5429],
+    ["Venus", 12104, 4.87, 0, 5243],
+    ["Uranus", 51118, 86.8, 27, 1270]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `FilterStyles` {#FilterStyles}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`input?: CSSStyle`](./sharedTypes#CSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`placeholderColor?: string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`caseIcon?:` [`StatefulCSS`](./sharedTypes#StatefulCSS) & {[`active?: CSSStyle`](./sharedTypes#CSSStyle)}, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;`dropdownIcon?:` [`StatefulCSS`](./sharedTypes#StatefulCSS) & {[`active?: CSSStyle`](./sharedTypes#CSSStyle)} <br />
+  }
+
+Styling properties for a filter component. <br />
+`input` defines the styling for the input element. <br />
+`placeholderColor` is the color used for the placeholder text. <br />
+`caseIcon` defines the styling for the various states of the element that toggles case sensitive filtering. <br />
+`dropdownIcon` defines styling for the various states of the element that toggles the column selection dropdown. <br />
+
+#### Example
+
+<TableContainer minHeight="380">
+  <ActiveTable
+    filter={{
+      styles: {
+        input: {height: '22px', fontSize: '15px', width: '150px', borderColor: '#818181', color: 'black'},
+        placeholderColor: 'grey',
+        caseIcon: {
+          default: {color: 'grey', fontSize: '15px'},
+          hover: {color: 'black'},
+          click: {color: 'black'},
+          active: {color: 'blue'},
+        },
+        dropdownIcon: {
+          default: {color: 'grey', width: '18px', height: '18px'},
+          hover: {color: 'black'},
+          click: {color: 'black'},
+          active: {color: 'blue'},
+        },
+      },
+    }}
+    content={[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
+
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table
+  filter='{
+    "styles": {
+      "input": {"height": "22px", "fontSize": "15px", "width": "150px", "borderColor": "#818181", "color": "black"},
+      "placeholderColor": "grey",
+      "caseIcon": {
+        "default": {"color": "grey", "fontSize": "15px"},
+        "hover": {"color": "black"},
+        "click": {"color": "black"},
+        "active": {"color": "blue"}
+      },
+      "dropdownIcon": {
+        "default": {"color": "grey", "width": "18px", "height": "18px"},
+        "hover": {"color": "black"},
+        "click": {"color": "black"},
+        "active": {"color": "blue"}
+      }
+    }
+  }'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  filter='{
+    "styles": {
+      "input": {"height": "22px", "fontSize": "15px", "width": "150px", "borderColor": "#818181", "color": "black"},
+      "placeholderColor": "grey",
+      "caseIcon": {
+        "default": {"color": "grey", "fontSize": "15px"},
+        "hover": {"color": "black"},
+        "click": {"color": "black"},
+        "active": {"color": "blue"}
+      },
+      "dropdownIcon": {
+        "default": {"color": "grey", "width": "18px", "height": "18px"},
+        "hover": {"color": "black"},
+        "click": {"color": "black"},
+        "active": {"color": "blue"}
+      }
+    }
+  }'
+  content='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>

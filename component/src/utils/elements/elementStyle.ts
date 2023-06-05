@@ -1,4 +1,4 @@
-import {NoDimensionCSSStyle, StatefulCSS} from '../../types/cssStyle';
+import {CSSStyle, NoDimensionCSSStyle, StatefulCSS} from '../../types/cssStyle';
 import {GenericObject} from '../../types/genericObject';
 
 export class ElementStyle {
@@ -28,5 +28,12 @@ export class ElementStyle {
     if (statefulStyle.click) ElementStyle.unsetStyle(buttonElement, statefulStyle.click);
     if (statefulStyle.hover) ElementStyle.unsetStyle(buttonElement, statefulStyle.hover);
     if (statefulStyle.default) ElementStyle.unsetStyle(buttonElement, statefulStyle.default);
+  }
+
+  public static generateStatefulCSS(styles: StatefulCSS, defHover: CSSStyle, defClick: CSSStyle): StatefulCSS {
+    const defaultStyle = styles.default || {};
+    const hoverStyle = Object.assign(JSON.parse(JSON.stringify({...defHover, ...defaultStyle})), styles?.hover);
+    const clickStyle = Object.assign(JSON.parse(JSON.stringify({...defClick, ...hoverStyle})), styles?.click);
+    return {default: defaultStyle, hover: hoverStyle, click: clickStyle};
   }
 }

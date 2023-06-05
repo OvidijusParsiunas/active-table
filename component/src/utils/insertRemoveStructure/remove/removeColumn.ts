@@ -12,6 +12,7 @@ import {CellElementIndex} from '../../elements/cellElementIndex';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
+import {HeaderText} from '../../columnDetails/headerText';
 import {TableContent} from '../../../types/tableContent';
 import {FireEvents} from '../../events/fireEvents';
 import {ActiveTable} from '../../../activeTable';
@@ -64,6 +65,7 @@ export class RemoveColumn {
       RemoveColumn.removeCell(at, rowElement as HTMLElement, rowIndex, columnIndex);
     });
     RemoveColumn.cleanUpContent(at.content);
+    HeaderText.onAttemptChange(at, at._columnsDetails[columnIndex].elements[0], columnIndex, {colRemove: true});
     // needs to be after getDetails but before changeWidthsBasedOnColumnInsertRemove
     const removedColumnDetails = at._columnsDetails.splice(columnIndex, 1)[0];
     RemoveColumn.updateTableDimensions(at, removedColumnDetails.settings);

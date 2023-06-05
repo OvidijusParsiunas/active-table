@@ -1,9 +1,11 @@
+import {OuterContainerDropdownI} from './outerContainerInternal';
 import {SelectedColumnSizerT} from './columnSizer';
 
 export interface ActiveOverlayElements {
   columnDropdown?: HTMLElement;
   columnTypeDropdown?: HTMLElement;
   rowDropdown?: HTMLElement;
+  outerContainerDropdown?: OuterContainerDropdownI;
   fullTableOverlay?: HTMLElement;
   // cannot get the actual date picker as its native browser element is not accessible
   // the cell is probably not the best element for this but its use is very efficient

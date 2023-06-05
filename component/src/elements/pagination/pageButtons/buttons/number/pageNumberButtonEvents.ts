@@ -3,6 +3,7 @@ import {PaginationInternal} from '../../../../../types/paginationInternal';
 import {ActiveTable} from '../../../../../activeTable';
 import {PageButtonStyle} from '../../pageButtonStyle';
 
+// WORK - row/column dropdowns don't close when clicking on pagination buttons
 export class PageNumberButtonEvents {
   // REF-30
   private static markClick(pagination: PaginationInternal) {

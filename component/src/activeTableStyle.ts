@@ -72,8 +72,10 @@ export const activeTableStyle = css`
 
   .cell {
     text-align: left;
-    padding: 6px;
-    padding-top: 11px;
+    padding: 11px 6px 6px;
+    font-size: 14px;
+    /* WORK - this will need to be removed from this branch */
+    line-height: 17px;
     height: 42.5px;
     box-sizing: border-box;
     outline: none;
@@ -237,6 +239,13 @@ export const activeTableStyle = css`
     z-index: 1;
   }
 
+  .active-table-dropup {
+    box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px,
+      rgba(15, 15, 15, 0.2) 0px -2px 24px;
+    top: unset !important;
+    bottom: 100%;
+  }
+
   .cell-dropdown {
     overflow: auto;
     white-space: nowrap;
@@ -327,6 +336,12 @@ export const activeTableStyle = css`
     color: white !important;
   }
 
+  /* Do not want to set default height incase user has set a font or a font-family so
+    setting a placeholder text and making it invisible */
+  .dropdown-item-empty {
+    color: #ffffae00 !important;
+  }
+
   .dropdown-disabled-item {
     pointer-events: none;
     color: #9e9e9e8a;
@@ -376,6 +391,10 @@ export const activeTableStyle = css`
 
   .cell-dropdown-option-color-button-icon {
     width: 12.5px;
+  }
+
+  .outer-container-dropdown {
+    z-index: 2;
   }
 
   .color-input {
@@ -431,6 +450,11 @@ export const activeTableStyle = css`
     width: calc(100% - 10px);
     background-color: #70c6ff4d;
     border: 5px dashed #6dafff;
+    display: none;
+    z-index: 2;
+  }
+
+  .filter-hidden-row {
     display: none;
   }
 
@@ -544,10 +568,12 @@ export const activeTableStyle = css`
   }
 
   #rows-per-page-select-button-arrow-icon {
-    height: 20px;
-    transform: scale(0.7, 1);
-    filter: brightness(0) saturate(100%) invert(28%) sepia(0%) saturate(486%) hue-rotate(314deg) brightness(92%)
-      contrast(89%);
+    width: 16px;
+    transform: scale(0.9, 1);
+    filter: brightness(0) saturate(100%) invert(11%) sepia(3%) saturate(99%) hue-rotate(157deg) brightness(97%)
+      contrast(98%);
+    padding-top: 2px;
+    padding-left: 2px;
   }
 
   #rows-per-page-select-button-text {
@@ -601,7 +627,7 @@ export const activeTableStyle = css`
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  #outer-top-container > div > * {
+  #outer-top-container > div > div > div > * {
     margin-bottom: 13px;
   }
 
@@ -678,5 +704,79 @@ export const activeTableStyle = css`
   /* REF-37 */
   .no-overflow-sticky-header-body > *:first-child > th {
     border-top: inherit !important;
+  }
+
+  .filter-rows-container {
+    position: relative;
+  }
+
+  .filter-rows-input {
+    width: 150px;
+    height: 20px;
+    border: 1px solid #0000002b;
+    border-radius: 4px;
+    color: rgb(45, 45, 45);
+    font-family: inherit;
+    padding: 5px 6px;
+    font-size: 14px;
+  }
+
+  .filter-rows-input::placeholder {
+    color: var(--active-table-filter-placeholder-color);
+  }
+
+  .filter-rows-dropdown-button {
+    position: absolute;
+    right: 4px;
+    top: 51.6%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+    filter: brightness(0) saturate(100%) invert(49%) sepia(0%) saturate(974%) hue-rotate(66deg) brightness(97%)
+      contrast(96%);
+    width: 16px;
+    height: 16px;
+  }
+
+  .filter-rows-dropdown-button + .filter-rows-case-button {
+    right: 15px;
+  }
+
+  .filter-rows-case-button + .filter-rows-input {
+    padding-right: 30px;
+    width: 129px;
+  }
+
+  .filter-rows-dropdown-button + .filter-rows-input {
+    padding-right: 22px;
+    width: 137px;
+  }
+
+  .filter-rows-dropdown-button + .filter-rows-case-button + .filter-rows-input {
+    padding-right: 45px;
+    width: 114px;
+  }
+
+  .filter-rows-case-button {
+    position: absolute;
+    right: 0px;
+    top: 49%;
+    transform: translate(-50%, -50%);
+    color: grey;
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .filter-rows-dropdown {
+    min-width: 100% !important;
+    width: max-content !important;
+  }
+
+  .filter-rows-dropdown > .dropdown-item {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
   }
 `;

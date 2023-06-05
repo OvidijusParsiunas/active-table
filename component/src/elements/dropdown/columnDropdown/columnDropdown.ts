@@ -1,11 +1,11 @@
 import {DropdownItemHighlightUtils} from '../../../utils/color/dropdownItemHighlightUtils';
 import {FullTableOverlayElement} from '../../fullTableOverlay/fullTableOverlayElement';
-import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
 import {GenericElementUtils} from '../../../utils/elements/genericElementUtils';
 import {ElementVisibility} from '../../../utils/elements/elementVisibility';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
 import {TableBorderDimensions} from '../../../types/tableBorderDimensions';
 import {ElementOffset} from '../../../utils/elements/elementOffset';
+import {HeaderText} from '../../../utils/columnDetails/headerText';
 import {DropdownItemNavigation} from '../dropdownItemNavigation';
 import {ColumnTypeDropdownItem} from './columnTypeDropdownItem';
 import {ColumnDropdownEvents} from './columnDropdownEvents';
@@ -30,7 +30,7 @@ export class ColumnDropdown {
     if (!columnDropdown || !fullTableOverlay || !columnTypeDropdown || !cellElement) return;
     if (GenericElementUtils.doesElementExistInDom(cellElement)) {
       CellEvents.setCellToDefaultIfNeeded(at, 0, columnIndex as number, cellElement);
-      ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, cellElement, columnIndex as number);
+      HeaderText.onAttemptChange(at, cellElement, columnIndex as number);
     }
     CellHighlightUtils.fade(cellElement, _columnsDetails[columnIndex as number]?.headerStateColors.default);
     Dropdown.hide(columnDropdown, fullTableOverlay, columnTypeDropdown);

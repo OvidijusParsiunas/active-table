@@ -56,6 +56,7 @@ export class RowsPerPageSelectButtonElement {
     arrow.id = RowsPerPageSelectButtonElement.ARROW_CONTAINER_ID;
     arrow.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);
     RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(arrow, pagination.styles.rowsPerPageSelect?.buttonArrow);
+    // WORK - need to show how to color this in documentation
     const arrowDownIcon = SVGIconUtils.createSVGElement(ARROW_DOWN_SVG_STRING);
     arrowDownIcon.id = RowsPerPageSelectButtonElement.ARROW_ICON_ID;
     arrow.appendChild(arrowDownIcon);
@@ -88,7 +89,7 @@ export class RowsPerPageSelectButtonElement {
     const optionsButton = RowsPerPageSelectButtonElement.createOptionsButton(at._pagination);
     optionsButton.appendChild(RowsPerPageSelectButtonElement.createButtonText(at._pagination));
     optionsButton.appendChild(RowsPerPageSelectButtonElement.createButtonArrow(at._pagination));
-    RowsPerPageSelectButtonEvents.setEvents(at, optionsButton);
+    setTimeout(() => RowsPerPageSelectButtonEvents.setEvents(at, optionsButton));
     return optionsButton;
   }
 }

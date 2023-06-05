@@ -39,6 +39,7 @@ import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
 import {PaginationInternal} from './types/paginationInternal';
 import {LabelColorUtils} from './utils/color/labelColorUtils';
+import {VisibilityInternal} from './types/visibilityInternal';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
@@ -67,8 +68,12 @@ import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
+import {Filter} from './types/filter';
 
 // WORK - on-render
+// WORK - hover animation for row
+// WORK - stub-style - rename to root cell
+// TO-DO - dropdown for export button
 // TO-DO - add comments on type properties
 @customElement('active-table')
 export class ActiveTable extends LitElement {
@@ -264,6 +269,9 @@ export class ActiveTable extends LitElement {
   @property({type: Object})
   files?: Files;
 
+  @property({type: Object})
+  filter?: boolean | Filter | Filter[];
+
   @property({type: String})
   auxiliaryStyle?: string;
 
@@ -342,6 +350,9 @@ export class ActiveTable extends LitElement {
 
   @state()
   _files: FilesInternal = FilesUtils.createDefault(this);
+
+  @state()
+  _visiblityInternal: VisibilityInternal = {};
 
   @state({
     hasChanged() {

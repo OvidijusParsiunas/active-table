@@ -1,6 +1,6 @@
 {
   "name": "active-table-react",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "description": "Active Table wrapper for React",
   "main": "./dist/activeTable.js",
   "module": "./dist/activeTable.js",
@@ -29,11 +29,11 @@
   "bugs": {
     "url": "https://github.com/OvidijusParsiunas/active-table/issues"
   },
-  "homepage": "https://github.com/OvidijusParsiunas/active-table",
+  "homepage": "https://activetable.io",
   "license": "MIT",
   "dependencies": {
     "@lit-labs/react": "^1.1.1",
-    "active-table": "^0.2.7"
+    "active-table": "^0.3.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",

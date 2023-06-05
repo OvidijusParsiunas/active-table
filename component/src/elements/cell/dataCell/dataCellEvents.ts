@@ -1,11 +1,11 @@
 import {OverwriteCellsViaCSVOnPaste} from '../../../utils/paste/CSV/overwriteCellsViaCSVOnPaste';
 import {UserKeyEventsStateUtils} from '../../../utils/userEventsState/userEventsStateUtils';
 import {DateCellInputElement} from '../cellsWithTextDiv/dateCell/dateCellInputElement';
-import {ColumnSettingsUtils} from '../../../utils/columnSettings/columnSettingsUtils';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {CaretDisplayFix} from '../../../utils/browser/caretDisplayFix';
 import {CellDropdown} from '../../dropdown/cellDropdown/cellDropdown';
+import {HeaderText} from '../../../utils/columnDetails/headerText';
 import {KEYBOARD_EVENT} from '../../../consts/keyboardEvents';
 import {PasteUtils} from '../../../utils/paste/pasteUtils';
 import {KEYBOARD_KEY} from '../../../consts/keyboardKeys';
@@ -76,7 +76,7 @@ export class DataCellEvents {
 
   private static blurCell(this: ActiveTable, rowIndex: number, columnIndex: number, event: Event) {
     if (rowIndex === 0 && !this._defaultColumnsSettings.columnDropdown?.displaySettings?.openMethod?.cellClick) {
-      ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(this, event.target as HTMLElement, columnIndex);
+      HeaderText.onAttemptChange(this, event.target as HTMLElement, columnIndex);
     }
     DataCellEvents.blur(this, rowIndex, columnIndex, event.target as HTMLElement);
   }

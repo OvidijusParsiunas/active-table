@@ -1,4 +1,5 @@
 import {SheetJSInternalUtils} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSInternalUtils';
+import {FilterInternalUtils} from '../../../../utils/outerTableComponents/filter/rows/filterInternalUtils';
 import {SheetJSImport} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSImport';
 import {ACCEPTED_FILE_FORMATS, DEFAULT_FILE_FORMATS} from '../../../../consts/fileFormats';
 import {FileFormat, ImportOptions, ImportOverwriteOptions} from '../../../../types/files';
@@ -8,11 +9,14 @@ import {ActiveTable} from '../../../../activeTable';
 export class FileImportButtonEvents {
   public static importFile(at: ActiveTable, file: File, formats: FileFormat[], options?: ImportOverwriteOptions) {
     if (formats.find((extension) => file.name.endsWith(extension))) {
+      if (at._visiblityInternal.rows) FilterInternalUtils.unsetAllFilters(at);
       if (file.name.endsWith('.csv')) {
         CSVImport.import(at, file, options);
       } else {
         SheetJSInternalUtils.execFuncWithExtractorModule(SheetJSImport.import.bind(this, at, file));
       }
+      // in a timeout as at.shadowRoot.contains does not work immediately
+      setTimeout(() => FilterInternalUtils.completeReset(at), 6);
     }
   }
 

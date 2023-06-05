@@ -1,23 +1,19 @@
+import {OuterDropdownItemEvents} from '../../../../utils/outerTableComponents/dropdown/outerDropdownItemEvents';
 import {RowsPerPageDropdownItemUtil} from './rowsPerPageDropdownItemUtil';
-import {RowsPerPageDropdownItem} from './rowsPerPageDropdownItem';
+import {PaginationInternal} from '../../../../types/paginationInternal';
 import {RowsPerPageDropdown} from './rowsPerPageDropdown';
 import {ActiveTable} from '../../../../activeTable';
 
 export class RowsPerPageDropdownItemEvents {
-  private static itemMouseDown(this: ActiveTable, optionsButton: HTMLElement, event: MouseEvent) {
-    const {rowsPerPageDropdown, rowsPerPage} = this._pagination;
-    const dropdown = rowsPerPageDropdown as HTMLElement;
-    const newRowsPerPage = (event.target as HTMLElement).innerText;
-    if (rowsPerPage !== Number(newRowsPerPage)) {
-      RowsPerPageDropdownItemUtil.setNewRowsPerPage(this, optionsButton, newRowsPerPage);
+  private static action(pagination: PaginationInternal, optionsButton: HTMLElement, at: ActiveTable, targetText: string) {
+    if ((pagination as PaginationInternal).rowsPerPage !== Number(targetText)) {
+      RowsPerPageDropdownItemUtil.setNewRowsPerPage(at, optionsButton, targetText);
     }
-    const items = Array.from(dropdown.children) as HTMLElement[];
-    RowsPerPageDropdown.hide(dropdown, items);
-    RowsPerPageDropdownItem.unsetActiveItem(dropdown);
-    RowsPerPageDropdownItem.setActive(items, newRowsPerPage);
   }
 
   public static setEvents(at: ActiveTable, item: HTMLElement, optionsButton: HTMLElement) {
-    item.onmousedown = RowsPerPageDropdownItemEvents.itemMouseDown.bind(at, optionsButton);
+    const actionFunc = RowsPerPageDropdownItemEvents.action.bind(this, at.pagination as PaginationInternal, optionsButton);
+    const hideFunc = RowsPerPageDropdown.hide;
+    item.onmousedown = OuterDropdownItemEvents.itemMouseDownCommon.bind(at, actionFunc, hideFunc);
   }
 }

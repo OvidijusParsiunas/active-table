@@ -97,7 +97,7 @@ export class DefaultColumnTypes {
       iconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
         containerStyles: {
-          dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-2px'},
+          dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-1.5px'},
           headerCorrections: {marginTop: '0px'},
         },
       },
@@ -109,7 +109,7 @@ export class DefaultColumnTypes {
       iconSettings: {
         svgString: CALENDAR_ICON_SVG_STRING,
         containerStyles: {
-          dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-2px'},
+          dropdown: {marginLeft: '1.25px', marginRight: '8px', marginTop: '-1.5px'},
           headerCorrections: {marginTop: '0px'},
         },
       },

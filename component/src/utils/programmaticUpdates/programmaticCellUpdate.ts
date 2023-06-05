@@ -1,10 +1,10 @@
 import {ColumnDropdown} from '../../elements/dropdown/columnDropdown/columnDropdown';
 import {ProgrammaticCellUpdateT} from '../../types/programmaticCellUpdateT';
-import {ColumnSettingsUtils} from '../columnSettings/columnSettingsUtils';
 import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 import {CellElement} from '../../elements/cell/cellElement';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {Dropdown} from '../../elements/dropdown/dropdown';
+import {HeaderText} from '../columnDetails/headerText';
 import {ObjectUtils} from '../object/objectUtils';
 import {ActiveTable} from '../../activeTable';
 
@@ -19,7 +19,7 @@ export class ProgrammaticCellUpdate {
     ColumnTypesUtils.updateRelatedElements(at, rowIndex, columnIndex, element);
     if (rowIndex === 0) {
       if (Dropdown.isDisplayed(at._activeOverlayElements.columnDropdown)) ColumnDropdown.processTextAndHide(at);
-      ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, element, columnIndex);
+      HeaderText.onAttemptChange(at, element, columnIndex);
     }
   }
 }

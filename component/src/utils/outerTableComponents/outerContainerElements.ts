@@ -1,4 +1,5 @@
 import {OuterContentPosition, OuterContainers} from '../../types/outerContainer';
+import {FilterInternalUtils} from './filter/rows/filterInternalUtils';
 import {FilesUtils} from './files/filesInternalUtils';
 import {ActiveTable} from '../../activeTable';
 
@@ -32,8 +33,8 @@ export class OuterContainerElements {
 
   private static setHeightsWhenOnlyMiddleColumns(containers: OuterContainers) {
     setTimeout(() => {
-      if (containers.bottom) OuterContainerElements.setContainerHeightBasedOnMiddleColumn(containers.bottom);
       if (containers.top) OuterContainerElements.setContainerHeightBasedOnMiddleColumn(containers.top);
+      if (containers.bottom) OuterContainerElements.setContainerHeightBasedOnMiddleColumn(containers.bottom);
     });
   }
 
@@ -111,6 +112,7 @@ export class OuterContainerElements {
         return position.indexOf(containerPosition) >= 0;
       });
     }
+    if (!isRequired && at.filter) isRequired = FilterInternalUtils.isContainerRequired(at.filter, containerPosition);
     return isRequired;
   }
 

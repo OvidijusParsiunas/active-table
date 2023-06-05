@@ -2,8 +2,8 @@ import {OuterContainerElements} from '../../../utils/outerTableComponents/outerC
 import {FilesUtils} from '../../../utils/outerTableComponents/files/filesInternalUtils';
 import {FileImportButtonEvents} from './importButton/fileImportButtonEvents';
 import {FileExportButtonEvents} from './exportButton/fileExportButtonEvents';
+import {StatefulCSSEvents} from '../../../utils/elements/statefulCSSEvents';
 import {OuterContainers} from '../../../types/outerContainer';
-import {FileButtonEvents} from './fileButtonEvents';
 import {ActiveTable} from '../../../activeTable';
 import {FileButton} from '../../../types/files';
 
@@ -26,7 +26,7 @@ export class FileButtonElements {
     buttonElement.style.order = String(order || 0);
     const processedStyles = FilesUtils.processStyles(styles);
     Object.assign(buttonElement.style, processedStyles.default);
-    setTimeout(() => FileButtonEvents.setStyleEvents(buttonElement, processedStyles));
+    setTimeout(() => StatefulCSSEvents.setEvents(buttonElement, processedStyles));
     return buttonElement;
   }
 

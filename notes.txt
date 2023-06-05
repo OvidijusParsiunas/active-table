@@ -1,4 +1,4 @@
-update homepage property in package
+ability to style dropdowns for all components
 
 detect React:
 !!Object.keys(document).find(key => key.includes('react'))
@@ -304,6 +304,9 @@ REF-41
 Table font family is set programmatically to allow the outer containers to inherit it so when the user set a custom style, they would
 automatically pick it up.
 
+REF-42
+Row filtering works by iterating all filter inputs sequentially and eleminitating (hiding) any rows that don't match the filter text.
+
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
 does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()
@@ -335,5 +338,6 @@ TO-DO can potentially keep track of the column widths and reset them correctly i
 Updating package version Checklist:
 
 Run npm run build:bundle
+Update Installation
 Update CDN references - in doc Install and VanillaJS/Files VanillaJS Live Example sections.
 Update React wrapper

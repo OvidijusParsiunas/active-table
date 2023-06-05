@@ -1,3 +1,4 @@
+// WORK - rename middle to center
 export type OuterContentPosition =
   | 'top-left'
   | 'top-middle'
