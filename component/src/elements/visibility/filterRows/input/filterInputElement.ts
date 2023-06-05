@@ -21,9 +21,9 @@ export class FilterInputElement {
   private static createElement(headerName?: string, template?: string, styles?: FilterStyles) {
     const inputElement = document.createElement('input');
     inputElement.classList.add(FilterInputElement.INPUT_CLASS);
-    const placeholderColor = styles?.placeholder?.color || '#656565';
+    const placeholderColor = styles?.placeholderColor || '#656565';
     inputElement.style.setProperty('--active-table-filter-placeholder-color', placeholderColor);
-    Object.assign(inputElement.style, styles?.container);
+    Object.assign(inputElement.style, styles?.input);
     FilterInputElement.setPlaceholder(inputElement, headerName, template);
     return inputElement;
   }

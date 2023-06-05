@@ -32,8 +32,8 @@ export class ElementStyle {
 
   public static generateStatefulCSS(styles: StatefulCSS, defHover: CSSStyle, defClick: CSSStyle): StatefulCSS {
     const defaultStyle = styles.default || {};
-    const hoverStyle = Object.assign(JSON.parse(JSON.stringify({...defaultStyle, ...defHover})), styles?.hover);
-    const clickStyle = Object.assign(JSON.parse(JSON.stringify({...hoverStyle, ...defClick})), styles?.click);
+    const hoverStyle = Object.assign(JSON.parse(JSON.stringify({...defHover, ...defaultStyle})), styles?.hover);
+    const clickStyle = Object.assign(JSON.parse(JSON.stringify({...defClick, ...hoverStyle})), styles?.click);
     return {default: defaultStyle, hover: hoverStyle, click: clickStyle};
   }
 }

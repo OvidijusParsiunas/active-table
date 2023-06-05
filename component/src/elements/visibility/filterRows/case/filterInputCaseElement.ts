@@ -15,8 +15,8 @@ export class FilterInputCaseElement {
   }
 
   public static create(at: ActiveTable, container: HTMLElement, config: FilterInternal, styles?: FilterStyles) {
-    const buttonElement = FilterInputCaseElement.createButton(styles?.caseButton);
+    const buttonElement = FilterInputCaseElement.createButton(styles?.caseIcon);
     container.appendChild(buttonElement);
-    setTimeout(() => FilterInputCaseEvents.setEvents(at, buttonElement, config, styles?.caseButton?.active));
+    setTimeout(() => FilterInputCaseEvents.setEvents(at, buttonElement, config, styles?.caseIcon?.active));
   }
 }

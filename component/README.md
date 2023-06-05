@@ -19,6 +19,7 @@
 - API for building custom column types
 - Programmatic cell updates
 - Pagination
+- Data filtering
 - Overflow scrollbar
 - Import/Export/Paste/Drag&Drop csv, xls, xlsx, ods, txt files
 - Everything is customizable!
@@ -52,7 +53,8 @@ The exact syntax for the above example will vary depending on the framework of y
 ### :dart: Roadmap
 
 - [x] Support csv, xls, xlsx, ods, txt files
-- [ ] Data filtering (<b>In Progress</b> - [branch](https://github.com/OvidijusParsiunas/active-table/tree/data-filtering))
+- [x] Data filtering
+- [ ] Column visibility
 - [ ] Move row/column by dragging
 - [ ] Pick mode
 - [ ] Undo/Redo

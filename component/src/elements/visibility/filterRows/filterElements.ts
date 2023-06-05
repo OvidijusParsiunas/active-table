@@ -29,7 +29,7 @@ export class FilterElements {
     const internalConfig = FilterInternalUtils.addConfig(at, userConfig);
     if (userConfig.dropdown !== false) {
       const dropdownElement = FilterDropdownElement.create(
-        at, containerElement, position, internalConfig, userConfig.styles?.dropdownArrow);
+        at, containerElement, position, internalConfig, userConfig.styles?.dropdownIcon);
       setTimeout(() => containerElement.appendChild(dropdownElement)); // appended at the end
     }
     if (userConfig.caseButton !== false) {

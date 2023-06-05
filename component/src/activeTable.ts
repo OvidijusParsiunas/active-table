@@ -269,7 +269,7 @@ export class ActiveTable extends LitElement {
   @property({type: Object})
   files?: Files;
 
-  @property({type: Boolean})
+  @property({type: Object})
   filter?: boolean | Filter | Filter[];
 
   @property({type: String})

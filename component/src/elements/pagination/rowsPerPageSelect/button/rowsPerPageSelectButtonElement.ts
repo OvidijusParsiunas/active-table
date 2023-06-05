@@ -56,6 +56,7 @@ export class RowsPerPageSelectButtonElement {
     arrow.id = RowsPerPageSelectButtonElement.ARROW_CONTAINER_ID;
     arrow.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);
     RowsPerPageSelectButtonElement.processAndApplyDefaultStyle(arrow, pagination.styles.rowsPerPageSelect?.buttonArrow);
+    // WORK - need to show how to color this in documentation
     const arrowDownIcon = SVGIconUtils.createSVGElement(ARROW_DOWN_SVG_STRING);
     arrowDownIcon.id = RowsPerPageSelectButtonElement.ARROW_ICON_ID;
     arrow.appendChild(arrowDownIcon);

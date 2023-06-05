@@ -27,7 +27,7 @@ export class FilterDropdownElement {
 
   // prettier-ignore
   public static create(at: ActiveTable, containerElement: HTMLElement, position: OuterContentPosition,
-      config: FilterInternal, dropdownArrowStyles?: FilterStyles['dropdownArrow']) {
+      config: FilterInternal, dropdownArrowStyles?: FilterStyles['dropdownIcon']) {
     const buttonElement = FilterButtonElement.create(dropdownArrowStyles);
     containerElement.appendChild(buttonElement);
     const customActiveStyle = dropdownArrowStyles?.active || {};

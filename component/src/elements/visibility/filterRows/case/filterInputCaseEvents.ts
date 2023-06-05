@@ -7,7 +7,7 @@ import {CSSStyle} from '../../../../types/cssStyle';
 export class FilterInputCaseEvents {
   private static clickButton(this: ActiveTable, button: HTMLElement, config: FilterInternal, active?: CSSStyle) {
     const activeStyle = active || {};
-    const wasActive = ToggleableElement.toggleActive(button, {...activeStyle, color: '#000000'});
+    const wasActive = ToggleableElement.toggleActive(button, {color: '#000000', ...activeStyle});
     config.isCaseSensitive = !wasActive;
     FilterInternalUtils.resetInput(this, config);
     config.inputElement.dispatchEvent(new Event('input'));
