@@ -22,11 +22,13 @@
 - Import/Export/Paste/Drag&Drop csv, xls, xlsx, ods, txt files
 - Everything is customizable!
 
-### :tada: Latest update: Drag & Drop
+### :tada: Latest update: Data filtering
 
-<p align="center"> 
-    <img style="margin-left: -15px" width="70%" src="./assets/readme/drag-and-drop.gif" alt="drag-and-drop">
-</p>
+<br />
+
+https://github.com/OvidijusParsiunas/active-table/assets/18709577/e6471759-8330-4e4f-ba40-3a52ec880700
+
+<br />
 
 ### :computer: Getting started
 
