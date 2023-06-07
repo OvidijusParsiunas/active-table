@@ -38,7 +38,7 @@ export class RowDropdownButtonItemConf {
       text: 'Delete',
       iconSettings: {
         svgString: TRASH_ICON_SVG_STRING,
-        containerStyles: {dropdown: {marginLeft: '-4px', marginRight: '5px', marginTop: '-0.5px'}},
+        containerStyles: {dropdown: {marginLeft: '-4px', marginRight: '5px', marginTop: '-1px'}},
       },
     },
   ];

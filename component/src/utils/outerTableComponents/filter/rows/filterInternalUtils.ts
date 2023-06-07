@@ -61,6 +61,8 @@ export class FilterInternalUtils {
       const columnIndex = content[0].findIndex((headerName) => headerName === rowConfig.defaultColumnHeaderName);
       rowConfig.elements = _columnsDetails[columnIndex === -1 ? 0 : columnIndex].elements;
       delete rowConfig.defaultColumnHeaderName;
+      // please consider that in codesandbox - upon a second refresh - elements are not there which causes no elements to
+      // be assigned to rowConfig.elements, this is caught by !config.elements in method below, but be careful on this
     } else if (rowConfig.elements && !at.shadowRoot?.contains(rowConfig.elements[0])) {
       rowConfig.elements = _columnsDetails[0].elements;
     }
@@ -69,8 +71,8 @@ export class FilterInternalUtils {
   // prettier-ignore
   public static resetInput(at: ActiveTable, config: FilterInternal) {
     const {_visiblityInternal: {rows}} = at;
-    if (!rows) return;
     FilterInternalUtils.assignElements(at, config);
+    if (!config.elements || !rows) return;
     const headerName = CellElement.getText(config.elements[0]);
     config.lastRegisteredHeaderName = headerName;
     FilterInputElement.setPlaceholder(config.inputElement, headerName, config.placeholderTemplate);

@@ -10,27 +10,26 @@ This package is an [Active Table](https://www.npmjs.com/package/active-table) co
 
 ### :rocket: Main Features
 
-- Add/Remove/Move rows/columns
-- Max rows/columns
-- Index column
-- Resizable column widths
-- Striped rows
-- Sorting
+- Add/Remove/Move/Edit rows/columns
 - Text validation
+- Sorting
+- Pagination
+- Filtering
 - Column types: Text/Number/Currency/Select/Label/Date/Checkbox
 - API for building custom column types
-- Programmatic cell updates
-- Pagination
-- Data filtering
-- Overflow scrollbar
 - Import/Export/Paste/Drag&Drop csv, xls, xlsx, ods, txt files
+- Programmatic cell updates
+- Reactive dimensions
+- Overflow handling
 - Everything is customizable!
 
-### :tada: Latest update: Drag & Drop
+### :tada: Latest update: Data filtering
 
-<p align="center"> 
-    <img style="margin-left: -15px" width="70%" src="https://raw.githubusercontent.com/OvidijusParsiunas/active-table/HEAD/assets/readme/drag-and-drop.gif" alt="drag-and-drop">
-</p>
+<br />
+
+https://github.com/OvidijusParsiunas/active-table/assets/18709577/e6471759-8330-4e4f-ba40-3a52ec880700
+
+<br />
 
 ### :computer: Getting started
 

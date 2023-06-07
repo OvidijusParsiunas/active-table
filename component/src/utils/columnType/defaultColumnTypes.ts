@@ -60,7 +60,7 @@ export class DefaultColumnTypes {
       iconSettings: {
         svgString: SELECT_ICON_SVG_STRING,
         containerStyles: {
-          dropdown: {marginTop: '0.5px', marginRight: '3px', marginLeft: '-2.75px'},
+          dropdown: {marginTop: '0px', marginRight: '3px', marginLeft: '-2.75px'},
           headerCorrections: {marginTop: '1px'},
         },
       },
@@ -81,7 +81,7 @@ export class DefaultColumnTypes {
       iconSettings: {
         svgString: CHECKBOX_ICON_SVG_STRING,
         containerStyles: {
-          dropdown: {marginRight: '6px', marginTop: '2.5px'},
+          dropdown: {marginRight: '6px', marginTop: '2px'},
           headerCorrections: {marginRight: '5px', marginLeft: '1px', marginTop: '3px'},
         },
       },

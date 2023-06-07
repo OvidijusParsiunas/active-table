@@ -6,20 +6,17 @@
 
 ### :rocket: Main Features
 
-- Add/Remove/Move rows/columns
-- Resizable column widths
-- Max rows/columns
-- Index column
-- Striped rows
-- Sorting
+- Add/Remove/Move/Edit rows/columns
 - Text validation
+- Sorting
+- Pagination
+- Filtering
 - Column types: Text/Number/Currency/Select/Label/Date/Checkbox
 - API for building custom column types
-- Programmatic cell updates
-- Pagination
-- Data filtering
-- Overflow scrollbar
 - Import/Export/Paste/Drag&Drop csv, xls, xlsx, ods, txt files
+- Programmatic cell updates
+- Reactive dimensions
+- Overflow handling
 - Everything is customizable!
 
 ### :tada: Latest update: Data filtering
