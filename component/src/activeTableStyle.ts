@@ -74,7 +74,6 @@ export const activeTableStyle = css`
     text-align: left;
     padding: 11px 6px 6px;
     font-size: 14px;
-    /* WORK - this will need to be removed from this branch */
     line-height: 17px;
     height: 42.5px;
     box-sizing: border-box;

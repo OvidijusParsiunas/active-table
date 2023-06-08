@@ -3,7 +3,7 @@ import {OptionColorButtonEvents} from './optionColorButtonEvents';
 import {Browser} from '../../../../utils/browser/browser';
 import {OptionButton} from './optionButton';
 
-// WORK - bug where the dropdown does not close when the color picker is closed
+// WORK - bug where the dropdown does not close when the color picker is closed (windows maybe)
 export class OptionColorButton {
   private static readonly COLOR_INPUT_CLASS = 'color-input';
   public static readonly COLOR_BUTTON_CLASS = 'option-color-button';

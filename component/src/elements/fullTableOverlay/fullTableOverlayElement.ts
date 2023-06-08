@@ -15,7 +15,11 @@ export class FullTableOverlayElement {
       fullTableOverlay.style.top = `${at.offsetTop}px`;
       fullTableOverlay.style.left = `${at.offsetLeft}px`;
     } else {
-      fullTableOverlay.style.top = `-${Browser.IS_FIREFOX ? 0 : at._tableDimensions.border.topWidth}px`;
+      // if available in the future, can use a top outer container reference
+      const topOuterContainerHeight = (at._tableElementRef as HTMLElement).offsetTop - at.offsetTop;
+      fullTableOverlay.style.top = `-${
+        Browser.IS_FIREFOX ? topOuterContainerHeight : topOuterContainerHeight + at._tableDimensions.border.topWidth
+      }px`;
       fullTableOverlay.style.left = `-${Browser.IS_FIREFOX ? 0 : at._tableDimensions.border.leftWidth}px`;
     }
     Dropdown.display(fullTableOverlay);
