@@ -521,6 +521,74 @@ export const activeTableStyle = css`
     stroke: inherit;
   }
 
+  /* WORK - this css works perfectly offline, but need to test it in windows
+  
+  #pagination-number-of-visible-rows {
+    color: #252525;
+    min-width: 82px;
+    text-align: center;
+    font-size: 15.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #pagination-number-of-rows-select {
+    position: relative;
+    color: #1d1d1d;
+    min-width: max-content;
+    display: flex;
+    align-items: center;
+  }
+
+  #pagination-number-of-rows-select-text {
+    font-size: 15.5px;
+    float: left;
+  }
+
+  #rows-per-page-select-button {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #0000004d;
+    border-radius: 4px;
+    height: 24px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 6px;
+    padding-right: 1px;
+    margin-top: 0.5px;
+    cursor: pointer;
+  }
+
+  #rows-per-page-select-button-arrow-container {
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    color: #353535;
+    font-size: 16px;
+    float: right;
+    margin: 1px;
+    margin-left: -1px;
+    margin-top: 0px;
+    width: 19px;
+  }
+
+  #rows-per-page-select-button-arrow-icon {
+    width: 16px;
+    transform: scale(0.9, 1);
+    filter: brightness(0) saturate(100%) invert(11%) sepia(3%) saturate(99%) hue-rotate(157deg) brightness(97%)
+      contrast(98%);
+    padding-top: 2px;
+    padding-left: 2px;
+  }
+
+  #rows-per-page-select-button-text {
+    display: inline-block;
+    pointer-events: none;
+  }
+  */
+
   #pagination-number-of-visible-rows {
     padding-top: 6px;
     color: #252525;
