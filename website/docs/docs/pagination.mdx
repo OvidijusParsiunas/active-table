@@ -272,7 +272,7 @@ Styling properties of pagination components. <br />
         "rowsPerPageSelect": {
           "prefixText": {"color": "#174a76"},
           "buttonText": {"default":{"color": "#174a76"}},
-          "buttonArrow": {"default":{"color": "#174a76"}}
+          "buttonArrow": {"default":{"filter": "brightness(0) saturate(100%) invert(22%) sepia(77%) saturate(620%) hue-rotate(168deg) brightness(96%) contrast(95%)"}}
         },
         "numberOfVisibleRows": {"color": "#174a76"},
         "pageButtons": {
@@ -327,7 +327,7 @@ Styling properties of pagination components. <br />
       "rowsPerPageSelect": {
         "prefixText": {"color": "#174a76"},
         "buttonText": {"default":{"color": "#174a76"}},
-        "buttonArrow": {"default":{"color": "#174a76"}}
+        "buttonArrow": {"default":{"filter": "brightness(0) saturate(100%) invert(22%) sepia(77%) saturate(620%) hue-rotate(168deg) brightness(96%) contrast(95%)"}}
       },
       "numberOfVisibleRows": {"color": "#174a76"},
       "pageButtons": {
@@ -356,7 +356,7 @@ Styling properties of pagination components. <br />
       "rowsPerPageSelect": {
         "prefixText": {"color": "#174a76"},
         "buttonText": {"default":{"color": "#174a76"}},
-        "buttonArrow": {"default":{"color": "#174a76"}}
+        "buttonArrow": {"default":{"filter": "brightness(0) saturate(100%) invert(22%) sepia(77%) saturate(620%) hue-rotate(168deg) brightness(96%) contrast(95%)"}}
       },
       "numberOfVisibleRows": {"color": "#174a76"},
       "pageButtons": {
@@ -433,7 +433,7 @@ Styling properties for the rows per page component elements. `container` is the 
           "prefixText": {"color": "#1f6e97"},
           "button": {"default":{"border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
           "buttonText": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-          "buttonArrow": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
+          "buttonArrow": {"default":{"filter": "brightness(0) saturate(100%) invert(31%) sepia(95%) saturate(397%) hue-rotate(155deg) brightness(99%) contrast(92%)"}, "hover":{"color": "brightness(0) saturate(100%) invert(27%) sepia(0%) saturate(3140%) hue-rotate(277deg) brightness(97%) contrast(100%)"}, "click":{"filter": "brightness(0) saturate(100%) invert(44%) sepia(0%) saturate(4%) hue-rotate(67deg) brightness(100%) contrast(98%)"}}
         }},
       "rowsPerPage": 5
     }}
@@ -480,7 +480,7 @@ Styling properties for the rows per page component elements. `container` is the 
         "prefixText": {"color": "#1f6e97"},
         "button": {"default":{"border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
         "buttonText": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-        "buttonArrow": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
+        "buttonArrow": {"default":{"filter": "brightness(0) saturate(100%) invert(31%) sepia(95%) saturate(397%) hue-rotate(155deg) brightness(99%) contrast(92%)"}, "hover":{"color": "brightness(0) saturate(100%) invert(27%) sepia(0%) saturate(3140%) hue-rotate(277deg) brightness(97%) contrast(100%)"}, "click":{"filter": "brightness(0) saturate(100%) invert(44%) sepia(0%) saturate(4%) hue-rotate(67deg) brightness(100%) contrast(98%)"}}
       }},
     "rowsPerPage": 5
   }'
@@ -501,7 +501,7 @@ Styling properties for the rows per page component elements. `container` is the 
         "prefixText": {"color": "#1f6e97"},
         "button": {"default":{"border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
         "buttonText": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-        "buttonArrow": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}}
+        "buttonArrow": {"default":{"filter": "brightness(0) saturate(100%) invert(31%) sepia(95%) saturate(397%) hue-rotate(155deg) brightness(99%) contrast(92%)"}, "hover":{"color": "brightness(0) saturate(100%) invert(27%) sepia(0%) saturate(3140%) hue-rotate(277deg) brightness(97%) contrast(100%)"}, "click":{"filter": "brightness(0) saturate(100%) invert(44%) sepia(0%) saturate(4%) hue-rotate(67deg) brightness(100%) contrast(98%)"}}
       }},
     "rowsPerPage": 5
   }'
@@ -537,6 +537,10 @@ Styling properties for the rows per page component elements. `container` is the 
 
 </TabItem>
 </Tabs>
+
+:::info
+Because `buttonArrow` is an svg icon - its color is set via _filter_ property. You can use the [cssfilterconverter](https://cssfilterconverter.com/) tool to generate its values.
+:::
 
 <LineBreak></LineBreak>
 
