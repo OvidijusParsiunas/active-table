@@ -16,7 +16,7 @@ export class OuterContainerElements {
   private static readonly COLUMN_INNER_CLASS = 'outer-container-column-inner';
   private static readonly COLUMN_CONTENT_CLASS = 'outer-container-column-content';
   private static readonly LEFT_COLUMN_CLASS = 'outer-container-left-column';
-  private static readonly MIDDLE_COLUMN_CLASS = 'outer-container-middle-column';
+  private static readonly CENTER_COLUMN_CLASS = 'outer-container-center-column';
   private static readonly RIGHT_COLUMN_CLASS = 'outer-container-right-column';
 
   // REF-38
@@ -49,7 +49,7 @@ export class OuterContainerElements {
     const container = (position.indexOf('top') >= 0 ? containers.top : containers.bottom) as HTMLElement;
     if (position.indexOf('left') >= 0) {
       OuterContainerElements.appendChildToColumn(container.children[0] as HTMLElement, element);
-    } else if (position.indexOf('middle') >= 0) {
+    } else if (position.indexOf('center') >= 0) {
       OuterContainerElements.appendChildToColumn(container.children[1] as HTMLElement, element);
     } else {
       OuterContainerElements.appendChildToColumn(container.children[2] as HTMLElement, element);
@@ -76,8 +76,8 @@ export class OuterContainerElements {
     container.classList.add(OuterContainerElements.CONTAINER_CLASS);
     const left = OuterContainerElements.createContainerColumn(OuterContainerElements.LEFT_COLUMN_CLASS, '1');
     container.appendChild(left);
-    const middle = OuterContainerElements.createContainerColumn(OuterContainerElements.MIDDLE_COLUMN_CLASS, '2');
-    container.appendChild(middle);
+    const center = OuterContainerElements.createContainerColumn(OuterContainerElements.CENTER_COLUMN_CLASS, '2');
+    container.appendChild(center);
     const right = OuterContainerElements.createContainerColumn(OuterContainerElements.RIGHT_COLUMN_CLASS, '3');
     container.appendChild(right);
     return container;

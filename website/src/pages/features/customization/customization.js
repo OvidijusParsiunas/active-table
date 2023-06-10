@@ -39,7 +39,7 @@ function BottomPanel() {
             },
             rowsPerPageSelect: false,
             displayNumberOfVisibleRows: false,
-            positions: {pageButtons: {position: 'bottom-middle'}},
+            positions: {pageButtons: {position: 'bottom-center'}},
             rowsPerPage: 4,
           }}
           stripedRows={{odd: {backgroundColor: '#2e3c60'}, even: {backgroundColor: '#242b4a'}}}
@@ -109,7 +109,7 @@ function BottomPanel() {
             displayFirstLast: false,
             rowsPerPageSelect: false,
             displayNumberOfVisibleRows: false,
-            positions: {pageButtons: {position: 'bottom-middle'}},
+            positions: {pageButtons: {position: 'bottom-center'}},
             rowsPerPage: 4,
           }}
           stripedRows={{odd: {backgroundColor: '#4f4f4f'}, even: {backgroundColor: '#373737'}}}

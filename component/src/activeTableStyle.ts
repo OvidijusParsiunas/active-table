@@ -722,12 +722,12 @@ export const activeTableStyle = css`
     margin-right: 10px;
   }
 
-  .outer-container-middle-column {
+  .outer-container-center-column {
     justify-content: center;
     position: absolute;
   }
 
-  .outer-container-middle-column .outer-container-column-content > div {
+  .outer-container-center-column .outer-container-column-content > div {
     margin-left: 5px;
     margin-right: 5px;
   }

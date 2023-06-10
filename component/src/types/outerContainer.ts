@@ -1,10 +1,9 @@
-// WORK - rename middle to center
 export type OuterContentPosition =
   | 'top-left'
-  | 'top-middle'
+  | 'top-center'
   | 'top-right'
   | 'bottom-left'
-  | 'bottom-middle'
+  | 'bottom-center'
   | 'bottom-right';
 
 export interface OuterContainers {

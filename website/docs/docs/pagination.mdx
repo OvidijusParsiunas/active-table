@@ -433,7 +433,11 @@ Styling properties for the rows per page component elements. `container` is the 
           "prefixText": {"color": "#1f6e97"},
           "button": {"default":{"border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
           "buttonText": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-          "buttonArrow": {"default":{"filter": "brightness(0) saturate(100%) invert(31%) sepia(95%) saturate(397%) hue-rotate(155deg) brightness(99%) contrast(92%)"}, "hover":{"color": "brightness(0) saturate(100%) invert(27%) sepia(0%) saturate(3140%) hue-rotate(277deg) brightness(97%) contrast(100%)"}, "click":{"filter": "brightness(0) saturate(100%) invert(44%) sepia(0%) saturate(4%) hue-rotate(67deg) brightness(100%) contrast(98%)"}}
+          "buttonArrow": {
+            "default":{"filter": "brightness(0) saturate(100%) invert(31%) sepia(95%) saturate(397%) hue-rotate(155deg) brightness(99%) contrast(92%)"},
+            "hover":{"color": "brightness(0) saturate(100%) invert(27%) sepia(0%) saturate(3140%) hue-rotate(277deg) brightness(97%) contrast(100%)"},
+            "click":{"filter": "brightness(0) saturate(100%) invert(44%) sepia(0%) saturate(4%) hue-rotate(67deg) brightness(100%) contrast(98%)"}
+          }
         }},
       "rowsPerPage": 5
     }}
@@ -480,8 +484,11 @@ Styling properties for the rows per page component elements. `container` is the 
         "prefixText": {"color": "#1f6e97"},
         "button": {"default":{"border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
         "buttonText": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-        "buttonArrow": {"default":{"filter": "brightness(0) saturate(100%) invert(31%) sepia(95%) saturate(397%) hue-rotate(155deg) brightness(99%) contrast(92%)"}, "hover":{"color": "brightness(0) saturate(100%) invert(27%) sepia(0%) saturate(3140%) hue-rotate(277deg) brightness(97%) contrast(100%)"}, "click":{"filter": "brightness(0) saturate(100%) invert(44%) sepia(0%) saturate(4%) hue-rotate(67deg) brightness(100%) contrast(98%)"}}
-      }},
+        "buttonArrow": {
+          "default":{"filter": "brightness(0) saturate(100%) invert(31%) sepia(95%) saturate(397%) hue-rotate(155deg) brightness(99%) contrast(92%)"},
+          "hover":{"filter": "brightness(0) saturate(100%) invert(27%) sepia(0%) saturate(3140%) hue-rotate(277deg) brightness(97%) contrast(100%)"},
+          "click":{"filter": "brightness(0) saturate(100%) invert(44%) sepia(0%) saturate(4%) hue-rotate(67deg) brightness(100%) contrast(98%)"}
+      }}},
     "rowsPerPage": 5
   }'
 ></active-table>
@@ -501,8 +508,11 @@ Styling properties for the rows per page component elements. `container` is the 
         "prefixText": {"color": "#1f6e97"},
         "button": {"default":{"border": "1px solid #9f9f9f"}, "hover":{"backgroundColor": "#fcfcfc"}},
         "buttonText": {"default":{"color": "#1f6e97"}, "hover":{"color": "#444444"}, "click":{"color": "#707070"}},
-        "buttonArrow": {"default":{"filter": "brightness(0) saturate(100%) invert(31%) sepia(95%) saturate(397%) hue-rotate(155deg) brightness(99%) contrast(92%)"}, "hover":{"color": "brightness(0) saturate(100%) invert(27%) sepia(0%) saturate(3140%) hue-rotate(277deg) brightness(97%) contrast(100%)"}, "click":{"filter": "brightness(0) saturate(100%) invert(44%) sepia(0%) saturate(4%) hue-rotate(67deg) brightness(100%) contrast(98%)"}}
-      }},
+        "buttonArrow": {
+          "default":{"filter": "brightness(0) saturate(100%) invert(31%) sepia(95%) saturate(397%) hue-rotate(155deg) brightness(99%) contrast(92%)"},
+          "hover":{"filter": "brightness(0) saturate(100%) invert(27%) sepia(0%) saturate(3140%) hue-rotate(277deg) brightness(97%) contrast(100%)"},
+          "click":{"filter": "brightness(0) saturate(100%) invert(44%) sepia(0%) saturate(4%) hue-rotate(67deg) brightness(100%) contrast(98%)"}
+      }}},
     "rowsPerPage": 5
   }'
   content='[
@@ -741,7 +751,7 @@ Styling for action buttons that facilitates the definition of styles for various
       "styles": {
         "pageButtons": {
           "actionButtons": {
-            "default": {"width": "50px", "fontSize": "15px", "color": "#1e912a"},
+            "default": {"width": "50px", "fontSize": "15px", "color": "#466dc2"},
             "hover": {"backgroundColor": "#e4ffe4"},
             "click": {"backgroundColor": "#81d581"},
             "previousText": "Prev",
@@ -889,7 +899,7 @@ Positions for pagination components.
   <ActiveTable
     pagination={{
       "positions": {
-        "pageButtons": {"position": "bottom-middle"},
+        "pageButtons": {"position": "bottom-center"},
         "numberOfVisibleRows": {"position": "top-left", "order": 2},
         "rowsPerPageSelect": {"position": "top-left", "order": 1}
       },
@@ -933,7 +943,7 @@ Positions for pagination components.
 <active-table
   pagination='{
     "positions": {
-      "pageButtons": {"position": "bottom-middle"},
+      "pageButtons": {"position": "bottom-center"},
       "numberOfVisibleRows": {"position": "top-left", "order": 2},
       "rowsPerPageSelect": {"position": "top-left", "order": 1}
     },
@@ -951,7 +961,7 @@ Positions for pagination components.
 <active-table
   pagination='{
     "positions": {
-      "pageButtons": {"position": "bottom-middle"},
+      "pageButtons": {"position": "bottom-center"},
       "numberOfVisibleRows": {"position": "top-left", "order": 2},
       "rowsPerPageSelect": {"position": "top-left", "order": 1}
     },
@@ -1039,7 +1049,7 @@ Object defining position properties for a pagination component. `order` is the o
       },
       rowsPerPageSelect: false,
       displayNumberOfVisibleRows: false,
-      positions: {pageButtons: {position: 'bottom-middle'}},
+      positions: {pageButtons: {position: 'bottom-center'}},
       rowsPerPage: 2,
     }}
     content={[
@@ -1077,7 +1087,7 @@ Object defining position properties for a pagination component. `order` is the o
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"position": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
 ></active-table>
@@ -1103,7 +1113,7 @@ Object defining position properties for a pagination component. `order` is the o
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"position": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
   content='[
@@ -1144,7 +1154,7 @@ Object defining position properties for a pagination component. `order` is the o
       }},
       "rowsPerPageSelect": false,
       "displayNumberOfVisibleRows": false,
-      "positions": {"pageButtons": {"position": "bottom-middle"}},
+      "positions": {"pageButtons": {"position": "bottom-center"}},
       "rowsPerPage": 2
     }}
     content={[
@@ -1182,7 +1192,7 @@ Object defining position properties for a pagination component. `order` is the o
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"position": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
 ></active-table>
@@ -1208,7 +1218,7 @@ Object defining position properties for a pagination component. `order` is the o
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"position": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
   content='[
@@ -1250,7 +1260,7 @@ Object defining position properties for a pagination component. `order` is the o
       }},
       "rowsPerPageSelect": false,
       "displayNumberOfVisibleRows": false,
-      "positions": {"pageButtons": {"position": "bottom-middle"}},
+      "positions": {"pageButtons": {"position": "bottom-center"}},
       "rowsPerPage": 2
     }}
     content={[
@@ -1289,7 +1299,7 @@ Object defining position properties for a pagination component. `order` is the o
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"position": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
 ></active-table>
@@ -1316,7 +1326,7 @@ Object defining position properties for a pagination component. `order` is the o
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"position": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
   content='[
@@ -1358,7 +1368,7 @@ Object defining position properties for a pagination component. `order` is the o
       }},
       "rowsPerPageSelect": false,
       "displayNumberOfVisibleRows": false,
-      "positions": {"pageButtons": {"position": "bottom-middle"}},
+      "positions": {"pageButtons": {"position": "bottom-center"}},
       "rowsPerPage": 2
     }}
     content={[
@@ -1397,7 +1407,7 @@ Object defining position properties for a pagination component. `order` is the o
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"position": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
 ></active-table>
@@ -1424,7 +1434,7 @@ Object defining position properties for a pagination component. `order` is the o
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"position": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
   content='[
@@ -1481,7 +1491,7 @@ Object defining position properties for a pagination component. `order` is the o
       },
       rowsPerPageSelect: false,
       displayNumberOfVisibleRows: false,
-      positions: {pageButtons: {position: 'bottom-middle'}},
+      positions: {pageButtons: {position: 'bottom-center'}},
       rowsPerPage: 2,
     }}
     content={[
@@ -1519,7 +1529,7 @@ Object defining position properties for a pagination component. `order` is the o
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"position": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
 ></active-table>
@@ -1545,7 +1555,7 @@ Object defining position properties for a pagination component. `order` is the o
     }},
     "rowsPerPageSelect": false,
     "displayNumberOfVisibleRows": false,
-    "positions": {"pageButtons": {"position": "bottom-middle"}},
+    "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
   content='[

@@ -50,7 +50,7 @@ export class RowsPerPageDropdown {
     const hideFunc = RowsPerPageDropdown.hide.bind(this, at._activeOverlayElements);
     const displayFunc = RowsPerPageDropdown.display.bind(this, optionsButton);
     // position is arbitrary as long as orientation isn't changed
-    const dropdown = OuterDropdownElement.create(at, optionsButton, 'bottom-middle', {}, [], hideFunc, displayFunc);
+    const dropdown = OuterDropdownElement.create(at, optionsButton, 'bottom-center', {}, [], hideFunc, displayFunc);
     RowsPerPageDropdownItem.populate(at, dropdown.element, optionsButton);
     RowsPerPageDropdown.setWidth(dropdown.element, at._pagination);
     return dropdown;

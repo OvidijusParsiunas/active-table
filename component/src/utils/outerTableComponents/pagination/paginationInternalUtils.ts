@@ -19,7 +19,7 @@ export class PaginationInternalUtils {
   private static readonly DEFAULT_POSITION = 'bottom-right';
   // prettier-ignore
   private static readonly POSITIONS: Set<OuterContentPosition> = new Set([
-    'top-left', 'top-middle', 'top-right', 'bottom-left', 'bottom-middle', PaginationInternalUtils.DEFAULT_POSITION,
+    'top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', PaginationInternalUtils.DEFAULT_POSITION,
   ]);
 
   public static getTotalNumberOfRows(at: ActiveTable) {
