@@ -23,4 +23,9 @@ export class FireEvents {
     at.onColumnsUpdate(updateBody);
     at.dispatchEvent(new CustomEvent('columns-update', {detail: updateBody}));
   }
+
+  public static onRender(at: ActiveTable) {
+    at.onRender();
+    at.dispatchEvent(new CustomEvent('render'));
+  }
 }

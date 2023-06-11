@@ -12,7 +12,7 @@ Take care not to re-render the component when using event information to update 
 
 ### `onCellUpdate` {#onCellUpdate}
 
-- Function: (`cellUpdate:` `Body`) => `void`
+- Function: (`cellUpdate: Body`) => `void`
 - Event: `cell-update`
 - Body: { <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`text: string`, <br />
@@ -72,7 +72,7 @@ tableElementRef.addEventListener('cell-update', (cellUpdate) => { console.log(ce
 
 ### `onContentUpdate` {#onContentUpdate}
 
-- Function: (`contentUpdate:` `Body`) => `void`
+- Function: (`contentUpdate: Body`) => `void`
 - Event: `content-update`
 - Body: `(string|number)[][]`
 
@@ -121,7 +121,7 @@ The first time this event is fired can also be used as an indicator to know when
 
 ### `onColumnsUpdate` {#onColumnsUpdate}
 
-- Function: (`columnsUpdate:` `Body`) => `void`
+- Function: (`columnsUpdate: Body`) => `void`
 - Event: `columns-update`
 - Body: [`ColumnsDetails`](./sharedTypes#ColumnsDetails)
 
@@ -158,6 +158,50 @@ tableElementRef.onColumnsUpdate = (columnsUpdate) => { console.log(columnsUpdate
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 tableElementRef.addEventListener('columns-update', (columnsUpdate) => { console.log(columnsUpdate.detail); });
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `onRender` {#onRender}
+
+- Function: () => `void`
+- Event: `render`
+
+Triggered when the component has finished rendering on the browser's window.
+
+#### Example
+
+<TableContainerEvents propertyname={"onRender"}>
+  <ActiveTable
+    content={[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
+
+</TableContainerEvents>
+
+<Tabs>
+<TabItem value="js" label="Function">
+
+```html
+tableElementRef.onRender = () => { console.log('finished rendering'); };
+```
+
+</TabItem>
+<TabItem value="py" label="Event">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+tableElementRef.addEventListener('render', () => { console.log('finished rendering'); });
 ```
 
 </TabItem>
