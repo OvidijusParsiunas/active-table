@@ -3,8 +3,8 @@ import LiveTableData from './liveTableData';
 import React from 'react';
 
 // using child to prevent table re-render
-const EventText = React.forwardRef((_, ref) => {
-  const [eventsText, setEventsText] = React.useState(['']);
+const EventText = React.forwardRef(({propertyname}, ref) => {
+  const [eventsText, setEventsText] = React.useState([propertyname === 'onRender' ? 'finished rendering' : '']);
   React.useImperativeHandle(ref, () => {
     const closureEventsText = [];
     return {
@@ -47,7 +47,7 @@ export default function TableContainerEvents({children, propertyname}) {
         <TableContainer>{children}</TableContainer>
       </div>
       <div className="documentation-example-container">
-        <EventText ref={eventTextRef}></EventText>
+        <EventText propertyname={propertyname} ref={eventTextRef}></EventText>
       </div>
     </div>
   );

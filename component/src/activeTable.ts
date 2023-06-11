@@ -57,6 +57,7 @@ import {ColumnsDetailsT} from './types/columnDetails';
 import {RowHoverStyles} from './types/rowHoverStyles';
 import {GlobalItemColors} from './types/itemToColor';
 import {StripedRows} from './utils/rows/stripedRows';
+import {FireEvents} from './utils/events/fireEvents';
 import {activeTableStyle} from './activeTableStyle';
 import {FilesInternal} from './types/filesInternal';
 import {StripedRowsT} from './types/stripedRows';
@@ -109,6 +110,9 @@ export class ActiveTable extends LitElement {
 
   @property({converter: LITElementTypeConverters.convertToFunction})
   onColumnsUpdate: OnColumnsUpdate = () => {};
+
+  @property({converter: LITElementTypeConverters.convertToFunction})
+  onRender: () => void = () => {};
 
   @property({type: Array})
   content: (number | string)[][] = [
@@ -370,6 +374,7 @@ export class ActiveTable extends LitElement {
     Render.renderTable(this);
     this.onContentUpdate(this.content);
     new ResizeObserver(ParentResize.resizeCallback.bind(this)).observe(this.parentElement as HTMLElement);
+    FireEvents.onRender(this);
   }
 
   protected override update(changedProperties: PropertyValues) {
