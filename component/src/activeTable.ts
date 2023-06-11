@@ -1,4 +1,3 @@
-import {CustomColumnsSettings, CustomColumnSettings, DimensionalCSSStyle} from './types/columnsSettings';
 import {PaginationInternalUtils} from './utils/outerTableComponents/pagination/paginationInternalUtils';
 import {ColumnUpdateDetails, OnCellUpdate, OnColumnsUpdate, OnContentUpdate} from './types/onUpdate';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
@@ -10,6 +9,7 @@ import {ProgrammaticCellUpdate} from './utils/programmaticUpdates/programmaticCe
 import {OuterTableComponents} from './utils/outerTableComponents/outerTableComponents';
 import {LITElementTypeConverters} from './utils/webComponent/LITElementTypeConverters';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
+import {CustomColumnsSettings, DimensionalCSSStyle} from './types/columnsSettings';
 import {WebComponentStyleUtils} from './utils/webComponent/webComponentStyleUtils';
 import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
@@ -43,7 +43,6 @@ import {VisibilityInternal} from './types/visibilityInternal';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
-import {ColumnType, ColumnTypes} from './types/columnType';
 import {GoogleFont} from './utils/webComponent/googleFont';
 import {OverflowInternal} from './types/overflowInternal';
 import {ParentResize} from './utils/render/parentResize';
@@ -63,6 +62,7 @@ import {FilesInternal} from './types/filesInternal';
 import {StripedRowsT} from './types/stripedRows';
 import {StickyProps} from './types/stickyProps';
 import {Browser} from './utils/browser/browser';
+import {ColumnTypes} from './types/columnType';
 import {LitElement, PropertyValues} from 'lit';
 import {CellText} from './types/tableContent';
 import {TableStyle} from './types/tableStyle';
@@ -83,22 +83,22 @@ export class ActiveTable extends LitElement {
     GoogleFont.appendStyleSheetToHead();
   }
 
-  @property({type: Function})
+  @property({attribute: false})
   getContent: () => (number | string)[][] = () => JSON.parse(JSON.stringify(this.content));
 
-  @property({type: Function})
+  @property({attribute: false})
   getColumnsDetails: () => ColumnUpdateDetails[] = () => ColumnDetailsUtils.getAllColumnsDetails(this._columnsDetails);
 
-  @property({type: Function})
+  @property({attribute: false})
   updateCell: (update: ProgrammaticCellUpdateT) => void = (update: ProgrammaticCellUpdateT) => {
     ProgrammaticCellUpdate.updateText(this, update);
   };
 
   // can only be activated by a user action - such as a button click
-  @property({type: Function})
+  @property({attribute: false})
   importFile: ImportFile = (options?: ImportOptions) => FileImportButtonEvents.triggerImportPrompt(this, options);
 
-  @property({type: Function})
+  @property({attribute: false})
   exportFile: ExportFile = (options?: ExportOptions) => FileExportButtonEvents.export(this, options);
 
   // REF-20
@@ -154,7 +154,7 @@ export class ActiveTable extends LitElement {
   })
   stickyHeader?: boolean;
 
-  @property({type: Array<CustomColumnSettings>})
+  @property({type: Array})
   customColumnsSettings: CustomColumnsSettings = [];
 
   @property({type: Object})
@@ -253,10 +253,10 @@ export class ActiveTable extends LitElement {
   })
   isColumnResizable?: boolean;
 
-  @property({type: Array<DEFAULT_COLUMN_TYPES>})
+  @property({type: Array})
   availableDefaultColumnTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
 
-  @property({type: Array<ColumnType>})
+  @property({type: Array})
   customColumnTypes?: ColumnTypes; // additional custom column types
 
   // If not provided defaultColumnTypeName will default to first of the following:
