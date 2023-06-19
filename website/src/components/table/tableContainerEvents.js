@@ -3,8 +3,8 @@ import LiveTableData from './liveTableData';
 import React from 'react';
 
 // using child to prevent table re-render
-const EventText = React.forwardRef(({propertyname}, ref) => {
-  const [eventsText, setEventsText] = React.useState([propertyname === 'onRender' ? 'finished rendering' : '']);
+const EventText = React.forwardRef(({propertyName}, ref) => {
+  const [eventsText, setEventsText] = React.useState([propertyName === 'onRender' ? 'finished rendering' : '']);
   React.useImperativeHandle(ref, () => {
     const closureEventsText = [];
     return {
@@ -24,7 +24,7 @@ const EventText = React.forwardRef(({propertyname}, ref) => {
   );
 });
 
-export default function TableContainerEvents({children, propertyname}) {
+export default function TableContainerEvents({children, propertyName}) {
   const tableContainerRef = React.useRef(null);
   const eventTextRef = React.useRef(null);
 
@@ -33,10 +33,10 @@ export default function TableContainerEvents({children, propertyname}) {
     setTimeout(() => {
       if (tableContainerRef.current && eventTextRef.current) {
         const activeTableReference = extractChildTableElement(tableContainerRef.current.children[0]);
-        activeTableReference[propertyname] = eventTextRef.current?.updateText;
+        activeTableReference[propertyName] = eventTextRef.current?.updateText;
       } else {
         const activeTableReference = extractChildTableElement(syncReference.children[0]);
-        activeTableReference[propertyname] = () => {};
+        activeTableReference[propertyName] = () => {};
       }
     });
   }
@@ -47,7 +47,7 @@ export default function TableContainerEvents({children, propertyname}) {
         <TableContainer>{children}</TableContainer>
       </div>
       <div className="documentation-example-container">
-        <EventText propertyname={propertyname} ref={eventTextRef}></EventText>
+        <EventText propertyName={propertyName} ref={eventTextRef}></EventText>
       </div>
     </div>
   );

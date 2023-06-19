@@ -2,37 +2,30 @@ import TableContainer, {extractChildTableElement} from '@site/src/components/tab
 import LiveTableData from './liveTableData';
 import React from 'react';
 
-// using child to prevent table re-render
-const ResultText = React.forwardRef((_, ref) => {
-  const [resultsText, setResultsText] = React.useState(['']);
-  React.useImperativeHandle(ref, () => {
-    const closureResultsText = [];
-    return {
-      updateText: (argument) => {
-        if (closureResultsText.length > 3) closureResultsText.pop();
-        closureResultsText.unshift(argument);
-        setResultsText([...closureResultsText]);
-      },
-    };
-  });
+function ResultText(props) {
   return (
     <div>
       Method results:
-      <LiveTableData data={resultsText}></LiveTableData>
+      <LiveTableData data={props.resultText}></LiveTableData>
     </div>
   );
-});
+}
 
-export default function TableContainerMethods({children, propertyname, displayResults}) {
+function click(table, resultText, setResultText, propertyName, displayResults) {
+  const activeTableReference = extractChildTableElement(table);
+  const content = activeTableReference[propertyName]();
+  if (displayResults ?? true) {
+    let newResultTextArr = [...resultText];
+    if (newResultTextArr.length === 1 && newResultTextArr[0] === '') newResultTextArr = [];
+    if (newResultTextArr.length > 3) newResultTextArr.pop();
+    newResultTextArr.unshift(content);
+    setResultText(newResultTextArr);
+  }
+}
+
+export default function TableContainerMethods({children, propertyName, displayResults}) {
   const tableContainerRef = React.useRef(null);
-  const eventTextRef = React.useRef(null);
-  const updateText = eventTextRef.current?.updateText; // stored in a reference for closure to work
-
-  const click = () => {
-    const activeTableReference = extractChildTableElement(tableContainerRef.current.children[0]);
-    const content = activeTableReference[propertyname]();
-    if (displayResults ?? true) updateText(content);
-  };
+  const [resultText, setResultText] = React.useState(['']);
 
   return (
     <div>
@@ -40,10 +33,15 @@ export default function TableContainerMethods({children, propertyname, displayRe
         <TableContainer>{children}</TableContainer>
       </div>
       <div className="documentation-example-container">
-        <button className="documentation-method-button" onClick={click}>
+        <button
+          className="documentation-method-button"
+          onClick={() =>
+            click(tableContainerRef.current.children[0], resultText, setResultText, propertyName, displayResults)
+          }
+        >
           Call Method
         </button>
-        {(displayResults ?? true) && <ResultText ref={eventTextRef}></ResultText>}
+        {(displayResults ?? true) && <ResultText resultText={resultText} />}
       </div>
     </div>
   );
