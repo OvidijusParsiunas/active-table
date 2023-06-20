@@ -11,7 +11,7 @@ const EventText = React.forwardRef(({propertyName}, ref) => {
       updateText: (argument) => {
         if (!ref.current) return;
         if (closureEventsText.length > 3) closureEventsText.pop();
-        closureEventsText.unshift(argument);
+        closureEventsText.unshift(JSON.parse(JSON.stringify(argument)));
         setEventsText([...closureEventsText]);
       },
     };
@@ -28,18 +28,20 @@ export default function TableContainerEvents({children, propertyName}) {
   const tableContainerRef = React.useRef(null);
   const eventTextRef = React.useRef(null);
 
-  if (tableContainerRef.current) {
-    const syncReference = tableContainerRef.current;
+  React.useEffect(() => {
     setTimeout(() => {
-      if (tableContainerRef.current && eventTextRef.current) {
-        const activeTableReference = extractChildTableElement(tableContainerRef.current.children[0]);
-        activeTableReference[propertyName] = eventTextRef.current?.updateText;
-      } else {
-        const activeTableReference = extractChildTableElement(syncReference.children[0]);
-        activeTableReference[propertyName] = () => {};
+      if (tableContainerRef.current) {
+        const syncReference = tableContainerRef.current;
+        if (tableContainerRef.current && eventTextRef.current) {
+          const activeTableReference = extractChildTableElement(tableContainerRef.current.children[0]);
+          activeTableReference[propertyName] = eventTextRef.current?.updateText;
+        } else {
+          const activeTableReference = extractChildTableElement(syncReference.children[0]);
+          activeTableReference[propertyName] = () => {};
+        }
       }
-    });
-  }
+    }, 40); // in a timeout as tableContainerRef.current not always set on start
+  }, []);
 
   return (
     <div>

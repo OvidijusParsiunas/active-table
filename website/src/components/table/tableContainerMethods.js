@@ -18,7 +18,7 @@ function click(table, resultText, setResultText, propertyName, displayResults) {
     let newResultTextArr = [...resultText];
     if (newResultTextArr.length === 1 && newResultTextArr[0] === '') newResultTextArr = [];
     if (newResultTextArr.length > 3) newResultTextArr.pop();
-    newResultTextArr.unshift(content);
+    newResultTextArr.unshift(JSON.parse(JSON.stringify(content)));
     setResultText(newResultTextArr);
   }
 }
