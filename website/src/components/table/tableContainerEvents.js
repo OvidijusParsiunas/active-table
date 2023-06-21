@@ -4,7 +4,7 @@ import React from 'react';
 
 // using child to prevent table re-render
 const EventText = React.forwardRef(({propertyName}, ref) => {
-  const [eventsText, setEventsText] = React.useState([propertyName === 'onRender' ? 'finished rendering' : '']);
+  const [eventsText, setEventsText] = React.useState([propertyName === 'onRender' ? 'Finished rendering' : '']);
   React.useImperativeHandle(ref, () => {
     const closureEventsText = [];
     return {
