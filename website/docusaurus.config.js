@@ -74,8 +74,18 @@ const config = {
         {name: 'og:title', content: 'Active Table'},
         {name: 'og:description', content: 'Framework agnostic table component for editable data experience'},
         {name: 'og:url', content: 'https://activetable.io/'},
+        {
+          name: 'og:image',
+          content:
+            'https://raw.githubusercontent.com/OvidijusParsiunas/active-table/main/assets/social-media/social-media.png',
+        },
         {name: 'twitter:title', content: 'Active Table'},
         {name: 'twitter:description', content: 'Framework agnostic table component for editable data experience'},
+        {
+          name: 'twitter:image',
+          content:
+            'https://raw.githubusercontent.com/OvidijusParsiunas/active-table/main/assets/social-media/social-media.png',
+        },
       ],
       navbar: {
         title: 'Active Table',
