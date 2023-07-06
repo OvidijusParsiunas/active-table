@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NODE_ENV: development
-      ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
-      ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3

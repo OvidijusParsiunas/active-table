@@ -813,11 +813,11 @@ Styling properties for the select and label dropdowns.
 
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp; `toYMDFunc: (cellText: string) => YMDFormat`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; `fromYMDFunc: (YMD: YMDFormat) => string`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `fromYMDFunc: (YMD: YMDFormat) => string` <br />
   }
 
 Adds a hoverable calendar icon element to each data cell. When a cell is focused - a [date picker overlay](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date)
-is opened which the user can use to help select the date they need. <br />
+is opened which the user can use to select the date they need. <br />
 The `toYMDFunc` and `fromYMDFunc` functions are strictly used for converting cell text into a format ([`YMDFormat`](#YMDFormat)) the calendar API
 accepts and back to the original format when a new date is chosen.
 
