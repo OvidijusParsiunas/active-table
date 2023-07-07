@@ -4,8 +4,8 @@
   <ShortName>Active Table</ShortName>
   <Description>Search Active Table</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image width="16" height="16" type="image/x-icon">https://active-table.io/img/favicon.png</Image>
-  <Url type="text/html" method="get" template="https://active-table.io/search?q={searchTerms}"/>
-  <Url type="application/opensearchdescription+xml" rel="self" template="https://active-table.io/opensearch.xml" />
-  <moz:SearchForm>https://active-table.io/</moz:SearchForm>
+  <Image width="16" height="16" type="image/x-icon">https://activetable.io/img/favicon.png</Image>
+  <Url type="text/html" method="get" template="https://activetable.io/search?q={searchTerms}"/>
+  <Url type="application/opensearchdescription+xml" rel="self" template="https://activetable.io/opensearch.xml" />
+  <moz:SearchForm>https://activetable.io/</moz:SearchForm>
 </OpenSearchDescription>
