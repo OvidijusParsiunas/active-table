@@ -1,25 +1,24 @@
-import {CellDropdown} from '../../../elements/dropdown/cellDropdown/cellDropdown';
-import {TableRow, CellText, TableContent} from '../../../types/tableContent';
-import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
-import {ColumnTypesUtils} from '../../columnType/columnTypesUtils';
-import {CaretPosition} from '../../focusedElements/caretPosition';
-import {CellElementIndex} from '../../elements/cellElementIndex';
-import {CellElement} from '../../../elements/cell/cellElement';
-import {ColumnsDetailsT} from '../../../types/columnDetails';
-import {CellEvents} from '../../../elements/cell/cellEvents';
-import {HeaderText} from '../../columnDetails/headerText';
-import {Matrix, MatrixRow} from '../../../types/matrix';
-import {FireEvents} from '../../events/fireEvents';
-import {EMPTY_STRING} from '../../../consts/text';
-import {ArrayUtils} from '../../array/arrayUtils';
-import {InsertNewColumn} from './insertNewColumn';
-import {ActiveTable} from '../../../activeTable';
-import {DataUtils} from '../shared/dataUtils';
-import {InsertNewRow} from './insertNewRow';
+import {InsertNewColumn} from '../insertRemoveStructure/insert/insertNewColumn';
+import {CellDropdown} from '../../elements/dropdown/cellDropdown/cellDropdown';
+import {TableRow, CellText, TableContent} from '../../types/tableContent';
+import {InsertNewRow} from '../insertRemoveStructure/insert/insertNewRow';
+import {FocusedCellUtils} from '../focusedElements/focusedCellUtils';
+import {DataUtils} from '../insertRemoveStructure/shared/dataUtils';
+import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
+import {CaretPosition} from '../focusedElements/caretPosition';
+import {CellElementIndex} from '../elements/cellElementIndex';
+import {CellElement} from '../../elements/cell/cellElement';
+import {ColumnsDetailsT} from '../../types/columnDetails';
+import {CellEvents} from '../../elements/cell/cellEvents';
+import {HeaderText} from '../columnDetails/headerText';
+import {FireEvents} from '../events/fireEvents';
+import {EMPTY_STRING} from '../../consts/text';
+import {ArrayUtils} from '../array/arrayUtils';
+import {ActiveTable} from '../../activeTable';
 
 export class InsertMatrix {
   // prettier-ignore
-  private static removeDataThatIsNotEditableFromNewRows(columnsDetails: ColumnsDetailsT, dataForNewRows: Matrix,
+  private static removeDataThatIsNotEditableFromNewRows(columnsDetails: ColumnsDetailsT, dataForNewRows: TableContent,
       startColumnIndex: number) {
     const existingColumnsToCheck = columnsDetails.slice(startColumnIndex);
     existingColumnsToCheck.forEach((columnDetails, colIndex) => {
@@ -31,17 +30,17 @@ export class InsertMatrix {
   }
 
   // if the data does not fill the 2D array, fill cells with empty strings
-  private static createRowDataArrayWithEmptyCells(arrayLength: number, data: MatrixRow, dataStartIndex: number) {
-    const newRowData = DataUtils.createEmptyStringDataArray(arrayLength);
+  private static createRowDataArrayWithEmptyCells(arrayLength: number, data: TableRow, dataStartIndex: number) {
+    const newRowData = DataUtils.createEmptyStringDataArray(arrayLength) as TableRow;
     newRowData.splice(dataStartIndex, data.length, ...data);
     return newRowData;
   }
 
   // prettier-ignore
-  private static createNewRows(at: ActiveTable, dataForNewRows: Matrix, startColumnIndex: number) {
+  private static createNewRows(at: ActiveTable, dataForNewRows: TableContent, startColumnIndex: number) {
     const processedDataForNewRows = InsertMatrix.removeDataThatIsNotEditableFromNewRows(at._columnsDetails,
       dataForNewRows, startColumnIndex);
-    processedDataForNewRows.forEach((rowData: MatrixRow) => {
+    processedDataForNewRows.forEach((rowData: TableRow) => {
       const newRowData = InsertMatrix.createRowDataArrayWithEmptyCells(
         at.content[0]?.length || 0, rowData, startColumnIndex);
       InsertNewRow.insert(at, at.content.length, true, newRowData);
@@ -61,9 +60,9 @@ export class InsertMatrix {
   }
 
   // prettier-ignore
-  private static createNewColumns(at: ActiveTable, dataForNewColumnsByRow: Matrix, startRowIndex: number) {
+  private static createNewColumns(at: ActiveTable, dataForNewColumnsByRow: TableContent, startRowIndex: number) {
     const dataForNewColumnsByColumn = ArrayUtils.transpose(dataForNewColumnsByRow);
-    dataForNewColumnsByColumn.forEach((columnData: MatrixRow) => {
+    dataForNewColumnsByColumn.forEach((columnData: TableRow) => {
       const newColumnData = InsertMatrix.createRowDataArrayWithEmptyCells(
         at.content.length, columnData, startRowIndex);
       InsertNewColumn.insert(at, at.content[0].length, newColumnData);
@@ -107,9 +106,9 @@ export class InsertMatrix {
 
   // prettier-ignore
   private static overwriteExistingCells(
-    at: ActiveTable, dataToOverwriteRows: Matrix, startRowIndex: number, startColumnIndex: number) {
-  const dataForNewColumns: Matrix = [];
-  dataToOverwriteRows.forEach((dataToOverwriteRow: MatrixRow, colIndex: number) => {
+    at: ActiveTable, dataToOverwriteRows: TableContent, startRowIndex: number, startColumnIndex: number) {
+  const dataForNewColumns: TableContent = [];
+  dataToOverwriteRows.forEach((dataToOverwriteRow: TableRow, colIndex: number) => {
     const relativeRowIndex = startRowIndex + colIndex;
     const rowElement = at._tableBodyElementRef?.children[relativeRowIndex] as HTMLElement;
     const numberOfCellsToOverwrite = at.content[0].length - startColumnIndex;
@@ -124,13 +123,13 @@ export class InsertMatrix {
 }
 
   // no new rows should be created if no columns that are to be overwritten/created allow text edit
-  private static canNewRowsBeCreated(at: ActiveTable, matrix: Matrix, startColumnIndex: number) {
+  private static canNewRowsBeCreated(at: ActiveTable, matrix: TableContent, startColumnIndex: number) {
     return at._columnsDetails
       .slice(startColumnIndex, startColumnIndex + matrix[0].length)
       .find((columnDetails) => columnDetails.settings.isCellTextEditable);
   }
 
-  private static insertColumnsInsideIfCantInsertRight(at: ActiveTable, matrix: Matrix, startColumnIndex: number) {
+  private static insertColumnsInsideIfCantInsertRight(at: ActiveTable, matrix: TableContent, startColumnIndex: number) {
     const columnsToBeOverwritten = at._columnsDetails.slice(startColumnIndex);
     const indexOfNoRightInsertionColumn = columnsToBeOverwritten.findIndex((columnDetails) => {
       return columnDetails.settings.columnDropdown.isInsertRightAvailable === false;
@@ -151,7 +150,7 @@ export class InsertMatrix {
     }
   }
 
-  private static getDataForImportedCSVColumns(matrix: Matrix, tableContent: TableContent, startColumnIndex: number) {
+  private static getNewMatrixBasedOnColumns(matrix: TableContent, tableContent: TableContent, startColumnIndex: number) {
     const numberOfNewColumnsRequired = (matrix[0]?.length || 0) - (tableContent[0]?.length || 0) - startColumnIndex;
     if (numberOfNewColumnsRequired > 0) {
       // because imported CSV removes any existing rows after startRowIndex - use tableContent.length
@@ -163,18 +162,18 @@ export class InsertMatrix {
   // A matrix is a complete 2D array
   // prettier-ignore
   public static insert(at: ActiveTable,
-      matrix: Matrix, startRowIndex: number, startColumnIndex: number, isCSVImport?: boolean) {
+      matrix: TableContent, startRowIndex: number, startColumnIndex: number, isFullTableData?: boolean) {
     const numberOfRowsToOverwrite = at.content.length - startRowIndex;
     // import ignores the isInsertRightAvailable rule
-    if (!isCSVImport) InsertMatrix.insertColumnsInsideIfCantInsertRight(at, matrix, startColumnIndex);
+    if (!isFullTableData) InsertMatrix.insertColumnsInsideIfCantInsertRight(at, matrix, startColumnIndex);
     const dataToOverwriteRows = matrix.slice(0, numberOfRowsToOverwrite);
     // the reason why new columns are not created when the existing cells are overwritten is because the creation of new
     // columns allows new column data to be defined - which is gathered after traversing all dataToOverwriteRows
-    const dataForNewColumnsByRow = isCSVImport
-      ? InsertMatrix.getDataForImportedCSVColumns(matrix, at.content, startColumnIndex)
+    const dataForNewColumnsByRow = isFullTableData
+      ? InsertMatrix.getNewMatrixBasedOnColumns(matrix, at.content, startColumnIndex)
       : InsertMatrix.overwriteExistingCells(at, dataToOverwriteRows, startRowIndex, startColumnIndex);
     InsertMatrix.createNewColumns(at, dataForNewColumnsByRow, startRowIndex);
-    if (!isCSVImport && !InsertMatrix.canNewRowsBeCreated(at, matrix, startColumnIndex)) return;
+    if (!isFullTableData && !InsertMatrix.canNewRowsBeCreated(at, matrix, startColumnIndex)) return;
     const dataForNewRows = matrix.slice(numberOfRowsToOverwrite);
     InsertMatrix.createNewRows(at, dataForNewRows, startColumnIndex);
     setTimeout(() => FireEvents.onContentUpdate(at));

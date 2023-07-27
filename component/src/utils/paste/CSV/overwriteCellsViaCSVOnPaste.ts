@@ -1,5 +1,5 @@
-import {InsertMatrix} from '../../insertRemoveStructure/insert/insertMatrix';
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
+import {InsertMatrix} from '../../programmaticUpdates/insertMatrix';
 import {ParseCSVClipboardText} from './parseCSVClipboardText';
 import {FocusedCell} from '../../../types/focusedCell';
 import {ActiveTable} from '../../../activeTable';

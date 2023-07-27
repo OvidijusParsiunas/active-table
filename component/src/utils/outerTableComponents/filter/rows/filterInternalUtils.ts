@@ -87,17 +87,18 @@ export class FilterInternalUtils {
   }
 
   public static unsetAllFilters(at: ActiveTable) {
+    let reset = false;
     const {content, _visiblityInternal, _tableBodyElementRef} = at;
     if (content[0] && content[0].length !== 0 && _tableBodyElementRef) {
-      let needReset = false;
       _visiblityInternal.rows?.forEach((rowConfig) => {
         if (rowConfig.inputElement.value !== '') {
           rowConfig.inputElement.value = '';
-          needReset = true;
+          reset = true;
         }
       });
-      if (needReset) _visiblityInternal.rows?.[0].inputElement.dispatchEvent(new Event('input'));
+      if (reset) _visiblityInternal.rows?.[0].inputElement.dispatchEvent(new Event('input'));
     }
+    return reset;
   }
 
   // prettier-ignore

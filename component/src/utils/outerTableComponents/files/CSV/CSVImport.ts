@@ -1,6 +1,4 @@
-import {NoContentStubElement} from '../../../../elements/table/addNewElements/shared/noContentStubElement';
-import {InsertMatrix} from '../../../insertRemoveStructure/insert/insertMatrix';
-import {RemoveRow} from '../../../insertRemoveStructure/remove/removeRow';
+import {UpdateAllTableData} from '../../../programmaticUpdates/updateAllTableData';
 import {ImportOverwriteOptions} from '../../../../types/files';
 import {ActiveTable} from '../../../../activeTable';
 
@@ -50,16 +48,7 @@ export class CSVImport {
       csvContent.splice(0, options.importRowStartIndex);
     if (!csvContent || csvContent.length === 0) return;
     const startRowIndex = CSVImport.getStartRowIndex(at.content.length, options);
-    for (let i = at.content.length - 1; i >= startRowIndex; i -= 1) {
-      RemoveRow.remove(at, i);
-    }
-    // in a timeout because RemoveRow.remove contains processes inside timeouts e.g. remove column details
-    setTimeout(() => {
-      InsertMatrix.insert(at, csvContent, startRowIndex, 0, true);
-      if (startRowIndex === 0) {
-        NoContentStubElement.convertFromStub({target: at._addRowCellElementRef as HTMLElement});
-      }
-    });
+    UpdateAllTableData.update(at, csvContent, startRowIndex);
   }
 
   public static import(at: ActiveTable, file: File, options?: ImportOverwriteOptions) {
