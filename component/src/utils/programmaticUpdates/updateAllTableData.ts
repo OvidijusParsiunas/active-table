@@ -1,6 +1,9 @@
+import {ToggleAdditionElements} from '../../elements/table/addNewElements/shared/toggleAdditionElements';
 import {NoContentStubElement} from '../../elements/table/addNewElements/shared/noContentStubElement';
 import {FilterInternalUtils} from '../outerTableComponents/filter/rows/filterInternalUtils';
+import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
 import {PaginationUtils} from '../outerTableComponents/pagination/paginationUtils';
+import {InitialContentProcessing} from '../content/initialContentProcessing';
 import {RemoveRow} from '../insertRemoveStructure/remove/removeRow';
 import {TableContent} from '../../types/tableContent';
 import {ActiveTable} from '../../activeTable';
@@ -11,6 +14,8 @@ export class UpdateAllTableData {
     for (let i = at.content.length - 1; i >= startRowIndex; i -= 1) {
       RemoveRow.remove(at, i);
     }
+    InitialContentProcessing.preProcess(at, content);
+    at._isPopulatingTable = true;
     // in a timeout because RemoveRow.remove contains processes inside timeouts e.g. remove column details
     setTimeout(() => {
       InsertMatrix.insert(at, content, startRowIndex, 0, true);
@@ -21,9 +26,10 @@ export class UpdateAllTableData {
     setTimeout(() => {
       // in a timeout as at.shadowRoot.contains does not work immediately
       FilterInternalUtils.completeReset(at);
-      if (at._pagination && at._pagination.activePageNumber !== 1) {
-        PaginationUtils.displayRowsForDifferentButton(at, 1);
-      }
+      // updateRowsOnNewInsert sets uses activePageNumber + 1
+      if (at._pagination && at._pagination.activePageNumber !== 1) PaginationUtils.displayRowsForDifferentButton(at, 1);
+      ToggleAdditionElements.update(at, true, AddNewRowElement.toggle);
+      at._isPopulatingTable = false;
     }, 6);
   }
 

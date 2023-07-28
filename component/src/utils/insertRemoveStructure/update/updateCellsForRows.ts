@@ -10,7 +10,7 @@ import {FireEvents} from '../../events/fireEvents';
 import {ActiveTable} from '../../../activeTable';
 
 export class UpdateCellsForRows {
-  private static updateRowCells(at: ActiveTable, rowElement: HTMLElement, rowIndex: number, updateType: CELL_UPDATE_TYPE) {
+  public static updateRowCells(at: ActiveTable, rowElement: HTMLElement, rowIndex: number, updateType: CELL_UPDATE_TYPE) {
     const dataCellElements = ExtractElements.textCellsArrFromRow(rowElement);
     dataCellElements.forEach((cellElement: Node, columnIndex: number) => {
       if (updateType !== CELL_UPDATE_TYPE.REMOVED) {

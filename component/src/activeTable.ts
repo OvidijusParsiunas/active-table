@@ -370,6 +370,14 @@ export class ActiveTable extends LitElement {
   })
   _isRendering = false;
 
+  // REF-43
+  @state({
+    hasChanged() {
+      return false;
+    },
+  })
+  _isPopulatingTable = false;
+
   static _ELEMENT_TAG = 'ACTIVE-TABLE';
 
   static override styles = [activeTableStyle];
@@ -383,6 +391,7 @@ export class ActiveTable extends LitElement {
   }
 
   protected override update(changedProperties: PropertyValues) {
+    this._isPopulatingTable = true;
     StickyPropsUtils.process(this);
     ColumnSettingsUtils.setUpInternalSettings(this);
     FrameComponentsInternalUtils.set(this);
@@ -396,10 +405,11 @@ export class ActiveTable extends LitElement {
     TableElement.addOverlayElements(this, tableElement, this._activeOverlayElements);
     this.shadowRoot?.appendChild(this._overflow?.overflowContainer || tableElement);
     OuterTableComponents.create(this);
-    InitialContentProcessing.preProcess(this);
+    InitialContentProcessing.preProcess(this, this.content);
     WindowElement.setEvents(this);
     this.spellcheck = this.spellCheck;
     if (this.auxiliaryStyle && this.shadowRoot) WebComponentStyleUtils.add(this.auxiliaryStyle, this.shadowRoot);
+    setTimeout(() => (this._isPopulatingTable = false), 1);
     super.update(changedProperties);
   }
 

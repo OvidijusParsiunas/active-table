@@ -22,7 +22,11 @@ export class InitialContentProcessing {
     row.splice(row.length, maxRowLength - row.length, ...newArray);
   }
 
-  private static makeAllContentRowsSameLength(content: TableContent, maxRowLength: number) {
+  private static processRowContentByLength(content: TableContent, maxRowLength: number) {
+    // if all rows length is 0 - remove them
+    if (maxRowLength === 0) {
+      content.splice(0, content.length);
+    }
     content.forEach((row) => {
       if (row.length < maxRowLength) {
         InitialContentProcessing.fillRow(row, maxRowLength);
@@ -54,11 +58,11 @@ export class InitialContentProcessing {
     }, new Set());
   }
 
-  public static preProcess(at: ActiveTable) {
-    const {content, maxRows, allowDuplicateHeaders, _defaultColumnsSettings} = at;
+  public static preProcess(at: ActiveTable, content: TableContent) {
+    const {maxRows, allowDuplicateHeaders, _defaultColumnsSettings} = at;
     InitialContentProcessing.removeRowsExceedingLimit(content, maxRows);
     const maxRowLength = InitialContentProcessing.getMaxRowLength(content);
-    InitialContentProcessing.makeAllContentRowsSameLength(content, maxRowLength);
+    InitialContentProcessing.processRowContentByLength(content, maxRowLength);
     if (!allowDuplicateHeaders && content.length > 0) {
       InitialContentProcessing.removeDuplicateHeaders(content, _defaultColumnsSettings.defaultText);
     }

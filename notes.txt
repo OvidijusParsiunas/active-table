@@ -262,7 +262,7 @@ to be even to make sure that no sibling rows are same.
 REF-33
 Cell event setters have been optimized to only be called when a column type is set or when a new cell is being inserted - instead of
 setting events on the conversion of each cell. The reason for that is after a cell is created, the events are set again in
-CellEventsReset method, hence remvoving redundant call.
+CellEventsReset method, hence removing a redundant call.
 
 REF-34
 To make sure that label colors vary, _globalItemColors property contains a reference to a default array of predefined colors which will
@@ -306,6 +306,9 @@ automatically pick it up.
 
 REF-42
 Row filtering works by iterating all filter inputs sequentially and eleminitating (hiding) any rows that don't match the filter text.
+
+REF-43
+_isPopulatingTable is primarily used to trigger ADD cell events when table is prepopulated as otherwise it would use UPDATE events.
 
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property

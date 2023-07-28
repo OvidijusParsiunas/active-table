@@ -78,7 +78,7 @@ export class InsertNewRow {
     if (!MaximumRows.canAddMore(at)) return;
     const isReplacingHeader = isNewText && rowIndex === 0 && at._columnsDetails.length > 0;
     if (isReplacingHeader) rowIndex = 1; // REF-26
-    InsertNewRow.insertNewRow(at, rowIndex, isNewText, rowData);
+    const rowElement = InsertNewRow.insertNewRow(at, rowIndex, isNewText, rowData);
     if (isNewText) {
       ToggleAdditionElements.update(at, true, AddNewRowElement.toggle);
       if (at._frameComponents.displayIndexColumn) IndexColumn.updateIndexes(at, rowIndex + 1);
@@ -86,11 +86,12 @@ export class InsertNewRow {
     }
     if (isReplacingHeader) MoveRow.move(at, 0, true); // REF-26
     setTimeout(() => {
-      // this is used to prevent multiple rebindings of same rows as upon the insertion of multiple via the initial
-      // table render or after pasting, the content array would be populated synchronously which would cause
-      // the lastRowIndex to be high every time this is called and rows between rowIndex and lastRowIndex would
-      // be rebinded multiple times
-      if (!rowData) {
+      if (at._isPopulatingTable) {
+        UpdateCellsForRows.updateRowCells(at, rowElement, rowIndex, CELL_UPDATE_TYPE.ADD);
+        // this is used to prevent multiple rebindings of same rows as upon the insertion of a new row or after pasting,
+        // the content array would be populated synchronously which would cause the lastRowIndex to be high every time
+        // this is called and rows between rowIndex and lastRowIndex would be rebinded multiple times
+      } else if (!rowData) {
         InsertNewRow.bindAndfireCellUpdates(at, rowIndex);
       } else if (rowIndex === at.content.length - 1) {
         // may not be best to start from 0 but this method has no concept of starting point
