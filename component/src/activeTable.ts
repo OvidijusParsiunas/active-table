@@ -14,6 +14,7 @@ import {WebComponentStyleUtils} from './utils/webComponent/webComponentStyleUtil
 import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
+import {UpdateAllTableData} from './utils/programmaticUpdates/updateAllTableData';
 import {FilesUtils} from './utils/outerTableComponents/files/filesInternalUtils';
 import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {ColumnDropdownSettingsDefault} from './types/columnDropdownSettings';
@@ -91,6 +92,11 @@ export class ActiveTable extends LitElement {
   @property({attribute: false})
   updateCell: (update: ProgrammaticCellUpdateT) => void = (update: ProgrammaticCellUpdateT) => {
     ProgrammaticCellUpdate.updateText(this, update);
+  };
+
+  @property({attribute: false})
+  updateContent: (content: (number | string)[][]) => void = (content: (number | string)[][]) => {
+    UpdateAllTableData.update(this, content, 0);
   };
 
   // can only be activated by a user action - such as a button click

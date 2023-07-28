@@ -10,6 +10,9 @@ import {ActiveTable} from '../../activeTable';
 import {IndexColumn} from './indexColumn';
 
 export class UpdateIndexColumnWidth {
+  private static readonly TEMPORARY_INDEX_ID_PREFIX = 'active-table-temp-index-';
+  private static readonly TEMPORARY_INDEX_ID_PREFIX_LENGTH = UpdateIndexColumnWidth.TEMPORARY_INDEX_ID_PREFIX.length;
+
   private static wrapColumnTextAndGetDefaultWidth(at: ActiveTable) {
     const {_tableBodyElementRef, content, _tableDimensions} = at;
     ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content).forEach((row) => {
@@ -54,16 +57,30 @@ export class UpdateIndexColumnWidth {
     return cell.scrollWidth + (Number.parseInt(getComputedStyle(cell).borderRightWidth) || 0);
   }
 
-  private static getIndexColumnWidth(firstRow: HTMLElement, lastCell: HTMLElement) {
+  // using a prefix because the same index cell can get overwritten multiple times by new last cells in pagination
+  // hidden pages - so when resetting in a timeout - the reset vaue is no longer the original
+  // to reproduce the error, simply set the following code in timeout: firstDataCell.textContent = firstCellContent
+  // and either upload a new file, drag and rop a new files, updateContent method with a lot of content
+  private static temporarilySetFirstDataCellWithLastNumber(firstDataCell: HTMLElement, lastCell: HTMLElement) {
+    const firstCellContent = firstDataCell.textContent;
+    if (!firstDataCell.id) firstDataCell.id = `${UpdateIndexColumnWidth.TEMPORARY_INDEX_ID_PREFIX}${firstCellContent}`;
+    firstDataCell.textContent = lastCell.textContent;
+    setTimeout(() => {
+      if (firstDataCell.id !== '') {
+        firstDataCell.textContent = firstDataCell.id.substring(UpdateIndexColumnWidth.TEMPORARY_INDEX_ID_PREFIX_LENGTH);
+        firstDataCell.removeAttribute('id');
+      }
+    });
+  }
+
+  private static getIndexColumnWidthWithAsyncFix(firstRow: HTMLElement, lastCell: HTMLElement) {
     // if using pagination and the last row is not visible, then scrollWidth will be 0 and we must temporarily add
     // the last cell content to the first data row cell to measure the overflow
     if (lastCell.scrollWidth === 0) {
       const firstDataRow = firstRow?.nextSibling as HTMLElement;
       if (firstDataRow && !AddNewRowElement.isAddNewRowRow(firstDataRow)) {
         const firstDataCell = firstDataRow.children[0] as HTMLElement;
-        const firstCellContent = firstDataCell.textContent;
-        firstDataCell.textContent = lastCell.textContent;
-        setTimeout(() => (firstDataCell.textContent = firstCellContent));
+        UpdateIndexColumnWidth.temporarilySetFirstDataCellWithLastNumber(firstDataCell, lastCell);
         return UpdateIndexColumnWidth.getCellWidth(firstDataCell);
       }
     }
@@ -73,7 +90,7 @@ export class UpdateIndexColumnWidth {
   // this works because the 'block' display style is not set on the table
   // checking if the cells width is overflown and if so - increase its width (cannot decrease the width)
   private static updateColumnWidthWhenOverflow(at: ActiveTable, firstRow: HTMLElement, lastCell: HTMLElement) {
-    const indexColumnWidth = UpdateIndexColumnWidth.getIndexColumnWidth(firstRow, lastCell);
+    const indexColumnWidth = UpdateIndexColumnWidth.getIndexColumnWidthWithAsyncFix(firstRow, lastCell);
     if (at._tableDimensions.indexColumnWidth !== indexColumnWidth && indexColumnWidth !== 0) {
       // Firefox does not include lastCell paddingRight (4px) when setting the new width
       const newWidth = indexColumnWidth + (Browser.IS_FIREFOX ? 4 : 0);
