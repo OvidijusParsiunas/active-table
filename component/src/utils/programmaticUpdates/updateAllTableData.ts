@@ -36,7 +36,7 @@ export class UpdateAllTableData {
   public static update(at: ActiveTable, content: TableContent, startRowIndex: number) {
     if (!Array.isArray(content)) return;
     let waitForFilterUnset = false;
-    if (at._visiblityInternal.rows) {
+    if (at._visiblityInternal.filters) {
       waitForFilterUnset = FilterInternalUtils.unsetAllFilters(at);
     }
     if (waitForFilterUnset) {

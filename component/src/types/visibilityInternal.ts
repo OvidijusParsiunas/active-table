@@ -16,7 +16,7 @@ export interface FilterInternal {
 }
 
 // encapsulates manually togglable structures for visibility (not pagination)
-// will have columsn here in the future
+// will have columns here in the future
 export interface VisibilityInternal {
-  rows?: FilterInternal[];
+  filters?: FilterInternal[];
 }

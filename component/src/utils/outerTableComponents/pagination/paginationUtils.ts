@@ -161,7 +161,7 @@ export class PaginationUtils {
   // prettier-ignore
   private static setCorrectRowsAsVisible(at: ActiveTable, buttonNumber: number) {
     const {_pagination: {rowsPerPage, visibleRows}, _tableBodyElementRef, content, _visiblityInternal} = at;
-    const tableRows = _visiblityInternal?.rows
+    const tableRows = _visiblityInternal?.filters
       ? FilterInternalUtils.extractUnfilteredRows(_tableBodyElementRef as HTMLElement, content.length)
       : ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content)
     let startingRowIndex = rowsPerPage * (buttonNumber - 1);

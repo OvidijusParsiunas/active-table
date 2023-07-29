@@ -48,8 +48,8 @@ export class FilterInternalUtils {
       placeholderTemplate,
       defaultColumnHeaderName: defaultColumnHeaderName || FilterInternalUtils.generateDefaultHeaderName(at.content),
     } as FilterInternal;
-    at._visiblityInternal.rows ??= [];
-    at._visiblityInternal.rows.push(internalConfig);
+    at._visiblityInternal.filters ??= [];
+    at._visiblityInternal.filters.push(internalConfig);
     return internalConfig;
   }
 
@@ -70,13 +70,13 @@ export class FilterInternalUtils {
 
   // prettier-ignore
   public static resetInput(at: ActiveTable, config: FilterInternal) {
-    const {_visiblityInternal: {rows}} = at;
+    const {_visiblityInternal: {filters}} = at;
     FilterInternalUtils.assignElements(at, config);
-    if (!config.elements || !rows) return;
+    if (!config.elements || !filters) return;
     const headerName = CellElement.getText(config.elements[0]);
     config.lastRegisteredHeaderName = headerName;
     FilterInputElement.setPlaceholder(config.inputElement, headerName, config.placeholderTemplate);
-    FilterInputEvents.setEvents(at, config, rows);
+    FilterInputEvents.setEvents(at, config, filters);
   }
 
   public static unsetFilter(inputElement: HTMLInputElement) {
@@ -90,34 +90,34 @@ export class FilterInternalUtils {
     let reset = false;
     const {content, _visiblityInternal, _tableBodyElementRef} = at;
     if (content[0] && content[0].length !== 0 && _tableBodyElementRef) {
-      _visiblityInternal.rows?.forEach((rowConfig) => {
+      _visiblityInternal.filters?.forEach((rowConfig) => {
         if (rowConfig.inputElement.value !== '') {
           rowConfig.inputElement.value = '';
           reset = true;
         }
       });
-      if (reset) _visiblityInternal.rows?.[0].inputElement.dispatchEvent(new Event('input'));
+      if (reset) _visiblityInternal.filters?.[0].inputElement.dispatchEvent(new Event('input'));
     }
     return reset;
   }
 
   // prettier-ignore
   public static resetAllInputs(at: ActiveTable) {
-    const {content, _visiblityInternal: {rows}} = at;
-    if (!content[0] || content[0].length === 0 || !rows) return FilterInputEvents.unsetEvents(rows);
-    rows.forEach((rowConfig) => FilterInternalUtils.resetInput(at, rowConfig));
+    const {content, _visiblityInternal: {filters}} = at;
+    if (!content[0] || content[0].length === 0 || !filters) return FilterInputEvents.unsetEvents(filters);
+    filters.forEach((config) => FilterInternalUtils.resetInput(at, config));
     FilterInternalUtils.unsetAllFilters(at);
   }
 
   public static completeReset(at: ActiveTable) {
-    const internalRows = at._visiblityInternal.rows;
-    if (!internalRows) return;
+    const internalFilters = at._visiblityInternal.filters;
+    if (!internalFilters) return;
     if (Array.isArray(at.filter)) {
       at.filter.forEach((rowConfig, index) => {
-        internalRows[index].defaultColumnHeaderName = rowConfig.defaultColumnHeaderName;
+        internalFilters[index].defaultColumnHeaderName = rowConfig.defaultColumnHeaderName;
       });
     } else if (typeof at.filter === 'object') {
-      internalRows[0].defaultColumnHeaderName = at.filter.defaultColumnHeaderName;
+      internalFilters[0].defaultColumnHeaderName = at.filter.defaultColumnHeaderName;
     }
     FilterInternalUtils.resetAllInputs(at);
   }
@@ -144,9 +144,9 @@ export class FilterInternalUtils {
     return rows.slice(0, contentLength).filter((row) => !row.classList.contains(FilterInternalUtils.HIDDEN_ROW_CLASS));
   }
 
-  public static wasHeaderChanged(columnsDetails: ColumnsDetailsT, rows: FilterInternal[], columnIndex: number) {
+  public static wasHeaderChanged(columnsDetails: ColumnsDetailsT, rowConfigs: FilterInternal[], columnIndex: number) {
     const elements = columnsDetails[columnIndex].elements;
-    const rowConfig = rows.find((rowConfig) => elements === rowConfig.elements);
-    return !rowConfig || rowConfig.lastRegisteredHeaderName !== CellElement.getText(elements[0]);
+    const rowConfig = rowConfigs.find((rowConfig) => elements === rowConfig.elements);
+    return rowConfig && rowConfig.lastRegisteredHeaderName !== CellElement.getText(elements[0]);
   }
 }

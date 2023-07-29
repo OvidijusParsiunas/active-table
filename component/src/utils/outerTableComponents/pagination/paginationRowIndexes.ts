@@ -27,7 +27,7 @@ export class PaginationRowIndexes {
     if (isAllRowsOptionSelected) {
       return content.length + 1;
     }
-    if (_visiblityInternal.rows) {
+    if (_visiblityInternal.filters) {
       return PaginationRowIndexes.getFilteredMaxVisibleRowIndex(_tableBodyElementRef as HTMLElement, _pagination);
     }
     return activePageNumber * rowsPerPage;

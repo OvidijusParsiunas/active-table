@@ -13,8 +13,8 @@ export class HeaderText {
     if (!event?.colRemove) {
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, cellElement, columnIndex, event?.colMove);
     }
-    if (at._visiblityInternal.rows) {
-      if (FilterInternalUtils.wasHeaderChanged(at._columnsDetails, at._visiblityInternal.rows, columnIndex)) {
+    if (at._visiblityInternal.filters) {
+      if (FilterInternalUtils.wasHeaderChanged(at._columnsDetails, at._visiblityInternal.filters, columnIndex)) {
         VisibilityUtils.headerChanged(at);
       }
     }
