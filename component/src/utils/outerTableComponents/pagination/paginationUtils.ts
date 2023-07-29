@@ -108,7 +108,16 @@ export class PaginationUtils {
     } else {
       PaginationUtils.hideRow(newRowElement);
       // wait for a new button to be created when on last
-      setTimeout(() => PaginationUtils.displayRowsForDifferentButton(at, activePageNumber + 1));
+      setTimeout(() => {
+        const lastPageNumber = PaginationUtils.getLastPossiblePageNumber(at);
+        const newPageNumber = activePageNumber + 1;
+        if (lastPageNumber < newPageNumber) {
+          // fix for error when using pagination, filtered down to 1 page and adding row via updateStructure to second page
+          PaginationUtils.setCorrectRowsAsVisible(at, lastPageNumber);
+        } else {
+          PaginationUtils.displayRowsForDifferentButton(at, newPageNumber);
+        }
+      });
     }
   }
 

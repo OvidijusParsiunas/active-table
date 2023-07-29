@@ -105,7 +105,7 @@ export class InsertNewRow {
     if (this.pagination) {
       if (this._visiblityInternal.rows && this._tableBodyElementRef) {
         const index = PaginationRowIndexes.getVisibleRowReallIndex(this._tableBodyElementRef, this._pagination);
-        newRowIndex = index + 1;
+        newRowIndex = Math.max(index, 0) + 1;
       } else {
         const maxVisibleRowIndex = PaginationRowIndexes.getMaxVisibleRowIndex(this);
         if (maxVisibleRowIndex < newRowIndex) newRowIndex = maxVisibleRowIndex;

@@ -1,8 +1,10 @@
 import {PaginationInternalUtils} from './utils/outerTableComponents/pagination/paginationInternalUtils';
+import {ProgrammaticCellUpdateT, ProgrammaticStructureUpdateT} from './types/programmaticCellUpdateT';
 import {ColumnUpdateDetails, OnCellUpdate, OnColumnsUpdate, OnContentUpdate} from './types/onUpdate';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
 import {FileExportButtonEvents} from './elements/files/buttons/exportButton/fileExportButtonEvents';
 import {FileImportButtonEvents} from './elements/files/buttons/importButton/fileImportButtonEvents';
+import {ProgrammaticStructureUpdate} from './utils/programmaticUpdates/programmaticStructureUpdate';
 import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {ProgrammaticCellUpdate} from './utils/programmaticUpdates/programmaticCellUpdate';
@@ -23,7 +25,6 @@ import {FrameComponentsStyles, IndexColumnT} from './types/frameComponents';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {FrameComponentsInternal} from './types/frameComponentsInternal';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
-import {ProgrammaticCellUpdateT} from './types/programmaticCellUpdateT';
 import {DefaultColumnsSettings} from './types/columnsSettingsDefault';
 import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
@@ -92,6 +93,11 @@ export class ActiveTable extends LitElement {
   @property({attribute: false})
   updateCell: (update: ProgrammaticCellUpdateT) => void = (update: ProgrammaticCellUpdateT) => {
     ProgrammaticCellUpdate.updateText(this, update);
+  };
+
+  @property({attribute: false})
+  updateStructure: (update: ProgrammaticStructureUpdateT) => void = (update: ProgrammaticStructureUpdateT) => {
+    ProgrammaticStructureUpdate.update(this, update);
   };
 
   @property({attribute: false})

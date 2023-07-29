@@ -8,6 +8,7 @@ import {Browser} from '../../utils/browser/browser';
 import {TableElement} from '../table/tableElement';
 import {ActiveTable} from '../../activeTable';
 import {IndexColumn} from './indexColumn';
+import {PaginationInternal} from '../../types/paginationInternal';
 
 export class UpdateIndexColumnWidth {
   private static readonly TEMPORARY_INDEX_ID_PREFIX = 'active-table-temp-index-';
@@ -115,15 +116,35 @@ export class UpdateIndexColumnWidth {
     }
   }
 
-  private static updatedBasedOnTableStyle(at: ActiveTable, lastCell: HTMLElement, forceWrap = false) {
-    const firstRow = at.pagination ? at._pagination.visibleRows[0] : (at._tableBodyElementRef?.children[0] as HTMLElement);
+  private static updatedBasedOnTableStyle(at: ActiveTable, row: HTMLElement, lastCell: HTMLElement, forceWrap = false) {
     if (forceWrap) {
-      UpdateIndexColumnWidth.forceWrap(at, firstRow);
+      UpdateIndexColumnWidth.forceWrap(at, row);
       // when 'block' display style is not set on the table
     } else if (at._tableDimensions.preserveNarrowColumns || at._tableDimensions.maxWidth !== undefined) {
-      UpdateIndexColumnWidth.updateColumnWidthWhenOverflow(at, firstRow, lastCell);
+      UpdateIndexColumnWidth.updateColumnWidthWhenOverflow(at, row, lastCell);
     } else if (at._tableDimensions.width !== undefined) {
       UpdateIndexColumnWidth.checkAutoColumnWidthUpdate(at, lastCell);
+    }
+  }
+
+  private static getFirstVisibleRow(pagination: PaginationInternal, tableBodyElement?: HTMLElement) {
+    return pagination ? pagination.visibleRows[0] : (tableBodyElement?.children[0] as HTMLElement);
+  }
+
+  private static updatedBasedOnVisiblity(at: ActiveTable, lastCell: HTMLElement, forceWrap = false) {
+    const firstRow = UpdateIndexColumnWidth.getFirstVisibleRow(at._pagination, at._tableBodyElementRef);
+    if (at._pagination && at.filter) {
+      if (firstRow) {
+        UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, firstRow, lastCell, forceWrap);
+      } else {
+        // when pagination is set, all rows have been filtered to not visible and new row is added via updateContent
+        setTimeout(() => {
+          const firstRow = UpdateIndexColumnWidth.getFirstVisibleRow(at._pagination, at._tableBodyElementRef);
+          UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, firstRow, lastCell, forceWrap);
+        });
+      }
+    } else if (firstRow) {
+      UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, firstRow, lastCell, forceWrap);
     }
   }
 
@@ -136,7 +157,7 @@ export class UpdateIndexColumnWidth {
       textRowsArr = ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content);
     }
     const lastCell = textRowsArr[textRowsArr.length - 1]?.children[0] as HTMLElement;
-    if (lastCell) UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, lastCell, forceWrap);
+    if (lastCell) UpdateIndexColumnWidth.updatedBasedOnVisiblity(at, lastCell, forceWrap);
   }
 
   // used when a new column is added to see if wrapping is needed

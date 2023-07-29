@@ -5,3 +5,10 @@ export interface ProgrammaticCellUpdateT {
   rowIndex: number;
   columnIndex: number;
 }
+
+export interface ProgrammaticStructureUpdateT {
+  structure: 'row' | 'column';
+  isInsert: boolean;
+  index: number;
+  data?: (string | number)[];
+}
