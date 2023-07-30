@@ -4,11 +4,11 @@ import {AddNewColumnElement} from '../table/addNewElements/column/addNewColumnEl
 import {TableDimensionsUtils} from '../../utils/tableDimensions/tableDimensionsUtils';
 import {AddNewRowElement} from '../table/addNewElements/row/addNewRowElement';
 import {ExtractElements} from '../../utils/elements/extractElements';
+import {PaginationInternal} from '../../types/paginationInternal';
 import {Browser} from '../../utils/browser/browser';
 import {TableElement} from '../table/tableElement';
 import {ActiveTable} from '../../activeTable';
 import {IndexColumn} from './indexColumn';
-import {PaginationInternal} from '../../types/paginationInternal';
 
 export class UpdateIndexColumnWidth {
   private static readonly TEMPORARY_INDEX_ID_PREFIX = 'active-table-temp-index-';
@@ -138,9 +138,10 @@ export class UpdateIndexColumnWidth {
         UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, firstRow, lastCell, forceWrap);
       } else {
         // when pagination is set, all rows have been filtered to not visible and new row is added via updateContent
+        // firstRow may not be defiened if a row is removed via updateContent
         setTimeout(() => {
           const firstRow = UpdateIndexColumnWidth.getFirstVisibleRow(at._pagination, at._tableBodyElementRef);
-          UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, firstRow, lastCell, forceWrap);
+          if (firstRow) UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, firstRow, lastCell, forceWrap);
         });
       }
     } else if (firstRow) {

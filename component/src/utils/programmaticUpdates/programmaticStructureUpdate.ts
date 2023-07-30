@@ -15,20 +15,20 @@ export class ProgrammaticStructureUpdate {
       const activePaginationNumber = at._pagination?.activePageNumber;
       if (isInsert) {
         InsertNewRow.insert(at, index, true, data);
+        setTimeout(() => {
+          if (at._pagination) {
+            const newPaginationNumber = at._pagination?.activePageNumber;
+            if (activePaginationNumber !== newPaginationNumber) {
+              PaginationUtils.displayRowsForDifferentButton(at, activePaginationNumber);
+            } else if (activePaginationNumber !== 1) {
+              PaginationUtils.displayRowsForDifferentButton(at, 1);
+              PaginationUtils.displayRowsForDifferentButton(at, activePaginationNumber);
+            }
+          }
+        });
       } else {
         RemoveRow.remove(at, index);
       }
-      setTimeout(() => {
-        if (at._pagination) {
-          const newPaginationNumber = at._pagination?.activePageNumber;
-          if (activePaginationNumber !== newPaginationNumber) {
-            PaginationUtils.displayRowsForDifferentButton(at, activePaginationNumber);
-          } else if (activePaginationNumber !== 1) {
-            PaginationUtils.displayRowsForDifferentButton(at, 1);
-            PaginationUtils.displayRowsForDifferentButton(at, activePaginationNumber);
-          }
-        }
-      });
     } else if (structure === 'column') {
       if (isInsert) {
         InsertNewColumn.insert(at, index, data);

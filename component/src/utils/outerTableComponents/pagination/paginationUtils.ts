@@ -78,6 +78,8 @@ export class PaginationUtils {
 
   private static updateRowsOnRemoval(at: ActiveTable, visibleIndex: number) {
     const {visibleRows, activePageNumber} = at._pagination;
+    // bug fix - filtering to one page and removing row via updateContent that is not visible would remove a visible row
+    if (activePageNumber === 1 && visibleIndex === -1) return;
     visibleRows.splice(visibleIndex, 1);
     if (visibleRows.length > 0) {
       const lastVisibleRow = visibleRows[visibleRows.length - 1];
@@ -85,6 +87,12 @@ export class PaginationUtils {
       if (nextRow) PaginationUtils.displayRow(nextRow, visibleRows);
     } else if (activePageNumber > 1) {
       PaginationUtils.displayRowsForDifferentButton(at, activePageNumber - 1);
+      // bug fix - filtering to two pages - on second one with one row left and removing filtered out row from the first
+      // would cause the page to change to first, but we can't know if filtered was removed - so check to see if second
+      // page is still there and if it is - navigate
+      if (at._visiblityInternal.filters && PaginationUtils.getLastPossiblePageNumber(at) !== activePageNumber - 1) {
+        PaginationUtils.displayRowsForDifferentButton(at, activePageNumber);
+      }
     }
   }
 
