@@ -144,9 +144,12 @@ export class FilterInternalUtils {
     return rows.slice(0, contentLength).filter((row) => !row.classList.contains(FilterInternalUtils.HIDDEN_ROW_CLASS));
   }
 
-  public static wasHeaderChanged(columnsDetails: ColumnsDetailsT, rowConfigs: FilterInternal[], columnIndex: number) {
+  // prettier-ignore
+  public static wasHeaderChanged(
+      columnsDetails: ColumnsDetailsT, rowConfigs: FilterInternal[], columnIndex: number, colRemove?: boolean) {
     const elements = columnsDetails[columnIndex].elements;
     const rowConfig = rowConfigs.find((rowConfig) => elements === rowConfig.elements);
-    return rowConfig && rowConfig.lastRegisteredHeaderName !== CellElement.getText(elements[0]);
+    // if rowConfig is set - it means it was the currently edited column
+    return rowConfig && (rowConfig.lastRegisteredHeaderName !== CellElement.getText(elements[0]) || colRemove);
   }
 }

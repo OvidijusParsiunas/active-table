@@ -10,11 +10,12 @@ interface Event {
 
 export class HeaderText {
   public static onAttemptChange(at: ActiveTable, cellElement: HTMLElement, columnIndex: number, event?: Event) {
-    if (!event?.colRemove) {
+    const colRem = event?.colRemove;
+    if (!colRem) {
       ColumnSettingsUtils.changeColumnSettingsIfNameDifferent(at, cellElement, columnIndex, event?.colMove);
     }
     if (at._visiblityInternal.filters) {
-      if (FilterInternalUtils.wasHeaderChanged(at._columnsDetails, at._visiblityInternal.filters, columnIndex)) {
+      if (FilterInternalUtils.wasHeaderChanged(at._columnsDetails, at._visiblityInternal.filters, columnIndex, colRem)) {
         VisibilityUtils.headerChanged(at);
       }
     }
