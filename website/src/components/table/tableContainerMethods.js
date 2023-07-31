@@ -11,9 +11,9 @@ function ResultText(props) {
   );
 }
 
-function click(table, resultText, setResultText, propertyName, displayResults) {
+function click(table, resultText, setResultText, propertyName, displayResults, argument) {
   const activeTableReference = extractChildTableElement(table);
-  const content = activeTableReference[propertyName]();
+  const content = activeTableReference[propertyName](argument);
   if (displayResults ?? true) {
     let newResultTextArr = [...resultText];
     if (newResultTextArr.length === 1 && newResultTextArr[0] === '') newResultTextArr = [];
@@ -23,7 +23,7 @@ function click(table, resultText, setResultText, propertyName, displayResults) {
   }
 }
 
-export default function TableContainerMethods({children, propertyName, displayResults}) {
+export default function TableContainerMethods({children, propertyName, displayResults, argument}) {
   const tableContainerRef = React.useRef(null);
   const [resultText, setResultText] = React.useState(['']);
 
@@ -36,7 +36,7 @@ export default function TableContainerMethods({children, propertyName, displayRe
         <button
           className="documentation-method-button"
           onClick={() =>
-            click(tableContainerRef.current.children[0], resultText, setResultText, propertyName, displayResults)
+            click(tableContainerRef.current.children[0], resultText, setResultText, propertyName, displayResults, argument)
           }
         >
           Call Method

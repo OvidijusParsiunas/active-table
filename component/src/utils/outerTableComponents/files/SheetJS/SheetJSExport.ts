@@ -1,6 +1,6 @@
 import {ActiveTable} from '../../../../activeTable';
 import {FileFormat} from '../../../../types/files';
-import xlsx from 'xlsx';
+import * as xlsx from 'xlsx';
 
 export class SheetJSExport {
   private static getFileName(format: FileFormat, fileName?: string) {

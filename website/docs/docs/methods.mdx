@@ -92,10 +92,18 @@ tableElementRef.getColumnsDetails();
 
 ### `updateCell` {#updateCell}
 
-- Type: `(update: {newText: string|number, rowIndex: number, columnIndex: number}) => void`
+- Type: `(update: CellDetails) => void`
 
-Update cell text programmatically after the table has been initially rendered without triggering another re-render. Both `rowIndex` and `columnIndex` start
-at _0_ where it is the header row for `rowIndex` and the left-most column for `columnIndex`.
+#### `CellDetails` {#CellDetails}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `newText:` `string | number`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `rowIndex: number`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `columnIndex: number` <br />
+  }
+
+Update cell text programmatically. Both `rowIndex` and `columnIndex` start at _0_ where it is the header row for
+`rowIndex` and the left-most column for `columnIndex`.
 
 #### Example
 
@@ -168,6 +176,105 @@ tableElementRef.updateCell({newText: "sample text", rowIndex: 1, columnIndex: 1}
 
 <LineBreak></LineBreak>
 
+### `updateStructure` {#updateStructure}
+
+- Type: [`(update: StructureDetails) => void`](#StructureDetails)
+
+#### `StructureDetails` {#StructureDetails}
+
+- Type: {<br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `structure:` `"row"` | `"column"`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `isInsert: boolean`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `index: number`, <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; `data?: (string|number)[]` <br />
+  }
+
+Programmatically insert/remove rows/columns. <br />
+`structure` defines whether the structure type is for a _"row"_ or a _"column"_. <br />
+`isInsert` sets the update behaviour; _true_ will create a new structure, _false_ will remove an existing one. <br />
+`index` is the row/column index. When adding a new structure, a value of _-1_ will append it to the end of the table. <br />
+`data` defines the new content. If not defined and the update for an insert, this will be populated with [`defaultText`](./content#defaultText).
+
+#### Example
+
+<TableContainerMethods propertyName={"updateStructure"} displayResults={false} argument={{structure: 'row', isInsert: true, index: -1, data: ['New Planet', '12345', '500', '10', '357']}}>
+  <ActiveTable
+    content={[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
+
+</TableContainerMethods>
+
+<Tabs>
+<TabItem value="js" label="Code">
+
+```javascript
+tableElementRef.updateStructure({
+  structure: 'row',
+  isInsert: true,
+  index: -1,
+  data: ['New Planet', '12345', '500', '10', '357'],
+});
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+### `updateContent` {#updateContent}
+
+- Type: `(content: (number | string)[][]) => void`
+
+Programmatically reset table data using the new data iside the `content` argument. <br />
+
+#### Example
+
+<TableContainerMethods propertyName={"updateContent"} displayResults={false} argument={[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ['Mercury', 4879, 0.33, 0, 5429],
+      ['Venus', 12104, 4.87, 0, 5243],
+      ['Uranus', 51118, 86.8, 27, 1270],
+      ['Pluto', 2376, 0.013, 5, 1850],
+      ['Moon', 3475, 0.073, 0, 3340]]}>
+  <ActiveTable
+    content={[
+      ["Planet", "Diameter", "Mass", "Moons", "Density"],
+      ["Earth", 12756, 5.97, 1, 5514],
+      ["Mars", 6792, 0.642, 2, 3934],
+      ["Jupiter", 142984, 1898, 79, 1326],
+      ["Saturn", 120536, 568, 82, 687],
+      ["Neptune", 49528, 102, 14, 1638]]}
+    tableStyle={{"width":"100%", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}}
+></ActiveTable>
+
+</TableContainerMethods>
+
+<Tabs>
+<TabItem value="js" label="Code">
+
+```javascript
+tableElementRef.updateContent([
+  ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+  ['Mercury', 4879, 0.33, 0, 5429],
+  ['Venus', 12104, 4.87, 0, 5243],
+  ['Uranus', 51118, 86.8, 27, 1270],
+  ['Pluto', 2376, 0.013, 5, 1850],
+  ['Moon', 3475, 0.073, 0, 3340],
+]);
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
 ### `importFile` {#importFile}
 
 - Type: [`(options?: ImportOptions) => void`](./files#ImportOptions)
@@ -200,13 +307,13 @@ through user actions, such as a click of a button.
 tableElementRef.importFile();
 ```
 
+</TabItem>
+</Tabs>
+
 :::info
 `csv` files are supported natively, however if you want to import any of the other file formats - you will need to add the [`xlsx`](https://www.npmjs.com/package/xlsx) module
 into your project. Please see examples [here](../../examples/files).
 :::
-
-</TabItem>
-</Tabs>
 
 <LineBreak></LineBreak>
 
