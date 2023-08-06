@@ -24,8 +24,6 @@ Active Table recognises this module via the `window` element as `window.XLSX`. H
   If you are using a dependancy manager such as npm, you can dynamically import the module and assign it to window.XLSX:
 
   ```
-  import * as xlsx from "xlsx";
-
   import("xlsx").then((module) => {
     window.XLSX = module;
   });
@@ -36,8 +34,6 @@ Active Table recognises this module via the `window` element as `window.XLSX`. H
   window.XLSX: <br />
 
   ```
-  import * as xlsx from "xlsx";
-
   import("https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js").then((module) => {
     window.XLSX = module;
   });

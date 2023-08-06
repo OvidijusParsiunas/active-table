@@ -2,7 +2,6 @@ import ExploreButton from './exploreButton/exploreButton';
 import SmallScreen from './smallScreen/smallScreen';
 import FadeInContent from './utils/fadeInContent';
 import StartPanel from './startPanel/startPanel';
-import PreloadFont from './preload/preloadFont';
 import Features from './features/features';
 import FadeInNav from './utils/fadeInNav';
 import Footer from './footer/footer';
@@ -16,7 +15,8 @@ export default function Home() {
     <Layout description="Fully customisable editable table component">
       <main>
         <FadeInNav></FadeInNav>
-        <PreloadFont></PreloadFont>
+        {/* WORK - see if this is still required */}
+        {/* <PreloadFont></PreloadFont> */}
         <div id="homepage-content" ref={homepageContentRef} className="invisible-component">
           <StartPanel></StartPanel>
           <Features></Features>

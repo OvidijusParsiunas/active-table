@@ -78,6 +78,8 @@ const config = {
             'https://raw.githubusercontent.com/OvidijusParsiunas/active-table/main/assets/social-media/social-media.png',
         },
         {name: 'twitter:title', content: 'Active Table'},
+        {name: 'twitter:card', content: 'summary_large_image'},
+        {name: 'twitter:site', content: '@activetable'},
         {name: 'twitter:description', content: 'Framework agnostic table component for editable data experience'},
         {
           name: 'twitter:image',
@@ -118,6 +120,13 @@ const config = {
         indexName: 'activetable',
       },
     }),
+  stylesheets: [
+    {
+      href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap',
+      rel: 'preload',
+      as: 'stylesheet',
+    },
+  ],
 };
 
 module.exports = config;
