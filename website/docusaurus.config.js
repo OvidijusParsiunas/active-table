@@ -120,11 +120,81 @@ const config = {
         indexName: 'activetable',
       },
     }),
-  stylesheets: [
+  // this is used to prevent the website font changing after it is rendered
+  // https://github.com/OvidijusParsiunas/active-table/issues/9
+  // the strategy is to preload the font-faces and their sources, additionally each one will need a 'preload' and 'stylesheet'
+  // rel attribute as 'preload' by itself does not apply the stylesheet
+  headTags: [
+    // The following is used to prevent the component styling from rendering too late
+    // https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2 appears to be the only font used immediately
     {
-      href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap',
-      rel: 'preload',
-      as: 'stylesheet',
+      tagName: 'link',
+      attributes: {
+        rel: 'preload',
+        href: 'https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2',
+        as: 'font',
+        type: 'font/woff2',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'stylesheet',
+        href: 'https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2',
+        as: 'font',
+        type: 'font/woff2',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preload',
+        href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap',
+        as: 'style',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap',
+        as: 'style',
+      },
+    },
+    // The following is used to prevent site's 'inter_webfont' font-family from rendering too late
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preload',
+        href: '/fonts/inter.woff2',
+        as: 'font',
+        type: 'font/woff2',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'stylesheet',
+        href: '/fonts/inter.woff2',
+        as: 'font',
+        type: 'font/woff2',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preload',
+        href: '/fonts/inter-webfont.css',
+        as: 'style',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'stylesheet',
+        href: '/fonts/inter-webfont.css',
+        as: 'style',
+      },
     },
   ],
 };

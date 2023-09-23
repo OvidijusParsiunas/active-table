@@ -15,8 +15,6 @@ export default function Home() {
     <Layout description="Fully customisable editable table component">
       <main>
         <FadeInNav></FadeInNav>
-        {/* WORK - see if this is still required */}
-        {/* <PreloadFont></PreloadFont> */}
         <div id="homepage-content" ref={homepageContentRef} className="invisible-component">
           <StartPanel></StartPanel>
           <Features></Features>
