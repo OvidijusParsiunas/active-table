@@ -221,7 +221,7 @@ export const activeTableStyle = css`
     text-align: center;
   }
 
-  .no-content-stub {
+  .root-cell {
     text-align: center;
     padding: 0px !important;
     border: none !important;

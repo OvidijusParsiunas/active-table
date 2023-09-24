@@ -5,6 +5,7 @@ import {InsertNewRow} from '../insertRemoveStructure/insert/insertNewRow';
 import {RemoveColumn} from '../insertRemoveStructure/remove/removeColumn';
 import {RemoveRow} from '../insertRemoveStructure/remove/removeRow';
 import {DataUtils} from '../insertRemoveStructure/shared/dataUtils';
+import {UpdateAllTableData} from './updateAllTableData';
 import {ActiveTable} from '../../activeTable';
 
 export class ProgrammaticStructureUpdate {
@@ -22,9 +23,12 @@ export class ProgrammaticStructureUpdate {
     return !isInsert && index === currentLength ? currentLength - 1 : index;
   }
 
+  // prettier-ignore
   private static updateColumn(at: ActiveTable, isInsert: boolean, index: number, data?: (string | number)[]) {
     index = ProgrammaticStructureUpdate.processIndex(index, isInsert, at.content[0]?.length || 0);
-    if (isInsert) {
+    if (at.content.length === 0) {
+      if (data) UpdateAllTableData.update(at, data.map((element) => [element]), 0, true);
+    } else if (isInsert) {
       data = ProgrammaticStructureUpdate.processData(at.content.length || 0, data);
       InsertNewColumn.insert(at, index, data);
     } else if (at.content.length > 0) {
@@ -48,15 +52,19 @@ export class ProgrammaticStructureUpdate {
 
   private static updateRow(at: ActiveTable, isInsert: boolean, index: number, data?: (string | number)[]) {
     index = ProgrammaticStructureUpdate.processIndex(index, isInsert, at.content.length);
-    if (isInsert) {
+    if (at.content.length === 0) {
+      // updating all table as first row needs to have columns added
+      if (data) UpdateAllTableData.update(at, [data], 0, true);
+    } else if (isInsert) {
       const activePaginationNumber = at._pagination?.activePageNumber;
       data = ProgrammaticStructureUpdate.processData(at.content[0]?.length || 0, data);
       InsertNewRow.insert(at, index, true, data);
       setTimeout(() => ProgrammaticStructureUpdate.updatePaginationAsync(at, activePaginationNumber));
-    } else if (at.content.length > 0) {
+    } else {
       RemoveRow.remove(at, index);
     }
   }
+
   public static update(at: ActiveTable, update: ProgrammaticStructureUpdateT) {
     const {structure, isInsert, index, data} = update;
     if (typeof isInsert !== 'boolean' || typeof index !== 'number') return;

@@ -1,5 +1,5 @@
-import {NoContentStubElement} from './noContentStubElement';
 import {ActiveTable} from '../../../../activeTable';
+import {RootCellElement} from './rootCellElement';
 
 type ToggleWhenContent = (at: ActiveTable, isInsert: boolean) => void;
 
@@ -8,7 +8,7 @@ type ToggleWhenContent = (at: ActiveTable, isInsert: boolean) => void;
 export class ToggleAdditionElements {
   public static update(at: ActiveTable, isInsert: boolean, toggleWhenContent: ToggleWhenContent) {
     if (at.content.length === 0 || at._columnsDetails.length === 0) {
-      NoContentStubElement.display(at);
+      RootCellElement.display(at);
     } else {
       toggleWhenContent(at, isInsert);
     }

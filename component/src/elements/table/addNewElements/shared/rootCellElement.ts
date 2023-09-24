@@ -3,23 +3,23 @@ import {AddNewRowElement} from '../row/addNewRowElement';
 import {ActiveTable} from '../../../../activeTable';
 
 // REF-18
-export class NoContentStubElement {
-  private static readonly NO_CONTENT_STUB_CLASS = 'no-content-stub';
+export class RootCellElement {
+  private static readonly ROOT_CELL_CLASS = 'root-cell';
 
-  public static convertFromStub(event: {target: EventTarget | null}) {
+  public static convertFromRootCell(event: {target: EventTarget | null}) {
     const addNewRowCell = event.target as HTMLElement;
-    addNewRowCell.classList.remove(NoContentStubElement.NO_CONTENT_STUB_CLASS);
+    addNewRowCell.classList.remove(RootCellElement.ROOT_CELL_CLASS);
     AddNewRowElement.setDefaultStyle(addNewRowCell);
-    addNewRowCell.removeEventListener('click', NoContentStubElement.convertFromStub);
+    addNewRowCell.removeEventListener('click', RootCellElement.convertFromRootCell);
   }
 
-  public static convertToStub(addNewRowCell: HTMLElement) {
-    addNewRowCell.classList.add(NoContentStubElement.NO_CONTENT_STUB_CLASS);
+  public static convertToRootCell(addNewRowCell: HTMLElement) {
+    addNewRowCell.classList.add(RootCellElement.ROOT_CELL_CLASS);
     addNewRowCell.innerText = '+';
     addNewRowCell.style.width = `${TableDimensionsUtils.MINIMAL_TABLE_WIDTH}px`;
   }
 
-  // addNewRowCell is preserved as it is reused as the stub element
+  // addNewRowCell is preserved as it is reused as the root cell
   private static removeRows(tableBodyElement: HTMLElement) {
     Array.from(tableBodyElement.children)
       .slice(0, tableBodyElement.children.length - 1)
@@ -33,10 +33,10 @@ export class NoContentStubElement {
     if (!_addRowCellElementRef) return;
     const tableBodyElement = _tableBodyElementRef as HTMLElement;
     if (displayAddNewColumn) _addColumnCellsElementsRef.splice(0, _addColumnCellsElementsRef.length);
-    NoContentStubElement.removeRows(tableBodyElement);
+    RootCellElement.removeRows(tableBodyElement);
     if (displayAddNewRow) {
-      NoContentStubElement.convertToStub(_addRowCellElementRef);
-      _addRowCellElementRef.addEventListener('click', NoContentStubElement.convertFromStub);
+      RootCellElement.convertToRootCell(_addRowCellElementRef);
+      _addRowCellElementRef.addEventListener('click', RootCellElement.convertFromRootCell);
     }
     AddNewRowElement.setDisplay(_addRowCellElementRef, true);
     

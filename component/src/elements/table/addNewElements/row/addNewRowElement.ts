@@ -1,5 +1,5 @@
 import {MaximumRows} from '../../../../utils/insertRemoveStructure/insert/maximum/maximumRows';
-import {NoContentStubElement} from '../shared/noContentStubElement';
+import {RootCellElement} from '../shared/rootCellElement';
 import {CellElement} from '../../../cell/cellElement';
 import {ActiveTable} from '../../../../activeTable';
 import {AddNewRowEvents} from './addNewRowEvents';
@@ -32,8 +32,8 @@ export class AddNewRowElement {
     const addNewRowCell = CellElement.createContentCell(false, cellStyle, styles?.default);
     addNewRowCell.id = AddNewRowElement.ID;
     if (!displayAddNewRow) {
-      // if this is not displayed when there is content, always use the stub style - REF-18
-      NoContentStubElement.convertToStub(addNewRowCell);
+      // if this is not displayed when there is content, always use the root cell style - REF-18
+      RootCellElement.convertToRootCell(addNewRowCell);
       addNewRowCell.addEventListener('click', AddNewRowElement.setDisplay.bind(this, addNewRowCell, false));
     } else {
       AddNewRowElement.setDefaultStyle(addNewRowCell);

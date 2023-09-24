@@ -150,10 +150,10 @@ such as webpack older versions - hence if parent project is using them - they wo
 Therefore the final solution is to import them as external scripts.
 
 REF-18
-The add row button is always in the table body and is converted into a no content stub and reconverted after it is clicked on.
+The add row button is always in the table body and is converted into a root cell and reconverted after it is clicked on.
 The reasonings for this are explained here:
-When there are no cells in the table, we display a stub element that the user can use to add the first element of the table.
-The original idea was to have the column add cell act as the stub when it is set to be displayed or add new row cell to act when
+When there are no cells in the table, we display a root cell that the user can use to add the first element of the table.
+The original idea was to have the column add cell act as the root cell when it is displayed or add new row cell to act when
 the column is not displayed etc. However this idea was dismissed due to the code complexity this required as we needed code to
 set and unset both of the cells' styles and have them work with the toggle logic for the max numbers. The second idea was to
 use a standalone cell button that would independently appear when the table had no content and would hide when content was
@@ -161,7 +161,7 @@ added again. This originally worked, but the logic behind displaying it and keep
 I then realised that this cell had an onclick event that would add a new row (a new column after no cells cannot be added)
 which was pretty much just like the add new row button, so why really have another standalone cell if we can just reuse
 the add new row button exclusively. Hence this is why the add row button is always present within the table body and all we do
-is convert its style to a stub when there are no content and set it back to normal or hide it when the content are added.
+is convert its style to a root cell when there is no content and set it back to normal or hide it when the content is readded.
 
 REF-19
 When the index column is too wide (and narrow columns are not preserved) - the table body will actually be increased over the size
