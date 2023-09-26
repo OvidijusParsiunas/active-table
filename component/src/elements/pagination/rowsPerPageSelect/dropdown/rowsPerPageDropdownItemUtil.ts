@@ -6,9 +6,12 @@ import {ActiveTable} from '../../../../activeTable';
 
 export class RowsPerPageDropdownItemUtil {
   private static updateRowsAndPaginationComponents(at: ActiveTable, optionsButton: HTMLElement, newRowsPerPage: string) {
-    PageButtonContainerElement.repopulateButtons(at);
     RowsPerPageSelectButtonElement.updateButtonText(optionsButton, newRowsPerPage);
-    PaginationUtils.displayRowsForDifferentButton(at, 1);
+    // when the only pagination button is disabled - changing the rows per page should not set it to active
+    if (PageButtonContainerElement.shouldButtonsBeActive(at)) {
+      PageButtonContainerElement.repopulateButtons(at);
+      PaginationUtils.displayRowsForDifferentButton(at, 1);
+    }
   }
 
   private static getNewRowsPerPage(at: ActiveTable, newRowsPerPage: string) {

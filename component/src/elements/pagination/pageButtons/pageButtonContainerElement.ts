@@ -15,12 +15,16 @@ import {ActiveTable} from '../../../activeTable';
 export class PageButtonContainerElement {
   private static readonly PAGINATION_BUTTON_CONTAINER_ID = 'pagination-button-container';
 
-  private static setStyle(at: ActiveTable) {
-    const minNumberOfButtonsToBeActive = at.dataStartsAtHeader ? 1 : 2;
-    if (at.content.length < minNumberOfButtonsToBeActive) {
-      PageButtonElement.setDisabled(at._pagination);
+  public static shouldButtonsBeActive(at: ActiveTable) {
+    const minNumberOfContentToBeActive = at.dataStartsAtHeader ? 1 : 2;
+    return at.content.length >= minNumberOfContentToBeActive;
+  }
+
+  public static setStyle(at: ActiveTable, pageNumber?: number) {
+    if (PageButtonContainerElement.shouldButtonsBeActive(at)) {
+      PageButtonElement.setActive(at, pageNumber ?? 1);
     } else {
-      PageButtonElement.setActive(at, 1);
+      PageButtonElement.setDisabled(at._pagination);
     }
   }
 

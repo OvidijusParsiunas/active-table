@@ -59,7 +59,7 @@ export class PaginationUtils {
     if (PaginationRowIndexes.getMaxVisibleRowIndex(at) <= rowIndex) {
       PaginationUtils.displayRowsForDifferentButton(at, activePageNumber + 1);
     } else if (rowIndex > 0 && at._tableBodyElementRef) {
-      if (rowIndex < PaginationRowIndexes.getVisibleRowReallIndex(at._tableBodyElementRef, at._pagination, 0)) {
+      if (rowIndex < PaginationRowIndexes.getVisibleRowRealIndex(at._tableBodyElementRef, at._pagination, 0)) {
         PaginationUtils.displayRowsForDifferentButton(at, activePageNumber - 1);
       }
     }

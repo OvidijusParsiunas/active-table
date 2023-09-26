@@ -2,7 +2,7 @@ import {PaginationInternal} from '../../../types/paginationInternal';
 import {ActiveTable} from '../../../activeTable';
 
 export class PaginationRowIndexes {
-  public static getVisibleRowReallIndex(tableBody: HTMLElement, pagination: PaginationInternal, index?: number) {
+  public static getVisibleRowRealIndex(tableBody: HTMLElement, pagination: PaginationInternal, index?: number) {
     const rows = Array.from(tableBody.children);
     const rowIndex = index === undefined ? pagination.visibleRows.length - 1 : index;
     const visibleRow = pagination.visibleRows[rowIndex];
@@ -16,7 +16,7 @@ export class PaginationRowIndexes {
 
   private static getFilteredMaxVisibleRowIndex(tableBodyElement: HTMLElement, pagination: PaginationInternal) {
     const {rowsPerPage, visibleRows} = pagination;
-    const rowIndex = PaginationRowIndexes.getVisibleRowReallIndex(tableBodyElement, pagination);
+    const rowIndex = PaginationRowIndexes.getVisibleRowRealIndex(tableBodyElement, pagination);
     if (visibleRows.length === rowsPerPage) return rowIndex;
     return rowIndex + (rowsPerPage - visibleRows.length);
   }

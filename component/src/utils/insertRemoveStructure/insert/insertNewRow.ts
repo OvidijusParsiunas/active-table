@@ -100,12 +100,14 @@ export class InsertNewRow {
     });
   }
 
+  // prettier-ignore
   public static insertEvent(this: ActiveTable) {
     let newRowIndex = this.content.length;
     if (this.pagination) {
       if (this._visiblityInternal.filters && this._tableBodyElementRef) {
-        const index = PaginationRowIndexes.getVisibleRowReallIndex(this._tableBodyElementRef, this._pagination);
-        newRowIndex = Math.max(index, 0) + 1;
+        // before changing this check if new row can be added when none are present and one is present
+        newRowIndex = this.content.length === 1 && !this.dataStartsAtHeader
+          ? 1 : PaginationRowIndexes.getVisibleRowRealIndex(this._tableBodyElementRef, this._pagination) + 1;
       } else {
         const maxVisibleRowIndex = PaginationRowIndexes.getMaxVisibleRowIndex(this);
         if (maxVisibleRowIndex < newRowIndex) newRowIndex = maxVisibleRowIndex;
