@@ -1,21 +1,31 @@
 import {OuterContainerElements} from '../../../utils/outerTableComponents/outerContainerElements';
 import {FilesUtils} from '../../../utils/outerTableComponents/files/filesInternalUtils';
+import {FileExportButtonElement} from './exportButton/button/fileExportButtonElement';
 import {FileImportButtonEvents} from './importButton/fileImportButtonEvents';
-import {FileExportButtonEvents} from './exportButton/fileExportButtonEvents';
 import {StatefulCSSEvents} from '../../../utils/elements/statefulCSSEvents';
+import {FileExportEvents} from './exportButton/fileExportEvents';
 import {OuterContainers} from '../../../types/outerContainer';
 import {ActiveTable} from '../../../activeTable';
 import {FileButton} from '../../../types/files';
 
 export class FileButtonElements {
   private static readonly BUTTON_CLASS = 'file-button';
+  private static readonly BUTTON_CONTAINER_CLASS = 'file-button-container';
 
   private static setEvents(at: ActiveTable, button: FileButton, buttonElement: HTMLElement) {
     if (button.import) {
       FileImportButtonEvents.setEvents(at, buttonElement, typeof button.import === 'object' ? button.import : undefined);
     } else if (button.export) {
-      FileExportButtonEvents.setEvents(at, buttonElement, typeof button.export === 'object' ? button.export : undefined);
+      FileExportEvents.setEvents(at, buttonElement, typeof button.export === 'object' ? button.export : undefined);
     }
+  }
+
+  // the main reason for this is to display a dropdown
+  private static wrapInRelativeContainer(buttonElement: HTMLDivElement) {
+    const container = document.createElement('div');
+    container.classList.add(FileButtonElements.BUTTON_CONTAINER_CLASS);
+    container.appendChild(buttonElement);
+    return container;
   }
 
   private static createElement(buttonProps: FileButton, defaultText: string) {
@@ -34,9 +44,15 @@ export class FileButtonElements {
     at.files?.buttons?.forEach((button) => {
       if (!button.export && !button.import) return;
       const buttonElement = FileButtonElements.createElement(button, button.import ? 'Import' : 'Export');
+      const containerElement = FileButtonElements.wrapInRelativeContainer(buttonElement);
+      const exportDropdownFormats = button.export && FileExportButtonElement.getDropdownFormats(button.export);
+      if (exportDropdownFormats) {
+        FileExportButtonElement.applyDropdown(at, buttonElement, containerElement, exportDropdownFormats, button.export);
+      } else {
+        setTimeout(() => FileButtonElements.setEvents(at, button, buttonElement));
+      }
       const position = button.position || FilesUtils.DEFAULT_BUTTON_POSITION;
-      OuterContainerElements.addToContainer(position, outerContainers, buttonElement);
-      setTimeout(() => FileButtonElements.setEvents(at, button, buttonElement));
+      OuterContainerElements.addToContainer(position, outerContainers, containerElement);
     });
   }
 }

@@ -1,7 +1,7 @@
+import {OuterDropdownSimpleUtils} from '../../../../utils/outerTableComponents/dropdown/outerDropdownSimpleUtils';
 import {OuterDropdownItemEvents} from '../../../../utils/outerTableComponents/dropdown/outerDropdownItemEvents';
 import {RowsPerPageDropdownItemUtil} from './rowsPerPageDropdownItemUtil';
 import {PaginationInternal} from '../../../../types/paginationInternal';
-import {RowsPerPageDropdown} from './rowsPerPageDropdown';
 import {ActiveTable} from '../../../../activeTable';
 
 export class RowsPerPageDropdownItemEvents {
@@ -13,7 +13,7 @@ export class RowsPerPageDropdownItemEvents {
 
   public static setEvents(at: ActiveTable, item: HTMLElement, optionsButton: HTMLElement) {
     const actionFunc = RowsPerPageDropdownItemEvents.action.bind(this, at.pagination as PaginationInternal, optionsButton);
-    const hideFunc = RowsPerPageDropdown.hide;
+    const hideFunc = OuterDropdownSimpleUtils.hide;
     item.onmousedown = OuterDropdownItemEvents.itemMouseDownCommon.bind(at, actionFunc, hideFunc);
   }
 }

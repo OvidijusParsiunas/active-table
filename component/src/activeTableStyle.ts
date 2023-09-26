@@ -330,6 +330,12 @@ export const activeTableStyle = css`
     color: white;
   }
 
+  /* using different class as standard dropdowns use above class in their functionality */
+  .active-static-dropdown-item {
+    background-color: #4a69d4;
+    color: white;
+  }
+
   .active-dropdown-item:focus {
     background-color: #2148d5 !important;
     color: white !important;
@@ -521,74 +527,6 @@ export const activeTableStyle = css`
     stroke: inherit;
   }
 
-  /* WORK - this css works perfectly offline, but need to test it in windows
-  
-  #pagination-number-of-visible-rows {
-    color: #252525;
-    min-width: 82px;
-    text-align: center;
-    font-size: 15.5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #pagination-number-of-rows-select {
-    position: relative;
-    color: #1d1d1d;
-    min-width: max-content;
-    display: flex;
-    align-items: center;
-  }
-
-  #pagination-number-of-rows-select-text {
-    font-size: 15.5px;
-    float: left;
-  }
-
-  #rows-per-page-select-button {
-    display: flex;
-    align-items: center;
-    background-color: white;
-    border: 1px solid #0000004d;
-    border-radius: 4px;
-    height: 24px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 6px;
-    padding-right: 1px;
-    margin-top: 0.5px;
-    cursor: pointer;
-  }
-
-  #rows-per-page-select-button-arrow-container {
-    display: flex;
-    align-items: center;
-    pointer-events: none;
-    color: #353535;
-    font-size: 16px;
-    float: right;
-    margin: 1px;
-    margin-left: -1px;
-    margin-top: 0px;
-    width: 19px;
-  }
-
-  #rows-per-page-select-button-arrow-icon {
-    width: 16px;
-    transform: scale(0.9, 1);
-    filter: brightness(0) saturate(100%) invert(11%) sepia(3%) saturate(99%) hue-rotate(157deg) brightness(97%)
-      contrast(98%);
-    padding-top: 2px;
-    padding-left: 2px;
-  }
-
-  #rows-per-page-select-button-text {
-    display: inline-block;
-    pointer-events: none;
-  }
-  */
-
   #pagination-number-of-visible-rows {
     padding-top: 6px;
     color: #252525;
@@ -624,7 +562,7 @@ export const activeTableStyle = css`
     cursor: pointer;
   }
 
-  #rows-per-page-select-button-arrow-container {
+  .outer-dropdown-button-arrow-container {
     pointer-events: none;
     color: #353535;
     font-size: 16px;
@@ -634,7 +572,7 @@ export const activeTableStyle = css`
     width: 19px;
   }
 
-  #rows-per-page-select-button-arrow-icon {
+  .outer-dropdown-button-arrow-icon {
     width: 16px;
     transform: scale(0.9, 1);
     filter: brightness(0) saturate(100%) invert(11%) sepia(3%) saturate(99%) hue-rotate(157deg) brightness(97%)
@@ -654,6 +592,10 @@ export const activeTableStyle = css`
     text-align: right;
   }
 
+  .file-button-container {
+    position: relative;
+  }
+
   .file-button {
     border: 1px solid #00000038;
     border-radius: 3px;
@@ -667,6 +609,20 @@ export const activeTableStyle = css`
     display: flex;
     height: 29px;
     padding: 0px 10px 1px;
+  }
+
+  .file-button-arrow-container {
+    margin-right: -5px;
+  }
+
+  .file-button-arrow-container-icon {
+    width: 17px;
+    padding-top: 5px;
+  }
+
+  .export-formats-dropdown-item {
+    padding: 4px 10px;
+    font-size: 14px;
   }
 
   .hidden-row {

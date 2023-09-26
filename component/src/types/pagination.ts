@@ -39,7 +39,7 @@ export interface PageButtonStyles<T = StatefulCSS> {
 }
 
 export interface PaginationStyles<T = StatefulCSS> {
-  pageButtons: PageButtonStyles<T>;
+  pageButtons?: PageButtonStyles<T>;
   numberOfVisibleRows?: CSSStyle;
   rowsPerPageSelect?: RowsPerPageOptionsStyle<T>;
 }

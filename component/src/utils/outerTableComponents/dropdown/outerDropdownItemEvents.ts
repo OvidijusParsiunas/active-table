@@ -2,6 +2,7 @@ import {DropdownItemHighlightUtils} from '../../color/dropdownItemHighlightUtils
 import {ActiveOverlayElements} from '../../../types/activeOverlayElements';
 import {OuterDropdownItem} from './outerDropdownItem';
 import {ActiveTable} from '../../../activeTable';
+import {StaticDropdown} from './staticDropdown';
 
 type ActionFunc = undefined | ((at: ActiveTable, targetText: string, event: MouseEvent) => void);
 
@@ -16,8 +17,10 @@ export class OuterDropdownItemEvents {
     action?.(this, targetText, event);
     const items = Array.from(outerContainerDropdown.element.children) as HTMLElement[];
     hide?.(this._activeOverlayElements, items);
-    OuterDropdownItem.unsetActiveItem(outerContainerDropdown.element);
-    OuterDropdownItem.setActive(items, targetText);
-    DropdownItemHighlightUtils.fadeCurrentlyHighlighted(this._activeOverlayElements);  
+    if (!outerContainerDropdown.element.classList.contains(StaticDropdown.DROPDOWN_CLASS)) {
+      OuterDropdownItem.unsetActiveItem(outerContainerDropdown.element);
+      OuterDropdownItem.setActive(items, targetText);
+      DropdownItemHighlightUtils.fadeCurrentlyHighlighted(this._activeOverlayElements);  
+    }
   }
 }

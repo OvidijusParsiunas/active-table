@@ -18,7 +18,11 @@ export interface FileButtonStyles {
 
 export type ImportOptions = {formats?: FileFormat[]; overwriteOptions?: ImportOverwriteOptions};
 
-export type ExportOptions = {format?: FileFormat; fileName?: string};
+export type ExportOptions = {
+  formats?: FileFormat[];
+  fileName?: string;
+  buttonArrowStyles?: StatefulCSS;
+};
 
 export type FileButton = FileButtonStyles &
   InterfacesUnion<{export: true | ExportOptions} | {import: true | ImportOptions}>;
@@ -27,3 +31,5 @@ export interface Files {
   buttons?: FileButton[];
   dragAndDrop?: boolean | DragAndDrop;
 }
+
+export type ExportSingleFile = {format?: FileFormat; fileName?: string};

@@ -1,12 +1,12 @@
 import {SheetJSInternalUtils} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSInternalUtils';
 import {SheetJSExport} from '../../../../utils/outerTableComponents/files/SheetJS/SheetJSExport';
 import {CSVExport} from '../../../../utils/outerTableComponents/files/CSV/CSVExport';
+import {ExportOptions, ExportSingleFile} from '../../../../types/files';
 import {ACCEPTED_FILE_FORMATS} from '../../../../consts/fileFormats';
-import {ExportOptions} from '../../../../types/files';
 import {ActiveTable} from '../../../../activeTable';
 
-export class FileExportButtonEvents {
-  public static export(at: ActiveTable, options?: ExportOptions) {
+export class FileExportEvents {
+  public static export(at: ActiveTable, options?: ExportSingleFile) {
     const acceptedFormat = options?.format || 'csv';
     if (ACCEPTED_FILE_FORMATS.find((extension) => acceptedFormat === extension)) {
       const fileName = options?.fileName;
@@ -19,6 +19,7 @@ export class FileExportButtonEvents {
   }
 
   public static setEvents(at: ActiveTable, buttonElement: HTMLElement, options?: ExportOptions) {
-    buttonElement.onclick = FileExportButtonEvents.export.bind(this, at, options);
+    const singleFile = options ? {format: options.formats?.[0], fileName: options.fileName} : undefined;
+    buttonElement.onclick = FileExportEvents.export.bind(this, at, singleFile);
   }
 }

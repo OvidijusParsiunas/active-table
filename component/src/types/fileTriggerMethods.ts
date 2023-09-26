@@ -1,5 +1,5 @@
-import {ImportOptions, ExportOptions} from './files';
+import {ImportOptions, ExportSingleFile} from './files';
 
 export type ImportFile = (options?: ImportOptions) => void;
 
-export type ExportFile = (options?: ExportOptions) => void;
+export type ExportFile = (options?: ExportSingleFile) => void;

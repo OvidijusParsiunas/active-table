@@ -2,12 +2,12 @@ import {PaginationInternalUtils} from './utils/outerTableComponents/pagination/p
 import {ProgrammaticCellUpdateT, ProgrammaticStructureUpdateT} from './types/programmaticCellUpdateT';
 import {ColumnUpdateDetails, OnCellUpdate, OnColumnsUpdate, OnContentUpdate} from './types/onUpdate';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
-import {FileExportButtonEvents} from './elements/files/buttons/exportButton/fileExportButtonEvents';
 import {FileImportButtonEvents} from './elements/files/buttons/importButton/fileImportButtonEvents';
 import {ProgrammaticStructureUpdate} from './utils/programmaticUpdates/programmaticStructureUpdate';
 import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {ProgrammaticCellUpdate} from './utils/programmaticUpdates/programmaticCellUpdate';
+import {FileExportEvents} from './elements/files/buttons/exportButton/fileExportEvents';
 import {OuterTableComponents} from './utils/outerTableComponents/outerTableComponents';
 import {LITElementTypeConverters} from './utils/webComponent/LITElementTypeConverters';
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
@@ -27,11 +27,11 @@ import {FrameComponentsInternal} from './types/frameComponentsInternal';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
 import {DefaultColumnsSettings} from './types/columnsSettingsDefault';
 import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
+import {ExportSingleFile, Files, ImportOptions} from './types/files';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {CellHighlightUtils} from './utils/color/cellHighlightUtils';
 import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
 import {ExportFile, ImportFile} from './types/fileTriggerMethods';
-import {ExportOptions, Files, ImportOptions} from './types/files';
 import {customElement, property, state} from 'lit/decorators.js';
 import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {StripedRowsInternal} from './types/stripedRowsInternal';
@@ -108,7 +108,7 @@ export class ActiveTable extends LitElement {
   importFile: ImportFile = (options?: ImportOptions) => FileImportButtonEvents.triggerImportPrompt(this, options);
 
   @property({attribute: false})
-  exportFile: ExportFile = (options?: ExportOptions) => FileExportButtonEvents.export(this, options);
+  exportFile: ExportFile = (options?: ExportSingleFile) => FileExportEvents.export(this, options);
 
   // REF-20
   @property({converter: LITElementTypeConverters.convertToFunction})
