@@ -319,10 +319,14 @@ into your project. Please see examples [here](../../examples/files).
 
 ### `exportFile` {#exportFile}
 
-- Type: [`(options?: exportOptions) => void`](./files#exportOptions)
-- Default: _({format: "csv", fileName: "table_data"}) => void_
+- Type: [`(options?: ExportSingleFile) => void`](#ExportSingleFile)
+- Default: _({fileName: "table_data", format: "csv"}) => void_
 
-Exports existing table content into a file. You can optionally pass an [`options`](./files#exportOptions) object
+#### `ExportSingleFile` {#ExportSingleFile}
+
+- Type: {`fileName?: string`, [`format?: FileFormat`](./files#FileFormat)}
+
+Exports existing table content into a file. You can optionally pass a [`ExportSingleFile`](#ExportSingleFile) object
 to define the exported file's name and its format.
 
 #### Example

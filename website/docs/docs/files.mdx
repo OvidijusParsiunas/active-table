@@ -505,10 +505,11 @@ will overwrite all of the rows below the header row. Use a value of _-1_ to appe
 
 ### `ExportOptions` {#ExportOptions}
 
-- Type: {fileName?: string, [`format?: FileFormat`](#FileFormat)}
-- Default: _{fileName: "table_data", format: "csv"}_
+- Type: {fileName?: string, [`formats?: FileFormat[]`](#FileFormat)}
+- Default: _{fileName: "table_data", format: ["csv"]}_
 
-Configuration for the exported `fileName` and its `format` .
+Configuration for the exported `fileName` and the available `formats` that it can be exported with. <br />
+When more than one format is defined - the button will use a dropdown to list each option.
 
 #### Example
 
@@ -516,11 +517,12 @@ Configuration for the exported `fileName` and its `format` .
   <ActiveTable
     files={{
       buttons: [
-        {export: {fileName: 'example_csv', format: 'csv'}, text: 'Export CSV'},
-        {export: {fileName: 'example_xls', format: 'xls'}, text: 'Export XLS'},
-        {export: {fileName: 'example_xlsx', format: 'xlsx'}, text: 'Export XLSX'},
-        {export: {fileName: 'example_ods', format: 'ods'}, text: 'Export ODS'},
-        {export: {fileName: 'example_txt', format: 'txt'}, text: 'Export TXT'},
+        {export: {fileName: 'example_csv', formats: ['csv']}, text: 'Export CSV'},
+        {export: {fileName: 'example_xls', formats: ['xls']}, text: 'Export XLS'},
+        {export: {fileName: 'example_xlsx', formats: ['xlsx']}, text: 'Export XLSX'},
+        {export: {fileName: 'example_ods', formats: ['ods']}, text: 'Export ODS'},
+        {export: {fileName: 'example_txt', formats: ['txt']}, text: 'Export TXT'},
+        {export: {fileName: 'example', formats: ['csv', 'xls', 'xlsx', 'ods', 'txt']}, text: 'Export'},
       ],
     }}
     content={[
@@ -542,11 +544,12 @@ Configuration for the exported `fileName` and its `format` .
 <active-table
   files='{
     "buttons": [
-      {"export": {"fileName": "example_csv", "format": "csv"}},
-      {"export": {"fileName": "example_xls", "format": "xls"}},
-      {"export": {"fileName": "example_xlsx", "format": "xlsx"}},
-      {"export": {"fileName": "example_ods", "format": "ods"}},
-      {"export": {"fileName": "example_txt", "format": "txt"}}
+      {"export": {"fileName": "example_csv", "formats": ["csv"]}},
+      {"export": {"fileName": "example_xls", "formats": ["xls"]}},
+      {"export": {"fileName": "example_xlsx", "formats": ["xlsx"]}},
+      {"export": {"fileName": "example_ods", "formats": ["ods"]}},
+      {"export": {"fileName": "example_txt", "formats": ["txt"]}},
+      {"export": {"fileName": "example", "formats": ["csv", "xls", "xlsx", "ods", "txt"]}}
   ]}'
 ></active-table>
 ```
@@ -561,11 +564,12 @@ Configuration for the exported `fileName` and its `format` .
 <active-table
   files='{
     "buttons": [
-      {"export": {"fileName": "example_csv", "format": "csv"}, "text": "Export CSV"},
-      {"export": {"fileName": "example_xls", "format": "xls"}, "text": "Export XLS"},
-      {"export": {"fileName": "example_xlsx", "format": "xlsx"}, "text": "Export XLSX"},
-      {"export": {"fileName": "example_ods", "format": "ods"}, "text": "Export ODS"},
-      {"export": {"fileName": "example_txt", "format": "txt"}, "text": "Export TXT"}
+      {"export": {"fileName": "example_csv", "formats": ["csv"]}, "text": "Export CSV"},
+      {"export": {"fileName": "example_xls", "formats": ["xls"]}, "text": "Export XLS"},
+      {"export": {"fileName": "example_xlsx", "formats": ["xlsx"]}, "text": "Export XLSX"},
+      {"export": {"fileName": "example_ods", "formats": ["ods"]}, "text": "Export ODS"},
+      {"export": {"fileName": "example_txt", "formats": ["txt"]}, "text": "Export TXT"},
+      {"export": {"fileName": "example", "formats": ["csv", "xls", "xlsx", "ods", "txt"]}}
   ]}'
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],

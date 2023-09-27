@@ -622,7 +622,7 @@ export const activeTableStyle = css`
 
   .export-formats-dropdown-item {
     padding: 4px 10px;
-    font-size: 14px;
+    font-size: 14.5px;
   }
 
   .hidden-row {
