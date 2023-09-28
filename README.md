@@ -19,14 +19,6 @@
 - Overflow handling
 - Everything is customizable!
 
-### :tada: Latest update: Data filtering
-
-<br />
-
-https://github.com/OvidijusParsiunas/active-table/assets/18709577/e6471759-8330-4e4f-ba40-3a52ec880700
-
-<br />
-
 ### :computer: Getting started
 
 ```
@@ -45,7 +37,15 @@ Then simply add this to your markup:
 <active-table content='[["Planet", "Diameter"], ["Earth", 12756]]'/>
 ```
 
-The exact syntax for the above example will vary depending on the framework of your choice ([see here](https://activetable.io/examples/frameworks)).
+The exact syntax for the above example will vary depending on the framework of your choice.
+
+### :beginner: Examples
+
+Check out the live codepen examples for your UI framework/library of choice:
+
+| React                                                                                                                                                         | Vue 2                                                                                                                                                      | Vue 3                                                                                                                                                      | Svelte                                                                                                                                        | Angular                                                                                                                                                                          | Solid                                                                                                                                                                                | Next                                                                                                                                                                                                                                                                                                       | VanillaJS                                                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <a href="https://codesandbox.io/s/active-table-react-cstm7k?file=/src/App.tsx" target="_blank"><img src="./website/static/img/reactLogo.png" width="60"/></a> | <a href="https://codesandbox.io/s/active-table-vue2-32f04e?file=/src/App.vue" target="_blank"><img src="./website/static/img/vueLogo.png" width="60"/></a> | <a href="https://codesandbox.io/s/active-table-vue3-z729vs?file=/src/App.vue" target="_blank"><img src="./website/static/img/vueLogo.png" width="60"/></a> | <a href="https://codesandbox.io/s/active-table-svelte-dbd0qp" target="_blank"><img src="./website/static/img/svelteLogo.png" width="45"/></a> | <a href="https://codesandbox.io/s/active-table-angular-9v8nfe?file=/src/app/app.component.html" target="_blank"><img src="./website/static/img/angularLogo.png" width="66"/></a> | <a href="https://codesandbox.io/p/sandbox/active-table-solidjs-wjg6h7?file=%2Fsrc%2FApp.tsx%3A41%2C5" target="_blank"><img src="./website/static/img/solidLogo.png" width="60"/></a> | <a href="https://codesandbox.io/p/sandbox/deep-chat-nextjs-9pv25f?file=%2Fpackage.json%3A6%2C19&selection=%5B%7B%22endColumn%22%3A30%2C%22endLineNumber%22%3A28%2C%22startColumn%22%3A30%2C%22startLineNumber%22%3A28%7D%5D" target="_blank"><img src="./website/static/img/nextLogo.png" width="60"/></a> | <a href="https://codesandbox.io/s/active-table-vanillajs-62yrrj?file=/index.html" target="_blank"><img src="./website/static/img/vanillaJSLogo.png" width="60"/></a> |
 
 ### :dart: Roadmap
 

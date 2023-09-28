@@ -3,7 +3,6 @@ import {RowsPerPageDropdownItemEvents} from './rowsPerPageDropdownItemEvents';
 import {DropdownItem} from '../../../dropdown/dropdownItem';
 import {ActiveTable} from '../../../../activeTable';
 
-// WORK - when one row and changing, the 1 page button changes style
 export class RowsPerPageDropdownItem {
   private static readonly ITEM_CLASS = 'number-of-rows-dropdown-item';
   public static readonly ALL_ITEM_TEXT = 'all'; // lower case as it will be compared against user set text

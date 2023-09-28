@@ -3,304 +3,38 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Active Table Component Demo</title>
-    <!-- <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script> -->
+    <title>Active Table Development</title>
     <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../node_modules/lit/polyfill-support.js"></script>
     <script type="module" src="../dist/activeTable.js"></script>
-    <style>
-      p {
-        border: solid 1px blue;
-        padding: 8px;
-      }
-    </style>
+    <!-- https://activetable.io/examples/files -->
+    <!-- Need this when exporting file formats that are other than csv -->
+    <!-- <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script> -->
   </head>
   <body>
-    <div style="width: 100%; height: 40px"></div>
-    <!-- <div style="width: 20px; height: 20px; float: left"></div> -->
-    <!-- when the table reaches the parent limit it does a jump down because of the above :/ -->
-    <div>
-      <active-table id="active-element"></active-table>
-    </div>
+    <!-- Attributes can be set as strings either directly on the element (headerStyles) or via a `setAttribute` method on its reference (tableStyle).
+      When passing JSON objects make sure that they are first correctly stringified (use the following tool https://jsonlint.com/), functions assigned
+      to properties must not have external references and all regex values are properly escaped.
+      You can also pass values into the component via properties by using the element reference (content).
+      -->
+    <active-table id="active-table-element" headerStyles='{"default":{"backgroundColor": "#d6d6d630"}}'></active-table>
     <script>
-      const myValue = [
-        [1, 2, 3, 4],
-        [1, 2, 3, 5],
+      const element = document.getElementById('active-table-element');
+      // Setting value via a property (easiest way)
+      element.content = [
+        ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+        ['Earth', 12756, 5.97, 1, 5514],
+        ['Mars', 6792, 0.642, 2, 3934],
+        ['Jupiter', 142984, 1898, 79, 1326],
+        ['Saturn', 120536, 568, 82, 687],
+        ['Neptune', 49528, 102, 14, 1638],
       ];
-      const element = document.getElementById('active-element');
-      const aa = (cellUpdate) => {
-        console.log(cellUpdate);
-      };
-      const columnsUpdate = (columnsUpdate) => {
-        console.log(columnsUpdate);
-      };
-      const tableUpdate = (tableUpdate) => {
-        console.log(tableUpdate);
-      };
-      setTimeout(() => {
-        if (element) {
-          // element.setAttribute('content', `[[${myValue[0]}],[${myValue[1]}]]`);
-          element.setAttribute('tableStyle', JSON.stringify({border: '20px solid black'}));
-          element.setAttribute(
-            'cellStyle',
-            JSON.stringify({borderRight: '4px solid grey', borderLeft: '8px solid red', backgroundColor: 'blue'})
-          );
-          element.setAttribute('defaultText', '-');
-          element.setAttribute(
-            'customColumnTypes',
-            JSON.stringify([
-              {
-                name: 'Custom type 1',
-                textValidation: {
-                  func: `(cellText) => {
-                      return !isNaN(cellText)
-                    }`,
-                  setTextToDefaultOnFail: false,
-                  failedStyle: {backgroundColor: 'yellow'},
-                },
-              },
-            ])
-          );
-          element.setAttribute('isDefaultTextRemovable', 'false');
-          element.setAttribute(
-            'headerStyles',
-            JSON.stringify({
-              default: {color: 'grey', paddingTop: '12px', paddingBottom: '12px'},
-            })
-          );
-          element.setAttribute(
-            'customColumnsSettings',
-            JSON.stringify([
-              {
-                headerName: 'Planet',
-                width: '100px',
-                cellStyle: {color: 'red'},
-                headerStyles: {
-                  default: {
-                    color: 'green',
-                  },
-                },
-              },
-              {
-                headerName: 'Ga',
-                defaultText: 'A',
-                isDefaultTextRemovable: false,
-                isCellTextEditable: false,
-                customColumnTypes: [
-                  {
-                    name: 'Custom type 2',
-                    textValidation: {
-                      func: `(cellText) => {
-                        return cellText !== 'red'
-                      }`,
-                      setTextToDefaultOnFail: false,
-                      failedStyle: {color: 'red'},
-                    },
-                    customTextProcessing: {
-                      // changeTextFunc: `(cellText) => {
-                      //   return 'aa';
-                      // }`,
-                      changeStyleFunc: `(cellText) => {
-                        if (cellText === 'green') {
-                          return {backgroundColor: 'green'}
-                        }
-                        if (cellText === 'purple') {
-                          return {color: 'purple'}
-                        }
-                        return {color: 'black'}
-                      }`,
-                    },
-                    iconSettings: {
-                      reusableIconName: `Select`,
-                    },
-                  },
-                ],
-                isInsertLeftAvailable: false,
-                isInsertRightAvailable: false,
-                defaultColumnTypeName: 'Custom type 2',
-              },
-              {
-                headerName: 'Diameter',
-                defaultText: 'A',
-                cellStyle: {
-                  borderLeft: '1px solid red',
-                  borderRight: '1px solid red',
-                  borderBottom: '1px solid red',
-                  backgroundColor: 'orange',
-                  minWidth: '500px',
-                },
-                headerStyles: {
-                  default: {
-                    border: '1px solid green',
-                  },
-                },
-                isDefaultTextRemovable: false,
-                // availableDefaultColumnTypes: ['number'],
-                customColumnTypes: [
-                  {
-                    name: 'Custom type 2',
-                    textValidation: {
-                      func: `(cellText) => {
-                        return !isNaN(cellText)
-                      }`,
-                      setTextToDefaultOnFail: false,
-                      failedStyle: {color: 'yellow'},
-                    },
-                    iconSettings: {
-                      reusableIconName: `Select`,
-                    },
-                  },
-                  {
-                    name: 'Custom type Calendar',
-                    calendar: {
-                      toYMDFunc: `(cellText) => {
-                        return ['2012', '4', '8'];
-                      }`,
-                      fromYMDFunc: `(YMD) => {
-                        return '2012, 2, 2';
-                      }`,
-                    },
-                  },
-                  // {
-                  //   name: 'Custom Label',
-                  //   label: {
-                  //     options: [{text: 'bb', backgroundColor: 'red'}],
-                  //   },
-                  // },
-                ],
-                isMoveAvailable: true,
-                defaultColumnTypeName: 'Custom type 2',
-                isHeaderTextEditable: true,
-                headerIconStyle: {
-                  filterColor:
-                    'brightness(0) saturate(100%) invert(52%) sepia(63%) saturate(2567%) hue-rotate(74deg) brightness(100%) contrast(89%)',
-                  scale: {
-                    x: 1.5,
-                    y: 1.5,
-                  },
-                },
-              },
-              {
-                headerName: 'C',
-                cellStyle: {
-                  borderLeft: '1px solid red',
-                  borderRight: '1px solid red',
-                  borderBottom: '1px solid red',
-                  width: '1000px',
-                  // backgroundColor: 'orange',
-                },
-                customColumnTypes: [
-                  {
-                    name: 'Custom type 3',
-                    textValidation: {
-                      func: `(cellText) => {
-                      return !isNaN(cellText)
-                    }`,
-                      setTextToDefaultOnFail: false,
-                      failedStyle: {color: 'green'},
-                    },
-                  },
-                  {
-                    name: 'Custom type 8',
-                    textValidation: {
-                      func: `(cellText) => {
-                        return !isNaN(cellText)
-                      }`,
-                      setTextToDefaultOnFail: false,
-                      failedStyle: {color: 'brown'},
-                    },
-                  },
-                ],
-                defaultColumnTypeName: 'Custom type 3',
-                // headerStyles: {
-                //   default: {
-                //     border: '1px solid green',
-                //   },
-                // },
-              },
-              // {
-              //   headerName: 'B',
-              //   width: '400px',
-              //   cellStyle: {backgroundColor: 'red'},
-              //   headerStyles: {hoverColors: {backgroundColor: 'yellow'}},
-              // },
-            ])
-          );
-          element.setAttribute('rowDropdown', JSON.stringify({isMoveAvailable: true}));
-          element.setAttribute(
-            'pagination',
-            JSON.stringify({
-              // displayPrevNext: false,
-              // displayFirstLast: false,
-              rowsPerPage: 10,
-              maxNumberOfVisiblePageButtons: 7,
-              style: {
-                pageButtons: {
-                  buttons: {
-                    default: {backgroundColor: 'purple'},
-                    hover: {backgroundColor: 'orange'},
-                    click: {backgroundColor: 'red'},
-                  },
-                  activeButton: {
-                    default: {backgroundColor: 'brown'},
-                    hover: {backgroundColor: 'violet'},
-                    click: {backgroundColor: 'green'},
-                  },
-                  actionButtons: {
-                    default: {backgroundColor: 'blue'},
-                    hover: {backgroundColor: 'skyblue'},
-                    click: {backgroundColor: 'deepskyblue'},
-                  },
-                  disabledButtons: {
-                    backgroundColor: 'yellow',
-                  },
-                },
-                rowsPerPageSelect: {
-                  // container: {backgroundColor: 'green'},
-                },
-              },
-              // positions: {
-              //   numberOfVisibleRows: {
-              //     position: 'top-left',
-              //   },
-              //   rowsPerPageSelect: {
-              //     order: 4,
-              //   },
-              // },
-              // rowsPerPageSelect: {
-              //   options: [1, 2, 3, 4],
-              //   prefixText: 'Example prefix:',
-              // },
-            })
-          );
-          // element.setAttribute(
-          //   'stripedRows',
-          //   JSON.stringify({
-          //     even: {color: 'green', backgroundColor: 'grey'},
-          //     odd: {backgroundColor: 'red', color: 'brown'},
-          //   })
-          // );
-          // element.setAttribute(
-          //   'rowHoverStyles',
-          //   JSON.stringify({
-          //     style: {backgroundColor: 'yellow'},
-          //     header: true,
-          //     addNewRowButton: true,
-          //   })
-          // );
-          // element.setAttribute(
-          //   'columnResizerColors',
-          //   JSON.stringify({hover: {backgroundColor: 'red'}, click: {backgroundColor: 'green'}})
-          // );
-          // element.setAttribute('onCellUpdate', aa);
-          // element.setAttribute('onContentUpdate', tableUpdate);
-          // element.setAttribute('onColumnsUpdate', columnsUpdate);
-          // element.setAttribute('overwriteColumnWidths', JSON.stringify({columns: [100, 200]}));
-          // setTimeout(() => {
-          //   element.updateCell({newText: 'test', rowIndex: 2, columnIndex: 2});
-          // }, 100);
-        }
-      }, 5);
+      element.setAttribute(
+        'tableStyle',
+        JSON.stringify({
+          border: '1px solid black',
+        })
+      );
     </script>
   </body>
 </html>
