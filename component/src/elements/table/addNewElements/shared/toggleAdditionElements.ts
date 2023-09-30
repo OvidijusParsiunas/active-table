@@ -1,5 +1,5 @@
+import {RootCellElement} from '../rootCell/rootCellElement';
 import {ActiveTable} from '../../../../activeTable';
-import {RootCellElement} from './rootCellElement';
 
 type ToggleWhenContent = (at: ActiveTable, isInsert: boolean) => void;
 

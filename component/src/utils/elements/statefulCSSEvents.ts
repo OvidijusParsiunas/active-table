@@ -29,11 +29,22 @@ export class StatefulCSSEvents {
   }
 
   // can change the styling on another element by using the otherElement argument
-  public static setEvents(element: HTMLElement, styles: StatefulCSS, inactiveClass?: string, otherElement?: HTMLElement) {
+  public static getEvents(element: HTMLElement, styles: StatefulCSS, inactiveClass?: string, otherElement?: HTMLElement) {
     const target = otherElement || element;
-    element.addEventListener('mouseenter', StatefulCSSEvents.mouseEnter.bind(this, styles, inactiveClass, target));
-    element.addEventListener('mouseleave', StatefulCSSEvents.mouseLeave.bind(this, styles, inactiveClass, target));
-    element.addEventListener('mousedown', StatefulCSSEvents.mouseDown.bind(this, styles, inactiveClass, target));
-    element.addEventListener('mouseup', StatefulCSSEvents.mouseUp.bind(this, styles, inactiveClass, target));
+    return {
+      mouseenter: StatefulCSSEvents.mouseEnter.bind(this, styles, inactiveClass, target),
+      mouseleave: StatefulCSSEvents.mouseLeave.bind(this, styles, inactiveClass, target),
+      mousedown: StatefulCSSEvents.mouseDown.bind(this, styles, inactiveClass, target),
+      mouseup: StatefulCSSEvents.mouseUp.bind(this, styles, inactiveClass, target),
+    };
+  }
+
+  public static setEvents(element: HTMLElement, styles: StatefulCSS, inactiveClass?: string, otherElement?: HTMLElement) {
+    const events = StatefulCSSEvents.getEvents(element, styles, inactiveClass, otherElement);
+    element.addEventListener('mouseenter', events.mouseenter);
+    element.addEventListener('mouseleave', events.mouseleave);
+    element.addEventListener('mousedown', events.mousedown);
+    element.addEventListener('mouseup', events.mouseup);
+    return events;
   }
 }

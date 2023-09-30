@@ -1,6 +1,6 @@
 import {ToggleAdditionElements} from '../../elements/table/addNewElements/shared/toggleAdditionElements';
+import {RootCellElement} from '../../elements/table/addNewElements/rootCell/rootCellElement';
 import {FilterInternalUtils} from '../outerTableComponents/filter/rows/filterInternalUtils';
-import {RootCellElement} from '../../elements/table/addNewElements/shared/rootCellElement';
 import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
 import {PaginationUtils} from '../outerTableComponents/pagination/paginationUtils';
 import {InitialContentProcessing} from '../content/initialContentProcessing';
@@ -20,7 +20,7 @@ export class UpdateAllTableData {
   private static insertData(at: ActiveTable, content: TableContent, startRowIndex: number) {
     InsertMatrix.insert(at, content, startRowIndex, 0, true);
     if (startRowIndex === 0) {
-      RootCellElement.convertFromRootCell({target: at._addRowCellElementRef as HTMLElement});
+      RootCellElement.convertFromRootCell(at);
     }
   }
 

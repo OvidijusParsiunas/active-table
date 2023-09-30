@@ -1,5 +1,5 @@
 import {MaximumRows} from '../../../../utils/insertRemoveStructure/insert/maximum/maximumRows';
-import {RootCellElement} from '../shared/rootCellElement';
+import {RootCellElement} from '../rootCell/rootCellElement';
 import {CellElement} from '../../../cell/cellElement';
 import {ActiveTable} from '../../../../activeTable';
 import {AddNewRowEvents} from './addNewRowEvents';
@@ -28,12 +28,12 @@ export class AddNewRowElement {
 
   // prettier-ignore
   private static createCell(at: ActiveTable) {
-    const {_defaultColumnsSettings: {cellStyle}, _frameComponents: {displayAddNewRow, styles}} = at;
+    const {_defaultColumnsSettings: {cellStyle}, _frameComponents: {displayAddNewRow, styles}, rootCell} = at;
     const addNewRowCell = CellElement.createContentCell(false, cellStyle, styles?.default);
     addNewRowCell.id = AddNewRowElement.ID;
     if (!displayAddNewRow) {
       // if this is not displayed when there is content, always use the root cell style - REF-18
-      RootCellElement.convertToRootCell(addNewRowCell);
+      RootCellElement.convertToRootCell(addNewRowCell, rootCell?.text);
       addNewRowCell.addEventListener('click', AddNewRowElement.setDisplay.bind(this, addNewRowCell, false));
     } else {
       AddNewRowElement.setDefaultStyle(addNewRowCell);
@@ -57,7 +57,7 @@ export class AddNewRowElement {
     const {_tableBodyElementRef, _addRowCellElementRef, _frameComponents: {displayAddNewRow}} = at;
     if (!_addRowCellElementRef?.parentElement || !_tableBodyElementRef) return;
     if (displayAddNewRow) AddNewRowElement.setDisplay(_addRowCellElementRef, MaximumRows.canAddMore(at));
-    RowElement.toggleLastRowClass(at)
+    RowElement.toggleLastRowClass(at);
   }
 
   public static isAddNewRowRow(rowElement: HTMLElement) {

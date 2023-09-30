@@ -43,6 +43,7 @@ import {PaginationInternal} from './types/paginationInternal';
 import {LabelColorUtils} from './utils/color/labelColorUtils';
 import {VisibilityInternal} from './types/visibilityInternal';
 import {OverflowUtils} from './utils/overflow/overflowUtils';
+import {ElementEvents} from './utils/elements/elementEvents';
 import {RowHoverEvents} from './utils/rows/rowHoverEvents';
 import {TableElement} from './elements/table/tableElement';
 import {GoogleFont} from './utils/webComponent/googleFont';
@@ -54,6 +55,7 @@ import {FocusedElements} from './types/focusedElements';
 import {HoveredElements} from './types/hoveredElements';
 import {HeaderIconStyle} from './types/headerIconStyle';
 import {HoverableStyles} from './types/hoverableStyles';
+import {EventFunctions} from './types/eventFunctions';
 import {ColumnsDetailsT} from './types/columnDetails';
 import {RowHoverStyles} from './types/rowHoverStyles';
 import {GlobalItemColors} from './types/itemToColor';
@@ -71,6 +73,7 @@ import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
+import {RootCell} from './types/rootCell';
 import {Filter} from './types/filter';
 
 // WORK - hover animation for row
@@ -237,6 +240,9 @@ export class ActiveTable extends LitElement {
   @property({type: Object})
   cellStyle?: DimensionalCSSStyle;
 
+  @property({type: Object})
+  rootCell?: RootCell;
+
   @property({
     type: Boolean,
     converter: LITElementTypeConverters.convertToBoolean,
@@ -327,6 +333,9 @@ export class ActiveTable extends LitElement {
 
   @state()
   _activeOverlayElements: ActiveOverlayElements = ActiveOverlayElementsUtils.createNew();
+
+  @state()
+  _eventFunctions: EventFunctions = ElementEvents.getDefault();
 
   @state()
   _userKeyEventsState: UserKeyEventsState = UserKeyEventsStateUtils.createNew();
