@@ -254,6 +254,53 @@ new row) can be set via the [`frameComponentsStyles`](./table#frameComponentsSty
 
 <LineBreak></LineBreak>
 
+### `rootCell` {#rootCell}
+
+- Type: {`text: string`, [`styles: StatefulCSS`](./sharedTypes#StatefulCSS)}
+- Default: _{text: "+"}_
+
+Configuration for the default cell when there is no content inside the table. <br />
+`text` defines the content inside the cell. <br />
+`styles` is used to define the cell's appearance for various mouse states. This is particularly useful for controlling the cell _width_ if you
+have set a _width_ property inside [`tableStyle`](./table#tableStyle) as the root cell will by default be stretched to match it (all documentation examples actually use
+_width: 100%_ so you will notice that other examples' root cells match their original table widths). Outer styling such as _border_ and _boxShadow_ will
+need to be controlled in [`tableStyle`](./table#tableStyle).
+
+#### Example
+
+<TableContainer minHeight="110">
+  <ActiveTable
+    rootCell={{text: 'Create', styles: {default: {width: '50px'}, hover: {backgroundColor: '#e0f1ff'}}}}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table
+  rootCell='{"text": "Create", "styles": {"default": {"width": "50px"}, "hover": {"backgroundColor": "#e0f1ff"}}}'
+></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  rootCell='{"text": "Create", "styles": {"default": {"width": "50px"}, "hover": {"backgroundColor": "#e0f1ff"}}}'
+  tableStyle='{"width":"100%", "borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
 ### `isCellTextEditable` {#isCellTextEditable}
 
 - Type: `boolean`
