@@ -21,8 +21,10 @@ export class TableEvents {
       delete activeOverlayElements.datePickerCell;
     }
   }
+
+  // REF-44
   // text blur will not activate when the dropdown has been clicked and will not close if its scrollbar, padding
-  // or delete cateogory buttons are clicked. If the user clicks elsewhere on the table, the dropdown is closed
+  // or delete category buttons are clicked. If the user clicks elsewhere on the table, the dropdown is closed
   // programmatically as follows
   // prettier-ignore
   private static closeCellDropdown(at: ActiveTable, targetElement: HTMLElement) {

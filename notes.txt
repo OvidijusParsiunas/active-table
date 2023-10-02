@@ -297,6 +297,15 @@ Row filtering works by iterating all filter inputs sequentially and eleminitatin
 REF-43
 _isPopulatingTable is primarily used to trigger ADD cell events when table is prepopulated as otherwise it would use UPDATE events.
 
+REF-44
+Fix for a bug where upon clicking on option button inside a cell dropdown - the cell was no longer focused and clicking on another
+cell's empty area whilst the dropdown is still open would not not close it. Usually this was fine as the TableEvents.closeCellDropdown
+is called before the focus is switched to another cell, but it was found that when the aforementioned steps are expedited and the user
+clicks on another cell type that has empty cell space, the focus would be switched before TableEvents.closeCellDropdown is called.
+This is now fixed by checking if at._focusedElements.cellDropdown is open on a cell with text mouseDownCell method.
+Test this: click on an option button inside label dropdown and then click on the empty space between text and calendar in date cell.
+
+
 CAUTION-1
 The returned string from textElement.innerText.trim() should not be used to set text on another cell as innerText/textContent property
 does not just return the cell text but additionally the new line chars (\n) which represent <br> elements within the cell and .trim()

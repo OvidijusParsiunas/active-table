@@ -41,6 +41,7 @@ export class CellWithTextEvents {
   // prettier-ignore
   public static mouseDownCell(at: ActiveTable, blurCallback: BlurCallback | null,
       cellElement: HTMLElement, event: MouseEvent) {
+    if (at._focusedElements.cellDropdown) CellWithTextEvents.programmaticBlur(at); // REF-44
     const textElement = CellElement.getTextElement(cellElement);
     // needed to set cursor at the end
     event.preventDefault();
