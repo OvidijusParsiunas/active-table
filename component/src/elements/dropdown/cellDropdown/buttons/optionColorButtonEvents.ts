@@ -5,6 +5,7 @@ import {FocusedElements} from '../../../../types/focusedElements';
 import {RGBAToHex} from '../../../../utils/color/rgbaToHex';
 import {OptionColorButton} from './optionColorButton';
 import {OptionButton} from './optionButton';
+import {Dropdown} from '../../dropdown';
 
 export class OptionColorButtonEvents {
   private static updateCellElements(columnDetails: ColumnDetailsT, colorPickerNewValue: ColorPickerNewValue) {
@@ -65,9 +66,12 @@ export class OptionColorButtonEvents {
     }
   }
 
+  // bug fix comments are for code that fixes a firefox bug where color picker is still open after closing the dropdown
   private static inputEvent(dropdown: _CellDropdown, event: Event) {
+    if (!Dropdown.isDisplayed(dropdown.element)) return; // bug fix
     const inputElement = event.target as HTMLInputElement;
-    const {textElement, dropdownItemElement} = OptionColorButton.extractRelativeParentElements(inputElement);
+    const {containerElement, textElement, dropdownItemElement} =
+      OptionColorButton.extractRelativeParentElements(inputElement);
     const itemText = textElement.textContent as string;
     const backgroundColor = inputElement.value;
     dropdownItemElement.style.backgroundColor = backgroundColor;
@@ -75,6 +79,9 @@ export class OptionColorButtonEvents {
     if (itemDetails.backgroundColor !== backgroundColor) {
       itemDetails.backgroundColor = backgroundColor;
       (dropdown.labelDetails as LabelDetails).colorPickerNewValue = {backgroundColor, itemText};
+      setTimeout(() => {
+        (dropdown.labelDetails as LabelDetails).colorPickerContainer ??= containerElement; // bug fix
+      });
     }
   }
 
