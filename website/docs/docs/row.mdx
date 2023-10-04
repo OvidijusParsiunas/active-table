@@ -27,7 +27,7 @@ import Tabs from '@theme/Tabs';
 
 <TableContainer>
   <ActiveTable
-    rowHoverStyles={{style: {backgroundColor: '#d6d6d630'}}}
+    rowHoverStyles={{style: {backgroundColor: '#d6d6d630', transitionDuration: '0.05s'}}}
     content={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
@@ -44,7 +44,7 @@ import Tabs from '@theme/Tabs';
 <TabItem value="js" label="Sample code">
 
 ```html
-<active-table rowHoverStyles='{"style":{"backgroundColor": "#d6d6d630"}}'></active-table>
+<active-table rowHoverStyles='{"style":{"backgroundColor": "#d6d6d630", "transitionDuration": "0.05s"}}'></active-table>
 ```
 
 </TabItem>
@@ -54,7 +54,7 @@ import Tabs from '@theme/Tabs';
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
-  rowHoverStyles='{"style":{"backgroundColor": "#d6d6d630"}}'
+  rowHoverStyles='{"style":{"backgroundColor": "#d6d6d630", "transitionDuration": "0.05s"}}'
   content='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],

@@ -76,7 +76,6 @@ import {Overflow} from './types/overflow';
 import {RootCell} from './types/rootCell';
 import {Filter} from './types/filter';
 
-// WORK - hover animation for row
 // TO-DO - dropdown for export button
 @customElement('active-table')
 export class ActiveTable extends LitElement {
