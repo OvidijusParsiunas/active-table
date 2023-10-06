@@ -3,6 +3,7 @@ import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils'
 import {ColumnSizerCellEvents} from '../../columnSizer/columnSizerCellEvents';
 import {ColumnDropdown} from '../../dropdown/columnDropdown/columnDropdown';
 import {CellHighlightUtils} from '../../../utils/color/cellHighlightUtils';
+import {DragColumn} from '../../../utils/moveStructure/drag/dragColumn';
 import {ActiveTable} from '../../../activeTable';
 import {Dropdown} from '../../dropdown/dropdown';
 import {CellEvents} from '../cellEvents';
@@ -44,5 +45,6 @@ export class HeaderCellEvents {
     cellElement.onmouseenter = HeaderCellEvents.mouseEnterCell.bind(at, columnIndex);
     cellElement.onmouseleave = HeaderCellEvents.mouseLeaveCell.bind(at, columnIndex);
     cellElement.onclick = HeaderCellEvents.mouseClick.bind(at, columnIndex);
+    DragColumn.applyEventsToCell(cellElement);
   }
 }

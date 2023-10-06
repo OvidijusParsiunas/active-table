@@ -221,6 +221,16 @@ export const activeTableStyle = css`
     text-align: center;
   }
 
+  .header-cell-clone {
+    position: absolute;
+    cursor: move;
+    top: 0px;
+  }
+
+  .header-cell-hidden {
+    opacity: 0 !important;
+  }
+
   .root-cell {
     text-align: center;
     padding: 0px !important;
