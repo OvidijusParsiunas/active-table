@@ -22,4 +22,10 @@ export class ArrayUtils {
   public static shuffle<T>(array: T[]) {
     return array.sort(() => Math.random() - 0.5);
   }
+
+  public static swap(array: unknown[], index1: number, index2: number) {
+    const temp = array[index1];
+    array[index1] = array[index2];
+    array[index2] = temp;
+  }
 }

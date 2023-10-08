@@ -1,4 +1,5 @@
 import {CellElement} from '../../../elements/cell/cellElement';
+import {ArrayUtils} from '../../array/arrayUtils';
 
 export class DragColumn {
   // WORK - should hold this as component state
@@ -10,11 +11,18 @@ export class DragColumn {
   private static ACTIVE_CELL_LEFT_PX = 0;
   private static IS_MOUSE_DOWN_ON_CELL = false;
   public static ACTIVE_CELL: HTMLElement | null = null;
-  private static CLONE_ELEMENTS: HTMLElement[] = [];
+  private static CLONE_CELLS: HTMLElement[] = [];
+  private static REAL_CELLS: HTMLElement[] = [];
+  private static ACTIVE_INDEX = 0;
+  private static THRESHOLD_RIGHT = 0;
+  private static THRESHOLD_LEFT = 0;
+  private static CAN_SWITCH_RIGHT = true;
+  private static CAN_SWITCH_LEFT = true;
+  private static MAX_LEFT = 0;
 
   private static processHeaderCellsToDefault(cellElement: HTMLElement) {
     const row = cellElement.parentElement?.children;
-    DragColumn.CLONE_ELEMENTS.forEach((cell) => cell.remove());
+    DragColumn.CLONE_CELLS.forEach((cell) => cell.remove());
     (Array.from(row || []) as HTMLElement[]).forEach((headerCell) => {
       if (headerCell.tagName === CellElement.HEADER_TAG) {
         headerCell.classList.remove(DragColumn.HEADER_CELL_HIDDEN_CLASS);
@@ -28,12 +36,18 @@ export class DragColumn {
     cloneCell.style.left = `${headerCell.offsetLeft}px`;
     // last element does not have border right (.row > .cell:last-of-type) so we instead append before
     lastElement?.insertAdjacentElement('beforebegin', cloneCell);
-    DragColumn.CLONE_ELEMENTS.push(cloneCell);
+    DragColumn.CLONE_CELLS.push(cloneCell);
+    DragColumn.REAL_CELLS.push(headerCell);
   }
 
-  private static initiateDragState(cloneCell: HTMLElement, headerCell: HTMLElement) {
-    DragColumn.ACTIVE_CELL = cloneCell;
-    DragColumn.ACTIVE_CELL_LEFT_PX = headerCell.offsetLeft;
+  private static initiateDragState(cellElement: HTMLElement) {
+    DragColumn.ACTIVE_INDEX = DragColumn.REAL_CELLS.findIndex((element) => cellElement === element);
+    DragColumn.ACTIVE_CELL = DragColumn.CLONE_CELLS[DragColumn.ACTIVE_INDEX];
+    DragColumn.ACTIVE_CELL_LEFT_PX = cellElement.offsetLeft;
+    DragColumn.THRESHOLD_LEFT = cellElement.offsetLeft - cellElement.offsetWidth / 2;
+    DragColumn.THRESHOLD_RIGHT = cellElement.offsetLeft + cellElement.offsetWidth / 2;
+    const lastCell = DragColumn.REAL_CELLS[DragColumn.REAL_CELLS.length - 1];
+    DragColumn.MAX_LEFT = lastCell.offsetLeft + lastCell.offsetWidth - cellElement.offsetWidth;
   }
 
   // WORK - disable dividers
@@ -41,10 +55,10 @@ export class DragColumn {
     (Array.from(cellElement.parentElement?.children || []) as HTMLElement[]).forEach((headerCell) => {
       if (headerCell.tagName === CellElement.HEADER_TAG) {
         const cloneCell = headerCell.cloneNode(true) as HTMLElement;
-        if (cellElement === headerCell) DragColumn.initiateDragState(cloneCell, headerCell);
         DragColumn.applyCloneHeaderCell(cloneCell, headerCell, lastElement);
       }
     });
+    DragColumn.initiateDragState(cellElement);
   }
 
   // WORK - drag for the overlayClick method
@@ -64,10 +78,36 @@ export class DragColumn {
     };
   }
 
+  private static switch(delta: number) {
+    const realCell = DragColumn.REAL_CELLS[DragColumn.ACTIVE_INDEX];
+    const previousThreshold = realCell.offsetLeft + (realCell.offsetWidth / 2) * delta - 5 * delta;
+    const siblingCell = DragColumn.CLONE_CELLS[DragColumn.ACTIVE_INDEX + delta];
+    const nextThreshold = siblingCell.offsetLeft + (siblingCell.offsetWidth / 2) * delta - 5 * delta;
+    DragColumn.THRESHOLD_RIGHT = delta > 0 ? nextThreshold : previousThreshold;
+    DragColumn.THRESHOLD_LEFT = delta > 0 ? previousThreshold : nextThreshold;
+    siblingCell.style.left = `${realCell.offsetLeft}px`;
+    // swapping as need to manipulate real reference
+    ArrayUtils.swap(DragColumn.CLONE_CELLS, DragColumn.ACTIVE_INDEX, DragColumn.ACTIVE_INDEX + delta);
+    DragColumn.ACTIVE_INDEX += delta;
+  }
+
   public static windowDrag(dragCell: HTMLElement, event: MouseEvent) {
     if (!DragColumn.IS_DRAGGING_ALLOWED) return;
-    DragColumn.ACTIVE_CELL_LEFT_PX += event.movementX;
+    let newDimension = Math.max(0, DragColumn.ACTIVE_CELL_LEFT_PX + event.movementX);
+    newDimension = Math.min(newDimension, DragColumn.MAX_LEFT);
+    DragColumn.ACTIVE_CELL_LEFT_PX = newDimension;
     dragCell.style.left = `${DragColumn.ACTIVE_CELL_LEFT_PX}px`;
+    if (DragColumn.ACTIVE_CELL_LEFT_PX > DragColumn.THRESHOLD_RIGHT) {
+      if (!DragColumn.CAN_SWITCH_RIGHT) return;
+      DragColumn.switch(1);
+      DragColumn.CAN_SWITCH_LEFT = true;
+      DragColumn.CAN_SWITCH_RIGHT = DragColumn.ACTIVE_INDEX + 2 < DragColumn.CLONE_CELLS.length;
+    } else if (DragColumn.ACTIVE_CELL_LEFT_PX < DragColumn.THRESHOLD_LEFT) {
+      if (!DragColumn.CAN_SWITCH_LEFT) return;
+      DragColumn.switch(-1);
+      DragColumn.CAN_SWITCH_RIGHT = true;
+      DragColumn.CAN_SWITCH_LEFT = DragColumn.ACTIVE_INDEX - 1 > 0;
+    }
   }
 
   public static windowMouseUp() {
@@ -78,6 +118,8 @@ export class DragColumn {
       DragColumn.INITIALISING_DRAG_PX = 0;
       DragColumn.ACTIVE_CELL_LEFT_PX = 0;
       DragColumn.IS_MOUSE_DOWN_ON_CELL = false;
+      DragColumn.CLONE_CELLS = [];
+      DragColumn.REAL_CELLS = [];
     }
   }
 }
