@@ -45,6 +45,6 @@ export class HeaderCellEvents {
     cellElement.onmouseenter = HeaderCellEvents.mouseEnterCell.bind(at, columnIndex);
     cellElement.onmouseleave = HeaderCellEvents.mouseLeaveCell.bind(at, columnIndex);
     cellElement.onclick = HeaderCellEvents.mouseClick.bind(at, columnIndex);
-    DragColumn.applyEventsToCell(cellElement);
+    DragColumn.applyEventsToCell(at, cellElement);
   }
 }

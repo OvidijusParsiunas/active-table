@@ -1,5 +1,8 @@
+import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ArrayUtils} from '../../array/arrayUtils';
+import {ActiveTable} from '../../../activeTable';
+import {MoveColumn} from '../moveColumn';
 
 export class DragColumn {
   // WORK - should hold this as component state
@@ -14,11 +17,26 @@ export class DragColumn {
   private static CLONE_CELLS: HTMLElement[] = [];
   private static REAL_CELLS: HTMLElement[] = [];
   private static ACTIVE_INDEX = 0;
+  private static ORIGINAL_INDEX = 0;
   private static THRESHOLD_RIGHT = 0;
   private static THRESHOLD_LEFT = 0;
   private static CAN_SWITCH_RIGHT = true;
   private static CAN_SWITCH_LEFT = true;
   private static MAX_LEFT = 0;
+
+  private static move(at: ActiveTable) {
+    const moveByNumber = DragColumn.ACTIVE_INDEX - DragColumn.ORIGINAL_INDEX - 1;
+    if (moveByNumber === 0) return;
+    const isMoveRight = moveByNumber > 0;
+    const delta = isMoveRight ? 1 : -1;
+    for (let i = 0; i < Math.abs(moveByNumber); i += 1) {
+      MoveColumn.move(at, DragColumn.ORIGINAL_INDEX + i * delta, isMoveRight);
+      // in timeout to allow move to finish processing
+      setTimeout(() => {
+        FocusedCellUtils.purge(at._focusedElements.cell);
+      }, 5);
+    }
+  }
 
   private static processHeaderCellsToDefault(cellElement: HTMLElement) {
     const row = cellElement.parentElement?.children;
@@ -48,6 +66,9 @@ export class DragColumn {
     DragColumn.THRESHOLD_RIGHT = cellElement.offsetLeft + cellElement.offsetWidth / 2;
     const lastCell = DragColumn.REAL_CELLS[DragColumn.REAL_CELLS.length - 1];
     DragColumn.MAX_LEFT = lastCell.offsetLeft + lastCell.offsetWidth - cellElement.offsetWidth;
+    DragColumn.ORIGINAL_INDEX = DragColumn.ACTIVE_INDEX - 1;
+    DragColumn.CAN_SWITCH_RIGHT = true;
+    DragColumn.CAN_SWITCH_LEFT = true;
   }
 
   // WORK - disable dividers
@@ -62,7 +83,7 @@ export class DragColumn {
   }
 
   // WORK - drag for the overlayClick method
-  public static applyEventsToCell(cellElement: HTMLElement) {
+  public static applyEventsToCell(at: ActiveTable, cellElement: HTMLElement) {
     if (!DragColumn.IS_DRAGGING_ALLOWED) return;
     cellElement.onmousedown = () => {
       DragColumn.IS_MOUSE_DOWN_ON_CELL = true;
@@ -73,6 +94,7 @@ export class DragColumn {
         if (DragColumn.INITIALISING_DRAG_PX > DragColumn.DRAG_PX_TO_MOVE) {
           const lastElement = cellElement.parentElement?.children[cellElement.parentElement.children.length - 1];
           DragColumn.processHeaderCellsToDrag(cellElement, lastElement as HTMLElement);
+          FocusedCellUtils.set(at._focusedElements.cell, cellElement, 0, DragColumn.ORIGINAL_INDEX);
         }
       }
     };
@@ -110,16 +132,17 @@ export class DragColumn {
     }
   }
 
-  public static windowMouseUp() {
+  public static windowMouseUp(at: ActiveTable) {
+    DragColumn.IS_MOUSE_DOWN_ON_CELL = false;
     if (!DragColumn.IS_DRAGGING_ALLOWED) return;
     if (DragColumn.ACTIVE_CELL) {
       DragColumn.processHeaderCellsToDefault(DragColumn.ACTIVE_CELL);
       DragColumn.ACTIVE_CELL = null;
       DragColumn.INITIALISING_DRAG_PX = 0;
       DragColumn.ACTIVE_CELL_LEFT_PX = 0;
-      DragColumn.IS_MOUSE_DOWN_ON_CELL = false;
       DragColumn.CLONE_CELLS = [];
       DragColumn.REAL_CELLS = [];
+      DragColumn.move(at);
     }
   }
 }

@@ -77,7 +77,7 @@ export class WindowEvents {
 
   public static onMouseUp(this: ActiveTable) {
     if (this._activeOverlayElements.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseUp(this);
-    if (DragColumn.ACTIVE_CELL) DragColumn.windowMouseUp();
+    DragColumn.windowMouseUp(this);
   }
 
   public static onMouseMove(this: ActiveTable, event: MouseEvent) {
