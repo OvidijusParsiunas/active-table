@@ -58,17 +58,23 @@ export class DragColumn {
     DragColumn.REAL_CELLS.push(headerCell);
   }
 
+  private static getThreshold(cellElement: HTMLElement, delta: number) {
+    const nextCell = DragColumn.REAL_CELLS[DragColumn.ACTIVE_INDEX + delta];
+    const dragOffset = Math.min(cellElement.offsetWidth / 2, nextCell.offsetWidth / 2) * delta;
+    return cellElement.offsetLeft + dragOffset;
+  }
+
   private static initiateDragState(cellElement: HTMLElement) {
     DragColumn.ACTIVE_INDEX = DragColumn.REAL_CELLS.findIndex((element) => cellElement === element);
     DragColumn.ACTIVE_CELL = DragColumn.CLONE_CELLS[DragColumn.ACTIVE_INDEX];
     DragColumn.ACTIVE_CELL_LEFT_PX = cellElement.offsetLeft;
-    DragColumn.THRESHOLD_LEFT = cellElement.offsetLeft - cellElement.offsetWidth / 2;
-    DragColumn.THRESHOLD_RIGHT = cellElement.offsetLeft + cellElement.offsetWidth / 2;
+    DragColumn.THRESHOLD_LEFT = DragColumn.getThreshold(cellElement, -1);
+    DragColumn.THRESHOLD_RIGHT = DragColumn.getThreshold(cellElement, 1);
     const lastCell = DragColumn.REAL_CELLS[DragColumn.REAL_CELLS.length - 1];
     DragColumn.MAX_LEFT = lastCell.offsetLeft + lastCell.offsetWidth - cellElement.offsetWidth;
     DragColumn.ORIGINAL_INDEX = DragColumn.ACTIVE_INDEX - 1;
-    DragColumn.CAN_SWITCH_RIGHT = true;
     DragColumn.CAN_SWITCH_LEFT = true;
+    DragColumn.CAN_SWITCH_RIGHT = true;
   }
 
   // WORK - disable dividers
@@ -101,13 +107,17 @@ export class DragColumn {
   }
 
   private static switch(delta: number) {
-    const realCell = DragColumn.REAL_CELLS[DragColumn.ACTIVE_INDEX];
-    const previousThreshold = realCell.offsetLeft + (realCell.offsetWidth / 2) * delta - 5 * delta;
-    const siblingCell = DragColumn.CLONE_CELLS[DragColumn.ACTIVE_INDEX + delta];
-    const nextThreshold = siblingCell.offsetLeft + (siblingCell.offsetWidth / 2) * delta - 5 * delta;
-    DragColumn.THRESHOLD_RIGHT = delta > 0 ? nextThreshold : previousThreshold;
-    DragColumn.THRESHOLD_LEFT = delta > 0 ? previousThreshold : nextThreshold;
-    siblingCell.style.left = `${realCell.offsetLeft}px`;
+    const currentCell = DragColumn.CLONE_CELLS[DragColumn.ACTIVE_INDEX];
+    const nextCell = DragColumn.CLONE_CELLS[DragColumn.ACTIVE_INDEX + delta];
+    if (delta > 0) {
+      DragColumn.THRESHOLD_LEFT = DragColumn.THRESHOLD_RIGHT - 5;
+      DragColumn.THRESHOLD_RIGHT = currentCell.offsetLeft + nextCell.offsetWidth;
+      nextCell.style.left = `${nextCell.offsetLeft - currentCell.offsetWidth}px`;
+    } else {
+      DragColumn.THRESHOLD_RIGHT = DragColumn.THRESHOLD_LEFT + 5;
+      DragColumn.THRESHOLD_LEFT = currentCell.offsetLeft - nextCell.offsetWidth;
+      nextCell.style.left = `${nextCell.offsetLeft + currentCell.offsetWidth}px`;
+    }
     // swapping as need to manipulate real reference
     ArrayUtils.swap(DragColumn.CLONE_CELLS, DragColumn.ACTIVE_INDEX, DragColumn.ACTIVE_INDEX + delta);
     DragColumn.ACTIVE_INDEX += delta;
