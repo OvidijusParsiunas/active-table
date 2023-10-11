@@ -227,6 +227,10 @@ export const activeTableStyle = css`
     top: 0px;
   }
 
+  .header-cell-clone-animation {
+    transition: 0.25s ease-out;
+  }
+
   .header-cell-hidden {
     opacity: 0 !important;
   }

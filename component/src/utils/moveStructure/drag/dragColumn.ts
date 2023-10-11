@@ -9,13 +9,15 @@ export class DragColumn {
   private static readonly IS_DRAGGING_ALLOWED = false;
   private static readonly HEADER_CELL_HIDDEN_CLASS = 'header-cell-hidden';
   private static readonly HEADER_CELL_CLONE_CLASS = 'header-cell-clone';
-  private static readonly DRAG_PX_TO_MOVE = 15;
+  private static readonly HEADER_CELL_CLONE_ANIMATION_CLASS = 'header-cell-clone-animation';
+  private static readonly DRAG_PX_TO_MOVE = 10;
   private static INITIALISING_DRAG_PX = 0;
   private static ACTIVE_CELL_LEFT_PX = 0;
   private static IS_MOUSE_DOWN_ON_CELL = false;
   public static ACTIVE_CELL: HTMLElement | null = null;
   private static CLONE_CELLS: HTMLElement[] = [];
   private static REAL_CELLS: HTMLElement[] = [];
+  private static DIVIDERS: HTMLElement[] = [];
   private static ACTIVE_INDEX = 0;
   private static ORIGINAL_INDEX = 0;
   private static THRESHOLD_RIGHT = 0;
@@ -38,7 +40,7 @@ export class DragColumn {
     }
   }
 
-  private static processHeaderCellsToDefault(cellElement: HTMLElement) {
+  private static setHeaderElementsToDefault(cellElement: HTMLElement) {
     const row = cellElement.parentElement?.children;
     DragColumn.CLONE_CELLS.forEach((cell) => cell.remove());
     (Array.from(row || []) as HTMLElement[]).forEach((headerCell) => {
@@ -46,11 +48,15 @@ export class DragColumn {
         headerCell.classList.remove(DragColumn.HEADER_CELL_HIDDEN_CLASS);
       }
     });
+    DragColumn.DIVIDERS.forEach((element) => {
+      element.style.pointerEvents = '';
+    });
   }
 
   private static applyCloneHeaderCell(cloneCell: HTMLElement, headerCell: HTMLElement, lastElement: HTMLElement) {
     headerCell.classList.add(DragColumn.HEADER_CELL_HIDDEN_CLASS);
     cloneCell.classList.add(DragColumn.HEADER_CELL_CLONE_CLASS);
+    cloneCell.classList.add(DragColumn.HEADER_CELL_CLONE_ANIMATION_CLASS);
     cloneCell.style.left = `${headerCell.offsetLeft}px`;
     // last element does not have border right (.row > .cell:last-of-type) so we instead append before
     lastElement?.insertAdjacentElement('beforebegin', cloneCell);
@@ -67,6 +73,7 @@ export class DragColumn {
   private static initiateDragState(cellElement: HTMLElement) {
     DragColumn.ACTIVE_INDEX = DragColumn.REAL_CELLS.findIndex((element) => cellElement === element);
     DragColumn.ACTIVE_CELL = DragColumn.CLONE_CELLS[DragColumn.ACTIVE_INDEX];
+    DragColumn.ACTIVE_CELL.classList.remove(DragColumn.HEADER_CELL_CLONE_ANIMATION_CLASS);
     DragColumn.ACTIVE_CELL_LEFT_PX = cellElement.offsetLeft;
     DragColumn.THRESHOLD_LEFT = DragColumn.getThreshold(cellElement, -1);
     DragColumn.THRESHOLD_RIGHT = DragColumn.getThreshold(cellElement, 1);
@@ -77,12 +84,14 @@ export class DragColumn {
     DragColumn.CAN_SWITCH_RIGHT = true;
   }
 
-  // WORK - disable dividers
   private static processHeaderCellsToDrag(cellElement: HTMLElement, lastElement: HTMLElement) {
-    (Array.from(cellElement.parentElement?.children || []) as HTMLElement[]).forEach((headerCell) => {
-      if (headerCell.tagName === CellElement.HEADER_TAG) {
-        const cloneCell = headerCell.cloneNode(true) as HTMLElement;
-        DragColumn.applyCloneHeaderCell(cloneCell, headerCell, lastElement);
+    (Array.from(cellElement.parentElement?.children || []) as HTMLElement[]).forEach((headerElement) => {
+      if (headerElement.tagName === CellElement.HEADER_TAG) {
+        const cloneCell = headerElement.cloneNode(true) as HTMLElement; // also clones the index and add column cells
+        DragColumn.applyCloneHeaderCell(cloneCell, headerElement, lastElement);
+      } else {
+        headerElement.style.pointerEvents = 'none';
+        DragColumn.DIVIDERS.push(headerElement);
       }
     });
     DragColumn.initiateDragState(cellElement);
@@ -146,12 +155,13 @@ export class DragColumn {
     DragColumn.IS_MOUSE_DOWN_ON_CELL = false;
     if (!DragColumn.IS_DRAGGING_ALLOWED) return;
     if (DragColumn.ACTIVE_CELL) {
-      DragColumn.processHeaderCellsToDefault(DragColumn.ACTIVE_CELL);
+      DragColumn.setHeaderElementsToDefault(DragColumn.ACTIVE_CELL);
       DragColumn.ACTIVE_CELL = null;
       DragColumn.INITIALISING_DRAG_PX = 0;
       DragColumn.ACTIVE_CELL_LEFT_PX = 0;
       DragColumn.CLONE_CELLS = [];
       DragColumn.REAL_CELLS = [];
+      DragColumn.DIVIDERS = [];
       DragColumn.move(at);
     }
   }
