@@ -97,13 +97,12 @@ export class DragColumn {
     DragColumn.initiateDragState(cellElement);
   }
 
-  // WORK - drag for the overlayClick method
-  public static applyEventsToCell(at: ActiveTable, cellElement: HTMLElement) {
+  public static applyEventsToCell(at: ActiveTable, draggableElement: HTMLElement, cellElement: HTMLElement) {
     if (!DragColumn.IS_DRAGGING_ALLOWED) return;
-    cellElement.onmousedown = () => {
+    draggableElement.onmousedown = () => {
       DragColumn.IS_MOUSE_DOWN_ON_CELL = true;
     };
-    cellElement.onmousemove = () => {
+    draggableElement.onmousemove = () => {
       if (DragColumn.IS_MOUSE_DOWN_ON_CELL && !DragColumn.ACTIVE_CELL) {
         DragColumn.INITIALISING_DRAG_PX += 1;
         if (DragColumn.INITIALISING_DRAG_PX > DragColumn.DRAG_PX_TO_MOVE) {

@@ -1,4 +1,5 @@
 import {DropdownDisplaySettings, DropdownCellOverlayStyles} from '../../../../types/dropdownDisplaySettings';
+import {DragColumn} from '../../../../utils/moveStructure/drag/dragColumn';
 import {DropdownCellOverlay} from '../../cellOverlay/dropdownCellOverlay';
 import {ColumnDetailsT} from '../../../../types/columnDetails';
 import {ActiveTable} from '../../../../activeTable';
@@ -54,19 +55,20 @@ export class ColumnDropdownCellOverlay {
     }
   }
 
-  private static create(overlayStyles?: DropdownCellOverlayStyles) {
+  private static create(at: ActiveTable, headerCell: HTMLElement, overlayStyles?: DropdownCellOverlayStyles) {
     const columnDropdownCellOverlay = document.createElement('div');
     columnDropdownCellOverlay.classList.add(DropdownCellOverlay.DROPDOWN_CELL_OVERLAY_CLASS);
     columnDropdownCellOverlay.classList.add(ColumnDropdownCellOverlay.COLUMN_DROPDOWN_CELL_OVERLAY_CLASS);
     columnDropdownCellOverlay.style.height = DropdownCellOverlay.HIDDEN_PX;
     ColumnDropdownCellOverlay.setDefault(columnDropdownCellOverlay, overlayStyles);
+    DragColumn.applyEventsToCell(at, columnDropdownCellOverlay, headerCell);
     return columnDropdownCellOverlay;
   }
 
   public static add(at: ActiveTable, columnIndex: number) {
     const overlayStyles = at._defaultColumnsSettings.columnDropdown?.displaySettings?.overlayStyles;
-    const columnDropdownCellOverlay = ColumnDropdownCellOverlay.create(overlayStyles);
     const headerCell = at._columnsDetails[columnIndex].elements[0];
+    const columnDropdownCellOverlay = ColumnDropdownCellOverlay.create(at, headerCell, overlayStyles);
     const cellDividerElement = headerCell.nextSibling as HTMLElement;
     cellDividerElement.appendChild(columnDropdownCellOverlay);
     return columnDropdownCellOverlay;
