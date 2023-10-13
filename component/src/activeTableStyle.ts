@@ -235,6 +235,11 @@ export const activeTableStyle = css`
     opacity: 0 !important;
   }
 
+  .row-clone {
+    position: absolute;
+    display: flex;
+  }
+
   .root-cell {
     text-align: center;
     padding: 0px !important;

@@ -11,6 +11,7 @@ import {ColumnDropdown} from '../dropdown/columnDropdown/columnDropdown';
 import {DragColumn} from '../../utils/moveStructure/drag/dragColumn';
 import {HeaderText} from '../../utils/columnDetails/headerText';
 import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
+import {DragRow} from '../../utils/moveStructure/drag/dragRow';
 import {KEYBOARD_KEY} from '../../consts/keyboardKeys';
 import {ActiveTable} from '../../activeTable';
 import {Dropdown} from '../dropdown/dropdown';
@@ -78,10 +79,12 @@ export class WindowEvents {
   public static onMouseUp(this: ActiveTable) {
     if (this._activeOverlayElements.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseUp(this);
     DragColumn.windowMouseUp(this);
+    DragRow.windowMouseUp(this);
   }
 
   public static onMouseMove(this: ActiveTable, event: MouseEvent) {
     if (this._activeOverlayElements.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseMove(this, event.movementX);
     if (DragColumn.ACTIVE_CELL) DragColumn.windowDrag(DragColumn.ACTIVE_CELL, event);
+    if (DragRow.ACTIVE_ROW) DragRow.windowDrag(DragRow.ACTIVE_ROW, event);
   }
 }

@@ -6,6 +6,7 @@ import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
+import {DragRow} from '../../moveStructure/drag/dragRow';
 import {FireEvents} from '../../events/fireEvents';
 import {ActiveTable} from '../../../activeTable';
 
@@ -24,6 +25,7 @@ export class UpdateCellsForRows {
       if (at.rowDropdown.displaySettings.openMethod?.overlayClick) {
         RowDropdownCellOverlayEvents.setOverlayEvents(at, rowIndex, leftMostCell);
       }
+      DragRow.applyEventsToCell(at, leftMostCell, leftMostCell);
     }
   }
 
