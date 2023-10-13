@@ -1,6 +1,6 @@
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
 import {CellElement} from '../../../elements/cell/cellElement';
-import {ArrayUtils} from '../../array/arrayUtils';
+// import {ArrayUtils} from '../../array/arrayUtils';
 import {ActiveTable} from '../../../activeTable';
 import {MoveColumn} from '../moveColumn';
 
@@ -11,22 +11,22 @@ export class DragRow {
   private static readonly IS_DRAGGING_ALLOWED = false;
   private static readonly HEADER_CELL_HIDDEN_CLASS = 'header-cell-hidden';
   private static readonly ROW_CLONE_CLASS = 'row-clone';
-  private static readonly HEADER_CELL_CLONE_ANIMATION_CLASS = 'header-cell-clone-animation';
+  // private static readonly HEADER_CELL_CLONE_ANIMATION_CLASS = 'header-cell-clone-animation';
   private static readonly DRAG_PX_TO_MOVE = 10;
   private static INITIALISING_DRAG_PX = 0;
   private static ACTIVE_ROW_TOP_PX = 0;
   private static IS_MOUSE_DOWN_ON_CELL = false;
   public static ACTIVE_ROW: HTMLElement | null = null;
   private static CLONE_CELLS: HTMLElement[] = [];
-  private static REAL_CELLS: HTMLElement[] = [];
+  // private static REAL_CELLS: HTMLElement[] = [];
   private static DIVIDERS: HTMLElement[] = [];
   private static ACTIVE_INDEX = 0;
   private static ORIGINAL_INDEX = 0;
-  private static THRESHOLD_RIGHT = 0;
-  private static THRESHOLD_LEFT = 0;
-  private static CAN_SWITCH_RIGHT = true;
-  private static CAN_SWITCH_LEFT = true;
-  private static MAX_UP = 0;
+  // private static THRESHOLD_RIGHT = 0;
+  // private static THRESHOLD_LEFT = 0;
+  // private static CAN_SWITCH_RIGHT = true;
+  // private static CAN_SWITCH_LEFT = true;
+  // private static MAX_UP = 0;
 
   private static move(at: ActiveTable) {
     const moveByNumber = DragRow.ACTIVE_INDEX - DragRow.ORIGINAL_INDEX - 1;
@@ -75,11 +75,11 @@ export class DragRow {
     // DragRow.REAL_CELLS.push(dataCell);
   }
 
-  private static getThreshold(cellElement: HTMLElement, delta: number) {
-    const nextCell = DragRow.REAL_CELLS[DragRow.ACTIVE_INDEX + delta];
-    const dragOffset = Math.min(cellElement.offsetWidth / 2, nextCell.offsetWidth / 2) * delta;
-    return cellElement.offsetLeft + dragOffset;
-  }
+  // private static getThreshold(cellElement: HTMLElement, delta: number) {
+  //   const nextCell = DragRow.REAL_CELLS[DragRow.ACTIVE_INDEX + delta];
+  //   const dragOffset = Math.min(cellElement.offsetWidth / 2, nextCell.offsetWidth / 2) * delta;
+  //   return cellElement.offsetLeft + dragOffset;
+  // }
 
   private static initiateDragState(cloneRow: HTMLElement, realRow: HTMLElement) {
     DragRow.ACTIVE_ROW_TOP_PX = realRow.offsetTop;
@@ -121,22 +121,22 @@ export class DragRow {
     };
   }
 
-  private static switch(delta: number) {
-    const currentCell = DragRow.CLONE_CELLS[DragRow.ACTIVE_INDEX];
-    const nextCell = DragRow.CLONE_CELLS[DragRow.ACTIVE_INDEX + delta];
-    if (delta > 0) {
-      DragRow.THRESHOLD_LEFT = DragRow.THRESHOLD_RIGHT - 5;
-      DragRow.THRESHOLD_RIGHT = currentCell.offsetLeft + nextCell.offsetWidth;
-      nextCell.style.left = `${nextCell.offsetLeft - currentCell.offsetWidth}px`;
-    } else {
-      DragRow.THRESHOLD_RIGHT = DragRow.THRESHOLD_LEFT + 5;
-      DragRow.THRESHOLD_LEFT = currentCell.offsetLeft - nextCell.offsetWidth;
-      nextCell.style.left = `${nextCell.offsetLeft + currentCell.offsetWidth}px`;
-    }
-    // swapping as need to manipulate real reference
-    ArrayUtils.swap(DragRow.CLONE_CELLS, DragRow.ACTIVE_INDEX, DragRow.ACTIVE_INDEX + delta);
-    DragRow.ACTIVE_INDEX += delta;
-  }
+  // private static switch(delta: number) {
+  //   const currentCell = DragRow.CLONE_CELLS[DragRow.ACTIVE_INDEX];
+  //   const nextCell = DragRow.CLONE_CELLS[DragRow.ACTIVE_INDEX + delta];
+  //   if (delta > 0) {
+  //     DragRow.THRESHOLD_LEFT = DragRow.THRESHOLD_RIGHT - 5;
+  //     DragRow.THRESHOLD_RIGHT = currentCell.offsetLeft + nextCell.offsetWidth;
+  //     nextCell.style.left = `${nextCell.offsetLeft - currentCell.offsetWidth}px`;
+  //   } else {
+  //     DragRow.THRESHOLD_RIGHT = DragRow.THRESHOLD_LEFT + 5;
+  //     DragRow.THRESHOLD_LEFT = currentCell.offsetLeft - nextCell.offsetWidth;
+  //     nextCell.style.left = `${nextCell.offsetLeft + currentCell.offsetWidth}px`;
+  //   }
+  //   // swapping as need to manipulate real reference
+  //   ArrayUtils.swap(DragRow.CLONE_CELLS, DragRow.ACTIVE_INDEX, DragRow.ACTIVE_INDEX + delta);
+  //   DragRow.ACTIVE_INDEX += delta;
+  // }
 
   public static windowDrag(dragRow: HTMLElement, event: MouseEvent) {
     if (!DragRow.IS_DRAGGING_ALLOWED) return;
@@ -166,7 +166,7 @@ export class DragRow {
       DragRow.INITIALISING_DRAG_PX = 0;
       DragRow.ACTIVE_ROW_TOP_PX = 0;
       DragRow.CLONE_CELLS = [];
-      DragRow.REAL_CELLS = [];
+      // DragRow.REAL_CELLS = [];
       DragRow.DIVIDERS = [];
       DragRow.move(at);
     }
