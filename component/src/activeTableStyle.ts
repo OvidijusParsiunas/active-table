@@ -238,6 +238,14 @@ export const activeTableStyle = css`
   .row-clone {
     position: absolute;
     display: flex;
+    opacity: 0.8s;
+  }
+
+  .row-drag-target-line {
+    height: 4px;
+    width: 100%;
+    position: absolute;
+    background-color: #69b0ff;
   }
 
   .root-cell {

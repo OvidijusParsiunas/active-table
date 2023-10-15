@@ -1,6 +1,5 @@
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
 import {CellElement} from '../../../elements/cell/cellElement';
-// import {ArrayUtils} from '../../array/arrayUtils';
 import {ActiveTable} from '../../../activeTable';
 import {MoveColumn} from '../moveColumn';
 
@@ -11,22 +10,24 @@ export class DragRow {
   private static readonly IS_DRAGGING_ALLOWED = false;
   private static readonly HEADER_CELL_HIDDEN_CLASS = 'header-cell-hidden';
   private static readonly ROW_CLONE_CLASS = 'row-clone';
-  // private static readonly HEADER_CELL_CLONE_ANIMATION_CLASS = 'header-cell-clone-animation';
   private static readonly DRAG_PX_TO_MOVE = 10;
   private static INITIALISING_DRAG_PX = 0;
   private static ACTIVE_ROW_TOP_PX = 0;
   private static IS_MOUSE_DOWN_ON_CELL = false;
   public static ACTIVE_ROW: HTMLElement | null = null;
   private static CLONE_CELLS: HTMLElement[] = [];
-  // private static REAL_CELLS: HTMLElement[] = [];
   private static DIVIDERS: HTMLElement[] = [];
   private static ACTIVE_INDEX = 0;
   private static ORIGINAL_INDEX = 0;
-  // private static THRESHOLD_RIGHT = 0;
-  // private static THRESHOLD_LEFT = 0;
-  // private static CAN_SWITCH_RIGHT = true;
-  // private static CAN_SWITCH_LEFT = true;
-  // private static MAX_UP = 0;
+  private static THRESHOLD_UP = 0;
+  private static THRESHOLD_DOWN = 0;
+  private static TARGET_UP_ROW?: HTMLElement;
+  private static TARGET_DOWN_ROW?: HTMLElement;
+  private static CAN_SWITCH_UP = true;
+  private static CAN_SWITCH_DOWN = true;
+  private static MAX_DOWN = 0;
+
+  private static TARGET_LINE?: HTMLElement;
 
   private static move(at: ActiveTable) {
     const moveByNumber = DragRow.ACTIVE_INDEX - DragRow.ORIGINAL_INDEX - 1;
@@ -65,44 +66,35 @@ export class DragRow {
     rowChildren.forEach((dataCell) => {
       dataCell.classList.add(DragRow.HEADER_CELL_HIDDEN_CLASS);
     });
-    // cloneCell.classList.add(DragRow.HEADER_CELL_CLONE_CLASS);
-    // cloneCell.classList.add(DragRow.HEADER_CELL_CLONE_ANIMATION_CLASS);
-    // cloneCell.style.left = `${dataCell.offsetLeft}px`;
-    // cloneCell.style.width = `${dataCell.offsetWidth}px`;
-    // last element does not have border right (.row > .cell:last-of-type) so we instead append before
-    // lastElement?.insertAdjacentElement('beforebegin', cloneCell);
-    // DragRow.CLONE_CELLS.push(cloneCell);
-    // DragRow.REAL_CELLS.push(dataCell);
   }
 
-  // private static getThreshold(cellElement: HTMLElement, delta: number) {
-  //   const nextCell = DragRow.REAL_CELLS[DragRow.ACTIVE_INDEX + delta];
-  //   const dragOffset = Math.min(cellElement.offsetWidth / 2, nextCell.offsetWidth / 2) * delta;
-  //   return cellElement.offsetLeft + dragOffset;
-  // }
-
-  private static initiateDragState(cloneRow: HTMLElement, realRow: HTMLElement) {
+  private static initiateDragState(tableBody: HTMLElement, cloneRow: HTMLElement, realRow: HTMLElement) {
     DragRow.ACTIVE_ROW_TOP_PX = realRow.offsetTop;
     DragRow.ACTIVE_ROW = cloneRow;
-    // DragRow.ACTIVE_INDEX = DragRow.REAL_CELLS.findIndex((element) => cellElement === element);
-    // DragRow.ACTIVE_CELL = DragRow.CLONE_CELLS[DragRow.ACTIVE_INDEX];
-    // DragRow.ACTIVE_CELL.classList.remove(DragRow.HEADER_CELL_CLONE_ANIMATION_CLASS);
-    // DragRow.ACTIVE_CELL_TOP_PX = cellElement.offsetTop;
-    // DragRow.THRESHOLD_LEFT = DragRow.getThreshold(cellElement, -1);
-    // DragRow.THRESHOLD_RIGHT = DragRow.getThreshold(cellElement, 1);
-    // const lastCell = DragRow.REAL_CELLS[DragRow.REAL_CELLS.length - 1];
-    // DragRow.MAX_UP = lastCell.offsetLeft + lastCell.offsetWidth - cellElement.offsetWidth;
-    // DragRow.ORIGINAL_INDEX = DragRow.ACTIVE_INDEX - 1;
-    // DragRow.CAN_SWITCH_LEFT = true;
-    // DragRow.CAN_SWITCH_RIGHT = true;
+    const previousRow = realRow.previousSibling as HTMLElement;
+    const nextRow = realRow.nextSibling?.nextSibling as HTMLElement;
+    DragRow.TARGET_UP_ROW = previousRow;
+    if (DragRow.TARGET_UP_ROW) {
+      DragRow.THRESHOLD_UP = previousRow.offsetTop + previousRow.offsetHeight / 2;
+    }
+    DragRow.THRESHOLD_DOWN = nextRow.offsetTop + nextRow.offsetHeight / 2 - realRow.offsetHeight;
+    DragRow.TARGET_DOWN_ROW = nextRow;
+    DragRow.CAN_SWITCH_UP = true;
+    DragRow.CAN_SWITCH_DOWN = true;
+    const targetLine = document.createElement('div');
+    targetLine.classList.add('row-drag-target-line');
+    targetLine.style.opacity = '0';
+    DragRow.TARGET_LINE = targetLine;
+    tableBody.appendChild(targetLine);
+    DragRow.MAX_DOWN = tableBody.offsetHeight - realRow.offsetHeight;
   }
 
-  private static processRowCellsToDrag(cellElement: HTMLElement) {
+  private static processRowCellsToDrag(tableBody: HTMLElement, cellElement: HTMLElement) {
     const realRow = cellElement.parentElement as HTMLElement;
     const cloneRow = realRow.cloneNode(true) as HTMLElement; // also clones the index and add column cells
     realRow?.insertAdjacentElement('afterend', cloneRow);
     DragRow.applyCloneRow(cloneRow, realRow);
-    DragRow.initiateDragState(cloneRow, realRow);
+    DragRow.initiateDragState(tableBody, cloneRow, realRow);
   }
 
   public static applyEventsToCell(at: ActiveTable, draggableElement: HTMLElement, cellElement: HTMLElement) {
@@ -114,47 +106,70 @@ export class DragRow {
       if (DragRow.IS_MOUSE_DOWN_ON_CELL && !DragRow.ACTIVE_ROW) {
         DragRow.INITIALISING_DRAG_PX += 1;
         if (DragRow.INITIALISING_DRAG_PX > DragRow.DRAG_PX_TO_MOVE) {
-          DragRow.processRowCellsToDrag(cellElement);
+          DragRow.processRowCellsToDrag(at._tableBodyElementRef as HTMLElement, cellElement);
           FocusedCellUtils.set(at._focusedElements.cell, cellElement, 0, DragRow.ORIGINAL_INDEX);
         }
       }
     };
   }
 
-  // private static switch(delta: number) {
-  //   const currentCell = DragRow.CLONE_CELLS[DragRow.ACTIVE_INDEX];
-  //   const nextCell = DragRow.CLONE_CELLS[DragRow.ACTIVE_INDEX + delta];
-  //   if (delta > 0) {
-  //     DragRow.THRESHOLD_LEFT = DragRow.THRESHOLD_RIGHT - 5;
-  //     DragRow.THRESHOLD_RIGHT = currentCell.offsetLeft + nextCell.offsetWidth;
-  //     nextCell.style.left = `${nextCell.offsetLeft - currentCell.offsetWidth}px`;
-  //   } else {
-  //     DragRow.THRESHOLD_RIGHT = DragRow.THRESHOLD_LEFT + 5;
-  //     DragRow.THRESHOLD_LEFT = currentCell.offsetLeft - nextCell.offsetWidth;
-  //     nextCell.style.left = `${nextCell.offsetLeft + currentCell.offsetWidth}px`;
-  //   }
-  //   // swapping as need to manipulate real reference
-  //   ArrayUtils.swap(DragRow.CLONE_CELLS, DragRow.ACTIVE_INDEX, DragRow.ACTIVE_INDEX + delta);
-  //   DragRow.ACTIVE_INDEX += delta;
-  // }
-
   public static windowDrag(dragRow: HTMLElement, event: MouseEvent) {
-    if (!DragRow.IS_DRAGGING_ALLOWED) return;
-    const newDimension = Math.max(0, DragRow.ACTIVE_ROW_TOP_PX + event.movementY);
-    // newDimension = Math.min(newDimension, DragRow.MAX_UP);
+    if (!DragRow.IS_DRAGGING_ALLOWED || !DragRow.TARGET_LINE) return;
+    let newDimension = Math.max(0, DragRow.ACTIVE_ROW_TOP_PX + event.movementY);
+    newDimension = Math.min(newDimension, DragRow.MAX_DOWN);
     DragRow.ACTIVE_ROW_TOP_PX = newDimension;
     dragRow.style.top = `${DragRow.ACTIVE_ROW_TOP_PX}px`;
-    // if (DragRow.ACTIVE_CELL_TOP_PX > DragRow.THRESHOLD_RIGHT) {
-    //   if (!DragRow.CAN_SWITCH_RIGHT) return;
-    //   DragRow.switch(1);
-    //   DragRow.CAN_SWITCH_LEFT = true;
-    //   DragRow.CAN_SWITCH_RIGHT = DragRow.ACTIVE_INDEX + 2 < DragRow.CLONE_CELLS.length;
-    // } else if (DragRow.ACTIVE_CELL_TOP_PX < DragRow.THRESHOLD_LEFT) {
-    //   if (!DragRow.CAN_SWITCH_LEFT) return;
-    //   DragRow.switch(-1);
-    //   DragRow.CAN_SWITCH_RIGHT = true;
-    //   DragRow.CAN_SWITCH_LEFT = DragRow.ACTIVE_INDEX - 1 > 0;
-    // }
+    if (DragRow.ACTIVE_ROW_TOP_PX > DragRow.THRESHOLD_DOWN) {
+      console.log('down');
+      if (DragRow.TARGET_DOWN_ROW && DragRow.CAN_SWITCH_DOWN) {
+        if ((DragRow.TARGET_DOWN_ROW.nextSibling as HTMLElement).id === 'last-visible-row') {
+          DragRow.CAN_SWITCH_DOWN = false;
+        }
+        if (DragRow.TARGET_DOWN_ROW.nextSibling?.nextSibling === dragRow) {
+          DragRow.TARGET_LINE.style.opacity = '0';
+          DragRow.THRESHOLD_UP = DragRow.THRESHOLD_DOWN;
+          DragRow.TARGET_UP_ROW = DragRow.TARGET_DOWN_ROW;
+          DragRow.TARGET_DOWN_ROW = dragRow.nextSibling as HTMLElement;
+          DragRow.THRESHOLD_DOWN = DragRow.TARGET_DOWN_ROW.offsetTop - DragRow.TARGET_DOWN_ROW.offsetHeight / 2;
+        } else {
+          DragRow.TARGET_LINE.style.opacity = '1';
+          DragRow.TARGET_LINE.style.top = `${
+            DragRow.TARGET_DOWN_ROW.offsetTop + DragRow.TARGET_DOWN_ROW.offsetHeight - 3
+          }px`;
+          // if (DragRow.THRESHOLD_DOWN > DragRow.TARGET_DOWN_ROW.offsetTop) {
+          DragRow.THRESHOLD_UP = DragRow.THRESHOLD_DOWN;
+          DragRow.TARGET_UP_ROW = DragRow.TARGET_DOWN_ROW;
+          DragRow.TARGET_DOWN_ROW = DragRow.TARGET_DOWN_ROW.nextSibling as HTMLElement;
+          DragRow.THRESHOLD_DOWN =
+            DragRow.TARGET_DOWN_ROW.offsetTop + DragRow.TARGET_DOWN_ROW.offsetHeight / 2 - dragRow.offsetHeight;
+        }
+        DragRow.CAN_SWITCH_UP = true;
+      }
+    } else if (DragRow.ACTIVE_ROW_TOP_PX < DragRow.THRESHOLD_UP) {
+      console.log('up');
+      if (DragRow.TARGET_UP_ROW && DragRow.CAN_SWITCH_UP) {
+        if (DragRow.TARGET_UP_ROW.previousSibling === dragRow) {
+          DragRow.TARGET_LINE.style.opacity = '0';
+          DragRow.THRESHOLD_DOWN = DragRow.THRESHOLD_UP;
+          DragRow.TARGET_DOWN_ROW = DragRow.TARGET_UP_ROW;
+          DragRow.TARGET_UP_ROW = dragRow.previousSibling?.previousSibling as HTMLElement;
+          if (DragRow.TARGET_UP_ROW) {
+            DragRow.THRESHOLD_UP = DragRow.TARGET_UP_ROW.offsetTop + DragRow.TARGET_UP_ROW.offsetHeight / 2;
+          }
+        } else {
+          DragRow.TARGET_LINE.style.opacity = '1';
+          DragRow.TARGET_LINE.style.top = `${DragRow.TARGET_UP_ROW.offsetTop - 3}px`;
+          DragRow.THRESHOLD_DOWN = DragRow.THRESHOLD_UP;
+          DragRow.TARGET_DOWN_ROW = DragRow.TARGET_UP_ROW;
+          DragRow.TARGET_UP_ROW = DragRow.TARGET_UP_ROW.previousSibling as HTMLElement;
+          DragRow.THRESHOLD_UP = DragRow.TARGET_UP_ROW.offsetTop + DragRow.TARGET_UP_ROW.offsetHeight / 2;
+        }
+        if (!DragRow.TARGET_UP_ROW?.previousSibling) {
+          DragRow.CAN_SWITCH_UP = false;
+        }
+        DragRow.CAN_SWITCH_DOWN = true;
+      }
+    }
   }
 
   public static windowMouseUp(at: ActiveTable) {
@@ -166,7 +181,6 @@ export class DragRow {
       DragRow.INITIALISING_DRAG_PX = 0;
       DragRow.ACTIVE_ROW_TOP_PX = 0;
       DragRow.CLONE_CELLS = [];
-      // DragRow.REAL_CELLS = [];
       DragRow.DIVIDERS = [];
       DragRow.move(at);
     }
