@@ -241,11 +241,16 @@ export const activeTableStyle = css`
     opacity: 0.8s;
   }
 
+  .row-clone > * {
+    cursor: move !important;
+  }
+
   .row-drag-target-line {
     height: 4px;
     width: 100%;
     position: absolute;
     background-color: #69b0ff;
+    pointer-events: none;
   }
 
   .root-cell {

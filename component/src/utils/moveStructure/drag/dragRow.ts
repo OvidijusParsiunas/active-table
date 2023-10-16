@@ -1,7 +1,6 @@
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
-import {CellElement} from '../../../elements/cell/cellElement';
 import {ActiveTable} from '../../../activeTable';
-import {MoveColumn} from '../moveColumn';
+import {MoveRow} from '../moveRow';
 
 // WORK - test when no index column
 
@@ -15,8 +14,7 @@ export class DragRow {
   private static ACTIVE_ROW_TOP_PX = 0;
   private static IS_MOUSE_DOWN_ON_CELL = false;
   public static ACTIVE_ROW: HTMLElement | null = null;
-  private static CLONE_CELLS: HTMLElement[] = [];
-  private static DIVIDERS: HTMLElement[] = [];
+  public static CLONE_ROW: HTMLElement | null = null;
   private static ACTIVE_INDEX = 0;
   private static ORIGINAL_INDEX = 0;
   private static THRESHOLD_UP = 0;
@@ -30,33 +28,30 @@ export class DragRow {
   private static TARGET_LINE?: HTMLElement;
 
   private static move(at: ActiveTable) {
-    const moveByNumber = DragRow.ACTIVE_INDEX - DragRow.ORIGINAL_INDEX - 1;
+    const moveByNumber = DragRow.ACTIVE_INDEX;
     if (moveByNumber === 0) return;
-    const isMoveRight = moveByNumber > 0;
-    const delta = isMoveRight ? 1 : -1;
+    const isMoveDown = moveByNumber > 0;
+    const delta = isMoveDown ? 1 : -1;
     for (let i = 0; i < Math.abs(moveByNumber); i += 1) {
-      MoveColumn.move(at, DragRow.ORIGINAL_INDEX + i * delta, isMoveRight);
-      // in timeout to allow move to finish processing
-      setTimeout(() => {
-        FocusedCellUtils.purge(at._focusedElements.cell);
-      }, 5);
+      console.log('moving');
+      MoveRow.move(at, DragRow.ORIGINAL_INDEX + i * delta, isMoveDown);
+      // // in timeout to allow move to finish processing
+      // setTimeout(() => {
+      //   FocusedCellUtils.purge(at._focusedElements.cell);
+      // }, 5);
     }
   }
 
-  private static setHeaderElementsToDefault(cellElement: HTMLElement) {
-    const row = cellElement.parentElement?.children;
-    DragRow.CLONE_CELLS.forEach((cell) => cell.remove());
-    (Array.from(row || []) as HTMLElement[]).forEach((headerCell) => {
-      if (headerCell.tagName === CellElement.HEADER_TAG) {
-        headerCell.classList.remove(DragRow.HEADER_CELL_HIDDEN_CLASS);
-      }
+  private static resetElements(realRow: HTMLElement) {
+    DragRow.CLONE_ROW?.remove();
+    const rowChildren = Array.from(realRow.children || []) as HTMLElement[];
+    rowChildren.forEach((dataCell) => {
+      dataCell.classList.remove(DragRow.HEADER_CELL_HIDDEN_CLASS);
     });
-    DragRow.DIVIDERS.forEach((element) => {
-      element.style.pointerEvents = '';
-    });
+    DragRow.TARGET_LINE?.remove();
   }
 
-  private static applyCloneRow(cloneRow: HTMLElement, realRow: HTMLElement) {
+  private static prepareElements(cloneRow: HTMLElement, realRow: HTMLElement) {
     cloneRow.classList.add(DragRow.ROW_CLONE_CLASS);
     cloneRow.style.top = `${realRow.offsetTop}px`;
     const rowChildren = Array.from(realRow.children || []) as HTMLElement[];
@@ -70,30 +65,34 @@ export class DragRow {
 
   private static initiateDragState(tableBody: HTMLElement, cloneRow: HTMLElement, realRow: HTMLElement) {
     DragRow.ACTIVE_ROW_TOP_PX = realRow.offsetTop;
-    DragRow.ACTIVE_ROW = cloneRow;
-    const previousRow = realRow.previousSibling as HTMLElement;
-    const nextRow = realRow.nextSibling?.nextSibling as HTMLElement;
+    DragRow.CLONE_ROW = cloneRow;
+    DragRow.ACTIVE_ROW = realRow;
+    const previousRow = DragRow.ACTIVE_ROW.previousSibling as HTMLElement;
+    const nextRow = DragRow.ACTIVE_ROW.nextSibling?.nextSibling as HTMLElement;
     DragRow.TARGET_UP_ROW = previousRow;
     if (DragRow.TARGET_UP_ROW) {
       DragRow.THRESHOLD_UP = previousRow.offsetTop + previousRow.offsetHeight / 2;
     }
-    DragRow.THRESHOLD_DOWN = nextRow.offsetTop + nextRow.offsetHeight / 2 - realRow.offsetHeight;
+    DragRow.THRESHOLD_DOWN = nextRow.offsetTop + nextRow.offsetHeight / 2 - DragRow.ACTIVE_ROW.offsetHeight;
     DragRow.TARGET_DOWN_ROW = nextRow;
     DragRow.CAN_SWITCH_UP = true;
     DragRow.CAN_SWITCH_DOWN = true;
-    const targetLine = document.createElement('div');
-    targetLine.classList.add('row-drag-target-line');
-    targetLine.style.opacity = '0';
-    DragRow.TARGET_LINE = targetLine;
-    tableBody.appendChild(targetLine);
-    DragRow.MAX_DOWN = tableBody.offsetHeight - realRow.offsetHeight;
+    DragRow.TARGET_LINE = document.createElement('div');
+    DragRow.TARGET_LINE.classList.add('row-drag-target-line');
+    DragRow.TARGET_LINE.style.opacity = '0';
+    tableBody.appendChild(DragRow.TARGET_LINE);
+    DragRow.MAX_DOWN = tableBody.offsetHeight - DragRow.ACTIVE_ROW.offsetHeight;
+    DragRow.ACTIVE_INDEX = 0;
+    DragRow.ORIGINAL_INDEX = Array.from(tableBody.children).findIndex((element) => element === DragRow.ACTIVE_ROW);
+    if ((nextRow as HTMLElement).id === 'last-visible-row') DragRow.CAN_SWITCH_DOWN = false;
+    if (!previousRow?.previousSibling) DragRow.CAN_SWITCH_UP = false;
   }
 
   private static processRowCellsToDrag(tableBody: HTMLElement, cellElement: HTMLElement) {
     const realRow = cellElement.parentElement as HTMLElement;
     const cloneRow = realRow.cloneNode(true) as HTMLElement; // also clones the index and add column cells
     realRow?.insertAdjacentElement('afterend', cloneRow);
-    DragRow.applyCloneRow(cloneRow, realRow);
+    DragRow.prepareElements(cloneRow, realRow);
     DragRow.initiateDragState(tableBody, cloneRow, realRow);
   }
 
@@ -113,24 +112,25 @@ export class DragRow {
     };
   }
 
-  public static windowDrag(dragRow: HTMLElement, event: MouseEvent) {
-    if (!DragRow.IS_DRAGGING_ALLOWED || !DragRow.TARGET_LINE) return;
+  public static windowDrag(event: MouseEvent) {
+    if (!DragRow.IS_DRAGGING_ALLOWED || !DragRow.TARGET_LINE || !DragRow.ACTIVE_ROW || !DragRow.CLONE_ROW) return;
     let newDimension = Math.max(0, DragRow.ACTIVE_ROW_TOP_PX + event.movementY);
     newDimension = Math.min(newDimension, DragRow.MAX_DOWN);
     DragRow.ACTIVE_ROW_TOP_PX = newDimension;
-    dragRow.style.top = `${DragRow.ACTIVE_ROW_TOP_PX}px`;
+    DragRow.CLONE_ROW.style.top = `${DragRow.ACTIVE_ROW_TOP_PX}px`;
     if (DragRow.ACTIVE_ROW_TOP_PX > DragRow.THRESHOLD_DOWN) {
-      console.log('down');
       if (DragRow.TARGET_DOWN_ROW && DragRow.CAN_SWITCH_DOWN) {
+        console.log('down');
         if ((DragRow.TARGET_DOWN_ROW.nextSibling as HTMLElement).id === 'last-visible-row') {
           DragRow.CAN_SWITCH_DOWN = false;
         }
-        if (DragRow.TARGET_DOWN_ROW.nextSibling?.nextSibling === dragRow) {
+        if (DragRow.TARGET_DOWN_ROW.nextSibling === DragRow.ACTIVE_ROW) {
           DragRow.TARGET_LINE.style.opacity = '0';
-          DragRow.THRESHOLD_UP = DragRow.THRESHOLD_DOWN;
           DragRow.TARGET_UP_ROW = DragRow.TARGET_DOWN_ROW;
-          DragRow.TARGET_DOWN_ROW = dragRow.nextSibling as HTMLElement;
-          DragRow.THRESHOLD_DOWN = DragRow.TARGET_DOWN_ROW.offsetTop - DragRow.TARGET_DOWN_ROW.offsetHeight / 2;
+          DragRow.THRESHOLD_UP = DragRow.TARGET_UP_ROW.offsetTop - DragRow.TARGET_UP_ROW.offsetHeight / 2 - 20;
+          DragRow.TARGET_DOWN_ROW = DragRow.ACTIVE_ROW.nextSibling?.nextSibling as HTMLElement;
+          DragRow.THRESHOLD_DOWN =
+            DragRow.TARGET_DOWN_ROW.offsetTop + DragRow.TARGET_DOWN_ROW.offsetHeight / 2 - DragRow.ACTIVE_ROW.offsetHeight;
         } else {
           DragRow.TARGET_LINE.style.opacity = '1';
           DragRow.TARGET_LINE.style.top = `${
@@ -141,18 +141,19 @@ export class DragRow {
           DragRow.TARGET_UP_ROW = DragRow.TARGET_DOWN_ROW;
           DragRow.TARGET_DOWN_ROW = DragRow.TARGET_DOWN_ROW.nextSibling as HTMLElement;
           DragRow.THRESHOLD_DOWN =
-            DragRow.TARGET_DOWN_ROW.offsetTop + DragRow.TARGET_DOWN_ROW.offsetHeight / 2 - dragRow.offsetHeight;
+            DragRow.TARGET_DOWN_ROW.offsetTop + DragRow.TARGET_DOWN_ROW.offsetHeight / 2 - DragRow.ACTIVE_ROW.offsetHeight;
         }
         DragRow.CAN_SWITCH_UP = true;
+        DragRow.ACTIVE_INDEX += 1;
       }
     } else if (DragRow.ACTIVE_ROW_TOP_PX < DragRow.THRESHOLD_UP) {
-      console.log('up');
       if (DragRow.TARGET_UP_ROW && DragRow.CAN_SWITCH_UP) {
-        if (DragRow.TARGET_UP_ROW.previousSibling === dragRow) {
+        console.log('up');
+        if (DragRow.TARGET_UP_ROW.previousSibling === DragRow.ACTIVE_ROW) {
           DragRow.TARGET_LINE.style.opacity = '0';
           DragRow.THRESHOLD_DOWN = DragRow.THRESHOLD_UP;
           DragRow.TARGET_DOWN_ROW = DragRow.TARGET_UP_ROW;
-          DragRow.TARGET_UP_ROW = dragRow.previousSibling?.previousSibling as HTMLElement;
+          DragRow.TARGET_UP_ROW = DragRow.ACTIVE_ROW.previousSibling as HTMLElement;
           if (DragRow.TARGET_UP_ROW) {
             DragRow.THRESHOLD_UP = DragRow.TARGET_UP_ROW.offsetTop + DragRow.TARGET_UP_ROW.offsetHeight / 2;
           }
@@ -168,6 +169,7 @@ export class DragRow {
           DragRow.CAN_SWITCH_UP = false;
         }
         DragRow.CAN_SWITCH_DOWN = true;
+        DragRow.ACTIVE_INDEX -= 1;
       }
     }
   }
@@ -176,12 +178,10 @@ export class DragRow {
     DragRow.IS_MOUSE_DOWN_ON_CELL = false;
     if (!DragRow.IS_DRAGGING_ALLOWED) return;
     if (DragRow.ACTIVE_ROW) {
-      DragRow.setHeaderElementsToDefault(DragRow.ACTIVE_ROW);
+      DragRow.resetElements(DragRow.ACTIVE_ROW);
       DragRow.ACTIVE_ROW = null;
       DragRow.INITIALISING_DRAG_PX = 0;
       DragRow.ACTIVE_ROW_TOP_PX = 0;
-      DragRow.CLONE_CELLS = [];
-      DragRow.DIVIDERS = [];
       DragRow.move(at);
     }
   }
