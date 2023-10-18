@@ -7,14 +7,14 @@ import {MoveColumn} from '../moveColumn';
 export class DragColumn {
   // WORK - should hold this as component state
   private static readonly IS_DRAGGING_ALLOWED = false;
-  private static readonly HEADER_CELL_HIDDEN_CLASS = 'header-cell-hidden';
+  private static readonly CELL_HIDDEN_CLASS = 'cell-hidden';
   private static readonly HEADER_CELL_CLONE_CLASS = 'header-cell-clone';
   private static readonly HEADER_CELL_CLONE_ANIMATION_CLASS = 'header-cell-clone-animation';
   private static readonly DRAG_PX_TO_MOVE = 10;
   private static INITIALISING_DRAG_PX = 0;
   private static ACTIVE_CELL_LEFT_PX = 0;
-  private static IS_MOUSE_DOWN_ON_CELL = false;
-  public static ACTIVE_CELL: HTMLElement | null = null;
+  private static IS_MOUSE_DOWN = false;
+  public static CELL: HTMLElement | null = null;
   private static CLONE_CELLS: HTMLElement[] = [];
   private static REAL_CELLS: HTMLElement[] = [];
   private static DIVIDERS: HTMLElement[] = [];
@@ -33,11 +33,9 @@ export class DragColumn {
     const delta = isMoveRight ? 1 : -1;
     for (let i = 0; i < Math.abs(moveByNumber); i += 1) {
       MoveColumn.move(at, DragColumn.ORIGINAL_INDEX + i * delta, isMoveRight);
-      // in timeout to allow move to finish processing
-      setTimeout(() => {
-        FocusedCellUtils.purge(at._focusedElements.cell);
-      }, 5);
     }
+    // in timeout to allow move to finish processing
+    setTimeout(() => FocusedCellUtils.purge(at._focusedElements.cell), 5);
   }
 
   private static setHeaderElementsToDefault(cellElement: HTMLElement) {
@@ -45,7 +43,7 @@ export class DragColumn {
     DragColumn.CLONE_CELLS.forEach((cell) => cell.remove());
     (Array.from(row || []) as HTMLElement[]).forEach((headerCell) => {
       if (headerCell.tagName === CellElement.HEADER_TAG) {
-        headerCell.classList.remove(DragColumn.HEADER_CELL_HIDDEN_CLASS);
+        headerCell.classList.remove(DragColumn.CELL_HIDDEN_CLASS);
       }
     });
     DragColumn.DIVIDERS.forEach((element) => {
@@ -54,7 +52,7 @@ export class DragColumn {
   }
 
   private static applyCloneHeaderCell(cloneCell: HTMLElement, headerCell: HTMLElement, lastElement: HTMLElement) {
-    headerCell.classList.add(DragColumn.HEADER_CELL_HIDDEN_CLASS);
+    headerCell.classList.add(DragColumn.CELL_HIDDEN_CLASS);
     cloneCell.classList.add(DragColumn.HEADER_CELL_CLONE_CLASS);
     cloneCell.classList.add(DragColumn.HEADER_CELL_CLONE_ANIMATION_CLASS);
     cloneCell.style.left = `${headerCell.offsetLeft}px`;
@@ -72,8 +70,8 @@ export class DragColumn {
 
   private static initiateDragState(cellElement: HTMLElement) {
     DragColumn.ACTIVE_INDEX = DragColumn.REAL_CELLS.findIndex((element) => cellElement === element);
-    DragColumn.ACTIVE_CELL = DragColumn.CLONE_CELLS[DragColumn.ACTIVE_INDEX];
-    DragColumn.ACTIVE_CELL.classList.remove(DragColumn.HEADER_CELL_CLONE_ANIMATION_CLASS);
+    DragColumn.CELL = DragColumn.CLONE_CELLS[DragColumn.ACTIVE_INDEX];
+    DragColumn.CELL.classList.remove(DragColumn.HEADER_CELL_CLONE_ANIMATION_CLASS);
     DragColumn.ACTIVE_CELL_LEFT_PX = cellElement.offsetLeft;
     DragColumn.THRESHOLD_LEFT = DragColumn.getThreshold(cellElement, -1);
     DragColumn.THRESHOLD_RIGHT = DragColumn.getThreshold(cellElement, 1);
@@ -97,13 +95,13 @@ export class DragColumn {
     DragColumn.initiateDragState(cellElement);
   }
 
-  public static applyEventsToCell(at: ActiveTable, draggableElement: HTMLElement, cellElement: HTMLElement) {
+  public static applyEventsToElement(at: ActiveTable, draggableElement: HTMLElement, cellElement: HTMLElement) {
     if (!DragColumn.IS_DRAGGING_ALLOWED) return;
     draggableElement.onmousedown = () => {
-      DragColumn.IS_MOUSE_DOWN_ON_CELL = true;
+      DragColumn.IS_MOUSE_DOWN = true;
     };
     draggableElement.onmousemove = () => {
-      if (DragColumn.IS_MOUSE_DOWN_ON_CELL && !DragColumn.ACTIVE_CELL) {
+      if (DragColumn.IS_MOUSE_DOWN && !DragColumn.CELL) {
         DragColumn.INITIALISING_DRAG_PX += 1;
         if (DragColumn.INITIALISING_DRAG_PX > DragColumn.DRAG_PX_TO_MOVE) {
           const lastElement = cellElement.parentElement?.children[cellElement.parentElement.children.length - 1];
@@ -151,11 +149,11 @@ export class DragColumn {
   }
 
   public static windowMouseUp(at: ActiveTable) {
-    DragColumn.IS_MOUSE_DOWN_ON_CELL = false;
+    DragColumn.IS_MOUSE_DOWN = false;
     if (!DragColumn.IS_DRAGGING_ALLOWED) return;
-    if (DragColumn.ACTIVE_CELL) {
-      DragColumn.setHeaderElementsToDefault(DragColumn.ACTIVE_CELL);
-      DragColumn.ACTIVE_CELL = null;
+    if (DragColumn.CELL) {
+      DragColumn.setHeaderElementsToDefault(DragColumn.CELL);
+      DragColumn.CELL = null;
       DragColumn.INITIALISING_DRAG_PX = 0;
       DragColumn.ACTIVE_CELL_LEFT_PX = 0;
       DragColumn.CLONE_CELLS = [];

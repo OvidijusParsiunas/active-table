@@ -231,7 +231,7 @@ export const activeTableStyle = css`
     transition: 0.25s ease-out;
   }
 
-  .header-cell-hidden {
+  .cell-hidden {
     opacity: 0 !important;
   }
 

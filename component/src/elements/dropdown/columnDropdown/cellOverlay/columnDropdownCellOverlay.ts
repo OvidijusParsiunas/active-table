@@ -61,7 +61,7 @@ export class ColumnDropdownCellOverlay {
     columnDropdownCellOverlay.classList.add(ColumnDropdownCellOverlay.COLUMN_DROPDOWN_CELL_OVERLAY_CLASS);
     columnDropdownCellOverlay.style.height = DropdownCellOverlay.HIDDEN_PX;
     ColumnDropdownCellOverlay.setDefault(columnDropdownCellOverlay, overlayStyles);
-    DragColumn.applyEventsToCell(at, columnDropdownCellOverlay, headerCell);
+    DragColumn.applyEventsToElement(at, columnDropdownCellOverlay, headerCell);
     return columnDropdownCellOverlay;
   }
 
