@@ -24,6 +24,9 @@ export class DragRow {
   private static CAN_SWITCH_UP = true;
   private static CAN_SWITCH_DOWN = true;
   private static MAX_DOWN = 0;
+  // think these can be set at the start
+  private static THRESHOLD_TO_NO_LINE_DOWN = -1;
+  private static THRESHOLD_TO_NO_LINE_UP = -1;
 
   private static TARGET_LINE?: HTMLElement;
 
@@ -121,13 +124,10 @@ export class DragRow {
     if (DragRow.ACTIVE_ROW_TOP_PX > DragRow.THRESHOLD_DOWN) {
       if (DragRow.TARGET_DOWN_ROW && DragRow.CAN_SWITCH_DOWN) {
         console.log('down');
-        if ((DragRow.TARGET_DOWN_ROW.nextSibling as HTMLElement).id === 'last-visible-row') {
-          DragRow.CAN_SWITCH_DOWN = false;
-        }
         if (DragRow.TARGET_DOWN_ROW.nextSibling === DragRow.ACTIVE_ROW) {
-          DragRow.TARGET_LINE.style.opacity = '0';
+          DragRow.THRESHOLD_TO_NO_LINE_DOWN = DragRow.TARGET_DOWN_ROW.offsetTop + DragRow.TARGET_DOWN_ROW.offsetHeight / 2;
           DragRow.TARGET_UP_ROW = DragRow.TARGET_DOWN_ROW;
-          DragRow.THRESHOLD_UP = DragRow.TARGET_UP_ROW.offsetTop - DragRow.TARGET_UP_ROW.offsetHeight / 2 - 20;
+          DragRow.THRESHOLD_UP = DragRow.TARGET_UP_ROW.offsetTop - DragRow.TARGET_UP_ROW.offsetHeight / 2;
           DragRow.TARGET_DOWN_ROW = DragRow.ACTIVE_ROW.nextSibling?.nextSibling as HTMLElement;
           DragRow.THRESHOLD_DOWN =
             DragRow.TARGET_DOWN_ROW.offsetTop + DragRow.TARGET_DOWN_ROW.offsetHeight / 2 - DragRow.ACTIVE_ROW.offsetHeight;
@@ -143,20 +143,22 @@ export class DragRow {
           DragRow.THRESHOLD_DOWN =
             DragRow.TARGET_DOWN_ROW.offsetTop + DragRow.TARGET_DOWN_ROW.offsetHeight / 2 - DragRow.ACTIVE_ROW.offsetHeight;
         }
+        if (DragRow.TARGET_DOWN_ROW.id === 'last-visible-row') {
+          DragRow.CAN_SWITCH_DOWN = false;
+        }
         DragRow.CAN_SWITCH_UP = true;
         DragRow.ACTIVE_INDEX += 1;
       }
     } else if (DragRow.ACTIVE_ROW_TOP_PX < DragRow.THRESHOLD_UP) {
       if (DragRow.TARGET_UP_ROW && DragRow.CAN_SWITCH_UP) {
         console.log('up');
-        if (DragRow.TARGET_UP_ROW.previousSibling === DragRow.ACTIVE_ROW) {
-          DragRow.TARGET_LINE.style.opacity = '0';
-          DragRow.THRESHOLD_DOWN = DragRow.THRESHOLD_UP;
+        if (DragRow.TARGET_UP_ROW.previousSibling?.previousSibling === DragRow.ACTIVE_ROW) {
+          DragRow.THRESHOLD_TO_NO_LINE_UP = DragRow.ACTIVE_ROW.offsetTop + DragRow.ACTIVE_ROW.offsetHeight / 2;
+          DragRow.THRESHOLD_DOWN = DragRow.TARGET_UP_ROW.offsetTop + DragRow.TARGET_UP_ROW.offsetHeight / 2;
           DragRow.TARGET_DOWN_ROW = DragRow.TARGET_UP_ROW;
           DragRow.TARGET_UP_ROW = DragRow.ACTIVE_ROW.previousSibling as HTMLElement;
-          if (DragRow.TARGET_UP_ROW) {
-            DragRow.THRESHOLD_UP = DragRow.TARGET_UP_ROW.offsetTop + DragRow.TARGET_UP_ROW.offsetHeight / 2;
-          }
+          const previousRow = DragRow.ACTIVE_ROW.previousSibling as HTMLElement;
+          DragRow.THRESHOLD_UP = previousRow ? previousRow.offsetTop + previousRow.offsetHeight / 2 : -1;
         } else {
           DragRow.TARGET_LINE.style.opacity = '1';
           DragRow.TARGET_LINE.style.top = `${DragRow.TARGET_UP_ROW.offsetTop - 3}px`;
@@ -171,6 +173,19 @@ export class DragRow {
         DragRow.CAN_SWITCH_DOWN = true;
         DragRow.ACTIVE_INDEX -= 1;
       }
+    } else if (DragRow.THRESHOLD_TO_NO_LINE_DOWN >= 0 && DragRow.THRESHOLD_TO_NO_LINE_DOWN < DragRow.ACTIVE_ROW_TOP_PX) {
+      console.log('3');
+      DragRow.TARGET_LINE.style.opacity = '0';
+      const previousRow = DragRow.ACTIVE_ROW.previousSibling as HTMLElement;
+      if (DragRow.TARGET_UP_ROW) {
+        DragRow.THRESHOLD_UP = previousRow.offsetTop + previousRow.offsetHeight / 2;
+      }
+      DragRow.THRESHOLD_TO_NO_LINE_DOWN = -1;
+    } else if (DragRow.THRESHOLD_TO_NO_LINE_UP >= 0 && DragRow.THRESHOLD_TO_NO_LINE_UP > DragRow.ACTIVE_ROW_TOP_PX) {
+      DragRow.TARGET_LINE.style.opacity = '0';
+      const nextRow = DragRow.ACTIVE_ROW.nextSibling?.nextSibling as HTMLElement;
+      DragRow.THRESHOLD_DOWN = nextRow.offsetTop + nextRow.offsetHeight / 2 - DragRow.ACTIVE_ROW.offsetHeight;
+      DragRow.THRESHOLD_TO_NO_LINE_UP = -1;
     }
   }
 
