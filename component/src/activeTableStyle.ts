@@ -243,6 +243,7 @@ export const activeTableStyle = css`
 
   .row-clone > * {
     cursor: move !important;
+    height: auto;
   }
 
   .row-drag-target-line {

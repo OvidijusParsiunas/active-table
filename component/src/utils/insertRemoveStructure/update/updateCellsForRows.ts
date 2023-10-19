@@ -25,7 +25,7 @@ export class UpdateCellsForRows {
       if (at.rowDropdown.displaySettings.openMethod?.overlayClick) {
         RowDropdownCellOverlayEvents.setOverlayEvents(at, rowIndex, leftMostCell);
       }
-      DragRow.applyEventsToCell(at, leftMostCell, leftMostCell);
+      DragRow.applyEventsToElement(at, leftMostCell, leftMostCell);
     }
   }
 
