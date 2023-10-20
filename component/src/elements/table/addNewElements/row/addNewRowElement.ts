@@ -9,7 +9,7 @@ export class AddNewRowElement {
   private static readonly DEFAULT_COL_SPAN = 1_000_000_000;
   private static readonly HIDDEN = 'none';
   private static readonly VISIBLE = '';
-  private static readonly ID = 'add-new-row-cell';
+  public static readonly ID = 'add-new-row-cell';
 
   public static isDisplayed(addNewRowCell: HTMLElement) {
     return addNewRowCell.style.display === AddNewRowElement.VISIBLE;
@@ -60,7 +60,7 @@ export class AddNewRowElement {
     RowElement.toggleLastRowClass(at);
   }
 
-  public static isAddNewRowRow(rowElement: HTMLElement) {
-    return rowElement.children[0]?.id === AddNewRowElement.ID;
+  public static isAddNewRowRow(rowElement?: HTMLElement) {
+    return rowElement?.children[0]?.id === AddNewRowElement.ID;
   }
 }

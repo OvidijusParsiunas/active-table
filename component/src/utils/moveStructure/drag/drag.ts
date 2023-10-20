@@ -6,7 +6,6 @@ type MoveFunc = (at: ActiveTable, columnIndex: number, isToRight: boolean) => vo
 export class Drag {
   protected static readonly CELL_HIDDEN_CLASS = 'cell-hidden';
   protected static readonly DRAG_PX_TO_MOVE = 10;
-  protected static IS_MOUSE_DOWN = false;
   protected static ORIGINAL_INDEX = 0;
 
   protected static move(at: ActiveTable, moveByNumber: number, move: MoveFunc) {

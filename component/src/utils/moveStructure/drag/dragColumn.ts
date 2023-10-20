@@ -1,4 +1,6 @@
+import {AddNewColumnElement} from '../../../elements/table/addNewElements/column/addNewColumnElement';
 import {FocusedCellUtils} from '../../focusedElements/focusedCellUtils';
+import {IndexColumn} from '../../../elements/indexColumn/indexColumn';
 import {CellElement} from '../../../elements/cell/cellElement';
 import {ArrayUtils} from '../../array/arrayUtils';
 import {ActiveTable} from '../../../activeTable';
@@ -15,6 +17,7 @@ export class DragColumn extends Drag {
   private static readonly HEADER_CELL_CLONE_ANIMATION_CLASS = 'header-cell-clone-animation';
   private static INITIALISING_DRAG_PX = 0;
   private static ACTIVE_CELL_LEFT_PX = 0;
+  private static IS_MOUSE_DOWN = false;
   public static CELL: HTMLElement | null = null;
   private static CLONE_CELLS: HTMLElement[] = [];
   private static REAL_CELLS: HTMLElement[] = [];
@@ -22,9 +25,8 @@ export class DragColumn extends Drag {
   private static ACTIVE_INDEX = 0;
   private static THRESHOLD_RIGHT = 0;
   private static THRESHOLD_LEFT = 0;
-  private static CAN_SWITCH_RIGHT = true;
-  private static CAN_SWITCH_LEFT = true;
   private static MAX_LEFT = 0;
+  private static MIN_LEFT = 0;
 
   private static setHeaderElementsToDefault(cellElement: HTMLElement) {
     const row = cellElement.parentElement?.children;
@@ -59,16 +61,18 @@ export class DragColumn extends Drag {
 
   private static initiateDragState(cellElement: HTMLElement) {
     DragColumn.ACTIVE_INDEX = DragColumn.REAL_CELLS.findIndex((element) => cellElement === element);
+    if (DragColumn.ACTIVE_INDEX + 2 >= DragColumn.CLONE_CELLS.length && DragColumn.ACTIVE_INDEX - 1 <= 0) return;
     DragColumn.CELL = DragColumn.CLONE_CELLS[DragColumn.ACTIVE_INDEX];
     DragColumn.CELL.classList.remove(DragColumn.HEADER_CELL_CLONE_ANIMATION_CLASS);
     DragColumn.ACTIVE_CELL_LEFT_PX = cellElement.offsetLeft;
     DragColumn.THRESHOLD_LEFT = DragColumn.getThreshold(cellElement, -1);
     DragColumn.THRESHOLD_RIGHT = DragColumn.getThreshold(cellElement, 1);
+    const firstCell = DragColumn.REAL_CELLS[0];
+    DragColumn.MIN_LEFT = firstCell.classList.contains(IndexColumn.INDEX_CELL_CLASS) ? firstCell.offsetWidth : 0;
     const lastCell = DragColumn.REAL_CELLS[DragColumn.REAL_CELLS.length - 1];
-    DragColumn.MAX_LEFT = lastCell.offsetLeft + lastCell.offsetWidth - cellElement.offsetWidth;
+    const maxOffset = lastCell.classList.contains(AddNewColumnElement.ADD_COLUMN_CELL_CLASS) ? 0 : lastCell.offsetWidth;
+    DragColumn.MAX_LEFT = lastCell.offsetLeft + maxOffset - cellElement.offsetWidth;
     Drag.ORIGINAL_INDEX = DragColumn.ACTIVE_INDEX - 1;
-    DragColumn.CAN_SWITCH_LEFT = true;
-    DragColumn.CAN_SWITCH_RIGHT = true;
   }
 
   private static processHeaderCellsToDrag(cellElement: HTMLElement, lastElement: HTMLElement) {
@@ -88,10 +92,10 @@ export class DragColumn extends Drag {
   public static applyEventsToElement(at: ActiveTable, draggableElement: HTMLElement, cellElement: HTMLElement) {
     if (!DragColumn.IS_DRAGGING_ALLOWED) return;
     draggableElement.onmousedown = () => {
-      Drag.IS_MOUSE_DOWN = true;
+      DragColumn.IS_MOUSE_DOWN = true;
     };
     draggableElement.onmousemove = () => {
-      if (Drag.IS_MOUSE_DOWN && !DragColumn.CELL) {
+      if (DragColumn.IS_MOUSE_DOWN && !DragColumn.CELL) {
         DragColumn.INITIALISING_DRAG_PX += 1;
         if (DragColumn.INITIALISING_DRAG_PX > Drag.DRAG_PX_TO_MOVE) {
           const lastElement = cellElement.parentElement?.children[cellElement.parentElement.children.length - 1];
@@ -121,25 +125,19 @@ export class DragColumn extends Drag {
 
   public static windowDrag(dragCell: HTMLElement, event: MouseEvent) {
     if (!DragColumn.IS_DRAGGING_ALLOWED) return;
-    let newDimension = Math.max(0, DragColumn.ACTIVE_CELL_LEFT_PX + event.movementX);
-    newDimension = Math.min(newDimension, DragColumn.MAX_LEFT);
+    const minimumLeft = Math.max(DragColumn.MIN_LEFT, DragColumn.ACTIVE_CELL_LEFT_PX + event.movementX);
+    const newDimension = Math.min(minimumLeft, DragColumn.MAX_LEFT);
     DragColumn.ACTIVE_CELL_LEFT_PX = newDimension;
     dragCell.style.left = `${DragColumn.ACTIVE_CELL_LEFT_PX}px`;
     if (DragColumn.ACTIVE_CELL_LEFT_PX > DragColumn.THRESHOLD_RIGHT) {
-      if (!DragColumn.CAN_SWITCH_RIGHT) return;
       DragColumn.switch(1);
-      DragColumn.CAN_SWITCH_LEFT = true;
-      DragColumn.CAN_SWITCH_RIGHT = DragColumn.ACTIVE_INDEX + 2 < DragColumn.CLONE_CELLS.length;
     } else if (DragColumn.ACTIVE_CELL_LEFT_PX < DragColumn.THRESHOLD_LEFT) {
-      if (!DragColumn.CAN_SWITCH_LEFT) return;
       DragColumn.switch(-1);
-      DragColumn.CAN_SWITCH_RIGHT = true;
-      DragColumn.CAN_SWITCH_LEFT = DragColumn.ACTIVE_INDEX - 1 > 0;
     }
   }
 
   public static windowMouseUp(at: ActiveTable) {
-    Drag.IS_MOUSE_DOWN = false;
+    DragColumn.IS_MOUSE_DOWN = false;
     if (!DragColumn.IS_DRAGGING_ALLOWED) return;
     if (DragColumn.CELL) {
       DragColumn.setHeaderElementsToDefault(DragColumn.CELL);
