@@ -1,3 +1,4 @@
+import {UpdateRowElement} from '../../../../../utils/insertRemoveStructure/update/updateRowElement';
 import {HeaderText} from '../../../../../utils/columnDetails/headerText';
 import {DataCellEvents} from '../../../dataCell/dataCellEvents';
 import {KEYBOARD_KEY} from '../../../../../consts/keyboardKeys';
@@ -8,6 +9,7 @@ import {CellElement} from '../../../cellElement';
 
 export class EditableHeaderIconTextEvents {
   private static keyDownOnText(this: ActiveTable, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
+    UpdateRowElement.updateHeadRowHeightOnKeyDown(this._tableBodyElementRef as HTMLElement);
     if (event.key === KEYBOARD_KEY.TAB) CellTextEvents.tabOutOfCell(this, rowIndex, columnIndex, event);
   }
 
