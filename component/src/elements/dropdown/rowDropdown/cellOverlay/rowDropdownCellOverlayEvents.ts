@@ -22,6 +22,7 @@ export class RowDropdownCellOverlayEvents {
     rowDropdownCellOverlay.onmouseleave = RowDropdownCellOverlayEvents.mouseLeave.bind(
       at, rowIndex, rowDropdownCellOverlay);
     rowDropdownCellOverlay.onclick = RowDropdown.display.bind(at, rowIndex, leftMostCell);
+    return rowDropdownCellOverlay;
   }
 
   private static cellMouseLeave(this: ActiveTable, rowIndex: number) {

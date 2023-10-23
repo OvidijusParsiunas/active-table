@@ -21,11 +21,14 @@ export class UpdateCellsForRows {
     });
     if (updateType !== CELL_UPDATE_TYPE.REMOVED) {
       const leftMostCell = rowElement.children[0] as HTMLElement;
-      if (at._frameComponents.displayIndexColumn) IndexColumnEvents.setEvents(at, leftMostCell, rowIndex);
-      if (at.rowDropdown.displaySettings.openMethod?.overlayClick) {
-        RowDropdownCellOverlayEvents.setOverlayEvents(at, rowIndex, leftMostCell);
+      if (at._frameComponents.displayIndexColumn) {
+        IndexColumnEvents.setEvents(at, leftMostCell, rowIndex);
+        DragRow.applyEventsToElement(at, leftMostCell, leftMostCell);
       }
-      DragRow.applyEventsToElement(at, leftMostCell, leftMostCell);
+      if (at.rowDropdown.displaySettings.openMethod?.overlayClick) {
+        const overlay = RowDropdownCellOverlayEvents.setOverlayEvents(at, rowIndex, leftMostCell);
+        DragRow.applyEventsToElement(at, overlay, leftMostCell);
+      }
     }
   }
 

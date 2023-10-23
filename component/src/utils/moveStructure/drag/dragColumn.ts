@@ -55,7 +55,7 @@ export class DragColumn extends Drag {
 
   private static getThreshold(cellElement: HTMLElement, delta: number) {
     const nextCell = DragColumn.REAL_CELLS[DragColumn.ACTIVE_INDEX + delta];
-    const dragOffset = Math.min(cellElement.offsetWidth / 2, nextCell.offsetWidth / 2) * delta;
+    const dragOffset = Math.min(cellElement.offsetWidth / 2, nextCell?.offsetWidth / 2) * delta;
     return cellElement.offsetLeft + dragOffset;
   }
 
@@ -72,7 +72,8 @@ export class DragColumn extends Drag {
     const lastCell = DragColumn.REAL_CELLS[DragColumn.REAL_CELLS.length - 1];
     const maxOffset = lastCell.classList.contains(AddNewColumnElement.ADD_COLUMN_CELL_CLASS) ? 0 : lastCell.offsetWidth;
     DragColumn.MAX_LEFT = lastCell.offsetLeft + maxOffset - cellElement.offsetWidth;
-    Drag.ORIGINAL_INDEX = DragColumn.ACTIVE_INDEX - 1;
+    const isIndexDisplayed = DragColumn.REAL_CELLS[0].classList.contains(IndexColumn.INDEX_CELL_CLASS);
+    Drag.ORIGINAL_INDEX = DragColumn.ACTIVE_INDEX - (isIndexDisplayed ? 1 : 0);
   }
 
   private static processHeaderCellsToDrag(cellElement: HTMLElement, lastElement: HTMLElement) {
@@ -145,9 +146,10 @@ export class DragColumn extends Drag {
       DragColumn.INITIALISING_DRAG_PX = 0;
       DragColumn.ACTIVE_CELL_LEFT_PX = 0;
       DragColumn.CLONE_CELLS = [];
-      DragColumn.REAL_CELLS = [];
       DragColumn.DIVIDERS = [];
-      DragRow.move(at, DragColumn.ACTIVE_INDEX - Drag.ORIGINAL_INDEX - 1, MoveColumn.move);
+      const isIndexDisplayed = DragColumn.REAL_CELLS[0].classList.contains(IndexColumn.INDEX_CELL_CLASS);
+      DragRow.move(at, DragColumn.ACTIVE_INDEX - Drag.ORIGINAL_INDEX - (isIndexDisplayed ? 1 : 0), MoveColumn.move);
+      DragColumn.REAL_CELLS = [];
     }
   }
 }

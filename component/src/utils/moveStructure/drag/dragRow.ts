@@ -74,7 +74,7 @@ export class DragRow extends Drag {
     DragRow.ROW = realRow;
     DragRow.TARGET_UP_ROW = DragRow.ROW.previousSibling as HTMLElement;
     DragRow.TARGET_DOWN_ROW = DragRow.ROW.nextSibling?.nextSibling as HTMLElement;
-    if (!DragRow.TARGET_UP_ROW && DragRow.TARGET_DOWN_ROW?.children[0]?.id === AddNewRowElement.ID) return;
+    if (!DragRow.TARGET_UP_ROW && AddNewRowElement.isAddNewRowRow(DragRow.TARGET_DOWN_ROW.children[0])) return;
     DragRow.CLONE_ROW = cloneRow;
     DragRow.ACTIVE_ROW_TOP_PX = realRow.offsetTop;
     DragRow.ACTIVE_INDEX = 0;
