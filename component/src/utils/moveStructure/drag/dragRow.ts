@@ -88,6 +88,7 @@ export class DragRow extends Drag {
 
   private static processRowCellsToDrag(tableBody: HTMLElement, cellElement: HTMLElement) {
     const realRow = cellElement.parentElement as HTMLElement;
+    realRow.dispatchEvent(new MouseEvent('mouseleave')); // optimization - slow rendering with hover style (on many rows)
     const cloneRow = realRow.cloneNode(true) as HTMLElement; // also clones the index and add column cells
     realRow?.insertAdjacentElement('afterend', cloneRow);
     DragRow.prepareElements(tableBody, cloneRow, realRow);

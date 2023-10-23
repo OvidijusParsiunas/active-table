@@ -4,6 +4,7 @@ import {DefaultCellHoverColors} from '../../types/cellStateColors';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
 import {RowHoverStyles} from '../../types/rowHoverStyles';
 import {ElementStyle} from '../elements/elementStyle';
+import {DragRow} from '../moveStructure/drag/dragRow';
 import {ActiveTable} from '../../activeTable';
 import {CSSStyle} from '../../types/cssStyle';
 import {StripedRows} from './stripedRows';
@@ -52,7 +53,7 @@ export class RowHoverEvents {
     const applyStyleFunc = rowHoverStyles?.style && RowHoverEvents.canStyleBeApplied(rowHoverStyles, rowElement, rowIndex)
       ? () => Object.assign(rowElement.style, rowHoverStyles?.style) : undefined;
     rowElement.onmouseenter = () => {
-      applyStyleFunc?.();
+      if (!DragRow.ROW) applyStyleFunc?.();
     };
   }
 
