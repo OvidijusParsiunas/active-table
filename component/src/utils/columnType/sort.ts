@@ -55,7 +55,7 @@ export class Sort {
         // by the earlier cells
         CellEvents.updateCell(at, cell as string, relativeRowIndex, columnIndex,
           { processText: false, element: cellElement, updateTableEvent: false, updateContent: false });
-        ColumnTypesUtils.updateRelatedElements(at, rowIndex, columnIndex, cellElement);
+        ColumnTypesUtils.updateDataElements(at, rowIndex, columnIndex, cellElement);
       });
     });
     content.splice(1, sortedDataContent.length, ...sortedDataContent);

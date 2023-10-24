@@ -14,14 +14,11 @@ export class MoveColumn {
   // prettier-ignore
   private static overwriteDataElements(at: ActiveTable,
       targetElements: HTMLElement[], targetColIndex: number, sourceCellText: string[]) {
-    const overwrittenText: string[] = [];
     targetElements.slice(1).forEach((element, rowIndex) => {
       const relativeIndex = rowIndex + 1;
       const sourceText = sourceCellText[relativeIndex];
-      const oldText = MoveUtils.setNewElementText(at, sourceText, element, targetColIndex, relativeIndex);
-      overwrittenText.push(oldText);
+      MoveUtils.setNewElementText(at, sourceText, element, targetColIndex, relativeIndex);
     });
-    return overwrittenText;
   }
 
   // prettier-ignore
@@ -36,41 +33,39 @@ export class MoveColumn {
   // prettier-ignore
   private static overwrite(at: ActiveTable, targetColumnDetails: ColumnDetailsT,
       targetColIndex: number, sourceCellText: string[], sourceType: ColumnTypeInternal, sourceColWidth: string) {
-    const overwrittenText: string[] = [];
     const {elements: targetElements, activeType: targetType} = targetColumnDetails;
-    const oldHeaderText = MoveUtils.setNewElementText(at, sourceCellText[0], targetElements[0], targetColIndex, 0);
-    overwrittenText.push(oldHeaderText);
+    MoveUtils.setNewElementText(at, sourceCellText[0], targetElements[0], targetColIndex, 0);
     MoveColumn.changeSettings(at, targetColIndex, targetElements[0], targetColumnDetails, sourceType);
-    const overwrittenDataText = MoveColumn.overwriteDataElements(at, targetElements, targetColIndex, sourceCellText);
-    overwrittenText.push(...overwrittenDataText);
+    MoveColumn.overwriteDataElements(at, targetElements, targetColIndex, sourceCellText);
     const overwrittenWidth = targetElements[0].style.width;
     targetElements[0].style.width = sourceColWidth; // this is done because column widths are not stored in state (REF-35)
-    return { overwrittenText, overwrittenType: targetType, overwrittenWidth };
+    return { overwrittenType: targetType, overwrittenWidth };
   }
 
   private static firstChangeSettingsIfSettingsChanged(at: ActiveTable, columnIndex: number) {
     const {areSettingsDifferent} = ColumnSettingsUtils.parseSettingsChange(at);
     if (areSettingsDifferent) {
-      const currentColumn = at._columnsDetails[columnIndex];
-      HeaderText.onAttemptChange(at, currentColumn.elements[0], columnIndex);
+      const sourceColumn = at._columnsDetails[columnIndex];
+      HeaderText.onAttemptChange(at, sourceColumn.elements[0], columnIndex);
     }
   }
 
   // prettier-ignore
   public static move(at: ActiveTable, columnIndex: number, isToRight: boolean) {
     MoveColumn.firstChangeSettingsIfSettingsChanged(at, columnIndex);
-    const currentColumn = at._columnsDetails[columnIndex];
-    CellHighlightUtils.fade(currentColumn.elements[0], currentColumn?.headerStateColors.default);
+    const sourceColumn = at._columnsDetails[columnIndex];
+    const sourceColumnText = at._columnsDetails[columnIndex].elements.map((element) => CellElement.getText(element));
+    CellHighlightUtils.fade(sourceColumn.elements[0], sourceColumn?.headerStateColors.default);
     const siblingIndex = isToRight ? columnIndex + 1 : columnIndex - 1;
     const siblingColumn = at._columnsDetails[siblingIndex];
     const siblingColumnText = siblingColumn.elements.map((element) => CellElement.getText(element));
     const siblingColumnWidth = siblingColumn.elements[0].style.width;
     // overwrite current column using sibling column
-    const overwritten = MoveColumn.overwrite(at, currentColumn, columnIndex, siblingColumnText,
+    const overwritten = MoveColumn.overwrite(at, sourceColumn, columnIndex, siblingColumnText,
       siblingColumn.activeType, siblingColumnWidth);
     FocusedCellUtils.set(at._focusedElements.cell, siblingColumn.elements[0], 0, siblingIndex);
     // overwrite sibling column using overwritten content
-    MoveColumn.overwrite(at, siblingColumn, siblingIndex, overwritten.overwrittenText,
+    MoveColumn.overwrite(at, siblingColumn, siblingIndex, sourceColumnText,
       overwritten.overwrittenType, overwritten.overwrittenWidth);
     setTimeout(() => FireEvents.onColumnsUpdate(at));
   }

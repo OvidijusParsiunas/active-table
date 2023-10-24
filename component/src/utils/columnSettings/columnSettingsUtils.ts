@@ -43,7 +43,7 @@ export class ColumnSettingsUtils {
     const columnDetails = at._columnsDetails[columnIndex];
     ColumnSettingsDefaultTextUtils.unsetDefaultText(at, columnDetails, columnIndex);
     columnDetails.settings = newSettings;
-    columnDetails.activeType = ColumnTypesUtils.getActiveType(newSettings, columnDetails.activeType.name);
+    columnDetails.activeType = ColumnTypesUtils.getActiveType(newSettings, columnDetails.settings.defaultColumnTypeName);
     ResetColumnStructure.reset(at, columnDetails, columnIndex);
     ColumnSettingsDefaultTextUtils.setDefaultText(at, columnDetails, columnIndex);
     if (!onColumnMove) ColumnSettingsWidthUtils.changeWidth(at, headerElement, oldSettings.widths, newSettings.widths);

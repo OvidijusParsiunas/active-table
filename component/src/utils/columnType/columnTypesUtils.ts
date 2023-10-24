@@ -194,10 +194,11 @@ export class ColumnTypesUtils {
 
   // updates label color, date input etc.
   // prettier-ignore
-  public static updateRelatedElements(at: ActiveTable, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
+  public static updateDataElements(at: ActiveTable, rowIndex: number, columnIndex: number, cellElement: HTMLElement) {
     const {_columnsDetails, _tableDimensions} = at;
     const columnDetails = _columnsDetails[columnIndex];
-    if (columnDetails.activeType.cellDropdownProps && rowIndex > 0) {
+    if (rowIndex === 0) return;
+    if (columnDetails.activeType.cellDropdownProps) {
       CellDropdown.updateCellDropdown(cellElement,
         columnDetails.cellDropdown, _tableDimensions.border, columnDetails.settings.defaultText, true);
       SelectCell.finaliseEditedText(at, cellElement.children[0] as HTMLElement, columnIndex, true);
