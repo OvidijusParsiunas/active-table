@@ -82,7 +82,7 @@ export class InsertMatrix {
     // this is to allow duplicate headers to be identified
     if (rowIndex === 0) CellElement.setNewText(at, cellElement, newCellText, false, false);
     CellEvents.updateCell(at, newCellText, rowIndex, columnIndex, { element: cellElement, updateTableEvent: false });
-    ColumnTypesUtils.updateRelatedElements(at, rowIndex, columnIndex, cellElement);
+    ColumnTypesUtils.updateDataElements(at, rowIndex, columnIndex, cellElement);
     if (rowIndex === 0) InsertMatrix.changeColumnSettings(at, columnIndex);
   }
 

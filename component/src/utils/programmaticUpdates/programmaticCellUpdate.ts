@@ -16,7 +16,7 @@ export class ProgrammaticCellUpdate {
     const element = at._columnsDetails[columnIndex]?.elements[rowIndex];
     if (!element || newText === CellElement.getText(element)) return;
     CellEvents.updateCell(at, newText, rowIndex, columnIndex, {element, processText: rowIndex > 0});
-    ColumnTypesUtils.updateRelatedElements(at, rowIndex, columnIndex, element);
+    ColumnTypesUtils.updateDataElements(at, rowIndex, columnIndex, element);
     if (rowIndex === 0) {
       if (Dropdown.isDisplayed(at._activeOverlayElements.columnDropdown)) ColumnDropdown.processTextAndHide(at);
       HeaderText.onAttemptChange(at, element, columnIndex);
