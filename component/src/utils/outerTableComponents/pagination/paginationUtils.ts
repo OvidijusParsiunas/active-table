@@ -162,7 +162,7 @@ export class PaginationUtils {
       const addRowRowElement = at._addRowCellElementRef.parentElement as HTMLElement;
       const rowIndex = (Array.from(at._tableBodyElementRef.children) as HTMLElement[]).length - 1;
       const isAddRowEven = PaginationUtils.getLastPossiblePageNumber(at) !== at._pagination.activePageNumber;
-      CustomRowProperties.setHoverEvents(at, addRowRowElement, rowIndex, isAddRowEven, rowIndex);
+      CustomRowProperties.updateRow(at, addRowRowElement, rowIndex, isAddRowEven, rowIndex);
     }
   }
 

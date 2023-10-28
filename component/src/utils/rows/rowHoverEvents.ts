@@ -7,7 +7,6 @@ import {ElementStyle} from '../elements/elementStyle';
 import {DragRow} from '../moveStructure/drag/dragRow';
 import {ActiveTable} from '../../activeTable';
 import {CSSStyle} from '../../types/cssStyle';
-import {StripedRows} from './stripedRows';
 
 export class RowHoverEvents {
   private static canStyleBeApplied(rowHoverStyles: RowHoverStyles, rowElement: HTMLElement, rowIndex: number) {
@@ -17,20 +16,9 @@ export class RowHoverEvents {
     );
   }
 
-  private static setStyle(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, isAddRowEven: boolean) {
-    if (etc._stripedRows) {
-      if (isAddRowEven && AddNewRowElement.isAddNewRowRow(rowElement)) {
-        rowIndex = Number(!etc.dataStartsAtHeader); // REF-32
-      }
-      return StripedRows.setRowStyle(rowElement, rowIndex, etc._stripedRows);
-    }
-    return undefined;
-  }
-
-  private static getRemoveColorFunc(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, isAddRowEven: boolean) {
+  private static getRemoveColorFunc(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, defaultStyle?: CSSStyle) {
     const rowHoverStyles = etc.rowHoverStyles;
     if (rowHoverStyles?.style && RowHoverEvents.canStyleBeApplied(rowHoverStyles, rowElement, rowIndex)) {
-      const defaultStyle: CSSStyle | undefined = RowHoverEvents.setStyle(etc, rowElement, rowIndex, isAddRowEven);
       return () => {
         ElementStyle.unsetStyle(rowElement, rowHoverStyles.style);
         Object.assign(rowElement.style, defaultStyle);
@@ -39,8 +27,8 @@ export class RowHoverEvents {
     return undefined;
   }
 
-  private static addMouseLeaveEvent(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, isAddRowEven: boolean) {
-    const removeStyleFunc = RowHoverEvents.getRemoveColorFunc(etc, rowElement, rowIndex, isAddRowEven);
+  private static addMouseLeaveEvent(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, defaultStyle?: CSSStyle) {
+    const removeStyleFunc = RowHoverEvents.getRemoveColorFunc(etc, rowElement, rowIndex, defaultStyle);
     const unsetHeightFunc = UpdateRowElement.getUnsetHeightFunc(rowElement, rowIndex);
     rowElement.onmouseleave = () => {
       removeStyleFunc?.();
@@ -57,9 +45,9 @@ export class RowHoverEvents {
     };
   }
 
-  public static addEvents(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, isAddRowEven: boolean) {
+  public static addEvents(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, defaultStyle?: CSSStyle) {
     RowHoverEvents.addMouseEnterEvent(rowElement, rowIndex, etc.rowHoverStyles);
-    RowHoverEvents.addMouseLeaveEvent(etc, rowElement, rowIndex, isAddRowEven);
+    RowHoverEvents.addMouseLeaveEvent(etc, rowElement, rowIndex, defaultStyle);
   }
 
   public static process(rowHoverStyles: RowHoverStyles | null, defaultCellHoverColors: DefaultCellHoverColors) {

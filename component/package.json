@@ -1,6 +1,6 @@
 {
   "name": "active-table",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "Framework agnostic table component for editable data experience",
   "main": "./dist/activeTable.js",
   "module": "./dist/activeTable.js",
