@@ -7,7 +7,7 @@ export class UpdateRowElement {
   public static updateHeaderRowHeight(rowElement: HTMLElement) {
     if (!ColumnSizerGenericUtils.canHeightBeInherited()) {
       rowElement.style.height = UpdateRowElement.UNSET; // using unset to get highest cell highet
-      rowElement.style.height = `${rowElement.offsetHeight}px`;
+      rowElement.style.height = getComputedStyle(rowElement).height; // rowElement.offsetHeight doesn't get decimal places
     }
   }
 
