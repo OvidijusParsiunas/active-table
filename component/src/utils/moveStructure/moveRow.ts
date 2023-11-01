@@ -31,7 +31,7 @@ export class MoveRow {
     const {_frameComponents, _focusedElements} = at;
     const {element, rowIndex, columnIndex} = initialFocusedCell;
     if (_frameComponents.displayIndexColumn) {
-      FocusedCellUtils.setIndexCell(_focusedElements.cell, element, columnIndex);
+      FocusedCellUtils.setIndexCell(_focusedElements.cell, element, rowIndex);
     } else {
       FocusedCellUtils.set(_focusedElements.cell, element, rowIndex, columnIndex);
     }
