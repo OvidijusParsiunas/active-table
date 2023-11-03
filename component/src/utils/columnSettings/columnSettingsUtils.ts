@@ -60,9 +60,9 @@ export class ColumnSettingsUtils {
     const {_customColumnsSettings, _columnsDetails, _focusedElements: {cell: {element: cellElement, columnIndex}}} = at;
     const columnDetails = _columnsDetails[columnIndex as number];
     const oldSettings = columnDetails.settings;
-    const newSettings = _customColumnsSettings[CellElement.getText(cellElement as HTMLElement)]
-      || at._defaultColumnsSettings;
-    return { oldSettings, newSettings, areSettingsDifferent: oldSettings !== newSettings }; 
+    const newSettings = _customColumnsSettings[CellElement.getText(cellElement as HTMLElement)];
+    const areSettingsDifferent = newSettings ? oldSettings !== newSettings : false;
+    return { oldSettings, newSettings, areSettingsDifferent }; 
   }
 
   // prettier-ignore
