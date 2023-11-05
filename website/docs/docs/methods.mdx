@@ -57,7 +57,7 @@ tableElementRef.getContent();
 
 ### `getColumnsDetails` {#getColumnsDetails}
 
-- Type: [`() => ColumnsDetails`](./sharedTypes#ColumnsDetails)
+- Type: [`() => ColumnsDetails`](/docs/sharedTypes#ColumnsDetails)
 
 Returns details related to existing columns - `width`, `typeName` and `cellDropdownItems` (if the column type contains a dropdown). This is particularly useful if the user has made changes to columns and you want to recreate them
 in the next session on the initial load.
@@ -193,7 +193,7 @@ Programmatically insert/remove rows/columns. <br />
 `structure` defines whether the structure type is for a _"row"_ or a _"column"_. <br />
 `isInsert` sets the update behaviour; _true_ will create a new structure, _false_ will remove an existing one. <br />
 `index` is the row/column index. When adding a new structure, a value of _-1_ will append it to the end of the table. <br />
-`data` defines the new content. If not defined and the update for an insert, this will be populated with [`defaultText`](./content#defaultText).
+`data` defines the new content. If not defined and the update for an insert, this will be populated with [`defaultText`](/docs/content#defaultText).
 
 #### Example
 
@@ -277,10 +277,10 @@ tableElementRef.updateContent([
 
 ### `importFile` {#importFile}
 
-- Type: [`(options?: ImportOptions) => void`](./files#ImportOptions)
+- Type: [`(options?: ImportOptions) => void`](/docs/files#ImportOptions)
 - Default: _({formats: ["csv"]}) => void_
 
-Opens up a file browser window to select a file and import its data. You can optionally pass an [`options`](./files#ImportOptions)
+Opens up a file browser window to select a file and import its data. You can optionally pass an [`options`](/docs/files#ImportOptions)
 object to define the allowed file formats and what they will overwrite. For browser security reasons - this method can ONLY be activated
 through user actions, such as a click of a button.
 
@@ -324,7 +324,7 @@ into your project. Please see examples [here](../../examples/files).
 
 #### `ExportSingleFile` {#ExportSingleFile}
 
-- Type: {`fileName?: string`, [`format?: FileFormat`](./files#FileFormat)}
+- Type: {`fileName?: string`, [`format?: FileFormat`](/docs/files#FileFormat)}
 
 Exports existing table content into a file. You can optionally pass a [`ExportSingleFile`](#ExportSingleFile) object
 to define the exported file's name and its format.

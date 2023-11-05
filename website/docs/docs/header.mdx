@@ -8,12 +8,12 @@ Properties related to the header cells.
 
 ### `headerStyles` {#headerStyles}
 
-- Type: [`HoverableStyles`](./sharedTypes#HoverableStyles)
+- Type: [`HoverableStyles`](/docs/sharedTypes#HoverableStyles)
 - Default: _unset_
 
 Styling details for the header elements in default and mouse hover states. To prevent the frame
 component (index and add new column) from inheriting the header style, set `inheritHeaderColors` property
-in [`frameComponentsStyles`](./table#frameComponentsStyles) to _false_.
+in [`frameComponentsStyles`](/docs/table#frameComponentsStyles) to _false_.
 
 #### Example
 
@@ -165,7 +165,7 @@ Controls if cell text can be edited for header cells.
 - Default: _true_
 
 Allows multiple columns to have the same header text. If set to _false_ and a duplicate is found the header text is defaulted to the value inside
-[`defaultText`](./content#defaultText).
+[`defaultText`](/docs/content#defaultText).
 
 #### Example for false
 
@@ -348,7 +348,7 @@ that can be retrieved using the [cssfilterconverter](https://cssfilterconverter.
 ### `stickyHeader` {#stickyHeader}
 
 - Type: `boolean`
-- Default: _false_ or if [`overflow`](./table#overflow) property is defined set to _true_
+- Default: _false_ or if [`overflow`](/docs/table#overflow) property is defined set to _true_
 
 Header row will remain at the top of the table when there is overflow in the table or a parent element.
 
@@ -401,7 +401,7 @@ Header row will remain at the top of the table when there is overflow in the tab
 </Tabs>
 
 :::note
-The scrollbar in this example is located on the parent div element, however when using the [`overflow`](./table#overflow) property
+The scrollbar in this example is located on the parent div element, however when using the [`overflow`](/docs/table#overflow) property
 it would be placed directly on the actual table component.
 :::
 
@@ -412,7 +412,7 @@ it would be placed directly on the actual table component.
 - Type: `boolean`
 - Default: _false_
 
-Starts the index column count at header row and if [`pagination`](./pagination) is used the header row will not be displayed in pages after the first.
+Starts the index column count at header row and if [`pagination`](/docs/pagination) is used the header row will not be displayed in pages after the first.
 
 #### Example
 

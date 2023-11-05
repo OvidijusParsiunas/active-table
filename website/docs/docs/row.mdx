@@ -8,7 +8,7 @@ Properties related to table rows.
 
 ### `rowHoverStyles` {#rowHoverStyles}
 
-- Type: {[`style: CSSStyle`](./sharedTypes#CSSStyle), `header?: boolean`, `addNewRowButton?: boolean`}
+- Type: {[`style: CSSStyle`](/docs/sharedTypes#CSSStyle), `header?: boolean`, `addNewRowButton?: boolean`}
 - Default: _unset_, but if _style_ is set then _header_ and _addNewRowButton_ are _true_
 
 Custom styling for row mouse hover. `header` property denotes if `style` can be applied to the header row
@@ -71,14 +71,14 @@ import Tabs from '@theme/Tabs';
 
 :::caution
 Custom default cell styles will override this property's styling. Additionally, using this property unsets the header (if set to _true_)
-and [`frameComponentsStyles`](./table#frameComponentsStyles) hover color properties.
+and [`frameComponentsStyles`](/docs/table#frameComponentsStyles) hover color properties.
 :::
 
 <LineBreak></LineBreak>
 
 ### `stripedRows` {#stripedRows}
 
-- Type: `boolean` | { [`odd?: CSSStyle`](./sharedTypes#CSSStyle), [`even?: CSSStyle`](./sharedTypes#CSSStyle) }
+- Type: `boolean` | { [`odd?: CSSStyle`](/docs/sharedTypes#CSSStyle), [`even?: CSSStyle`](/docs/sharedTypes#CSSStyle) }
 - Default: _false_, but if set to _true_ then _even_ is _{backgroundColor: ''}_ and _odd_ is _{backgroundColor: '#dcdcdc7a'}}_
 
 Stripe based styling for rows.
@@ -132,8 +132,8 @@ Stripe based styling for rows.
 </Tabs>
 
 :::info
-Using this property unsets the default header and [`frameComponentsStyles`](./table#frameComponentsStyles) hover color properties.
-If the component is set with a [`cellStyle`](./content#cellStyle) property - this will be overriden.
+Using this property unsets the default header and [`frameComponentsStyles`](/docs/table#frameComponentsStyles) hover color properties.
+If the component is set with a [`cellStyle`](/docs/content#cellStyle) property - this will be overriden.
 :::
 
 <LineBreak></LineBreak>
@@ -141,7 +141,7 @@ If the component is set with a [`cellStyle`](./content#cellStyle) property - thi
 ### `rowDropdown` {#rowDropdown}
 
 - Type: {<br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`displaySettings: DropdownDisplaySettings`](./sharedTypes#DropdownDisplaySettings), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`displaySettings: DropdownDisplaySettings`](/docs/sharedTypes#DropdownDisplaySettings), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `isInsertUpAvailable?: boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `isInsertDownAvailable?: boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `isMoveAvailable?: boolean`, <br />
@@ -157,7 +157,7 @@ If the component is set with a [`cellStyle`](./content#cellStyle) property - thi
   &nbsp;&nbsp;&nbsp;&nbsp; _isHeaderRowEditable: true_, <br />
   }
 
-Row dropdown settings. If [`displaySettings`](./sharedTypes#DropdownDisplaySettings) object's `openMethod` property has `cellClick` set to _true_ - simply click on the left-most
+Row dropdown settings. If [`displaySettings`](/docs/sharedTypes#DropdownDisplaySettings) object's `openMethod` property has `cellClick` set to _true_ - simply click on the left-most
 row cell to open the dropdown. If `openMethod` is `overlayClick` - hover over the left-most cell and click on the overlay. <br />
 The `canEditHeaderRow` property denotes whether this dropdown can be used to change the header row e.g. move or delete it, therefore
 it does not open on header row when set to _false_.
@@ -274,7 +274,7 @@ Maximum number of rows allowed (including header row).
 - Default: _true_
 
 A toggle for a clickable '+ New' row at the bottom of the table which is used to add new empty rows. <br />
-You can set the add new row style via [`frameComponentsStyles`](./table#frameComponentsStyles).
+You can set the add new row style via [`frameComponentsStyles`](/docs/table#frameComponentsStyles).
 
 #### Example
 

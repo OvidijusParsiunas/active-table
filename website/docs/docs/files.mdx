@@ -5,7 +5,7 @@ sidebar_position: 10
 # Files
 
 Active Table supports the following file formats: `csv`, `xls`, `xlsx`, `ods`, `txt`. You can import or export files via the use of [buttons](#FileButton),
-[methods](./methods#importCSV) or using [drag and drop](#DragAndDrop). You can additionally copy data from an external spreadsheet and paste it into the table directly.
+[methods](/docs/methods#importCSV) or using [drag and drop](#DragAndDrop). You can additionally copy data from an external spreadsheet and paste it into the table directly.
 
 :::info
 `csv` is supported natively, however if you are using any of the other file formats - you will need to add the [`xlsx`](https://www.npmjs.com/package/xlsx) module
@@ -89,8 +89,8 @@ Object types for properties inside [`files`](#files):
   &nbsp;&nbsp;&nbsp;&nbsp;[`import: true | ImportOptions`](#ImportOptions), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;[`export: true | ExportOptions`](#ExportOptions), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`text?: string`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`styles?: StatefulCSS`](./sharedTypes#StatefulCSS), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;[`position?: OuterContentPosition`](./sharedTypes#OuterContentPosition), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`styles?: StatefulCSS`](/docs/sharedTypes#StatefulCSS), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;[`position?: OuterContentPosition`](/docs/sharedTypes#OuterContentPosition), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;`order?: number` <br />
   }
 - Default: {<br />
@@ -247,7 +247,7 @@ This object requires either the `import` or `export` properties to be defined. <
 
 ### `DragAndDrop` {#DragAndDrop}
 
-- Type: {[`overlayStyle?: CSSStyle`](./sharedTypes#CSSStyle)} & [`ImportOptions`](#ImportOptions)
+- Type: {[`overlayStyle?: CSSStyle`](/docs/sharedTypes#CSSStyle)} & [`ImportOptions`](#ImportOptions)
 
 Configuration for the drag and drop functionality. <br />
 `overlayStyle` is used to customise the overlay element that is displayed when a file is dragged over the table. <br />

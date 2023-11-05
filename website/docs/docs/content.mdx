@@ -194,10 +194,10 @@ Removes default text when a cell containg one is focused.
 
 Defines the default style for table cells. <br />
 This object contais all `CSSStyle` properties except `minWidth`, `maxWidth`, `height`, `minHeight` and `maxHeight`. <br />
-The `width` property supports _px_ and _%_ measurements, however when using _%_ - the [`tableStyle`](./table#tableStyle) object should have its `width` property
+The `width` property supports _px_ and _%_ measurements, however when using _%_ - the [`tableStyle`](/docs/table#tableStyle) object should have its `width` property
 set as otherwise the cells will not be able to calculate a relative width. Additionally, when [`cellStyle`](#cellStyle) - `width` and
-[`tableStyle`](./table#tableStyle) - `width` are defined and [`isColumnResizable`](./column#isColumnResizable) is set to _true_, the [`cellStyle`](#cellStyle) - `width`
-will be overriden to reach the set table `width`, hence to prevent this make sure to set [`isColumnResizable`](./column#isColumnResizable) to _false_.
+[`tableStyle`](/docs/table#tableStyle) - `width` are defined and [`isColumnResizable`](/docs/column#isColumnResizable) is set to _true_, the [`cellStyle`](#cellStyle) - `width`
+will be overriden to reach the set table `width`, hence to prevent this make sure to set [`isColumnResizable`](/docs/column#isColumnResizable) to _false_.
 
 #### Example
 
@@ -248,23 +248,23 @@ will be overriden to reach the set table `width`, hence to prevent this make sur
 </Tabs>
 
 :::info
-If you wish to set the header cell style please use the [`headerStyles`](./header#headerStyles) property and the style of the frame components (index, add new column,
-new row) can be set via the [`frameComponentsStyles`](./table#frameComponentsStyles) property.
+If you wish to set the header cell style please use the [`headerStyles`](/docs/header#headerStyles) property and the style of the frame components (index, add new column,
+new row) can be set via the [`frameComponentsStyles`](/docs/table#frameComponentsStyles) property.
 :::
 
 <LineBreak></LineBreak>
 
 ### `rootCell` {#rootCell}
 
-- Type: {`text: string`, [`styles: StatefulCSS`](./sharedTypes#StatefulCSS)}
+- Type: {`text: string`, [`styles: StatefulCSS`](/docs/sharedTypes#StatefulCSS)}
 - Default: _{text: "+"}_
 
 Configuration for the default cell when there is no content inside the table. <br />
 `text` defines the content inside the cell. <br />
 `styles` is used to define the cell's appearance for various mouse states. This is particularly useful for controlling the cell _width_ if you
-have set a _width_ property inside [`tableStyle`](./table#tableStyle) as the root cell will by default be stretched to match it (all documentation examples actually use
+have set a _width_ property inside [`tableStyle`](/docs/table#tableStyle) as the root cell will by default be stretched to match it (all documentation examples actually use
 _width: 100%_ so you will notice that other examples' root cells match their original table widths). Outer styling such as _border_ and _boxShadow_ will
-need to be controlled in [`tableStyle`](./table#tableStyle).
+need to be controlled in [`tableStyle`](/docs/table#tableStyle).
 
 #### Example
 
@@ -306,7 +306,7 @@ need to be controlled in [`tableStyle`](./table#tableStyle).
 - Type: `boolean`
 - Default: _true_
 
-Controls if cell text can be edited for both data and header cells. This property is superseded by [`isHeaderTextEditable`](./header#isHeaderTextEditable) for header cells.
+Controls if cell text can be edited for both data and header cells. This property is superseded by [`isHeaderTextEditable`](/docs/header#isHeaderTextEditable) for header cells.
 
 #### Example
 

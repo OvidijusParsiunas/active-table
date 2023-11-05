@@ -248,14 +248,14 @@ more than one of these is provided - only the first one will be used in that ord
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp; `func: (cellText: string) => boolean`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `setTextToDefaultOnFail?: boolean`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`failedStyle?: NoDimensionCSSStyle`](./sharedTypes#NoDimensionCSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`failedStyle?: NoDimensionCSSStyle`](/docs/sharedTypes#NoDimensionCSSStyle), <br />
   }
 - Default: { _setTextToDefaultOnFail: true_ }
 
 Used to enforce cell text validation. This operates only in the data cells and not the header. <br />
 The `func` property takes a function that will be called when the text is initially placed in the cell and when
 it changes. The function must return _true_ if the text is correct or _false_ if it is incorrect.
-`setTextToDefaultOnFail` will reset the cell text to value defined inside [`defaultText`](./content#defaultText)
+`setTextToDefaultOnFail` will reset the cell text to value defined inside [`defaultText`](/docs/content#defaultText)
 if the function returns _false_. <br />
 `failedStyle` is used to change the cell styling if the function returns _false_.
 
@@ -338,7 +338,7 @@ if the function returns _false_. <br />
 
 - Type: {<br />
   &nbsp;&nbsp;&nbsp;&nbsp; `changeTextFunc?: (cellText: string, rowIndex: number) => string|number`, <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`changeStyleFunc?: (cellText: string, rowIndex: number) => NoDimensionCSSStyle`](./sharedTypes#NoDimensionCSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`changeStyleFunc?: (cellText: string, rowIndex: number) => NoDimensionCSSStyle`](/docs/sharedTypes#NoDimensionCSSStyle), <br />
   }
 
 Augments cell after its text is changed. `changeTextFunc` is a function that processes cell text and
@@ -523,8 +523,8 @@ are equal, or a positive value (> 0) if cellText1 is greater than cellText2.
   &nbsp;&nbsp;&nbsp;&nbsp; [`reusableIconName?: DEFAULT_COLUMN_TYPES`](#DEFAULT_COLUMN_TYPES), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `svgString?: string`, <br />
   &nbsp;&nbsp;&nbsp;&nbsp; `containerStyles?`: { <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [`columnDropdown?: CSSStyle`](./sharedTypes#CSSStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [`headerCorrections?: CSSStyle`](./sharedTypes#CSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [`columnDropdown?: CSSStyle`](/docs/sharedTypes#CSSStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [`headerCorrections?: CSSStyle`](/docs/sharedTypes#CSSStyle), <br />
   &nbsp;&nbsp;&nbsp;&nbsp;}}
 
 Defines column type icon properties. <br />
@@ -915,7 +915,7 @@ This type automatically comes with a predefined [`customTextProcessing`](#Custom
 uses _""_, _"0"_, _"00"_ and _"false"_ values to represent the checkbox as unchecked and all the other values as checked. You can overwite it
 with your own `changeTextFunc` function that would return a string of _"true"_ when the checkbox should be checked and _"false"_ when it should
 be unchecked. <br />
-The [`onCellUpdate`](./events#onCellUpdate) and [`onContentUpdate`](./events#onContentUpdate) properties will return string _"true"_ if the checkbox
+The [`onCellUpdate`](/docs/events#onCellUpdate) and [`onContentUpdate`](/docs/events#onContentUpdate) properties will return string _"true"_ if the checkbox
 is checked and _"false"_ if unchecked.
 
 #### Example
