@@ -1,5 +1,5 @@
 import {LabelOptions, SelectOptions, CellDropdownT} from './cellDropdown';
-import {DEFAULT_COLUMN_TYPES} from '../enums/defaultColumnTypes';
+import {DEFAULT_COLUMN_TYPES_STR} from '../enums/defaultColumnTypes';
 import {CustomTextProcessing} from './customTextProcessing';
 import {IconSettings} from './dropdownButtonItem';
 import {Calendar} from './calendarFunctionality';
@@ -10,7 +10,7 @@ import {Sorting} from './sorting';
 // This is to be used by the client exclusively
 
 // can reuse one of the existing icons
-export type ColumnIconSettings = InterfacesUnion<{reusableIconName: DEFAULT_COLUMN_TYPES} | IconSettings>;
+export type ColumnIconSettings = InterfacesUnion<{reusableIconName: DEFAULT_COLUMN_TYPES_STR} | IconSettings>;
 
 interface Parent {
   name: string;

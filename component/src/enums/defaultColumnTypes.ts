@@ -8,3 +8,13 @@ export enum DEFAULT_COLUMN_TYPES {
   SELECT = 'Select',
   LABEL = 'Label',
 }
+
+export type DEFAULT_COLUMN_TYPES_STR =
+  | 'Text'
+  | 'Number'
+  | 'Currency'
+  | 'Date d-m-y'
+  | 'Date m-d-y'
+  | 'Checkbox'
+  | 'Select'
+  | 'Label';

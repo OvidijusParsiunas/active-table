@@ -30,12 +30,12 @@ import {StickyPropsUtils} from './utils/stickyProps/stickyPropsUtils';
 import {ExportSingleFile, Files, ImportOptions} from './types/files';
 import {ActiveOverlayElements} from './types/activeOverlayElements';
 import {CellHighlightUtils} from './utils/color/cellHighlightUtils';
+import {DEFAULT_COLUMN_TYPES_STR} from './enums/defaultColumnTypes';
 import {ColumnsSettingsMap} from './types/columnsSettingsInternal';
 import {ExportFile, ImportFile} from './types/fileTriggerMethods';
 import {customElement, property, state} from 'lit/decorators.js';
 import {RowDropdownSettings} from './types/rowDropdownSettings';
 import {StripedRowsInternal} from './types/stripedRowsInternal';
-import {DEFAULT_COLUMN_TYPES} from './enums/defaultColumnTypes';
 import {DefaultCellHoverColors} from './types/cellStateColors';
 import {WindowElement} from './elements/window/windowElement';
 import {UserKeyEventsState} from './types/userKeyEventsState';
@@ -268,7 +268,7 @@ export class ActiveTable extends LitElement {
   isColumnResizable?: boolean;
 
   @property({type: Array})
-  availableDefaultColumnTypes?: DEFAULT_COLUMN_TYPES[]; // this will reduce the default types to ones included here
+  availableDefaultColumnTypes?: DEFAULT_COLUMN_TYPES_STR[]; // this will reduce the default types to ones included here
 
   @property({type: Array})
   customColumnTypes?: ColumnTypes; // additional custom column types

@@ -12,12 +12,13 @@ import {DefaultColumnsSettings} from '../../types/columnsSettingsDefault';
 import {ColumnSettingsBorderUtils} from './columnSettingsBorderUtils';
 import {ColumnSettingsStyleUtils} from './columnSettingsStyleUtils';
 import {ColumnSettingsWidthUtils} from './columnSettingsWidthUtils';
+import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {ColumnTypesUtils} from '../columnType/columnTypesUtils';
 import {ResetColumnStructure} from './resetColumnStructure';
 import {CellElement} from '../../elements/cell/cellElement';
 import {GenericObject} from '../../types/genericObject';
-import {ActiveTable} from '../../activeTable';
 import {EMPTY_STRING} from '../../consts/text';
+import {ActiveTable} from '../../activeTable';
 
 export class ColumnSettingsUtils {
   private static updateSizer(at: ActiveTable, columnIndex: number) {
@@ -118,7 +119,7 @@ export class ColumnSettingsUtils {
 
   private static setDefaultTypeProperties(at: ActiveTable) {
     const {_defaultColumnsSettings} = at;
-    _defaultColumnsSettings.availableDefaultColumnTypes = at.availableDefaultColumnTypes;
+    _defaultColumnsSettings.availableDefaultColumnTypes = at.availableDefaultColumnTypes as DEFAULT_COLUMN_TYPES[];
     _defaultColumnsSettings.customColumnTypes = at.customColumnTypes;
     _defaultColumnsSettings.defaultColumnTypeName = at.defaultColumnTypeName;
     _defaultColumnsSettings.types = ColumnTypesUtils.getProcessedTypes(_defaultColumnsSettings);
