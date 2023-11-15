@@ -1,6 +1,6 @@
 {
   "name": "active-table",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Framework agnostic table component for editable data experience",
   "main": "./dist/activeTable.js",
   "module": "./dist/activeTable.js",
@@ -53,14 +53,14 @@
   },
   "homepage": "https://activetable.io",
   "dependencies": {
-    "lit": "^2.2.4"
+    "lit": "^3.0.2"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.6.3",
     "@open-wc/testing": "^3.1.5",
     "@rollup/plugin-replace": "^4.0.0",
-    "@types/xlsx": "^0.0.36",
     "@types/mocha": "^10.0.1",
+    "@types/xlsx": "^0.0.36",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
     "@typescript-eslint/parser": "^5.25.0",
     "@web/dev-server": "^0.1.31",
@@ -69,13 +69,13 @@
     "@web/test-runner-playwright": "^0.8.8",
     "@webcomponents/webcomponentsjs": "^2.6.0",
     "eslint": "^8.15.0",
-    "lit-analyzer": "^1.2.1",
+    "lit-analyzer": "^2.0.1",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.79.0",
     "rollup-plugin-summary": "^1.4.3",
     "rollup-plugin-terser": "^7.0.2",
-    "typescript": "~4.9.0"
+    "typescript": "~5.2.2"
   },
   "customElements": "custom-elements.json",
   "files": [
