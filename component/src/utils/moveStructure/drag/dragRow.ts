@@ -4,11 +4,7 @@ import {ActiveTable} from '../../../activeTable';
 import {MoveRow} from '../moveRow';
 import {Drag} from './drag';
 
-// WORK - test when no index column
-
 export class DragRow extends Drag {
-  // WORK - should hold this as component state
-  private static readonly IS_DRAGGING_ALLOWED = false;
   private static readonly ROW_CLONE_CLASS = 'row-clone';
   private static INITIALISING_DRAG_PX = 0;
   private static ACTIVE_ROW_TOP_PX = 0;
@@ -96,7 +92,7 @@ export class DragRow extends Drag {
   }
 
   public static applyEventsToElement(at: ActiveTable, draggableElement: HTMLElement, cellElement: HTMLElement) {
-    if (!DragRow.IS_DRAGGING_ALLOWED) return;
+    if (at.drag?.row === false) return;
     draggableElement.onmousedown = () => {
       DragRow.IS_MOUSE_DOWN = true;
     };
@@ -176,8 +172,8 @@ export class DragRow extends Drag {
     }
   }
 
-  public static windowDrag(event: MouseEvent) {
-    if (!DragRow.IS_DRAGGING_ALLOWED || !DragRow.TARGET_LINE || !DragRow.ROW || !DragRow.CLONE_ROW) return;
+  public static windowDrag(at: ActiveTable, event: MouseEvent) {
+    if (at.drag?.row === false || !DragRow.TARGET_LINE || !DragRow.ROW || !DragRow.CLONE_ROW) return;
     const minimumDown = Math.max(0, DragRow.ACTIVE_ROW_TOP_PX + event.movementY);
     const newDimension = Math.min(minimumDown, DragRow.MAX_DOWN);
     DragRow.ACTIVE_ROW_TOP_PX = newDimension;
@@ -195,7 +191,7 @@ export class DragRow extends Drag {
 
   public static windowMouseUp(at: ActiveTable) {
     DragRow.IS_MOUSE_DOWN = false;
-    if (!DragRow.IS_DRAGGING_ALLOWED) return;
+    if (at.drag?.row === false) return;
     if (DragRow.ROW) {
       DragRow.resetElements(DragRow.ROW);
       DragRow.ROW = null;

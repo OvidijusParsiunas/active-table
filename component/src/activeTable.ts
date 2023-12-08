@@ -75,6 +75,7 @@ import {Render} from './utils/render/render';
 import {Overflow} from './types/overflow';
 import {RootCell} from './types/rootCell';
 import {Filter} from './types/filter';
+import {Drag} from './types/drag';
 
 // TO-DO - dropdown for export button
 @customElement('active-table')
@@ -170,6 +171,9 @@ export class ActiveTable extends LitElement {
 
   @property({type: Object})
   rowHoverStyles?: RowHoverStyles;
+
+  @property({type: Object})
+  drag?: Drag;
 
   // when true - the table automatically holds an unlimited size via table-controlled-width class (dynamic table)
   // this property is not used internally and is being set/used in tableDimensions as it is overriden when resizing
