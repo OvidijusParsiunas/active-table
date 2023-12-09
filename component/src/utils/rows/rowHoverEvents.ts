@@ -4,7 +4,6 @@ import {DefaultCellHoverColors} from '../../types/cellStateColors';
 import {CellHighlightUtils} from '../color/cellHighlightUtils';
 import {RowHoverStyles} from '../../types/rowHoverStyles';
 import {ElementStyle} from '../elements/elementStyle';
-import {DragRow} from '../moveStructure/drag/dragRow';
 import {ActiveTable} from '../../activeTable';
 import {CSSStyle} from '../../types/cssStyle';
 
@@ -16,8 +15,8 @@ export class RowHoverEvents {
     );
   }
 
-  private static getRemoveColorFunc(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, defaultStyle?: CSSStyle) {
-    const rowHoverStyles = etc.rowHoverStyles;
+  private static getRemoveColorFunc(at: ActiveTable, rowElement: HTMLElement, rowIndex: number, defaultStyle?: CSSStyle) {
+    const rowHoverStyles = at.rowHoverStyles;
     if (rowHoverStyles?.style && RowHoverEvents.canStyleBeApplied(rowHoverStyles, rowElement, rowIndex)) {
       return () => {
         ElementStyle.unsetStyle(rowElement, rowHoverStyles.style);
@@ -27,8 +26,8 @@ export class RowHoverEvents {
     return undefined;
   }
 
-  private static addMouseLeaveEvent(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, defaultStyle?: CSSStyle) {
-    const removeStyleFunc = RowHoverEvents.getRemoveColorFunc(etc, rowElement, rowIndex, defaultStyle);
+  private static addMouseLeaveEvent(at: ActiveTable, rowElement: HTMLElement, rowIndex: number, defaultStyle?: CSSStyle) {
+    const removeStyleFunc = RowHoverEvents.getRemoveColorFunc(at, rowElement, rowIndex, defaultStyle);
     const unsetHeightFunc = UpdateRowElement.getUnsetHeightFunc(rowElement, rowIndex);
     rowElement.onmouseleave = () => {
       removeStyleFunc?.();
@@ -37,17 +36,18 @@ export class RowHoverEvents {
   }
 
   // prettier-ignore
-  private static addMouseEnterEvent(rowElement: HTMLElement, rowIndex: number, rowHoverStyles?: RowHoverStyles) {
+  private static addMouseEnterEvent(at: ActiveTable, rowElement: HTMLElement, rowIndex: number) {
+    const {rowHoverStyles, _focusedElements: {rowDragEl}} = at;
     const applyStyleFunc = rowHoverStyles?.style && RowHoverEvents.canStyleBeApplied(rowHoverStyles, rowElement, rowIndex)
       ? () => Object.assign(rowElement.style, rowHoverStyles?.style) : undefined;
     rowElement.onmouseenter = () => {
-      if (!DragRow.ROW) applyStyleFunc?.();
+      if (!rowDragEl) applyStyleFunc?.();
     };
   }
 
-  public static addEvents(etc: ActiveTable, rowElement: HTMLElement, rowIndex: number, defaultStyle?: CSSStyle) {
-    RowHoverEvents.addMouseEnterEvent(rowElement, rowIndex, etc.rowHoverStyles);
-    RowHoverEvents.addMouseLeaveEvent(etc, rowElement, rowIndex, defaultStyle);
+  public static addEvents(at: ActiveTable, rowElement: HTMLElement, rowIndex: number, defaultStyle?: CSSStyle) {
+    RowHoverEvents.addMouseEnterEvent(at, rowElement, rowIndex);
+    RowHoverEvents.addMouseLeaveEvent(at, rowElement, rowIndex, defaultStyle);
   }
 
   public static process(rowHoverStyles: RowHoverStyles | null, defaultCellHoverColors: DefaultCellHoverColors) {

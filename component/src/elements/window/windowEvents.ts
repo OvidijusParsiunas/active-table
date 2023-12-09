@@ -84,7 +84,7 @@ export class WindowEvents {
 
   public static onMouseMove(this: ActiveTable, event: MouseEvent) {
     if (this._activeOverlayElements.selectedColumnSizer) ColumnSizerExtrinsicEvents.windowMouseMove(this, event.movementX);
-    if (DragColumn.CELL) DragColumn.windowDrag(this, DragColumn.CELL, event);
-    if (DragRow.ROW) DragRow.windowDrag(this, event);
+    if (this._focusedElements.colDragEl) DragColumn.windowDrag(this, this._focusedElements.colDragEl, event);
+    if (this._focusedElements.rowDragEl) DragRow.windowDrag(this, event);
   }
 }

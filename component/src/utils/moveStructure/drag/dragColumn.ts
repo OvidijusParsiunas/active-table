@@ -14,7 +14,6 @@ export class DragColumn extends Drag {
   private static INITIALISING_DRAG_PX = 0;
   private static ACTIVE_CELL_LEFT_PX = 0;
   private static IS_MOUSE_DOWN = false;
-  public static CELL: HTMLElement | null = null;
   private static CLONE_CELLS: HTMLElement[] = [];
   private static REAL_CELLS: HTMLElement[] = [];
   private static DIVIDERS: HTMLElement[] = [];
@@ -55,11 +54,11 @@ export class DragColumn extends Drag {
     return cellElement.offsetLeft + dragOffset;
   }
 
-  private static initiateDragState(cellElement: HTMLElement) {
+  private static initiateDragState(at: ActiveTable, cellElement: HTMLElement) {
     DragColumn.ACTIVE_INDEX = DragColumn.REAL_CELLS.findIndex((element) => cellElement === element);
     if (DragColumn.ACTIVE_INDEX + 2 >= DragColumn.CLONE_CELLS.length && DragColumn.ACTIVE_INDEX - 1 <= 0) return;
-    DragColumn.CELL = DragColumn.CLONE_CELLS[DragColumn.ACTIVE_INDEX];
-    DragColumn.CELL.classList.remove(DragColumn.HEADER_CELL_CLONE_ANIMATION_CLASS);
+    at._focusedElements.colDragEl = DragColumn.CLONE_CELLS[DragColumn.ACTIVE_INDEX];
+    at._focusedElements.colDragEl.classList.remove(DragColumn.HEADER_CELL_CLONE_ANIMATION_CLASS);
     DragColumn.ACTIVE_CELL_LEFT_PX = cellElement.offsetLeft;
     DragColumn.THRESHOLD_LEFT = DragColumn.getThreshold(cellElement, -1);
     DragColumn.THRESHOLD_RIGHT = DragColumn.getThreshold(cellElement, 1);
@@ -72,7 +71,7 @@ export class DragColumn extends Drag {
     Drag.ORIGINAL_INDEX = DragColumn.ACTIVE_INDEX - (isIndexDisplayed ? 1 : 0);
   }
 
-  private static processHeaderCellsToDrag(cellElement: HTMLElement, lastElement: HTMLElement) {
+  private static processHeaderCellsToDrag(at: ActiveTable, cellElement: HTMLElement, lastElement: HTMLElement) {
     const cellHeight = `${cellElement.offsetHeight}px`;
     (Array.from(cellElement.parentElement?.children || []) as HTMLElement[]).forEach((headerElement) => {
       if (headerElement.tagName === CellElement.HEADER_TAG) {
@@ -83,7 +82,7 @@ export class DragColumn extends Drag {
         DragColumn.DIVIDERS.push(headerElement);
       }
     });
-    DragColumn.initiateDragState(cellElement);
+    DragColumn.initiateDragState(at, cellElement);
   }
 
   public static applyEventsToElement(at: ActiveTable, draggableElement: HTMLElement, cellElement: HTMLElement) {
@@ -92,11 +91,11 @@ export class DragColumn extends Drag {
       DragColumn.IS_MOUSE_DOWN = true;
     };
     draggableElement.onmousemove = () => {
-      if (DragColumn.IS_MOUSE_DOWN && !DragColumn.CELL) {
+      if (DragColumn.IS_MOUSE_DOWN && !at._focusedElements.colDragEl) {
         DragColumn.INITIALISING_DRAG_PX += 1;
         if (DragColumn.INITIALISING_DRAG_PX > Drag.DRAG_PX_TO_MOVE) {
           const lastElement = cellElement.parentElement?.children[cellElement.parentElement.children.length - 1];
-          DragColumn.processHeaderCellsToDrag(cellElement, lastElement as HTMLElement);
+          DragColumn.processHeaderCellsToDrag(at, cellElement, lastElement as HTMLElement);
           FocusedCellUtils.set(at._focusedElements.cell, cellElement, 0, Drag.ORIGINAL_INDEX);
         }
       }
@@ -135,17 +134,15 @@ export class DragColumn extends Drag {
 
   public static windowMouseUp(at: ActiveTable) {
     DragColumn.IS_MOUSE_DOWN = false;
-    if (at.drag?.column === false) return;
-    if (DragColumn.CELL) {
-      DragColumn.setHeaderElementsToDefault(DragColumn.CELL);
-      DragColumn.CELL = null;
-      DragColumn.INITIALISING_DRAG_PX = 0;
-      DragColumn.ACTIVE_CELL_LEFT_PX = 0;
-      DragColumn.CLONE_CELLS = [];
-      DragColumn.DIVIDERS = [];
-      const isIndexDisplayed = DragColumn.REAL_CELLS[0].classList.contains(IndexColumn.INDEX_CELL_CLASS);
-      DragRow.move(at, DragColumn.ACTIVE_INDEX - Drag.ORIGINAL_INDEX - (isIndexDisplayed ? 1 : 0), MoveColumn.move);
-      DragColumn.REAL_CELLS = [];
-    }
+    if (at.drag?.column === false || !at._focusedElements.colDragEl) return;
+    DragColumn.setHeaderElementsToDefault(at._focusedElements.colDragEl);
+    delete at._focusedElements.colDragEl;
+    DragColumn.INITIALISING_DRAG_PX = 0;
+    DragColumn.ACTIVE_CELL_LEFT_PX = 0;
+    DragColumn.CLONE_CELLS = [];
+    DragColumn.DIVIDERS = [];
+    const isIndexDisplayed = DragColumn.REAL_CELLS[0].classList.contains(IndexColumn.INDEX_CELL_CLASS);
+    DragRow.move(at, DragColumn.ACTIVE_INDEX - Drag.ORIGINAL_INDEX - (isIndexDisplayed ? 1 : 0), MoveColumn.move);
+    DragColumn.REAL_CELLS = [];
   }
 }
