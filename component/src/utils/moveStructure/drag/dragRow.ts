@@ -91,7 +91,7 @@ export class DragRow extends Drag {
   }
 
   public static applyEventsToElement(at: ActiveTable, draggableElement: HTMLElement, cellElement: HTMLElement) {
-    if (at.drag?.row === false) return;
+    if (DragRow.isDisabled(at)) return;
     draggableElement.onmousedown = () => {
       DragRow.IS_MOUSE_DOWN = true;
     };
@@ -172,7 +172,7 @@ export class DragRow extends Drag {
   }
 
   public static windowDrag(at: ActiveTable, event: MouseEvent) {
-    if (at.drag?.row === false || !DragRow.TARGET_LINE || !at._focusedElements.rowDragEl || !DragRow.CLONE_ROW) return;
+    if (DragRow.isDisabled(at) || !DragRow.TARGET_LINE || !at._focusedElements.rowDragEl || !DragRow.CLONE_ROW) return;
     const minimumDown = Math.max(0, DragRow.ACTIVE_ROW_TOP_PX + event.movementY);
     const newDimension = Math.min(minimumDown, DragRow.MAX_DOWN);
     DragRow.ACTIVE_ROW_TOP_PX = newDimension;
@@ -190,12 +190,17 @@ export class DragRow extends Drag {
 
   public static windowMouseUp(at: ActiveTable) {
     DragRow.IS_MOUSE_DOWN = false;
-    if (at.drag?.row === false) return;
+    if (DragRow.isDisabled(at)) return;
     if (at._focusedElements.rowDragEl) {
       DragRow.resetElements(at._focusedElements.rowDragEl);
       delete at._focusedElements.rowDragEl;
       DragRow.INITIALISING_DRAG_PX = 0;
       DragRow.move(at, DragRow.ACTIVE_INDEX, MoveRow.move);
     }
+  }
+
+  // row dragging is cumbersome when filter/pagination enabled as some rows are hidden
+  private static isDisabled(at: ActiveTable) {
+    return at.drag?.row === false || at.filter || at.pagination;
   }
 }
