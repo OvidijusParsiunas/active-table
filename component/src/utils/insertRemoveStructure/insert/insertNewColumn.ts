@@ -6,8 +6,8 @@ import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {ExtractElements} from '../../elements/extractElements';
 import {ElementDetails} from '../../../types/elementDetails';
 import {MaximumColumns} from './maximum/maximumColumns';
-import {TableRow} from '../../../types/tableContent';
 import {FireEvents} from '../../events/fireEvents';
+import {TableRow} from '../../../types/tableData';
 import {EMPTY_STRING} from '../../../consts/text';
 import {ActiveTable} from '../../../activeTable';
 import {LastColumn} from '../shared/lastColumn';
@@ -21,7 +21,7 @@ export class InsertNewColumn {
   }
 
   private static insertToAllRows(at: ActiveTable, columnIndex: number, columnData?: TableRow) {
-    const rowElements = ExtractElements.textRowsArrFromTBody(at._tableBodyElementRef as HTMLElement, at.content);
+    const rowElements = ExtractElements.textRowsArrFromTBody(at._tableBodyElementRef as HTMLElement, at.data);
     rowElements.forEach((rowElement: Node, rowIndex: number) => {
       const cellText = columnData ? columnData[rowIndex] : EMPTY_STRING;
       InsertNewCell.insertToRow(at, rowElement as HTMLElement, rowIndex, columnIndex, cellText as string, true);
@@ -36,7 +36,7 @@ export class InsertNewColumn {
       InsertNewColumn.insertToAllRows(at, columnIndex, columnData);
       ToggleAdditionElements.update(at, true, AddNewColumnElement.toggle);
       setTimeout(() => {
-        FireEvents.onContentUpdate(at);
+        FireEvents.onDataUpdate(at);
         FireEvents.onColumnsUpdate(at);
       });
     }

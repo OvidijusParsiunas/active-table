@@ -21,9 +21,9 @@ export class RemoveRow {
   private static update(at: ActiveTable, rowIndex: number, lastRowElement: HTMLElement, lastRowIndex: number) {
     const lastRow = {element: lastRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(at, rowIndex, CELL_UPDATE_TYPE.REMOVED, lastRow); // REF-20
-    setTimeout(() => FireEvents.onContentUpdate(at));
+    setTimeout(() => FireEvents.onDataUpdate(at));
     if (at._isRendering) return;
-    if (at.content.length === 0) RemoveRow.removeAllColumnsDetails(at);
+    if (at.data.length === 0) RemoveRow.removeAllColumnsDetails(at);
     at._addColumnCellsElementsRef.splice(rowIndex, 1);
   }
 
@@ -36,14 +36,14 @@ export class RemoveRow {
     const index = at.pagination ? RemoveRow.rowToBeRemovedIndexWhenPagination(at, rowIndex) : 0; // before it is removed
     at._tableBodyElementRef?.children[rowIndex].remove();
     at._rowDropdownCellOverlays.splice(rowIndex, 1);
-    const removedContentRow = at.content.splice(rowIndex, 1);
+    const removedDataRow = at.data.splice(rowIndex, 1);
     // needs to be done synchronously as add new row toggle needs elements count when calling MaximumRows.canAddMore
-    removedContentRow[0].forEach((_, columnIndex: number) => {
+    removedDataRow[0].forEach((_, columnIndex: number) => {
       at._columnsDetails[columnIndex].elements.splice(rowIndex, 1);
       at._columnsDetails[columnIndex].processedStyle.splice(rowIndex, 1);
     });
     if (at.pagination) PaginationUtils.updateOnRowChange(at, index);
-    return removedContentRow[0];
+    return removedDataRow[0];
   }
 
   // REF-27
@@ -58,7 +58,7 @@ export class RemoveRow {
 
   public static remove(at: ActiveTable, rowIndex: number) {
     rowIndex = RemoveRow.changeRowIndexIfRemoveHeaderWithDataBelow(at, rowIndex);
-    const lastRowIndex = at.content.length - 1;
+    const lastRowIndex = at.data.length - 1;
     const lastRowElement = at._tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     RemoveRow.removeRow(at, rowIndex);
     ToggleAdditionElements.update(at, false, AddNewRowElement.toggle);

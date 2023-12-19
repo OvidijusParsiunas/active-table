@@ -6,8 +6,8 @@ import {FilterInternal} from '../../../../types/visibilityInternal';
 import {CellElement} from '../../../../elements/cell/cellElement';
 import {PaginationUtils} from '../../pagination/paginationUtils';
 import {ColumnsDetailsT} from '../../../../types/columnDetails';
-import {TableContent} from '../../../../types/tableContent';
 import {FilterViaWebWorkers} from './filterViaWebWorkers';
+import {TableData} from '../../../../types/tableData';
 import {FilterViaTimeouts} from './filterViaTimeouts';
 import {ActiveTable} from '../../../../activeTable';
 import {Filter} from '../../../../types/filter';
@@ -32,12 +32,12 @@ export class FilterInternalUtils {
       : FilterViaTimeouts.execute.bind(this, finish);
   }
 
-  public static generateDefaultHeaderName(content: TableContent, defaultColumnHeaderName?: string) {
+  public static generateDefaultHeaderName(data: TableData, defaultColumnHeaderName?: string) {
     if (defaultColumnHeaderName) {
-      const headerExists = content[0]?.find((headerName) => headerName === defaultColumnHeaderName);
+      const headerExists = data[0]?.find((headerName) => headerName === defaultColumnHeaderName);
       if (headerExists) return defaultColumnHeaderName;
     }
-    return content[0]?.[0] !== undefined ? String(content[0]?.[0]) : '';
+    return data[0]?.[0] !== undefined ? String(data[0]?.[0]) : '';
   }
 
   public static addConfig(at: ActiveTable, userConfig: Filter) {
@@ -46,7 +46,7 @@ export class FilterInternalUtils {
     const internalConfig = {
       isCaseSensitive: false,
       placeholderTemplate,
-      defaultColumnHeaderName: defaultColumnHeaderName || FilterInternalUtils.generateDefaultHeaderName(at.content),
+      defaultColumnHeaderName: defaultColumnHeaderName || FilterInternalUtils.generateDefaultHeaderName(at.data),
     } as FilterInternal;
     at._visiblityInternal.filters ??= [];
     at._visiblityInternal.filters.push(internalConfig);
@@ -55,10 +55,10 @@ export class FilterInternalUtils {
 
   // colElements are used to identify active column (not using name as columns can have same names)
   private static assignElements(at: ActiveTable, rowConfig: FilterInternal) {
-    const {content, _columnsDetails} = at;
-    if (content.length === 0) return;
+    const {data, _columnsDetails} = at;
+    if (data.length === 0) return;
     if (rowConfig.defaultColumnHeaderName) {
-      const columnIndex = content[0].findIndex((headerName) => headerName === rowConfig.defaultColumnHeaderName);
+      const columnIndex = data[0].findIndex((headerName) => headerName === rowConfig.defaultColumnHeaderName);
       rowConfig.elements = _columnsDetails[columnIndex === -1 ? 0 : columnIndex].elements;
       delete rowConfig.defaultColumnHeaderName;
       // please consider that in codesandbox - upon a second refresh - elements are not there which causes no elements to
@@ -88,8 +88,8 @@ export class FilterInternalUtils {
 
   public static unsetAllFilters(at: ActiveTable) {
     let reset = false;
-    const {content, _visiblityInternal, _tableBodyElementRef} = at;
-    if (content[0] && content[0].length !== 0 && _tableBodyElementRef) {
+    const {data, _visiblityInternal, _tableBodyElementRef} = at;
+    if (data[0] && data[0].length !== 0 && _tableBodyElementRef) {
       _visiblityInternal.filters?.forEach((rowConfig) => {
         if (rowConfig.inputElement.value !== '') {
           rowConfig.inputElement.value = '';
@@ -103,8 +103,8 @@ export class FilterInternalUtils {
 
   // prettier-ignore
   public static resetAllInputs(at: ActiveTable) {
-    const {content, _visiblityInternal: {filters}} = at;
-    if (!content[0] || content[0].length === 0 || !filters) return FilterInputEvents.unsetEvents(filters);
+    const {data, _visiblityInternal: {filters}} = at;
+    if (!data[0] || data[0].length === 0 || !filters) return FilterInputEvents.unsetEvents(filters);
     filters.forEach((config) => FilterInternalUtils.resetInput(at, config));
     FilterInternalUtils.unsetAllFilters(at);
   }

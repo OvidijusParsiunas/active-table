@@ -1,5 +1,5 @@
 import {NoDimensionCSSStyle} from './cssStyle';
-import {CellText} from './tableContent';
+import {CellText} from './tableData';
 
 export interface CustomTextProcessing {
   // for attributes - if utilizing regex inside the function, make sure the escape characters are padded, e.g: \ => \\

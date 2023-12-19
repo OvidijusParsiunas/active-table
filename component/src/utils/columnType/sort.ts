@@ -1,8 +1,8 @@
 import {DEFAULT_COLUMN_TYPES} from '../../enums/defaultColumnTypes';
 import {ColumnTypeInternal} from '../../types/columnTypeInternal';
-import {TableContent, TableRow} from '../../types/tableContent';
 import {CellElementIndex} from '../elements/cellElementIndex';
 import {Calendar} from '../../types/calendarFunctionality';
+import {TableData, TableRow} from '../../types/tableData';
 import {CellEvents} from '../../elements/cell/cellEvents';
 import {TextValidation} from '../../types/textValidation';
 import {ColumnTypesUtils} from './columnTypesUtils';
@@ -39,42 +39,42 @@ export class Sort {
 
   // cannot safely identify if nothing has been changed, hence need to send out an update for all cells
   // prettier-ignore
-  private static update(at: ActiveTable, sortedDataContent: TableContent) {
-    const {_tableBodyElementRef, _frameComponents: {displayIndexColumn}, content} = at;
+  private static update(at: ActiveTable, sortedData: TableData) {
+    const {_tableBodyElementRef, _frameComponents: {displayIndexColumn}, data} = at;
     const rowElements = (_tableBodyElementRef as HTMLElement).children;
-    sortedDataContent.forEach((row, rowIndex) => {
+    sortedData.forEach((row, rowIndex) => {
       const relativeRowIndex = rowIndex + 1;
       const rowChildren = rowElements[relativeRowIndex].children;
       row.forEach((cell, columnIndex) => {
         const elementColumnIndex = CellElementIndex.getViaColumnIndex(columnIndex, !!displayIndexColumn);
         const cellElement = rowChildren[elementColumnIndex] as HTMLElement;
-        // the reason why updateContent property is set to false is because we do not want to overwrite content array
-        // cells as their row references are still the same with the sortedDataContent, hence upon attempting to
-        // overwrite the content array cells, sortedDataContent cells are also overwritten. This is problematic because
-        // sortedDataContent rows are in a different order, hence the cells to be traversed can already be overwritten
+        // the reason why updateData property is set to false is because we do not want to overwrite data array
+        // cells as their row references are still the same with the sortedData, hence upon attempting to
+        // overwrite the data array cells, sortedData cells are also overwritten. This is problematic because
+        // sortedData rows are in a different order, hence the cells to be traversed can already be overwritten
         // by the earlier cells
         CellEvents.updateCell(at, cell as string, relativeRowIndex, columnIndex,
-          { processText: false, element: cellElement, updateTableEvent: false, updateContent: false });
+          { processText: false, element: cellElement, updateTableEvent: false, updateData: false });
         ColumnTypesUtils.updateDataElements(at, rowIndex, columnIndex, cellElement);
       });
     });
-    content.splice(1, sortedDataContent.length, ...sortedDataContent);
-    setTimeout(() => FireEvents.onContentUpdate(at));
+    data.splice(1, sortedData.length, ...sortedData);
+    setTimeout(() => FireEvents.onDataUpdate(at));
   }
 
-  private static sortStringsColumnAscending(content: TableContent, columnIndex: number) {
-    content.sort((a: TableRow, b: TableRow) => String(a[columnIndex]).localeCompare(String(b[columnIndex])));
+  private static sortStringsColumnAscending(data: TableData, columnIndex: number) {
+    data.sort((a: TableRow, b: TableRow) => String(a[columnIndex]).localeCompare(String(b[columnIndex])));
   }
 
-  private static sortStringsColumnDescending(content: TableContent, columnIndex: number) {
-    content.sort((a: TableRow, b: TableRow) => String(b[columnIndex]).localeCompare(String(a[columnIndex])));
+  private static sortStringsColumnDescending(data: TableData, columnIndex: number) {
+    data.sort((a: TableRow, b: TableRow) => String(b[columnIndex]).localeCompare(String(a[columnIndex])));
   }
 
-  private static sortStrings(dataContent: TableContent, columnIndex: number, isAsc: boolean) {
+  private static sortStrings(data: TableData, columnIndex: number, isAsc: boolean) {
     if (isAsc) {
-      Sort.sortStringsColumnAscending(dataContent, columnIndex);
+      Sort.sortStringsColumnAscending(data, columnIndex);
     } else {
-      Sort.sortStringsColumnDescending(dataContent, columnIndex);
+      Sort.sortStringsColumnDescending(data, columnIndex);
     }
   }
 
@@ -102,10 +102,10 @@ export class Sort {
     return sortFunc(parseResult[0], parseResult[1]);
   }
 
-  private static sortViaSortFuncs(type: ColumnTypeInternal, dataContent: TableContent, colIndex: number, isAsc: boolean) {
+  private static sortViaSortFuncs(type: ColumnTypeInternal, data: TableData, colIndex: number, isAsc: boolean) {
     const {sorting, textValidation} = type;
     if (!sorting) return;
-    dataContent.sort((a: TableRow, b: TableRow) =>
+    data.sort((a: TableRow, b: TableRow) =>
       Sort.validateAndSort(a[colIndex] as string, b[colIndex] as string, sorting, textValidation.func, isAsc)
     );
   }
@@ -120,10 +120,10 @@ export class Sort {
   }
 
   // prettier-ignore
-  private static sortDates(type: ColumnTypeInternal, dataContent: TableContent, columnIndex: number, isAsc: boolean) {
+  private static sortDates(type: ColumnTypeInternal, data: TableData, columnIndex: number, isAsc: boolean) {
     const {calendar, textValidation} = type;
     if (!calendar) return;
-    dataContent.sort((a: TableRow, b: TableRow) => {
+    data.sort((a: TableRow, b: TableRow) => {
       // isAsc param is always true because the order at which we pass in text is always the same as the asc sort
       const parseResult = Sort.parseComparedText(a[columnIndex] as string, b[columnIndex] as string, true,
         Sort.parseYMDFormat.bind(this, textValidation.func, calendar)); 
@@ -135,15 +135,15 @@ export class Sort {
   }
 
   public static sortColumn(at: ActiveTable, columnIndex: number, isAsc: boolean) {
-    const dataContent = at.content.slice(1);
+    const dataSlice = at.data.slice(1);
     const {activeType} = at._columnsDetails[columnIndex];
     if (activeType.calendar) {
-      Sort.sortDates(activeType, dataContent, columnIndex, isAsc);
+      Sort.sortDates(activeType, dataSlice, columnIndex, isAsc);
     } else if (activeType.sorting) {
-      Sort.sortViaSortFuncs(activeType, dataContent, columnIndex, isAsc);
+      Sort.sortViaSortFuncs(activeType, dataSlice, columnIndex, isAsc);
     } else {
-      Sort.sortStrings(dataContent, columnIndex, isAsc);
+      Sort.sortStrings(dataSlice, columnIndex, isAsc);
     }
-    Sort.update(at, dataContent);
+    Sort.update(at, dataSlice);
   }
 }

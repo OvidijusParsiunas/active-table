@@ -2,10 +2,10 @@ import {_CellDropdown, ActiveCellDropdownItems, LabelDetails} from '../../../typ
 import {LabelCellTextElement} from '../../cell/cellsWithTextDiv/selectCell/label/labelCellTextElement';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {LabelColorUtils} from '../../../utils/color/labelColorUtils';
-import {CellText, TableContent} from '../../../types/tableContent';
 import {CellDropdownItemEvents} from './cellDropdownItemEvents';
 import {OptionDeleteButton} from './buttons/optionDeleteButton';
 import {OptionColorButton} from './buttons/optionColorButton';
+import {CellText, TableData} from '../../../types/tableData';
 import {FireEvents} from '../../../utils/events/fireEvents';
 import {ColumnDetailsT} from '../../../types/columnDetails';
 import {LabelOptions} from '../../../types/cellDropdown';
@@ -30,7 +30,7 @@ export class CellDropdownItem {
   // prettier-ignore
   private static updateCellElementIfNotUpdated(at: ActiveTable,
       newText: string, rowIndex: number, columnIndex: number, textElement: HTMLElement) {
-    if ((at.content[rowIndex][columnIndex]) !== newText) {
+    if ((at.data[rowIndex][columnIndex]) !== newText) {
       CellEvents.updateCell(at, newText, rowIndex, columnIndex, {processText: false, element: textElement});
     }
   }
@@ -183,9 +183,9 @@ export class CellDropdownItem {
   }
 
   // prettier-ignore
-  private static processNewItemsToColor(content: TableContent, columnIndex: number, itemToColor: _ItemToColor,
+  private static processNewItemsToColor(data: TableData, columnIndex: number, itemToColor: _ItemToColor,
       labelDetails?: LabelDetails) {
-    content.slice(1).reduce<_ItemToColor>((itemToColor, row) => {
+    data.slice(1).reduce<_ItemToColor>((itemToColor, row) => {
       const cellText = row[columnIndex];
       if (cellText !== EMPTY_STRING && !itemToColor[cellText]) {
         if (labelDetails) {
@@ -218,7 +218,7 @@ export class CellDropdownItem {
 
   // prettier-ignore
   public static populateItems(at: ActiveTable, columnIndex: number) {
-    const {content, _columnsDetails} = at;
+    const {data, _columnsDetails} = at;
     const columnDetails = _columnsDetails[columnIndex];
     const {cellDropdown: {labelDetails}, settings: {defaultText, isDefaultTextRemovable}, activeType: {cellDropdownProps}
       } = columnDetails;
@@ -228,7 +228,7 @@ export class CellDropdownItem {
       itemToColor = CellDropdownItem.changeUserOptionsToItemToColor(cellDropdownProps.options, labelDetails)
     }
     if (cellDropdownProps.canAddMoreOptions) {
-      CellDropdownItem.processNewItemsToColor(content, columnIndex, itemToColor, labelDetails);
+      CellDropdownItem.processNewItemsToColor(data, columnIndex, itemToColor, labelDetails);
     }
     CellDropdownItem.postProcessItemToColor(isDefaultTextRemovable, itemToColor, defaultText);
     CellDropdownItem.addItems(at, itemToColor, columnDetails);

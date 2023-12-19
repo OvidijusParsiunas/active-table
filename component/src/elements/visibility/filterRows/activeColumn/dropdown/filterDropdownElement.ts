@@ -20,7 +20,7 @@ export class FilterDropdownElement {
   // prettier-ignore
   private static display(
       displayFunc: DisplayFunc, config: FilterInternal, at: ActiveTable, dropdown: OuterContainerDropdownI) {
-    if (!at.content[0]) return;
+    if (!at.data[0]) return;
     FilterDropdownItem.populate(at, dropdown, config);
     displayFunc(at, dropdown);
   }

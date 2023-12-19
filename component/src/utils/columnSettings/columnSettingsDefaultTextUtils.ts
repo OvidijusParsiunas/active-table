@@ -18,6 +18,6 @@ export class ColumnSettingsDefaultTextUtils {
       const isUpdated = CellEvents.setCellToDefaultIfNeeded(at, relativeIndex, columnIndex, element, false);
       if (!isCellUpdated && isUpdated) isCellUpdated = true;
     });
-    setTimeout(() => FireEvents.onContentUpdate(at));
+    setTimeout(() => FireEvents.onDataUpdate(at));
   }
 }

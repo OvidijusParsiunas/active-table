@@ -1,6 +1,6 @@
-import {NumberOfIdenticalCells} from '../../content/numberOfIdenticalCells';
+import {NumberOfIdenticalCells} from '../../data/numberOfIdenticalCells';
 import {TextValidation} from '../../../types/textValidation';
-import {CellText} from '../../../types/tableContent';
+import {CellText} from '../../../types/tableData';
 import {EMPTY_STRING} from '../../../consts/text';
 import {ActiveTable} from '../../../activeTable';
 
@@ -17,7 +17,7 @@ export class DataUtils {
     return false;
   }
 
-  // note that NumberOfIdenticalCells.get uses the at.content top row, so it needs to be up-to-date
+  // note that NumberOfIdenticalCells.get uses the at.data top row, so it needs to be up-to-date
   // prettier-ignore
   private static shouldBeSetToDefault(at: ActiveTable,
       text: CellText, defaultText: CellText, rowIndex: number, textValidation: TextValidation) {

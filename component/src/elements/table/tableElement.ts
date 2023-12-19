@@ -4,11 +4,11 @@ import {FrameComponentsElements} from '../../utils/frameComponents/frameComponen
 import {FrameComponentsColors} from '../../utils/frameComponents/frameComponentsColors';
 import {ToggleAdditionElements} from './addNewElements/shared/toggleAdditionElements';
 import {StringDimensionUtils} from '../../utils/tableDimensions/stringDimensionUtils';
-import {InitialContentProcessing} from '../../utils/content/initialContentProcessing';
 import {InsertRemoveColumnSizer} from '../columnSizer/utils/insertRemoveColumnSizer';
 import {FullTableOverlayElement} from '../fullTableOverlay/fullTableOverlayElement';
 import {InsertNewRow} from '../../utils/insertRemoveStructure/insert/insertNewRow';
 import {AddNewColumnElement} from './addNewElements/column/addNewColumnElement';
+import {InitialDataProcessing} from '../../utils/data/initialDataProcessing';
 import {UpdateIndexColumnWidth} from '../indexColumn/updateIndexColumnWidth';
 import {DragAndDropElement} from '../files/dragAndDrop/dragAndDropElement';
 import {StickyPropsUtils} from '../../utils/stickyProps/stickyPropsUtils';
@@ -22,7 +22,7 @@ import {RowDropdown} from '../dropdown/rowDropdown/rowDropdown';
 import {TableDimensions} from '../../types/tableDimensions';
 import {FireEvents} from '../../utils/events/fireEvents';
 import {IndexColumn} from '../indexColumn/indexColumn';
-import {TableRow} from '../../types/tableContent';
+import {TableRow} from '../../types/tableData';
 import {ActiveTable} from '../../activeTable';
 import {TableEvents} from './tableEvents';
 
@@ -63,13 +63,13 @@ export class TableElement {
   private static addCells(at: ActiveTable) {
     if (!MaximumColumns.canAddMore(at)) return;
     StaticTableWidthUtils.toggleWidthUsingMaxWidth(at, true);
-    at.content.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(at, rowIndex, false, row));
+    at.data.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(at, rowIndex, false, row));
     StaticTableWidthUtils.toggleWidthUsingMaxWidth(at, false);
   }
 
   private static postProcessColumns(at: ActiveTable) {
     StaticTableWidthUtils.changeWidthsBasedOnColumnInsertRemove(at, true); // REF-11
-    InitialContentProcessing.postProcess(at.content, at._columnsDetails);
+    InitialDataProcessing.postProcess(at.data, at._columnsDetails);
     setTimeout(() => {
       FireEvents.onColumnsUpdate(at);
       InsertRemoveColumnSizer.cleanUpCustomColumnSizers(at, at._columnsDetails.length - 1);

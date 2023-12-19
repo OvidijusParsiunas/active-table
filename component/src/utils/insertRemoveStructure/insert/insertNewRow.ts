@@ -9,8 +9,8 @@ import {IndexColumn} from '../../../elements/indexColumn/indexColumn';
 import {CustomRowProperties} from '../../rows/customRowProperties';
 import {CELL_UPDATE_TYPE} from '../../../enums/onUpdateCellType';
 import {UpdateCellsForRows} from '../update/updateCellsForRows';
-import {CellText, TableRow} from '../../../types/tableContent';
 import {ElementDetails} from '../../../types/elementDetails';
+import {CellText, TableRow} from '../../../types/tableData';
 import {MaximumColumns} from './maximum/maximumColumns';
 import {MoveRow} from '../../moveStructure/moveRow';
 import {FireEvents} from '../../events/fireEvents';
@@ -24,11 +24,11 @@ export class InsertNewRow {
   // however the notification messages are necessary and the rebinding does not seem to cause issues, nevertheless take
   // note of this if editing any of the logic below
   private static bindAndfireCellUpdates(at: ActiveTable, rowIndex: number) {
-    const lastRowIndex = at.content.length - 1;
+    const lastRowIndex = at.data.length - 1;
     const lastDataRowElement = at._tableBodyElementRef?.children[lastRowIndex] as HTMLElement;
     const lastRowDetails: ElementDetails = {element: lastDataRowElement, index: lastRowIndex};
     UpdateCellsForRows.rebindAndFireUpdates(at, rowIndex, CELL_UPDATE_TYPE.ADD, lastRowDetails); // REF-20
-    setTimeout(() => FireEvents.onContentUpdate(at));
+    setTimeout(() => FireEvents.onDataUpdate(at));
   }
 
   private static canStartRenderCellBeAdded(at: ActiveTable, rowIndex: number, columnIndex: number) {
@@ -63,17 +63,17 @@ export class InsertNewRow {
   }
 
   private static insertNewRow(at: ActiveTable, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
-    const newRowData = rowData || DataUtils.createEmptyStringDataArray(at.content[0]?.length || 1);
+    const newRowData = rowData || DataUtils.createEmptyStringDataArray(at.data[0]?.length || 1);
     const newRowElement = RowElement.create();
     if (at.pagination) InsertNewRow.updatePagination(at, rowIndex, isNewText, newRowElement);
     at._tableBodyElementRef?.insertBefore(newRowElement, at._tableBodyElementRef.children[rowIndex]);
     // don't need a timeout as addition of row with new text is not expensive
-    if (isNewText) at.content.splice(rowIndex, 0, []);
+    if (isNewText) at.data.splice(rowIndex, 0, []);
     InsertNewRow.addCells(at, newRowData, newRowElement, rowIndex, isNewText);
     return newRowElement;
   }
 
-  // isNewText indicates whether rowData is already in the content state or if it needs to be added
+  // isNewText indicates whether rowData is already in the data state or if it needs to be added
   public static insert(at: ActiveTable, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
     if (!MaximumRows.canAddMore(at)) return;
     const isReplacingHeader = isNewText && rowIndex === 0 && at._columnsDetails.length > 0;
@@ -89,11 +89,11 @@ export class InsertNewRow {
       if (at._isPopulatingTable) {
         UpdateCellsForRows.updateRowCells(at, rowElement, rowIndex, CELL_UPDATE_TYPE.ADD);
         // this is used to prevent multiple rebindings of same rows as upon the insertion of a new row or after pasting,
-        // the content array would be populated synchronously which would cause the lastRowIndex to be high every time
+        // the data array would be populated synchronously which would cause the lastRowIndex to be high every time
         // this is called and rows between rowIndex and lastRowIndex would be rebinded multiple times
       } else if (!rowData) {
         InsertNewRow.bindAndfireCellUpdates(at, rowIndex);
-      } else if (rowIndex === at.content.length - 1) {
+      } else if (rowIndex === at.data.length - 1) {
         // may not be best to start from 0 but this method has no concept of starting point
         InsertNewRow.bindAndfireCellUpdates(at, 0);
       }
@@ -102,11 +102,11 @@ export class InsertNewRow {
 
   // prettier-ignore
   public static insertEvent(this: ActiveTable) {
-    let newRowIndex = this.content.length;
+    let newRowIndex = this.data.length;
     if (this.pagination) {
       if (this._visiblityInternal.filters && this._tableBodyElementRef) {
         // before changing this check if new row can be added when none are present and one is present
-        newRowIndex = this.content.length === 1 && !this.dataStartsAtHeader
+        newRowIndex = this.data.length === 1 && !this.dataStartsAtHeader
           ? 1 : PaginationRowIndexes.getVisibleRowRealIndex(this._tableBodyElementRef, this._pagination) + 1;
       } else {
         const maxVisibleRowIndex = PaginationRowIndexes.getMaxVisibleRowIndex(this);

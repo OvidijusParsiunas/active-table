@@ -1,7 +1,7 @@
 import {Calendar, YMDFormat} from '../../../../types/calendarFunctionality';
 import {RegexUtils} from '../../../../utils/regex/regexUtils';
-import {CellText} from '../../../../types/tableContent';
 import {CellTextElement} from '../text/cellTextElement';
+import {CellText} from '../../../../types/tableData';
 
 export class DateCellTextElement {
   public static convertInputValueToText(inputDate: string, defaultText: CellText, calendarFunc: Calendar) {

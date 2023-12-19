@@ -78,7 +78,7 @@ export class PaginationUtils {
 
   private static updateRowsOnRemoval(at: ActiveTable, visibleIndex: number) {
     const {visibleRows, activePageNumber} = at._pagination;
-    // bug fix - filtering to one page and removing row via updateContent that is not visible would remove a visible row
+    // bug fix - filtering to one page and removing row via updateData that is not visible would remove a visible row
     if (activePageNumber === 1 && visibleIndex === -1) return;
     visibleRows.splice(visibleIndex, 1);
     if (visibleRows.length > 0) {
@@ -168,10 +168,10 @@ export class PaginationUtils {
 
   // prettier-ignore
   private static setCorrectRowsAsVisible(at: ActiveTable, buttonNumber: number) {
-    const {_pagination: {rowsPerPage, visibleRows}, _tableBodyElementRef, content, _visiblityInternal} = at;
+    const {_pagination: {rowsPerPage, visibleRows}, _tableBodyElementRef, data, _visiblityInternal} = at;
     const tableRows = _visiblityInternal?.filters
-      ? FilterInternalUtils.extractUnfilteredRows(_tableBodyElementRef as HTMLElement, content.length)
-      : ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content)
+      ? FilterInternalUtils.extractUnfilteredRows(_tableBodyElementRef as HTMLElement, data.length)
+      : ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, data)
     let startingRowIndex = rowsPerPage * (buttonNumber - 1);
     if (!at.dataStartsAtHeader) startingRowIndex += 1; 
     tableRows.slice(startingRowIndex, startingRowIndex + rowsPerPage).forEach((rowElement) => {

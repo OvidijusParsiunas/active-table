@@ -29,10 +29,10 @@ export class AddNewRowElement {
   // prettier-ignore
   private static createCell(at: ActiveTable) {
     const {_defaultColumnsSettings: {cellStyle}, _frameComponents: {displayAddNewRow, styles}, rootCell} = at;
-    const addNewRowCell = CellElement.createContentCell(false, cellStyle, styles?.default);
+    const addNewRowCell = CellElement.createDataCell(false, cellStyle, styles?.default);
     addNewRowCell.id = AddNewRowElement.ID;
     if (!displayAddNewRow) {
-      // if this is not displayed when there is content, always use the root cell style - REF-18
+      // if this is not displayed when there is data, always use the root cell style - REF-18
       RootCellElement.convertToRootCell(addNewRowCell, rootCell?.text);
       addNewRowCell.addEventListener('click', AddNewRowElement.setDisplay.bind(this, addNewRowCell, false));
     } else {

@@ -37,7 +37,7 @@ export class FilterInputEvents {
   }
 
   public static setEvents(at: ActiveTable, currentConf: FilterInternal, allConfigs: FilterInternal[]) {
-    if (!currentConf.elements) return; // elements not present when initialised with no content
+    if (!currentConf.elements) return; // elements not present when initialised with no data
     const filterFunc = FilterInternalUtils.getFilterFunc(at);
     const otherRowConfigs = allConfigs.filter((rowConfig) => rowConfig !== currentConf);
     currentConf.inputElement.oninput = () => {

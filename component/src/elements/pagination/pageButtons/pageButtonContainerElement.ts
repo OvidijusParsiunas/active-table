@@ -16,8 +16,8 @@ export class PageButtonContainerElement {
   private static readonly PAGINATION_BUTTON_CONTAINER_ID = 'pagination-button-container';
 
   public static shouldButtonsBeActive(at: ActiveTable) {
-    const minNumberOfContentToBeActive = at.dataStartsAtHeader ? 1 : 2;
-    return at.content.length >= minNumberOfContentToBeActive;
+    const minNumberOfDataToBeActive = at.dataStartsAtHeader ? 1 : 2;
+    return at.data.length >= minNumberOfDataToBeActive;
   }
 
   public static setStyle(at: ActiveTable, pageNumber?: number) {

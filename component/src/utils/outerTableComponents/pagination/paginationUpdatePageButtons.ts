@@ -21,7 +21,7 @@ export class PaginationUpdatePageButtons {
       if (numberButtons.length > 1) {
         PaginationUpdatePageButtons.removeLastNumberButton(at, numberButtons);
       }
-    } else if (at.content.length < (at.dataStartsAtHeader ? 1 : 2)) {
+    } else if (at.data.length < (at.dataStartsAtHeader ? 1 : 2)) {
       PageButtonElement.setDisabled(at._pagination);
     }
   }
@@ -37,7 +37,7 @@ export class PaginationUpdatePageButtons {
 
   public static updateOnRowInsert(at: ActiveTable) {
     const expectedItemsBeforeInsert = at.dataStartsAtHeader ? 0 : 1;
-    if (at.content.length === expectedItemsBeforeInsert) {
+    if (at.data.length === expectedItemsBeforeInsert) {
       PageButtonElement.unsetDisabled(at._pagination);
     } else {
       const numberButtons = PaginationUtils.getPageNumberButtons(at._pagination);

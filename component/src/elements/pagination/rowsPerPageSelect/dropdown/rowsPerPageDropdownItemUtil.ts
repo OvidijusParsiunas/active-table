@@ -15,9 +15,9 @@ export class RowsPerPageDropdownItemUtil {
   }
 
   private static getNewRowsPerPage(at: ActiveTable, newRowsPerPage: string) {
-    const {_pagination, content, dataStartsAtHeader} = at;
+    const {_pagination, data, dataStartsAtHeader} = at;
     if (_pagination.isAllRowsOptionSelected) {
-      return dataStartsAtHeader ? content.length : content.length - 1;
+      return dataStartsAtHeader ? data.length : data.length - 1;
     }
     return Number(newRowsPerPage);
   }

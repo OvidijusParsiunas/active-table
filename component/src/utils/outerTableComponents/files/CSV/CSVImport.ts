@@ -43,12 +43,12 @@ export class CSVImport {
   }
 
   public static processFile(at: ActiveTable, csvText: string, options?: ImportOverwriteOptions) {
-    const csvContent = CSVImport.parseCSV(csvText);
-    if (csvContent && options && typeof options.importRowStartIndex === 'number')
-      csvContent.splice(0, options.importRowStartIndex);
-    if (!csvContent || csvContent.length === 0) return;
-    const startRowIndex = CSVImport.getStartRowIndex(at.content.length, options);
-    UpdateAllTableData.update(at, csvContent, startRowIndex);
+    const csvData = CSVImport.parseCSV(csvText);
+    if (csvData && options && typeof options.importRowStartIndex === 'number')
+      csvData.splice(0, options.importRowStartIndex);
+    if (!csvData || csvData.length === 0) return;
+    const startRowIndex = CSVImport.getStartRowIndex(at.data.length, options);
+    UpdateAllTableData.update(at, csvData, startRowIndex);
   }
 
   public static import(at: ActiveTable, file: File, options?: ImportOverwriteOptions) {

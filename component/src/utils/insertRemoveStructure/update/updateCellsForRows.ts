@@ -43,9 +43,9 @@ export class UpdateCellsForRows {
     if (tableBodyChildren) {
       const lowerRows = Array.from(tableBodyChildren).slice(startRowIndex, lastRowIndex);
       lowerRows.forEach((row: Node, lowerRowIndex: number) => {
-        const relativeContentRowIndex = lowerRowIndex + startRowIndex;
+        const relativeDataRowIndex = lowerRowIndex + startRowIndex;
         const rowElement = row as HTMLElement;
-        UpdateCellsForRows.updateRowCells(at, rowElement, relativeContentRowIndex, CELL_UPDATE_TYPE.UPDATE);
+        UpdateCellsForRows.updateRowCells(at, rowElement, relativeDataRowIndex, CELL_UPDATE_TYPE.UPDATE);
       });
     }
   }

@@ -12,7 +12,7 @@ export class FilterDropdownItem {
   }
 
   private static addItems(at: ActiveTable, dropdown: OuterContainerDropdownI, config: FilterInternal) {
-    const headers = at.content[0]?.map((headerText) => String(headerText));
+    const headers = at.data[0]?.map((headerText) => String(headerText));
     headers?.forEach((headerText) => {
       const itemsSettings = {text: headerText};
       const item = DropdownItem.addButtonItem(at, dropdown.element, itemsSettings);

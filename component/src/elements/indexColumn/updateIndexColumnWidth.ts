@@ -15,8 +15,8 @@ export class UpdateIndexColumnWidth {
   private static readonly TEMPORARY_INDEX_ID_PREFIX_LENGTH = UpdateIndexColumnWidth.TEMPORARY_INDEX_ID_PREFIX.length;
 
   private static wrapColumnTextAndGetDefaultWidth(at: ActiveTable) {
-    const {_tableBodyElementRef, content, _tableDimensions} = at;
-    ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content).forEach((row) => {
+    const {_tableBodyElementRef, data, _tableDimensions} = at;
+    ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, data).forEach((row) => {
       const indexCell = row.children[0] as HTMLElement;
       indexCell.classList.remove(IndexColumn.INDEX_CELL_OVERFLOW_CLASS);
     });
@@ -61,7 +61,7 @@ export class UpdateIndexColumnWidth {
   // using a prefix because the same index cell can get overwritten multiple times by new last cells in pagination
   // hidden pages - so when resetting in a timeout - the reset vaue is no longer the original
   // to reproduce the error, simply set the following code in timeout: firstDataCell.textContent = firstCellContent
-  // and either upload a new file, drag and rop a new files, updateContent method with a lot of content
+  // and either upload a new file, drag and rop a new files, updateData method with a lot of data
   private static temporarilySetFirstDataCellWithLastNumber(firstDataCell: HTMLElement, lastCell: HTMLElement) {
     const firstCellContent = firstDataCell.textContent;
     if (!firstDataCell.id) firstDataCell.id = `${UpdateIndexColumnWidth.TEMPORARY_INDEX_ID_PREFIX}${firstCellContent}`;
@@ -137,8 +137,8 @@ export class UpdateIndexColumnWidth {
       if (firstRow) {
         UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, firstRow, lastCell, forceWrap);
       } else {
-        // when pagination is set, all rows have been filtered to not visible and new row is added via updateContent
-        // firstRow may not be defiened if a row is removed via updateContent
+        // when pagination is set, all rows have been filtered to not visible and new row is added via updateData
+        // firstRow may not be defiened if a row is removed via updateData
         setTimeout(() => {
           const firstRow = UpdateIndexColumnWidth.getFirstVisibleRow(at._pagination, at._tableBodyElementRef);
           if (firstRow) UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, firstRow, lastCell, forceWrap);
@@ -154,8 +154,8 @@ export class UpdateIndexColumnWidth {
   public static update(at: ActiveTable, textRowsArr?: Element[], forceWrap = false) {
     if (at._tableDimensions.isColumnIndexCellTextWrapped) return;
     if (!textRowsArr) {
-      const {_tableBodyElementRef, content} = at;
-      textRowsArr = ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, content);
+      const {_tableBodyElementRef, data} = at;
+      textRowsArr = ExtractElements.textRowsArrFromTBody(_tableBodyElementRef as HTMLElement, data);
     }
     const lastCell = textRowsArr[textRowsArr.length - 1]?.children[0] as HTMLElement;
     if (lastCell) UpdateIndexColumnWidth.updatedBasedOnVisiblity(at, lastCell, forceWrap);

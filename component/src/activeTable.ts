@@ -1,9 +1,9 @@
 import {PaginationInternalUtils} from './utils/outerTableComponents/pagination/paginationInternalUtils';
 import {ProgrammaticCellUpdateT, ProgrammaticStructureUpdateT} from './types/programmaticCellUpdateT';
-import {ColumnUpdateDetails, OnCellUpdate, OnColumnsUpdate, OnContentUpdate} from './types/onUpdate';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
 import {FileImportButtonEvents} from './elements/files/buttons/importButton/fileImportButtonEvents';
 import {ProgrammaticStructureUpdate} from './utils/programmaticUpdates/programmaticStructureUpdate';
+import {ColumnUpdateDetails, OnCellUpdate, OnColumnsUpdate, OnDataUpdate} from './types/onUpdate';
 import {FrameComponentsInternalUtils} from './utils/frameComponents/frameComponentsInternalUtils';
 import {RowDropdownSettingsUtil} from './elements/dropdown/rowDropdown/rowDropdownSettingsUtil';
 import {ProgrammaticCellUpdate} from './utils/programmaticUpdates/programmaticCellUpdate';
@@ -13,7 +13,6 @@ import {LITElementTypeConverters} from './utils/webComponent/LITElementTypeConve
 import {UserKeyEventsStateUtils} from './utils/userEventsState/userEventsStateUtils';
 import {CustomColumnsSettings, DimensionalCSSStyle} from './types/columnsSettings';
 import {WebComponentStyleUtils} from './utils/webComponent/webComponentStyleUtils';
-import {InitialContentProcessing} from './utils/content/initialContentProcessing';
 import {FocusedElementsUtils} from './utils/focusedElements/focusedElementsUtils';
 import {TableDimensionsUtils} from './utils/tableDimensions/tableDimensionsUtils';
 import {UpdateAllTableData} from './utils/programmaticUpdates/updateAllTableData';
@@ -22,6 +21,7 @@ import {ColumnSettingsUtils} from './utils/columnSettings/columnSettingsUtils';
 import {ColumnDropdownSettingsDefault} from './types/columnDropdownSettings';
 import {ColumnDetailsUtils} from './utils/columnDetails/columnDetailsUtils';
 import {FrameComponentsStyles, IndexColumnT} from './types/frameComponents';
+import {InitialDataProcessing} from './utils/data/initialDataProcessing';
 import {DefaultColumnTypes} from './utils/columnType/defaultColumnTypes';
 import {FrameComponentsInternal} from './types/frameComponentsInternal';
 import {RowDropdownCellOverlays} from './types/rowDropdownCellOverlays';
@@ -68,14 +68,15 @@ import {StickyProps} from './types/stickyProps';
 import {Browser} from './utils/browser/browser';
 import {ColumnTypes} from './types/columnType';
 import {LitElement, PropertyValues} from 'lit';
-import {CellText} from './types/tableContent';
 import {TableStyle} from './types/tableStyle';
 import {Pagination} from './types/pagination';
 import {Render} from './utils/render/render';
+import {CellText} from './types/tableData';
 import {Overflow} from './types/overflow';
 import {RootCell} from './types/rootCell';
 import {Filter} from './types/filter';
 
+// WORK - Update package
 // TO-DO - dropdown for export button
 @customElement('active-table')
 export class ActiveTable extends LitElement {
@@ -85,7 +86,7 @@ export class ActiveTable extends LitElement {
   }
 
   @property({attribute: false})
-  getContent: () => (number | string)[][] = () => JSON.parse(JSON.stringify(this.content));
+  getData: () => (number | string)[][] = () => JSON.parse(JSON.stringify(this.data));
 
   @property({attribute: false})
   getColumnsDetails: () => ColumnUpdateDetails[] = () => ColumnDetailsUtils.getAllColumnsDetails(this._columnsDetails);
@@ -101,8 +102,8 @@ export class ActiveTable extends LitElement {
   };
 
   @property({attribute: false})
-  updateContent: (content: (number | string)[][]) => void = (content: (number | string)[][]) => {
-    UpdateAllTableData.update(this, content, 0);
+  updateData: (data: (number | string)[][]) => void = (data: (number | string)[][]) => {
+    UpdateAllTableData.update(this, data, 0);
   };
 
   // can only be activated by a user action - such as a button click
@@ -117,7 +118,7 @@ export class ActiveTable extends LitElement {
   onCellUpdate: OnCellUpdate = () => {};
 
   @property({converter: LITElementTypeConverters.convertToFunction})
-  onContentUpdate: OnContentUpdate = () => {};
+  onDataUpdate: OnDataUpdate = () => {};
 
   @property({converter: LITElementTypeConverters.convertToFunction})
   onColumnsUpdate: OnColumnsUpdate = () => {};
@@ -126,7 +127,7 @@ export class ActiveTable extends LitElement {
   onRender: () => void = () => {};
 
   @property({type: Array})
-  content: (number | string)[][] = [
+  data: (number | string)[][] = [
     // ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
     // ['Earth', 12756, 5.97, 1, 5514],
     // ['Mars', 6792, 0.642, 2, 3934],
@@ -403,7 +404,7 @@ export class ActiveTable extends LitElement {
   // CAUTION-4
   protected override render() {
     Render.renderTable(this);
-    this.onContentUpdate(this.content);
+    this.onDataUpdate(this.data);
     new ResizeObserver(ParentResize.resizeCallback.bind(this)).observe(this.parentElement as HTMLElement);
     FireEvents.onRender(this);
   }
@@ -423,7 +424,7 @@ export class ActiveTable extends LitElement {
     TableElement.addOverlayElements(this, tableElement, this._activeOverlayElements);
     this.shadowRoot?.appendChild(this._overflow?.overflowContainer || tableElement);
     OuterTableComponents.create(this);
-    InitialContentProcessing.preProcess(this, this.content);
+    InitialDataProcessing.preProcess(this, this.data);
     WindowElement.setEvents(this);
     this.spellcheck = this.spellCheck;
     if (this.auxiliaryStyle && this.shadowRoot) WebComponentStyleUtils.add(this.auxiliaryStyle, this.shadowRoot);
@@ -460,7 +461,7 @@ declare global {
 // @state()
 // observer = new MutationObserver(function (mutations) {
 //   mutations.forEach(function (mutation) {
-//     if (mutation.attributeName === 'content') {
+//     if (mutation.attributeName === 'data') {
 //       console.log(mutation);
 //       console.log('attributes changed');
 //     }

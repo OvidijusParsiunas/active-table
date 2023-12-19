@@ -14,8 +14,8 @@ import {CellDividerElement} from '../../../elements/cell/cellDividerElement';
 import {CellElementIndex} from '../../elements/cellElementIndex';
 import {ColumnDetails} from '../../columnDetails/columnDetails';
 import {CellElement} from '../../../elements/cell/cellElement';
-import {CellText} from '../../../types/tableContent';
 import {FireEvents} from '../../events/fireEvents';
+import {CellText} from '../../../types/tableData';
 import {ActiveTable} from '../../../activeTable';
 import {DataUtils} from '../shared/dataUtils';
 
@@ -47,13 +47,13 @@ export class InsertNewCell {
   // prettier-ignore
   private static insert(at: ActiveTable, rowElement: HTMLElement, newCellElement: HTMLElement,
       processedCellText: CellText, isNewText: boolean, rowIndex: number, columnIndex: number) {
-    const {_frameComponents: {displayIndexColumn}, content, _columnsDetails} = at;
+    const {_frameComponents: {displayIndexColumn}, data, _columnsDetails} = at;
     const columnDetails = _columnsDetails[columnIndex];
     columnDetails.elements.splice(rowIndex, 0, newCellElement); // cannot be in timeout for max rows
     columnDetails.processedStyle.splice(rowIndex, 0, ProcessedDataTextStyle.getDefaultProcessedTextStyle());
     InsertNewCell.insertElementsToRow(rowElement, newCellElement, rowIndex, columnIndex, !!displayIndexColumn);
-    // cannot place in a timeout as at.content length is used to get last row index
-    content[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
+    // cannot place in a timeout as at.data length is used to get last row index
+    data[rowIndex].splice(columnIndex, isNewText ? 0 : 1, processedCellText);
   }
 
   private static convertCell(at: ActiveTable, rowIndex: number, columnIndex: number, newCellElement: HTMLElement) {
@@ -89,7 +89,7 @@ export class InsertNewCell {
       _columnsDetails.splice(columnIndex, 0, columnDetails as ColumnDetailsT);
   }
 
-  // isNewText indicates whether rowData is already in the content state or if it needs to be added
+  // isNewText indicates whether rowData is already in the data state or if it needs to be added
   // prettier-ignore
   public static insertToRow(at: ActiveTable,
       rowElement: HTMLElement, rowIndex: number, columnIndex: number, cellText: CellText, isNewText: boolean) {

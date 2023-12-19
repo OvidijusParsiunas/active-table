@@ -21,11 +21,11 @@ export class ChangeColumnType {
 
   private static setInvalidCellsToDefault(at: ActiveTable, columnIndex: number) {
     let updateTableEvent = false;
-    at.content.slice(1).forEach((_, rowIndex) => {
+    at.data.slice(1).forEach((_, rowIndex) => {
       const isUpdated = ChangeColumnType.setInvalidCellToDefault(at, rowIndex, columnIndex);
       if (isUpdated && !updateTableEvent) updateTableEvent = true;
     });
-    if (updateTableEvent) setTimeout(() => FireEvents.onContentUpdate(at));
+    if (updateTableEvent) setTimeout(() => FireEvents.onDataUpdate(at));
   }
 
   private static setNew(at: ActiveTable, newType: string, columnIndex: number) {

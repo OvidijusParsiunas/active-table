@@ -31,7 +31,7 @@ export class DataCellEvents {
     const textContainerElement = inputEvent.target as HTMLElement;
     if (DateCellInputElement.isInputElement(textContainerElement)) return;
     const text = CellElement.getText(textContainerElement);
-    // sanitizePastedTextContent causes inputType to no longer be insertFromPaste, hence using this instead
+    // sanitizePastedTextData causes inputType to no longer be insertFromPaste, hence using this instead
     if (!this._userKeyEventsState[KEYBOARD_EVENT.PASTE]) {
       const isUndo = inputEvent.inputType === UNDO_INPUT_TYPE;
       CellElement.setNewText(this, textContainerElement, text, false, isUndo, false);
@@ -47,7 +47,7 @@ export class DataCellEvents {
   // prettier-ignore
   private static pasteCell(this: ActiveTable, rowIndex: number, columnIndex: number, event: ClipboardEvent) {
     UserKeyEventsStateUtils.temporarilyIndicateEvent(this._userKeyEventsState, KEYBOARD_EVENT.PASTE);
-    PasteUtils.sanitizePastedTextContent(event);
+    PasteUtils.sanitizePastedTextData(event);
     const clipboardText = PasteUtils.extractClipboardText(event);
     if (OverwriteCellsViaCSVOnPaste.isCSVData(clipboardText)) {
       OverwriteCellsViaCSVOnPaste.overwrite(this, clipboardText, event, rowIndex, columnIndex);

@@ -9,7 +9,7 @@ import {CheckboxCellElement} from './checkboxCell/checkboxCellElement';
 import {CaretDisplayFix} from '../../utils/browser/caretDisplayFix';
 import {_Widths} from '../../types/columnsSettingsInternal';
 import {NoDimensionCSSStyle} from '../../types/cssStyle';
-import {CellText} from '../../types/tableContent';
+import {CellText} from '../../types/tableData';
 import {ActiveTable} from '../../activeTable';
 
 export class CellElement {
@@ -32,7 +32,7 @@ export class CellElement {
   }
 
   // prettier-ignore
-  public static createContentCell(isHeader: boolean, cellStyle?: NoDimensionCSSStyle, customStyle?: NoDimensionCSSStyle,
+  public static createDataCell(isHeader: boolean, cellStyle?: NoDimensionCSSStyle, customStyle?: NoDimensionCSSStyle,
       isUsedAsAButton?: boolean) {
     const cellElement = CellElement.createBaseCell(isHeader);
     if (isHeader && isUsedAsAButton) cellElement.classList.add(GenericElementUtils.NOT_SELECTABLE_CLASS);
@@ -143,7 +143,7 @@ export class CellElement {
     const {_defaultColumnsSettings: {cellStyle, headerStyles}, _columnsDetails} = at;
     const columnDetails = _columnsDetails[columnIndex];
     const isOpenViaCellClick = at._defaultColumnsSettings.columnDropdown?.displaySettings?.openMethod?.cellClick;
-    const cellElement = CellElement.createContentCell(isHeader, cellStyle,
+    const cellElement = CellElement.createDataCell(isHeader, cellStyle,
       isHeader ? headerStyles?.default : {}, isOpenViaCellClick);
     const {settings} = columnDetails;
     ColumnSettingsStyleUtils.applySettingsStyleOnCell(settings, cellElement, isHeader);

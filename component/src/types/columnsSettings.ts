@@ -5,7 +5,7 @@ import {HoverableStyles} from './hoverableStyles';
 import {NoDimensionCSSStyle} from './cssStyle';
 import {StringDimension} from './dimensions';
 import {ColumnTypes} from './columnType';
-import {CellText} from './tableContent';
+import {CellText} from './tableData';
 
 // to be used by the client
 

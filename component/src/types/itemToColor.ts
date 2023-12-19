@@ -1,4 +1,4 @@
-import {CellText} from './tableContent';
+import {CellText} from './tableData';
 
 export interface ItemToColor {
   [cellText: CellText]: string;

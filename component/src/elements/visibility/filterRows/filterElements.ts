@@ -35,7 +35,7 @@ export class FilterElements {
     if (userConfig.caseButton !== false) {
       FilterInputCaseElement.create(at, containerElement, internalConfig, userConfig.styles);
     }
-    const inputElement = FilterInputElement.create(internalConfig, userConfig, at.content);
+    const inputElement = FilterInputElement.create(internalConfig, userConfig, at.data);
     containerElement.appendChild(inputElement);
     OuterContainerElements.addToContainer(position, outerContainers, containerElement);
   }

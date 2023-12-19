@@ -1,5 +1,5 @@
 import {CustomTextProcessing} from '../../../types/customTextProcessing';
-import {CellText} from '../../../types/tableContent';
+import {CellText} from '../../../types/tableData';
 
 export class CheckboxValidationFunc {
   // cannot place this inside the CheckboxCellElement class as certain dependencies are not imported in time

@@ -3,9 +3,9 @@ import {RootCellElement} from '../../elements/table/addNewElements/rootCell/root
 import {FilterInternalUtils} from '../outerTableComponents/filter/rows/filterInternalUtils';
 import {AddNewRowElement} from '../../elements/table/addNewElements/row/addNewRowElement';
 import {PaginationUtils} from '../outerTableComponents/pagination/paginationUtils';
-import {InitialContentProcessing} from '../content/initialContentProcessing';
 import {RemoveRow} from '../insertRemoveStructure/remove/removeRow';
-import {TableContent} from '../../types/tableContent';
+import {InitialDataProcessing} from '../data/initialDataProcessing';
+import {TableData} from '../../types/tableData';
 import {ActiveTable} from '../../activeTable';
 import {InsertMatrix} from './insertMatrix';
 
@@ -17,27 +17,27 @@ export class UpdateAllTableData {
     ToggleAdditionElements.update(at, true, AddNewRowElement.toggle);
   }
 
-  private static insertData(at: ActiveTable, content: TableContent, startRowIndex: number) {
-    InsertMatrix.insert(at, content, startRowIndex, 0, true);
+  private static insertData(at: ActiveTable, data: TableData, startRowIndex: number) {
+    InsertMatrix.insert(at, data, startRowIndex, 0, true);
     if (startRowIndex === 0) {
       RootCellElement.convertFromRootCell(at);
     }
   }
 
-  private static changeTableData(at: ActiveTable, content: TableContent, startRowIndex: number, forceSync: boolean) {
-    for (let i = at.content.length - 1; i >= startRowIndex; i -= 1) {
+  private static changeTableData(at: ActiveTable, data: TableData, startRowIndex: number, forceSync: boolean) {
+    for (let i = at.data.length - 1; i >= startRowIndex; i -= 1) {
       RemoveRow.remove(at, i);
     }
-    InitialContentProcessing.preProcess(at, content);
+    InitialDataProcessing.preProcess(at, data);
     at._isPopulatingTable = true;
     if (forceSync) {
-      UpdateAllTableData.insertData(at, content, startRowIndex);
+      UpdateAllTableData.insertData(at, data, startRowIndex);
       UpdateAllTableData.toggleAdditionalElements(at);
       at._isPopulatingTable = true;
     } else {
       setTimeout(() => {
         // in a timeout because RemoveRow.remove contains processes inside timeouts e.g. remove column details
-        UpdateAllTableData.insertData(at, content, startRowIndex);
+        UpdateAllTableData.insertData(at, data, startRowIndex);
       });
       setTimeout(() => {
         // in a timeout as at.shadowRoot.contains does not work immediately
@@ -47,17 +47,17 @@ export class UpdateAllTableData {
     }
   }
 
-  public static update(at: ActiveTable, content: TableContent, startRowIndex: number, forceSync = false) {
-    if (!Array.isArray(content)) return;
+  public static update(at: ActiveTable, data: TableData, startRowIndex: number, forceSync = false) {
+    if (!Array.isArray(data)) return;
     let waitForFilterUnset = false;
     if (at._visiblityInternal.filters) {
       waitForFilterUnset = FilterInternalUtils.unsetAllFilters(at);
     }
     if (!forceSync && waitForFilterUnset) {
       // need to wait for inputElement.dispatchEvent(new Event('input')) when unsetting
-      setTimeout(() => UpdateAllTableData.changeTableData(at, content, startRowIndex, forceSync), 40);
+      setTimeout(() => UpdateAllTableData.changeTableData(at, data, startRowIndex, forceSync), 40);
     } else {
-      UpdateAllTableData.changeTableData(at, content, startRowIndex, forceSync);
+      UpdateAllTableData.changeTableData(at, data, startRowIndex, forceSync);
     }
   }
 }

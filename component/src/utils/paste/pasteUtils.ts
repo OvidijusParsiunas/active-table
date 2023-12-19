@@ -1,7 +1,7 @@
 export class PasteUtils {
   private static readonly TEXT_DATA_FORMAT = 'text/plain';
 
-  public static sanitizePastedTextContent(event: ClipboardEvent) {
+  public static sanitizePastedTextData(event: ClipboardEvent) {
     event.preventDefault();
     const text = event.clipboardData?.getData('text/plain');
     document.execCommand?.('insertHTML', false, text);

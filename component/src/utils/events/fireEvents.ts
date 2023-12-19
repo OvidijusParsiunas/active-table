@@ -1,6 +1,6 @@
 import {ColumnDetailsUtils} from '../columnDetails/columnDetailsUtils';
 import {CELL_UPDATE_TYPE} from '../../enums/onUpdateCellType';
-import {CellText} from '../../types/tableContent';
+import {CellText} from '../../types/tableData';
 import {ActiveTable} from '../../activeTable';
 
 export class FireEvents {
@@ -12,10 +12,10 @@ export class FireEvents {
     at.dispatchEvent(new CustomEvent('cell-update', {detail: updateBody}));
   }
 
-  public static onContentUpdate(at: ActiveTable) {
-    const updateBody = JSON.parse(JSON.stringify(at.content));
-    at.onContentUpdate(updateBody);
-    at.dispatchEvent(new CustomEvent('content-update', {detail: updateBody}));
+  public static onDataUpdate(at: ActiveTable) {
+    const updateBody = JSON.parse(JSON.stringify(at.data));
+    at.onDataUpdate(updateBody);
+    at.dispatchEvent(new CustomEvent('data-update', {detail: updateBody}));
   }
 
   public static onColumnsUpdate(at: ActiveTable) {

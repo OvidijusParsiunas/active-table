@@ -20,11 +20,11 @@ export class NumberOfVisibleRowsElement {
   }
 
   public static update(at: ActiveTable) {
-    const {_pagination, content, dataStartsAtHeader} = at;
+    const {_pagination, data, dataStartsAtHeader} = at;
     const {numberOfVisibleRowsElement, isAllRowsOptionSelected} = _pagination;
     if (!numberOfVisibleRowsElement) return;
-    // using max as when there are no contents on startup - dataRowsLength is -1
-    const dataRowsLength = Math.max(dataStartsAtHeader ? content.length : content.length - 1, 0);
+    // using max as when there is no data on startup - dataRowsLength is -1
+    const dataRowsLength = Math.max(dataStartsAtHeader ? data.length : data.length - 1, 0);
     if (isAllRowsOptionSelected) {
       NumberOfVisibleRowsElement.updateForAllRows(numberOfVisibleRowsElement, dataRowsLength);
     } else {

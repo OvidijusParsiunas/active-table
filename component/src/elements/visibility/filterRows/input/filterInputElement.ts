@@ -1,7 +1,7 @@
 import {FilterInternalUtils} from '../../../../utils/outerTableComponents/filter/rows/filterInternalUtils';
 import {FilterInternal} from '../../../../types/visibilityInternal';
 import {Filter, FilterStyles} from '../../../../types/filter';
-import {TableContent} from '../../../../types/tableContent';
+import {TableData} from '../../../../types/tableData';
 
 export class FilterInputElement {
   private static readonly INPUT_CLASS = 'filter-rows-input';
@@ -28,9 +28,9 @@ export class FilterInputElement {
     return inputElement;
   }
 
-  public static create(config: FilterInternal, userConfig: Filter, content: TableContent) {
+  public static create(config: FilterInternal, userConfig: Filter, data: TableData) {
     // done here as resetInput is in a timeout which will cause the input text display to be delayed on startup
-    const defaultHeader = FilterInternalUtils.generateDefaultHeaderName(content, config.defaultColumnHeaderName);
+    const defaultHeader = FilterInternalUtils.generateDefaultHeaderName(data, config.defaultColumnHeaderName);
     const input = FilterInputElement.createElement(defaultHeader, config.placeholderTemplate, userConfig.styles);
     config.inputElement = input;
     return input;

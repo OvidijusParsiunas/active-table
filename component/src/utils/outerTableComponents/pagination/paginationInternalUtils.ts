@@ -23,10 +23,10 @@ export class PaginationInternalUtils {
   ]);
 
   public static getTotalNumberOfRows(at: ActiveTable) {
-    const {content, _visiblityInternal, _tableBodyElementRef} = at;
+    const {data, _visiblityInternal, _tableBodyElementRef} = at;
     return _visiblityInternal?.filters
-      ? FilterInternalUtils.extractUnfilteredRows(_tableBodyElementRef as HTMLElement, content.length).length
-      : content.length;
+      ? FilterInternalUtils.extractUnfilteredRows(_tableBodyElementRef as HTMLElement, data.length).length
+      : data.length;
   }
 
   private static insertNewRowsPerPageOption(newRowsPerPageNumber: number, rowsPerPageOptionsItemText: string[]) {

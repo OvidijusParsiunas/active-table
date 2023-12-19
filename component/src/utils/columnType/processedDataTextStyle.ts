@@ -6,7 +6,7 @@ import {ResetColumnStyles} from '../columnSettings/resetColumnStyles';
 import {CellElement} from '../../elements/cell/cellElement';
 import {ColumnDetailsT} from '../../types/columnDetails';
 import {NoDimensionCSSStyle} from '../../types/cssStyle';
-import {CellText} from '../../types/tableContent';
+import {CellText} from '../../types/tableData';
 import {ActiveTable} from '../../activeTable';
 
 // this class only operates on data cells

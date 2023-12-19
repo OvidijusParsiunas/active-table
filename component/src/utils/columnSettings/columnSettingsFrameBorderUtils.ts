@@ -39,7 +39,7 @@ export class ColumnSettingsFrameBorderUtils {
         _addColumnCellsElementsRef, currentColumn.elements, 'left', defColumnsSettings);
     }
     if (!leftColumnDetails && displayIndexColumn) {
-      const rowElements = ExtractElements.textRowsArrFromTBody(at._tableBodyElementRef as HTMLElement, at.content, 0);
+      const rowElements = ExtractElements.textRowsArrFromTBody(at._tableBodyElementRef as HTMLElement, at.data, 0);
       const indexCells = rowElements.map((row) => row.children[0]) as HTMLElement[];
       ColumnSettingsFrameBorderUtils.toggleFrameBorder(indexCells, currentColumn.elements, 'right', defColumnsSettings);
     }

@@ -1,5 +1,5 @@
 import {CELL_UPDATE_TYPE} from '../enums/onUpdateCellType';
-import {TableContent} from './tableContent';
+import {TableData} from './tableData';
 
 interface CellUpdateDetails {
   text: string;
@@ -20,6 +20,6 @@ export interface ColumnUpdateDetails {
 
 export type OnColumnsUpdate = (columnsUpdate: ColumnUpdateDetails[]) => void;
 
-export type OnContentUpdate = (contentUpdate: TableContent) => void;
+export type OnDataUpdate = (dataUpdate: TableData) => void;
 
 export type OnColumnWidthsUpdate = (columnWidthsUpdate: number[]) => void;
