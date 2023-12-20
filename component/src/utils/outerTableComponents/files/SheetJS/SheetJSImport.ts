@@ -1,6 +1,6 @@
 import {ActiveTable} from '../../../../activeTable';
+import * as xlsx from '../../../../types/xlsx';
 import {CSVImport} from '../CSV/CSVImport';
-import * as xlsx from 'xlsx';
 
 export class SheetJSImport {
   public static import(at: ActiveTable, file: File, xlsxModule: typeof xlsx) {

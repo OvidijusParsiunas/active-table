@@ -1,4 +1,4 @@
-import * as xlsx from 'xlsx';
+import * as xlsx from '../../../../types/xlsx';
 
 declare global {
   interface Window {
