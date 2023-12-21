@@ -52,7 +52,7 @@ import Tabs from '@theme/Tabs';
 <TableContainer minHeight="602">
   <ActiveTable
     pagination={true}
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -98,7 +98,7 @@ import Tabs from '@theme/Tabs';
 
 <active-table
   pagination="true"
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -161,7 +161,7 @@ If the defined `rowsPerPage` value (in [`pagination`](#pagination) object) is no
       "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [10, 20, 30, "All"]},
       "rowsPerPage": 5
     }}
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -215,7 +215,7 @@ If the defined `rowsPerPage` value (in [`pagination`](#pagination) object) is no
     "rowsPerPageSelect": {"prefixText": "Number of rows:", "options": [10, 20, 30, "All"]},
     "rowsPerPage": 5
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -286,7 +286,7 @@ Styling properties of pagination components. <br />
       }},
       "rowsPerPage": 5
     }}
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -370,7 +370,7 @@ Styling properties of pagination components. <br />
     }},
     "rowsPerPage": 5
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -441,7 +441,7 @@ Styling properties for the rows per page component elements. `container` is the 
         }},
       "rowsPerPage": 5
     }}
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -515,7 +515,7 @@ Styling properties for the rows per page component elements. `container` is the 
       }}},
     "rowsPerPage": 5
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -608,7 +608,7 @@ as otherwise the last button is not going to have a border on the right.
       }},
       "rowsPerPage": 5
     }}
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -682,7 +682,7 @@ as otherwise the last button is not going to have a border on the right.
     }},
     "rowsPerPage": 5
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -762,7 +762,7 @@ Styling for action buttons that facilitates the definition of styles for various
       },
       "rowsPerPage": 5
     }}
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -838,7 +838,7 @@ Styling for action buttons that facilitates the definition of styles for various
     },
     "rowsPerPage": 5
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -905,7 +905,7 @@ Positions for pagination components.
       },
       "rowsPerPage": 5
     }}
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -967,7 +967,7 @@ Positions for pagination components.
     },
     "rowsPerPage": 5
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -1052,7 +1052,7 @@ Object defining position properties for a pagination component. `order` is the o
       positions: {pageButtons: {position: 'bottom-center'}},
       rowsPerPage: 2,
     }}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -1116,7 +1116,7 @@ Object defining position properties for a pagination component. `order` is the o
     "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -1157,7 +1157,7 @@ Object defining position properties for a pagination component. `order` is the o
       "positions": {"pageButtons": {"position": "bottom-center"}},
       "rowsPerPage": 2
     }}
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -1221,7 +1221,7 @@ Object defining position properties for a pagination component. `order` is the o
     "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -1263,7 +1263,7 @@ Object defining position properties for a pagination component. `order` is the o
       "positions": {"pageButtons": {"position": "bottom-center"}},
       "rowsPerPage": 2
     }}
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -1329,7 +1329,7 @@ Object defining position properties for a pagination component. `order` is the o
     "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -1371,7 +1371,7 @@ Object defining position properties for a pagination component. `order` is the o
       "positions": {"pageButtons": {"position": "bottom-center"}},
       "rowsPerPage": 2
     }}
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -1437,7 +1437,7 @@ Object defining position properties for a pagination component. `order` is the o
     "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -1494,7 +1494,7 @@ Object defining position properties for a pagination component. `order` is the o
       positions: {pageButtons: {position: 'bottom-center'}},
       rowsPerPage: 2,
     }}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -1558,7 +1558,7 @@ Object defining position properties for a pagination component. `order` is the o
     "positions": {"pageButtons": {"position": "bottom-center"}},
     "rowsPerPage": 2
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],

@@ -35,7 +35,7 @@ import Tabs from '@theme/Tabs';
 <TableContainer minHeight="381">
   <ActiveTable
     files={{buttons: [{import: true}, {export: true}], dragAndDrop: true}}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -63,7 +63,7 @@ import Tabs from '@theme/Tabs';
 
 <active-table
   files='{"buttons": [{"import": true}, {"export": true}], "dragAndDrop": true}'
-  content='[
+  data='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -147,7 +147,7 @@ This object requires either the `import` or `export` properties to be defined. <
         },
       ],
     }}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -229,7 +229,7 @@ This object requires either the `import` or `export` properties to be defined. <
         "order": 0
       }
   ]}'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -266,7 +266,7 @@ are no import buttons this property will be set to _["csv"]_.
         overwriteOptions: {importRowStartIndex: 1, tableRowStartIndex: 1},
       },
     }}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -306,7 +306,7 @@ are no import buttons this property will be set to _["csv"]_.
       "formats": ["csv", "xlsx"],
       "overwriteOptions": {"importRowStartIndex": 1, "tableRowStartIndex": 1}
   }}'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -364,7 +364,7 @@ Configuration for the importable files. <br />
         },
       ],
     }}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -424,7 +424,7 @@ Configuration for the importable files. <br />
         "text": "Import XLS XLSX"
       }
   ]}'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -457,7 +457,7 @@ will overwrite all of the rows below the header row. Use a value of _-1_ to appe
 <TableContainer minHeight="381">
   <ActiveTable
     files={{buttons: [{import: {overwriteOptions: {importRowStartIndex: 1, tableRowStartIndex: -1}}}]}}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -487,7 +487,7 @@ will overwrite all of the rows below the header row. Use a value of _-1_ to appe
 
 <active-table
   files='{"buttons": [{"import": {"overwriteOptions": {"importRowStartIndex": 1, "tableRowStartIndex": -1}}}]}'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -525,7 +525,7 @@ When more than one format is defined - the button will use a dropdown to list ea
         {export: {fileName: 'example', formats: ['csv', 'xls', 'xlsx', 'ods', 'txt']}, text: 'Export'},
       ],
     }}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -571,7 +571,7 @@ When more than one format is defined - the button will use a dropdown to list ea
       {"export": {"fileName": "example_txt", "formats": ["txt"]}, "text": "Export TXT"},
       {"export": {"fileName": "example", "formats": ["csv", "xls", "xlsx", "ods", "txt"]}}
   ]}'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],

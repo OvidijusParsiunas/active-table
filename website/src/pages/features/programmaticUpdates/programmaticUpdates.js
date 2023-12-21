@@ -94,7 +94,7 @@ function LeftPanel() {
           }}
           rowDropdown={{displaySettings: {isAvailable: false}}}
           displayHeaderIcons={false}
-          content={[
+          data={[
             ['Stock', 'Current', 'Last', 'Change', 'Yield'],
             ['JPA', '$88.22', '$85.73', '-0.1%', '1.4%'],
             ['REFR', '$18.52', '$88', '1.5%', '0.4%'],

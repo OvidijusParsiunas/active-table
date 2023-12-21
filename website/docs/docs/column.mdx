@@ -13,10 +13,10 @@ Properties related to table columns.
   &nbsp;&nbsp;&nbsp;&nbsp; [`defaultColumnTypeName?: string`](/docs/columnType#defaultColumnTypeName), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`availableDefaultColumnTypes?: DEFAULT_COLUMN_TYPES[]`](/docs/columnType#availableDefaultColumnTypes), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`customColumnTypes?: ColumnType[]`](/docs/columnType#customColumnTypes), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`defaultText?: string|number`](/docs/content#defaultText), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`isDefaultTextRemovable?: boolean`](/docs/content#isDefaultTextRemovable), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`cellStyle?: cellStyle`](/docs/content#cellStyle), <br />
-  &nbsp;&nbsp;&nbsp;&nbsp; [`isCellTextEditable?: boolean`](/docs/content#isCellTextEditable), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`defaultText?: string|number`](/docs/data#defaultText), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`isDefaultTextRemovable?: boolean`](/docs/data#isDefaultTextRemovable), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`cellStyle?: cellStyle`](/docs/data#cellStyle), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp; [`isCellTextEditable?: boolean`](/docs/data#isCellTextEditable), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`isColumnResizable?: boolean`](#isColumnResizable), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`headerStyles?: headerStyles`](/docs/header#headerStyles), <br />
   &nbsp;&nbsp;&nbsp;&nbsp; [`isHeaderTextEditable?: boolean`](/docs/header#isHeaderTextEditable), <br />
@@ -61,7 +61,7 @@ import Tabs from '@theme/Tabs';
         isHeaderTextEditable: false,
       },
     ]}
-    content={[
+    data={[
       ['Planet', 'Number', 'Shape', 'Date Created'],
       ['', 12756, 'Sphere', '01-02-2012'],
       ['', 6792, 'Dinosaur', '14-05-1990'],
@@ -100,7 +100,7 @@ import Tabs from '@theme/Tabs';
     { "headerName": "Shape", "cellStyle": {"backgroundColor": "#f8f8f8"}, "defaultColumnTypeName": "Select", "isHeaderTextEditable": false },
     { "headerName": "Date Created", "cellStyle": {"backgroundColor": "#f1f1f1"}, "defaultColumnTypeName": "Date d-m-y", "isHeaderTextEditable": false }
   ]'
-  content='[
+  data='[
     ["Planet", "Number", "Shape", "Date Created"],
     ["", 12756, "Sphere", "01-02-2012"],
     ["", 6792, "Dinosaur", "14-05-1990"],
@@ -121,7 +121,7 @@ import Tabs from '@theme/Tabs';
 - Type: `boolean`
 - Default: _true_
 
-Determines if columns can be resized via the use of the overlay between header cells. When `width` is defined in [`cellStyle`](/docs/content#cellStyle)
+Determines if columns can be resized via the use of the overlay between header cells. When `width` is defined in [`cellStyle`](/docs/data#cellStyle)
 and [`tableStyle`](/docs/table#tableStyle) properties, and this is set to _true_ - the column `width` will be automatically overwritten to
 meet the set table `width`. However if this is set to _false_, columns will permanently hold the initially set `width`.
 
@@ -130,7 +130,7 @@ meet the set table `width`. However if this is set to _false_, columns will perm
 <TableContainer>
   <ActiveTable
     isColumnResizable={true}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -157,7 +157,7 @@ meet the set table `width`. However if this is set to _false_, columns will perm
 
 <active-table
   isColumnResizable="true"
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -185,7 +185,7 @@ Column width resizer overlay background color style for hover and click events.
 <TableContainer>
   <ActiveTable
     columnResizerColors={{hover: '#87ddff', click: '#369cfd'}}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -212,7 +212,7 @@ Column width resizer overlay background color style for hover and click events.
 
 <active-table
   columnResizerColors='{ "hover": "#87ddff", "click": "#369cfd" }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -258,7 +258,7 @@ appear over it.
       isSortAvailable: false,
       isMoveAvailable: false,
     }}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -297,7 +297,7 @@ appear over it.
     "isSortAvailable": false,
     "isMoveAvailable": false
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -325,7 +325,7 @@ Maximum number of columns allowed (not including the index and add columns colum
 <TableContainer>
   <ActiveTable
     maxColumns={4}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -352,7 +352,7 @@ Maximum number of columns allowed (not including the index and add columns colum
 
 <active-table
   maxColumns="4"
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -375,7 +375,7 @@ Maximum number of columns allowed (not including the index and add columns colum
 
 When [`tableStyle`](/docs/table#tableStyle) is set with a `width` or `maxWidth` property to limit its size, the insertion of new columns will
 cause all existing column widths to automatically be reduced to make space for the new ones (except columns set with `isColumnResizable` as _false_
-inside [`cellStyle`](/docs/content#cellStyle) of the [`customColumnsSettings`](#customColumnsSettings) object). This can however become problematic when
+inside [`cellStyle`](/docs/data#cellStyle) of the [`customColumnsSettings`](#customColumnsSettings) object). This can however become problematic when
 existing column widths eventually become too narrow\* and their widths cannot be reduced any further. <br />
 When `preserveNarrowColumns` is _true_ and column widths are too narrow\*, the table width will be increased to allow new columns to be inserted. <br />
 When `preserveNarrowColumns` is _false_ and column widths are too narow\*, no new columns will be allowed to be inserted.
@@ -386,7 +386,7 @@ _\*Minimal column size is recognised as 33px_
 
 <TableContainer minHeight="189">
   <ActiveTable
-    content={[
+    data={[
       [
         '1',
         '2',
@@ -475,7 +475,7 @@ _\*Minimal column size is recognised as 33px_
 <active-table
   preserveNarrowColumns="true"
   tableStyle='{"width":"300px"}'
-  content='[
+  data='[
     ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"],
     ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"]]'
 ></active-table>
@@ -488,7 +488,7 @@ _\*Minimal column size is recognised as 33px_
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
-  content='[
+  data='[
       ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"],
       ["1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2","1","2"]]'
   tableStyle='{"width":"300px", "boxShadow": "rgb(172 172 172 / 17%) 0px 0.5px 1px 0px", "borderRadius":"2px"}'
@@ -518,7 +518,7 @@ You can set the add new column style via [`frameComponentsStyles`](/docs/table#f
 <TableContainer>
   <ActiveTable
     displayAddNewColumn={true}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -545,7 +545,7 @@ You can set the add new column style via [`frameComponentsStyles`](/docs/table#f
 
 <active-table
   displayAddNewColumn="true"
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -579,7 +579,7 @@ You can set the index column style via [`frameComponentsStyles`](/docs/table#fra
 <TableContainer>
   <ActiveTable
     displayIndexColumn={{wrapIndexCellText: false}}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -606,7 +606,7 @@ You can set the index column style via [`frameComponentsStyles`](/docs/table#fra
 
 <active-table
   displayIndexColumn='{"wrapIndexCellText": false}'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -661,7 +661,7 @@ Shared object property types related to columns:
       isInsertLeftAvailable: false,
       isInsertRightAvailable: true,
     }}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -700,7 +700,7 @@ Shared object property types related to columns:
     "isInsertLeftAvailable": false,
     "isInsertRightAvailable": true
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],

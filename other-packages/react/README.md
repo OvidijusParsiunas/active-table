@@ -32,7 +32,7 @@ npm install active-table-react
 Then simply add this to your markup:
 
 ```
-<ActiveTable content={[["Planet", "Diameter"], ["Earth", 12756]]} />
+<ActiveTable data={[["Planet", "Diameter"], ["Earth", 12756]]} />
 ```
 
 ### :beginner: Examples

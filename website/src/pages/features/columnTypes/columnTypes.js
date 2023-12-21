@@ -40,7 +40,7 @@ function RightPanel() {
             },
             {headerName: 'Verified', defaultColumnTypeName: 'Checkbox'},
           ]}
-          content={[
+          data={[
             ['Name', 'Date of Birth', 'Hobby', 'Verified'],
             ['Peter', '12-08-1992', 'Fishing', 'true'],
             ['John', '14-10-2012', 'Soccer', 'false'],

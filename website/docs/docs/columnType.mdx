@@ -27,7 +27,7 @@ import Tabs from '@theme/Tabs';
 <TableContainer>
   <ActiveTable
     defaultColumnTypeName={'Label'}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -54,7 +54,7 @@ import Tabs from '@theme/Tabs';
 
 <active-table
   defaultColumnTypeName="Label"
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -83,7 +83,7 @@ will be automatically set to _"Text"_.
 <TableContainer>
   <ActiveTable
     availableDefaultColumnTypes={['Number']}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['1', 12756, 5.97, 1, 5514],
       ['2', 6792, 0.642, 2, 3934],
@@ -110,7 +110,7 @@ will be automatically set to _"Text"_.
 
 <active-table
   availableDefaultColumnTypes='["Number"]'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["1", 12756, 5.97, 1, 5514],
     ["2", 6792, 0.642, 2, 3934],
@@ -150,7 +150,7 @@ An array of custom column types which are automatically appended to the [`availa
         },
       },
     ]}
-    content={[
+    data={[
       ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'],
       ['Pass', 'Pass', 'Fail', 'Fail', 'Fail'],
       ['Fail', 'Pass', 'Pass', 'Fail', 'Fail'],
@@ -197,7 +197,7 @@ An array of custom column types which are automatically appended to the [`availa
       "reusableIconName": "select"
     }}]'
   availableDefaultColumnTypes="[]"
-  content='[
+  data='[
     ["Category 1", "Category 2", "Category 3", "Category 4", "Category 5"],
     ["Pass", "Pass", "Fail", "Fail", "Fail"],
     ["Fail", "Pass", "Pass", "Fail", "Fail"],
@@ -255,7 +255,7 @@ more than one of these is provided - only the first one will be used in that ord
 Used to enforce cell text validation. This operates only in the data cells and not the header. <br />
 The `func` property takes a function that will be called when the text is initially placed in the cell and when
 it changes. The function must return _true_ if the text is correct or _false_ if it is incorrect.
-`setTextToDefaultOnFail` will reset the cell text to value defined inside [`defaultText`](/docs/content#defaultText)
+`setTextToDefaultOnFail` will reset the cell text to value defined inside [`defaultText`](/docs/data#defaultText)
 if the function returns _false_. <br />
 `failedStyle` is used to change the cell styling if the function returns _false_.
 
@@ -274,7 +274,7 @@ if the function returns _false_. <br />
       },
     ]}
     defaultColumnTypeName={'Custom type'}
-    content={[
+    data={[
       ['Gravity', 'Diameter', 'Mass', 'Moons', 'Density'],
       [9.8, 12756, 5.97, 1, 5514],
       [3.7, 6792, 0.642, 2, 3934],
@@ -318,7 +318,7 @@ if the function returns _false_. <br />
         "failedStyle":{"color":"red"}
   }}]'
   defaultColumnTypeName="Custom type"
-  content='[
+  data='[
     ["Gravity", "Diameter", "Mass", "Moons", "Density"],
     [9.8, 12756, 5.97, 1, 5514],
     [3.7, 6792, 0.642, 2, 3934],
@@ -365,7 +365,7 @@ returns a styling object for the cell depenging on its contents.
       },
     ]}
     defaultColumnTypeName={'Custom type'}
-    content={[
+    data={[
       ['Gravity', 'Diameter', 'Mass', 'Moons', 'Density'],
       [9.8, 12756, 5.97, 1, 5514],
       [3.7, 6792, 0.642, 2, 3934],
@@ -417,7 +417,7 @@ returns a styling object for the cell depenging on its contents.
       }"
   }}]'
   defaultColumnTypeName="Custom type"
-  content='[
+  data='[
     ["Gravity", "Diameter", "Mass", "Moons", "Density"],
     [9.8, 12756, 5.97, 1, 5514],
     [3.7, 6792, 0.642, 2, 3934],
@@ -459,7 +459,7 @@ are equal, or a positive value (> 0) if cellText1 is greater than cellText2.
       },
     ]}
     defaultColumnTypeName={'Custom type'}
-    content={[
+    data={[
       ['Gravity', 'Diameter', 'Mass', 'Moons', 'Density'],
       [9.8, 12756, 5.97, 1, 5514],
       [3.7, 6792, 0.642, 2, 3934],
@@ -501,7 +501,7 @@ are equal, or a positive value (> 0) if cellText1 is greater than cellText2.
         "descendingFunc": "(cellText1, cellText2) => Number(cellText2) - Number(cellText1)"
   }}]'
   defaultColumnTypeName="Custom type"
-  content='[
+  data='[
     ["Gravity", "Diameter", "Mass", "Moons", "Density"],
     [9.8, 12756, 5.97, 1, 5514],
     [3.7, 6792, 0.642, 2, 3934],
@@ -552,7 +552,7 @@ properties are also used for the header however if they don't fit the `headerCor
       },
     ]}
     defaultColumnTypeName={'Custom type'}
-    content={[
+    data={[
       ['Gravity', 'Diameter', 'Mass', 'Moons', 'Density'],
       [9.8, 12756, 5.97, 1, 5514],
       [3.7, 6792, 0.642, 2, 3934],
@@ -599,7 +599,7 @@ properties are also used for the header however if they don't fit the `headerCor
         "headerCorrections": {"marginTop": "-1px", "marginLeft": "-2px"}
   }}}]'
   defaultColumnTypeName="Custom type"
-  content='[
+  data='[
     ["Gravity", "Diameter", "Mass", "Moons", "Density"],
     [9.8, 12756, 5.97, 1, 5514],
     [3.7, 6792, 0.642, 2, 3934],
@@ -671,7 +671,7 @@ Styling properties for the select and label dropdowns.
       },
     ]}
     defaultColumnTypeName={'Custom select type'}
-    content={[
+    data={[
       ['Animal 1', 'Animal 2', 'Animal 3', 'Animal 4', 'Animal 5'],
       ['Elephant', 'Giraffe', 'Elephant', 'Giraffe', 'Tiger'],
       ['Tiger', 'Elephant', 'Tiger', 'Tiger', 'Giraffe'],
@@ -716,7 +716,7 @@ Styling properties for the select and label dropdowns.
         "canAddMoreOptions": false
     }}]'
   defaultColumnTypeName="Custom select type"
-  content='[
+  data='[
     ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
     ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
     ["Tiger", "Elephant", "Tiger", "Tiger", "Giraffe"],
@@ -752,7 +752,7 @@ Styling properties for the select and label dropdowns.
       },
     ]}
     defaultColumnTypeName={'Custom label type'}
-    content={[
+    data={[
       ['Animal 1', 'Animal 2', 'Animal 3', 'Animal 4', 'Animal 5'],
       ['Elephant', 'Giraffe', 'Elephant', 'Giraffe', 'Tiger'],
       ['Tiger', 'Elephant', 'Tiger', 'Tiger', 'Giraffe'],
@@ -793,7 +793,7 @@ Styling properties for the select and label dropdowns.
         "canAddMoreOptions": true
     }}]'
   defaultColumnTypeName="Custom label type"
-  content='[
+  data='[
     ["Animal 1", "Animal 2", "Animal 3", "Animal 4", "Animal 5"],
     ["Elephant", "Giraffe", "Elephant", "Giraffe", "Tiger"],
     ["Tiger", "Elephant", "Tiger", "Tiger", "Giraffe"],
@@ -844,7 +844,7 @@ for a custom [`Calendar`](#Calendar) type).
       },
     ]}
     defaultColumnTypeName={'Custom d/m/y type'}
-    content={[
+    data={[
       ['Date 1', 'Date 2', 'Date 3', 'Date 4'],
       ['3/2/2052', '4/2/1993', '6/12/2012', '2/2/2012'],
       ['18/12/0001', '2/4/1689', '16/2/2029', '1/02/2004'],
@@ -885,7 +885,7 @@ for a custom [`Calendar`](#Calendar) type).
         "fromYMDFunc": "(YMD) => { return [YMD[2], YMD[1], YMD[0]].join(`/`); }"
     }}]'
   defaultColumnTypeName="Custom d/m/y type"
-  content='[
+  data='[
     ["Date 1", "Date 2", "Date 3", "Date 4"],
     ["3/2/2052", "4/2/1993", "6/12/2012", "2/2/2012"],
     ["18/12/0001", "2/4/1689", "16/2/2029", "1/02/2004"],
@@ -915,7 +915,7 @@ This type automatically comes with a predefined [`customTextProcessing`](#Custom
 uses _""_, _"0"_, _"00"_ and _"false"_ values to represent the checkbox as unchecked and all the other values as checked. You can overwite it
 with your own `changeTextFunc` function that would return a string of _"true"_ when the checkbox should be checked and _"false"_ when it should
 be unchecked. <br />
-The [`onCellUpdate`](/docs/events#onCellUpdate) and [`onContentUpdate`](/docs/events#onContentUpdate) properties will return string _"true"_ if the checkbox
+The [`onCellUpdate`](/docs/events#onCellUpdate) and [`onDataUpdate`](/docs/events#onDataUpdate) properties will return string _"true"_ if the checkbox
 is checked and _"false"_ if unchecked.
 
 #### Example
@@ -929,7 +929,7 @@ is checked and _"false"_ if unchecked.
       },
     ]}
     defaultColumnTypeName={'Custom checkbox type'}
-    content={[
+    data={[
       ['Criteria 1', 'Criteria 2', 'Criteria 3', 'Criteria 4'],
       ['positive', 'true', 'positive', 'false'],
       ['true', 'false', '00', ''],
@@ -966,7 +966,7 @@ is checked and _"false"_ if unchecked.
       "checkbox": true
     }]'
   defaultColumnTypeName="Custom checkbox type"
-  content='[
+  data='[
     ["Criteria 1", "Criteria 2", "Criteria 3", "Criteria 4"],
     ["positive", "true", "positive", "false"],
     ["true", "false", "00", ""],

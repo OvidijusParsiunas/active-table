@@ -39,7 +39,7 @@ import Tabs from '@theme/Tabs';
         backgroundColor: '#d2d2d2',
       },
     }}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -88,7 +88,7 @@ import Tabs from '@theme/Tabs';
       "backgroundColor": "#d2d2d2"
     }
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -116,7 +116,7 @@ Controls if cell text can be edited for header cells.
 <TableContainer>
   <ActiveTable
     isHeaderTextEditable={false}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -143,7 +143,7 @@ Controls if cell text can be edited for header cells.
 
 <active-table
   isHeaderTextEditable="false"
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -165,14 +165,14 @@ Controls if cell text can be edited for header cells.
 - Default: _true_
 
 Allows multiple columns to have the same header text. If set to _false_ and a duplicate is found the header text is defaulted to the value inside
-[`defaultText`](/docs/content#defaultText).
+[`defaultText`](/docs/data#defaultText).
 
 #### Example for false
 
 <TableContainer>
   <ActiveTable
     allowDuplicateHeaders={false}
-    content={[
+    data={[
       ['Planet', 'Planet', 'Moons', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -199,7 +199,7 @@ Allows multiple columns to have the same header text. If set to _false_ and a du
 
 <active-table
   allowDuplicateHeaders="false"
-  content='[
+  data='[
     ["Planet", "Planet", "Moons", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -227,7 +227,7 @@ Displays an icon beside header text that represents the column type.
 <TableContainer>
   <ActiveTable
     displayHeaderIcons={false}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -254,7 +254,7 @@ Displays an icon beside header text that represents the column type.
 
 <active-table
   displayHeaderIcons="false"
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -294,7 +294,7 @@ that can be retrieved using the [cssfilterconverter](https://cssfilterconverter.
         'brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)',
       scale: {x: 1.5, y: 1.5},
     }}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -329,7 +329,7 @@ that can be retrieved using the [cssfilterconverter](https://cssfilterconverter.
     "filterColor": "brightness(0) saturate(100%) invert(16%) sepia(85%) saturate(1892%) hue-rotate(210deg) brightness(88%) contrast(103%)",
     "scale": {"x": 1.5, "y": 1.5}
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -357,7 +357,7 @@ Header row will remain at the top of the table when there is overflow in the tab
 <TableContainer customStyle={{maxHeight: '200px', overflow: 'auto'}}>
   <ActiveTable
     stickyHeader={true}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -385,7 +385,7 @@ Header row will remain at the top of the table when there is overflow in the tab
 <div style="maxHeight: 200px; overflow: auto">
   <active-table
     stickyHeader="true"
-    content='[
+    data='[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -419,7 +419,7 @@ Starts the index column count at header row and if [`pagination`](/docs/paginati
 <TableContainer>
   <ActiveTable
     dataStartsAtHeader={'true'}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -446,7 +446,7 @@ Starts the index column count at header row and if [`pagination`](/docs/paginati
 
 <active-table
   dataStartsAtHeader="true"
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],

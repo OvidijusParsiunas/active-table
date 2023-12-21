@@ -62,7 +62,7 @@ function RightPanel() {
             {headerName: 'Sale date', defaultColumnTypeName: 'Date d-m-y'},
             {headerName: 'Price', defaultColumnTypeName: 'Currency'},
           ]}
-          content={[
+          data={[
             ['Name', 'Category', 'Sale date', 'Price'],
             ['Car', 'Vehicles', '20/07/2012', '$6800.00'],
             ['Laptop', 'Electronics', '08/11/2014', '$700'],

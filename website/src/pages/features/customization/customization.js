@@ -51,7 +51,7 @@ function BottomPanel() {
           headerStyles={{default: {backgroundColor: '#08183a'}, hoverColors: {backgroundColor: '#0a1e47'}}}
           displayAddNewRow={false}
           displayAddNewColumn={false}
-          content={[
+          data={[
             ['Planet', 'Diameter', 'Mass', 'Moons'],
             ['Earth', 12756, 5.97, 1],
             ['Mars', 6792, 0.642, 2],
@@ -121,7 +121,7 @@ function BottomPanel() {
           columnResizerColors={{click: '#727272'}}
           displayAddNewRow={false}
           displayAddNewColumn={false}
-          content={[
+          data={[
             ['Planet', 'Diameter', 'Mass', 'Moons'],
             ['Earth', 12756, 5.97, 1],
             ['Mars', 6792, 0.642, 2],
@@ -164,7 +164,7 @@ function TopPanel() {
           stripedRows={{odd: {backgroundColor: ''}, even: {backgroundColor: '#edf7ff'}}}
           columnResizerColors={{hover: '#66b3ff', click: '#4aa5ff'}}
           displayAddNewColumn={false}
-          content={[
+          data={[
             ['Planet', 'Diameter', 'Mass', 'Moons'],
             ['Earth', 12756, 5.97, 1],
             ['Mars', 6792, 0.642, 2],
@@ -186,7 +186,7 @@ function TopPanel() {
           }}
           stripedRows={{odd: {backgroundColor: ''}, even: {backgroundColor: '#ebebeb7a'}}}
           columnResizerColors={{click: '#727272'}}
-          content={[
+          data={[
             ['Planet', 'Diameter', 'Mass', 'Moons'],
             ['Earth', 12756, 5.97, 1],
             ['Mars', 6792, 0.642, 2],

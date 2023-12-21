@@ -19,7 +19,7 @@ const Panel = React.forwardRef((_, ref) => (
   <div className="responsive-design-panel" ref={ref}>
     <ActiveTableBrowser
       tableStyle={{borderRadius: '5px', width: '100%'}}
-      content={[
+      data={[
         ['Planet', 'Diameter', 'Mass', 'Moons'],
         ['Earth', 12756, 5.97, 1],
         ['Mars', 6792, 0.642, 2],

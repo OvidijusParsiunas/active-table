@@ -10,7 +10,7 @@ Method properties that can be called directly on the Active Table element.
 Make sure the Active Table component has been fully rendered on the DOM before using these.
 :::
 
-### `getContent` {#getContent}
+### `getData` {#getData}
 
 - Type: `() => (string|number)[][]`
 
@@ -29,9 +29,9 @@ import Tabs from '@theme/Tabs';
 <BrowserOnly>{() => require('@site/src/components/nav/autoNavToggle').readdAutoNavShadowToggle()}</BrowserOnly>
 <BrowserOnly>{() => require('@site/src/components/externalModules/externalModules').importXLSX()}</BrowserOnly>
 
-<TableContainerMethods propertyName={"getContent"}>
+<TableContainerMethods propertyName={"getData"}>
   <ActiveTable
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -46,8 +46,8 @@ import Tabs from '@theme/Tabs';
 <Tabs>
 <TabItem value="js" label="Code">
 
-```html
-tableElementRef.getContent();
+```javascript
+tableElementRef.getData();
 ```
 
 </TabItem>
@@ -66,7 +66,7 @@ in the next session on the initial load.
 
 <TableContainerMethods propertyName={"getColumnsDetails"}>
   <ActiveTable
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -81,7 +81,7 @@ in the next session on the initial load.
 <Tabs>
 <TabItem value="js" label="Code">
 
-```html
+```javascript
 tableElementRef.getColumnsDetails();
 ```
 
@@ -109,7 +109,7 @@ Update cell text programmatically. Both `rowIndex` and `columnIndex` start at _0
 
 <TableContainerProgrammaticUpdates>
   <ActiveTable
-    content={[
+    data={[
       ['Name', 'CPU', 'Memory', 'Disk', 'Network'],
       ['Chrome', '4.5%', '1400MB', '0.2MB/s', '1.2Mbps'],
       ['Firefox', '2.5%', '800MB', '0.1MB/s', '0.5Mbps'],
@@ -124,8 +124,8 @@ Update cell text programmatically. Both `rowIndex` and `columnIndex` start at _0
 <Tabs>
 <TabItem value="js" label="Sample code">
 
-```html
-tableElementRef.updateCell({newText: "sample text", rowIndex: 1, columnIndex: 1});
+```javascript
+tableElementRef.updateCell({newText: 'sample text', rowIndex: 1, columnIndex: 1});
 ```
 
 </TabItem>
@@ -136,7 +136,7 @@ tableElementRef.updateCell({newText: "sample text", rowIndex: 1, columnIndex: 1}
 
 <active-table
   id="active-table"
-  content='[
+  data='[
     ["Name", "CPU", "Memory", "Disk", "Network"],
     ["Chrome", "4.5%", "1400MB", "0.2MB/s", "1.2Mbps"],
     ["Firefox", "2.5%", "800MB", "0.1MB/s", "0.5Mbps"],
@@ -193,13 +193,13 @@ Programmatically insert/remove rows/columns. <br />
 `structure` defines whether the structure type is for a _"row"_ or a _"column"_. <br />
 `isInsert` sets the update behaviour; _true_ will create a new structure, _false_ will remove an existing one. <br />
 `index` is the row/column index. When adding a new structure, a value of _-1_ will append it to the end of the table. <br />
-`data` defines the new content. If not defined and the update for an insert, this will be populated with [`defaultText`](/docs/content#defaultText).
+`data` defines the new cells' content. If not defined and the update is for an insert, this will be populated with [`defaultText`](/docs/data#defaultText).
 
 #### Example
 
 <TableContainerMethods propertyName={"updateStructure"} displayResults={false} argument={{structure: 'row', isInsert: true, index: -1, data: ['New Planet', '12345', '500', '10', '357']}}>
   <ActiveTable
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -228,15 +228,15 @@ tableElementRef.updateStructure({
 
 <LineBreak></LineBreak>
 
-### `updateContent` {#updateContent}
+### `updateData` {#updateData}
 
-- Type: `(content: (number | string)[][]) => void`
+- Type: `(data: (number | string)[][]) => void`
 
-Programmatically reset table data using the new data iside the `content` argument. <br />
+Programmatically reset table data using the new data iside the `data` argument. <br />
 
 #### Example
 
-<TableContainerMethods propertyName={"updateContent"} displayResults={false} argument={[
+<TableContainerMethods propertyName={"updateData"} displayResults={false} argument={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ['Mercury', 4879, 0.33, 0, 5429],
       ['Venus', 12104, 4.87, 0, 5243],
@@ -244,7 +244,7 @@ Programmatically reset table data using the new data iside the `content` argumen
       ['Pluto', 2376, 0.013, 5, 1850],
       ['Moon', 3475, 0.073, 0, 3340]]}>
   <ActiveTable
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -260,7 +260,7 @@ Programmatically reset table data using the new data iside the `content` argumen
 <TabItem value="js" label="Code">
 
 ```javascript
-tableElementRef.updateContent([
+tableElementRef.updateData([
   ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
   ['Mercury', 4879, 0.33, 0, 5429],
   ['Venus', 12104, 4.87, 0, 5243],
@@ -288,7 +288,7 @@ through user actions, such as a click of a button.
 
 <TableContainerMethods propertyName={"importFile"} displayResults={false}>
   <ActiveTable
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -303,7 +303,7 @@ through user actions, such as a click of a button.
 <Tabs>
 <TabItem value="js" label="Code">
 
-```html
+```javascript
 tableElementRef.importFile();
 ```
 
@@ -326,14 +326,14 @@ into your project. Please see examples [here](../../examples/files).
 
 - Type: {`fileName?: string`, [`format?: FileFormat`](/docs/files#FileFormat)}
 
-Exports existing table content into a file. You can optionally pass a [`ExportSingleFile`](#ExportSingleFile) object
+Exports existing table data into a file. You can optionally pass a [`ExportSingleFile`](#ExportSingleFile) object
 to define the exported file's name and its format.
 
 #### Example
 
 <TableContainerMethods propertyName={"exportFile"} displayResults={false}>
   <ActiveTable
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -348,7 +348,7 @@ to define the exported file's name and its format.
 <Tabs>
 <TabItem value="js" label="Code">
 
-```html
+```javascript
 tableElementRef.exportFile();
 ```
 

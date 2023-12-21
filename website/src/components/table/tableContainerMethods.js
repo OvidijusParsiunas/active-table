@@ -13,12 +13,12 @@ function ResultText(props) {
 
 function click(table, resultText, setResultText, propertyName, displayResults, argument) {
   const activeTableReference = extractChildTableElement(table);
-  const content = activeTableReference[propertyName](argument);
+  const data = activeTableReference[propertyName](argument);
   if (displayResults ?? true) {
     let newResultTextArr = [...resultText];
     if (newResultTextArr.length === 1 && newResultTextArr[0] === '') newResultTextArr = [];
     if (newResultTextArr.length > 3) newResultTextArr.pop();
-    newResultTextArr.unshift(JSON.parse(JSON.stringify(content)));
+    newResultTextArr.unshift(JSON.parse(JSON.stringify(data)));
     setResultText(newResultTextArr);
   }
 }

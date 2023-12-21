@@ -34,7 +34,7 @@ import Tabs from '@theme/Tabs';
         availableDefaultColumnTypes: ['Date d-m-y', 'Date m-d-y'],
       },
     ]}
-    content={[
+    data={[
       ['Planet', 'Age', 'Shape', 'Date Created'],
       ['Earth', 12756, 'Sphere', '01-02-2012'],
       ['Mars', 6792, 'Dinosaur', '14-05-1990'],
@@ -60,7 +60,7 @@ import Tabs from '@theme/Tabs';
     {"headerName": "Date Created", "defaultColumnTypeName": "Date d-m-y", "availableDefaultColumnTypes": ["Date d-m-y", "Date m-d-y"]}
   ]'
   tableStyle='{"borderRadius":"2px"}'
-  content='[
+  data='[
     ["Planet", "Age", "Shape", "Date Created"],
     ["Earth", 12756, "Sphere", "01-02-2012"],
     ["Mars", 6792, "Dinosaur", "14-05-1990"],
@@ -88,7 +88,7 @@ Data in this table cannot be changed.
     rowDropdown={{displaySettings: {isAvailable: false}}}
     frameComponentsStyles={{style: {hoverColors: {backgroundColor: 'white'}}}}
     headerStyles={{hoverColors: {backgroundColor: 'white'}}}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -115,7 +115,7 @@ Data in this table cannot be changed.
   frameComponentsStyles='{"style": {"hoverColors": {"backgroundColor": "white"}}}'
   headerStyles='{"hoverColors": {"backgroundColor": "white"}}'
   tableStyle='{"borderRadius":"2px"}'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons","Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -150,7 +150,7 @@ Table configuration for a dark design.
       },
       inheritHeaderColors: true,
     }}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -180,7 +180,7 @@ Table configuration for a dark design.
     "style": {"hoverColors": {"backgroundColor": "#5f5f5f"}},
     "inheritHeaderColors": true
   }'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -254,7 +254,7 @@ to set a stock related look. Whilst all of the columns are set to not be editabl
     }}
     rowDropdown={{displaySettings: {isAvailable: false}}}
     displayHeaderIcons={false}
-    content={[
+    data={[
       ['Stock', 'Current', 'Last', 'Change', 'Yield'],
       ['JPA', '$88.22', '$85.73', '-0.1%', '1.4%'],
       ['REFR', '$18.52', '$88', '1.5%', '0.4%'],
@@ -323,7 +323,7 @@ to set a stock related look. Whilst all of the columns are set to not be editabl
   displayAddNewRow="false"
   displayHeaderIcons="false"
   tableStyle='{"borderRadius":"2px"}'
-  content='[
+  data='[
     ["Stock", "Current", "Last", "Change", "Yield"],
     ["JPA", "$88.22", "$85.73", "-0.1%", "1.4%"],
     ["REFR", "$18.52", "$88", "1.5%", "0.4%"],

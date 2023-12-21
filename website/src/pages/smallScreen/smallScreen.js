@@ -47,7 +47,7 @@ export default function SmallScreen() {
           ]}
           displayIndexColumn={false}
           displayAddNewColumn={false}
-          content={[
+          data={[
             ['Name', 'Date of Birth', 'Hobby', 'Verified'],
             ['Peter', '12-08-1992', 'Fishing', 'true'],
             ['John', '14-10-2012', 'Soccer', 'false'],

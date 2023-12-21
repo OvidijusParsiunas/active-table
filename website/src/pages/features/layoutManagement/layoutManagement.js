@@ -16,7 +16,7 @@ function RightPanel() {
       <ActiveTableBrowser
         tableStyle={{borderRadius: '5px', width: '100%'}}
         pagination={{rowsPerPage: 4}}
-        content={[
+        data={[
           ['Planet', 'Diameter', 'Mass', 'Moons'],
           ['Earth', 12756, 5.97, 1],
           ['Mars', 6792, 0.642, 2],
@@ -55,7 +55,7 @@ function LeftPanel() {
         ::-webkit-scrollbar-track {
           background-color: #f2f2f2;
         }"
-        content={[
+        data={[
           ['Planet', 'Diameter', 'Mass', 'Moons'],
           ['Earth', 12756, 5.97, 1],
           ['Mars', 6792, 0.642, 2],

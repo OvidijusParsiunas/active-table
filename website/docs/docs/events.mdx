@@ -21,7 +21,7 @@ Take care not to re-render the component when using event information to update 
   &nbsp;&nbsp;&nbsp;&nbsp;`updateType: "add"|"update"|"remove"` <br />
   }
 
-Triggered when any content within the table has changed. Both `rowIndex` and `columnIndex` begin at _0_
+Triggered when any data within the table has changed. Both `rowIndex` and `columnIndex` begin at _0_
 where it is the header row for `rowIndex` and the left-most column for `columnIndex`.
 
 #### Example
@@ -37,7 +37,7 @@ import Tabs from '@theme/Tabs';
 
 <TableContainerEvents propertyName={"onCellUpdate"}>
   <ActiveTable
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -52,17 +52,19 @@ import Tabs from '@theme/Tabs';
 <Tabs>
 <TabItem value="js" label="Function">
 
-```html
+```javascript
 tableElementRef.onCellUpdate = (cellUpdate) => { console.log(cellUpdate); });
 ```
 
 </TabItem>
 <TabItem value="py" label="Event">
 
-```html
-<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+```javascript
+// This example is for Vanilla JS and should be tailored to your framework (see Examples)
 
-tableElementRef.addEventListener('cell-update', (cellUpdate) => { console.log(cellUpdate.detail); });
+tableElementRef.addEventListener('cell-update', (cellUpdate) => {
+  console.log(cellUpdate.detail);
+});
 ```
 
 </TabItem>
@@ -70,19 +72,19 @@ tableElementRef.addEventListener('cell-update', (cellUpdate) => { console.log(ce
 
 <LineBreak></LineBreak>
 
-### `onContentUpdate` {#onContentUpdate}
+### `onDataUpdate` {#onDataUpdate}
 
-- Function: (`contentUpdate: Body`) => `void`
-- Event: `content-update`
+- Function: (`dataUpdate: Body`) => `void`
+- Event: `data-update`
 - Body: `(string|number)[][]`
 
-Similarly to [`onCellUpdate`](#onCellUpdate) this is triggered when any cell is updated - however this property returns the full table contents 2D array instead.
+Similarly to [`onCellUpdate`](#onCellUpdate) this is triggered when any cell is updated - however this property returns the full table data in a 2D array instead.
 
 #### Example
 
-<TableContainerEvents propertyName={"onContentUpdate"}>
+<TableContainerEvents propertyName={"onDataUpdate"}>
   <ActiveTable
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -97,17 +99,21 @@ Similarly to [`onCellUpdate`](#onCellUpdate) this is triggered when any cell is 
 <Tabs>
 <TabItem value="js" label="Function">
 
-```html
-tableElementRef.onContentUpdate = (contentUpdate) => { console.log(contentUpdate); };
+```javascript
+tableElementRef.onDataUpdate = (dataUpdate) => {
+  console.log(dataUpdate);
+};
 ```
 
 </TabItem>
 <TabItem value="py" label="Event">
 
-```html
-<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+```javascript
+// This example is for Vanilla JS and should be tailored to your framework (see Examples)
 
-tableElementRef.addEventListener('content-update', (contentUpdate) => { console.log(contentUpdate.detail); });
+tableElementRef.addEventListener('data-update', (dataUpdate) => {
+  console.log(dataUpdate.detail);
+});
 ```
 
 </TabItem>
@@ -128,7 +134,7 @@ in the next session on the initial load.
 
 <TableContainerEvents propertyName={"onColumnsUpdate"}>
   <ActiveTable
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -143,17 +149,21 @@ in the next session on the initial load.
 <Tabs>
 <TabItem value="js" label="Function">
 
-```html
-tableElementRef.onColumnsUpdate = (columnsUpdate) => { console.log(columnsUpdate); };
+```javascript
+tableElementRef.onColumnsUpdate = (columnsUpdate) => {
+  console.log(columnsUpdate);
+};
 ```
 
 </TabItem>
 <TabItem value="py" label="Event">
 
-```html
-<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+```javascript
+// This example is for Vanilla JS and should be tailored to your framework (see Examples)
 
-tableElementRef.addEventListener('columns-update', (columnsUpdate) => { console.log(columnsUpdate.detail); });
+tableElementRef.addEventListener('columns-update', (columnsUpdate) => {
+  console.log(columnsUpdate.detail);
+});
 ```
 
 </TabItem>
@@ -172,7 +182,7 @@ Triggered when the component has finished rendering on the browser's window.
 
 <TableContainerEvents propertyName={"onRender"}>
   <ActiveTable
-    content={[
+    data={[
       ["Planet", "Diameter", "Mass", "Moons", "Density"],
       ["Earth", 12756, 5.97, 1, 5514],
       ["Mars", 6792, 0.642, 2, 3934],
@@ -187,17 +197,21 @@ Triggered when the component has finished rendering on the browser's window.
 <Tabs>
 <TabItem value="js" label="Function">
 
-```html
-tableElementRef.onRender = () => { console.log('Finished rendering'); };
+```javascript
+tableElementRef.onRender = () => {
+  console.log('Finished rendering');
+};
 ```
 
 </TabItem>
 <TabItem value="py" label="Event">
 
-```html
-<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+```javascript
+// This example is for Vanilla JS and should be tailored to your framework (see Examples)
 
-tableElementRef.addEventListener('render', () => { console.log('Finished rendering'); });
+tableElementRef.addEventListener('render', () => {
+  console.log('Finished rendering');
+});
 ```
 
 </TabItem>

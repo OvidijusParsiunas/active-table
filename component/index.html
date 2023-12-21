@@ -15,13 +15,13 @@
     <!-- Attributes can be set as strings either directly on the element (headerStyles) or via a `setAttribute` method on its reference (tableStyle).
       When passing JSON objects make sure that they are first correctly stringified (use the following tool https://jsonlint.com/), functions assigned
       to properties must not have external references and all regex values are properly escaped.
-      You can also pass values into the component via properties by using the element reference (content).
+      You can also pass values into the component via properties by using the element reference (data).
       -->
     <active-table id="active-table-element" headerStyles='{"default":{"backgroundColor": "#d6d6d630"}}'></active-table>
     <script>
       const element = document.getElementById('active-table-element');
       // Setting value via a property (easiest way)
-      element.content = [
+      element.data = [
         ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
         ['Earth', 12756, 5.97, 1, 5514],
         ['Mars', 6792, 0.642, 2, 3934],

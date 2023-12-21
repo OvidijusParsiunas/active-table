@@ -2,14 +2,13 @@
 sidebar_position: 3
 ---
 
-# Content
+# Data
 
-Properties related to content cells displayed in the table.
+Properties related to data cells displayed in the table.
 
-### `content` {#content}
+### `data` {#data}
 
 - Type: `(string|number)[][]`
-<!-- TableContent -->
 
 Header and data text to be displayed in the table. First array represents the header row, following arrays represent data rows.
 
@@ -26,7 +25,7 @@ import Tabs from '@theme/Tabs';
 
 <TableContainer>
   <ActiveTable
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -43,7 +42,7 @@ import Tabs from '@theme/Tabs';
 
 ```html
 <active-table
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -60,7 +59,7 @@ import Tabs from '@theme/Tabs';
 <!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
 
 <active-table
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -88,7 +87,7 @@ Text that is displayed when a cell is empty or its type validation has failed. <
 <TableContainer>
   <ActiveTable
     defaultText={'-'}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['', '', 5.97, 1, 5514],
       ['', '', 0.642, 2, 3934],
@@ -115,7 +114,7 @@ Text that is displayed when a cell is empty or its type validation has failed. <
 
 <active-table
   defaultText="-"
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["", "", 5.97, 1, 5514],
     ["", "", 0.642, 2, 3934],
@@ -144,7 +143,7 @@ Removes default text when a cell containg one is focused.
   <ActiveTable
     defaultText={'Click'}
     isDefaultTextRemovable={'true'}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['', '', 5.97, 1, 5514],
       ['', '', 0.642, 2, 3934],
@@ -172,7 +171,7 @@ Removes default text when a cell containg one is focused.
 <active-table
   defaultText="Click"
   isDefaultTextRemovable="true"
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["", "", 5.97, 1, 5514],
     ["", "", 0.642, 2, 3934],
@@ -204,7 +203,7 @@ will be overriden to reach the set table `width`, hence to prevent this make sur
 <TableContainer>
   <ActiveTable
     cellStyle={{borderBottom: '1px solid black', borderRight: '1px solid black', backgroundColor: '#fafafa'}}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -233,7 +232,7 @@ will be overriden to reach the set table `width`, hence to prevent this make sur
 
 <active-table
   cellStyle='{"borderBottom": "1px solid black", "borderRight": "1px solid black", "backgroundColor": "#fafafa"}'
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -259,7 +258,7 @@ new row) can be set via the [`frameComponentsStyles`](/docs/table#frameComponent
 - Type: {`text: string`, [`styles: StatefulCSS`](/docs/sharedTypes#StatefulCSS)}
 - Default: _{text: "+"}_
 
-Configuration for the default cell when there is no content inside the table. <br />
+Configuration for the default cell when there is no data inside the table. <br />
 `text` defines the content inside the cell. <br />
 `styles` is used to define the cell's appearance for various mouse states. This is particularly useful for controlling the cell _width_ if you
 have set a _width_ property inside [`tableStyle`](/docs/table#tableStyle) as the root cell will by default be stretched to match it (all documentation examples actually use
@@ -313,7 +312,7 @@ Controls if cell text can be edited for both data and header cells. This propert
 <TableContainer>
   <ActiveTable
     isCellTextEditable={false}
-    content={[
+    data={[
       ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
       ['Earth', 12756, 5.97, 1, 5514],
       ['Mars', 6792, 0.642, 2, 3934],
@@ -340,7 +339,7 @@ Controls if cell text can be edited for both data and header cells. This propert
 
 <active-table
   isCellTextEditable="false"
-  content='[
+  data='[
     ["Planet", "Diameter", "Mass", "Moons", "Density"],
     ["Earth", 12756, 5.97, 1, 5514],
     ["Mars", 6792, 0.642, 2, 3934],
@@ -368,7 +367,7 @@ Checks table text for spelling mistakes (based on the browser's language setting
 <TableContainer>
   <ActiveTable
     spellCheck={true}
-    content={[
+    data={[
       ['Planetasdasd', 'Diamasdasdeter', 'Masssdfsdf', 'Mooffns', 'Denssdsdfdsfity'],
       ['asdasdasd', 12756, 5.97, 1, 5514],
       ['Msadasdars', 6792, 0.642, 2, 3934],
@@ -395,7 +394,7 @@ Checks table text for spelling mistakes (based on the browser's language setting
 
 <active-table
   spellCheck="true"
-  content='[
+  data='[
     ["Planetasdasd", "Diamasdasdeter", "Masssdfsdf", "Mooffns", "Denssdsdfdsfity"],
     ["asdasdasd", 12756, 5.97, 1, 5514],
     ["Msadasdars", 6792, 0.642, 2, 3934],
