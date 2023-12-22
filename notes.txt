@@ -143,12 +143,12 @@ When there are no cells in the table, we display a root cell that the user can u
 The original idea was to have the column add cell act as the root cell when it is displayed or add new row cell to act when
 the column is not displayed etc. However this idea was dismissed due to the code complexity this required as we needed code to
 set and unset both of the cells' styles and have them work with the toggle logic for the max numbers. The second idea was to
-use a standalone cell button that would independently appear when the table had no content and would hide when content was
+use a standalone cell button that would independently appear when the table had no data and would hide when data was
 added again. This originally worked, but the logic behind displaying it and keeping the other cells hidden grew in complexity.
 I then realised that this cell had an onclick event that would add a new row (a new column after no cells cannot be added)
 which was pretty much just like the add new row button, so why really have another standalone cell if we can just reuse
 the add new row button exclusively. Hence this is why the add row button is always present within the table body and all we do
-is convert its style to a root cell when there is no content and set it back to normal or hide it when the content is readded.
+is convert its style to a root cell when there is no data and set it back to normal or hide it when the data is readded.
 
 REF-19
 When the index column is too wide (and narrow columns are not preserved) - the table body will actually be increased over the size
@@ -213,7 +213,7 @@ mark the last visible row with an id. This is done to not display bottom border 
 and to inherit bottom table border radius.
 
 REF-26
-To insert a header row when there is an existing one - we create a new row below it and move the content of the header row to it.
+To insert a header row when there is an existing one - we create a new row below it and move the data of the header row to it.
 The reason for this approach is not to have to create a new row with <td> elements and sizers.
 
 REF-27
