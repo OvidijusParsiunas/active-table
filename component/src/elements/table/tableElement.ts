@@ -100,11 +100,11 @@ export class TableElement {
 
   private static createTableElement(at: ActiveTable) {
     const tableElement = document.createElement('table');
-    tableElement.style.fontFamily = 'Inter, sans-serif, Avenir, Helvetica, Arial'; // REF-41
     tableElement.classList.add('table-controlled-width');
     // no dimension copy is used because dimensions will be still be reused when table is re-rendered
     const noDimensionsStyleCopy = StringDimensionUtils.removeAllDimensions(JSON.parse(JSON.stringify(at.tableStyle)));
     Object.assign(tableElement.style, noDimensionsStyleCopy);
+    tableElement.style.fontFamily ||= 'Inter, sans-serif, Avenir, Helvetica, Arial'; // REF-41
     tableElement.onmousedown = TableEvents.onMouseDown.bind(at);
     tableElement.onmouseup = TableEvents.onMouseUp.bind(at);
     return tableElement;
