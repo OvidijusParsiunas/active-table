@@ -27,7 +27,7 @@ export class UpdateCellsForRows {
       }
       if (at.rowDropdown.displaySettings.openMethod?.overlayClick) {
         const overlay = RowDropdownCellOverlayEvents.setOverlayEvents(at, rowIndex, leftMostCell);
-        DragRow.applyEventsToElement(at, overlay, leftMostCell);
+        DragRow.applyEventsToElement(at, overlay, leftMostCell); // dragging also for overlay
       }
     }
   }
