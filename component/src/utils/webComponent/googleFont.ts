@@ -1,5 +1,5 @@
 export class GoogleFont {
-  private static FONT_URL = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap';
+  private static readonly FONT_URL = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap';
 
   public static appendStyleSheetToHead() {
     const head = document.getElementsByTagName('head')[0];

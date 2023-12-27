@@ -9,7 +9,7 @@ type DisplayFunc = (at: ActiveTable, dropdown: OuterContainerDropdownI) => void;
 
 export class OuterDropdownButtonEvents {
   // this is used to prevent the dropdown from opening up again after clicking the button to close
-  private static DO_NOT_DISPLAY_DROPDOWN_CLASS = 'do-not-display-class';
+  private static readonly DO_NOT_DISPLAY_DROPDOWN_CLASS = 'do-not-display-class';
 
   private static mouseClickButton(at: ActiveTable, dropdown: OuterContainerDropdownI, displayFunc: DisplayFunc) {
     const {element} = dropdown;

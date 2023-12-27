@@ -8,7 +8,8 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2020,
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "component/tsconfig.json"
   },
   "plugins": ["@typescript-eslint"],
   "env": {
@@ -23,6 +24,7 @@
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": ["warn", {"argsIgnorePattern": "^_"}],
+    "@typescript-eslint/prefer-readonly": "error",
     "max-len": ["error", {"code": 123}]
   },
   "overrides": [

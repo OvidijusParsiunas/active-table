@@ -7,7 +7,7 @@ declare global {
 }
 
 export class SheetJSInternalUtils {
-  private static MODULE_NOT_FOUND_ERROR = 'xlsx module was not found';
+  private static readonly MODULE_NOT_FOUND_ERROR = 'xlsx module was not found';
 
   // REF-17
   public static async execFuncWithExtractorModule(func: (xlsxModule: typeof xlsx) => void) {

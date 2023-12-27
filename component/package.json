@@ -11,7 +11,7 @@
     "build:bundle": "npm run clean && tsc --project tsconfig.element.json && npm run analyze && rollup -c",
     "clean": "rimraf dist test",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
-    "lint:eslint": "eslint 'src/**/*.ts'",
+    "lint:eslint": "eslint --parser-options '{'project':'./tsconfig.json'}' 'src/**/*.ts'",
     "lint:lit-analyzer": "lit-analyzer",
     "format": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
     "analyze": "cem analyze --litelement --globs \"src/**/*.ts\"",

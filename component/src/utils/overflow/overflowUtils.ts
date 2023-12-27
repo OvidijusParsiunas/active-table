@@ -7,7 +7,7 @@ import {ActiveTable} from '../../activeTable';
 import {Browser} from '../browser/browser';
 
 export class OverflowUtils {
-  private static ID = 'overflow-container';
+  private static readonly ID = 'overflow-container';
   public static readonly SCROLLBAR_WIDTH = 15;
 
   public static isOverflowElement(element?: HTMLElement) {
