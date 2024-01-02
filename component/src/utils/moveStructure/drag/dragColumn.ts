@@ -86,7 +86,7 @@ export class DragColumn extends Drag {
   }
 
   public static applyEventsToElement(at: ActiveTable, draggableElement: HTMLElement, cellElement: HTMLElement) {
-    if (at.dragColumn === false) return;
+    if (at.dragColumns === false) return;
     draggableElement.onmousedown = () => {
       DragColumn.IS_MOUSE_DOWN = true;
     };
@@ -120,7 +120,7 @@ export class DragColumn extends Drag {
   }
 
   public static windowDrag(at: ActiveTable, dragCell: HTMLElement, event: MouseEvent) {
-    if (at.dragColumn === false) return;
+    if (at.dragColumns === false) return;
     const minimumLeft = Math.max(DragColumn.MIN_LEFT, DragColumn.ACTIVE_CELL_LEFT_PX + event.movementX);
     const newDimension = Math.min(minimumLeft, DragColumn.MAX_LEFT);
     DragColumn.ACTIVE_CELL_LEFT_PX = newDimension;
@@ -134,7 +134,7 @@ export class DragColumn extends Drag {
 
   public static windowMouseUp(at: ActiveTable) {
     DragColumn.IS_MOUSE_DOWN = false;
-    if (at.dragColumn === false || !at._focusedElements.colDragEl) return;
+    if (at.dragColumns === false || !at._focusedElements.colDragEl) return;
     DragColumn.setHeaderElementsToDefault(at._focusedElements.colDragEl);
     delete at._focusedElements.colDragEl;
     DragColumn.INITIALISING_DRAG_PX = 0;

@@ -201,6 +201,6 @@ export class DragRow extends Drag {
 
   // row dragging is cumbersome when filter/pagination enabled as some rows are hidden
   private static isDisabled(at: ActiveTable) {
-    return at.dragRow === false || at.filter || at.pagination;
+    return at.dragRows === false || at.filter || at.pagination;
   }
 }
