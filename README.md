@@ -21,10 +21,10 @@
 
 ### :tada: Latest update
 
-Table [columns](https://activetable.io/docs/column#dragColumns) and [rows](https://activetable.io/docs/column#dragRows) can now be dragged using your mouse:
+Table [columns](https://activetable.io/docs/column#dragColumns) and [rows](https://activetable.io/docs/row#dragRows) can now be dragged using your mouse:
 
 <p align="center">
-    <img width="700" src="https://github.com/OvidijusParsiunas/active-table/assets/18709577/22095883-8beb-4be6-a75a-61beab3d6ea7" alt="Drag Feature">
+    <img width="650" src="https://github.com/OvidijusParsiunas/active-table/assets/18709577/22095883-8beb-4be6-a75a-61beab3d6ea7" alt="Drag Feature">
 </p>
 
 ### :computer: Getting started
