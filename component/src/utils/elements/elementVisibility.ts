@@ -1,5 +1,6 @@
 import {TableBorderDimensions} from '../../types/tableBorderDimensions';
 import {OverflowUtils} from '../overflow/overflowUtils';
+import {Browser} from '../browser/browser';
 import {SIDE} from '../../types/side';
 
 interface FullyVisible {
@@ -19,28 +20,25 @@ export class ElementVisibility {
       isInsideTable = true): VisibilityDetails {
     const {topWidth: topBorderWidth, leftWidth: leftBorderWidth} = isInsideTable
       ? borderDimensions : {topWidth: 0, leftWidth: 0};
-    let top = element.offsetTop;
-    let left = element.offsetLeft;
+    const rect = element.getBoundingClientRect();
+    const top = (Browser.IS_CHROMIUM ? rect.top - topBorderWidth : rect.top) + window.scrollY;
+    const left = (Browser.IS_CHROMIUM ? rect.left - leftBorderWidth : rect.left) + window.scrollX;
     const width = element.offsetWidth;
     const height = element.offsetHeight;
-
-    while (element.offsetParent) {
-      element = element.offsetParent as HTMLElement;
-      top += element.offsetTop;
-      left += element.offsetLeft;
-    }
+    const body = document.body;
+    
     const blockingSides: Set<SIDE> = new Set();
     if (top < window.pageYOffset) {
       blockingSides.add(SIDE.TOP);
     }
-    const xScrollDelta = element.clientWidth < element.scrollWidth ? OverflowUtils.SCROLLBAR_WIDTH : 0;
+    const xScrollDelta = body.clientWidth < body.scrollWidth ? OverflowUtils.SCROLLBAR_WIDTH : 0;
     if (top + height + topBorderWidth > window.pageYOffset + window.innerHeight - xScrollDelta) {
       blockingSides.add(SIDE.BOTTOM);
     }
     if (left < window.pageXOffset) {
       blockingSides.add(SIDE.LEFT);
     }
-    const yScrollDelta = element.clientHeight < element.scrollHeight ? OverflowUtils.SCROLLBAR_WIDTH : 0;
+    const yScrollDelta = body.clientHeight < body.scrollHeight ? OverflowUtils.SCROLLBAR_WIDTH : 0;
     if (left + width + leftBorderWidth > window.pageXOffset + window.innerWidth - yScrollDelta) {
       blockingSides.add(SIDE.RIGHT);
     }

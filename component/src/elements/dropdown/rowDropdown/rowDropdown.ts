@@ -44,8 +44,9 @@ export class RowDropdown {
   // prettier-ignore
   private static correctPositionWhenBottomOverflow(tableDimensions: TableDimensions, dropdown: HTMLElement,
       initialTopValue: PX) {
-    const tableTopOffset = (dropdown.parentElement as HTMLElement).offsetTop + tableDimensions.border.topWidth;
-    let newTopValue = window.pageYOffset + window.innerHeight - tableTopOffset - dropdown.offsetHeight;
+    const {top} = (dropdown.parentElement as HTMLElement).getBoundingClientRect();
+    const tableTopOffset = top + tableDimensions.border.topWidth;
+    let newTopValue = window.innerHeight - tableTopOffset - dropdown.offsetHeight;
     if (Browser.IS_FIREFOX) newTopValue += tableDimensions.border.topWidth;
     dropdown.style.top = `${newTopValue}px`;
     const visibilityDetails = ElementVisibility.getDetailsInWindow(dropdown, tableDimensions.border);
