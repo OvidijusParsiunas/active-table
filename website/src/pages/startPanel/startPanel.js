@@ -12,7 +12,7 @@ function RightPanel() {
             {
               name: 'Category',
               iconSettings: {
-                reusableIconName: 'label',
+                reusableIconName: 'Label',
               },
               label: {
                 // options: [
