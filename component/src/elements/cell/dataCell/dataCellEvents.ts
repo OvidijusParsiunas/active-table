@@ -2,6 +2,7 @@ import {OverwriteCellsViaCSVOnPaste} from '../../../utils/paste/CSV/overwriteCel
 import {UserKeyEventsStateUtils} from '../../../utils/userEventsState/userEventsStateUtils';
 import {DateCellInputElement} from '../cellsWithTextDiv/dateCell/dateCellInputElement';
 import {FocusedCellUtils} from '../../../utils/focusedElements/focusedCellUtils';
+import {FocusNextRowCell} from '../../../utils/focusedElements/focusNextRowCell';
 import {CaretPosition} from '../../../utils/focusedElements/caretPosition';
 import {CaretDisplayFix} from '../../../utils/browser/caretDisplayFix';
 import {CellDropdown} from '../../dropdown/cellDropdown/cellDropdown';
@@ -15,10 +16,13 @@ import {CellElement} from '../cellElement';
 import {CellEvents} from '../cellEvents';
 
 export class DataCellEvents {
-  public static keyDownCell(this: ActiveTable, event: KeyboardEvent) {
+  public static keyDownCell(this: ActiveTable, rowIndex: number, columnIndex: number, event: KeyboardEvent) {
+    const {elements, activeType} = this._columnsDetails[columnIndex];
     // REF-7
     if (event.key === KEYBOARD_KEY.TAB) {
       UserKeyEventsStateUtils.temporarilyIndicateEvent(this._userKeyEventsState, KEYBOARD_KEY.TAB);
+    } else if (event.key === KEYBOARD_KEY.ENTER && this.enterKeyMoveDown && !activeType.cellDropdownProps) {
+      FocusNextRowCell.focus(this, rowIndex, elements, event);
     }
   }
 
@@ -111,6 +115,6 @@ export class DataCellEvents {
     cellElement.onmousedown = () => {};
     cellElement.oninput = DataCellEvents.inputCell.bind(at, rowIndex, columnIndex);
     cellElement.onpaste = DataCellEvents.pasteCell.bind(at, rowIndex, columnIndex);
-    cellElement.onkeydown = DataCellEvents.keyDownCell.bind(at);
+    cellElement.onkeydown = DataCellEvents.keyDownCell.bind(at, rowIndex, columnIndex);
   }
 }

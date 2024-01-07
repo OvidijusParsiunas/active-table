@@ -292,6 +292,12 @@ export class ActiveTable extends LitElement {
   @property({type: Object})
   columnDropdown?: ColumnDropdownSettingsDefault;
 
+  @property({
+    type: Boolean,
+    converter: LITElementTypeConverters.convertToBoolean,
+  })
+  enterKeyMoveDown = false;
+
   @property({type: Object})
   pagination?: boolean | Pagination;
 

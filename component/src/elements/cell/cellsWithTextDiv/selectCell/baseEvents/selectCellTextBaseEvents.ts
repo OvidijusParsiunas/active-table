@@ -1,4 +1,4 @@
-import {FocusNextCellFromSelectCell} from '../../../../../utils/focusedElements/focusNextCellFromSelectCell';
+import {FocusNextRowCell} from '../../../../../utils/focusedElements/focusNextRowCell';
 import {CellDropdownItem} from '../../../../dropdown/cellDropdown/cellDropdownItem';
 import {OptionButton} from '../../../../dropdown/cellDropdown/buttons/optionButton';
 import {ColumnDetailsT, ColumnsDetailsT} from '../../../../../types/columnDetails';
@@ -26,7 +26,7 @@ export class SelectCellTextBaseEvents {
       CellTextEvents.tabOutOfCell(at, rowIndex, columnIndex, event);
     } else if (event.key === KEYBOARD_KEY.ENTER) {
       event.preventDefault();
-      FocusNextCellFromSelectCell.focusOrBlurSelectNextCell(elements, rowIndex);
+      FocusNextRowCell.focusOrBlurSelect(elements, rowIndex);
     } else if (event.key === KEYBOARD_KEY.ARROW_UP) {
       event.preventDefault();
       CellDropdownItem.setSiblingItemOnCell(at, activeItems, 'previousSibling');
