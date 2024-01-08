@@ -235,6 +235,67 @@ row's `backgroundColor` and text `color`.
 
 <LineBreak></LineBreak>
 
+### `enterKeyMoveDown` {#enterKeyMoveDown}
+
+- Type: `boolean`
+- Default: _false_
+
+When the user presses the ENTER key, the cursor focus is moved to the cell below.
+
+#### Example
+
+<TableContainer>
+  <ActiveTable
+    enterKeyMoveDown={true}
+    data={[
+      ['Planet', 'Diameter', 'Mass', 'Moons', 'Density'],
+      ['Earth', 12756, 5.97, 1, 5514],
+      ['Mars', 6792, 0.642, 2, 3934],
+      ['Jupiter', 142984, 1898, 79, 1326],
+      ['Saturn', 120536, 568, 82, 687],
+      ['Neptune', 49528, 102, 14, 1638],
+    ]}
+    tableStyle={{width: '100%', boxShadow: 'rgb(172 172 172 / 17%) 0px 0.5px 1px 0px', borderRadius: '2px'}}
+  ></ActiveTable>
+</TableContainer>
+
+<Tabs>
+<TabItem value="js" label="Sample code">
+
+```html
+<active-table enterKeyMoveDown="true"></active-table>
+```
+
+</TabItem>
+<TabItem value="py" label="Full code">
+
+```html
+<!-- This example is for Vanilla JS and should be tailored to your framework (see Examples) -->
+
+<active-table
+  enterKeyMoveDown="true"
+  data='[
+    ["Planet", "Diameter", "Mass", "Moons", "Density"],
+    ["Earth", 12756, 5.97, 1, 5514],
+    ["Mars", 6792, 0.642, 2, 3934],
+    ["Jupiter", 142984, 1898, 79, 1326],
+    ["Saturn", 120536, 568, 82, 687],
+    ["Neptune", 49528, 102, 14, 1638]]'
+  tableStyle='{"borderRadius":"2px"}'
+></active-table>
+```
+
+</TabItem>
+</Tabs>
+
+<LineBreak></LineBreak>
+
+:::caution
+The autofocus does not work in the Safari browser.
+:::
+
+<LineBreak></LineBreak>
+
 ### `auxiliaryStyle` {#auxiliaryStyle}
 
 - Type: `string`
