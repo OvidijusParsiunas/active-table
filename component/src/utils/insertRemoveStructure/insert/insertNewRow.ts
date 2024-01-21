@@ -52,9 +52,7 @@ export class InsertNewRow {
     setTimeout(() => RowDropdownCellOverlay.add(at, rowIndex, newRowElement.children[0] as HTMLElement));
   }
 
-  // prettier-ignore
-  private static updatePagination(at: ActiveTable,
-      rowIndex: number, isNewText: boolean, newRowElement: HTMLElement) {
+  private static updatePagination(at: ActiveTable, rowIndex: number, isNewText: boolean, newRowElement: HTMLElement) {
     if (!isNewText) {
       PaginationUtils.initialRowUpdates(at, rowIndex, newRowElement);
     } else {
@@ -62,7 +60,7 @@ export class InsertNewRow {
     }
   }
 
-  private static insertNewRow(at: ActiveTable, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
+  public static insertNewRow(at: ActiveTable, rowIndex: number, isNewText: boolean, rowData?: TableRow) {
     const newRowData = rowData || DataUtils.createEmptyStringDataArray(at.data[0]?.length || 1);
     const newRowElement = RowElement.create();
     if (at.pagination) InsertNewRow.updatePagination(at, rowIndex, isNewText, newRowElement);
