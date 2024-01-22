@@ -12,9 +12,10 @@ interface UpdateCellOptions {
   // opt in
   element?: HTMLElement;
   // opt out
-  updateTableEvent?: boolean;
   processText?: boolean;
   updateData?: boolean;
+  updateTableEvent?: boolean;
+  updateCellEvent?: boolean;
 }
 
 export class CellEvents {
@@ -36,8 +37,10 @@ export class CellEvents {
     // slight inefficiency using this here as setCellToDefaultIfNeeded and removeTextIfDefault have already validated text,
     // however having it here minimizes complexity
     if (rowIndex > 0) ProcessedDataTextStyle.setCellStyle(at, rowIndex, columnIndex);
-    // not in timeout as functionality that calls updateCell calls at.onDataUpdate after - should remain that way
-    FireEvents.onCellUpdate(at, cellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
+    if (CellEvents.executeUpdateOperation('updateCellEvent', options)) {
+      // not in timeout as functionality that calls updateCell calls at.onDataUpdate after - should remain that way
+      FireEvents.onCellUpdate(at, cellText, rowIndex, columnIndex, CELL_UPDATE_TYPE.UPDATE);
+    }
     return cellText;
   }
 

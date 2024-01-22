@@ -1,6 +1,11 @@
 import {OuterContentPosition} from './outerContainer';
 import {CSSStyle, StatefulCSS} from './cssStyle';
 
+export interface PaginationAsync {
+  totalRows: number;
+  handler: (pageNumber: number, quantity: number) => Promise<(number | string)[][]>;
+}
+
 export interface PaginationPosition {
   position: OuterContentPosition;
   order?: number;
@@ -59,4 +64,5 @@ export interface Pagination {
   displayNumberOfVisibleRows?: boolean; // by default true
   styles?: PaginationStyles;
   positions?: PaginationPositions;
+  _async?: PaginationAsync;
 }
