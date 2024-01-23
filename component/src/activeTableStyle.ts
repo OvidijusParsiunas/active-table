@@ -834,4 +834,33 @@ export const activeTableStyle = css`
     padding-top: 4px;
     padding-bottom: 4px;
   }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    width: 400px;
+    border: 1px solid grey;
+  }
+
+  .loading {
+    width: 60px;
+    height: 60px;
+    border: 5px solid #38a4ff;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 `;

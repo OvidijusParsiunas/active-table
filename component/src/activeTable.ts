@@ -63,6 +63,7 @@ import {StripedRows} from './utils/rows/stripedRows';
 import {FireEvents} from './utils/events/fireEvents';
 import {activeTableStyle} from './activeTableStyle';
 import {FilesInternal} from './types/filesInternal';
+import {LoadingStyles} from './types/loadingStyles';
 import {StripedRowsT} from './types/stripedRows';
 import {StickyProps} from './types/stickyProps';
 import {Browser} from './utils/browser/browser';
@@ -300,6 +301,9 @@ export class ActiveTable extends LitElement {
 
   @property({type: Object})
   pagination?: boolean | Pagination;
+
+  @property({type: Object})
+  loadingStyles?: LoadingStyles;
 
   @property({type: Object})
   files?: Files;
