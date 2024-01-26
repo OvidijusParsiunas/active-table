@@ -2,9 +2,7 @@ import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/sta
 import {ToggleAdditionElements} from '../table/addNewElements/shared/toggleAdditionElements';
 import {AddNewColumnElement} from '../table/addNewElements/column/addNewColumnElement';
 import {TableDimensionsUtils} from '../../utils/tableDimensions/tableDimensionsUtils';
-import {AddNewRowElement} from '../table/addNewElements/row/addNewRowElement';
 import {ExtractElements} from '../../utils/elements/extractElements';
-import {PaginationInternal} from '../../types/paginationInternal';
 import {Browser} from '../../utils/browser/browser';
 import {TableElement} from '../table/tableElement';
 import {ActiveTable} from '../../activeTable';
@@ -59,7 +57,7 @@ export class UpdateIndexColumnWidth {
   }
 
   // using a prefix because the same index cell can get overwritten multiple times by new last cells in pagination
-  // hidden pages - so when resetting in a timeout - the reset vaue is no longer the original
+  // hidden pages - so when resetting in a timeout - the reset value is no longer the original
   // to reproduce the error, simply set the following code in timeout: firstDataCell.textContent = firstCellContent
   // and either upload a new file, drag and rop a new files, updateData method with a lot of data
   private static temporarilySetFirstDataCellWithLastNumber(firstDataCell: HTMLElement, lastCell: HTMLElement) {
@@ -78,12 +76,9 @@ export class UpdateIndexColumnWidth {
     // if using pagination and the last row is not visible, then scrollWidth will be 0 and we must temporarily add
     // the last cell content to the first data row cell to measure the overflow
     if (lastCell.scrollWidth === 0) {
-      const firstDataRow = firstRow?.nextSibling as HTMLElement;
-      if (firstDataRow && !AddNewRowElement.isAddNewRowRow(firstDataRow)) {
-        const firstDataCell = firstDataRow.children[0] as HTMLElement;
-        UpdateIndexColumnWidth.temporarilySetFirstDataCellWithLastNumber(firstDataCell, lastCell);
-        return UpdateIndexColumnWidth.getCellWidth(firstDataCell);
-      }
+      const firstDataCell = firstRow.children[0] as HTMLElement;
+      UpdateIndexColumnWidth.temporarilySetFirstDataCellWithLastNumber(firstDataCell, lastCell);
+      return UpdateIndexColumnWidth.getCellWidth(firstDataCell);
     }
     return UpdateIndexColumnWidth.getCellWidth(lastCell);
   }
@@ -127,12 +122,16 @@ export class UpdateIndexColumnWidth {
     }
   }
 
-  private static getFirstVisibleRow(pagination: PaginationInternal, tableBodyElement?: HTMLElement) {
-    return pagination ? pagination.visibleRows[0] : (tableBodyElement?.children[0] as HTMLElement);
+  private static getFirstVisibleRow(at: ActiveTable) {
+    const {_pagination, _tableBodyElementRef, dataStartsAtHeader} = at;
+    if (dataStartsAtHeader && _pagination) {
+      return _pagination.visibleRows[0];
+    }
+    return _tableBodyElementRef?.children[0] as HTMLElement;
   }
 
   private static updatedBasedOnVisiblity(at: ActiveTable, lastCell: HTMLElement, forceWrap = false) {
-    const firstRow = UpdateIndexColumnWidth.getFirstVisibleRow(at._pagination, at._tableBodyElementRef);
+    const firstRow = UpdateIndexColumnWidth.getFirstVisibleRow(at);
     if (at._pagination && at.filter) {
       if (firstRow) {
         UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, firstRow, lastCell, forceWrap);
@@ -140,7 +139,7 @@ export class UpdateIndexColumnWidth {
         // when pagination is set, all rows have been filtered to not visible and new row is added via updateData
         // firstRow may not be defiened if a row is removed via updateData
         setTimeout(() => {
-          const firstRow = UpdateIndexColumnWidth.getFirstVisibleRow(at._pagination, at._tableBodyElementRef);
+          const firstRow = UpdateIndexColumnWidth.getFirstVisibleRow(at);
           if (firstRow) UpdateIndexColumnWidth.updatedBasedOnTableStyle(at, firstRow, lastCell, forceWrap);
         });
       }
