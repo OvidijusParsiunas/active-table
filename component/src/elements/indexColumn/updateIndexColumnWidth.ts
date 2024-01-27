@@ -52,6 +52,9 @@ export class UpdateIndexColumnWidth {
     if (UpdateIndexColumnWidth.shouldTextBeWrapped(at)) UpdateIndexColumnWidth.forceWrap(at, firstRow);
   }
 
+  // important to note that on initial render if the font library has not been downloaded
+  // scrollWidth will give the wrong number. This is usually not a problem when using
+  // small numbers or cache
   private static getCellWidth(cell: HTMLElement) {
     return cell.scrollWidth + (Number.parseInt(getComputedStyle(cell).borderRightWidth) || 0);
   }
