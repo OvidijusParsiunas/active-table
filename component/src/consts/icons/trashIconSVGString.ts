@@ -1,8 +1,6 @@
 // REF-10
-// prettier-ignore
 /* eslint-disable max-len */
-export const TRASH_ICON_SVG_STRING = 
-`<?xml version="1.0" standalone="no"?>
+export const TRASH_ICON_SVG_STRING = `<?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="15">
   <g transform="matrix(1.0666668 0 0 1.0714285 0 0)">

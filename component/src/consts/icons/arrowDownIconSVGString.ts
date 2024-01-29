@@ -1,8 +1,6 @@
 // REF-10
-// prettier-ignore
 /* eslint-disable max-len */
-export const ARROW_DOWN_SVG_STRING = 
-`<?xml version="1.0" encoding="UTF-8"?>
+export const ARROW_DOWN_SVG_STRING = `<?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 		<g transform="translate(-288.000000, 0.000000)">

@@ -1,5 +1,4 @@
 // REF-10
-// prettier-ignore
 /* eslint-disable max-len */
 function buildIcon(transform: string) {
   return `<?xml version="1.0" encoding="utf-8"?>

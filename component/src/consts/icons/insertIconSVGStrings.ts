@@ -1,5 +1,4 @@
 // REF-10
-// prettier-ignore
 /* eslint-disable max-len */
 function buildIcon(transform: string) {
   return `<?xml version="1.0" standalone="no"?>
@@ -29,7 +28,6 @@ function buildIcon(transformRotate: string) {
 }
 
 // REF-10
-// prettier-ignore
 export const ARROW_LEFT_ICON_SVG_STRING = buildIcon('rotate(180deg)');
 
 export const ARROW_RIGHT_ICON_SVG_STRING = buildIcon('');
