@@ -9,8 +9,7 @@ import {ActiveTable} from '../../activeTable';
 import {IndexColumn} from './indexColumn';
 
 export class UpdateIndexColumnWidth {
-  private static readonly TEMPORARY_INDEX_ID_PREFIX = 'active-table-temp-index-';
-  private static readonly TEMPORARY_INDEX_ID_PREFIX_LENGTH = UpdateIndexColumnWidth.TEMPORARY_INDEX_ID_PREFIX.length;
+  private static readonly TEMPORARY_INDEX_NUMBER = 'active-table-temp-index-number';
 
   private static wrapColumnTextAndGetDefaultWidth(at: ActiveTable) {
     const {_tableBodyElementRef, data, _tableDimensions} = at;
@@ -59,18 +58,17 @@ export class UpdateIndexColumnWidth {
     return cell.scrollWidth + (Number.parseInt(getComputedStyle(cell).borderRightWidth) || 0);
   }
 
-  // using a prefix because the same index cell can get overwritten multiple times by new last cells in pagination
-  // hidden pages - so when resetting in a timeout - the reset value is no longer the original
-  // to reproduce the error, simply set the following code in timeout: firstDataCell.textContent = firstCellContent
-  // and either upload a new file, drag and rop a new files, updateData method with a lot of data
-  private static temporarilySetFirstDataCellWithLastNumber(firstDataCell: HTMLElement, lastCell: HTMLElement) {
-    const firstCellContent = firstDataCell.textContent;
-    if (!firstDataCell.id) firstDataCell.id = `${UpdateIndexColumnWidth.TEMPORARY_INDEX_ID_PREFIX}${firstCellContent}`;
-    firstDataCell.textContent = lastCell.textContent;
+  // need to keep track of first cell because upon using pagination and uploading a new file, drag and droping a new file,
+  // or using updateData method with a lot of data does not refresh the cell with original value
+  // to reproduce the error, simply set the code in timeout to: firstCell.textContent = firstCellContent
+  private static temporarilySetFirstRowIndexCellWithLastNumber(firstCell: HTMLElement, lastCell: HTMLElement) {
+    const firstCellContent = firstCell.textContent;
+    if (!firstCell.id) firstCell.id = UpdateIndexColumnWidth.TEMPORARY_INDEX_NUMBER;
+    firstCell.textContent = lastCell.textContent;
     setTimeout(() => {
-      if (firstDataCell.id !== '') {
-        firstDataCell.textContent = firstDataCell.id.substring(UpdateIndexColumnWidth.TEMPORARY_INDEX_ID_PREFIX_LENGTH);
-        firstDataCell.removeAttribute('id');
+      if (firstCell.id !== '') {
+        firstCell.textContent = firstCellContent;
+        firstCell.removeAttribute('id');
       }
     });
   }
@@ -79,9 +77,9 @@ export class UpdateIndexColumnWidth {
     // if using pagination and the last row is not visible, then scrollWidth will be 0 and we must temporarily add
     // the last cell content to the first data row cell to measure the overflow
     if (lastCell.scrollWidth === 0) {
-      const firstDataCell = firstRow.children[0] as HTMLElement;
-      UpdateIndexColumnWidth.temporarilySetFirstDataCellWithLastNumber(firstDataCell, lastCell);
-      return UpdateIndexColumnWidth.getCellWidth(firstDataCell);
+      const firstCell = firstRow.children[0] as HTMLElement;
+      UpdateIndexColumnWidth.temporarilySetFirstRowIndexCellWithLastNumber(firstCell, lastCell);
+      return UpdateIndexColumnWidth.getCellWidth(firstCell);
     }
     return UpdateIndexColumnWidth.getCellWidth(lastCell);
   }
