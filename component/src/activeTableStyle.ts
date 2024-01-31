@@ -216,6 +216,10 @@ export const activeTableStyle = css`
     overflow-wrap: normal;
   }
 
+  #temp-invisible-index-number {
+    color: #e2e2e200 !important;
+  }
+
   .add-column-cell {
     cursor: pointer;
     text-align: center;
