@@ -12,9 +12,11 @@ import {InsertMatrix} from './insertMatrix';
 export class UpdateAllTableData {
   private static toggleAdditionalElements(at: ActiveTable) {
     FilterInternalUtils.completeReset(at);
-    // updateRowsOnNewInsert sets uses activePageNumber + 1
-    if (at._pagination && at._pagination.activePageNumber !== 1) PaginationUtils.displayRowsForDifferentButton(at, 1);
     ToggleAdditionElements.update(at, true, AddNewRowElement.toggle);
+    setTimeout(() => {
+      // updateRowsOnNewInsert sets uses activePageNumber + 1, hence this resets to 1
+      if (at._pagination && at._pagination.activePageNumber !== 1) PaginationUtils.displayRowsForDifferentButton(at, 1);
+    });
   }
 
   private static insertData(at: ActiveTable, data: TableData, startRowIndex: number) {
