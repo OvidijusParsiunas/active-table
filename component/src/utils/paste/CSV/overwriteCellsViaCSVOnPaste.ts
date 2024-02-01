@@ -13,7 +13,7 @@ export class OverwriteCellsViaCSVOnPaste {
 
   // prettier-ignore
   public static overwrite(at: ActiveTable,
-      clipboardText: string, event: ClipboardEvent, rowIndex: number, columnIndex: number,) {
+      clipboardText: string, event: ClipboardEvent, rowIndex: number, columnIndex: number) {
     event.preventDefault();
     const CSV = ParseCSVClipboardText.parse(clipboardText);
     OverwriteCellsViaCSVOnPaste.focusOriginalCellAfterProcess(at,

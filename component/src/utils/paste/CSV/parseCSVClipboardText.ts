@@ -35,7 +35,9 @@ export class ParseCSVClipboardText {
     const linesOfText: string[] = processedText.split(newLine);
     return linesOfText.map((lineOfText: string) => {
       // row indexes in worksheets end with \\t\\t\\t\\t\\t
-      return lineOfText.split(tab);
+      const cells = lineOfText.split(tab);
+      // when pasting data with ", it is parsed as \\"
+      return cells.map((cell) => cell.replace(/\\"/g, ''));
     });
   }
 }

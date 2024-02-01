@@ -7,11 +7,24 @@ export class CSVImport {
     return rowsOfData.map((row) => row.concat(Array(largestRowLength).fill('')).slice(0, largestRowLength));
   }
 
-  private static parseDataFromRow(row: string, rowsOfData: string[][], largestRowLength: number) {
-    const data = row.split(',');
-    if (data.length > 0) {
-      rowsOfData.push(data);
-      if (data.length > largestRowLength) largestRowLength = data.length;
+  private static splitRow(row: string) {
+    // Matches commas outside of double-quotes
+    const regex = /("[^"]*"|[^,]+)(,|$)/g;
+    const rowCells: string[] = [];
+    row.replace(regex, (_, value) => {
+      rowCells.push(value);
+      // Return an empty string to continue the iteration
+      return '';
+    });
+
+    return rowCells;
+  }
+
+  private static parseDataFromRow(row: string, cells: string[][], largestRowLength: number) {
+    const rowCells = CSVImport.splitRow(row);
+    if (rowCells.length > 0) {
+      cells.push(rowCells);
+      if (rowCells.length > largestRowLength) largestRowLength = rowCells.length;
     }
     return largestRowLength;
   }
@@ -20,12 +33,12 @@ export class CSVImport {
   private static parseCSV(csvText: string) {
     try {
       const rows = csvText.split(/\r\n|\n/) as string[];
-      const rowsOfData: string[][] = [];
+      const cells: string[][] = [];
       let largestRowLength = 0;
       rows.forEach((row) => {
-        largestRowLength = CSVImport.parseDataFromRow(row, rowsOfData, largestRowLength);
+        largestRowLength = CSVImport.parseDataFromRow(row, cells, largestRowLength);
       });
-      return CSVImport.getPaddedArray(rowsOfData, largestRowLength);
+      return CSVImport.getPaddedArray(cells, largestRowLength);
     } catch (errorMessage) {
       console.error('Incorrect format');
       return null;
