@@ -58,12 +58,11 @@ export class DataCellEvents {
     } else {
       const targetElement = event.target as HTMLElement;
       const {cellDropdown, settings: {defaultText}, activeType} = this._columnsDetails[columnIndex];
-      const {calendar, cellDropdownProps} = activeType;
-      // if the user has deleted all text in calendar/select/label cell - targetElement can be the <br> tag
-      const containerElement = calendar || cellDropdownProps
+      // if the user has deleted all text - targetElement can be the <br> tag
+      const containerElement = targetElement.tagName === 'BR'
         ? (targetElement.parentElement as HTMLElement) : targetElement;
       setTimeout(() => {
-        if (cellDropdownProps) CellDropdown.updateCellDropdown(
+        if (activeType.cellDropdownProps) CellDropdown.updateCellDropdown(
           containerElement, cellDropdown, this._tableDimensions.border, defaultText, true);
         CellEvents.updateCell(this, CellElement.getText(containerElement), rowIndex, columnIndex, {processText: false});
       });
