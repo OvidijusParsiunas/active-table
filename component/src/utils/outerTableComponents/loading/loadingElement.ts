@@ -1,4 +1,4 @@
-import {ActiveOverlayElements} from '../../../types/activeOverlayElements';
+import {OuterContainerElements} from '../outerContainerElements';
 import {LoadingStyles} from '../../../types/loadingStyles';
 import {GenericObject} from '../../../types/genericObject';
 import {TableStyle} from '../../../types/tableStyle';
@@ -6,14 +6,11 @@ import {CSSStyle} from '../../../types/cssStyle';
 import {ActiveTable} from '../../../activeTable';
 
 export class LoadingElement {
-  public static get(overlayElements: ActiveOverlayElements) {
-    const {loadingDefault, loadingCustom} = overlayElements;
-    return loadingCustom || loadingDefault;
-  }
+  private static readonly DEFAULT_LOADING_CONTAINER_CLASS = 'default-loading-container';
 
   private static createSpinner(spinnerStyle?: CSSStyle) {
     const spinnerElement = document.createElement('span');
-    spinnerElement.className = 'loading';
+    spinnerElement.className = 'loading-spinner';
     Object.assign(spinnerElement.style, spinnerStyle);
     return spinnerElement;
   }
@@ -32,11 +29,10 @@ export class LoadingElement {
     });
   }
 
-  private static processCustom(element: HTMLElement, overlays: ActiveOverlayElements, loadingStyles?: LoadingStyles) {
+  private static processCustom(element: HTMLElement, loadingStyles?: LoadingStyles) {
     if (element.style.display === 'none') element.style.display = 'block';
     Object.assign(element.style, loadingStyles?.container);
-    overlays.loadingCustom = element;
-    return overlays.loadingCustom;
+    return element;
   }
 
   // prettier-ignore
@@ -53,47 +49,46 @@ export class LoadingElement {
 
   private static createNew(loadingStyles?: LoadingStyles, tableStyle?: TableStyle) {
     const containerElement = LoadingElement.createContainer(loadingStyles, tableStyle);
-    containerElement.className = 'loading-container';
+    containerElement.classList.add(LoadingElement.DEFAULT_LOADING_CONTAINER_CLASS);
     const spinnerElement = LoadingElement.createSpinner(loadingStyles?.spinner);
     containerElement.appendChild(spinnerElement);
     return containerElement;
   }
 
   private static processInitial(at: ActiveTable) {
-    const {loadingStyles, tableStyle, _activeOverlayElements} = at;
+    const {loadingStyles, tableStyle} = at;
     const childElement = at.children[0] as HTMLElement;
-    _activeOverlayElements.loadingDefault = childElement
-      ? LoadingElement.processCustom(childElement, _activeOverlayElements, loadingStyles)
+    return childElement
+      ? LoadingElement.processCustom(childElement, loadingStyles)
       : LoadingElement.createNew(loadingStyles, tableStyle);
-    return _activeOverlayElements.loadingDefault;
   }
 
   public static addInitial(at: ActiveTable) {
-    const initialLoadingElement = LoadingElement.processInitial(at);
-    at.shadowRoot?.appendChild(initialLoadingElement);
+    at._activeOverlayElements.loading = LoadingElement.processInitial(at);
+    at.shadowRoot?.appendChild(at._activeOverlayElements.loading);
   }
 
-  private static update(overlayEls: ActiveOverlayElements, tableStyle?: TableStyle, loadingStyles?: LoadingStyles) {
-    const element = LoadingElement.get(overlayEls) as HTMLElement;
-    const {loadingDefault} = overlayEls;
-    if (loadingDefault && tableStyle) {
+  private static update(loadingElement: HTMLElement, tableStyle?: TableStyle, loadingStyles?: LoadingStyles) {
+    if (loadingElement.classList.contains(LoadingElement.DEFAULT_LOADING_CONTAINER_CLASS) && tableStyle) {
       LoadingElement.removeTableStyles(
         ['width', 'minWidth', 'maxHeight', 'height', 'minHeight', 'maxHeight', 'border', 'borderColor', 'borderWidth'],
-        loadingDefault
+        loadingElement
       );
-      Object.assign(loadingDefault.style, loadingStyles?.container);
+      Object.assign(loadingElement.style, loadingStyles?.container);
     }
     if (loadingStyles?.loadingBackgroundColor) {
-      element.style.backgroundColor = loadingStyles?.loadingBackgroundColor;
+      loadingElement.style.backgroundColor = loadingStyles?.loadingBackgroundColor;
     }
   }
 
   public static addActive(at: ActiveTable) {
-    const element = LoadingElement.get(at._activeOverlayElements) as HTMLElement;
-    if (!element.classList.contains('loading-container-absolute')) {
-      element.classList.add('loading-container-absolute');
-      LoadingElement.update(at._activeOverlayElements, at.tableStyle, at.loadingStyles);
+    const {loading} = at._activeOverlayElements;
+    if (!loading) return;
+    // this is also used to only update the styling once
+    if (!loading.classList.contains(OuterContainerElements.ABSOULUTE_FULL_TABLE_CLASS)) {
+      loading.classList.add(OuterContainerElements.ABSOULUTE_FULL_TABLE_CLASS);
+      LoadingElement.update(loading, at.tableStyle, at.loadingStyles);
     }
-    at._tableElementRef?.appendChild(element);
+    at._tableElementRef?.appendChild(loading);
   }
 }

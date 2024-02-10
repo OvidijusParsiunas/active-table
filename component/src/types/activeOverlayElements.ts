@@ -16,6 +16,5 @@ export interface ActiveOverlayElements {
   dropdownItem?: HTMLElement;
   // the reason why this is here and not in ColumnSizerT is because it is more efficient to access these values here
   selectedColumnSizer?: SelectedColumnSizerT;
-  loadingDefault?: HTMLElement; // default one
-  loadingCustom?: HTMLElement; // controlled by the user via child element
+  loading?: HTMLElement;
 }

@@ -839,7 +839,7 @@ export const activeTableStyle = css`
     padding-bottom: 4px;
   }
 
-  .loading-container {
+  .default-loading-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -848,7 +848,14 @@ export const activeTableStyle = css`
     border: 1px solid grey;
   }
 
-  .loading {
+  .loading-container-absolute {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .loading-spinner {
     width: 60px;
     height: 60px;
     border: 5px solid #38a4ff;

@@ -8,6 +8,7 @@ type ContainerPositions = 'top' | 'bottom';
 type PositionalComponents = {[key: string]: {position: OuterContentPosition}};
 
 export class OuterContainerElements {
+  public static readonly ABSOULUTE_FULL_TABLE_CLASS = 'absolute-container';
   private static readonly CONTAINER_CLASS = 'outer-container';
   private static readonly TOP_CONTAINER_ID = 'outer-top-container';
   private static readonly BOTTOM_CONTAINER_ID = 'outer-bottom-container';
