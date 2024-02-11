@@ -12,7 +12,6 @@ import {Dropdown} from '../dropdown/dropdown';
 export class TableEvents {
   // not using hoveredElements state as the targetElement will be the element clicked, hence need to use
   // activeOverlayElements.datePickerCell to get the cell of the date picker input
-  // prettier-ignore
   private static closeDatePicker(activeOverlayElements: ActiveOverlayElements, targetElement: HTMLElement) {
     if (activeOverlayElements.datePickerCell) {
       if (activeOverlayElements.datePickerCell !== CellElement.getCellElement(targetElement)) {

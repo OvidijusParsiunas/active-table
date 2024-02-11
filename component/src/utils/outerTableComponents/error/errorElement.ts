@@ -15,7 +15,7 @@ export class ErrorElement {
 
   public static display(at: ActiveTable) {
     const {error} = at._activeOverlayElements;
-    if (error) at._tableElementRef?.appendChild(error);
+    if (error && at._tableElementRef) at._tableElementRef.appendChild(error);
   }
 
   public static remove(at: ActiveTable) {
