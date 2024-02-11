@@ -855,6 +855,13 @@ export const activeTableStyle = css`
     width: 100%;
   }
 
+  .absolute-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+  }
+
   .loading-spinner {
     width: 60px;
     height: 60px;
@@ -864,6 +871,22 @@ export const activeTableStyle = css`
     display: inline-block;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
+  }
+
+  #error-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #ff000006;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #error-text {
+    font-size: 24px;
+    color: red;
   }
 
   @keyframes rotation {
