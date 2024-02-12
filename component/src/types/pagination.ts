@@ -2,8 +2,8 @@ import {OuterContentPosition} from './outerContainer';
 import {CSSStyle, StatefulCSS} from './cssStyle';
 
 export interface PaginationAsync {
-  totalRows: number;
-  handler: (pageNumber: number, quantity: number) => Promise<(number | string)[][]>;
+  getTotalRows: () => Promise<number>;
+  getPageData: (pageNumber: number, quantity: number) => Promise<(number | string)[][]>;
 }
 
 export interface PaginationPosition {
