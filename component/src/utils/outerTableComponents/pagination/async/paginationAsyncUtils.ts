@@ -46,11 +46,13 @@ export class PaginationAsyncUtils {
   }
 
   public static async getAndApplyDataOnButtonClick(at: ActiveTable, async: PaginationAsync, buttonNumber: number) {
+    at._pagination.asyncGetButtonNumber = buttonNumber;
     ErrorElement.remove(at);
     LoadingElement.addActive(at);
     let data: TableData = [[]];
     try {
       data = await async.getPageData(buttonNumber, at._pagination.rowsPerPage);
+      if (at._pagination.asyncGetButtonNumber !== buttonNumber) return;
     } catch (e) {
       PaginationAsyncUtils.displayError(e, at);
     }

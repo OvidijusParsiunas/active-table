@@ -13,6 +13,12 @@ export interface IPaginationStyles extends PaginationStyles<Required<StatefulCSS
   pageButtons: IPageButtonsStyles;
 }
 
+export interface AsyncStartData {
+  totalRows: number;
+  data: (number | string)[][];
+  failed?: boolean;
+}
+
 export interface PaginationInternal extends Required<Pagination> {
   styles: IPaginationStyles;
   dropdownWidth: number;
@@ -27,4 +33,6 @@ export interface PaginationInternal extends Required<Pagination> {
   clickedPageNumberButton?: boolean; // REF-30
   isAllRowsOptionSelected: boolean;
   rowsPerPageOptionsItemText: string[];
+  asyncStartData?: AsyncStartData;
+  asyncGetButtonNumber?: number;
 }
