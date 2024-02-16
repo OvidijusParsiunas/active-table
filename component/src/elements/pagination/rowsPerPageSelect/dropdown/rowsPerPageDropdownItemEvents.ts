@@ -6,13 +6,13 @@ import {ActiveTable} from '../../../../activeTable';
 
 export class RowsPerPageDropdownItemEvents {
   private static action(pagination: PaginationInternal, optionsButton: HTMLElement, at: ActiveTable, targetText: string) {
-    if ((pagination as PaginationInternal).rowsPerPage !== Number(targetText)) {
+    if (pagination.rowsPerPage !== Number(targetText)) {
       RowsPerPageDropdownItemUtil.setNewRowsPerPage(at, optionsButton, targetText);
     }
   }
 
   public static setEvents(at: ActiveTable, item: HTMLElement, optionsButton: HTMLElement) {
-    const actionFunc = RowsPerPageDropdownItemEvents.action.bind(this, at.pagination as PaginationInternal, optionsButton);
+    const actionFunc = RowsPerPageDropdownItemEvents.action.bind(this, at._pagination, optionsButton);
     const hideFunc = OuterDropdownSimpleUtils.hide;
     item.onmousedown = OuterDropdownItemEvents.itemMouseDownCommon.bind(at, actionFunc, hideFunc);
   }
