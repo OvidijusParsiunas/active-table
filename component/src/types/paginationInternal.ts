@@ -34,5 +34,5 @@ export interface PaginationInternal extends Required<Pagination> {
   isAllRowsOptionSelected: boolean;
   rowsPerPageOptionsItemText: string[];
   asyncStartData?: AsyncStartData;
-  asyncGetButtonNumber?: number;
+  asyncGetId?: unknown;
 }

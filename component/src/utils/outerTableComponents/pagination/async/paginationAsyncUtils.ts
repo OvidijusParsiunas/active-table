@@ -45,14 +45,14 @@ export class PaginationAsyncUtils {
     UpdateIndexColumnWidth.update(at);
   }
 
-  public static async getAndApplyDataOnButtonClick(at: ActiveTable, async: PaginationAsync, buttonNumber: number) {
-    at._pagination.asyncGetButtonNumber = buttonNumber;
+  public static async getAndApplyNewData(at: ActiveTable, async: PaginationAsync, buttonNumber: number, id: unknown) {
+    at._pagination.asyncGetId = id;
     ErrorElement.remove(at);
     LoadingElement.addActive(at);
     let data: TableData = [[]];
     try {
       data = await async.getPageData(buttonNumber, at._pagination.rowsPerPage);
-      if (at._pagination.asyncGetButtonNumber !== buttonNumber) return;
+      if (at._pagination.asyncGetId !== id) return;
     } catch (e) {
       PaginationAsyncUtils.displayError(e, at);
     }
