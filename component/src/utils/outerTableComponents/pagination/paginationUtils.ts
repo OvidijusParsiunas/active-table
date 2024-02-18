@@ -6,6 +6,7 @@ import {PaginationVisibleButtonsUtils} from './paginationVisibleButtonsUtils';
 import {PaginationUpdatePageButtons} from './paginationUpdatePageButtons';
 import {FilterInternalUtils} from '../filter/rows/filterInternalUtils';
 import {PaginationInternal} from '../../../types/paginationInternal';
+import {PaginationAsyncUtils} from './async/paginationAsyncUtils';
 import {CustomRowProperties} from '../../rows/customRowProperties';
 import {PaginationInternalUtils} from './paginationInternalUtils';
 import {ExtractElements} from '../../elements/extractElements';
@@ -16,7 +17,6 @@ import {ActiveTable} from '../../../activeTable';
 export class PaginationUtils {
   private static readonly HIDDEN_ROW_CLASS = 'hidden-row';
 
-  // prettier-ignore
   public static getLastPossiblePageNumber(at: ActiveTable, isBeforeInsert = false) {
     const {_pagination, dataStartsAtHeader} = at;
     if (_pagination.isAllRowsOptionSelected) return 1;
@@ -194,5 +194,13 @@ export class PaginationUtils {
 
   public static getFirstVisibleRow(visibleRows: HTMLElement[]) {
     return visibleRows.find((row) => !row.classList.contains(FilterInternalUtils.HIDDEN_ROW_CLASS));
+  }
+
+  public static async getAndApplyDataOnButtonClick(at: ActiveTable, buttonNumber: number, id: unknown) {
+    if (at._pagination._async) {
+      PaginationAsyncUtils.getAndApplyNewData(at, at._pagination._async, buttonNumber, id);
+    } else {
+      PaginationUtils.displayRowsForDifferentButton(at, buttonNumber);
+    }
   }
 }

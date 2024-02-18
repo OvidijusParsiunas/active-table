@@ -17,7 +17,7 @@ export class PageNumberButtonEvents {
     if (this._pagination.activePageNumber === buttonNumber) {
       PageButtonStyle.mouseEnter(buttonElement, pageButtons, false);
     } else {
-      PaginationUtils.displayRowsForDifferentButton(this, buttonNumber);
+      PaginationUtils.getAndApplyDataOnButtonClick(this, buttonNumber, buttonNumber);
       // for the case when mouse clicks on a number button and no new buttons are created
       PageButtonStyle.mouseEnter(buttonElement, pageButtons, false);
     }

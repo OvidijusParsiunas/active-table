@@ -10,7 +10,7 @@ export class RowsPerPageDropdownItemUtil {
     // when the only pagination button is disabled - changing the rows per page should not set it to active
     if (PageButtonContainerElement.shouldButtonsBeActive(at)) {
       PageButtonContainerElement.repopulateButtons(at);
-      PaginationUtils.displayRowsForDifferentButton(at, 1);
+      PaginationUtils.getAndApplyDataOnButtonClick(at, 1, newRowsPerPage);
     }
   }
 
