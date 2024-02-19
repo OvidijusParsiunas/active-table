@@ -9,7 +9,7 @@ export class LastPageButtonEvents {
     PageButtonStyle.mouseEnter(buttonElement, styles.pageButtons, true);
     const numberOfNumberButtons = PaginationUtils.getLastPossiblePageNumber(this);
     if (numberOfNumberButtons <= activePageNumber) return;
-    PaginationUtils.displayRowsForDifferentButton(this, numberOfNumberButtons);
+    PaginationUtils.getAndApplyDataOnButtonClick(this, numberOfNumberButtons);
   }
 
   public static setEvents(at: ActiveTable, lastButtonElement: HTMLElement) {

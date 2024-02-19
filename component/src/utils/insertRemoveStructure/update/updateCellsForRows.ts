@@ -11,13 +11,17 @@ import {FireEvents} from '../../events/fireEvents';
 import {ActiveTable} from '../../../activeTable';
 
 export class UpdateCellsForRows {
-  public static updateRowCells(at: ActiveTable, rowElement: HTMLElement, rowIndex: number, updateType: CELL_UPDATE_TYPE) {
+  // prettier-ignore
+  public static updateRowCells(
+      at: ActiveTable, rowElement: HTMLElement, rowIndex: number, updateType: CELL_UPDATE_TYPE, update = true) {
     const dataCellElements = ExtractElements.textCellsArrFromRow(rowElement);
     dataCellElements.forEach((cellElement: Node, columnIndex: number) => {
       if (updateType !== CELL_UPDATE_TYPE.REMOVED) {
         CellEventsReset.reset(at, cellElement as HTMLElement, rowIndex, columnIndex); // REF-33
       }
-      FireEvents.onCellUpdate(at, CellElement.getText(cellElement as HTMLElement), rowIndex, columnIndex, updateType);
+      if (update) {
+        FireEvents.onCellUpdate(at, CellElement.getText(cellElement as HTMLElement), rowIndex, columnIndex, updateType);
+      }
     });
     if (updateType !== CELL_UPDATE_TYPE.REMOVED) {
       const leftMostCell = rowElement.children[0] as HTMLElement;

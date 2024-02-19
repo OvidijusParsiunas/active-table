@@ -196,9 +196,9 @@ export class PaginationUtils {
     return visibleRows.find((row) => !row.classList.contains(FilterInternalUtils.HIDDEN_ROW_CLASS));
   }
 
-  public static async getAndApplyDataOnButtonClick(at: ActiveTable, buttonNumber: number, id: unknown) {
+  public static async getAndApplyDataOnButtonClick(at: ActiveTable, buttonNumber: number, rowsPerPage?: string) {
     if (at._pagination._async) {
-      PaginationAsyncUtils.getAndApplyNewData(at, at._pagination._async, buttonNumber, id);
+      PaginationAsyncUtils.getAndApplyNewData(at, at._pagination._async, buttonNumber, rowsPerPage);
     } else {
       PaginationUtils.displayRowsForDifferentButton(at, buttonNumber);
     }

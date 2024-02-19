@@ -7,7 +7,7 @@ export class FirstPageButtonEvents {
     const buttonElement = event.target as HTMLElement;
     PageButtonStyle.mouseEnter(buttonElement, this._pagination.styles.pageButtons, true);
     if (this._pagination.activePageNumber === 1) return;
-    PaginationUtils.displayRowsForDifferentButton(this, 1);
+    PaginationUtils.getAndApplyDataOnButtonClick(this, 1);
   }
 
   public static setEvents(at: ActiveTable, firstButtonElement: HTMLElement) {

@@ -1,3 +1,4 @@
+import {PageButtonElement} from '../../../../elements/pagination/pageButtons/pageButtonElement';
 import {UpdateIndexColumnWidth} from '../../../../elements/indexColumn/updateIndexColumnWidth';
 import {ColumnTypesUtils} from '../../../columnType/columnTypesUtils';
 import {CellEvents} from '../../../../elements/cell/cellEvents';
@@ -44,14 +45,16 @@ export class PaginationAsyncUtils {
     UpdateIndexColumnWidth.update(at);
   }
 
-  public static async getAndApplyNewData(at: ActiveTable, async: PaginationAsync, buttonNumber: number, id: unknown) {
-    at._pagination.asyncGetId = id;
+  public static async getAndApplyNewData(at: ActiveTable, async: PaginationAsync, buttonNumber: number, rows?: string) {
+    const uniqueId = rows || buttonNumber;
+    at._pagination.asyncGetId = uniqueId;
     ErrorElement.remove(at);
     LoadingElement.addActive(at);
+    PageButtonElement.setActive(at, buttonNumber);
     let data: TableData = [[]];
     try {
       data = await async.getPageData(buttonNumber, at._pagination.rowsPerPage);
-      if (at._pagination.asyncGetId !== id) return;
+      if (at._pagination.asyncGetId !== uniqueId) return;
     } catch (e) {
       PaginationAsyncUtils.displayError(e, at);
     }
