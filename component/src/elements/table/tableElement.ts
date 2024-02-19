@@ -1,3 +1,4 @@
+import {PaginationAsyncStartData} from '../../utils/outerTableComponents/pagination/async/paginationAsyncStartData';
 import {StaticTableWidthUtils} from '../../utils/tableDimensions/staticTable/staticTableWidthUtils';
 import {MaximumColumns} from '../../utils/insertRemoveStructure/insert/maximum/maximumColumns';
 import {FrameComponentsElements} from '../../utils/frameComponents/frameComponentsElements';
@@ -64,6 +65,7 @@ export class TableElement {
     if (!MaximumColumns.canAddMore(at)) return;
     StaticTableWidthUtils.toggleWidthUsingMaxWidth(at, true);
     at.data.map((row: TableRow, rowIndex: number) => InsertNewRow.insert(at, rowIndex, false, row));
+    if (at._pagination.asyncStartData) PaginationAsyncStartData.populate(at, at._pagination.asyncStartData);
     StaticTableWidthUtils.toggleWidthUsingMaxWidth(at, false);
   }
 

@@ -34,7 +34,7 @@ export class InitialDataProcessing {
     });
   }
 
-  private static getMaxRowLength(data: TableData) {
+  public static getMaxRowLength(data: TableData) {
     return data.reduce((currentMax, row) => {
       return Math.max(currentMax, row.length);
     }, 0);

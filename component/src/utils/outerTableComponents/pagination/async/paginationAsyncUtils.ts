@@ -1,16 +1,15 @@
 import {UpdateIndexColumnWidth} from '../../../../elements/indexColumn/updateIndexColumnWidth';
-import {Pagination, PaginationAsync} from '../../../../types/pagination';
-import {PaginationInternal} from '../../../../types/paginationInternal';
 import {ColumnTypesUtils} from '../../../columnType/columnTypesUtils';
 import {CellEvents} from '../../../../elements/cell/cellEvents';
 import {CellText, TableData} from '../../../../types/tableData';
+import {PaginationAsync} from '../../../../types/pagination';
 import {LoadingElement} from '../../loading/loadingElement';
 import {ErrorElement} from '../../error/errorElement';
 import {ActiveTable} from '../../../../activeTable';
 import {PaginationUtils} from '../paginationUtils';
 
 export class PaginationAsyncUtils {
-  private static displayError(e: unknown, at: ActiveTable) {
+  public static displayError(e: unknown, at: ActiveTable) {
     ErrorElement.display(at);
     console.error(e);
     console.error('Error fetching page information');
@@ -59,20 +58,5 @@ export class PaginationAsyncUtils {
     PaginationAsyncUtils.insertData(at, data, buttonNumber);
     at._activeOverlayElements.loading?.remove();
     PaginationUtils.displayRowsForDifferentButton(at, buttonNumber);
-  }
-
-  public static async getStartDetails(at: ActiveTable, pagination: Pagination, paginationInternal: PaginationInternal) {
-    const {_async, rowsPerPage: rowsPerPageC} = pagination;
-    if (!_async) return;
-    const {rowsPerPage: rowsPerPageI} = paginationInternal;
-    const rowsPerPage = typeof rowsPerPageC === 'number' ? rowsPerPageC : rowsPerPageI;
-    try {
-      // not handling partial failures because users would be looking at partial data without knowing about it
-      const [totalRows, data] = await Promise.all([_async.getTotalRows(), _async.getPageData(1, rowsPerPage)]);
-      return {totalRows, data};
-    } catch (e) {
-      setTimeout(() => PaginationAsyncUtils.displayError(e, at));
-      return {totalRows: 0, data: [['', '']], failed: true};
-    }
   }
 }

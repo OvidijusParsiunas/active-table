@@ -14,7 +14,7 @@ export interface IPaginationStyles extends PaginationStyles<Required<StatefulCSS
 }
 
 export interface AsyncStartData {
-  totalRows: number;
+  totalDataRows: number;
   data: (number | string)[][];
   failed?: boolean;
 }

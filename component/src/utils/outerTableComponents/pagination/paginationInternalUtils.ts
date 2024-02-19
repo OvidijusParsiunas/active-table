@@ -2,9 +2,12 @@ import {RowsPerPageDropdownItem} from '../../../elements/pagination/rowsPerPageS
 import {RowsPerPageSelect, PaginationPositions, PageButtonStyles, Pagination} from '../../../types/pagination';
 import {PageButtonElement} from '../../../elements/pagination/pageButtons/pageButtonElement';
 import {IPaginationStyles, PaginationInternal} from '../../../types/paginationInternal';
+import {PaginationAsyncStartData} from './async/paginationAsyncStartData';
 import {FilterInternalUtils} from '../filter/rows/filterInternalUtils';
 import {OuterContentPosition} from '../../../types/outerContainer';
+import {LoadingElement} from '../loading/loadingElement';
 import {StatefulCSS} from '../../../types/cssStyle';
+import {ErrorElement} from '../error/errorElement';
 import {ActiveTable} from '../../../activeTable';
 
 interface DefaultBackgroundColors {
@@ -222,10 +225,15 @@ export class PaginationInternalUtils {
     delete pagination.positions; // deleted so that Object.assign wouldn't apply it
   }
 
-  public static process(at: ActiveTable) {
-    const {_pagination} = at;
+  public static async process(at: ActiveTable) {
+    const {_pagination, _activeOverlayElements} = at;
     if (!at.pagination) return;
     const pagination: Pagination = typeof at.pagination === 'boolean' ? {} : at.pagination;
+    if (pagination._async) {
+      LoadingElement.addInitial(at);
+      _activeOverlayElements.error = ErrorElement.create();
+      _pagination.asyncStartData = await PaginationAsyncStartData.get(at, pagination, _pagination);
+    }
     if (pagination.maxNumberOfVisiblePageButtons !== undefined && pagination.maxNumberOfVisiblePageButtons < 1) {
       pagination.maxNumberOfVisiblePageButtons = 1;
     }
