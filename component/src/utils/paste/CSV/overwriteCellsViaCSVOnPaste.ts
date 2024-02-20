@@ -24,7 +24,9 @@ export class OverwriteCellsViaCSVOnPaste {
       clipboardText: string, event: ClipboardEvent, rowIndex: number, columnIndex: number) {
     event.preventDefault();
     let CSV = ParseCSVClipboardText.parse(clipboardText);
-    if (!at.displayAddNewRow) CSV = OverwriteCellsViaCSVOnPaste.trimCSVRowsIfCantCreateNew(CSV, at.data, rowIndex);
+    if (!at.displayAddNewRow && at._pagination._async) {
+      CSV = OverwriteCellsViaCSVOnPaste.trimCSVRowsIfCantCreateNew(CSV, at.data, rowIndex);
+    }
     OverwriteCellsViaCSVOnPaste.focusOriginalCellAfterProcess(at,
       InsertMatrix.insert.bind(this, at, CSV, rowIndex, columnIndex));
   }
