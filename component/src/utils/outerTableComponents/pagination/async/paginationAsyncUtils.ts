@@ -1,9 +1,9 @@
 import {PageButtonElement} from '../../../../elements/pagination/pageButtons/pageButtonElement';
 import {UpdateIndexColumnWidth} from '../../../../elements/indexColumn/updateIndexColumnWidth';
+import {Pagination, PaginationAsync} from '../../../../types/pagination';
 import {ColumnTypesUtils} from '../../../columnType/columnTypesUtils';
 import {CellEvents} from '../../../../elements/cell/cellEvents';
 import {CellText, TableData} from '../../../../types/tableData';
-import {PaginationAsync} from '../../../../types/pagination';
 import {LoadingElement} from '../../loading/loadingElement';
 import {ErrorElement} from '../../error/errorElement';
 import {ActiveTable} from '../../../../activeTable';
@@ -61,5 +61,27 @@ export class PaginationAsyncUtils {
     PaginationAsyncUtils.insertData(at, data, buttonNumber);
     at._activeOverlayElements.loading?.remove();
     PaginationUtils.displayRowsForDifferentButton(at, buttonNumber);
+  }
+
+  private static isAsyncPagination(pagination?: boolean | Pagination) {
+    return typeof pagination === 'object' && pagination._async;
+  }
+
+  public static removeLoadingOverlay(at: ActiveTable) {
+    if (PaginationAsyncUtils.isAsyncPagination(at.pagination)) {
+      at._activeOverlayElements.loading?.remove();
+    }
+  }
+
+  public static preprocessTablePropertiesIfAsync(at: ActiveTable) {
+    if (PaginationAsyncUtils.isAsyncPagination(at.pagination)) {
+      at.displayAddNewRow = false;
+      at.displayAddNewColumn = false;
+      at.rowDropdown.displaySettings.isAvailable = false;
+      at.columnDropdown = {displaySettings: {isAvailable: false}};
+      at.files ??= {};
+      at.files.buttons = at.files.buttons?.filter((button) => !button.import);
+      at.files.dragAndDrop = false;
+    }
   }
 }
