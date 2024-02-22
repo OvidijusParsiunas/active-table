@@ -6,9 +6,16 @@ import {TableData} from '../../../types/tableData';
 import {ActiveTable} from '../../../activeTable';
 
 export class OverwriteCellsViaCSVOnPaste {
-  private static trimCSVRowsIfCantCreateNew(CSV: TableData, data: TableData, rowIndex: number) {
-    if (data.length < CSV.length + rowIndex) {
-      return CSV.slice(0, CSV.length - (CSV.length + rowIndex - data.length));
+  private static trimCSVRowsIfPaginationAsync(CSV: TableData, data: TableData, rowIndex: number, columnIndex: number) {
+    const endRowIndex = CSV.length + rowIndex;
+    if (data.length < endRowIndex) {
+      CSV = CSV.slice(0, CSV.length - (endRowIndex - data.length));
+    }
+    const columnNumber = data[0]?.length || 0;
+    const endColumnIndex = CSV[0].length + columnIndex;
+    if (columnNumber < endColumnIndex) {
+      const trimIndex = CSV[0].length - (endColumnIndex - columnNumber);
+      CSV.forEach((row) => row.splice(trimIndex));
     }
     return CSV;
   }
@@ -24,8 +31,8 @@ export class OverwriteCellsViaCSVOnPaste {
       clipboardText: string, event: ClipboardEvent, rowIndex: number, columnIndex: number) {
     event.preventDefault();
     let CSV = ParseCSVClipboardText.parse(clipboardText);
-    if (!at.displayAddNewRow && at._pagination._async) {
-      CSV = OverwriteCellsViaCSVOnPaste.trimCSVRowsIfCantCreateNew(CSV, at.data, rowIndex);
+    if (at._pagination._async) {
+      CSV = OverwriteCellsViaCSVOnPaste.trimCSVRowsIfPaginationAsync(CSV, at.data, rowIndex, columnIndex);
     }
     OverwriteCellsViaCSVOnPaste.focusOriginalCellAfterProcess(at,
       InsertMatrix.insert.bind(this, at, CSV, rowIndex, columnIndex));
