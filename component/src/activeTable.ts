@@ -1,4 +1,5 @@
 import {PaginationInternalUtils} from './utils/outerTableComponents/pagination/paginationInternalUtils';
+import {PaginationAsyncUtils} from './utils/outerTableComponents/pagination/async/paginationAsyncUtils';
 import {ProgrammaticCellUpdateT, ProgrammaticStructureUpdateT} from './types/programmaticCellUpdateT';
 import {ActiveOverlayElementsUtils} from './utils/activeOverlayElements/activeOverlayElementsUtils';
 import {FileImportButtonEvents} from './elements/files/buttons/importButton/fileImportButtonEvents';
@@ -423,19 +424,21 @@ export class ActiveTable extends LitElement {
     FireEvents.onRender(this);
   }
 
-  protected override update(changedProperties: PropertyValues) {
+  protected override async update(changedProperties: PropertyValues) {
+    PaginationAsyncUtils.preprocessTablePropertiesIfAsync(this);
     this._isPopulatingTable = true;
     StickyPropsUtils.process(this);
     ColumnSettingsUtils.setUpInternalSettings(this);
     FrameComponentsInternalUtils.set(this);
     DefaultColumnTypes.createDropdownItemsForDefaultTypes();
     RowDropdownSettingsUtil.process(this);
-    if (this.pagination) PaginationInternalUtils.process(this);
+    if (this.pagination) await PaginationInternalUtils.process(this);
     if (this.stripedRows) StripedRows.process(this);
     if (this.rowHoverStyles) RowHoverEvents.process(this.rowHoverStyles, this._defaultCellHoverColors);
     const tableElement = TableElement.createInfrastructureElements(this);
     if (this.overflow) OverflowUtils.setupContainer(this, tableElement); // must not be after BORDER_DIMENSIONS is set
     TableElement.addOverlayElements(this, tableElement, this._activeOverlayElements);
+    PaginationAsyncUtils.removeLoadingOverlay(this);
     this.shadowRoot?.appendChild(this._overflow?.overflowContainer || tableElement);
     OuterTableComponents.create(this);
     InitialDataProcessing.preProcess(this, this.data);
