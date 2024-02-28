@@ -64,5 +64,5 @@ export interface Pagination {
   displayNumberOfVisibleRows?: boolean; // by default true
   styles?: PaginationStyles;
   positions?: PaginationPositions;
-  _async?: PaginationAsync;
+  async?: PaginationAsync;
 }

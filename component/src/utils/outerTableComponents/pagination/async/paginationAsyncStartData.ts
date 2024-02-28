@@ -39,13 +39,13 @@ export class PaginationAsyncStartData {
   }
 
   public static async get(at: ActiveTable, pagination: Pagination, paginationInternal: PaginationInternal) {
-    const {_async, rowsPerPage: rowsPerPageC} = pagination;
-    if (!_async) return;
+    const {async, rowsPerPage: rowsPerPageC} = pagination;
+    if (!async) return;
     const {rowsPerPage: rowsPerPageI} = paginationInternal;
     const rowsPerPage = typeof rowsPerPageC === 'number' ? rowsPerPageC : rowsPerPageI;
     try {
       // not handling partial failures because users would be looking at partial data without knowing about it
-      const [totalDataRows, data] = await Promise.all([_async.getTotalRows(), _async.getPageData(1, rowsPerPage)]);
+      const [totalDataRows, data] = await Promise.all([async.getTotalRows(), async.getPageData(1, rowsPerPage)]);
       return {totalDataRows, data};
     } catch (e) {
       setTimeout(() => PaginationAsyncUtils.displayError(e, at));

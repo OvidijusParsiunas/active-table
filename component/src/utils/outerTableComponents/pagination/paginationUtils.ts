@@ -197,8 +197,8 @@ export class PaginationUtils {
   }
 
   public static async getAndApplyDataOnButtonClick(at: ActiveTable, buttonNumber: number, rowsPerPage?: string) {
-    if (at._pagination._async) {
-      PaginationAsyncUtils.getAndApplyNewData(at, at._pagination._async, buttonNumber, rowsPerPage);
+    if (at._pagination.async) {
+      PaginationAsyncUtils.getAndApplyNewData(at, at._pagination.async, buttonNumber, rowsPerPage);
     } else {
       PaginationUtils.displayRowsForDifferentButton(at, buttonNumber);
     }

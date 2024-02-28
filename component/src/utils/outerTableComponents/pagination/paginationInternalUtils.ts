@@ -229,7 +229,7 @@ export class PaginationInternalUtils {
     const {_pagination, _activeOverlayElements} = at;
     if (!at.pagination) return;
     const pagination: Pagination = typeof at.pagination === 'boolean' ? {} : at.pagination;
-    if (pagination._async) {
+    if (pagination.async) {
       LoadingElement.addInitial(at);
       _activeOverlayElements.error = ErrorElement.create();
       _pagination.asyncStartData = await PaginationAsyncStartData.get(at, pagination, _pagination);

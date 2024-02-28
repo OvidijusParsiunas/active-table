@@ -31,7 +31,7 @@ export class OverwriteCellsViaCSVOnPaste {
       clipboardText: string, event: ClipboardEvent, rowIndex: number, columnIndex: number) {
     event.preventDefault();
     let CSV = ParseCSVClipboardText.parse(clipboardText);
-    if (at._pagination._async) {
+    if (at._pagination.async) {
       CSV = OverwriteCellsViaCSVOnPaste.trimCSVRowsIfPaginationAsync(CSV, at.data, rowIndex, columnIndex);
     }
     OverwriteCellsViaCSVOnPaste.focusOriginalCellAfterProcess(at,

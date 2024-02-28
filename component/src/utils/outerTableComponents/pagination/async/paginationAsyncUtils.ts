@@ -64,7 +64,7 @@ export class PaginationAsyncUtils {
   }
 
   private static isAsyncPagination(pagination?: boolean | Pagination) {
-    return typeof pagination === 'object' && pagination._async;
+    return typeof pagination === 'object' && pagination.async;
   }
 
   public static removeLoadingOverlay(at: ActiveTable) {
