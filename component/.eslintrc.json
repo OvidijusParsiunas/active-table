@@ -45,5 +45,6 @@
         "@typescript-eslint/no-explicit-any": "off"
       }
     }
-  ]
+  ],
+  "ignorePatterns": ["vite.config.ts"]
 }
