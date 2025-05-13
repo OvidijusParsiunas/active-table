@@ -6,6 +6,8 @@ export class ParseCSVClipboardText {
   public static readonly NEW_LINE_SYMBOL = '\\n';
   private static readonly EXPLICIT_TAB_SYMBOL = '\\\\t';
   private static readonly EXPLICIT_NEW_LINE_SYMBOL = '\\\\n';
+  private static readonly WINDOWS_NEW_LINE_SYMBOL = '\\r\\n';
+  private static readonly EXPLICIT_WINDOWS_NEW_LINE_SYMBOL = '\\\\r\\\\n';
 
   private static preprocessText(multiLineString: string): string {
     let newString = multiLineString;
@@ -20,6 +22,17 @@ export class ParseCSVClipboardText {
 
   private static getSeparatorSymbols(multiLineString: string): {newLine: string; tab: string} {
     // occurs when pasting string that contains actual \n or \t symbols
+
+    // Handle Windows-style line endings (`\r\n`)
+    if (multiLineString.indexOf(ParseCSVClipboardText.EXPLICIT_WINDOWS_NEW_LINE_SYMBOL) > -1) {
+      return {
+        newLine: ParseCSVClipboardText.EXPLICIT_WINDOWS_NEW_LINE_SYMBOL, tab: ParseCSVClipboardText.EXPLICIT_TAB_SYMBOL
+      };
+    }
+    if (multiLineString.indexOf(ParseCSVClipboardText.WINDOWS_NEW_LINE_SYMBOL) > -1) {
+      return { newLine: ParseCSVClipboardText.WINDOWS_NEW_LINE_SYMBOL, tab: ParseCSVClipboardText.TAB_SYMBOL };
+    }
+    // Handle Unix-style line endings (`\n`)
     if (
       multiLineString.indexOf(ParseCSVClipboardText.EXPLICIT_NEW_LINE_SYMBOL) > -1 ||
       multiLineString.indexOf(ParseCSVClipboardText.EXPLICIT_TAB_SYMBOL) > -1
