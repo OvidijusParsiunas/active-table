@@ -13,7 +13,7 @@ export class CheckboxCellElement {
   }
 
   public static isCheckboxCell(cellElement: HTMLElement) {
-    return CheckboxCellElement.isCheckbox(cellElement.children[0] as HTMLElement);
+    return !!cellElement && CheckboxCellElement.isCheckbox(cellElement.children[0] as HTMLElement);
   }
 
   public static getCheckboxElement(element: HTMLElement) {
