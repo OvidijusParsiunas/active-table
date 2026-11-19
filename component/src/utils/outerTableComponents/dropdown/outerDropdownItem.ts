@@ -17,6 +17,6 @@ export class OuterDropdownItem {
   }
 
   public static setActiveByIndex(items: HTMLElement[], index: number) {
-    items[index].classList.add(DropdownItem.ACTIVE_ITEM_CLASS);
+    items[index]?.classList.add(DropdownItem.ACTIVE_ITEM_CLASS);
   }
 }
